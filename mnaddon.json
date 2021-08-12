@@ -1,0 +1,8 @@
+{
+  "addonid": "marginnote.extension.onmymn",
+  "author": "ourongxing",
+  "title": "OhMyMN",
+  "version": "0.1",
+  "marginnote_version_min": "3.7.10",
+  "cert_key": ""
+}
