@@ -1,6 +1,5 @@
-JSB.require('panguIniter')
 const Utils = JSB.defineClass('Utils : NSObject')
-Utils.prototype.init = () => ({
+Utils.prototype.init = (pangu) => ({
   log: function(text){
     JSB.log("MNLOG %@", text)
   },
@@ -52,14 +51,15 @@ Utils.prototype.init = () => ({
       else return ""
     } else return ""
   },
-  standardizeText: function(setting, text) {
+  standardizeText: function(text) {
     // pangu 主要是加空格，以及换成全角字符
-    const pangu = PanguIniter.new().init()
     return pangu.spacing(text)
     // return ""
     // if (setting.defaultChinese) {
     //
     // }
+  },
+  modifyText: function(config, text) {
   },
   getCommentIndex: function(node, commentNote) {
     const comments = node.comments

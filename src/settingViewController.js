@@ -1,8 +1,8 @@
-function log(text){
-  JSB.log("MNLOG %@", text)
-}
 const SettingViewController = JSB.defineClass('SettingViewController : UITableViewController', {
   viewDidLoad: function () {
+    // 这样才能正确读取到
+    JSB.require(self.mainPath + '/src/dataSource')
+
     // 允许被选中，如果不加有一定机率无法触发选中 delegate
     self.tableView.allowsSelection = true
     // 圆角
@@ -33,7 +33,7 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
         view.backgroundColor = UIColor.clearColor()
         view.on = status
         return view
-      }, 
+      },
       input: function (text = "") {
         const frame = { x: 0, y: 9, width: 100, height: 30 }
         if (self.tmp.osType == 0) frame.y = 5
@@ -45,7 +45,7 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
         view.textAlignment = 0
         view.autoresizingMask = 1 << 1 | 1 << 5
         return view
-      }, 
+      },
       lineInput: function (text = "") {
         const frame = { x: 40, y: 9, width: 250, height: 30 }
         if (self.tmp.osType == 0) frame.y = 5
@@ -59,193 +59,13 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
       }
     }
 
-    self.allSettings = [
-      {
-        addonName: 'OhMyMN',
-        addonSetting: [
-          {
-            type: 'display',
-            label: 'Github 投票征集新的需求\nMade By @ourongxing（点击跳转）'
-          }, {
-            type: 'switch',
-            label: '面板置于右侧',
-            key: 'rightMode',
-          }, {
-            type: 'switch',
-            label: '双击打开面板',
-            key: 'doubleClick',
-          },
-        ]
-      },
-      {
-        addonName: 'Shortcuts',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '请注意，以下功能均为选中卡片后点击操作\n使用方法点我查看，与后续板块相呼应'
-          }, {
-            type: 'switch',
-            label: '点击后自动关闭面板',
-            key: 'clickHidden',
-          }, {
-            type: 'button',
-            label: '序列化摘录',
-            key: 'listChecked',
-            origin: 'AutoList'
-          }, {
-            type: 'button',
-            label: '补全单词词形', key: 'completeChecked',
-            origin: 'AutoComplete'
-          }, {
-            type: 'button',
-            label: '填充单词解释',
-            key: 'fillChecked',
-            origin: 'AutoComplete'
-          }, {
-            type: 'button',
-            label: '规范摘录和标题',
-            key: 'standardizeChecked',
-            origin: 'AutoStandardize'
-          }, {
-            type: 'button',
-            label: '切换摘录或标题',
-            key: 'switchTitleorExcerpt',
-            origin: 'AnotherAutoTitle'
-          }, {
-            type: 'buttonWithInput',
-            label: '批量重命名标题',
-            key: 'renameChecked',
-            help: '%s 代表原标题',
-          }, {
-            type: 'buttonWithInput',
-            label: '批量替换摘录文字',
-            key: 'replaceChecked',
-            help: `参考 JS 的 replace 语法\n格式：("匹配","替换");()`,
-            origin: 'AutoReplace'
-          }, {
-            type: 'buttonWithInput',
-            label: '改变所有摘录颜色',
-            key: 'changeColorChecked',
-            help: '输入颜色索引，也就是顺序，从 1 开始',
-          }, {
-            type: 'buttonWithInput',
-            label: '改变所有摘录填充',
-            help: '输入填充索引，也就是顺序，从 1 开始',
-            key: 'changeFillChecked',
-          },
-        ]
-      },
-      {
-        addonName: 'AutoStandardize',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '按照排版规范来优化摘录以及标题'
-          }, {
-            type: 'switch',
-            label: '摘录时自动执行',
-            key: 'on',
-          }, {
-            type: 'switch',
-            label: '默认使用中文标点符号',
-            key: 'defaultChinese',
-          }, {
-            type: 'switch',
-            label: '首字母大写',
-            key: 'firstCapitalize',
-          },
-        ]
-      },
-      {
-        addonName: 'AutoComplete',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '补全单词词形，只支持动词和名词\n需要配合AnotherAutoTitle 使用'
-          }, {
-            type: 'switch',
-            label: '摘录时自动执行',
-            key: 'on',
-          }, {
-            type: 'display',
-            label: '覆盖小学到托福词汇'
-          }, {
-            type: 'switch',
-            label: '填充单词解释',
-            key: 'fillExplanation',
-          },
-        ]
-      },
-      {
-        addonName: 'AnotherAutoTitle',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '更强大的自动转换标题插件'
-          }, {
-            type: 'switch',
-            label: '摘录时自动执行',
-            key: 'on',
-          }, {
-            type: 'display',
-            label: '以下情况会在摘录时自动转换为标题'
-          }, {
-            type: 'switch',
-            label: '不含有点号',
-            key: 'noPunctuation',
-          }, {
-            type: 'input',
-            label: '字数不超过',
-            key: 'wordCount',
-            content: '10'
-          }, {
-            type: 'display',
-            label: '自定义正则表达式，无视上述规则\n格式：(/正则/);(/正则/)'
-          }, {
-            type: 'lineInput',
-            key: 'customInput',
-          }
-        ]
-      },
-      {
-        addonName: 'AutoReplace',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '使用正则匹配替换摘录中的某些错误'
-          }, {
-            type: 'switch',
-            key: 'on',
-            label: '摘录时自动执行',
-          }, {
-            type: 'display',
-            label: `参考 JS 的 replace 语法\n格式：("匹配","替换");();`
-          }, {
-            type: 'lineInput',
-            key: 'customInput',
-          },
-        ]
-      },
-      {
-        addonName: 'AutoList',
-        addonSetting: [
-          {
-            type: 'display',
-            label: '针对序列文本，自动换行以及补充序号或分号'
-          }, {
-            type: 'switch',
-            key: 'on',
-            label: '摘录时自动执行',
-          },
-        ]
-      },
-    ]
+    self.dataSource = DataSource.new().init()
 
     // 如果设置了默认状态的话，貌似不允许修改
     const tmp_config = NSUserDefaults.standardUserDefaults().objectForKey('marginnote_ohmymn_config')
     if (tmp_config){
       const config = JSON.parse(tmp_config)
-      for (addon of self.allSettings) {
+      for (addon of self.dataSource) {
         const addonName = addon.addonName
         for (setting of addon.addonSetting){
           if (setting.type == 'switch') {
@@ -264,19 +84,19 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
   },
 
   numberOfSectionsInTableView: function (tableView) {
-    return self.allSettings.length
+    return self.dataSource.length
   },
 
   tableViewNumberOfRowsInSection: function (tableView, section) {
-    return self.allSettings[section].addonSetting.length
+    return self.dataSource[section].addonSetting.length
   },
 
   tableViewTitleForHeaderInSection: function (tableView, section) {
-    return self.allSettings[section].addonName
+    return self.dataSource[section].addonName
   },
 
   tableViewHeightForRowAtIndexPath: function (tableView, indexPath) {
-    setting = self.allSettings[indexPath.section].addonSetting[indexPath.row]
+    setting = self.dataSource[indexPath.section].addonSetting[indexPath.row]
     if (setting.type == 'display'){
       let num = setting.label.length - setting.label.replace(/[\r\n]/g, '').length
       return 30 + num * 15
@@ -286,7 +106,7 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
 
   tableViewCellForRowAtIndexPath: function (tableView, indexPath) {
     // 渲染一组的不同行
-    setting = self.allSettings[indexPath.section].addonSetting[indexPath.row]
+    setting = self.dataSource[indexPath.section].addonSetting[indexPath.row]
     if (setting.type == 'display') {
       let cell = UITableViewCell.makeWithStyleReuseIdentifier(0, 'DisplayCellID')
       cell.selectionStyle = 0
@@ -351,7 +171,7 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
   },
 
   tableViewDidSelectRowAtIndexPath: function(tableView, indexPath) {
-    const addon = self.allSettings[indexPath.section]
+    const addon = self.dataSource[indexPath.section]
     const setting = addon.addonSetting[indexPath.row]
     if(indexPath.section == 0 && indexPath.row == 0){
       const encodedUrl = encodeURI("https://github.com/ourongxing")
@@ -364,17 +184,17 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
       UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(setting.label, setting.help, 2, "确定",[], function(alert) {
         tmp = alert.textFieldAtIndex(0).text
         if (!tmp) tmp = ""
-        NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('ButtonClick', self, {origin: setting.origin ? setting.origin : "", key: setting.key, content: tmp})
+        NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('ButtonClick', self, {key: setting.key, content: tmp})
       })
     }
     if (setting.type == 'button'){
-      NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('ButtonClick', self, {origin: setting.origin ? setting.origin : "", key: setting.key, content: ""})
+      NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('ButtonClick', self, {key: setting.key, content: ""})
     }
   },
 
   textFieldShouldReturn: function(sender) {
     sender.resignFirstResponder()
-    const addon = self.allSettings[(sender.tag - 999 - (sender.tag - 999) % 100)/100]
+    const addon = self.dataSource[(sender.tag - 999 - (sender.tag - 999) % 100)/100]
     const setting = addon.addonSetting[(sender.tag - 999) % 100]
     setting.content = sender.text
     NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('InputOver', self, {name: addon.addonName, key: setting.key, content: sender.text})
@@ -382,7 +202,7 @@ const SettingViewController = JSB.defineClass('SettingViewController : UITableVi
   },
 
   switchChange: function (sender) {
-    const addon = self.allSettings[(sender.tag - 999 - (sender.tag - 999) % 100)/100]
+    const addon = self.dataSource[(sender.tag - 999 - (sender.tag - 999) % 100)/100]
     const setting = addon.addonSetting[(sender.tag - 999) % 100]
     setting.status = sender.on
     NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('SwitchChange', self, {name: addon.addonName, key: setting.key, status: sender.on})

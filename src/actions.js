@@ -10,8 +10,7 @@ Actions.prototype.init = () => ({
     utils.log(param)
   },
   standardizeChecked: function(_self, utils, param){
-    const nodes = utils.selectNodes(_self)
-    for(node of nodes) {
+    for(node of param.nodes) {
       const title = utils.getNoteTitle(node)
       if(title) node.noteTitle = utils.standardizeText(title)
       const notes = utils.excerptNotes(node)
@@ -23,8 +22,7 @@ Actions.prototype.init = () => ({
     utils.refreshNotebook(_self)
   },
   switchTitleorExcerpt: function(_self, utils, param){
-    const nodes = utils.selectNodes(_self)
-    for(note of nodes) {
+    for(note of param.nodes) {
       const title = utils.getNoteTitle(note)
       const text = utils.getNoteText(note)
       // 只允许存在一个
@@ -45,8 +43,7 @@ Actions.prototype.init = () => ({
     // 使下标从 1 开始
     const index = Number(param.input)
     if (!isNaN(index) && index <= 4 && index > 0) {
-      const nodes = utils.selectNodes(_self)
-      for(node of nodes) {
+      for(node of param.nodes) {
         const notes = utils.excerptNotes(node)
         for(note of notes) {
           note.fillIndex = index - 2
@@ -60,8 +57,7 @@ Actions.prototype.init = () => ({
   changeColorChecked: function(_self, utils, param){
     const index = Number(param.input)
     if (!isNaN(index) && index <= 16 && index > 0) {
-      const nodes = utils.selectNodes(_self)
-      for(node of nodes) {
+      for(node of param.nodes) {
         const notes = utils.excerptNotes(node)
         for(note of notes) {
           note.colorIndex = index - 1

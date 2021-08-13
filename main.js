@@ -1,48 +1,21 @@
+// mainPath 是传入的插件文件夹位置
 JSB.newAddon = function(mainPath){
-  JSB.require('settingViewController')
-  JSB.require('panguIniter')
+  JSB.require('/src/settingViewController')
+  JSB.require('/src/dictImporter')
+  JSB.require('/src/panguIniter')
+  JSB.require('/src/utils')
+  JSB.require('/src/actions')
+  // MAC 上由于不支持 OCR PRO ，就不存在自动矫正的问题，但是在 iPad 上，会出现自动校正，此时我们需要等待矫正完成再修改。
   const newAddonClass = JSB.defineClass('OhMyMN : JSExtension',{
-    // 打开窗口时，也就是打开 MN，只加载一次，生命周期从这里开始
     sceneWillConnect: function() {
-      self.utils = {
-        log: function(text){
-          JSB.log("MNLOG %@", text)
-        },
-        showHUD: function(text, sec = 2){
-          Application.sharedInstance().showHUD(text, self.window, sec)
-        },
-        refreshNotebook: function(notebookid){
-          NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('RefreshAfterDBChange', self, { topicid: notebookid })
-        },
-        selectNodes: function(){
-          const MindMapNodes = self.studyController.notebookController.mindmapView.selViewLst
-          if(MindMapNodes) return MindMapNodes.map(item => item.note.note)
-          else return []
-        },
-        excerptNotes: function(node){
-          const notes = [node]
-          // 包括作为评论的摘录
-          const comments = node.comments
-          for (comment of comments){
-            if (comment.type == "LinkNote") notes.push(Database.sharedInstance().getNoteById(comment.noteid))
-          }
-          return notes
-        },
-        getNoteTitle: function(note) {
-          // 预处理一下没有标题的情况
-          if (note.noteTitle) return note.noteTitle
-          else return ""
-        },
-        getNoteText: function(note) {
-          // 排除掉图片摘录，防止获取到 OCR 结果
-          if (!note.excerptPic) {
-            if (note.excerptText) return note.excerptText
-            else return ""
-          } else return ""
-        },
-        pangu: PanguIniter.new().init()
+      // 导入词典
+      self.tmp = {
+        show: false,
+        dict: DictImporter.new().init()
       }
-      self.tmp = {}
+      self.utils = Utils.new().init(PanguIniter.new().init())
+      self.action = Actions.new().init()
+
       // 初始化配置
       self.config = {
         OhMyMN: {},
@@ -61,106 +34,30 @@ JSB.newAddon = function(mainPath){
         }
       }
 
-      self.SettingViewController = SettingViewController.new()
+      self.settingViewController = SettingViewController.new()
+      self.settingViewController.mainPath = mainPath
       self.studyController = Application.sharedInstance().studyController(self.window)
       self.layoutViewController = function(rightMode){
         let frame = self.studyController.view.bounds
         // let width = frame.width > 300?(300 + (frame.width - 300)/2):300
         let width = 300
         if (rightMode) {
-          self.SettingViewController.view.frame = {x:frame.width-width-50,y:110,width: width,height: 450}
+          self.settingViewController.view.frame = {x:frame.width-width-50,y:110,width: width,height: 450}
         } else {
-          self.SettingViewController.view.frame = {x:50,y:110,width: width,height: 450}
-        }
-      }
-      self.SettingViewController.mainPath = mainPath
-      self.action = {
-        listChecked: function(param){
-          self.utils.log(param)
-        },
-        completeChecked: function(param){
-          self.utils.log(param)
-        },
-        fillChecked: function(param){
-          self.utils.log(param)
-        },
-        standardizeChecked: function(param){
-          const nodes = self.utils.selectNodes()
-          for(node of nodes) {
-            const title = self.utils.getNoteTitle(node)
-            if(title){
-              node.noteTitle = self.utils.pangu.spacing(title)
-            }
-            const notes = self.utils.excerptNotes(node)
-            for(note of notes) {
-              const text = self.utils.getNoteText(note)
-              if (text)  {
-                note.excerptText = self.utils.pangu.spacing(text)
-              }
-            }
-          }
-          self.utils.refreshNotebook(self.notebookid)
-        },
-        switchTitleorExcerpt: function(param){
-          const nodes = self.utils.selectNodes()
-          for(note of nodes) {
-            const title = self.utils.getNoteTitle(note)
-            const text = self.utils.getNoteText(note)
-            // 只允许存在一个
-            if ((title || text) && !(title && text)) {
-              note.noteTitle = text
-              note.excerptText = title
-            }
-          }
-          self.utils.refreshNotebook(self.notebookid)
-        },
-        renameChecked: function(param){
-          self.utils.log(param)
-        },
-        changeFillChecked: function(param){
-          // 使下标从 1 开始
-          const index = Number(param.input)
-          if (!isNaN(index) && index <= 4 && index > 0) {
-            const nodes = self.utils.selectNodes()
-            for(node of nodes) {
-              const notes = self.utils.excerptNotes(node)
-              for(note of notes) {
-                note.fillIndex = index - 2
-              }
-            }
-            self.utils.refreshNotebook(self.notebookid)
-          } else {
-            self.utils.showHUD("输入不正确", 1)
-          }
-        },
-        changeColorChecked: function(param){
-          const index = Number(param.input)
-          if (!isNaN(index) && index <= 16 && index > 0) {
-            const nodes = self.utils.selectNodes()
-            for(node of nodes) {
-              const notes = self.utils.excerptNotes(node)
-              for(note of notes) {
-                note.colorIndex = index - 1
-              }
-            }
-            self.utils.refreshNotebook(self.notebookid)
-          } else {
-            self.utils.showHUD("输入不正确", 1)
-          }
-        },
-        replaceChecked: function(param){
-          self.utils.log(param)
+          self.settingViewController.view.frame = {x:50,y:110,width: width,height: 450}
         }
       }
     },
     sceneDidDisconnect: function() {
+      // 保存配置信息
+      NSUserDefaults.standardUserDefaults().setObjectForKey(JSON.stringify(self.config), 'marginnote_ohmymn_config')
     },
     sceneWillResignActive: function() {
     },
     sceneDidBecomeActive: function() {
     },
     notebookWillOpen: function(notebookid) {
-      self.notebookid = notebookid
+      self.tmp.notebookid = notebookid
       // 插件面板自定义响应事件
       NSNotificationCenter.defaultCenter().addObserverSelectorName(self, 'onButtonClick:', 'ButtonClick')
       NSNotificationCenter.defaultCenter().addObserverSelectorName(self, 'onSwitchChange:', 'SwitchChange')
@@ -168,16 +65,8 @@ JSB.newAddon = function(mainPath){
       // 创建摘录以及修改摘录
       NSNotificationCenter.defaultCenter().addObserverSelectorName(self,'onProcessExcerptText:','ProcessNewExcerpt')
       NSNotificationCenter.defaultCenter().addObserverSelectorName(self,'onProcessExcerptText:','ChangeExcerptRange')
-      // 等待 0.2s 再打开面板
-      NSTimer.scheduledTimerWithTimeInterval(0.2,false,function(){
-        self.show = NSUserDefaults.standardUserDefaults().objectForKey('marginnote_ohmymn_show')
-        if(self.show){
-          self.studyController.view.addSubview(self.SettingViewController.view)
-          self.layoutViewController(self.config.OhMyMN.rightMode)
-          self.studyController.refreshAddonCommands()
-        }
-      })
-      myUserDefaults = NSUserDefaults.standardUserDefaults()
+      // MindMapSelChanged, return syncIndex 不知道是什么
+      // NSNotificationCenter.defaultCenter().addObserverSelectorName(self,'test:','')
     },
     notebookWillClose: function(notebookid) {
       // 保存配置信息
@@ -199,34 +88,82 @@ JSB.newAddon = function(mainPath){
       }
     },
     queryAddonCommandStatus: function() {
-      return {
-        image: 'ohmymn.png',
-        object: self,
-        selector: 'toggleOhMyMN:',
-        checked: (self.show ? true : false)
-      }
+      // 仅在学习模式下
+      if(self.studyController.studyMode < 3)
+        return {
+          image: 'ohmymn.png',
+          object: self,
+          selector: 'toggleOhMyMN:',
+          checked: (self.tmp.show ? true : false)
+        }
+      return null
     },
 
     // 创建摘录以及修改摘录
     onProcessExcerptText: function(sender) {
-      // 通过 groupNoteId 是否是属于评论的摘录，当然前提是卡片的摘录存在的情况下
+      // 不处理其他窗口发出的通知
+      if(!Application.sharedInstance().checkNotifySenderInWindow(sender,self.window)) return
+      // 通过 groupNoteId 是否是属于评论的摘录
       const note = Database.sharedInstance().getNoteById(sender.userInfo.noteid)
       let title = self.utils.getNoteTitle(note)
       let text = self.utils.getNoteText(note)
-      self.utils.log(text)
+      // 先对摘录进行处理
+      if(text) {
+        if (self.config.AutoStandardize.on)
+          text = self.utils.standardizeText(text)
+      } else return
+
+      let flag = self.utils.checkTitle(self.config.AnotherAutoTitle, text)
+      // 表明是属于卡片真正的摘录，后面的摘录都是属于评论了, groupNoteId 是当前卡片的 id
+      UndoManager.sharedInstance().undoGrouping('ohmymn', self.tmp.notebookId, () => {
+        if (!note.groupNoteId) {
+          if(title.length > 2 && (text.startsWith(title) || text.endsWith(title))) {
+            // 如果标题已经存在，说明是在修改标题
+            // 如果满足转换成标题的条件，修改的时候可以不管标题是否满足条件
+            // 不光是要标题存在，如果标题是后加的，此时如果修改摘录，也会转成标题
+            // 此时要处理一下，标题是摘录的开头或结尾
+            flag = true
+          }
+          if(self.config.AnotherAutoTitle.on && flag){
+            note.noteTitle = text
+            note.excerptText = ""
+          } else note.excerptText = text
+        } else {
+          // 满足标题条件的评论摘录自动合并标题，并删除该摘录
+          if (self.config.AnotherAutoTitle.mergeTitle && flag) {
+            const node = Database.sharedInstance().getNoteById(note.groupNoteId)
+            let nodeTitle = self.utils.getNoteTitle(node)
+            if (nodeTitle) {
+              node.noteTitle = nodeTitle + "；" + text
+            } else {
+              node.noteTitle = text
+            }
+            const index = self.utils.getCommentIndex(node, note)
+            // 找到 index ，删除它
+            if ( index != -1) node.removeCommentByIndex(index)
+          } else note.excerptText = text
+        }
+        Database.sharedInstance().setNotebookSyncDirty(self.tmp.notebookId)
+      })
+      self.utils.refreshNotebook(self)
     },
 
     onButtonClick: function(sender) {
-      const key = sender.userInfo.key
-      const input = sender.userInfo.content
-      const origin = sender.userInfo.origin
+      // 点击后关闭面板
       if (self.config.Shortcuts.clickHidden) {
-        self.SettingViewController.view.removeFromSuperview()
-        NSUserDefaults.standardUserDefaults().setObjectForKey(false,'marginnote_ohmymn_show')
-        self.show = false
+        self.settingViewController.view.removeFromSuperview()
+        self.tmp.show = false
         self.studyController.refreshAddonCommands()
       }
-      self.action[key]({input, origin})
+      const nodes = utils.selectNodes(self)
+      const key = sender.userInfo.key
+      const input = sender.userInfo.content
+      UndoManager.sharedInstance().undoGrouping('ohmymn', self.tmp.notebookId, () => {
+        if (nodes.length) {
+          self.action[key](self, self.utils, {input, nodes})
+          Database.sharedInstance().setNotebookSyncDirty(self.tmp.notebookId)
+        }
+      })
     },
 
     onInputOver: function(sender){
@@ -234,7 +171,7 @@ JSB.newAddon = function(mainPath){
       const key = sender.userInfo.key
       const addonName = sender.userInfo.name
       self.config[addonName][key] = input
-      self.utils.showHUD("输入已保存", 1)
+      self.utils.showHUD(self, "输入已保存", 1)
     },
 
     onSwitchChange: function(sender){
@@ -248,10 +185,9 @@ JSB.newAddon = function(mainPath){
     },
 
     toggleOhMyMN: function(sender) {
-      if(self.show) {
-        self.SettingViewController.view.removeFromSuperview()
-        NSUserDefaults.standardUserDefaults().setObjectForKey(false,'marginnote_ohmymn_show')
-        self.show = false
+      if(self.tmp.show) {
+        self.settingViewController.view.removeFromSuperview()
+        self.tmp.show = false
         self.studyController.refreshAddonCommands()
       } else {
         let flag = true
@@ -268,12 +204,11 @@ JSB.newAddon = function(mainPath){
           // 开启插件时自动变为一半脑图一半书
           if (self.studyController.docMapSplitMode == 2) {
             self.studyController.docMapSplitMode = 1
-            showHUD("OhMyMN 与脑图更配喔")
+            self.utils.showHUD("OhMyMN 与脑图更配喔", 1)
           }
-          self.studyController.view.addSubview(self.SettingViewController.view)
+          self.studyController.view.addSubview(self.settingViewController.view)
           self.layoutViewController(self.config.OhMyMN.rightMode)
-          NSUserDefaults.standardUserDefaults().setObjectForKey(true,'marginnote_ohmymn_show')
-          self.show = true
+          self.tmp.show = true
           // 开启面板时，若键盘处于开启状态，关闭键盘
           NSTimer.scheduledTimerWithTimeInterval(0.2,false,function(){
             self.studyController.becomeFirstResponder()
@@ -285,14 +220,10 @@ JSB.newAddon = function(mainPath){
   },
     {
       addonDidConnect: function() {
-      },
-      addonWillDisconnect: function() {
-      },
-      applicationWillEnterForeground: function() {
-      },
-      applicationDidEnterBackground: function() {
-      },
-      applicationDidReceiveLocalNotification: function(notify) {
+      }, addonWillDisconnect: function() {
+      }, applicationWillEnterForeground: function() {
+      }, applicationDidEnterBackground: function() {
+      }, applicationDidReceiveLocalNotification: function(notify) {
       },
     })
   return newAddonClass
