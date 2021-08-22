@@ -1,0 +1,31 @@
+{
+  "name": "ohmymn",
+  "author": "ourongxing",
+  "version": "0.9.0",
+  "license": "MIT",
+  "description": "Maybe the most powerful addon of Marginnote3",
+  "main": "",
+  "scripts": {
+    "build": "NODE_ENV=production rollup --config rollup.config.js",
+    "dev": "NODE_ENV=development rollup -w --config rollup.config.js"
+  },
+  "keywords": [
+    "marginote",
+    "addon",
+    "typescript"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-strip": "^2.1.0",
+    "@rollup/plugin-typescript": "^8.2.0",
+    "rollup": "^2.42.4",
+    "rollup-plugin-copy2": "^0.2.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "rollup-plugin-zip": "^1.0.1",
+    "rollup-watch": "^4.3.1",
+    "ts-jest": "^26.5.4",
+    "tslib": "^2.1.0",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {}
+}

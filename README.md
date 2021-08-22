@@ -1,2 +1,3 @@
-# ohmymn
-Powerful Addon for Marginnote3
+# OhMyMN
+
+Maybe the most powerful add of Marginnote3

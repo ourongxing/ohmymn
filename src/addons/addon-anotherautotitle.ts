@@ -1,0 +1,97 @@
+import profile from "profile"
+import { log } from "utils/public"
+
+const config: IConfig = {
+  name: "AnotherAutoTitle",
+  intro: "更强大的自动转换标题插件",
+  settings: [
+    {
+      key: "on",
+      type: cellViewType.switch,
+      label: "摘录时自动执行"
+    },
+    {
+      key: "mergeTitle",
+      type: cellViewType.switch,
+      label: "摘录自动合并为标题"
+    },
+    {
+      help: "在一定范围内修改作为标题的摘录\n不受规则限制，直接转为标题",
+      key: "changeTitleNoLimit",
+      type: cellViewType.switch,
+      label: "标题摘录修改不受限制"
+    },
+    {
+      help: "以下情况会在摘录时自动转换为标题",
+      key: "isWord",
+      type: cellViewType.switch,
+      label: "是单词",
+    },
+    {
+      help: "点号指 。、？?！!，,；;：:",
+      key: "noPunctuation",
+      type: cellViewType.switch,
+      label: "不含有点号"
+    },
+    {
+      key: "wordCount",
+      type: cellViewType.inlineInput,
+      label: "字数不超过",
+    },
+    {
+      key: "customTitle",
+      type: cellViewType.input,
+      help: "自定义，点击查看具体格式",
+      link: "https://github.com/ourongxing"
+    }
+  ],
+  actions: [
+    {
+      type: cellViewType.button,
+      label: '切换摘录或标题',
+      key: 'switchTitleorExcerpt',
+    },
+  ]
+}
+
+const util = {
+  checkAutoTitle(text: string): boolean | string {
+    const anotherautotitle = profile.anotherautotitle
+    if (anotherautotitle.customTitle) {
+      const tmp_arr = anotherautotitle.customTitle.match(/\(\/(.+?)\/[gimy]\)/g)
+      // for (const value of tmp_arr) {
+      //   // if (text.match(eval(value.replace(/^\((.+?)\)$/g, "$1")))) return true
+      // }
+    }
+    // 没有标点符号
+    if (anotherautotitle.noPunctuation) {
+      const reg = RegExp(/[。、？?！!，,；;：:]/)
+      if (!reg.test(text)) return text
+    }
+    if (anotherautotitle.isWord) {
+      if (/^[a-z]+$/.test(text)) return text
+    }
+    // 字数达标
+    if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > text.length)
+      return text
+    return false
+  },
+}
+const action: IActionMethod = {
+  switchTitleorExcerpt({ nodes }) {
+    for (const note of nodes) {
+      const title = note?.noteTitle
+      const text = note?.excerptText
+      // 只允许存在一个
+      if ((title || text) && !(title && text)) {
+        note.noteTitle = text
+        note.excerptText = title
+      } else if (title == text) {
+        // 如果摘录与标题相同，MN 只显示标题，此时我们必然想切换到摘录
+        note.noteTitle = ""
+      }
+    }
+  },
+
+}
+export default { config, util, action }

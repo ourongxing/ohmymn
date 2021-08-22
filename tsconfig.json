@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "target": "es5",
+    "allowJs": false,
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "strict": true,
+    "baseUrl": "src",
+    "lib": [
+      "ES2020"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/addons/utils.mts"
+  ]
+}
