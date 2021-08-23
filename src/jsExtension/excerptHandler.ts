@@ -3,7 +3,7 @@ import profile from "profile"
 import { getCommentIndex, getNoteById, undoGrouping } from "utils/notebook"
 import { isHalfWidth, log } from "../utils/public"
 
-export const excerptHandler = (note: MbBookNote, isOCR = false) => {
+export const excerptHandler = (note: MbBookNote, isOCR = false): string => {
     const groupNoteId = note?.groupNoteId
     let text = note.excerptText!.trim()
     let title = note?.noteTitle
@@ -18,12 +18,15 @@ export const excerptHandler = (note: MbBookNote, isOCR = false) => {
         }
     }
 
-    // 这里是插件的主要工作区间，就是修改摘录
-    if (profile.ohmymn.defaultFullWidth) {
+    // 这里是插件的主要工作区间，就是修改摘录的内容
+    if (profile.ohmymn.defaultFullWidth)
         text = utils.ohmymn.toFullWidth(text)
-    } else if (profile.autostandardize.on) {
+    else if (profile.autostandardize.on)
         text = utils.autostandardize.standardizeText(text)
-    }
+    if (profile.autolist.on)
+        text = utils.autolist.listText(text)
+    if (profile.autoreplace.on)
+        text = utils.autoreplace.replaceText(text)
 
     undoGrouping("ohmymn", note.notebookId!, () => {
         // ------------
@@ -71,10 +74,12 @@ export const excerptHandler = (note: MbBookNote, isOCR = false) => {
                 note.noteTitle = text
                 if (!isOCR) note.excerptText = ""
             }
-            // ---------
-            else {
-                note.excerptText = text
-            }
+            // 虽然开启了自动转标题，但不满足任何条件
+            else note.excerptText = text
         }
+        // ---------
+        // 没有开启自动转标题
+        else note.excerptText = text
     })
+    return text
 }

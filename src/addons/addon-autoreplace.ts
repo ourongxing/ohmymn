@@ -1,3 +1,4 @@
+import profile from "profile"
 import { excerptNotes } from "utils/notebook"
 import { showHUD, string2ReplaceParam } from "utils/public"
 
@@ -27,7 +28,20 @@ const config: IConfig = {
   ]
 }
 
-const util = {}
+const util = {
+  replaceText(text: string) {
+    if (profile.autoreplace.customReplace) {
+      const params = string2ReplaceParam(profile.autoreplace.customReplace)
+      let _text = ""
+      for (const item of params) {
+        _text = text.replaceAll(item.regexp, item.replace)
+      }
+      if (text != _text) return _text
+    }
+    else return text
+  }
+}
+
 const action: IActionMethod = {
   replaceChecked({ content, nodes }) {
     // 检查输入正确性
