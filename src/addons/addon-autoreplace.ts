@@ -1,3 +1,6 @@
+import { excerptNotes } from "utils/notebook"
+import { showHUD, string2ReplaceParam } from "utils/public"
+
 const config: IConfig = {
   name: "AutoReplace",
   intro: "自动替换摘录中的某些错误",
@@ -17,13 +20,35 @@ const config: IConfig = {
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "替换摘录文字",
+      label: "批量替换摘录文字",
       key: "replaceChecked",
-      help: `参考 JS 的 replace 语法\n格式：("匹配","替换");()`
+      help: "具体输入格式见顶上帮助信息"
     }
   ]
 }
 
 const util = {}
-const action = {}
+const action: IActionMethod = {
+  replaceChecked({ content, nodes }) {
+    // 检查输入正确性
+    try {
+      const params = string2ReplaceParam(content)
+      for (const node of nodes) {
+        const notes = excerptNotes(node)
+        for (const note of notes) {
+          const text = note.excerptText
+          let _text = ""
+          if (text) {
+            for (const item of params) {
+              _text = text.replaceAll(item.regexp, item.replace)
+            }
+          }
+          if (text !== _text) note.excerptText = _text
+        }
+      }
+    } catch {
+      showHUD("输入错误")
+    }
+  }
+}
 export default { config, util, action }
