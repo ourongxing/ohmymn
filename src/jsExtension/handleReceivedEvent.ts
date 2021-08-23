@@ -62,7 +62,7 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
         // 有可能一直没获取到文字
         if (note.excerptText) {
           const modifiedText = excerptHandler(note)
-          if (profile.ohmymn.autoCorrect) {
+          if (note.excerptText && profile.ohmymn.autoCorrect) {
             times = 20 // 重置 times，等待自动矫正
             NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (_timer) {
               if ((note.excerptText != text && note.excerptText != modifiedText) || !times--) {
