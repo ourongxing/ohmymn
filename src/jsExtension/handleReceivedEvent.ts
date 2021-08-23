@@ -24,6 +24,8 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
         nodes: nodes
       })
     })
+  } else {
+    showHUD("未选中任何脑图卡片")
   }
 }
 
@@ -59,11 +61,11 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
         timer.invalidate()
         // 有可能一直没获取到文字
         if (note.excerptText) {
-          excerptHandler(note, true)
+          const modifiedText = excerptHandler(note)
           if (profile.ohmymn.autoCorrect) {
             times = 20 // 重置 times，等待自动矫正
             NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (_timer) {
-              if (note.excerptText != text || !times--) {
+              if ((note.excerptText != text && note.excerptText != modifiedText) || !times--) {
                 _timer.invalidate()
                 if (note.excerptText != text) excerptHandler(note, true)
               }
@@ -75,12 +77,12 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
   }
   // 纯文字
   else if (text) {
-    excerptHandler(note)
+    const modifiedText = excerptHandler(note)
     // 开启了自动矫正，判断一下是否还有摘录，防止上一次执行把摘录清空了
     if (note.excerptText && profile.ohmymn.autoCorrect) {
       let times = 20
       NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (timer) {
-        if (note.excerptText != text || !times--) {
+        if ((note.excerptText != text && note.excerptText != modifiedText) || !times--) {
           timer.invalidate()
           if (note.excerptText != text) excerptHandler(note)
         }
