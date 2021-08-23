@@ -35,6 +35,8 @@ const onSwitchChange: eventHandler = ({ userInfo }) => {
 }
 
 const onInputOver: eventHandler = ({ userInfo }) => {
+  profile[userInfo.name][userInfo.key] = userInfo.content
+  log(profile.anotherautotitle)
   if (userInfo.content) {
     showHUD("输入已保存")
   } else showHUD("输入已清空")
@@ -50,7 +52,7 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
   // 自动矫正先处理，再等，再处理
 
   if (note.excerptPic && profile.ohmymn.autoOCR) {
-    let times = 15
+    let times = 20
     // 异步
     NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (timer) {
       if (note.excerptText || !times--) {
@@ -59,7 +61,7 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
         if (note.excerptText) {
           excerptHandler(note, true)
           if (profile.ohmymn.autoCorrect) {
-            times = 15 // 重置 times，等待自动矫正
+            times = 20 // 重置 times，等待自动矫正
             NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (_timer) {
               if (note.excerptText != text || !times--) {
                 _timer.invalidate()
@@ -76,7 +78,7 @@ const onProcessExcerptText: eventHandler = ({ userInfo }) => {
     excerptHandler(note)
     // 开启了自动矫正，判断一下是否还有摘录，防止上一次执行把摘录清空了
     if (note.excerptText && profile.ohmymn.autoCorrect) {
-      let times = 15
+      let times = 20
       NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (timer) {
         if (note.excerptText != text || !times--) {
           timer.invalidate()
