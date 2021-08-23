@@ -1,6 +1,5 @@
-import { log, showHUD } from "utils/public"
+import { log, showHUD, string2ReplaceParam } from "utils/public"
 import { dataSource } from "addons/synthesizer"
-import checkInput from "./checkInput"
 
 const tag2indexPath = (tag: number): NSIndexPath => {
     return {
@@ -8,6 +7,7 @@ const tag2indexPath = (tag: number): NSIndexPath => {
         row: (tag - 999) % 100
     }
 }
+
 
 const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSIndexPath) => {
     const section = dataSource[indexPath.section]
@@ -35,20 +35,39 @@ const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSI
     }
 }
 
+// 输入错误不保存，全部采用 replaceall，不然麻烦的很
+// 基本格式：(/reg/g, ""); ()
+const checkInputCorrect = (text: string, key: string): boolean => {
+    try {
+        if (key == "wordCount" && isNaN(Number(text)))
+            throw new Error("")
+        else {
+            const params = string2ReplaceParam(text)
+            for (const item of params) {
+                "test".replaceAll(item.regexp, item.replace)
+            }
+        }
+    } catch {
+        showHUD("输入错误，请查看相关说明")
+        return false
+    }
+    return true
+}
+
 const textFieldShouldReturn = (sender: UITextField) => {
     const indexPath: NSIndexPath = tag2indexPath(sender.tag)
     const section = dataSource[indexPath.section]
     const row = section.rows[indexPath.row]
     let text = sender.text.trim()
     // 可以为空
-    if (checkInput(text)) {
-        // 输入正确取消光标
+    if (!text || checkInputCorrect(text, row.key!)) {
+        // 输入正确则取消光标
         sender.resignFirstResponder()
         row.content = text
         NSNotificationCenter.defaultCenter()
             .postNotificationNameObjectUserInfo('InputOver', self,
                 { name: section.header.toLocaleLowerCase(), key: row.key, content: text })
-    } else showHUD("输入错误，请查看输入格式")
+    }
     return true
 }
 

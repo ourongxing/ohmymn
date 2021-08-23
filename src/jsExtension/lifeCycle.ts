@@ -1,6 +1,6 @@
 import settingViewControllerInst from "settingViewController/main"
 import eventHandlerController from "utils/eventHandlers"
-import { readProfile, saveProfile } from "jsExtension/readsaveProfile";
+import { readProfile, saveProfile } from "utils/readsaveProfile";
 import { getObjCClassDeclar, log, showHUD } from "utils/public"
 import { closePanel } from "./switchPanel";
 
@@ -56,9 +56,10 @@ const documentDidOpen = (docmd5: string) => {
         log("读取当前文档的配置", "profile")
         readProfile(docmd5)
         closePanel()
-        // 如果打开笔记本和打开书的间隔在一定时间内，则为打开书
     }
-    if (lastOpenNotebook && now - lastOpenNotebook < 300) {
+    // 如果打开笔记本和打开书的间隔在一定时间内，并且从来没有关闭过文档，说明是此次
+    // 打开 MN 第一次打开笔记本，此时读取全部配置，其余时间均只读取文档配置
+    if (!lastCloseDoc && lastOpenNotebook && now - lastOpenNotebook < 300) {
         log("读取所有配置", "profile")
         readProfile(docmd5, true)
     }
