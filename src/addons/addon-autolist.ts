@@ -1,3 +1,7 @@
+import profile from "profile"
+import { excerptNotes } from "utils/notebook"
+import { log, string2ReplaceParam } from "utils/public"
+
 const config: IConfig = {
   name: "AutoList",
   intro: "针对有序号的文本，自动换行",
@@ -33,11 +37,40 @@ const config: IConfig = {
   ]
 }
 
-const util = {}
+const util = {
+  // 匹配到就在前面或后面添加换行
+  listText(text: string): string {
+    const autolist = profile.autolist
+    if (autolist.customList) {
+      const params = string2ReplaceParam(autolist.customList)
+      let _text = ""
+      for (const item of params) {
+        _text = text.replaceAll(item.regexp, item.replace)
+      }
+      if (text != _text) return _text.trim()
+    }
+    if (autolist.wrapWhenSemicolon) {
+      // 有空格
+      const _text = text.replaceAll(/([;；])\s*/g, "$1\n")
+      if (text != _text) return _text.trimEnd()
+    }
+    if (autolist.multipleChoiceEnhance) {
+      let _text = text.replaceAll(/\s*([ABCDabcd][.、\s]*)/g,
+        (match: string) => "\n" + match.trimStart().toUpperCase())
+      if (text != _text) return _text.trimStart()
+    }
+    return text
+  }
+}
 const action: IActionMethod = {
   listChecked({ nodes }) {
-    const thisNode = nodes[0]
-    thisNode.removeCommentByIndex(0)
+    for (const node of nodes) {
+      const notes = excerptNotes(node)
+      for (const note of notes) {
+        const text = note.excerptText
+        if (text) note.excerptText = util.listText(text)
+      }
+    }
   }
 }
 export default { config, util, action }
