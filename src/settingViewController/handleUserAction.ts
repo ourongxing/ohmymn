@@ -39,16 +39,16 @@ const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSI
 // 基本格式：(/reg/g, ""); ()
 const checkInputCorrect = (text: string, key: string): boolean => {
     try {
-        if (key == "wordCount" && isNaN(Number(text)))
-            throw new Error("")
-        else {
+        if (key == "wordCount") {
+            if (isNaN(Number(text)))
+                throw new Error("")
+        } else {
             const params = string2ReplaceParam(text)
             for (const item of params) {
                 "test".replaceAll(item.regexp, item.replace)
             }
         }
     } catch {
-        showHUD("输入错误，请查看相关说明")
         return false
     }
     return true
@@ -67,7 +67,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
         NSNotificationCenter.defaultCenter()
             .postNotificationNameObjectUserInfo('InputOver', self,
                 { name: section.header.toLocaleLowerCase(), key: row.key, content: text })
-    }
+    } else showHUD("输入错误，请查看相关说明")
     return true
 }
 
