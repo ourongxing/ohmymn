@@ -1,5 +1,5 @@
 import profile from "profile"
-import { log } from "utils/public"
+import { log, string2ReplaceParam } from "utils/public"
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
@@ -58,10 +58,15 @@ const util = {
   checkAutoTitle(text: string): boolean | string {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customTitle) {
-      const tmp_arr = anotherautotitle.customTitle.match(/\(\/(.+?)\/[gimy]\)/g)
-      // for (const value of tmp_arr) {
-      //   // if (text.match(eval(value.replace(/^\((.+?)\)$/g, "$1")))) return true
-      // }
+      const params = string2ReplaceParam(anotherautotitle.customTitle)
+      let _text = ""
+      let flag = false
+      for (const item of params) {
+        // 匹配到了就说明可以作为标题，然后传回 replace 的结果
+        if (!flag && text.match(item.regexp)) flag = true
+        _text = text.replaceAll(item.regexp, item.replace)
+      }
+      if (flag) return _text
     }
     // 没有标点符号
     if (anotherautotitle.noPunctuation) {
