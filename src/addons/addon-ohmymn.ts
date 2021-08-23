@@ -1,5 +1,5 @@
 const config: IConfig = {
-  name: "OhMyMn",
+  name: "OhMyMN",
   intro: "Github 投票征集新的需求\nMade with 💖 By @ourongxing（点击跳转）",
   settings: [
     {
