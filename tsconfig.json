@@ -13,7 +13,8 @@
     "strict": true,
     "baseUrl": "src",
     "lib": [
-      "ES2020"
+      "ES2020",
+      "ESNext.String"
     ]
   },
   "include": [
