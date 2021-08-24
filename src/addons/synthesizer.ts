@@ -39,11 +39,11 @@ const genActionsUtils = () => {
 export const { actions, utils } = genActionsUtils()
 
 const genSection = (config: IConfig): ISection => {
-    const rows: Array<IRow> = []
-    rows.push({
+    const rows: Array<IRow> = [{
         type: cellViewType.plainText,
-        label: config.intro
-    })
+        label: config.intro,
+        link: config.link ?? ""
+    }]
     for (const setting of config.settings) {
         // magicaction 的 help 显示在弹窗上
         if (setting.help && config.name.toLowerCase() != "magicaction") rows.push({

@@ -13,7 +13,7 @@ export const excerptHandler = (note: MbBookNote, isOCR = false): string => {
     // 只要没有大规模改动，修改摘录后的内容可以不受规则限制，直接转为标题，
     // 不过这里会设置一个开关，看具体的使用习惯
     if (text && title && title.length >= 2 && profile.anotherautotitle.changeTitleNoLimit) {
-        if ((text.startsWith(title) || text.endsWith(title) || title.endsWith(text) || title.startsWith(text))) {
+        if (text.startsWith(title) || text.endsWith(title) || title.endsWith(text) || title.startsWith(text)) {
             changeTitle = true
         }
     }
