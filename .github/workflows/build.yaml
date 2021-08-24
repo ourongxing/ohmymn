@@ -20,4 +20,4 @@ jobs:
               run: yarn
 
             - name: Build mnaddon
-            - run: yarn build
+              run: yarn build
