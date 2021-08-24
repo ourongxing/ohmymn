@@ -35,8 +35,8 @@ const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSI
     }
 }
 
-// 输入错误不保存，全部采用 replaceall，不然麻烦的很
-// 基本格式：(/reg/g, ""); ()
+// 输入错误不保存
+// 基本格式：(/reg/gi, ""); ()
 const checkInputCorrect = (text: string, key: string): boolean => {
     try {
         if (key == "wordCount") {
@@ -45,7 +45,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         } else {
             const params = string2ReplaceParam(text)
             for (const item of params) {
-                "test".replaceAll(item.regexp, item.replace)
+                "test".replace(item.regexp, item.replace)
             }
         }
     } catch {

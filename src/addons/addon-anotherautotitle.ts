@@ -64,7 +64,7 @@ const util = {
       for (const item of params) {
         // 匹配到了就说明可以作为标题，然后传回 replace 的结果
         if (!flag && text.match(item.regexp)) flag = true
-        _text = text.replaceAll(item.regexp, item.replace)
+        _text = text.replace(item.regexp, item.replace)
       }
       if (flag) return _text
     }

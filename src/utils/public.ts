@@ -37,7 +37,7 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
   const willReturn = []
   for (const bracket of brackets) {
     const tmp = bracket.substring(1, bracket.length - 1)
-      .replaceAll(/\/g(,)/g, "/gdelimiter")
+      .replace(/(\/[gi]{0,2})\s*,/g, "$1delimiter")
       .split("delimiter").map(item => item.trim())
     const [regString, replace] = tmp
 

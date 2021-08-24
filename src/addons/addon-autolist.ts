@@ -45,17 +45,17 @@ const util = {
       const params = string2ReplaceParam(autolist.customList)
       let _text = ""
       for (const item of params) {
-        _text = text.replaceAll(item.regexp, item.replace)
+        _text = text.replace(item.regexp, item.replace)
       }
       if (text != _text) return _text.trim()
     }
     if (autolist.wrapWhenSemicolon) {
       // 有空格
-      const _text = text.replaceAll(/([;；])\s*/g, "$1\n")
+      const _text = text.replace(/([;；])\s*/g, "$1\n")
       if (text != _text) return _text.trimEnd()
     }
     if (autolist.multipleChoiceEnhance) {
-      let _text = text.replaceAll(/\s*([ABCDabcd][.、\s]*)/g,
+      let _text = text.replace(/\s*([ABCDabcd][.、\s]*)/g,
         (match: string) => "\n" + match.trimStart().toUpperCase())
       if (text != _text) return _text.trimStart()
     }

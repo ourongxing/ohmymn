@@ -94,7 +94,7 @@ const action: IActionMethod = {
                 nodes.forEach((note, index) => {
                     const title = note.noteTitle ?? ""
                     if (newReplace[index]) {
-                        note.noteTitle = title.replaceAll(params[0].regexp, newReplace[index])
+                        note.noteTitle = title.replace(params[0].regexp, newReplace[index])
                     }
                 })
             }
@@ -102,7 +102,7 @@ const action: IActionMethod = {
             else {
                 nodes.forEach((note, index) => {
                     const title = note.noteTitle ?? ""
-                    note.noteTitle = title.replaceAll(params[0].regexp, params[0].replace)
+                    note.noteTitle = title.replace(params[0].regexp, params[0].replace)
                 })
             }
         } catch {
