@@ -59,12 +59,12 @@ const util = {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customTitle) {
       const params = string2ReplaceParam(anotherautotitle.customTitle)
-      let _text = ""
+      let _text = text
       let flag = false
       for (const item of params) {
         // 匹配到了就说明可以作为标题，然后传回 replace 的结果
-        if (!flag && text.match(item.regexp)) flag = true
-        _text = text.replace(item.regexp, item.replace)
+        if (!flag && _text.match(item.regexp)) flag = true
+        _text = _text.replace(item.regexp, item.replace)
       }
       if (flag) return _text
     }

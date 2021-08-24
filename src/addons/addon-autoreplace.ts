@@ -32,9 +32,9 @@ const util = {
   replaceText(text: string) {
     if (profile.autoreplace.customReplace) {
       const params = string2ReplaceParam(profile.autoreplace.customReplace)
-      let _text = ""
+      let _text = text
       for (const item of params) {
-        _text = text.replace(item.regexp, item.replace)
+        _text = _text.replace(item.regexp, item.replace)
       }
       if (text != _text) return _text
     }
@@ -51,13 +51,13 @@ const action: IActionMethod = {
         const notes = excerptNotes(node)
         for (const note of notes) {
           const text = note.excerptText
-          let _text = ""
           if (text) {
+            let _text = text
             for (const item of params) {
-              _text = text.replace(item.regexp, item.replace)
+              _text = _text.replace(item.regexp, item.replace)
             }
+            if (text !== _text) note.excerptText = _text
           }
-          if (text !== _text) note.excerptText = _text
         }
       }
     } catch {

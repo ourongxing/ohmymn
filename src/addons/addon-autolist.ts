@@ -43,9 +43,9 @@ const util = {
     const autolist = profile.autolist
     if (autolist.customList) {
       const params = string2ReplaceParam(autolist.customList)
-      let _text = ""
+      let _text = text
       for (const item of params) {
-        _text = text.replace(item.regexp, item.replace)
+        _text = _text.replace(item.regexp, item.replace)
       }
       if (text != _text) return _text.trim()
     }
