@@ -19,7 +19,7 @@ const config: IConfig = {
       label: "自动关闭面板"
     },
     {
-      help: "下列三项仅当前笔记本生效",
+      help: "下列三项仅当前文档生效",
       key: "defaultFullWidth",
       type: cellViewType.switch,
       label: "默认使用全角符号"
