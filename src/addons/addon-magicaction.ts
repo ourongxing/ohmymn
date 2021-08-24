@@ -32,9 +32,9 @@ const config: IConfig = {
 const util = {
     genCharArray(char: string, len: number, step: number = 1): string[] {
         const charArr = []
-        let i = char.charCodeAt(0)
-        const end = i + len * step - 1
-        for (; i <= end; i = i + step) {
+        let start = char.charCodeAt(0)
+        const end = start + len * step - 1
+        for (let i = start; i <= end; i = i + step) {
             charArr.push(String.fromCharCode(i))
         }
         return charArr
@@ -42,7 +42,7 @@ const util = {
     genNumArr(num: number, len: number, step = 1, digit = 0) {
         const numArr = []
         const end = num + len * step - 1
-        for (let i = num; i < end; i = i + step) {
+        for (let i = num; i <= end; i = i + step) {
             numArr.push(String(i).padStart(digit, '0'))
         }
         return numArr
