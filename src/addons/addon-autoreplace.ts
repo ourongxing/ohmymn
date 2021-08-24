@@ -22,7 +22,7 @@ const config: IConfig = {
     {
       type: cellViewType.buttonWithInput,
       label: "批量替换摘录文字",
-      key: "replaceChecked",
+      key: "replaceSelected",
       help: "具体输入格式见顶上帮助信息"
     }
   ]
@@ -43,7 +43,7 @@ const util = {
 }
 
 const action: IActionMethod = {
-  replaceChecked({ content, nodes }) {
+  replaceSelected({ content, nodes }) {
     // 检查输入正确性
     try {
       const params = string2ReplaceParam(content)

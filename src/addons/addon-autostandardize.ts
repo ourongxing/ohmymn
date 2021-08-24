@@ -14,7 +14,7 @@ const config: IConfig = {
   ],
   actions: [
     {
-      key: "standardizeChecked",
+      key: "standardizeSelected",
       type: cellViewType.button,
       label: "优化摘录和标题排版"
     }
@@ -59,7 +59,7 @@ const util = {
 }
 
 const action: IActionMethod = {
-  standardizeChecked({ nodes }) {
+  standardizeSelected({ nodes }) {
     for (const node of nodes) {
       const title = node.noteTitle
       if (title) {

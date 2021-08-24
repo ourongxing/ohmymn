@@ -32,7 +32,7 @@ const config: IConfig = {
     {
       type: cellViewType.button,
       label: "序列摘录自动换行",
-      key: "listChecked"
+      key: "listSelected"
     }
   ]
 }
@@ -63,7 +63,7 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  listChecked({ nodes }) {
+  listSelected({ nodes }) {
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {

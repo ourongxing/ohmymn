@@ -12,18 +12,18 @@ const config: IConfig = {
             type: cellViewType.buttonWithInput,
             label: '修改摘录填充',
             help: '输入填充索引，也就是顺序，1 到 4',
-            key: 'changeFillChecked',
+            key: 'changeFillSelected',
         },
         {
             type: cellViewType.buttonWithInput,
             label: '修改摘录颜色',
-            key: 'changeColorChecked',
+            key: 'changeColorSelected',
             help: '输入颜色索引，也就是顺序，1 到 16',
         },
         {
             type: cellViewType.buttonWithInput,
             label: '批量重命名标题',
-            key: 'renameChecked',
+            key: 'renameSelected',
             help: '注意事项及具体输入格式见顶上帮助信息',
         }
     ]
@@ -80,7 +80,7 @@ const util = {
 }
 
 const action: IActionMethod = {
-    renameChecked({ content, nodes }) {
+    renameSelected({ content, nodes }) {
         // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
         // 如果单个选中，则为选中的顺序
 
@@ -109,7 +109,7 @@ const action: IActionMethod = {
             showHUD("输入不正确")
         }
     },
-    changeFillChecked({ content, nodes }) {
+    changeFillSelected({ content, nodes }) {
         // 使下标从 1 开始
         const index = Number(content)
         if (!isNaN(index) && index <= 4 && index > 0) {
@@ -123,7 +123,7 @@ const action: IActionMethod = {
             showHUD("输入不正确")
         }
     },
-    changeColorChecked({ content, nodes }) {
+    changeColorSelected({ content, nodes }) {
         // 使下标从 1 开始
         const index = Number(content)
         if (!isNaN(index) && index <= 16 && index > 0) {

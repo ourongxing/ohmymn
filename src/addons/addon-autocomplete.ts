@@ -25,7 +25,7 @@ const config: IConfig = {
   ],
   actions: [
     {
-      key: "completeChecked",
+      key: "completeSelected",
       type: cellViewType.button,
       label: "补全单词词形",
     }
@@ -51,7 +51,7 @@ const util = {
 }
 const action: IActionMethod = {
   // 如果有标题摘录为空，或者摘录与标题相同时，才会起作用
-  completeChecked({ nodes }) {
+  completeSelected({ nodes }) {
     for (const note of nodes) {
       const title = note?.noteTitle
       const text = note?.excerptText
