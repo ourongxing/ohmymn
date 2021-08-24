@@ -83,9 +83,10 @@ const action: IActionMethod = {
     renameSelected({ content, nodes }) {
         // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
         // 如果单个选中，则为选中的顺序
-
         // 检查输入正确性
         try {
+            if (!/\(.*"\)/.test(content))
+                content = `(/^(.*)$/g, ${content})`
             const params = string2ReplaceParam(content)
             let newReplace: string[] = []
             // 如果含有序列信息，就把获取新的 replace 参数
