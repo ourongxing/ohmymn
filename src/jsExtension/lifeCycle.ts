@@ -78,12 +78,14 @@ const addonDidConnect = () => {
     log("插件启用", "lifeCycle")
 }
 
-// 清空配置文件，如果出现问题可以删除
+// 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
     log("插件停用", "lifeCycle")
-    // 初始化配置
-    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_global")
-    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_doc")
+    // 清空配置，很遗憾，在 iPad 上，更新插件也会触发，导致配置被清空，所以只支持 Mac 端
+    if (Application.sharedInstance().osType == 2) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_global")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_doc")
+    }
 }
 
 // 进入后台保存配置，适合 iPad 上
