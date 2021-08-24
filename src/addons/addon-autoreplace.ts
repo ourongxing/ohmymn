@@ -38,7 +38,7 @@ const util = {
       }
       if (text != _text) return _text
     }
-    else return text
+    return text
   }
 }
 
