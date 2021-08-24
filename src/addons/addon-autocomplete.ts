@@ -39,7 +39,10 @@ const util = {
     if (!/^[a-z]+$/.test(text) || !dict[text]) return false
     const autocomplete = profile.autocomplete
     let word = dict[text]
-    if (word.lemma) word = dict[word.lemma]
+    if (word.lemma) {
+      text = word.lemma
+      word = dict[word.lemma]
+    }
     const wordObj = { title: text, text: "" }
     let tmp_text = []
     if (word.exchange) wordObj.title = text + "; " + word.exchange.replace(/-/g, text).replace(/;/g, "; ")
