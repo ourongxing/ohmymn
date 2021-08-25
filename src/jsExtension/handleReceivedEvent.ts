@@ -1,4 +1,3 @@
-import utils from "addons/addon-autostandardize"
 import { actions } from "addons/synthesizer"
 import { excerptHandler } from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"

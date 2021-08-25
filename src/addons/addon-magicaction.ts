@@ -1,4 +1,3 @@
-import { __values } from "tslib"
 import { excerptNotes } from "utils/notebook"
 import { log, showHUD, string2ReplaceParam } from "utils/public"
 

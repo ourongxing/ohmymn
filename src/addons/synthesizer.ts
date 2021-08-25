@@ -5,7 +5,6 @@ import autocomplete from "./addon-autocomplete";
 import anotherautotitle from "./addon-anotherautotitle";
 import autolist from "./addon-autolist";
 import autoreplace from "./addon-autoreplace";
-import { log } from "utils/public";
 
 interface IAddon {
     config: IConfig,
