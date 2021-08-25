@@ -13,65 +13,70 @@ const eventCtrl = eventHandlerController([
     { event: "ChangeExcerptRange", handler: "onProcessExcerptText" }
 ]);
 
+/**
+ * MN 的生命周期有点离谱，尤其是先关闭笔记本再关闭文档，
+ * 如果直接关闭窗口，是不会触发关闭笔记本和文档的
+ * 1. 启用插件
+ * 2. 打开窗口
+ * 3. 打开笔记本
+ * 4. 打开文档
+ * 5. 关闭笔记本
+ * 6. 关闭文档
+ * 7. 关闭窗口
+ */
+
+
 // 打开 MN，可以用来初始化
 const sceneWillConnect = () => {
-    log("打开 MN", "lifeCycle")
+    log("打开窗口", "lifeCycle")
     self.studyController = Application.sharedInstance().studyController(self.window)
     self.settingViewController = SettingViewController.new()
     self.settingViewController.window = self.window
 }
 
-// 关闭 MN，不会调用关闭笔记本和关闭文档的方法
-// iPad 上不生效
+// 关闭窗口，不会调用关闭笔记本和关闭文档的方法
+// iPad 上貌似不触发，切换到后台可以
 const sceneDidDisconnect = () => {
-    log("关闭 MN", "lifeCycle")
+    log("关闭窗口", "lifeCycle")
     log("保存所有配置", "profile")
-    // 总要打开文档再关闭 MN 才会保存配置吧
+    // 只要打开过文档，再关闭窗口就保存
     if (thisDocMd5) saveProfile(thisDocMd5, true)
 }
 
-let lastOpenNotebook = 0
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
     log("打开笔记本", "lifeCycle")
-    lastOpenNotebook = new Date().getTime()
     eventCtrl.add()
 }
 
 // 关闭笔记本
 const notebookWillClose = (notebookid: string) => {
     log("关闭笔记本", "lifeCycle")
-    // 关闭面板
-    closePanel()
     eventCtrl.remove()
 }
 
-let lastCloseDoc = 0
 const documentDidOpen = (docmd5: string) => {
-    log("打开文档", "lifeCycle")
-    thisDocMd5 = docmd5
-    const now = new Date().getTime()
-    // 打开书，如果关书和打开书的间隔在一定时间内，则为换书
-    if (lastCloseDoc && now - lastCloseDoc < 300) {
+    // 如果 thisDocMd5 有值，说明是换书，反正不是第一次打开书，此时读取本文档配置
+    if (thisDocMd5) {
         log("读取当前文档的配置", "profile")
         readProfile(docmd5)
-        closePanel()
     }
-    // 如果打开笔记本和打开书的间隔在一定时间内，并且从来没有关闭过文档，说明是此次
-    // 打开 MN 第一次打开笔记本，此时读取全部配置，其余时间均只读取文档配置
-    if (!lastCloseDoc && lastOpenNotebook && now - lastOpenNotebook < 300) {
+    // 如果 thisDocMd5 没有值，说明是刚打开 MN，此时读取所有配置
+    else {
         log("读取所有配置", "profile")
         readProfile(docmd5, true)
     }
+    log("打开文档", "lifeCycle")
+    thisDocMd5 = docmd5
 }
 
 // 关闭文档，为了在关闭 MN 时，也能保存文档的配置
 let thisDocMd5 = ""
 const documentWillClose = (docmd5: string) => {
     log("关闭文档", "lifeCycle")
-    lastCloseDoc = new Date().getTime()
     log("保存当前文档配置", "profile")
     saveProfile(docmd5)
+    closePanel()
 }
 
 const addonDidConnect = () => {
