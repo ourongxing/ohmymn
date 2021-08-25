@@ -16,24 +16,28 @@ export const layoutViewController = () => {
 }
 
 export const closePanel = () => {
-    self.settingViewController.view.removeFromSuperview()
-    // 刷新按钮状态
-    panelStatus = false;
-    self.studyController.refreshAddonCommands()
+    if (panelStatus) {
+        self.settingViewController.view.removeFromSuperview()
+        // 刷新按钮状态
+        panelStatus = false;
+        self.studyController.refreshAddonCommands()
+    }
 }
 
 const openPanel = () => {
-    self.studyController.view.addSubview(self.settingViewController.view)
-    if (self.studyController.docMapSplitMode == 2) {
-        self.studyController.docMapSplitMode = 1
-        showHUD("OhMyMN 与脑图更配喔", 1)
+    if (!panelStatus) {
+        self.studyController.view.addSubview(self.settingViewController.view)
+        if (self.studyController.docMapSplitMode == 2) {
+            self.studyController.docMapSplitMode = 1
+            showHUD("OhMyMN 与脑图更配喔", 1)
+        }
+        // 开启面板时，若键盘处于开启状态，关闭键盘
+        NSTimer.scheduledTimerWithTimeInterval(0.2, false, function () {
+            self.studyController.becomeFirstResponder()
+        })
+        panelStatus = true;
+        self.studyController.refreshAddonCommands()
     }
-    // 开启面板时，若键盘处于开启状态，关闭键盘
-    NSTimer.scheduledTimerWithTimeInterval(0.2, false, function () {
-        self.studyController.becomeFirstResponder()
-    })
-    panelStatus = true;
-    self.studyController.refreshAddonCommands()
 }
 
 let lastClickButton = 0
