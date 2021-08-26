@@ -31,7 +31,7 @@ ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同�
 
 - 插件化，尽管目前不能完全解耦，下一个目标是设计一个编译器，预先编译插件。
 - 配置管理，支持全局配置，文档配置，尽管设计的也不是很好，目前仅 ohmymn 中的配置支持文档配置。
-- 完全 TS 化，提供所有 MN API 的类型文件和部分 UIKit 的类型文件。注：MN 的类型文件来自于 [mn-addon-api](https://github.com/aidenlx/mn-addon-api)
+- 完全 TS 化，提供所有 MN API 和部分 UIKit 的类型声明文件。注：MN API 的类型声明文件来自于 [mn-addon-api](https://github.com/aidenlx/mn-addon-api)
 
 ## Layout
 
@@ -88,7 +88,7 @@ yarn dev // 先修改 rollup.config.js 中的用户名
 
 ## Acknowledgements
 
-* [mn-addon-api](https://github.com/aidenlx/mn-addon-api)  MN API 的类型文件。
+* [mn-addon-api](https://github.com/aidenlx/mn-addon-api)  MN API 的类型声明文件。
 * [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) 这是第一个使用 TS 开发 MN 插件的项目，使得我在使用 TS 重构 ohmymn 时非常顺利。
 * [pangu.js](https://github.com/vinta/pangu.js) 为中英文之间添加空格，十分有效。
 
