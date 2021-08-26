@@ -1,30 +1,23 @@
-
-
 <p align="center">
   <a href="https://github.com/ourongxing/ohmymn">
     <img src="assets/logo.svg" alt="Logo" width="100" height="100">
   </a>
   <h3 align="center">OhMyMN</h3>
+  <p align="center">可能是最强大的 Marginnote3 插件</p>
+</p>
 <p align="center">
   <a href="https://github.com/ourongxing/ohmymn/network/members"><img src="https://img.shields.io/github/forks/ourongxing/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/ourongxing/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/ourongxing/ohmymn.svg?style=flat" alt="stars"></a>
   <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v0.9.0-orange" alt="version"></a>
     <a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
-  <p align="center">
-  可能是最强大的 Marginnote3 插件
-    <br />
-    <a href="https://github.com/ourongxing/ohmymn"><strong>了解如何使用 »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/ourongxing/ohmymn/releases">下载</a> ·
-    <a href="https://github.com/ourongxing/ohmymn/issues">报告 Bug</a> ·
-    <a href="https://github.com/ourongxing/ohmymn/issues">提出新需求</a>
-  </p>
+<p align="center">
+  <a href="https://github.com/ourongxing/ohmymn/releases">下载</a> ·
+  <a href="https://github.com/ourongxing/ohmymn/issues">报告 Bug</a> ·
+  <a href="https://github.com/ourongxing/ohmymn/issues">提出新需求</a>
 </p>
-![assets/](./assets/p1.png)
 
-
+<img src="assets/p1.png">
 
 # ohmymn
 
@@ -40,14 +33,14 @@ ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同�
 - 配置管理，支持全局配置，文档配置，尽管设计的也不是很好，目前仅 ohmymn 中的配置支持文档配置。
 - 完全 TS 化，提供所有 MN API 的类型文件和部分 UIKit 的类型文件。注：MN 的类型文件来自于 [mn-addon-api](https://github.com/aidenlx/mn-addon-api)
 
-### Layout
+## Layout
 
 ```shell
 ├── addons  // ohmymn 插件目录
 ├── jsExtension // MN 插件目录，包含事件响应以及生命周期
 ├── settingViewController // 设置面板，一般不用管
 ├── utils // 一些方法
-├── main.ts // 主文件
+├── main.ts // 入口文件
 └── profile.ts // 配置文件
 ```
 
