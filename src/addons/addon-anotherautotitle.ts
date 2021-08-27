@@ -70,7 +70,7 @@ const util = {
     }
     // 没有标点符号
     if (anotherautotitle.noPunctuation) {
-      const reg = RegExp(/[。、？?！!，,；;：:]/)
+      const reg = RegExp(/[。.、？?！!，,；;：:]/)
       if (!reg.test(text)) return text
     }
     if (anotherautotitle.isWord) {
