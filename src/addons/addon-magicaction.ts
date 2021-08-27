@@ -10,7 +10,7 @@ const config: IConfig = {
         {
             type: cellViewType.buttonWithInput,
             label: '修改摘录填充',
-            help: '输入填充索引，也就是顺序，1 到 4',
+            help: '输入填充索引，也就是顺序，1 到 3',
             key: 'changeFillSelected',
         },
         {
@@ -110,13 +110,12 @@ const action: IActionMethod = {
         }
     },
     changeFillSelected({ content, nodes }) {
-        // 使下标从 1 开始
         const index = Number(content)
-        if (!isNaN(index) && index <= 4 && index > 0) {
+        if (!isNaN(index) && index <= 3 && index > 0) {
             for (const node of nodes) {
                 const notes = excerptNotes(node)
                 for (const note of notes) {
-                    note.fillIndex = index - 2
+                    note.fillIndex = index - 1
                 }
             }
         } else {
@@ -124,7 +123,6 @@ const action: IActionMethod = {
         }
     },
     changeColorSelected({ content, nodes }) {
-        // 使下标从 1 开始
         const index = Number(content)
         if (!isNaN(index) && index <= 16 && index > 0) {
             for (const node of nodes) {
