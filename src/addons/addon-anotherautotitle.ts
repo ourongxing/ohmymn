@@ -42,7 +42,7 @@ const config: IConfig = {
       key: "customTitle",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
-      link: "https://github.com/ourongxing"
+      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"
     }
   ],
   actions: [

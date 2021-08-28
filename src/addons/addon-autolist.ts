@@ -25,7 +25,7 @@ const config: IConfig = {
       key: "customList",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
-      link: "https://github.com/ourongxing",
+      link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec",
     }
   ],
   actions: [

@@ -23,7 +23,7 @@
 
 > ohmymn is the project name and OhMyMN is the addon name. Since OhMyMN is mainly for Chinese users and I am preparing for my exams, I have no plans to internationalize, but PR is welcome !
 
-OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。[**查看使用文档（Not yet completed）**](https://github.com/ourongxing/ohmymn)
+OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。[**查看使用文档（Not yet completed）**](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)
 
 ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同我的设计理念，那么你可以为 ohmymn 开发插件，使得 ohmymn 更加强大。当然你也可以另起炉灶，毕竟 ohmymn 已经踩过了大部分的坑。
 

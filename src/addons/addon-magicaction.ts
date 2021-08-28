@@ -4,7 +4,7 @@ import { log, showHUD, string2ReplaceParam } from "utils/public"
 const config: IConfig = {
     name: "MagicAction",
     intro: "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
-    link: "https://github.com/ourongxing",
+    link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
     settings: [],
     actions: [
         {
@@ -85,7 +85,7 @@ const action: IActionMethod = {
         // 检查输入正确性
         try {
             if (!/\(.*"\)/.test(content))
-                content = `(/^(.*)$/g, ${content})`
+                content = `(/^.*$/g, ${content})`
             const params = string2ReplaceParam(content)
             let newReplace: string[] = []
             // 如果含有序列信息，就把获取新的 replace 参数

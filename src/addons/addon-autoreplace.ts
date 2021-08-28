@@ -15,7 +15,7 @@ const config: IConfig = {
       key: "customReplace",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
-      link: "https://github.com/ourongxing",
+      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
     }
   ],
   actions: [

@@ -1,7 +1,7 @@
 const config: IConfig = {
   name: "OhMyMN",
-  intro: "Github 投票征集新的需求\nMade with 💖 By @ourongxing（点击跳转）",
-  link: "https://github.com/ourongxing",
+  intro: "Version: beta 0.9.0 \nMade by @ourongxing",
+  link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
       key: "rightMode",
@@ -69,5 +69,5 @@ const util = {
     return this.removeRepeat(tmp).replace(/\s+/g, "")
   },
 }
-const action = {}
+const action = { }
 export default { config, util, action }
