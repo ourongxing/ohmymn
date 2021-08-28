@@ -1,5 +1,5 @@
 const log = (obj: any, suffix = "normal") => {
-  JSB.log(`MNLOG-${suffix} %@`, obj);
+  JSB.log(`ohmymn-${suffix} %@`, obj);
 }
 
 const showHUD = (message: string, duration: number = 1) => {
@@ -32,7 +32,7 @@ declare interface ReplaceParam {
 const string2ReplaceParam = (text: string): ReplaceParam[] => {
   // 首先通过分号来分离，格外注意，MN 无法使用(?<!)，正则很多都不支持，try catch 都没用
   // 会导致插件无法加载，这样写或许兼容性高一点
-  const brackets = text.replace(/\)\s*(;)/g, ")delimiter")
+  const brackets = text.replace(/\)\s*;/g, ")delimiter")
     .split("delimiter").map(item => item.trim())
   const willReturn = []
   for (const bracket of brackets) {
