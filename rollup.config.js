@@ -34,12 +34,12 @@ export default {
         ["assets/logo.png", "logo.png"]
       ]
     }),
-    isProd() && strip({
+    strip({
       include: ["**/*.ts",],
       functions: ["log"]
     }),
-    isProd() && uglify(),
-    isProd() && banner(_banner),
+    uglify(),
+    banner(_banner),
     isProd() && zip({
       file: "ohmymn.mnaddon"
     })
