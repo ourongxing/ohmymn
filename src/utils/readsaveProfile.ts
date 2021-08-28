@@ -1,5 +1,5 @@
 import { dataSource } from "addons/synthesizer"
-import { log } from "utils/public"
+import { log, showHUD } from "utils/public"
 import profile from "profile"
 
 // 读配置包含两种情况
@@ -12,8 +12,14 @@ interface Profile_doc {
     autoCorrect: boolean,
     defaultFullWidth: boolean
 }
+// 重置这两项，不保存这两项
+const reset: Profile_doc = {
+    autoOCR: false,
+    autoCorrect: false,
+    defaultFullWidth: false
+}
 
-const profile_doc: { [k: string]: Profile_doc } = {}
+const profile_doc: { [k: string]: Profile_doc } = { }
 
 const refreshDocDataSource = (doc_profile: Profile_doc) => {
     for (const row of dataSource[1].rows) {
@@ -30,8 +36,8 @@ const refreshDocDataSource = (doc_profile: Profile_doc) => {
     }
 }
 
-export const readProfile = (docmd5: string, firstOpenDoc = false) => {
-    if (firstOpenDoc) {
+export const readProfile = (docmd5: string, readAll = false) => {
+    if (readAll) {
         let tmp_global = NSUserDefaults.standardUserDefaults()
             .objectForKey("marginnote_ohmymn_profile_global")
         if (tmp_global) {
@@ -58,11 +64,16 @@ export const readProfile = (docmd5: string, firstOpenDoc = false) => {
         refreshDocDataSource(JSON.parse(tmp_doc)[docmd5])
         log("检测到配置，正在读取", "profile")
         log(JSON.parse(tmp_doc)[docmd5], "profile")
+    } else {
+        // 如果当前文档没有，就用默认值
+        Object.assign(profile.ohmymn, reset)
+        log("当前文档第一次打开，使用默认值", "profile")
+        refreshDocDataSource(reset)
     }
 }
 
 // 切换的时候仅保存当前文档的，退出的时候全部保存
-export const saveProfile = (docmd5: string, closeMN = false) => {
+export const saveProfile = (docmd5: string, saveAll = false) => {
     const thisDocProfile = {
         autoOCR: profile.ohmymn.autoOCR,
         autoCorrect: profile.ohmymn.autoCorrect,
@@ -73,26 +84,9 @@ export const saveProfile = (docmd5: string, closeMN = false) => {
         "marginnote_ohmymn_profile_doc")
     log("保存文档配置", "profile")
     log(thisDocProfile, "profile")
-
-    // 重置这两项，不保存这两项
-    const reset = {
-        autoOCR: false,
-        autoCorrect: false,
-        defaultFullWidth: false
-    }
-    // 返回的是 ohmymn
-    Object.assign(profile.ohmymn, reset)
-    if (closeMN) {
+    if (saveAll) {
+        log("保存全部配置", "profile")
         NSUserDefaults.standardUserDefaults().setObjectForKey(
             JSON.stringify(profile), "marginnote_ohmymn_profile_global")
-    } else {
-        refreshDocDataSource(reset)
     }
 }
-/*
- * 只有刚打开文档才读取整个配置，只有关闭 MN 或失去焦点才保存整个配置
- * 其他时候打开文档都只会读文档的配置，关闭只会保存文档的配置，同时重置全局配置
- * 列表的刷新是读取 dataSource，每次保存文档配置的时候都会重置 dataSource 中的
- * 但是关闭 MN 或者失去焦点的时候就没必要。失去焦点不一定那个是退出，此时如果重置了那部分配置，
- * 回到焦点就要重新读取配置才行
-*/
