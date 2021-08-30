@@ -58,14 +58,6 @@ export default async (noteid: string) => {
         log("开始矫正", "excerpt")
         const originText = note.excerptText!
 
-        // 貌似在全英文的情况下不会矫正，英文文档不需要打开自动矫正
-        if (/^\w*$/.test(originText)) {
-            log("全单词，无须矫正", "excerpt")
-            alert("OhMyMN 提醒您：当前文档无须自动矫正，为防止出现错误，请关闭 MN 和 OhMyMN 自动矫正的选项")
-            excerptHandler()
-            return
-        }
-
         note.excerptText = "😎"
         // 等待在线矫正返回结果
         const success = await delayBreak(20, 0.1, () => note.excerptText != "😎" ? true : false)
