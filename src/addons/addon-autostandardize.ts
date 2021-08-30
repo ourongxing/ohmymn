@@ -72,8 +72,8 @@ const action: IActionMethod = {
         const text = note.excerptText
         if (text) {
           if (profile.ohmymn.defaultFullWidth)
-            node.excerptText = util.toFullWidth(text)
-          else node.excerptText = util.standardizeText(text)
+            note.excerptText = util.toFullWidth(text)
+          else note.excerptText = util.standardizeText(text)
         }
       }
     }
