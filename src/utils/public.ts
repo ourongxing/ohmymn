@@ -6,6 +6,10 @@ const showHUD = (message: string, duration: number = 1) => {
   Application.sharedInstance().showHUD(message, self.window, duration);
 }
 
+const alert = (message: string) => {
+  Application.sharedInstance().alert(message)
+}
+
 /**
  * Get Objective-C class declaration
  */
@@ -56,10 +60,26 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
   return willReturn
 }
 
+const delay = (sec: number) => {
+  return new Promise(
+    resolve => NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve))
+}
+
+const delayBreak = async (times: number, sec: number, f: () => boolean): Promise<boolean> => {
+  for (let i = 0; i < times; i++) {
+    await delay(sec)
+    if (f()) return true
+  }
+  return false
+}
+
 export {
   log,
   showHUD,
+  alert,
   getObjCClassDeclar,
   isHalfWidth,
   string2ReplaceParam,
+  delay,
+  delayBreak
 }
