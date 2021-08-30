@@ -55,6 +55,7 @@ const util = {
       if (text != _text) return _text.trimEnd()
     }
     if (autolist.multipleChoiceEnhance) {
+      if (/^[\w,.]*$/.test(text)) return text
       let _text = text.replace(/\s*([ABCDabcd][.、\s]*)/g,
         (match: string) => "\n" + match.trimStart().toUpperCase())
       if (text != _text) return _text.trimStart()
