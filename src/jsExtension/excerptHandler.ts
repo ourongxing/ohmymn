@@ -1,24 +1,86 @@
 import { utils } from "addons/synthesizer"
 import profile from "profile"
 import { getCommentIndex, getNoteById, undoGrouping } from "utils/notebook"
-import { isHalfWidth, log } from "../utils/public"
+import { alert, delay, delayBreak, isHalfWidth, log, showHUD } from "../utils/public"
 
-export const excerptHandler = (note: MbBookNote, isOCR = false): string => {
-    const groupNoteId = note?.groupNoteId
-    let text = note.excerptText!.trim()
-    let title = note?.noteTitle
-    let changeTitle = false
-    // 对于修改已经创建的摘录，处理步骤其实没什么变化，主要还是标题
-    // 我个人认为对于已经有标题的摘录，并且标题还是摘录自动转的，在你重新修改摘录的时候
-    // 只要没有大规模改动，修改摘录后的内容可以不受规则限制，直接转为标题，
-    // 不过这里会设置一个开关，看具体的使用习惯
-    if (text && title && title.length >= 2 && profile.anotherautotitle.changeTitleNoLimit) {
-        if (text.startsWith(title) || text.endsWith(title) || title.endsWith(text) || title.startsWith(text)) {
-            changeTitle = true
+let note: MbBookNote
+let nodeNote: MbBookNote
+let isOCR: boolean
+let isComment: boolean
+
+/**
+ * 这几个函数的作用
+ * 1. default：摘录入口，检测是否打开了 OCR 和自动矫正，并等待
+ * 2. excerpthandler：处理摘录的入口
+ * 3. genTitleText：这是各个插件集中处理的地方，生成新的标题和内容
+ * 4. processExcerpt： 把新的标题和内容根据不同情况赋值给卡片
+ */
+
+export default async (noteid: string) => {
+    // 初始化全局变量
+    note = getNoteById(noteid)
+    isOCR = false
+    isComment = note.groupNoteId ? true : false
+    if (isComment) nodeNote = getNoteById(note.groupNoteId!)
+
+    /*
+    * 图片 -> OCR -> 自动矫正
+    * 文字 -> 自动矫正
+    * OCR 要等，再处理
+    * 自动矫正也要等，再处理
+    */
+
+    if (note.excerptPic) {
+        log("摘录是图片", "excerpt")
+        if (profile.ohmymn.autoOCR) {
+            const success = await delayBreak(20, 0.1, () => note.excerptText ? true : false)
+            if (success) {
+                isOCR = true
+                log("OCR 成功", "excerpt")
+                // 如果 OCR 获取到的值不是乱码，MN 貌似不会为其进行矫正
+                if (!/^[^\u4e00-\u9fa5]*$/.test(note.excerptText!)
+                    && /^[^\w\d]*$/.test(note.excerptText!)) {
+                    log("不是乱码，无须矫正，直接处理", "excerpt")
+                    excerptHandler()
+                    return
+                }
+            } else {
+                log("OCR 失败，没有文字", "excerpt")
+                return
+            }
+        } else {
+            log("没有开启自动 OCR 选项，不处理图片", "excerpt")
+            return
         }
     }
 
-    // 这里是插件的主要工作区间，就是修改摘录的内容
+    if (profile.ohmymn.autoCorrect) {
+        log("开始矫正", "excerpt")
+        const originText = note.excerptText!
+
+        // 貌似在全英文的情况下不会矫正
+        if (/^[\w\s]*$/.test(originText)) {
+            log("全单词，无须矫正", "excerpt")
+            excerptHandler()
+            return
+        }
+
+        note.excerptText = "😎"
+        // 等待在线矫正返回结果
+        const success = await delayBreak(20, 0.1, () => note.excerptText != "😎" ? true : false)
+        if (success) log("矫正成功", "excerpt")
+        else {
+            log("矫正失败或无须矫正", "excerpt")
+            note.excerptText = originText
+            alert("OhMyMN 提醒您：当前文档无须自动矫正，为防止出现错误，请关闭 MN 和 OhMyMN 自动矫正的选项")
+        }
+    }
+
+    excerptHandler()
+}
+
+// 集中处理标题和摘录
+const genTitleText = (text: string): { title?: string, text: string } => {
     if (profile.ohmymn.defaultFullWidth)
         text = utils.ohmymn.toFullWidth(text)
     else if (profile.autostandardize.on)
@@ -28,58 +90,80 @@ export const excerptHandler = (note: MbBookNote, isOCR = false): string => {
     if (profile.autoreplace.on)
         text = utils.autoreplace.replaceText(text)
 
-    undoGrouping("ohmymn", note.notebookId!, () => {
-        // ------------
-        // 先设置标题，这个插件的选项主管所有自动生成标题的功能
-        if (profile.anotherautotitle.on) {
-            const newTitle = utils.anotherautotitle.checkAutoTitle(text)
-            if (newTitle) {
-                // ---------
-                // groupNoteId 是作为当前卡片摘录的 noteid，只有作为评论的摘录存在此属性
-                // 可以实现拖拽合并标题，补充标题，并且设置标题后删除该评论
-                if (groupNoteId) {
-                    const thisNode = getNoteById(groupNoteId)
-                    const thisNodeTitle = thisNode?.noteTitle
-                    // 合并标题
-                    if (thisNodeTitle && profile.anotherautotitle.mergeTitle) {
-                        // 全半角就使用半角分号
-                        if (isHalfWidth(text))
-                            thisNode.noteTitle = thisNodeTitle + "; " + newTitle
-                        else
-                            thisNode.noteTitle = thisNodeTitle + "；" + newTitle
-                    } else if (!thisNodeTitle) {
-                        thisNode.noteTitle = newTitle
-                    }
-                    const index = getCommentIndex(thisNode, note)
-                    if (index != -1) thisNode.removeCommentByIndex(index)
-                }
-
-                // ---------
-                // 生成卡片，第一次摘录
-                else {
-                    const wordObj = utils.autocomplete.checkGetWord(text)
-                    if (profile.autocomplete.on && wordObj) {
-                        note.noteTitle = wordObj.title
-                        note.excerptText = wordObj.text
-                    } else {
-                        note.noteTitle = newTitle
-                        // OCR 如果清空文字的话，会显示图片，暂时无法删除图片
-                        if (!isOCR) note.excerptText = ""
-                    }
-                }
-            }
-            // -----
-            // 突然意思到有标题不一定是修改，因为我会执行两次
-            else if (changeTitle) {
-                note.noteTitle = text
-                if (!isOCR) note.excerptText = ""
-            }
-            // 虽然开启了自动转标题，但不满足任何条件
-            else note.excerptText = text
+    // 判断是否能成为标题
+    // autotitle 优先级应该是最低的
+    if (profile.autocomplete.on) {
+        const result = utils.autocomplete.checkGetWord(text)
+        if (result) return {
+            title: result.title,
+            text: result.text
         }
-        // ---------
-        // 没有开启自动转标题
-        else note.excerptText = text
+    }
+    if (profile.anotherautotitle.on) {
+        const result = utils.anotherautotitle.checkGetTitle(text)
+        // 可以作为标题
+        if (result) return {
+            title: result,
+            text: ""
+        }
+    }
+    return { text }
+}
+
+const excerptHandler = () => {
+    if (!note.excerptText?.trim()) return
+    let { title, text } = genTitleText(note.excerptText!.trim())
+
+    // 如果摘录是作为评论，反正是卡片已经存在的情况下摘录
+    if (isComment) {
+        log("当前摘录作为评论", "excerpt")
+        const nodeTitle = nodeNote?.noteTitle
+        if (profile.anotherautotitle.mergeTitle && nodeTitle && title) {
+            const semi = isHalfWidth(nodeTitle) ? "; " : "；"
+            title = nodeTitle + semi + title
+        }
+    } else {
+        // 只有这一种情况会出现摘录有标题
+        // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
+        const originTitle = note?.noteTitle
+        if (profile.anotherautotitle.changeTitleNoLimit && originTitle && originTitle.length >= 2
+            && (text.startsWith(originTitle) || text.endsWith(originTitle))) {
+            log("正在修改标题", "excerpt")
+            title = text
+        }
+    }
+    log(title ? "当前标题是：" + title : "没有标题", "excerpt")
+    log(text ? "当前摘录内容是：" + text : "摘录转为了标题", "excerpt")
+    processExcerpt(title, text)
+}
+
+const processExcerpt = (title: string | undefined, text: string) => {
+    undoGrouping("ohmymn", note.notebookId!, () => {
+        if (text) {
+            note.excerptText = text
+            // 如果摘录为空，有三种情况
+        } else {
+            if (isComment) {
+                const index = getCommentIndex(nodeNote, note)
+                if (index != -1) nodeNote.removeCommentByIndex(index)
+                // 如果节点摘录是 OCR 后变成标题了，这时候又来了一个标题，必须将节点摘录的内容设置为
+                // 标题才能隐藏内容。
+                if (nodeNote.excerptText == nodeNote.noteTitle)
+                    nodeNote.excerptText = title
+            }
+            // OCR 不能清空，否则会显示图片，必须设置为标题一样才能不显示
+            // 虽然说 isComment 与 isOCR 不冲突，但如果是评论，会直接删掉
+            else if (isOCR) note.excerptText = title
+            else note.excerptText = ""
+        }
+
+        // 设置标题必须放在后面，前面会用到以前的标题
+        if (title) {
+            if (isComment) {
+                nodeNote.noteTitle = title
+            } else {
+                note.noteTitle = title
+            }
+        }
     })
-    return text
 }

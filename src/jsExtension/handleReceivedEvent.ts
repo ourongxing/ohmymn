@@ -1,8 +1,8 @@
 import { actions } from "addons/synthesizer"
-import { excerptHandler } from "jsExtension/excerptHandler"
+import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import profile from "profile"
-import { getNoteById, getSelectNodes, undoGrouping } from "utils/notebook"
+import { getSelectNodes, undoGrouping } from "utils/notebook"
 import { log, showHUD } from "utils/public"
 
 declare interface IUserInfo {
@@ -43,51 +43,9 @@ const onInputOver: eventHandler = ({ userInfo }) => {
   } else showHUD("输入已清空")
 }
 
+
 const onProcessExcerptText: eventHandler = ({ userInfo }) => {
-  const note = getNoteById(userInfo.noteid)
-  let text = note?.excerptText
-
-  // Mac & iPad：图片 -> OCR -> 自动矫正
-  // iPad：文字 -> 自动矫正
-  // OCR 要等，再处理
-  // 自动矫正先处理，再等，再处理
-
-  if (note.excerptPic && profile.ohmymn.autoOCR) {
-    let times = 20
-    // 异步
-    NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (timer) {
-      if (note.excerptText || !times--) {
-        timer.invalidate()
-        // 有可能一直没获取到文字
-        if (note.excerptText) {
-          const modifiedText = excerptHandler(note, true)
-          if (note.excerptText && profile.ohmymn.autoCorrect) {
-            times = 20 // 重置 times，等待自动矫正
-            NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (_timer) {
-              if ((note.excerptText != text && note.excerptText != modifiedText) || !times--) {
-                _timer.invalidate()
-                if (note.excerptText != text) excerptHandler(note, true)
-              }
-            })
-          }
-        }
-      }
-    })
-  }
-  // 纯文字
-  else if (text) {
-    const modifiedText = excerptHandler(note)
-    // 开启了自动矫正，判断一下是否还有摘录，防止上一次执行把摘录清空了
-    if (note.excerptText && profile.ohmymn.autoCorrect) {
-      let times = 20
-      NSTimer.scheduledTimerWithTimeInterval(0.1, true, function (timer) {
-        if ((note.excerptText != text && note.excerptText != modifiedText) || !times--) {
-          timer.invalidate()
-          if (note.excerptText != text) excerptHandler(note)
-        }
-      })
-    }
-  }
+  handleExcerpt(userInfo.noteid)
 }
 
 export default {
