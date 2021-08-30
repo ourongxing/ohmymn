@@ -3,7 +3,7 @@ import profile from "profile"
 
 const config: IConfig = {
   name: "AutoComplete",
-  intro: "补全单词词形，只支持动词和名词\n需要配合 AnotherAutoTitle 使用",
+  intro: "补全单词词形，只支持动词和名词\n并自动设置为标题",
   settings: [
     {
       key: "on",

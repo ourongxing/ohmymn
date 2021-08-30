@@ -4,7 +4,7 @@ import pangu from "utils/pangu"
 import { isHalfWidth } from "utils/public"
 const config: IConfig = {
   name: "AutoStandardize",
-  intro: "优化标题和标题的中英文排版\n默认全角字符模式下无法使用\nPowerd by Pangu.js",
+  intro: "优化摘录和标题的中英文排版\n默认全角字符模式下无法使用\nPowerd by Pangu.js",
   settings: [
     {
       key: "on",

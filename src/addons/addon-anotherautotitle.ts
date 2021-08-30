@@ -16,10 +16,10 @@ const config: IConfig = {
       label: "摘录自动合并为标题"
     },
     {
-      help: "在一定范围内修改作为标题的摘录\n不受规则限制，直接转为标题",
+      help: "拓宽作为标题的摘录，不受规则限制\n直接转为标题",
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
-      label: "标题摘录修改不受限制"
+      label: "拓宽标题摘录不受限制"
     },
     {
       help: "以下情况会在摘录时自动转换为标题",
@@ -55,7 +55,7 @@ const config: IConfig = {
 }
 
 const util = {
-  checkAutoTitle(text: string): boolean | string {
+  checkGetTitle(text: string): string | boolean {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customTitle) {
       const params = string2ReplaceParam(anotherautotitle.customTitle)
@@ -74,7 +74,7 @@ const util = {
       if (!reg.test(text)) return text
     }
     if (anotherautotitle.isWord) {
-      if (/^[a-z]+$/.test(text)) return text
+      if (/^[a-zA-Z]+$/.test(text)) return text
     }
     // 字数达标
     if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > text.length)
