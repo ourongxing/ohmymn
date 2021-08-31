@@ -1,10 +1,9 @@
-import profile from "profile"
 import { excerptNotes } from "utils/notebook"
 import pangu from "utils/pangu"
 import { isHalfWidth } from "utils/public"
 const config: IConfig = {
   name: "AutoStandardize",
-  intro: "优化摘录和标题的中英文排版\n默认全角字符模式下无法使用\nPowerd by Pangu.js",
+  intro: "优化摘录和标题的中英文排版\nPowerd by Pangu.js",
   settings: [
     {
       key: "on",
@@ -29,24 +28,6 @@ const util = {
     }
     return text
   },
-  toFullWidth(text: string): string {
-    const fullIndex = [
-      33, 34, 35, 36, 37, 38, 39, 40, 41,
-      42, 43, 44, 45, 46, 47, 58, 59, 60,
-      61, 62, 63, 64, 91, 92, 93, 94, 95,
-      96, 91, 92, 93, 94, 95, 96, 123, 124,
-      125, 126
-    ]
-    let tmp = "";
-    for (const char of text) {
-      if (fullIndex.includes(char.charCodeAt(0))) {
-        tmp = tmp + String.fromCharCode(char.charCodeAt(0) + 65248);
-      }
-      else tmp = tmp + char
-    }
-    // 删除所有空格和重复符号
-    return this.removeRepeat(tmp).replace(/\s+/g, "")
-  },
   standardizeText(text: string): string {
     // 英文环境下全为半角，不处理
     if (isHalfWidth(text)) return text
@@ -63,17 +44,13 @@ const action: IActionMethod = {
     for (const node of nodes) {
       const title = node.noteTitle
       if (title) {
-        if (profile.ohmymn.defaultFullWidth)
-          node.noteTitle = util.toFullWidth(title)
-        else node.noteTitle = util.standardizeText(title)
+        node.noteTitle = util.standardizeText(title)
       }
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (text) {
-          if (profile.ohmymn.defaultFullWidth)
-            note.excerptText = util.toFullWidth(text)
-          else note.excerptText = util.standardizeText(text)
+          note.excerptText = util.standardizeText(text)
         }
       }
     }

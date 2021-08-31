@@ -74,9 +74,7 @@ export default async (noteid: string) => {
 
 // 集中处理标题和摘录
 const genTitleText = (text: string): { title?: string, text: string } => {
-    if (profile.ohmymn.defaultFullWidth)
-        text = utils.ohmymn.toFullWidth(text)
-    else if (profile.autostandardize.on)
+    if (profile.autostandardize.on)
         text = utils.autostandardize.standardizeText(text)
     if (profile.autolist.on)
         text = utils.autolist.listText(text)

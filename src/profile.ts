@@ -4,7 +4,6 @@ const profileType = {
         doubleClick: false,
         clickHidden: false,
         autoOCR: false,
-        defaultFullWidth: false,
         autoCorrect: false
     },
     autocomplete: {
@@ -45,7 +44,6 @@ const profile: { [k: string]: { [k: string]: boolean | string } } & IProfile = {
         doubleClick: false,
         clickHidden: false,
         autoOCR: false,
-        defaultFullWidth: false,
         autoCorrect: false
     },
     autocomplete: {

@@ -10,13 +10,11 @@ import profile from "profile"
 interface Profile_doc {
     autoOCR: boolean,
     autoCorrect: boolean,
-    defaultFullWidth: boolean
 }
 // 重置这两项，不保存这两项
 const reset: Profile_doc = {
     autoOCR: false,
     autoCorrect: false,
-    defaultFullWidth: false
 }
 
 const profile_doc: { [k: string]: Profile_doc } = { }
@@ -26,9 +24,6 @@ const refreshDocDataSource = (doc_profile: Profile_doc) => {
         switch (row.key) {
             case "autoCorrect":
                 row.status = doc_profile.autoCorrect
-                break;
-            case "defaultFullWidth":
-                row.status = doc_profile.defaultFullWidth
                 break;
             case "autoOCR":
                 row.status = doc_profile.autoOCR
@@ -77,7 +72,6 @@ export const saveProfile = (docmd5: string, saveAll = false) => {
     const thisDocProfile = {
         autoOCR: profile.ohmymn.autoOCR,
         autoCorrect: profile.ohmymn.autoCorrect,
-        defaultFullWidth: profile.ohmymn.defaultFullWidth
     }
     NSUserDefaults.standardUserDefaults().setObjectForKey(
         JSON.stringify(Object.assign(profile_doc, { [docmd5]: thisDocProfile })),
