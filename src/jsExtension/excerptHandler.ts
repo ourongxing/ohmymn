@@ -65,7 +65,7 @@ export default async (noteid: string) => {
         else {
             log("矫正失败或无须矫正", "excerpt")
             note.excerptText = originText
-            alert("OhMyMN 提醒您：当前文档无须自动矫正，为防止出现错误，请关闭 MN 和 OhMyMN 自动矫正的选项")
+            showHUD("OhMyMN 提醒您：当前文档无须自动矫正，为避免出现错误，请关闭 MN 和 OhMyMN 自动矫正的选项", 3)
         }
     }
 
