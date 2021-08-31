@@ -89,7 +89,8 @@ const action: IActionMethod = {
       const text = note.excerptText ?? ""
       // 只允许存在一个
       if ((title || text) && !(title && text)) {
-        note.noteTitle = text
+        // 去除划重点留下的 ****
+        note.noteTitle = text.replace(/\*\*(.*?)\*\*/g, "$1")
         note.excerptText = title
       } else if (title == text) {
         // 如果摘录与标题相同，MN 只显示标题，此时我们必然想切换到摘录
