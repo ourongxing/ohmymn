@@ -85,8 +85,8 @@ const util = {
 const action: IActionMethod = {
   switchTitleorExcerpt({ nodes }) {
     for (const note of nodes) {
-      const title = note?.noteTitle
-      const text = note?.excerptText
+      const title = note.noteTitle ?? ""
+      const text = note.excerptText ?? ""
       // 只允许存在一个
       if ((title || text) && !(title && text)) {
         note.noteTitle = text
