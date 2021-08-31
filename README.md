@@ -48,19 +48,21 @@ ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同�
 
 - config: 设置项，展示到控制面板上，其中又可以分为
   - name: 插件名
-  - Intro: 插件介绍
+  - intro: 插件介绍
   - link: 插件的相关链接，可跳转
   - settings: 设置项
   - actions: MagicAction 中的菜单，统一放在最顶上的 MagicAction 中，方便操作。
-- util: 插件的方法，一般用于 action 和摘录自动执行，在插件外使用时统一 `utils.插件名(小写).方法名` 即可。
+- util: 插件的方法，一般用于 action 和摘录自动执行，在插件外使用时统一 `utils.插件名(小写).方法名` 。
 - action: 实现 config-actions 中的动作，为选中卡片后点击执行。
 - 具体结构可以查看 [相关代码](https://github.com/ourongxing/ohmymn/blob/main/src/addons/addon-anotherautotitle.ts) 。
 
 ## Disadvantages
 
-- profile 要自己写，在 profile.ts 文件中，才能有提示，可以写脚本生成，这个以后会放在编译器里面。
+- 为了避免循环引用，profile 要自己写，在 profile.ts 文件中。可以写脚本生成，这个以后会放在编译器里面。
 
-- 需要自己插入到具体的摘录执行的过程中去。
+- 需要自己插入到具体的摘录执行的过程中去，不过目前代码结构清晰，很容易插入。
+
+- 暂时不支持安装 npm 包，某些情况会导致插件无法被 MN 加载。
 
 ## Development
 

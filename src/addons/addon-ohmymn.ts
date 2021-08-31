@@ -1,6 +1,6 @@
 const config: IConfig = {
   name: "OhMyMN",
-  intro: "Version: beta 0.9.5 \nMade by @ourongxing",
+  intro: "version: beta 0.9.5 \nmade by @ourongxing",
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
@@ -31,7 +31,7 @@ const config: IConfig = {
       label: "是否开启了选框自动 OCR",
     },
     {
-      help: "开启后会在矫正后重新处理",
+      help: "开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
       label: "是否开启了自动在线矫正",
