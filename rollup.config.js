@@ -27,11 +27,6 @@ export default {
     exclude: '../node_modules/**'
   },
   plugins: [
-    esmImportToUrl({
-      imports: {
-        'pangu': 'https://cdn.jsdelivr.net/npm/pangu/+esm',
-      },
-    }),
     typescript(),
     copy({
       assets: [
