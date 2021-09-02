@@ -12,7 +12,7 @@ const eventHandlerController = (
       if (v.handler)
         NSNotificationCenter.defaultCenter().addObserverSelectorName(self, `${v.handler}:`, v.event);
       else
-        NSNotificationCenter.defaultCenter().addObserverSelectorName(self, `on${v.event}:`, v.event);
+        NSNotificationCenter.defaultCenter().addObserverSelectorName(self, `on${v.event.replace(/_NAME_/, "")}:`, v.event);
     });
   }
 

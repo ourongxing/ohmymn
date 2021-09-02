@@ -34,7 +34,7 @@ const refreshDocDataSource = (doc_profile: Profile_doc) => {
 export const readProfile = (docmd5: string, readAll = false) => {
     if (readAll) {
         let tmp_global = NSUserDefaults.standardUserDefaults()
-            .objectForKey("marginnote_ohmymn_profile_global")
+            .objectForKey("marginnote__NAME__profile_global")
         if (tmp_global) {
             Object.assign(profile, JSON.parse(tmp_global))
             for (const section of dataSource) {
@@ -51,7 +51,7 @@ export const readProfile = (docmd5: string, readAll = false) => {
         }
     }
     let tmp_doc = NSUserDefaults.standardUserDefaults()
-        .objectForKey("marginnote_ohmymn_profile_doc")
+        .objectForKey("marginnote__NAME__profile_doc")
     if (tmp_doc && JSON.parse(tmp_doc)[docmd5]) {
         // 只有 ohmymn 里的可以保存为仅本文档
         Object.assign(profile.ohmymn, JSON.parse(tmp_doc)[docmd5])
@@ -75,12 +75,12 @@ export const saveProfile = (docmd5: string, saveAll = false) => {
     }
     NSUserDefaults.standardUserDefaults().setObjectForKey(
         JSON.stringify(Object.assign(profile_doc, { [docmd5]: thisDocProfile })),
-        "marginnote_ohmymn_profile_doc")
+        "marginnote__NAME__profile_doc")
     log("保存文档配置", "profile")
     log(thisDocProfile, "profile")
     if (saveAll) {
         log("保存全部配置", "profile")
         NSUserDefaults.standardUserDefaults().setObjectForKey(
-            JSON.stringify(profile), "marginnote_ohmymn_profile_global")
+            JSON.stringify(profile), "marginnote__NAME__profile_global")
     }
 }

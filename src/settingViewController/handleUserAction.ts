@@ -23,14 +23,14 @@ const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSI
                 let text = alert.textFieldAtIndex(0).text
                 if (!text) return
                 NSNotificationCenter.defaultCenter()
-                    .postNotificationNameObjectUserInfo('ButtonClick', self,
+                    .postNotificationNameObjectUserInfo('_NAME_ButtonClick', self,
                         { key: row.key, content: text })
             })
     }
     else if (row.type == cellViewType.button) {
         NSNotificationCenter
             .defaultCenter()
-            .postNotificationNameObjectUserInfo('ButtonClick', self,
+            .postNotificationNameObjectUserInfo('_NAME_ButtonClick', self,
                 { key: row.key, content: "" })
     }
 }
@@ -65,7 +65,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
         sender.resignFirstResponder()
         row.content = text
         NSNotificationCenter.defaultCenter()
-            .postNotificationNameObjectUserInfo('InputOver', self,
+            .postNotificationNameObjectUserInfo('_NAME_InputOver', self,
                 { name: section.header.toLocaleLowerCase(), key: row.key, content: text })
     } else showHUD("输入错误，请查看相关说明")
     return true
@@ -77,7 +77,7 @@ const switchChange = (sender: UISwitch) => {
     const row = section.rows[indexPath.row]
     row.status = sender.on
     NSNotificationCenter.defaultCenter().
-        postNotificationNameObjectUserInfo('SwitchChange', self,
+        postNotificationNameObjectUserInfo('_NAME_SwitchChange', self,
             { name: section.header.toLowerCase(), key: row.key, status: sender.on })
 }
 

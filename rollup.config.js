@@ -4,6 +4,11 @@ import zip from 'rollup-plugin-zip';
 import { uglify } from "rollup-plugin-uglify";
 import strip from '@rollup/plugin-strip';
 import banner from 'rollup-plugin-banner';
+import replace from '@rollup/plugin-replace';
+
+// 插件名称以及插件大写名称，代码中可以使用这两个变量
+const _NAME_ = "ohmymn"
+const _CAPNAME_ = "OhMyMN"
 
 // 判断是否为开发环境
 const isProd = () => process.env.NODE_ENV === 'production';
@@ -27,6 +32,15 @@ export default {
     exclude: '../node_modules/**'
   },
   plugins: [
+    replace({
+      exclude: '../node_modules/**',
+      preventAssignment: true,
+      delimiters: ['', ''],
+      values: {
+        _NAME_,
+        _CAPNAME_
+      }
+    }),
     typescript(),
     copy({
       assets: [

@@ -12,4 +12,4 @@ const inst: InstMembers = {
 const cls: ClsMembers = {
   ...clsMethons
 }
-JSB.newAddon = (mainPath): WrapperObj<any> => JSB.defineClass(getObjCClassDeclar("OhMyMN", "JSExtension"), inst, cls);
+JSB.newAddon = (mainPath): WrapperObj<any> => JSB.defineClass(getObjCClassDeclar("_CAPNAME_", "JSExtension"), inst, cls);

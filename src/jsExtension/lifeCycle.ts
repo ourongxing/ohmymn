@@ -6,9 +6,9 @@ import { closePanel } from "./switchPanel";
 
 const SettingViewController = JSB.defineClass(getObjCClassDeclar("SettingViewController", "UITableViewController"), settingViewControllerInst)
 const eventCtrl = eventHandlerController([
-    { event: "InputOver" },
-    { event: "SwitchChange" },
-    { event: "ButtonClick" },
+    { event: "_NAME_InputOver" },
+    { event: "_NAME_SwitchChange" },
+    { event: "_NAME_ButtonClick" },
     { event: "ProcessNewExcerpt", handler: "onProcessExcerptText" },
     { event: "ChangeExcerptRange", handler: "onProcessExcerptText" }
 ]);
@@ -82,8 +82,8 @@ const addonDidConnect = () => {
 // 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
     log("插件停用", "lifeCycle")
-    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_global")
-    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote_ohmymn_profile_doc")
+    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote__NAME__profile_global")
+    NSUserDefaults.standardUserDefaults().removeObjectForKey("marginnote__NAME__profile_doc")
 }
 
 // 进入后台保存配置，适合 iPad 上

@@ -17,7 +17,7 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
   if (profile.ohmymn.clickHidden) closePanel()
   const nodes = getSelectNodes()
   if (nodes.length) {
-    undoGrouping("ohmymn", nodes[0].notebookId!, () => {
+    undoGrouping(nodes[0].notebookId!, () => {
       actions[userInfo.key]({
         content: userInfo.content,
         nodes: nodes
