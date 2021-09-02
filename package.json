@@ -1,7 +1,7 @@
 {
   "name": "ohmymn",
   "author": "ourongxing",
-  "version": "0.9.5",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Maybe the most powerful addon of Marginnote3",
   "main": "",
@@ -15,6 +15,7 @@
     "typescript"
   ],
   "devDependencies": {
+    "@rollup/plugin-replace": "^3.0.0",
     "@rollup/plugin-strip": "^2.1.0",
     "@rollup/plugin-typescript": "^8.2.0",
     "rollup": "^2.42.4",

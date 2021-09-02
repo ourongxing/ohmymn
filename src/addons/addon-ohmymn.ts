@@ -1,6 +1,6 @@
 const config: IConfig = {
   name: "OhMyMN",
-  intro: "version: beta 0.9.5 \nmade by @ourongxing",
+  intro: "version: beta 1.0.0 \nmade by @ourongxing",
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
