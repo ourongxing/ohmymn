@@ -19,13 +19,7 @@ const config: IConfig = {
       label: "自动关闭面板"
     },
     {
-      help: "下列两项仅当前文档生效\n开启后会对框选的摘录执行处理",
-      key: "autoOCR",
-      type: cellViewType.switch,
-      label: "是否开启了选框自动 OCR",
-    },
-    {
-      help: "开启后会在矫正后执行处理",
+      help: "【当前文档】开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
       label: "是否开启了自动在线矫正",

@@ -27,6 +27,11 @@ const getNoteById = (noteid: string): MbBookNote => {
   return Database.sharedInstance().getNoteById(noteid)!
 }
 
+// topic 就是 notebook
+const getNotebookById = (notebookid: string): MbTopic => {
+  return Database.sharedInstance().getNotebookById(notebookid)!
+}
+
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
@@ -60,5 +65,6 @@ export {
   excerptNotes,
   undoGrouping,
   getCommentIndex,
+  getNotebookById,
   getNoteById
 }

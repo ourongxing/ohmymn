@@ -8,12 +8,10 @@ import profile from "profile"
 
 // 暂时没有更好的办法实现文档配置和全局配置分开处理，循环赋值开销很大
 interface Profile_doc {
-    autoOCR: boolean,
     autoCorrect: boolean,
 }
-// 重置这两项，不保存这两项
+// 重置这一项
 const reset: Profile_doc = {
-    autoOCR: false,
     autoCorrect: false,
 }
 
@@ -25,8 +23,6 @@ const refreshDocDataSource = (doc_profile: Profile_doc) => {
             case "autoCorrect":
                 row.status = doc_profile.autoCorrect
                 break;
-            case "autoOCR":
-                row.status = doc_profile.autoOCR
         }
     }
 }
@@ -70,7 +66,6 @@ export const readProfile = (docmd5: string, readAll = false) => {
 // 切换的时候仅保存当前文档的，退出的时候全部保存
 export const saveProfile = (docmd5: string, saveAll = false) => {
     const thisDocProfile = {
-        autoOCR: profile.ohmymn.autoOCR,
         autoCorrect: profile.ohmymn.autoCorrect,
     }
     NSUserDefaults.standardUserDefaults().setObjectForKey(

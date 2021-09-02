@@ -1,6 +1,6 @@
-import { utils } from "addons/synthesizer"
+import { dataSource, utils } from "addons/synthesizer"
 import profile from "profile"
-import { getCommentIndex, getNoteById, undoGrouping } from "utils/notebook"
+import { getCommentIndex, getNotebookById, getNoteById, undoGrouping } from "utils/notebook"
 import { alert, delay, delayBreak, isHalfWidth, log, showHUD } from "../utils/public"
 
 let note: MbBookNote
@@ -22,6 +22,9 @@ export default async (noteid: string) => {
     isOCR = false
     isComment = note.groupNoteId ? true : false
     if (isComment) nodeNote = getNoteById(note.groupNoteId!)
+    let autoOCR = false
+    const noteBook = getNotebookById(note.notebookId!)
+    if (noteBook?.options?.autoOCRMode) autoOCR = true
 
     /*
     * 图片 -> OCR -> 自动矫正
@@ -32,7 +35,7 @@ export default async (noteid: string) => {
 
     if (note.excerptPic) {
         log("摘录是图片", "excerpt")
-        if (profile.ohmymn.autoOCR) {
+        if (autoOCR) {
             const success = await delayBreak(20, 0.1, () => note.excerptText ? true : false)
             if (success) {
                 isOCR = true
