@@ -19,7 +19,7 @@ https://github.com/ourongxing/ohmymn
 version: <%= pkg.version %> by <%= pkg.author %>`;
 
 // 把用户名换一下就行，亲测无法使用 ～
-const dir = isProd() ? "./dist" : "/Users/ourongxing/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.ohmymn"
+const dir = isProd() ? "./dist" : "/Users/ourongxing/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension." + _NAME_
 export default {
   input: ["src/main.ts"],
   output: {
@@ -55,7 +55,7 @@ export default {
     isProd() && uglify(),
     isProd() && banner(_banner),
     isProd() && zip({
-      file: "ohmymn.mnaddon"
+      file: _NAME_ + ".mnaddon"
     })
   ],
 };
