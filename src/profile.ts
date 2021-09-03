@@ -3,6 +3,8 @@ const profileType = {
         rightMode: false,
         doubleClick: false,
         clickHidden: false,
+        lockExcerpt: false,
+        selectChildren: false,
         autoCorrect: false
     },
     autocomplete: {
@@ -42,6 +44,8 @@ const profile: { [k: string]: { [k: string]: boolean | string } } & IProfile = {
         rightMode: false,
         doubleClick: false,
         clickHidden: false,
+        lockExcerpt: false,
+        selectChildren: false,
         autoCorrect: false
     },
     autocomplete: {

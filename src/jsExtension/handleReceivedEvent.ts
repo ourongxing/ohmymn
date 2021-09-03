@@ -2,7 +2,7 @@ import { actions } from "addons/synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import profile from "profile"
-import { getSelectNodes, undoGrouping } from "utils/notebook"
+import { getSelectNodes, getSelectNodesAll, undoGrouping } from "utils/notebook"
 import { log, showHUD } from "utils/public"
 
 declare interface IUserInfo {
@@ -15,7 +15,11 @@ interface eventHandler {
 
 const onButtonClick: eventHandler = ({ userInfo }) => {
   if (profile.ohmymn.clickHidden) closePanel()
-  const nodes = getSelectNodes()
+  let nodes: MbBookNote[]
+
+  if (profile.ohmymn.selectChildren) nodes = getSelectNodesAll()
+  else nodes = getSelectNodes()
+
   if (nodes.length) {
     undoGrouping(nodes[0].notebookId!, () => {
       actions[userInfo.key]({

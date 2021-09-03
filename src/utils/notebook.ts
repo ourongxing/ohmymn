@@ -5,9 +5,32 @@ import { log } from "./public"
  */
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] = self.studyController.notebookController.mindmapView.selViewLst
-  if (MindMapNodes) return MindMapNodes.map(item => item.note.note)
+  if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }
+
+/**
+ * 获取选中的卡片，包括子节点
+ */
+const getSelectNodesAll = (): MbBookNote[] => {
+  const nodes = getSelectNodes()
+  // 使用 set 方便去重
+  const allNodes: Set<MbBookNote> = new Set()
+  const getChildren = (nodes: MbBookNote[]) => {
+    nodes.forEach((node: MbBookNote) => {
+      if (node.childNotes?.length) {
+        allNodes.add(node)
+        getChildren(node.childNotes)
+      }
+      else
+        allNodes.add(node)
+    })
+  }
+  getChildren(nodes)
+  // 返回数组
+  return [...allNodes]
+}
+
 
 /**
  * 获取卡片中的所有摘录
@@ -62,6 +85,7 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
 
 export {
   getSelectNodes,
+  getSelectNodesAll,
   excerptNotes,
   undoGrouping,
   getCommentIndex,
