@@ -54,31 +54,41 @@ const config: IConfig = {
   ]
 }
 
+
 const util = {
-  checkGetTitle(text: string): string | boolean {
+  checkGetTitle(text: string): {} | boolean {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customTitle) {
       const params = string2ReplaceParam(anotherautotitle.customTitle)
-      let _text = text
-      let flag = false
       for (const item of params) {
-        // 匹配到了就说明可以作为标题，然后传回 replace 的结果
-        if (!flag && _text.match(item.regexp)) flag = true
-        _text = _text.replace(item.regexp, item.replace)
+        // 匹配到了就说明可以作为标题，然后传回 replace 的结果，越前面优先级越高
+        if (text.match(item.regexp)) {
+          const title = text.replace(item.regexp, item.newSubStr)
+          return {
+            title,
+            text: item.fnKey ? text : ""
+          }
+        }
       }
-      if (flag) return _text
     }
     // 没有标点符号
     if (anotherautotitle.noPunctuation) {
       const reg = RegExp(/[。.、？?！!，,；;：:]/)
-      if (!reg.test(text)) return text
+      if (!reg.test(text)) return {
+        title: text,
+      }
+
     }
     if (anotherautotitle.isWord) {
-      if (/^[a-zA-Z]+$/.test(text)) return text
+      if (/^[a-zA-Z]+$/.test(text)) return {
+        title: text
+      }
     }
     // 字数达标
     if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > text.length)
-      return text
+      return {
+        title: text
+      }
     return false
   },
 }
