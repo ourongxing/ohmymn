@@ -30,7 +30,8 @@ const isHalfWidth = (text: string): boolean => {
 
 declare interface ReplaceParam {
   regexp: RegExp,
-  newSubStr: string
+  newSubStr: string,
+  fnKey: number
 }
 
 const string2ReplaceParam = (text: string): ReplaceParam[] => {
@@ -42,9 +43,10 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
   for (const bracket of brackets) {
     const tmp = bracket.substring(1, bracket.length - 1)
       .replace(/(\/[gi]{0,2})\s*,/g, "$1delimiter")
+      .replace(/"\s*,/g, "\"delimiter")
       .split("delimiter").map(item => item.trim())
-    const [regString, newSubStr] = tmp
-
+    const [regString, newSubStr, fnKey] = tmp
+    if (fnKey && isNaN(Number(fnKey))) throw new Error("")
     const regParts = regString.match(/^\/(.*?)\/([gim]*)$/)
     let regexp = null
     if (regParts) regexp = new RegExp(regParts[1], regParts[2])
@@ -54,7 +56,8 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
     const parsing = JSON.parse(`{ "key": ${newSubStr} }`)
     willReturn.push({
       regexp,
-      newSubStr: parsing.key
+      newSubStr: parsing.key,
+      fnKey: fnKey ? Number(fnKey) : 0
     })
   }
   return willReturn
