@@ -34,7 +34,7 @@ const util = {
       const params = string2ReplaceParam(profile.autoreplace.customReplace)
       let _text = text
       for (const item of params) {
-        _text = _text.replace(item.regexp, item.replace)
+        _text = _text.replace(item.regexp, item.newSubStr)
       }
       if (text != _text) return _text
     }
@@ -54,7 +54,7 @@ const action: IActionMethod = {
           if (text) {
             let _text = text
             for (const item of params) {
-              _text = _text.replace(item.regexp, item.replace)
+              _text = _text.replace(item.regexp, item.newSubStr)
             }
             if (text !== _text) note.excerptText = _text
           }

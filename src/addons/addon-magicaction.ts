@@ -89,8 +89,8 @@ const action: IActionMethod = {
             const params = string2ReplaceParam(content)
             let newReplace: string[] = []
             // 如果含有序列信息，就把获取新的 replace 参数
-            if (/%\[(.*)\]/.test(params[0].replace)) {
-                newReplace = util.getSerialInfo(params[0].replace, nodes.length)
+            if (/%\[(.*)\]/.test(params[0].newSubStr)) {
+                newReplace = util.getSerialInfo(params[0].newSubStr, nodes.length)
                 nodes.forEach((note, index) => {
                     const title = note.noteTitle ?? ""
                     if (newReplace[index]) {
@@ -102,7 +102,7 @@ const action: IActionMethod = {
             else {
                 nodes.forEach((note, index) => {
                     const title = note.noteTitle ?? ""
-                    note.noteTitle = title.replace(params[0].regexp, params[0].replace)
+                    note.noteTitle = title.replace(params[0].regexp, params[0].newSubStr)
                 })
             }
         } catch {

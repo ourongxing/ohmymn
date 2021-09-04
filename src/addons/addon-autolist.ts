@@ -45,7 +45,7 @@ const util = {
       const params = string2ReplaceParam(autolist.customList)
       let _text = text
       for (const item of params) {
-        _text = _text.replace(item.regexp, item.replace)
+        _text = _text.replace(item.regexp, item.newSubStr)
       }
       if (text != _text) return _text.trim()
     }

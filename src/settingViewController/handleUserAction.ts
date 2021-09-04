@@ -45,7 +45,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         } else {
             const params = string2ReplaceParam(text)
             for (const item of params) {
-                "test".replace(item.regexp, item.replace)
+                "test".replace(item.regexp, item.newSubStr)
             }
         }
     } catch {
