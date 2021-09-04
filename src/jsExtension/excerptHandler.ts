@@ -16,15 +16,12 @@ let isComment: boolean
  * 4. processExcerpt： 把新的标题和内容根据不同情况赋值给卡片
  */
 
-export default async (noteid: string) => {
+export default async (_note: MbBookNote) => {
     // 初始化全局变量
-    note = getNoteById(noteid)
+    note = _note
     isOCR = false
     isComment = note.groupNoteId ? true : false
     if (isComment) nodeNote = getNoteById(note.groupNoteId!)
-    let autoOCR = false
-    const noteBook = getNotebookById(note.notebookId!)
-    if (noteBook?.options?.autoOCRMode) autoOCR = true
 
     /*
     * 图片 -> OCR -> 自动矫正
@@ -34,6 +31,9 @@ export default async (noteid: string) => {
     */
 
     if (note.excerptPic) {
+        let autoOCR = false
+        const noteBook = getNotebookById(note.notebookId!)
+        if (noteBook?.options?.autoOCRMode) autoOCR = true
         log("摘录是图片", "excerpt")
         if (autoOCR) {
             const success = await delayBreak(20, 0.1, () => note.excerptText ? true : false)
@@ -124,6 +124,7 @@ const excerptHandler = () => {
             && (text.startsWith(originTitle) || text.endsWith(originTitle))) {
             log("正在修改标题", "excerpt")
             title = text
+            text = ""
         }
     }
     log(title ? "当前标题是：" + title : "没有标题", "excerpt")
