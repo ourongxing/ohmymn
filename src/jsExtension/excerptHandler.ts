@@ -63,7 +63,7 @@ export default async (_note: MbBookNote) => {
 
         note.excerptText = "😎"
         // 等待在线矫正返回结果
-        const success = await delayBreak(20, 0.1, () => note.excerptText != "😎" ? true : false)
+        const success = await delayBreak(20, 0.1, () => note.excerptText != "😎")
         if (success) log("矫正成功", "excerpt")
         else {
             log("矫正失败或无须矫正", "excerpt")
@@ -97,8 +97,8 @@ const genTitleText = (text: string): { title?: string, text: string } => {
         const result = utils.anotherautotitle.checkGetTitle(text)
         // 可以作为标题
         if (result) return {
-            title: result,
-            text: ""
+            title: result.title,
+            text: result.text
         }
     }
     return { text }

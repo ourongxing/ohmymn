@@ -34,8 +34,18 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
 
 const onSwitchChange: eventHandler = ({ userInfo }) => {
   profile[userInfo.name][userInfo.key] = userInfo.status
-  if (userInfo.key == "rightMode") {
-    layoutViewController()
+  switch (userInfo.key) {
+    case "rightMode":
+      layoutViewController()
+      break
+    case "lockExcerpt":
+      if (userInfo.status && profile.ohmymn.autoCorrect) showHUD("锁定摘录不建议和自动矫正同时开启", 2)
+      break
+    case "autoCorrect":
+      if (userInfo.status) showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
+      break
+    default:
+      break
   }
 }
 
@@ -56,34 +66,37 @@ const onPopupMenuOnNote: eventHandler = async ({ userInfo }) => {
     const note = <MbBookNote>userInfo.note
     isChangeExcerptRange = false
     isProcessNewExcerpt = false
-    const success = await delayBreak(5, 0.05, () => isChangeExcerptRange || isProcessNewExcerpt ? true : false)
-    // 说明确实是创建摘录或修改摘录触发的点击，此时直接退出
+    const success = await delayBreak(10, 0.05, () => isChangeExcerptRange || isProcessNewExcerpt)
     if (success) return
     lastExcerptText = note.excerptText!
     log("检测到开启锁定摘录选项，保存摘录", "excerpt")
   }
 }
 
-const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
-  const note = getNoteById(userInfo.noteid)
-  if (profile.ohmymn.lockExcerpt) {
-    log("检测到开启锁定摘录选项，摘录前初始化，使得创建摘录时可以自由修改", "excerpt")
-    isProcessNewExcerpt = true
-    lastExcerptText = "😎"
-  }
-  handleExcerpt(note)
-}
-
-const onChangeExcerptRange: eventHandler = ({ userInfo }) => {
+const onChangeExcerptRange: eventHandler = async ({ userInfo }) => {
   const note = getNoteById(userInfo.noteid)
   isChangeExcerptRange = true
   log("修改摘录", "excerpt")
   // 创建摘录时立即修改不会影响，因为没有触发保存
   if (profile.ohmymn.lockExcerpt && lastExcerptText != "😎") {
     log("检测到开启锁定摘录选项，还原摘录", "excerpt")
+    // 但是如果开启了自动矫正就比较麻烦了
+    if (profile.ohmymn.autoCorrect) {
+      note.excerptText = "😎"
+      await delayBreak(20, 0.1, () => note.excerptText != "😎")
+    }
     note.excerptText = lastExcerptText
+  } else handleExcerpt(note)
+}
+
+const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
+  const note = getNoteById(userInfo.noteid)
+  isProcessNewExcerpt = true
+  if (profile.ohmymn.lockExcerpt) {
+    log("检测到开启锁定摘录选项，摘录前初始化，使得创建摘录时可以自由修改", "excerpt")
+    lastExcerptText = "😎"
   }
-  else handleExcerpt(note)
+  handleExcerpt(note)
 }
 
 export default {
