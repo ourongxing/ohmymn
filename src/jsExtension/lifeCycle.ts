@@ -9,8 +9,9 @@ const eventCtrl = eventHandlerController([
     { event: "_NAME_InputOver" },
     { event: "_NAME_SwitchChange" },
     { event: "_NAME_ButtonClick" },
-    { event: "ProcessNewExcerpt", handler: "onProcessExcerptText" },
-    { event: "ChangeExcerptRange", handler: "onProcessExcerptText" }
+    { event: "PopupMenuOnNote" },
+    { event: "ProcessNewExcerpt" },
+    { event: "ChangeExcerptRange" }
 ]);
 
 /**
