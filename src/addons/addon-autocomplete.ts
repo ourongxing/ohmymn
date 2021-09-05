@@ -35,7 +35,7 @@ const util = {
   checkGetWord(text: string) {
     text = text.toLowerCase()
     // 判断一下是否是单词，或许可以降低点内存消耗
-    if (!/^[a-z]+$/.test(text) || !dict[text]) return false
+    if (/^[a-z]+$/.test(text) && dict[text]) return false
     const autocomplete = profile.autocomplete
     let word = dict[text]
     if (word.lemma) {
