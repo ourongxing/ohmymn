@@ -28,7 +28,7 @@ const config: IConfig = {
       label: "是单词",
     },
     {
-      help: "点号指 。、？?！!，,；;：:",
+      help: "点号指 。.、？?！!，,；;：:",
       key: "noPunctuation",
       type: cellViewType.switch,
       label: "不含有点号"

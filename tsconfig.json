@@ -6,6 +6,7 @@
     "allowJs": false,
     "sourceMap": false,
     "noImplicitAny": true,
+    "downlevelIteration": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
