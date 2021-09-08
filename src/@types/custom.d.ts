@@ -16,7 +16,7 @@ declare global {
     link?: string
     settings: Array<ISetting>
     /**
-     * 快捷方式，放在第二个 Section ，方便点击
+     * 快捷方式，放在第一个 Section ，方便点击
      */
     actions: Array<IAction>
   }
