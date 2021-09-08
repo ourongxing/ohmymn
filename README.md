@@ -77,6 +77,8 @@ yarn dev // 先修改 rollup.config.js 中的用户名
 
 注： 自动操作和控制台均为 Mac 上自带的软件，这意味着您需要 Mac 系统来进行开发。
 
+更多细节请查看[开发文档](https://busiyi.notion.site/busiyi/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01#c5a601fcf71a4dda9bb05efdd5a1cf6f)
+
 ## Contact
 
 除了 Github，你还可以在下面三个平台找到我，我会在即刻上发布更新说明和使用技巧，欢迎来即刻关注我。
