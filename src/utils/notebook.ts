@@ -59,7 +59,7 @@ const getNotebookById = (notebookid: string): MbTopic => {
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
 const undoGrouping = (notebookid: string, action: () => void) => {
-  UndoManager.sharedInstance().undoGrouping("_NAME_", notebookid, () => {
+  UndoManager.sharedInstance().undoGrouping("ohmymn", notebookid, () => {
     action()
     // 同步修改到数据库
     Database.sharedInstance().setNotebookSyncDirty(notebookid)

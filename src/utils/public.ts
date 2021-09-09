@@ -1,5 +1,5 @@
 const log = (obj: any, suffix = "normal") => {
-  JSB.log(`_NAME_-${suffix} %@`, obj);
+  JSB.log(`ohmymn-${suffix} %@`, obj);
 }
 
 const showHUD = (message: string, duration: number = 1) => {

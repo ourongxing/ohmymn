@@ -4,11 +4,6 @@ import zip from 'rollup-plugin-zip';
 import { uglify } from "rollup-plugin-uglify";
 import strip from '@rollup/plugin-strip';
 import banner from 'rollup-plugin-banner';
-import replace from '@rollup/plugin-replace';
-
-// 插件名称以及插件大写名称，代码中可以使用这两个变量
-const _NAME_ = "ohmymn"
-const _CAPNAME_ = "OhMyMN"
 
 // 判断是否为开发环境
 const isProd = () => process.env.NODE_ENV === 'production';
@@ -19,7 +14,7 @@ https://github.com/ourongxing/ohmymn
 version: <%= pkg.version %> by <%= pkg.author %>`;
 
 // 把用户名换一下就行，亲测无法使用 ～
-const dir = isProd() ? "./dist" : "/Users/ourongxing/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension." + _NAME_
+const dir = isProd() ? "./dist" : "/Users/ourongxing/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.ohmymn"
 export default {
   input: ["src/main.ts"],
   output: {
@@ -32,15 +27,6 @@ export default {
     exclude: '../node_modules/**'
   },
   plugins: [
-    replace({
-      exclude: '../node_modules/**',
-      preventAssignment: true,
-      delimiters: ['', ''],
-      values: {
-        _NAME_,
-        _CAPNAME_
-      }
-    }),
     typescript(),
     copy({
       assets: [
@@ -55,7 +41,7 @@ export default {
     isProd() && uglify(),
     isProd() && banner(_banner),
     isProd() && zip({
-      file: _NAME_ + ".mnaddon"
+      file: "ohmymn.mnaddon"
     })
   ],
 };
