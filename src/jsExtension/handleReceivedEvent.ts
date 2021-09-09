@@ -74,9 +74,9 @@ const onPopupMenuOnNote: eventHandler = async ({ userInfo }) => {
 }
 
 const onChangeExcerptRange: eventHandler = async ({ userInfo }) => {
+  log("修改摘录", "excerpt")
   const note = getNoteById(userInfo.noteid)
   isChangeExcerptRange = true
-  log("修改摘录", "excerpt")
   // 创建摘录时立即修改不会影响，因为没有触发保存
   if (profile.ohmymn.lockExcerpt && lastExcerptText != "😎") {
     log("检测到开启锁定摘录选项，还原摘录", "excerpt")
@@ -85,11 +85,14 @@ const onChangeExcerptRange: eventHandler = async ({ userInfo }) => {
       note.excerptText = "😎"
       await delayBreak(20, 0.1, () => note.excerptText != "😎")
     }
-    note.excerptText = lastExcerptText
-  } else handleExcerpt(note)
+    undoGrouping(note.notebookId!, () => {
+      note.excerptText = lastExcerptText
+    })
+  } else handleExcerpt(note, true)
 }
 
 const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
+  log("创建摘录", "excerpt")
   const note = getNoteById(userInfo.noteid)
   isProcessNewExcerpt = true
   if (profile.ohmymn.lockExcerpt) {
@@ -100,10 +103,10 @@ const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
 }
 
 export default {
-  onButtonClick,
   onInputOver,
+  onButtonClick,
   onSwitchChange,
   onPopupMenuOnNote,
   onProcessNewExcerpt,
-  onChangeExcerptRange
+  onChangeExcerptRange,
 }

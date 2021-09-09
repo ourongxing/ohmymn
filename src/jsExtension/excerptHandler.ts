@@ -1,12 +1,13 @@
 import { dataSource, utils } from "addons/synthesizer"
 import profile from "profile"
 import { getCommentIndex, getNotebookById, getNoteById, undoGrouping } from "utils/notebook"
-import { alert, delay, delayBreak, isHalfWidth, log, showHUD } from "../utils/public"
+import { alert, delay, delayBreak, isHalfWidth, log, showHUD } from "utils/public"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
 let isOCR: boolean
 let isComment: boolean
+let isModifying: boolean
 
 /**
  * 这几个函数的作用
@@ -16,11 +17,13 @@ let isComment: boolean
  * 4. processExcerpt： 把新的标题和内容根据不同情况赋值给卡片
  */
 
-export default async (_note: MbBookNote) => {
+export default async (_note: MbBookNote, _isModifying = false) => {
+    log("正在处理摘录", "excerpt")
     // 初始化全局变量
     note = _note
     isOCR = false
     isComment = note.groupNoteId ? true : false
+    isModifying = _isModifying
     if (isComment) nodeNote = getNoteById(note.groupNoteId!)
 
     /*
@@ -60,7 +63,6 @@ export default async (_note: MbBookNote) => {
     if (profile.ohmymn.autoCorrect) {
         log("开始矫正", "excerpt")
         const originText = note.excerptText!
-
         note.excerptText = "😎"
         // 等待在线矫正返回结果
         const success = await delayBreak(20, 0.1, () => note.excerptText != "😎")
@@ -71,7 +73,6 @@ export default async (_note: MbBookNote) => {
             showHUD("_CAPNAME_ 提醒您：当前文档无须自动矫正，为避免出现错误，请关闭 MN 和 _CAPNAME_ 自动矫正的选项", 3)
         }
     }
-
     excerptHandler()
 }
 
@@ -116,13 +117,13 @@ const excerptHandler = () => {
             const semi = isHalfWidth(nodeTitle) ? "; " : "；"
             title = nodeTitle + semi + title
         }
-    } else {
-        // 只有这一种情况会出现摘录有标题
+    }
+    if (isModifying) {
         // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
         const originTitle = note?.noteTitle
-        if (profile.anotherautotitle.changeTitleNoLimit && originTitle && originTitle.length >= 2
-            && (text.startsWith(originTitle) || text.endsWith(originTitle))) {
-            log("正在修改标题", "excerpt")
+        if (profile.anotherautotitle.changeTitleNoLimit && !title && originTitle
+            && originTitle.length >= 2 && (text.startsWith(originTitle) || text.endsWith(originTitle))) {
+            log("正在拓宽作为标题的摘录", "excerpt")
             title = text
             text = ""
         }
