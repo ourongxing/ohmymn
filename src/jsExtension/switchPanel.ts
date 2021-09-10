@@ -29,7 +29,7 @@ const openPanel = () => {
         self.studyController.view.addSubview(self.settingViewController.view)
         if (self.studyController.docMapSplitMode == 2) {
             self.studyController.docMapSplitMode = 1
-            showHUD("_CAPNAME_ 与脑图更配喔", 1)
+            showHUD("OhMyMN 与脑图更配喔", 1)
         }
         // 开启面板时，若键盘处于开启状态，关闭键盘
         NSTimer.scheduledTimerWithTimeInterval(0.2, false, function () {

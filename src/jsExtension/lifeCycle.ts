@@ -31,7 +31,7 @@ const eventCtrl = eventHandlerController([
 const sceneWillConnect = () => {
     log("打开窗口", "lifeCycle")
     self.studyController = Application.sharedInstance().studyController(self.window)
-    self.settingViewController = SettingViewController.new()
+    self.settingViewController = new SettingViewController()
     self.settingViewController.window = self.window
 }
 

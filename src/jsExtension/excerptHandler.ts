@@ -1,7 +1,7 @@
-import { dataSource, utils } from "addons/synthesizer"
 import profile from "profile"
 import { getCommentIndex, getNotebookById, getNoteById, undoGrouping } from "utils/notebook"
-import { alert, delay, delayBreak, isHalfWidth, log, showHUD } from "utils/public"
+import { delayBreak, isBroadened, isHalfWidth, log, showHUD } from "utils/public"
+import { genTitleText } from "./newExcerptGenerater"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -70,39 +70,10 @@ export default async (_note: MbBookNote, _isModifying = false) => {
         else {
             log("矫正失败或无须矫正", "excerpt")
             note.excerptText = originText
-            showHUD("_CAPNAME_ 提醒您：当前文档无须自动矫正，为避免出现错误，请关闭 MN 和 _CAPNAME_ 自动矫正的选项", 3)
+            showHUD("OhMyMN 提醒您：当前文档无须自动矫正，为避免出现错误，请关闭 MN 和 OhMyMN 自动矫正的选项", 3)
         }
     }
     excerptHandler()
-}
-
-// 集中处理标题和摘录
-const genTitleText = (text: string): { title?: string, text: string } => {
-    if (profile.autostandardize.on)
-        text = utils.autostandardize.standardizeText(text)
-    if (profile.autolist.on)
-        text = utils.autolist.listText(text)
-    if (profile.autoreplace.on)
-        text = utils.autoreplace.replaceText(text)
-
-    // 判断是否能成为标题
-    // autotitle 优先级应该是最低的
-    if (profile.autocomplete.on) {
-        const result = utils.autocomplete.checkGetWord(text)
-        if (result) return {
-            title: result.title,
-            text: result.text
-        }
-    }
-    if (profile.anotherautotitle.on) {
-        const result = utils.anotherautotitle.checkGetTitle(text)
-        // 可以作为标题
-        if (result) return {
-            title: result.title,
-            text: result.text
-        }
-    }
-    return { text }
 }
 
 const excerptHandler = () => {
@@ -120,9 +91,7 @@ const excerptHandler = () => {
     }
     if (isModifying) {
         // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
-        const originTitle = note?.noteTitle
-        if (profile.anotherautotitle.changeTitleNoLimit && !title && originTitle
-            && originTitle.length >= 2 && (text.startsWith(originTitle) || text.endsWith(originTitle))) {
+        if (profile.anotherautotitle.changeTitleNoLimit && !title && isBroadened(note?.noteTitle, text)) {
             log("正在拓宽作为标题的摘录", "excerpt")
             title = text
             text = ""

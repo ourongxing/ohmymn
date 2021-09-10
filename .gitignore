@@ -3,4 +3,3 @@ dist
 api
 yarn.lock
 .vscode
-src/utils/highlightRecorder.ts

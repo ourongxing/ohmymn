@@ -76,6 +76,9 @@ const delayBreak = async (times: number, sec: number, f: () => boolean): Promise
   return false
 }
 
+const isBroadened = (oldStr: string | undefined, newStr: string) => {
+  return oldStr && oldStr.length >= 2 && (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
+}
 export {
   log,
   showHUD,
@@ -84,5 +87,6 @@ export {
   isHalfWidth,
   string2ReplaceParam,
   delay,
-  delayBreak
+  delayBreak,
+  isBroadened
 }
