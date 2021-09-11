@@ -1,4 +1,4 @@
-import profile from "profile"
+import { profile } from "profile"
 import { excerptNotes } from "utils/notebook"
 import { log, string2ReplaceParam } from "utils/public"
 

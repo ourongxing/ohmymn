@@ -5,7 +5,9 @@ const profileType = {
         clickHidden: false,
         lockExcerpt: false,
         selectChildren: false,
-        autoCorrect: false
+        autoCorrect: false,
+        dontShowHUD: false,
+        waitTime: "2.0"
     },
     autocomplete: {
         on: false,
@@ -21,7 +23,7 @@ const profileType = {
         noPunctuation: false,
         isWord: false,
         changeTitleNoLimit: false,
-        wordCount: "",
+        wordCount: "10",
         customTitle: ""
     },
     autolist: {
@@ -36,10 +38,21 @@ const profileType = {
     }
 }
 
-declare type IProfile = typeof profileType
-// 为了防止循环引用，可以单独写个脚本生成配置文件，主要是想要有提示
+const docProfileType = {
+    autoCorrect: false,
+    dontShowHUD: false,
+    waitTime: "2.0"
+}
+
+export type IProfile = typeof profileType
+export type IProfile_doc = typeof docProfileType
+
 const profile: { [k: string]: { [k: string]: boolean | string } } & IProfile = {
     ...profileType
 }
 
-export default profile
+const docProfile: IProfile_doc = {
+    ...docProfileType
+}
+
+export { profile, docProfile }

@@ -1,4 +1,4 @@
-import profile from "profile"
+import { profile } from "profile"
 import { log, string2ReplaceParam } from "utils/public"
 
 const config: IConfig = {

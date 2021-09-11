@@ -1,4 +1,4 @@
-import { log, showHUD, string2ReplaceParam } from "utils/public"
+import { checkInputCorrect, log, showHUD, string2ReplaceParam } from "utils/public"
 import { dataSource } from "addons/synthesizer"
 
 const tag2indexPath = (tag: number): NSIndexPath => {
@@ -33,25 +33,6 @@ const tableViewDidSelectRowAtIndexPath = (tableView: UITableView, indexPath: NSI
             .postNotificationNameObjectUserInfo('ButtonClick', self,
                 { key: row.key, content: "" })
     }
-}
-
-// 输入错误不保存
-// 基本格式：(/reg/gi, ""); ()
-const checkInputCorrect = (text: string, key: string): boolean => {
-    try {
-        if (key == "wordCount") {
-            if (isNaN(Number(text)))
-                throw new Error("")
-        } else {
-            const params = string2ReplaceParam(text)
-            for (const item of params) {
-                "test".replace(item.regexp, item.newSubStr)
-            }
-        }
-    } catch {
-        return false
-    }
-    return true
 }
 
 const textFieldShouldReturn = (sender: UITextField) => {

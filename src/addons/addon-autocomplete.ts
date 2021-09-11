@@ -1,5 +1,5 @@
 import { dict } from "utils/dict"
-import profile from "profile"
+import { profile } from "profile"
 
 const config: IConfig = {
   name: "AutoComplete",

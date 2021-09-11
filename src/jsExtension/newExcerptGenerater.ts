@@ -1,5 +1,5 @@
 import { utils } from "addons/synthesizer"
-import profile from "profile"
+import { profile } from "profile"
 
 export const genTitleText = (text: string): { title?: string, text: string } => {
     if (profile.autostandardize.on)

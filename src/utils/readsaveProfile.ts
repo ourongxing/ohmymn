@@ -1,47 +1,46 @@
 import { dataSource } from "addons/synthesizer"
 import { log, showHUD } from "utils/public"
-import profile from "profile"
+import { profile, docProfile, IProfile, IProfile_doc } from "profile"
 
 // 读配置包含两种情况
 // 1.刚打开一个笔记本，读两个配置文件，然后合并
 // 2.切换文档，只需要读取 doc 配置
 
-// 暂时没有更好的办法实现文档配置和全局配置分开处理，循环赋值开销很大
-interface Profile_doc {
-    autoCorrect: boolean,
-}
-// 重置这一项
-const reset: Profile_doc = {
-    autoCorrect: false,
-}
+// 暂时文档配置只支持 OhMyMN 中的部分
 
-const profile_doc: { [k: string]: Profile_doc } = {}
+const profile_doc: { [k: string]: IProfile_doc } = {}
+const reset = { ...docProfile }
 
-const refreshDocDataSource = (doc_profile: Profile_doc) => {
+const refreshDocDataSource = (docProfile: IProfile_doc) => {
     for (const row of dataSource[1].rows) {
-        switch (row.key) {
-            case "autoCorrect":
-                row.status = doc_profile.autoCorrect
-                break;
+        const key = <keyof IProfile_doc>row.key
+        if (key && docProfile[key] != undefined) {
+            switch (row.type) {
+                case cellViewType.switch:
+                    row.status = <boolean>docProfile[key]
+                    break
+                case cellViewType.inlineInput: case cellViewType.input:
+                    row.content = <string>docProfile[key]
+                    break
+            }
         }
     }
 }
+
 
 export const readProfile = (docmd5: string, readAll = false) => {
     if (readAll) {
         let tmp_global = NSUserDefaults.standardUserDefaults()
             .objectForKey("marginnote_ohmymn_profile_global")
-        if (tmp_global) {
-            Object.assign(profile, JSON.parse(tmp_global))
-            for (const section of dataSource) {
-                for (const row of section.rows) {
-                    switch (row.type) {
-                        case cellViewType.switch:
-                            row.status = <boolean>profile[section.header.toLowerCase()][row.key!]
-                            break;
-                        case cellViewType.input: case cellViewType.inlineInput:
-                            row.content = <string>profile[section.header.toLowerCase()][row.key!]
-                    }
+        if (tmp_global) Object.assign(profile, JSON.parse(tmp_global))
+        for (const section of dataSource) {
+            for (const row of section.rows) {
+                switch (row.type) {
+                    case cellViewType.switch:
+                        row.status = <boolean>profile[section.header.toLowerCase()][row.key!]
+                        break;
+                    case cellViewType.input: case cellViewType.inlineInput:
+                        row.content = <string>profile[section.header.toLowerCase()][row.key!]
                 }
             }
         }
@@ -65,9 +64,11 @@ export const readProfile = (docmd5: string, readAll = false) => {
 
 // 切换的时候仅保存当前文档的，退出的时候全部保存
 export const saveProfile = (docmd5: string, saveAll = false) => {
-    const thisDocProfile = {
-        autoCorrect: profile.ohmymn.autoCorrect,
-    }
+    const thisDocProfile: IProfile_doc = { ...docProfile }
+    Object.keys(reset).forEach((key: string) => {
+        //@ts-ignore
+        thisDocProfile[key] = profile.ohmymn[key]
+    })
     NSUserDefaults.standardUserDefaults().setObjectForKey(
         JSON.stringify(Object.assign(profile_doc, { [docmd5]: thisDocProfile })),
         "marginnote_ohmymn_profile_doc")

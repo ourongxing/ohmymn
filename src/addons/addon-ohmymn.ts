@@ -33,8 +33,19 @@ const config: IConfig = {
       key: "autoCorrect",
       type: cellViewType.switch,
       label: "是否开启了自动在线矫正",
+    },
+    {
+      help: "【当前文档】不再提醒你关闭自动矫正",
+      key: "dontShowHUD",
+      type: cellViewType.switch,
+      label: "关闭自动矫正提示",
+    },
+    {
+      help: "【当前文档】1.0 - 3.0s，默认 2s ",
+      key: "waitTime",
+      type: cellViewType.inlineInput,
+      label: "自动矫正等待时间",
     }
-
   ],
   actions: [
   ]

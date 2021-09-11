@@ -1,4 +1,4 @@
-import profile from "profile";
+import { profile } from "profile";
 import { showHUD } from "utils/public";
 
 // 面板和按键状态

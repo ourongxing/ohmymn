@@ -79,6 +79,31 @@ const delayBreak = async (times: number, sec: number, f: () => boolean): Promise
 const isBroadened = (oldStr: string | undefined, newStr: string) => {
   return oldStr && oldStr.length >= 2 && (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
 }
+
+
+const checkInputCorrect = (text: string, key: string): boolean => {
+  try {
+    switch (key) {
+      case "wordCount":
+        if (isNaN(Number(text))) throw new Error("")
+        break
+      case "waitTime":
+        const time = Number(text)
+        if (isNaN(time) || (time < 1 || time > 3)) throw new Error("");
+        break
+      default:
+        const params = string2ReplaceParam(text)
+        for (const item of params) {
+          "test".replace(item.regexp, item.newSubStr)
+        }
+        break
+    }
+  } catch {
+    return false
+  }
+  return true
+}
+
 export {
   log,
   showHUD,
@@ -88,5 +113,6 @@ export {
   string2ReplaceParam,
   delay,
   delayBreak,
-  isBroadened
+  isBroadened,
+  checkInputCorrect
 }
