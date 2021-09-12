@@ -6,8 +6,6 @@ const profileType = {
         lockExcerpt: false,
         selectChildren: false,
         autoCorrect: false,
-        dontShowHUD: false,
-        waitTime: "2.0"
     },
     autocomplete: {
         on: false,
@@ -40,8 +38,6 @@ const profileType = {
 
 const docProfileType = {
     autoCorrect: false,
-    dontShowHUD: false,
-    waitTime: "2.0"
 }
 
 export type IProfile = typeof profileType

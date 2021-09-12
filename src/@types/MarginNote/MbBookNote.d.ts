@@ -1,4 +1,4 @@
-export {}
+export { }
 
 declare global {
   interface pic {
@@ -128,6 +128,8 @@ declare global {
     readonly textHighlight?: {
       highlight_text: string;
       coords_hash: string;
+      maskList?: string[];
+      textSelLst?: any[];
     };
     readonly options?: DictObj;
 

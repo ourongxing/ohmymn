@@ -19,9 +19,6 @@ const refreshDocDataSource = (docProfile: IProfile_doc) => {
                 case cellViewType.switch:
                     row.status = <boolean>docProfile[key]
                     break
-                case cellViewType.inlineInput: case cellViewType.input:
-                    row.content = <string>docProfile[key]
-                    break
             }
         }
     }
