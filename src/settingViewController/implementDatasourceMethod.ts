@@ -43,6 +43,7 @@ const tableViewCellForRowAtIndexPath = (tableView: UITableView, indexPath: NSInd
         case cellViewType.button: case cellViewType.buttonWithInput: {
             const cell = UITableViewCell.makeWithStyleReuseIdentifier(0, 'ButtonCellID')
             cell.textLabel.font = UIFont.systemFontOfSize(16)
+            cell.textLabel.textColor = self.textColor
             cell.selectionStyle = 1
             cell.textLabel.text = row.label
             return cell
@@ -52,6 +53,7 @@ const tableViewCellForRowAtIndexPath = (tableView: UITableView, indexPath: NSInd
             cell.selectionStyle = 0
             cell.textLabel.text = row.label
             cell.textLabel.font = UIFont.systemFontOfSize(16)
+            cell.textLabel.textColor = self.textColor
             let view = null
             if (row.status) view = controllers.switch(row.status)
             else view = controllers.switch()
@@ -67,6 +69,7 @@ const tableViewCellForRowAtIndexPath = (tableView: UITableView, indexPath: NSInd
             const cell = UITableViewCell.makeWithStyleReuseIdentifier(0, 'inlineInputCellID')
             cell.selectionStyle = 0
             cell.textLabel.font = UIFont.systemFontOfSize(16)
+            cell.textLabel.textColor = self.textColor
             cell.textLabel.text = row.label
             let view = null
             if (row.content) view = controllers.inlineInput(row.content)
@@ -84,6 +87,7 @@ const tableViewCellForRowAtIndexPath = (tableView: UITableView, indexPath: NSInd
         case cellViewType.input: {
             const cell = UITableViewCell.makeWithStyleReuseIdentifier(0, 'inputCellID')
             cell.textLabel.font = UIFont.systemFontOfSize(16)
+            cell.textLabel.textColor = self.textColor
             cell.selectionStyle = 0
             let view = null
             if (row.content) view = controllers.input(row.content)
@@ -112,6 +116,7 @@ export const controllers = {
         if (Application.sharedInstance().osType == 0) frame.y = 5
         const view = new UITextField(frame)
         view.font = UIFont.systemFontOfSize(18)
+        view.textColor = self.textColor
         // 把协议和控制器连接
         view.delegate = self
         view.text = text
@@ -125,6 +130,7 @@ export const controllers = {
         if (Application.sharedInstance().osType == 0) frame.y = 5
         const view = new UITextField(frame)
         view.font = UIFont.systemFontOfSize(15)
+        view.textColor = self.textColor
         view.placeholder = "enter"
         view.delegate = self
         view.textAlignment = 0
