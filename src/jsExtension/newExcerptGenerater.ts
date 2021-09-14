@@ -13,18 +13,12 @@ export const genTitleText = (text: string): { title?: string, text: string } => 
     // autotitle 优先级应该是最低的
     if (profile.autocomplete.on) {
         const result = utils.autocomplete.checkGetWord(text)
-        if (result) return {
-            title: result.title,
-            text: result.text
-        }
+        if (result) return result
     }
     if (profile.anotherautotitle.on) {
         const result = utils.anotherautotitle.checkGetTitle(text)
         // 可以作为标题
-        if (result) return {
-            title: result.title,
-            text: result.text
-        }
+        if (result) return result
     }
     return { text }
 }

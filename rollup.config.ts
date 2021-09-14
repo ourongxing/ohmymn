@@ -4,7 +4,7 @@ import zip from 'rollup-plugin-zip';
 import { uglify } from "rollup-plugin-uglify";
 import strip from '@rollup/plugin-strip';
 import banner from 'rollup-plugin-banner';
-
+import pkg from './package.json'
 // 判断是否为开发环境
 const isProd = () => process.env.NODE_ENV === 'production';
 
@@ -41,7 +41,7 @@ export default {
     isProd() && uglify(),
     isProd() && banner(_banner),
     isProd() && zip({
-      file: "ohmymn.mnaddon"
+      file: `ohmymn_v${pkg.version}.mnaddon`
     })
   ],
 };
