@@ -1,5 +1,7 @@
 import { profile } from "profile"
-import { log, string2ReplaceParam } from "utils/public"
+import { log } from "utils/common"
+import { string2ReplaceParam } from "utils/input"
+import { wordCount } from "utils/text"
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
@@ -85,7 +87,7 @@ const util = {
       }
     }
     // 字数达标
-    if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > text.length)
+    if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > wordCount(text))
       return {
         title: text
       }

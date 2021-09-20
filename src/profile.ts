@@ -19,7 +19,6 @@ const profileType = {
         on: false,
         mergeTitle: false,
         noPunctuation: false,
-        isWord: false,
         changeTitleNoLimit: false,
         wordCount: "10",
         customTitle: ""
