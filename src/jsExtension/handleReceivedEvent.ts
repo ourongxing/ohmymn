@@ -2,7 +2,13 @@ import { actions } from "addons/synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
-import { getNoteById, getSelectNodes, getSelectNodesAll, RefreshAfterDBChange, undoGrouping } from "utils/note"
+import {
+  getNoteById,
+  getSelectNodes,
+  getSelectNodesAll,
+  RefreshAfterDBChange,
+  undoGrouping,
+} from "utils/note"
 import { delayBreak, log, showHUD } from "utils/common"
 import eventHandlerController from "utils/event"
 
@@ -12,9 +18,8 @@ export const eventCtrl = eventHandlerController([
   { event: "ButtonClick" },
   { event: "PopupMenuOnNote" },
   { event: "ProcessNewExcerpt" },
-  { event: "ChangeExcerptRange" }
+  { event: "ChangeExcerptRange" },
 ])
-
 
 declare interface IUserInfo {
   [k: string]: any
@@ -35,7 +40,7 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
     undoGrouping(() => {
       actions[userInfo.key]({
         content: userInfo.content,
-        nodes: nodes
+        nodes: nodes,
       })
     })
   } else {
@@ -50,10 +55,12 @@ const onSwitchChange: eventHandler = ({ userInfo }) => {
       layoutViewController()
       break
     case "lockExcerpt":
-      if (userInfo.status && profile.ohmymn.autoCorrect) showHUD("锁定摘录不建议和自动矫正同时开启", 2)
+      if (userInfo.status && profile.ohmymn.autoCorrect)
+        showHUD("锁定摘录不建议和自动矫正同时开启", 2)
       break
     case "autoCorrect":
-      if (userInfo.status) showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
+      if (userInfo.status)
+        showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
       break
     default:
       break
@@ -76,7 +83,11 @@ const onPopupMenuOnNote: eventHandler = async ({ userInfo }) => {
   const note = <MbBookNote>userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
-  const success = await delayBreak(10, 0.05, () => isChangeExcerptRange || isProcessNewExcerpt)
+  const success = await delayBreak(
+    10,
+    0.05,
+    () => isChangeExcerptRange || isProcessNewExcerpt
+  )
   if (success) return
   // 保存修改摘录前的内容
   lastExcerptText = note.excerptText!

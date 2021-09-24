@@ -16,7 +16,7 @@ const config: IConfig = {
       key: "fillExplanation",
       type: cellViewType.switch,
       label: "填充单词解释",
-      help: "覆盖小学到托福词汇"
+      help: "覆盖小学到托福词汇",
     },
     {
       key: "fillFrequency",
@@ -29,15 +29,16 @@ const config: IConfig = {
       key: "completeSelected",
       type: cellViewType.button,
       label: "补全单词词形",
-    }
-  ]
+    },
+  ],
 }
 
 const util = {
   async checkGetWord(text: string) {
     if (!isHalfWidth(text) && wordCount(text) != 1) return false
-    const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + text)
-      .then(res => res.json())
+    const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + text).then(
+      res => res.json()
+    )
     const wordObj = { title: text, text: res[0].translation }
     return wordObj
     // if (!(/^[a-z]+$/.test(text))) return false
@@ -70,7 +71,7 @@ const action: IActionMethod = {
         }
       }
     }
-  }
+  },
 }
 
 export default { config, util, action }

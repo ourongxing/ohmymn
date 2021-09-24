@@ -1,8 +1,8 @@
-export { }
+export {}
 declare global {
   class NSOperationQueue {
     static new(): NSOperationQueue
-    start: void;
-    main: void;
+    start: void
+    main: void
   }
 }

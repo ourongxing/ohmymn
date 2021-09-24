@@ -1,18 +1,24 @@
-export { }
+export {}
 declare global {
   const enum NSJSONWritingOptions {
     PrettyPrinted = 0,
     SortedKeys,
     FragmentsAllowed,
-    WithoutEscapingSlashes
+    WithoutEscapingSlashes,
   }
   const enum NSJSONReadingOptions {
     MutableContainers = 0,
     MutableLeaves,
-    AllowFragments
+    AllowFragments,
   }
   class NSJSONSerialization {
-    static JSONObjectWithDataOptions(obj: WrapperObj<any>, data: NSJSONReadingOptions): WrapperObj<any>
-    static dataWithJSONObject(obj: WrapperObj<any>, options: NSJSONWritingOptions): NSData;
+    static JSONObjectWithDataOptions(
+      obj: WrapperObj<any>,
+      data: NSJSONReadingOptions
+    ): WrapperObj<any>
+    static dataWithJSONObject(
+      obj: WrapperObj<any>,
+      options: NSJSONWritingOptions
+    ): NSData
   }
 }

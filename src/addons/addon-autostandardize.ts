@@ -8,16 +8,16 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行"
+      label: "摘录时自动执行",
     },
   ],
   actions: [
     {
       key: "standardizeSelected",
       type: cellViewType.button,
-      label: "优化摘录和标题排版"
-    }
-  ]
+      label: "优化摘录和标题排版",
+    },
+  ],
 }
 
 const util = {
@@ -55,7 +55,7 @@ const action: IActionMethod = {
         }
       }
     }
-  }
+  },
 }
 
 export default { config, util, action }

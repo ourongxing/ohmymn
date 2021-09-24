@@ -1,4 +1,4 @@
-export { }
+export {}
 
 declare global {
   const enum NSDataReadingOptions {
@@ -30,19 +30,19 @@ declare global {
     SearchBackwards = 1,
   }
   class NSData {
-    static data(): WrapperObj<any>;
+    static data(): WrapperObj<any>
     /**
      * @param string NSString*
      */
     static dataWithStringEncoding(
       string: string,
       encoding: NSStringEncoding
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param bytes const void*
      * @param length NSUInteger
      */
-    static dataWithBytesLength(bytes: any, length: number): WrapperObj<any>;
+    static dataWithBytesLength(bytes: any, length: number): WrapperObj<any>
     /**
      * @param bytes void*
      * @param length NSUInteger
@@ -50,7 +50,7 @@ declare global {
     static dataWithBytesNoCopyLength(
       bytes: any,
       length: number
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param bytes void*
      * @param length NSUInteger
@@ -59,7 +59,7 @@ declare global {
       bytes: any,
       length: number,
       b: boolean
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param path NSString*
      * @param errorPtr NSError**
@@ -68,7 +68,7 @@ declare global {
       path: string,
       readOptionsMask: NSDataReadingOptions,
       errorPtr: NSError
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param url NSURL*
      * @param errorPtr NSError**
@@ -77,61 +77,61 @@ declare global {
       url: NSURL,
       readOptionsMask: NSDataReadingOptions,
       errorPtr: NSError
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param path NSString*
      */
-    static dataWithContentsOfFile(path: string): WrapperObj<any>;
+    static dataWithContentsOfFile(path: string): WrapperObj<any>
     /**
      * @param url NSURL*
      */
-    static dataWithContentsOfURL(url: NSURL): WrapperObj<any>;
+    static dataWithContentsOfURL(url: NSURL): WrapperObj<any>
     /**
      * @param data NSData*
      */
-    static dataWithData(data: NSData): WrapperObj<any>;
+    static dataWithData(data: NSData): WrapperObj<any>
     /**
      * @param path NSString*
      */
-    static dataWithContentsOfMappedFile(path: string): WrapperObj<any>;
+    static dataWithContentsOfMappedFile(path: string): WrapperObj<any>
 
     /**
      * @returns NSUInteger
      */
-    length(): number;
+    length(): number
     /**
      * @returns const void*
      */
-    bytes(): any;
+    bytes(): any
     /**
      * @returns NSString*
      */
-    description(): string;
+    description(): string
     /**
      * @param buffer void*
      * @param length NSUInteger
      */
-    getBytesLength(buffer: any, length: number): void;
+    getBytesLength(buffer: any, length: number): void
     /**
      * @param buffer void*
      */
-    getBytesRange(buffer: void, range: NSRange): void;
+    getBytesRange(buffer: void, range: NSRange): void
     /**
      * @param other NSData*
      */
-    isEqualToData(other: NSData): boolean;
+    isEqualToData(other: NSData): boolean
     /**
      * @returns NSData*
      */
-    subdataWithRange(range: NSRange): NSData;
+    subdataWithRange(range: NSRange): NSData
     /**
      * @param path NSString*
      */
-    writeToFileAtomically(path: string, useAuxiliaryFile: boolean): boolean;
+    writeToFileAtomically(path: string, useAuxiliaryFile: boolean): boolean
     /**
      * @param url NSURL*
      */
-    writeToURLAtomically(url: NSURL, atomically: boolean): boolean;
+    writeToURLAtomically(url: NSURL, atomically: boolean): boolean
     /**
      * @param path NSString*
      * @param errorPtr NSError**
@@ -140,7 +140,7 @@ declare global {
       path: string,
       writeOptionsMask: NSDataWritingOptions,
       errorPtr: NSError
-    ): boolean;
+    ): boolean
     /**
      * @param url NSURL*
      * @param errorPtr NSError**
@@ -149,7 +149,7 @@ declare global {
       url: NSURL,
       writeOptionsMask: NSDataWritingOptions,
       errorPtr: NSError
-    ): boolean;
+    ): boolean
     /**
      * @param dataToFind NSData*
      */
@@ -157,18 +157,18 @@ declare global {
       dataToFind: NSData,
       mask: NSDataSearchOptions,
       searchRange: NSRange
-    ): NSRange;
+    ): NSRange
     /**
      * @param block void (^)(const void*bytes,NSRange byteRange,BOOL*stop)
      */
-    enumerateByteRangesUsingBlock(block: any): void;
+    enumerateByteRangesUsingBlock(block: any): void
     /**
      * @param buffer void*
      */
-    getBytes(buffer: any): void;
+    getBytes(buffer: any): void
     /**
      * @returns NSString*
      */
-    base64Encoding(): string;
+    base64Encoding(): string
   }
 }

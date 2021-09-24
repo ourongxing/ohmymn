@@ -1,83 +1,82 @@
 export {}
 
 declare global {
-  const enum UITableViewStyle {
-  }
-  const enum UITableViewCellSeparatorStyle {
-
-  }
-  const enum UITableViewScrollPosition {
-
-  }
+  const enum UITableViewStyle {}
+  const enum UITableViewCellSeparatorStyle {}
+  const enum UITableViewScrollPosition {}
   class UITableView {
-    readonly style: UITableViewStyle;
-    dataSource: WrapperObj<any>;
-    rowHeight: CGFloat;
-    separatorStyle: UITableViewCellSeparatorStyle;
-    separatorColor?: UIColor;
-    tableHeaderView?: UIView;
-    tableFooterView?: UIView;
-    backgroundView?: UIView;
-    allowsSelection: boolean;
+    readonly style: UITableViewStyle
+    dataSource: WrapperObj<any>
+    rowHeight: CGFloat
+    separatorStyle: UITableViewCellSeparatorStyle
+    separatorColor?: UIColor
+    tableHeaderView?: UIView
+    tableFooterView?: UIView
+    backgroundView?: UIView
+    allowsSelection: boolean
     /** not implemented */
-    allowsSelectionDuringEditing: boolean;
-    allowsMultipleSelectionDuringEditing: boolean;
-    editing: boolean;
-    sectionHeaderHeight: CGFloat;
-    sectionFooterHeight: CGFloat;
+    allowsSelectionDuringEditing: boolean
+    allowsMultipleSelectionDuringEditing: boolean
+    editing: boolean
+    sectionHeaderHeight: CGFloat
+    sectionFooterHeight: CGFloat
 
-    reloadData(): void;
-    reloadSectionIndexTitles(): void;
+    reloadData(): void
+    reloadSectionIndexTitles(): void
     /**
      *  NSInteger
      */
-    numberOfSections(): number;
-    numberOfRowsInSection(section: number): number;
-    rectForSection(section: number): CGRect;
-    rectForHeaderInSection(section: number): CGRect;
-    rectForFooterInSection(section: number): CGRect;
+    numberOfSections(): number
+    numberOfRowsInSection(section: number): number
+    rectForSection(section: number): CGRect
+    rectForHeaderInSection(section: number): CGRect
+    rectForFooterInSection(section: number): CGRect
     /**
      *  @param indexPath NSIndexPath*
      */
-    rectForRowAtIndexPath(indexPath: NSIndexPath): CGRect;
+    rectForRowAtIndexPath(indexPath: NSIndexPath): CGRect
     /**
      *  @returns NSIndexPath*
      */
-    indexPathForRowAtPoint(point: CGPoint): NSIndexPath;
+    indexPathForRowAtPoint(point: CGPoint): NSIndexPath
     /**
      *  @returns NSIndexPath*
      */
-    indexPathForCell(cell: UITableViewCell): NSIndexPath;
+    indexPathForCell(cell: UITableViewCell): NSIndexPath
     /**
      *  @returns NSArray*
      */
-    indexPathsForRowsInRect(rect: CGRect): Array<any>;
+    indexPathsForRowsInRect(rect: CGRect): Array<any>
     /**
      *  @param indexPath NSIndexPath*
      */
-    cellForRowAtIndexPath(indexPath: NSIndexPath): UITableViewCell;
+    cellForRowAtIndexPath(indexPath: NSIndexPath): UITableViewCell
     /**
      *  @returns NSArray*
      */
-    visibleCells(): Array<any>;
+    visibleCells(): Array<any>
     /**
      *  @returns NSArray*
      */
-    indexPathsForVisibleRows(): Array<any>;
+    indexPathsForVisibleRows(): Array<any>
     /**
      *  @returns UIView*
      *  NSInteger
      */
-    headerViewForSection(section: number): UIView;
+    headerViewForSection(section: number): UIView
     /**
      *  @returns UIView*
      *  NSInteger
      */
-    footerViewForSection(section: number): UIView;
+    footerViewForSection(section: number): UIView
     /**
      * @param indexPath NSIndexPath*
      */
-    scrollToRowAtIndexPath(indexPath: NSIndexPath, scrollPosition: UITableViewScrollPosition, animated: boolean): void;
-    deselectRowAtIndexPath(indexPath: NSIndexPath, animated: boolean): void;
+    scrollToRowAtIndexPath(
+      indexPath: NSIndexPath,
+      scrollPosition: UITableViewScrollPosition,
+      animated: boolean
+    ): void
+    deselectRowAtIndexPath(indexPath: NSIndexPath, animated: boolean): void
   }
 }

@@ -1,28 +1,36 @@
 const eventHandlerController = (
   handlerList: {
-    event: string,
+    event: string
     handler?: string
   }[]
 ): {
-  add: () => void;
-  remove: () => void;
+  add: () => void
+  remove: () => void
 } => {
   function add() {
-    handlerList.forEach((v) => {
+    handlerList.forEach(v => {
       if (v.handler)
-        NSNotificationCenter.defaultCenter().addObserverSelectorName(self, `${v.handler}:`, v.event);
+        NSNotificationCenter.defaultCenter().addObserverSelectorName(
+          self,
+          `${v.handler}:`,
+          v.event
+        )
       else
-        NSNotificationCenter.defaultCenter().addObserverSelectorName(self, `on${v.event}:`, v.event);
-    });
+        NSNotificationCenter.defaultCenter().addObserverSelectorName(
+          self,
+          `on${v.event}:`,
+          v.event
+        )
+    })
   }
 
   function remove() {
-    handlerList.forEach((v) => {
-      NSNotificationCenter.defaultCenter().removeObserverName(self, v.event);
-    });
+    handlerList.forEach(v => {
+      NSNotificationCenter.defaultCenter().removeObserverName(self, v.event)
+    })
   }
 
-  return { add, remove };
+  return { add, remove }
 }
 
 export default eventHandlerController

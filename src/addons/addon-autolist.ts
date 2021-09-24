@@ -10,32 +10,32 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行"
+      label: "摘录时自动执行",
     },
     {
       key: "multipleChoiceEnhance",
       type: cellViewType.switch,
-      label: "选择题增强"
+      label: "选择题增强",
     },
     {
       key: "wrapWhenSemicolon",
       type: cellViewType.switch,
-      label: "见分号换行"
+      label: "见分号换行",
     },
     {
       key: "customList",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec",
-    }
+    },
   ],
   actions: [
     {
       type: cellViewType.button,
       label: "序列摘录自动换行",
-      key: "listSelected"
-    }
-  ]
+      key: "listSelected",
+    },
+  ],
 }
 
 const util = {
@@ -57,12 +57,14 @@ const util = {
     }
     if (autolist.multipleChoiceEnhance) {
       if (/^[\w,.]*$/.test(text)) return text
-      let _text = text.replace(/\s*([ABCDabcd][.、\s]*)/g,
-        (match: string) => "\n" + match.trimStart().toUpperCase())
+      let _text = text.replace(
+        /\s*([ABCDabcd][.、\s]*)/g,
+        (match: string) => "\n" + match.trimStart().toUpperCase()
+      )
       if (text != _text) return _text.trimStart()
     }
     return text
-  }
+  },
 }
 const action: IActionMethod = {
   listSelected({ nodes }) {
@@ -73,6 +75,6 @@ const action: IActionMethod = {
         if (text) note.excerptText = util.listText(text)
       }
     }
-  }
+  },
 }
 export default { config, util, action }

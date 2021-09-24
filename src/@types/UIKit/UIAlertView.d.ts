@@ -1,8 +1,6 @@
-export { }
+export {}
 declare global {
-  const enum UIAlertViewStyle {
-
-  }
+  const enum UIAlertViewStyle {}
   class UIAlertView {
     static showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
       title: string,
@@ -11,14 +9,14 @@ declare global {
       cancelButtonTitle: string,
       otherButtonTitles: Array<string>,
       tapBlock: object
-    ): void;
+    ): void
     static makeWithTitleMessageDelegateCancelButtonTitleOtherButtonTitles(
       title: string,
       message: string,
       delegate: WrapperObj<any>,
       cancelButtonTitle: string,
       otherButtonTitles: Array<string>
-    ): void;
-    textFieldAtIndex(textFieldIndex: number): UITextField;
+    ): void
+    textFieldAtIndex(textFieldIndex: number): UITextField
   }
 }

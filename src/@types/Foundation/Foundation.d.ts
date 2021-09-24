@@ -1,4 +1,4 @@
-export { }
+export {}
 declare global {
   /** A NSTimeInterval value is always specified in seconds;
    * it yields sub-millisecond precision over a range of 10,000 years.
@@ -7,17 +7,17 @@ declare global {
    * or even a span between specific times. Combining a time interval with
    * one or more known reference points yields a NSDate or NSDateInterval value. */
 
-  type JSValue = any;
-  type NSDictionary = any;
-  type NSRange = any;
+  type JSValue = any
+  type NSDictionary = any
+  type NSRange = any
   type NSIndexPath = {
-    section: number,
+    section: number
     row: number
   }
-  type NSMutableArray<T = any> = Array<T>;
-  type NSIndexSet = any;
-  type NSCharacterSet = any;
-  type NSError = any;
+  type NSMutableArray<T = any> = Array<T>
+  type NSIndexSet = any
+  type NSCharacterSet = any
+  type NSError = any
   class NSNotification {
     /**
      * @param aName NSString*
@@ -25,7 +25,7 @@ declare global {
     static notificationWithNameObject(
       aName: string,
       anObject: WrapperObj<any>
-    ): NSNotification;
+    ): NSNotification
     /**
      * @param aName NSString*
      * @param aUserInfo NSDictionary*
@@ -34,10 +34,10 @@ declare global {
       aName: string,
       anObject: WrapperObj<any>,
       aUserInfo: DictObj
-    ): NSNotification;
-    readonly name?: string;
-    readonly object: WrapperObj<any>;
-    readonly userInfo?: DictObj;
+    ): NSNotification
+    readonly name?: string
+    readonly object: WrapperObj<any>
+    readonly userInfo?: DictObj
     /**
      * @param name NSString*
      * @param userInfo NSDictionary*
@@ -46,97 +46,94 @@ declare global {
       name: string,
       object: WrapperObj<any>,
       userInfo: DictObj
-    ): NSNotification;
+    ): NSNotification
   }
 
   class NSLocale {
-    static autoupdatingCurrentLocale(): WrapperObj<NSLocale>;
-    static currentLocale(): WrapperObj<NSLocale>;
-    static systemLocale(): WrapperObj<NSLocale>;
+    static autoupdatingCurrentLocale(): WrapperObj<NSLocale>
+    static currentLocale(): WrapperObj<NSLocale>
+    static systemLocale(): WrapperObj<NSLocale>
     /**
      * @param ident NSString*
      */
-    static localeWithLocaleIdentifier(ident: string): NSLocale;
+    static localeWithLocaleIdentifier(ident: string): NSLocale
     /**
      * @returns NSArray*
      */
-    static availableLocaleIdentifiers(): Array<string>;
+    static availableLocaleIdentifiers(): Array<string>
     /**
      * @returns NSArray*
      */
-    static ISOLanguageCodes(): Array<string>;
+    static ISOLanguageCodes(): Array<string>
     /**
      * @returns NSArray*
      */
-    static ISOCountryCodes(): Array<string>;
+    static ISOCountryCodes(): Array<string>
     /**
      * @returns NSArray*
      */
-    static ISOCurrencyCodes(): Array<string>;
+    static ISOCurrencyCodes(): Array<string>
     /**
      * @returns NSArray*
      */
-    static commonISOCurrencyCodes(): Array<string>;
+    static commonISOCurrencyCodes(): Array<string>
     /**
      * @returns NSArray*
      */
-    static preferredLanguages(): Array<string>;
+    static preferredLanguages(): Array<string>
     /**
      * @returns NSDictionary*
      * @param string NSString*
      */
-    static componentsFromLocaleIdentifier(string: string): DictObj;
+    static componentsFromLocaleIdentifier(string: string): DictObj
     /**
      * @returns NSString*
      * @param dict NSDictionary*
      */
-    static localeIdentifierFromComponents(dict: DictObj): string;
+    static localeIdentifierFromComponents(dict: DictObj): string
     /**
      * @returns NSString*
      * @param string NSString*
      */
-    static canonicalLocaleIdentifierFromString(string: string): string;
+    static canonicalLocaleIdentifierFromString(string: string): string
     /**
      * @returns NSString*
      * @param string NSString*
      */
-    static canonicalLanguageIdentifierFromString(string: string): string;
+    static canonicalLanguageIdentifierFromString(string: string): string
     /**
      * @returns NSString*
      * @param lcid uint32_t
      */
-    static localeIdentifierFromWindowsLocaleCode(lcid: number): string;
+    static localeIdentifierFromWindowsLocaleCode(lcid: number): string
     /**
      * @returns uint32_t
      * @param localeIdentifier NSString*
      */
     static windowsLocaleCodeFromLocaleIdentifier(
       localeIdentifier: string
-    ): number;
+    ): number
     /**
      * @param isoLangCode NSString*
      */
     static characterDirectionForLanguage(
       isoLangCode: string
-    ): NSLocaleLanguageDirection;
+    ): NSLocaleLanguageDirection
     /**
      * @param isoLangCode NSString*
      */
     static lineDirectionForLanguage(
       isoLangCode: string
-    ): NSLocaleLanguageDirection;
-    objectForKey(key: WrapperObj<any>): WrapperObj<any>;
+    ): NSLocaleLanguageDirection
+    objectForKey(key: WrapperObj<any>): WrapperObj<any>
     /**
      * @returns NSString*
      */
-    displayNameForKeyValue(
-      key: WrapperObj<any>,
-      value: WrapperObj<any>
-    ): string;
+    displayNameForKeyValue(key: WrapperObj<any>, value: WrapperObj<any>): string
     /**
      * @returns NSString*
      */
-    localeIdentifier(): string;
+    localeIdentifier(): string
   }
 
   enum NSLocaleLanguageDirection {
@@ -148,8 +145,8 @@ declare global {
   }
 
   class NSNotificationCenter {
-    static defaultCenter(): NSNotificationCenter;
-    init(): NSNotificationCenter;
+    static defaultCenter(): NSNotificationCenter
+    init(): NSNotificationCenter
     /**
      * @param aSelector the function name of {@link EventHandler} in {@link InstMember}
      * @param aName event name
@@ -158,15 +155,15 @@ declare global {
       observer: WrapperObj<any>,
       aSelector: string,
       aName: string
-    ): void;
+    ): void
     /**
      * @param notification NSNotification*
      */
-    postNotification(notification: NSNotification): void;
+    postNotification(notification: NSNotification): void
     /**
      * @param aName NSString*
      */
-    postNotificationNameObject(aName: string, anObject: WrapperObj<any>): void;
+    postNotificationNameObject(aName: string, anObject: WrapperObj<any>): void
     /**
      * @param aName NSString*
      * @param aUserInfo NSDictionary*
@@ -175,166 +172,166 @@ declare global {
       aName: string,
       anObject: WrapperObj<any>,
       aUserInfo: DictObj
-    ): void;
-    removeObserver(observer: WrapperObj<any>): void;
+    ): void
+    removeObserver(observer: WrapperObj<any>): void
     /**
      * @param aName NSString*
      */
-    removeObserverName(observer: WrapperObj<any>, aName: string): void;
+    removeObserverName(observer: WrapperObj<any>, aName: string): void
   }
 
   class NSUserDefaults {
     /**
      * @returns NSUserDefaults*
      */
-    static standardUserDefaults(): NSUserDefaults;
-    static resetStandardUserDefaults(): void;
+    static standardUserDefaults(): NSUserDefaults
+    static resetStandardUserDefaults(): void
     /**
      * @param defaultName NSString*
      */
-    objectForKey(defaultName: string): WrapperObj<any>;
+    objectForKey(defaultName: string): WrapperObj<any>
     /**
      * @param defaultName NSString*
      */
-    setObjectForKey(value: WrapperObj<any>, defaultName: string): void;
+    setObjectForKey(value: WrapperObj<any>, defaultName: string): void
     /**
      * @param defaultName NSString*
      */
-    removeObjectForKey(defaultName: string): void;
+    removeObjectForKey(defaultName: string): void
     /**
      * @returns NSString*
      * @param defaultName NSString*
      */
-    stringForKey(defaultName: string): string;
+    stringForKey(defaultName: string): string
     /**
      * @returns NSArray*
      * @param defaultName NSString*
      */
-    arrayForKey(defaultName: string): Array<any>;
+    arrayForKey(defaultName: string): Array<any>
     /**
      * @returns NSDictionary*
      * @param defaultName NSString*
      */
-    dictionaryForKey(defaultName: string): DictObj;
+    dictionaryForKey(defaultName: string): DictObj
     /**
      * @returns NSData*
      * @param defaultName NSString*
      */
-    dataForKey(defaultName: string): NSData;
+    dataForKey(defaultName: string): NSData
     /**
      * @returns NSArray*
      * @param defaultName NSString*
      */
-    stringArrayForKey(defaultName: string): Array<any>;
+    stringArrayForKey(defaultName: string): Array<any>
     /**
      * @returns NSInteger
      * @param defaultName NSString*
      */
-    integerForKey(defaultName: string): number;
+    integerForKey(defaultName: string): number
     /**
      * @returns float
      * @param defaultName NSString*
      */
-    floatForKey(defaultName: string): number;
+    floatForKey(defaultName: string): number
     /**
      * @returns double
      * @param defaultName NSString*
      */
-    doubleForKey(defaultName: string): number;
+    doubleForKey(defaultName: string): number
     /**
      * @param defaultName NSString*
      */
-    boolForKey(defaultName: string): boolean;
+    boolForKey(defaultName: string): boolean
     /**
      * @returns NSURL*
      * @param defaultName NSString*
      */
-    URLForKey(defaultName: string): NSURL;
+    URLForKey(defaultName: string): NSURL
     /**
      * @param value NSInteger
      * @param defaultName NSString*
      */
-    setIntegerForKey(value: number, defaultName: string): void;
+    setIntegerForKey(value: number, defaultName: string): void
     /**
      * @param value float
      * @param defaultName NSString*
      */
-    setFloatForKey(value: number, defaultName: string): void;
+    setFloatForKey(value: number, defaultName: string): void
     /**
      * @param value double
      * @param defaultName NSString*
      */
-    setDoubleForKey(value: number, defaultName: string): void;
+    setDoubleForKey(value: number, defaultName: string): void
     /**
      * @param defaultName NSString*
      */
-    setBoolForKey(value: boolean, defaultName: string): void;
+    setBoolForKey(value: boolean, defaultName: string): void
     /**
      * @param url NSURL*
      * @param defaultName NSString*
      */
-    setURLForKey(url: NSURL, defaultName: string): void;
+    setURLForKey(url: NSURL, defaultName: string): void
     /**
      * @param registrationDictionary NSDictionary*
      */
-    registerDefaults(registrationDictionary: DictObj): void;
+    registerDefaults(registrationDictionary: DictObj): void
     /**
      * @param suiteName NSString*
      */
-    addSuiteNamed(suiteName: string): void;
+    addSuiteNamed(suiteName: string): void
     /**
      * @param suiteName NSString*
      */
-    removeSuiteNamed(suiteName: string): void;
+    removeSuiteNamed(suiteName: string): void
     /**
      * @returns NSDictionary*
      */
-    dictionaryRepresentation(): DictObj;
+    dictionaryRepresentation(): DictObj
     /**
      * @returns NSArray*
      */
-    volatileDomainNames(): Array<any>;
+    volatileDomainNames(): Array<any>
     /**
      * @returns NSDictionary*
      * @param domainName NSString*
      */
-    volatileDomainForName(domainName: string): DictObj;
+    volatileDomainForName(domainName: string): DictObj
     /**
      * @param domain NSDictionary*
      * @param domainName NSString*
      */
-    setVolatileDomainForName(domain: DictObj, domainName: string): void;
+    setVolatileDomainForName(domain: DictObj, domainName: string): void
     /**
      * @param domainName NSString*
      */
-    removeVolatileDomainForName(domainName: string): void;
+    removeVolatileDomainForName(domainName: string): void
     /**
      * @returns NSArray*
      */
-    persistentDomainNames(): Array<any>;
+    persistentDomainNames(): Array<any>
     /**
      * @returns NSDictionary*
      * @param domainName NSString*
      */
-    persistentDomainForName(domainName: string): DictObj;
+    persistentDomainForName(domainName: string): DictObj
     /**
      * @param domain NSDictionary*
      * @param domainName NSString*
      */
-    setPersistentDomainForName(domain: DictObj, domainName: string): void;
+    setPersistentDomainForName(domain: DictObj, domainName: string): void
     /**
      * @param domainName NSString*
      */
-    removePersistentDomainForName(domainName: string): void;
-    synchronize(): boolean;
+    removePersistentDomainForName(domainName: string): void
+    synchronize(): boolean
     /**
      * @param key NSString*
      */
-    objectIsForcedForKey(key: string): boolean;
+    objectIsForcedForKey(key: string): boolean
     /**
      * @param key NSString*
      * @param domain NSString*
      */
-    objectIsForcedForKeyInDomain(key: string, domain: string): boolean;
+    objectIsForcedForKeyInDomain(key: string, domain: string): boolean
   }
 }

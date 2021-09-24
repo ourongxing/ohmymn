@@ -1,11 +1,11 @@
 export {}
 
 declare global {
-    class UITableViewController extends UIViewController {
-      [k: string]: any;
-      tableView?: UITableView;
-      clearsSelectionOnViewWillAppear: boolean;
-    }
+  class UITableViewController extends UIViewController {
+    [k: string]: any
+    tableView?: UITableView
+    clearsSelectionOnViewWillAppear: boolean
+  }
 }
 
 // tableviewcontrol 里面全是执行 tableview 的 datasoure 协议和 delegate 协议

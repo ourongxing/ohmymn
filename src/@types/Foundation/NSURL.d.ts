@@ -3,70 +3,70 @@ declare global {
   const enum NSStringEncoding /** ASCII encoding contains, 7-bit of information stored in 8 bits. */ {
     ASCIIStringEncoding = 1,
 
-      ISO2022JP = 21,
-      /** 8-bit ISO/IEC 8859-1, also knows as Latin1 encoding. */
-      ISOLatin1 = 5,
+    ISO2022JP = 21,
+    /** 8-bit ISO/IEC 8859-1, also knows as Latin1 encoding. */
+    ISOLatin1 = 5,
 
-      /** 8-bit ISO/IEC 8859-2, also knows as Latin2 encoding. */
-      ISOLatin2 = 9,
+    /** 8-bit ISO/IEC 8859-2, also knows as Latin2 encoding. */
+    ISOLatin2 = 9,
 
-      JapaneseEUC = 3,
-      MacOSRoman = 30,
-      NEXTSTEP = 2,
-      NonLossyASCII = 7,
-      ShiftJIS = 8,
-      Symbol = 6,
-      Unicode = 10,
-      /** 16 bit-based variable length encoding, blocks are interpreted as big endian. */
-      UTF16BigEndian = 2415919360,
+    JapaneseEUC = 3,
+    MacOSRoman = 30,
+    NEXTSTEP = 2,
+    NonLossyASCII = 7,
+    ShiftJIS = 8,
+    Symbol = 6,
+    Unicode = 10,
+    /** 16 bit-based variable length encoding, blocks are interpreted as big endian. */
+    UTF16BigEndian = 2415919360,
 
-      /** 16 bit-based variable length encoding, blocks are interpreted as litle endian. */
-      UTF16LittleEndian = 2483028224,
+    /** 16 bit-based variable length encoding, blocks are interpreted as litle endian. */
+    UTF16LittleEndian = 2483028224,
 
-      /** 32-bit unicode encoding. */
-      UTF32 = 2348810496,
+    /** 32-bit unicode encoding. */
+    UTF32 = 2348810496,
 
-      /** 32 bit encoding, blocks are interpreted as big endian. */
-      UTF32BigEndian = 2550137088,
+    /** 32 bit encoding, blocks are interpreted as big endian. */
+    UTF32BigEndian = 2550137088,
 
-      /** 32 bit encoding, blocks are interpreted as little endian. */
-      UTF32LittleEndian = 2617245952,
+    /** 32 bit encoding, blocks are interpreted as little endian. */
+    UTF32LittleEndian = 2617245952,
 
-      /** 8-bit based variable-length character encoding for Unicode. */
-      UTF8 = 4,
+    /** 8-bit based variable-length character encoding for Unicode. */
+    UTF8 = 4,
 
-      WindowsCP1250 = 15,
-      WindowsCP1251 = 11,
-      WindowsCP1252 = 12,
-      WindowsCP1253 = 13,
-      WindowsCP1254 = 14,
+    WindowsCP1250 = 15,
+    WindowsCP1251 = 11,
+    WindowsCP1252 = 12,
+    WindowsCP1253 = 13,
+    WindowsCP1254 = 14,
   }
   class NSURL {
-    percentEncodedFragment?: string;
-    percentEncodedPath?: string;
-    query?: string;
-    percentEncodedPassword?: string;
-    path?: string;
-    host?: string;
-    password?: string;
-    scheme?: string;
-    percentEncodedHost?: string;
-    percentEncodedUser?: string;
-    percentEncodedQuery?: string;
-    user?: string;
-    fragment?: string;
-    port?: number | boolean;
+    percentEncodedFragment?: string
+    percentEncodedPath?: string
+    query?: string
+    percentEncodedPassword?: string
+    path?: string
+    host?: string
+    password?: string
+    scheme?: string
+    percentEncodedHost?: string
+    percentEncodedUser?: string
+    percentEncodedQuery?: string
+    user?: string
+    fragment?: string
+    port?: number | boolean
     /**
      * @param path NSString*
      */
     static fileURLWithPathIsDirectory(
       path: string,
       isDir: boolean
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param path NSString*
      */
-    static fileURLWithPath(path: string): WrapperObj<any>;
+    static fileURLWithPath(path: string): WrapperObj<any>
     /**
      * @param path const char*
      * @param baseURL NSURL*
@@ -75,11 +75,11 @@ declare global {
       path: string,
       isDir: boolean,
       baseURL: NSURL
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param URLString NSString*
      */
-    static URLWithString(URLString: string): WrapperObj<any>;
+    static URLWithString(URLString: string): WrapperObj<any>
     /**
      * @param URLString NSString*
      * @param baseURL NSURL*
@@ -87,7 +87,7 @@ declare global {
     static URLWithStringRelativeToURL(
       URLString: string,
       baseURL: NSURL
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param bookmarkData NSData*
      * @param relativeURL NSURL*
@@ -100,7 +100,7 @@ declare global {
       relativeURL: NSURL,
       isStale: boolean,
       error: NSError
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @returns NSDictionary*
      * @param keys NSArray*
@@ -109,7 +109,7 @@ declare global {
     static resourceValuesForKeysFromBookmarkData(
       keys: Array<any>,
       bookmarkData: NSData
-    ): DictObj;
+    ): DictObj
     /**
      * @param bookmarkData NSData*
      * @param bookmarkFileURL NSURL*
@@ -120,7 +120,7 @@ declare global {
       bookmarkFileURL: NSURL,
       options: NSURLBookmarkFileCreationOptions,
       error: NSError
-    ): boolean;
+    ): boolean
     /**
      * @returns NSData*
      * @param bookmarkFileURL NSURL*
@@ -129,45 +129,45 @@ declare global {
     static bookmarkDataWithContentsOfURLError(
       bookmarkFileURL: NSURL,
       error: NSError
-    ): NSData;
+    ): NSData
     /**
      * @param url NSURL*
      */
     static componentsWithURLResolvingAgainstBaseURL(
       url: NSURL,
       resolve: boolean
-    ): WrapperObj<any>;
+    ): WrapperObj<any>
     /**
      * @param URLString NSString*
      */
-    static componentsWithString(URLString: string): WrapperObj<any>;
-    static URLUserAllowedCharacterSet(): WrapperObj<any>;
-    static URLPasswordAllowedCharacterSet(): WrapperObj<any>;
-    static URLHostAllowedCharacterSet(): WrapperObj<any>;
-    static URLPathAllowedCharacterSet(): WrapperObj<any>;
-    static URLQueryAllowedCharacterSet(): WrapperObj<any>;
-    static URLFragmentAllowedCharacterSet(): WrapperObj<any>;
+    static componentsWithString(URLString: string): WrapperObj<any>
+    static URLUserAllowedCharacterSet(): WrapperObj<any>
+    static URLPasswordAllowedCharacterSet(): WrapperObj<any>
+    static URLHostAllowedCharacterSet(): WrapperObj<any>
+    static URLPathAllowedCharacterSet(): WrapperObj<any>
+    static URLQueryAllowedCharacterSet(): WrapperObj<any>
+    static URLFragmentAllowedCharacterSet(): WrapperObj<any>
     /**
      * @returns NSURL*
      * @param components NSArray*
      */
-    static fileURLWithPathComponents(components: Array<any>): NSURL;
+    static fileURLWithPathComponents(components: Array<any>): NSURL
     /**
      * @returns NSString*
      */
-    absoluteString(): string;
+    absoluteString(): string
     /**
      * @returns NSString*
      */
-    relativeString(): string;
+    relativeString(): string
     /**
      * @returns NSURL*
      */
-    baseURL(): NSURL;
+    baseURL(): NSURL
     /**
      * @returns NSURL*
      */
-    absoluteURL(): NSURL;
+    absoluteURL(): NSURL
     /**
      * @returns NSString*
      */
@@ -175,7 +175,7 @@ declare global {
     /**
      * @returns NSString*
      */
-    resourceSpecifier(): string;
+    resourceSpecifier(): string
     /**
      * @returns NSString*
      */
@@ -203,7 +203,7 @@ declare global {
     /**
      * @returns NSString*
      */
-    parameterString(): string;
+    parameterString(): string
     /**
      * @returns NSString*
      */
@@ -211,36 +211,36 @@ declare global {
     /**
      * @returns NSString*
      */
-    relativePath(): string;
+    relativePath(): string
     /**
      * @param buffer char*
      */
     getFileSystemRepresentationMaxLength(
       buffer: string,
       maxBufferLength: number
-    ): boolean;
+    ): boolean
     /**
      * @returns const char*
      */
-    fileSystemRepresentation(): string;
-    isFileURL(): boolean;
+    fileSystemRepresentation(): string
+    isFileURL(): boolean
     /**
      * @returns NSURL*
      */
-    standardizedURL(): NSURL;
+    standardizedURL(): NSURL
     /**
      * @param error NSError**
      */
-    checkResourceIsReachableAndReturnError(error: NSError): boolean;
-    isFileReferenceURL(): boolean;
+    checkResourceIsReachableAndReturnError(error: NSError): boolean
+    isFileReferenceURL(): boolean
     /**
      * @returns NSURL*
      */
-    fileReferenceURL(): NSURL;
+    fileReferenceURL(): NSURL
     /**
      * @returns NSURL*
      */
-    filePathURL(): NSURL;
+    filePathURL(): NSURL
     /**
      * @param value out id*
      * @param key NSString*
@@ -250,13 +250,13 @@ declare global {
       value: WrapperObj<any>,
       key: string,
       error: NSError
-    ): boolean;
+    ): boolean
     /**
      * @returns NSDictionary*
      * @param keys NSArray*
      * @param error NSError**
      */
-    resourceValuesForKeysError(keys: Array<any>, error: NSError): DictObj;
+    resourceValuesForKeysError(keys: Array<any>, error: NSError): DictObj
     /**
      * @param key NSString*
      * @param error NSError**
@@ -265,21 +265,21 @@ declare global {
       value: WrapperObj<any>,
       key: string,
       error: NSError
-    ): boolean;
+    ): boolean
     /**
      * @param keyedValues NSDictionary*
      * @param error NSError**
      */
-    setResourceValuesError(keyedValues: DictObj, error: NSError): boolean;
+    setResourceValuesError(keyedValues: DictObj, error: NSError): boolean
     /**
      * @param key NSString*
      */
-    removeCachedResourceValueForKey(key: string): void;
-    removeAllCachedResourceValues(): void;
+    removeCachedResourceValueForKey(key: string): void
+    removeAllCachedResourceValues(): void
     /**
      * @param key NSString*
      */
-    setTemporaryResourceValueForKey(value: WrapperObj<any>, key: string): void;
+    setTemporaryResourceValueForKey(value: WrapperObj<any>, key: string): void
     /**
      * @returns NSData*
      * @param keys NSArray*
@@ -291,54 +291,54 @@ declare global {
       keys: Array<any>,
       relativeURL: NSURL,
       error: NSError
-    ): NSData;
-    startAccessingSecurityScopedResource(): boolean;
-    stopAccessingSecurityScopedResource(): void;
+    ): NSData
+    startAccessingSecurityScopedResource(): boolean
+    stopAccessingSecurityScopedResource(): void
     /**
      * @returns NSURL*
      */
-    URL(): NSURL;
+    URL(): NSURL
     /**
      * @returns NSURL*
      * @param baseURL NSURL*
      */
-    URLRelativeToURL(baseURL: NSURL): NSURL;
+    URLRelativeToURL(baseURL: NSURL): NSURL
     /**
      * @returns NSString*
      * @param allowedCharacters NSCharacterSet*
      */
     stringByAddingPercentEncodingWithAllowedCharacters(
       allowedCharacters: NSCharacterSet
-    ): string;
+    ): string
     /**
      * @returns NSString*
      */
-    stringByRemovingPercentEncoding(): string;
+    stringByRemovingPercentEncoding(): string
     /**
      * @returns NSString*
      */
-    stringByAddingPercentEscapesUsingEncoding(enc: NSStringEncoding): string;
+    stringByAddingPercentEscapesUsingEncoding(enc: NSStringEncoding): string
     /**
      * @returns NSString*
      */
-    stringByReplacingPercentEscapesUsingEncoding(enc: NSStringEncoding): string;
+    stringByReplacingPercentEscapesUsingEncoding(enc: NSStringEncoding): string
     /**
      * @returns NSArray*
      */
-    pathComponents(): Array<any>;
+    pathComponents(): Array<any>
     /**
      * @returns NSString*
      */
-    lastPathComponent(): string;
+    lastPathComponent(): string
     /**
      * @returns NSString*
      */
-    pathExtension(): string;
+    pathExtension(): string
     /**
      * @returns NSURL*
      * @param pathComponent NSString*
      */
-    URLByAppendingPathComponent(pathComponent: string): NSURL;
+    URLByAppendingPathComponent(pathComponent: string): NSURL
     /**
      * @returns NSURL*
      * @param pathComponent NSString*
@@ -346,52 +346,51 @@ declare global {
     URLByAppendingPathComponentIsDirectory(
       pathComponent: string,
       isDirectory: boolean
-    ): NSURL;
+    ): NSURL
     /**
      * @returns NSURL*
      */
-    URLByDeletingLastPathComponent(): NSURL;
+    URLByDeletingLastPathComponent(): NSURL
     /**
      * @returns NSURL*
      * @param pathExtension NSString*
      */
-    URLByAppendingPathExtension(pathExtension: string): NSURL;
+    URLByAppendingPathExtension(pathExtension: string): NSURL
     /**
      * @returns NSURL*
      */
-    URLByDeletingPathExtension(): NSURL;
+    URLByDeletingPathExtension(): NSURL
     /**
      * @returns NSURL*
      */
-    URLByStandardizingPath(): NSURL;
+    URLByStandardizingPath(): NSURL
     /**
      * @returns NSURL*
      */
-    URLByResolvingSymlinksInPath(): NSURL;
-    readonly previewItemURL?: NSURL;
-    readonly previewItemTitle?: string;
+    URLByResolvingSymlinksInPath(): NSURL
+    readonly previewItemURL?: NSURL
+    readonly previewItemTitle?: string
   }
 }
 
 export const enum NSURLBookmarkResolutionOptions {
   WithoutMounting = 512,
-    WithoutUI = 256,
-    WithSecurityScope = 1024,
+  WithoutUI = 256,
+  WithSecurityScope = 1024,
 }
 
 export const enum NSURLBookmarkFileCreationOptions {
   MinimalBookmark = 512,
-    PreferFileIDResolution = 256,
-    SecurityScopeAllowOnlyReadAccess = 4096,
-    SuitableForBookmarkFile = 1024,
-    WithSecurityScope = 2048,
+  PreferFileIDResolution = 256,
+  SecurityScopeAllowOnlyReadAccess = 4096,
+  SuitableForBookmarkFile = 1024,
+  WithSecurityScope = 2048,
 }
 
 export const enum NSURLBookmarkCreationOptions {
   MinimalBookmark = 512,
-    PreferFileIDResolution = 256,
-    SecurityScopeAllowOnlyReadAccess = 4096,
-    SuitableForBookmarkFile = 1024,
-    WithSecurityScope = 2048,
+  PreferFileIDResolution = 256,
+  SecurityScopeAllowOnlyReadAccess = 4096,
+  SuitableForBookmarkFile = 1024,
+  WithSecurityScope = 2048,
 }
-

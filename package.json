@@ -7,7 +7,8 @@
   "main": "",
   "scripts": {
     "build": "NODE_ENV=production rollup --config rollup.config.ts",
-    "dev": "NODE_ENV=development rollup -w --config rollup.config.ts"
+    "dev": "NODE_ENV=development rollup -w --config rollup.config.ts",
+    "prettify": "prettier --write \"./**/*.{ts, json}\""
   },
   "keywords": [
     "marginote",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@rollup/plugin-strip": "^2.1.0",
     "@rollup/plugin-typescript": "^8.2.0",
+    "prettier": "^2.4.1",
     "rollup": "^2.42.4",
     "rollup-plugin-banner": "^0.2.1",
     "rollup-plugin-copy2": "^0.2.0",

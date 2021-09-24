@@ -1,166 +1,162 @@
-export { }
+export {}
 
 declare global {
   interface pic {
-    paint: string;
-    size: unknown;
+    paint: string
+    size: unknown
   }
 
   interface excerptPic extends pic {
     selLst: {
       [key: number]: {
-        rotation: number;
-        imgRect: unknown;
-        rect: unknown;
-        pageNo: number;
-      };
-    };
+        rotation: number
+        imgRect: unknown
+        rect: unknown
+        pageNo: number
+      }
+    }
   }
 
-  type noteComment =
-    | textComment
-    | htmlComment
-    | linkComment
-    | paintComment;
+  type noteComment = textComment | htmlComment | linkComment | paintComment
 
   /**
    * 基本的Comment，合并Note时其title也被合并为此类型
    */
   interface textComment {
-    type: "TextNote";
-    text: string;
+    type: "TextNote"
+    text: string
     /**为被合并Note的内容时存在*/
-    noteid?: string;
+    noteid?: string
   }
   /**
    * 复制html内容进Note时产生
    */
   interface htmlComment {
-    type: "HtmlNote";
-    htmlSize: DictObj;
-    rtf: DictObj;
-    html: string;
-    text: string;
+    type: "HtmlNote"
+    htmlSize: DictObj
+    rtf: DictObj
+    html: string
+    text: string
     /**为被合并Note的内容时存在*/
-    noteid?: string;
+    noteid?: string
   }
   /**
    * 合并Note时产生
    */
-  type linkComment = linkComment_text | linkComment_pic;
+  type linkComment = linkComment_text | linkComment_pic
 
   interface linkComment_text {
-    type: "LinkNote";
-    noteid: string;
-    q_htext: textComment["text"];
+    type: "LinkNote"
+    noteid: string
+    q_htext: textComment["text"]
   }
 
   interface linkComment_pic {
-    type: "LinkNote";
-    noteid: string;
-    q_htext?: textComment["text"];
-    q_hpic: pic;
+    type: "LinkNote"
+    noteid: string
+    q_htext?: textComment["text"]
+    q_hpic: pic
   }
 
   interface paintComment extends pic {
-    type: "PaintNote";
+    type: "PaintNote"
   }
 
   interface LinkedNote {
-    summary: boolean;
-    noteid: string;
-    linktext: string;
+    summary: boolean
+    noteid: string
+    linktext: string
   }
 
   class MbBookNote {
-    excerptText?: string;
-    noteTitle?: string;
+    excerptText?: string
+    noteTitle?: string
     /**int */
-    colorIndex: number;
+    colorIndex: number
     /**int */
-    fillIndex: number;
-    mindmapPosition: CGPoint;
+    fillIndex: number
+    mindmapPosition: CGPoint
 
-    readonly noteId?: string;
-    readonly docMd5?: string;
-    readonly notebookId?: string;
+    readonly noteId?: string
+    readonly docMd5?: string
+    readonly notebookId?: string
     /** int */
-    readonly startPage?: number;
+    readonly startPage?: number
     /** int */
-    readonly endPage?: number;
-    readonly startPos?: string;
-    readonly endPos?: string;
-    readonly excerptPic?: excerptPic;
-    readonly createDate?: Date;
-    readonly modifiedDate?: Date;
+    readonly endPage?: number
+    readonly startPos?: string
+    readonly endPos?: string
+    readonly excerptPic?: excerptPic
+    readonly createDate?: Date
+    readonly modifiedDate?: Date
     /** list of media hash seprated by '-' */
-    readonly mediaList?: string;
-    readonly originNoteId?: string;
-    readonly mindmapBranchClose?: number;
-    readonly notesText?: string;
-    readonly groupNoteId?: string;
+    readonly mediaList?: string
+    readonly originNoteId?: string
+    readonly mindmapBranchClose?: number
+    readonly notesText?: string
+    readonly groupNoteId?: string
 
-    readonly comments: noteComment[];
+    readonly comments: noteComment[]
 
-    readonly parentNote?: MbBookNote;
-    readonly linkedNotes: LinkedNote[];
-    readonly childNotes: MbBookNote[];
+    readonly parentNote?: MbBookNote
+    readonly linkedNotes: LinkedNote[]
+    readonly childNotes: MbBookNote[]
     /**
      * Array of summarized note-id
      */
-    readonly summaryLinks: string[];
+    readonly summaryLinks: string[]
 
     /** int */
-    readonly zLevel?: number;
-    readonly hidden?: boolean;
+    readonly zLevel?: number
+    readonly hidden?: boolean
     /** int */
-    readonly toc?: number;
-    readonly annotation?: boolean;
-    readonly textFirst?: boolean;
+    readonly toc?: number
+    readonly annotation?: boolean
+    readonly textFirst?: boolean
     /** int */
-    readonly groupMode?: number;
+    readonly groupMode?: number
     /** int */
-    readonly flashcard?: number;
+    readonly flashcard?: number
     /** int */
-    readonly summary: number;
+    readonly summary: number
     /** int */
-    readonly flagged?: number;
+    readonly flagged?: number
     readonly textHighlight?: {
-      highlight_text: string;
-      coords_hash: string;
-      maskList?: string[];
-      textSelLst?: any[];
-    };
-    readonly options?: DictObj;
+      highlight_text: string
+      coords_hash: string
+      maskList?: string[]
+      textSelLst?: any[]
+    }
+    readonly options?: DictObj
 
-    paste(): void;
-    clearFormat(): void;
+    paste(): void
+    clearFormat(): void
     /**
      * @returns NSString*
      */
-    allNoteText(): string;
+    allNoteText(): string
     /**
      * @param note MbBookNote*
      */
-    merge(note: MbBookNote): void;
+    merge(note: MbBookNote): void
     /**
      * @param html NSString*
      * @param text NSString*
      * @param tag NSString*
      */
-    appendHtmlComment(html: string, text: string, tag: string): void;
+    appendHtmlComment(html: string, text: string, tag: string): void
     /**
      * @param text NSString*
      */
-    appendTextComment(text: string): void;
+    appendTextComment(text: string): void
     /**
      * @param note MbBookNote*
      */
-    appendNoteLink(note: MbBookNote): void;
+    appendNoteLink(note: MbBookNote): void
     /**
      * @param index NSInteger
      */
-    removeCommentByIndex(index: number): void;
+    removeCommentByIndex(index: number): void
     /**
      * @returns MbBookNote*
      * @param title NSString*
@@ -171,6 +167,6 @@ declare global {
       title: string,
       topic: MbTopic,
       book: MbBook
-    ): MbBookNote;
+    ): MbBookNote
   }
 }

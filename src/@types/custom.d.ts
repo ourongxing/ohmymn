@@ -1,4 +1,4 @@
-export { }
+export {}
 declare global {
   const enum cellViewType {
     plainText = 0,
@@ -59,6 +59,12 @@ declare global {
     help?: string
   }
   interface IActionMethod {
-    [k: string]: ({ content, nodes }: { content: string, nodes: MbBookNote[] }) => void
+    [k: string]: ({
+      content,
+      nodes,
+    }: {
+      content: string
+      nodes: MbBookNote[]
+    }) => void
   }
 }

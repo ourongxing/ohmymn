@@ -10,23 +10,23 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行"
+      label: "摘录时自动执行",
     },
     {
       key: "customReplace",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
-    }
+    },
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
       label: "批量替换摘录文字",
       key: "replaceSelected",
-      help: "具体输入格式见顶上帮助信息"
-    }
-  ]
+      help: "具体输入格式见顶上帮助信息",
+    },
+  ],
 }
 
 const util = {
@@ -40,7 +40,7 @@ const util = {
       if (text != _text) return _text
     }
     return text
-  }
+  },
 }
 
 const action: IActionMethod = {
@@ -64,6 +64,6 @@ const action: IActionMethod = {
     } catch {
       showHUD("输入错误")
     }
-  }
+  },
 }
 export default { config, util, action }

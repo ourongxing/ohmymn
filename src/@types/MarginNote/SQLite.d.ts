@@ -1,3 +1,1 @@
-declare class SQLite {
-  
-}
+declare class SQLite {}

@@ -5,49 +5,49 @@ declare global {
     /**
      * @param notes NSArray*
      */
-    startSpeechNotes(notes: Array<any>): void;
-    stopSpeech(): void;
-    pauseSpeech(): void;
-    continueSpeech(): void;
-    prevSpeech(): void;
-    nextSpeech(): void;
-    canPrev(): boolean;
-    canNext(): boolean;
+    startSpeechNotes(notes: Array<any>): void
+    stopSpeech(): void
+    pauseSpeech(): void
+    continueSpeech(): void
+    prevSpeech(): void
+    nextSpeech(): void
+    canPrev(): boolean
+    canNext(): boolean
     /**
      * @param text NSString*
      */
-    playText(text: string): void;
+    playText(text: string): void
     /**
      * @param text NSString*
      * @param languageTxt NSString*
      */
-    playTextLanguageTxt(text: string, languageTxt: string): void;
-    readonly speaking: boolean;
-    readonly paused: boolean;
-    sceneWindow?: UIWindow;
-    languageCode?: string;
+    playTextLanguageTxt(text: string, languageTxt: string): void
+    readonly speaking: boolean
+    readonly paused: boolean
+    sceneWindow?: UIWindow
+    languageCode?: string
     /**
      * @returns SpeechManager*
      */
-    static sharedInstance(): SpeechManager;
+    static sharedInstance(): SpeechManager
   }
 
   class UndoManager {
     /**
      * @returns id<JSBUndoManager>
      */
-    static sharedInstance(): WrapperObj<UndoManager>;
+    static sharedInstance(): WrapperObj<UndoManager>
     /**
      * @param actionName NSString*
      * @param topicid NSString*
      * @param block JSValue*
      */
-    undoGrouping(actionName: string, topicid: string, block: JSValue): void;
-    undo(): void;
-    redo(): void;
-    canUndo(): boolean;
-    canRedo(): boolean;
-    clearAll(): void;
+    undoGrouping(actionName: string, topicid: string, block: JSValue): void
+    undo(): void
+    redo(): void
+    canUndo(): boolean
+    canRedo(): boolean
+    clearAll(): void
   }
 
   class ZipArchive {
@@ -58,7 +58,7 @@ declare global {
     static unzipFileAtPathToDestination(
       path: string,
       destination: string
-    ): boolean;
+    ): boolean
     /**
      * @param path NSString*
      * @param destination NSString*
@@ -69,7 +69,7 @@ declare global {
       destination: string,
       overwrite: boolean,
       password: string
-    ): boolean;
+    ): boolean
     /**
      * @param path NSString*
      * @param filenames NSArray*
@@ -77,7 +77,7 @@ declare global {
     static createZipFileAtPathWithFilesAtPaths(
       path: string,
       filenames: Array<any>
-    ): boolean;
+    ): boolean
     /**
      * @param path NSString*
      * @param directoryPath NSString*
@@ -85,21 +85,21 @@ declare global {
     static createZipFileAtPathWithContentsOfDirectory(
       path: string,
       directoryPath: string
-    ): boolean;
+    ): boolean
     /**
      * @param path NSString*
      */
-    initWithPath(path: string): WrapperObj<any>;
-    open(): boolean;
+    initWithPath(path: string): WrapperObj<any>
+    open(): boolean
     /**
      * @param path NSString*
      */
-    writeFile(path: string): boolean;
+    writeFile(path: string): boolean
     /**
      * @param data NSData*
      * @param filename NSString*
      */
-    writeDataFilename(data: NSData, filename: string): boolean;
-    close(): boolean;
+    writeDataFilename(data: NSData, filename: string): boolean
+    close(): boolean
   }
 }

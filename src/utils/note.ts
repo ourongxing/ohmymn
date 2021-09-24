@@ -4,7 +4,8 @@ import { delay, log, postNotification } from "./common"
  * 获取选中的卡片
  */
 const getSelectNodes = (): MbBookNote[] => {
-  const MindMapNodes: any[] = self.studyController.notebookController.mindmapView.selViewLst
+  const MindMapNodes: any[] =
+    self.studyController.notebookController.mindmapView.selViewLst
   if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }
@@ -21,9 +22,7 @@ const getSelectNodesAll = (): MbBookNote[] => {
       if (node.childNotes?.length) {
         allNodes.add(node)
         getChildren(node.childNotes)
-      }
-      else
-        allNodes.add(node)
+      } else allNodes.add(node)
     })
   }
   getChildren(nodes)
@@ -33,7 +32,6 @@ const getSelectNodesAll = (): MbBookNote[] => {
   // 返回数组
   return [...allNodes]
 }
-
 
 /**
  * 获取卡片中的所有摘录
@@ -68,12 +66,11 @@ const undoGrouping = (f: () => void) => {
   })
 }
 
-
 /**
  * 可撤销的动作，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  postNotification('RefreshAfterDBChange', { topicid: self.notebookid })
+  postNotification("RefreshAfterDBChange", { topicid: self.notebookid })
 }
 
 const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
@@ -100,5 +97,5 @@ export {
   getCommentIndex,
   getNotebookById,
   getNoteById,
-  RefreshAfterDBChange
+  RefreshAfterDBChange,
 }

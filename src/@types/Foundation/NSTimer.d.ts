@@ -1,6 +1,6 @@
 export {}
 declare global {
-  type NSTimeInterval = number;
+  type NSTimeInterval = number
   class NSTimer {
     /**
      * @returns NSTimer*
@@ -10,21 +10,21 @@ declare global {
       ti: NSTimeInterval,
       yesOrNo: boolean,
       block: (timer: NSTimer) => void
-    ): NSTimer;
-    fire(): void;
+    ): NSTimer
+    fire(): void
     /**
      * @returns NSDate*
      */
-    fireDate(): Date;
+    fireDate(): Date
     /**
      * @param date NSDate*
      */
-    setFireDate(date: Date): void;
-    timeInterval(): NSTimeInterval;
-    tolerance(): NSTimeInterval;
-    setTolerance(tolerance: NSTimeInterval): void;
-    invalidate(): void;
-    isValid(): boolean;
-    userInfo(): WrapperObj<any>;
+    setFireDate(date: Date): void
+    timeInterval(): NSTimeInterval
+    tolerance(): NSTimeInterval
+    setTolerance(tolerance: NSTimeInterval): void
+    invalidate(): void
+    isValid(): boolean
+    userInfo(): WrapperObj<any>
   }
 }

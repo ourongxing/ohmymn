@@ -1,6 +1,5 @@
 export {}
 
 declare global {
-    class UIEvent {
-    }
+  class UIEvent {}
 }
