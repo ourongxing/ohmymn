@@ -1,5 +1,7 @@
-import { dict } from "utils/dict"
 import { profile } from "profile"
+import { log } from "utils/common"
+import fetch from "utils/network"
+import { isHalfWidth, wordCount } from "utils/text"
 
 const config: IConfig = {
   name: "AutoComplete",
@@ -32,33 +34,34 @@ const config: IConfig = {
 }
 
 const util = {
-  checkGetWord(text: string) {
-    text = text.toLowerCase()
-    // 判断一下是否是单词，或许可以降低点内存消耗
-    if (!(/^[a-z]+$/.test(text) && dict[text])) return false
-    const autocomplete = profile.autocomplete
-    let word = dict[text]
-    if (word.lemma) {
-      text = word.lemma
-      word = dict[word.lemma]
-    }
-    const wordObj = { title: text, text: "" }
-    let tmp_text = []
-    if (word.exchange) wordObj.title = text + "; " + word.exchange.replace(/-/g, text).replace(/;/g, "; ")
-    if (autocomplete.fillExplanation && word.explain) tmp_text.push(word.explain)
-    if (autocomplete.fillFrequency && word.frequency) tmp_text.push(word.frequency)
-    wordObj.text = tmp_text.join("\n\n")
+  async checkGetWord(text: string) {
+    if (!isHalfWidth(text) && wordCount(text) != 1) return false
+    const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + text)
+      .then(res => res.json())
+    const wordObj = { title: text, text: res[0].translation }
     return wordObj
+    // if (!(/^[a-z]+$/.test(text))) return false
+    // const autocomplete = profile.autocomplete
+    // let word = dict[text]
+    // if (word.lemma) {
+    //   text = word.lemma
+    //   word = dict[word.lemma]
+    // }
+    // let tmp_text = []
+    // if (word.exchange) wordObj.title = text + "; " + word.exchange.replace(/-/g, text).replace(/;/g, "; ")
+    // if (autocomplete.fillExplanation && word.explain) tmp_text.push(word.explain)
+    // if (autocomplete.fillFrequency && word.frequency) tmp_text.push(word.frequency)
+    // wordObj.text = tmp_text.join("\n\n")
   },
 }
 const action: IActionMethod = {
   // 如果有标题摘录为空，或者摘录与标题相同时，才会起作用
-  completeSelected({ nodes }) {
+  async completeSelected({ nodes }) {
     for (const note of nodes) {
       const title = note?.noteTitle
       const text = note?.excerptText
       if (title) {
-        const wordObj = util.checkGetWord(title)
+        const wordObj = await util.checkGetWord(title)
         if (wordObj) {
           note.noteTitle = wordObj.title
           if (!text || text == title) {

@@ -1,6 +1,6 @@
-import { excerptNotes } from "utils/notebook"
+import { excerptNotes } from "utils/note"
 import pangu from "utils/pangu"
-import { isHalfWidth } from "utils/public"
+import { isHalfWidth } from "utils/text"
 const config: IConfig = {
   name: "AutoStandardize",
   intro: "优化摘录和标题的中英文排版\nPowerd by Pangu.js",

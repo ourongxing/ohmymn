@@ -1,4 +1,4 @@
-import { log } from "./public"
+import { delay, log, postNotification } from "./common"
 
 /**
  * 获取选中的卡片
@@ -27,6 +27,9 @@ const getSelectNodesAll = (): MbBookNote[] => {
     })
   }
   getChildren(nodes)
+  // 如果只选中一个结点，并且该结点有子结点，删除该结点
+  if (nodes.length == 1 && nodes[0].childNotes?.length)
+    allNodes.delete(nodes[0])
   // 返回数组
   return [...allNodes]
 }
@@ -58,13 +61,19 @@ const getNotebookById = (notebookid: string): MbTopic => {
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
-const undoGrouping = (notebookid: string, action: () => void) => {
-  UndoManager.sharedInstance().undoGrouping("ohmymn", notebookid, () => {
-    action()
-    // 同步修改到数据库
-    Database.sharedInstance().setNotebookSyncDirty(notebookid)
+const undoGrouping = (f: () => void) => {
+  UndoManager.sharedInstance().undoGrouping("ohmymn", self.notebookid, () => {
+    f()
+    Database.sharedInstance().setNotebookSyncDirty(self.notebookid)
   })
-  NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo('RefreshAfterDBChange', self, { topicid: notebookid })
+}
+
+
+/**
+ * 可撤销的动作，刷新界面
+ */
+const RefreshAfterDBChange = () => {
+  postNotification('RefreshAfterDBChange', { topicid: self.notebookid })
 }
 
 const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
@@ -90,5 +99,6 @@ export {
   undoGrouping,
   getCommentIndex,
   getNotebookById,
-  getNoteById
+  getNoteById,
+  RefreshAfterDBChange
 }

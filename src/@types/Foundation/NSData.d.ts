@@ -1,41 +1,33 @@
-export {}
+export { }
 
 declare global {
   const enum NSDataReadingOptions {
     Coordinated = 4,
+    /** Use the kernel's virtual memory map to load the file, if possible. If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file. */
+    Mapped = 1,
+    /** Force NSData to try to use the kernel's mapping support to load the file. If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file. */
+    MappedAlways = 8,
 
-      /** Use the kernel's virtual memory map to load the file, if possible. If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file. */
-      Mapped = 1,
-
-      /** Force NSData to try to use the kernel's mapping support to load the file. If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file. */
-      MappedAlways = 8,
-
-      /** Notify the kernel that it should not try to cache the contents of this file in its buffer cache. */
-      Uncached = 2,
+    /** Notify the kernel that it should not try to cache the contents of this file in its buffer cache. */
+    Uncached = 2,
   }
 
   const enum NSDataWritingOptions {
     Atomic = 1,
-
-      FileProtectionComplete = 536870912,
-
-      FileProtectionCompleteUnlessOpen = 805306368,
-
-      FileProtectionCompleteUntilFirstUserAuthentication = 1073741824,
-
-      FileProtectionMask = 4026531840,
-
-      FileProtectionNone = 268435456,
-
-      WithoutOverwriting = 2,
+    FileProtectionComplete = 536870912,
+    FileProtectionCompleteUnlessOpen = 805306368,
+    FileProtectionCompleteUntilFirstUserAuthentication = 1073741824,
+    FileProtectionMask = 4026531840,
+    FileProtectionNone = 268435456,
+    WithoutOverwriting = 2,
   }
 
   const enum NSDataSearchOptions {
     /** Limits the search to the start (or end if SearchBackwards is specified) */
     SearchAnchored = 2,
 
-      /** Starts search from the end, instead of the start. */
-      SearchBackwards = 1,
+    /** Starts search from the end, instead of the start. */
+    SearchBackwards = 1,
   }
   class NSData {
     static data(): WrapperObj<any>;
@@ -180,4 +172,3 @@ declare global {
     base64Encoding(): string;
   }
 }
-

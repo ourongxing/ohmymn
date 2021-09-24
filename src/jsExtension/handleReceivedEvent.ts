@@ -2,8 +2,19 @@ import { actions } from "addons/synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
-import { getNoteById, getSelectNodes, getSelectNodesAll, undoGrouping } from "utils/notebook"
-import { delayBreak, log, showHUD } from "utils/public"
+import { getNoteById, getSelectNodes, getSelectNodesAll, RefreshAfterDBChange, undoGrouping } from "utils/note"
+import { delayBreak, log, showHUD } from "utils/common"
+import eventHandlerController from "utils/event"
+
+export const eventCtrl = eventHandlerController([
+  { event: "InputOver" },
+  { event: "SwitchChange" },
+  { event: "ButtonClick" },
+  { event: "PopupMenuOnNote" },
+  { event: "ProcessNewExcerpt" },
+  { event: "ChangeExcerptRange" }
+])
+
 
 declare interface IUserInfo {
   [k: string]: any
@@ -21,7 +32,7 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
   else nodes = getSelectNodes()
 
   if (nodes.length) {
-    undoGrouping(nodes[0].notebookId!, () => {
+    undoGrouping(() => {
       actions[userInfo.key]({
         content: userInfo.content,
         nodes: nodes
@@ -76,6 +87,7 @@ const onChangeExcerptRange: eventHandler = async ({ userInfo }) => {
   const note = getNoteById(userInfo.noteid)
   isChangeExcerptRange = true
   handleExcerpt(note, lastExcerptText)
+  RefreshAfterDBChange()
 }
 
 const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
@@ -85,6 +97,7 @@ const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
   // 摘录前初始化，使得创建摘录时可以自由修改
   if (profile.ohmymn.lockExcerpt) lastExcerptText = "😎"
   handleExcerpt(note)
+  RefreshAfterDBChange()
 }
 
 export default {

@@ -1,7 +1,8 @@
 import { profile } from "profile"
-import { getCommentIndex, getNotebookById, getNoteById, undoGrouping } from "utils/notebook"
-import { delayBreak, isBroadened, isHalfWidth, log, showHUD } from "utils/public"
+import { getCommentIndex, getNotebookById, getNoteById, undoGrouping } from "utils/note"
+import { delayBreak, log, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
+import { isHalfWidth } from "utils/text"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -52,15 +53,14 @@ export default async (_note: MbBookNote, _lastExcerptText = "") => {
         }
     }
 
-
     if (profile.ohmymn.autoCorrect) {
         log("开始矫正", "excerpt")
         log(note.excerptText, "highlight")
         const originText = note.excerptText!
         // 强制进行自动矫正
-        note.excerptText = originText + "???????"
+        note.excerptText = originText + "??????????"
         // 等待在线矫正返回结果
-        const success = await delayBreak(20, 0.1, () => note.excerptText != originText + "???????")
+        const success = await delayBreak(20, 0.1, () => note.excerptText != originText + "??????????")
         if (success) log("矫正成功", "excerpt")
         else {
             log("矫正失败", "excerpt")
@@ -70,10 +70,9 @@ export default async (_note: MbBookNote, _lastExcerptText = "") => {
     excerptHandler()
 }
 
-const excerptHandler = () => {
+const excerptHandler = async () => {
     if (!note.excerptText) return
-    // 去除重点，消除 **** 的影响
-    let { title, text } = genTitleText(note.excerptText!.trim())
+    let { title, text } = await genTitleText(note.excerptText!.trim())
 
     // 如果摘录是作为评论，反正是卡片已经存在的情况下摘录
     if (isComment) {
@@ -87,6 +86,9 @@ const excerptHandler = () => {
 
     // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
     if (isModifying) {
+        const isBroadened = (oldStr: string | undefined, newStr: string) => {
+            return oldStr && oldStr.length >= 2 && (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
+        }
         if (profile.anotherautotitle.changeTitleNoLimit && !title && isBroadened(note?.noteTitle, text)) {
             log("正在拓宽作为标题的摘录", "excerpt")
             title = text
@@ -100,7 +102,7 @@ const excerptHandler = () => {
 }
 
 const processExcerpt = (title: string | undefined, text: string) => {
-    undoGrouping(note.notebookId!, () => {
+    undoGrouping(() => {
         if (text) note.excerptText = text
         // 如果摘录为空，有三种情况
         else {

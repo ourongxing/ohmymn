@@ -1,5 +1,6 @@
-import { excerptNotes } from "utils/notebook"
-import { log, showHUD, string2ReplaceParam } from "utils/public"
+import { excerptNotes } from "utils/note"
+import { log, showHUD } from "utils/common"
+import { string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
     name: "MagicAction",

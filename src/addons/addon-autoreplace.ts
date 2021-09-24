@@ -1,6 +1,7 @@
 import { profile } from "profile"
-import { excerptNotes } from "utils/notebook"
-import { showHUD, string2ReplaceParam } from "utils/public"
+import { excerptNotes } from "utils/note"
+import { showHUD } from "utils/common"
+import { string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
   name: "AutoReplace",

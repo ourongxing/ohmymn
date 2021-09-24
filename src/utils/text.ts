@@ -8,7 +8,7 @@ const isCJK = (text: string): boolean => {
 }
 
 const wordCount = (text: string): number => {
-    const en = text.split(new RegExp(`[^a-zA-Z${CJK}-']`, "g")).filter(item => item ? true : false)
+    const en = text.split(new RegExp(`[^a-zA-Z-']`, "g")).filter(item => item ? true : false)
     const zh = text.match(new RegExp(`[${CJK}]`, "g")) ?? []
     return en.length + zh.length
 }

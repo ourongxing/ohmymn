@@ -1,18 +1,10 @@
 import settingViewControllerInst from "settingViewController/main"
-import eventHandlerController from "utils/eventHandlers"
-import { readProfile, saveProfile } from "utils/readsaveProfile";
-import { getObjCClassDeclar, log, showHUD } from "utils/public"
+import { readProfile, saveProfile } from "utils/profile";
+import { getObjCClassDeclar, log, showHUD } from "utils/common"
 import { closePanel } from "./switchPanel";
+import { eventCtrl } from "./handleReceivedEvent";
 
 const SettingViewController = JSB.defineClass(getObjCClassDeclar("SettingViewController", "UITableViewController"), settingViewControllerInst)
-const eventCtrl = eventHandlerController([
-    { event: "InputOver" },
-    { event: "SwitchChange" },
-    { event: "ButtonClick" },
-    { event: "PopupMenuOnNote" },
-    { event: "ProcessNewExcerpt" },
-    { event: "ChangeExcerptRange" }
-]);
 
 /**
  * MN 的生命周期有点离谱，尤其是先关闭笔记本再关闭文档，
@@ -46,6 +38,7 @@ const sceneDidDisconnect = () => {
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
     log("打开笔记本", "lifeCycle")
+    self.notebookid = notebookid
     eventCtrl.add()
 }
 
@@ -88,7 +81,6 @@ const addonWillDisconnect = () => {
 }
 
 // 进入后台保存配置，适合 iPad 上
-// 这里有一个巨离谱的 bug
 const applicationDidEnterBackground = () => {
     log("应用进入后台", "lifeCycle")
     if (thisDocMd5) {

@@ -36,11 +36,6 @@ const config: IConfig = {
       label: "不含有点号"
     },
     {
-      key: "wordCount",
-      type: cellViewType.inlineInput,
-      label: "字数不超过",
-    },
-    {
       key: "customTitle",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
@@ -81,12 +76,9 @@ const util = {
       }
 
     }
-    if (anotherautotitle.isWord) {
-      if (/^[a-zA-Z]+$/.test(text)) return {
-        title: text
-      }
-    }
     // 字数达标
+    log(text, "count")
+    log(wordCount(text), "count")
     if (anotherautotitle.wordCount && Number(anotherautotitle.wordCount) > wordCount(text))
       return {
         title: text

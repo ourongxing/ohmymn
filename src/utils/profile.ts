@@ -1,5 +1,5 @@
 import { dataSource } from "addons/synthesizer"
-import { log, showHUD } from "utils/public"
+import { log, showHUD } from "utils/common"
 import { profile, docProfile, IProfile, IProfile_doc } from "profile"
 
 // 读配置包含两种情况
