@@ -27,7 +27,8 @@ const tableViewHeightForRowAtIndexPath = (
   indexPath: NSIndexPath
 ) => {
   const row = dataSource[indexPath.section].rows[indexPath.row]
-  if (row.type === cellViewType.plainText) {
+  if (row.key == "space") return 300
+  else if (row.type === cellViewType.plainText) {
     let num = row.label!.length - row.label!.replace(/[\r\n]/g, "").length
     return 30 + num * 15
   } else return 40
@@ -62,7 +63,7 @@ const tableViewCellForRowAtIndexPath = (
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
-      cell.selectionStyle = 1
+      cell.selectionStyle = row.key == "space" ? 0 : 1
       cell.textLabel.text = row.label
       return cell
     }

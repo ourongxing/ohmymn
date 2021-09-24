@@ -82,6 +82,12 @@ export const genDataSource = (
     )
   }
   dataSource.splice(0, 0, genSection(magicaction))
+  // 最后加块空白，防止被键盘遮挡，按理说输入框会自动上移的，但现在不知道为啥不行了
+  dataSource[dataSource.length - 1].rows.push({
+    type: cellViewType.button,
+    key: "space",
+    label: ""
+  })
   return dataSource
 }
 
