@@ -141,7 +141,7 @@ declare global {
     LeftToRight = 1,
     RightToLeft = 2,
     TopToBottom = 3,
-    Unknown = 0,
+    Unknown = 0
   }
 
   class NSNotificationCenter {

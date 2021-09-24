@@ -39,7 +39,7 @@ declare global {
     WindowsCP1251 = 11,
     WindowsCP1252 = 12,
     WindowsCP1253 = 13,
-    WindowsCP1254 = 14,
+    WindowsCP1254 = 14
   }
   class NSURL {
     percentEncodedFragment?: string
@@ -376,7 +376,7 @@ declare global {
 export const enum NSURLBookmarkResolutionOptions {
   WithoutMounting = 512,
   WithoutUI = 256,
-  WithSecurityScope = 1024,
+  WithSecurityScope = 1024
 }
 
 export const enum NSURLBookmarkFileCreationOptions {
@@ -384,7 +384,7 @@ export const enum NSURLBookmarkFileCreationOptions {
   PreferFileIDResolution = 256,
   SecurityScopeAllowOnlyReadAccess = 4096,
   SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048,
+  WithSecurityScope = 2048
 }
 
 export const enum NSURLBookmarkCreationOptions {
@@ -392,5 +392,5 @@ export const enum NSURLBookmarkCreationOptions {
   PreferFileIDResolution = 256,
   SecurityScopeAllowOnlyReadAccess = 4096,
   SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048,
+  WithSecurityScope = 2048
 }

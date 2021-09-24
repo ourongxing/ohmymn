@@ -9,7 +9,7 @@ declare global {
     MappedAlways = 8,
 
     /** Notify the kernel that it should not try to cache the contents of this file in its buffer cache. */
-    Uncached = 2,
+    Uncached = 2
   }
 
   const enum NSDataWritingOptions {
@@ -19,7 +19,7 @@ declare global {
     FileProtectionCompleteUntilFirstUserAuthentication = 1073741824,
     FileProtectionMask = 4026531840,
     FileProtectionNone = 268435456,
-    WithoutOverwriting = 2,
+    WithoutOverwriting = 2
   }
 
   const enum NSDataSearchOptions {
@@ -27,7 +27,7 @@ declare global {
     SearchAnchored = 2,
 
     /** Starts search from the end, instead of the start. */
-    SearchBackwards = 1,
+    SearchBackwards = 1
   }
   class NSData {
     static data(): WrapperObj<any>

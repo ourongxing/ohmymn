@@ -23,26 +23,26 @@ export default {
     dir,
     format: "iife",
     exports: "none",
-    sourcemap: false,
+    sourcemap: false
   },
   watch: {
-    exclude: "../node_modules/**",
+    exclude: "../node_modules/**"
   },
   plugins: [
     typescript(),
     copy({
-      assets: ["mnaddon.json", ["assets/logo.png", "logo.png"]],
+      assets: ["mnaddon.json", ["assets/logo.png", "logo.png"]]
     }),
     isProd() &&
       strip({
         include: ["**/*.ts"],
-        functions: ["log"],
+        functions: ["log"]
       }),
     isProd() && uglify(),
     isProd() && banner(_banner),
     isProd() &&
       zip({
-        file: `ohmymn_v${pkg.version}.mnaddon`,
-      }),
-  ],
+        file: `ohmymn_v${pkg.version}.mnaddon`
+      })
+  ]
 }

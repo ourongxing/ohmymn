@@ -10,27 +10,27 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行",
+      label: "摘录时自动执行"
     },
     {
       key: "fillExplanation",
       type: cellViewType.switch,
       label: "填充单词解释",
-      help: "覆盖小学到托福词汇",
+      help: "覆盖小学到托福词汇"
     },
     {
       key: "fillFrequency",
       type: cellViewType.switch,
-      label: "填充单词词频",
-    },
+      label: "填充单词词频"
+    }
   ],
   actions: [
     {
       key: "completeSelected",
       type: cellViewType.button,
-      label: "补全单词词形",
-    },
-  ],
+      label: "补全单词词形"
+    }
+  ]
 }
 
 const util = {
@@ -41,19 +41,7 @@ const util = {
     )
     const wordObj = { title: text, text: res[0].translation }
     return wordObj
-    // if (!(/^[a-z]+$/.test(text))) return false
-    // const autocomplete = profile.autocomplete
-    // let word = dict[text]
-    // if (word.lemma) {
-    //   text = word.lemma
-    //   word = dict[word.lemma]
-    // }
-    // let tmp_text = []
-    // if (word.exchange) wordObj.title = text + "; " + word.exchange.replace(/-/g, text).replace(/;/g, "; ")
-    // if (autocomplete.fillExplanation && word.explain) tmp_text.push(word.explain)
-    // if (autocomplete.fillFrequency && word.frequency) tmp_text.push(word.frequency)
-    // wordObj.text = tmp_text.join("\n\n")
-  },
+  }
 }
 const action: IActionMethod = {
   // 如果有标题摘录为空，或者摘录与标题相同时，才会起作用
@@ -71,7 +59,7 @@ const action: IActionMethod = {
         }
       }
     }
-  },
+  }
 }
 
 export default { config, util, action }

@@ -6,7 +6,7 @@ declare global {
     Center, //居中
     Right, //右对齐
     Justified, //最后一行自然对齐
-    Natural, //默认对齐脚本
+    Natural //默认对齐脚本
   }
   const enum UITextBorderStyle {}
   class UITextField extends UIControl {

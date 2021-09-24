@@ -4,12 +4,12 @@ declare global {
     PrettyPrinted = 0,
     SortedKeys,
     FragmentsAllowed,
-    WithoutEscapingSlashes,
+    WithoutEscapingSlashes
   }
   const enum NSJSONReadingOptions {
     MutableContainers = 0,
     MutableLeaves,
-    AllowFragments,
+    AllowFragments
   }
   class NSJSONSerialization {
     static JSONObjectWithDataOptions(

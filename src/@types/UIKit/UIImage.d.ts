@@ -24,7 +24,7 @@ declare global {
     Up = 0,
 
     /** Flipped about its vertical axis.  */
-    UpMirrored = 4,
+    UpMirrored = 4
   }
 
   class UIImage {

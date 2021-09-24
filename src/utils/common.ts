@@ -64,5 +64,5 @@ export {
   delayBreak,
   getObjCClassDeclar,
   openUrl,
-  postNotification,
+  postNotification
 }

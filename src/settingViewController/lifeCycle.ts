@@ -18,5 +18,5 @@ const viewWillAppear = () => {
 
 export default {
   viewDidLoad,
-  viewWillAppear,
+  viewWillAppear
 }

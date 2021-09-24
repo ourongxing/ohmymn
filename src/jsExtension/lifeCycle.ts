@@ -104,7 +104,7 @@ export const clsMethons = {
   addonDidConnect,
   addonWillDisconnect,
   applicationDidEnterBackground,
-  applicationWillEnterForeground,
+  applicationWillEnterForeground
 }
 
 export const InstMethods = {
@@ -113,5 +113,5 @@ export const InstMethods = {
   notebookWillOpen,
   notebookWillClose,
   documentDidOpen,
-  documentWillClose,
+  documentWillClose
 }

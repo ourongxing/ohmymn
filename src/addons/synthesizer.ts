@@ -19,7 +19,7 @@ const addons: IAddon[] = [
   autostandardize,
   autocomplete,
   autoreplace,
-  autolist,
+  autolist
 ]
 
 const genActionsUtils = () => {
@@ -41,8 +41,8 @@ const genSection = (config: IConfig): ISection => {
     {
       type: cellViewType.plainText,
       label: config.intro,
-      link: config.link ?? "",
-    },
+      link: config.link ?? ""
+    }
   ]
   for (const setting of config.settings) {
     // magicaction 的 help 显示在弹窗上
@@ -51,7 +51,7 @@ const genSection = (config: IConfig): ISection => {
         {
           type: cellViewType.plainText,
           label: setting.help,
-          link: setting.link ?? "",
+          link: setting.link ?? ""
         },
         setting
       )
@@ -59,7 +59,7 @@ const genSection = (config: IConfig): ISection => {
   }
   return {
     header: config.name,
-    rows,
+    rows
   }
 }
 

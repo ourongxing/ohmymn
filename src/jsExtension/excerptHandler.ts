@@ -3,7 +3,7 @@ import {
   getCommentIndex,
   getNotebookById,
   getNoteById,
-  undoGrouping,
+  undoGrouping
 } from "utils/note"
 import { delayBreak, log, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"

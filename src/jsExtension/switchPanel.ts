@@ -13,14 +13,14 @@ export const layoutViewController = () => {
       x: frame.width - width - 50,
       y: 110,
       width: width,
-      height: 450,
+      height: 450
     }
   } else {
     self.settingViewController.view.frame = {
       x: 50,
       y: 110,
       width: width,
-      height: 450,
+      height: 450
     }
   }
 }
@@ -77,7 +77,7 @@ const queryAddonCommandStatus = () => {
       image: "logo.png",
       object: self,
       selector: "switchPanel:",
-      checked: panelStatus ? true : false,
+      checked: panelStatus ? true : false
     }
   return null
 }
@@ -85,5 +85,5 @@ const queryAddonCommandStatus = () => {
 export default {
   queryAddonCommandStatus,
   switchPanel,
-  controllerWillLayoutSubviews,
+  controllerWillLayoutSubviews
 }

@@ -3,7 +3,7 @@ declare global {
   const enum osType {
     iPadOS = 0,
     iPhoneOS = 1,
-    macOS = 2,
+    macOS = 2
   }
 
   class DocumentController {
@@ -53,14 +53,14 @@ declare global {
     doc0 = 0,
     doc1 = 1,
     study = 2,
-    review = 3,
+    review = 3
   }
 
   const enum docMapSplitMode {
     allMap = 0,
     /** halfMap or halfDoc */
     half = 1,
-    allDoc = 2,
+    allDoc = 2
   }
 
   class StudyController {

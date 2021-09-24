@@ -89,6 +89,26 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
   return -1
 }
 
+/**
+ * 获取卡片内所有的文字
+ */
+const getAllText = (note: MbBookNote) => {
+  const textArr = []
+  if (note.excerptText) textArr.push(note.excerptText)
+  note.comments.forEach(comment => {
+    switch (comment.type) {
+      case "TextNote":
+      case "HtmlNote":
+        const text = comment.text.trim()
+        if (text && !text.includes("marginnote3app")) textArr.push(text)
+        break
+      case "LinkNote":
+        if (comment.q_htext) textArr.push(comment.q_htext.trim())
+    }
+  })
+  return textArr.join("\n")
+}
+
 export {
   getSelectNodes,
   getSelectNodesAll,
@@ -98,4 +118,5 @@ export {
   getNotebookById,
   getNoteById,
   RefreshAfterDBChange,
+  getAllText
 }

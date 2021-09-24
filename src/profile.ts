@@ -5,15 +5,15 @@ const profileType = {
     clickHidden: false,
     lockExcerpt: false,
     selectChildren: false,
-    autoCorrect: false,
+    autoCorrect: false
   },
   autocomplete: {
     on: false,
     fillExplanation: false,
-    fillFrequency: false,
+    fillFrequency: false
   },
   autostandardize: {
-    on: false,
+    on: false
   },
   anotherautotitle: {
     on: false,
@@ -21,33 +21,33 @@ const profileType = {
     noPunctuation: false,
     changeTitleNoLimit: false,
     wordCount: "10",
-    customTitle: "",
+    customTitle: ""
   },
   autolist: {
     on: false,
     multipleChoiceEnhance: false,
     wrapWhenSemicolon: false,
-    customList: "",
+    customList: ""
   },
   autoreplace: {
     on: false,
-    customReplace: "",
-  },
+    customReplace: ""
+  }
 }
 
 const docProfileType = {
-  autoCorrect: false,
+  autoCorrect: false
 }
 
 export type IProfile = typeof profileType
 export type IProfile_doc = typeof docProfileType
 
 const profile: { [k: string]: { [k: string]: boolean | string } } & IProfile = {
-  ...profileType,
+  ...profileType
 }
 
 const docProfile: IProfile_doc = {
-  ...docProfileType,
+  ...docProfileType
 }
 
 export { profile, docProfile }

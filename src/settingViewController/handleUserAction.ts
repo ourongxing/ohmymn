@@ -5,7 +5,7 @@ import { checkInputCorrect } from "utils/input"
 const tag2indexPath = (tag: number): NSIndexPath => {
   return {
     section: (tag - 999 - ((tag - 999) % 100)) / 100,
-    row: (tag - 999) % 100,
+    row: (tag - 999) % 100
   }
 }
 
@@ -31,7 +31,7 @@ const tableViewDidSelectRowAtIndexPath = (
           if (!text) return
           postNotification("ButtonClick", {
             key: row.key,
-            content: text,
+            content: text
           })
         }
       )
@@ -39,7 +39,7 @@ const tableViewDidSelectRowAtIndexPath = (
     case cellViewType.button:
       postNotification("ButtonClick", {
         key: row.key,
-        content: "",
+        content: ""
       })
   }
 }
@@ -57,7 +57,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
     postNotification("InputOver", {
       name: section.header.toLocaleLowerCase(),
       key: row.key,
-      content: text,
+      content: text
     })
   } else showHUD("输入错误，请查看相关说明")
   return true
@@ -71,12 +71,12 @@ const switchChange = (sender: UISwitch) => {
   postNotification("SwitchChange", {
     name: section.header.toLowerCase(),
     key: row.key,
-    status: sender.on,
+    status: sender.on
   })
 }
 
 export default {
   tableViewDidSelectRowAtIndexPath,
   textFieldShouldReturn,
-  switchChange,
+  switchChange
 }

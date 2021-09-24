@@ -8,16 +8,16 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行",
-    },
+      label: "摘录时自动执行"
+    }
   ],
   actions: [
     {
       key: "standardizeSelected",
       type: cellViewType.button,
-      label: "优化摘录和标题排版",
-    },
-  ],
+      label: "优化摘录和标题排版"
+    }
+  ]
 }
 
 const util = {
@@ -37,7 +37,7 @@ const util = {
     text = pangu.spacing(text.replace(/\*\*/g, "占位符"))
     // 划重点会产生 **包裹文字**
     return text.replace(/\x20?占位符\x20?/g, "**")
-  },
+  }
 }
 
 const action: IActionMethod = {
@@ -55,7 +55,7 @@ const action: IActionMethod = {
         }
       }
     }
-  },
+  }
 }
 
 export default { config, util, action }

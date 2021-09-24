@@ -10,45 +10,45 @@ const config: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: "摘录时自动执行",
+      label: "摘录时自动执行"
     },
     {
       key: "mergeTitle",
       type: cellViewType.switch,
-      label: "摘录自动合并为标题",
+      label: "摘录自动合并为标题"
     },
     {
       help: "拓宽作为标题的摘录，不受规则限制\n直接转为标题",
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
-      label: "拓宽标题摘录不受限制",
+      label: "拓宽标题摘录不受限制"
     },
     {
       help: "以下情况会在摘录时自动转换为标题",
       key: "isWord",
       type: cellViewType.switch,
-      label: "是单词",
+      label: "是单词"
     },
     {
       help: "点号指 。.、？?！!，,；;：:",
       key: "noPunctuation",
       type: cellViewType.switch,
-      label: "不含有点号",
+      label: "不含有点号"
     },
     {
       key: "customTitle",
       type: cellViewType.input,
       help: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
-    },
+      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"
+    }
   ],
   actions: [
     {
       type: cellViewType.button,
       label: "切换摘录或标题",
-      key: "switchTitleorExcerpt",
-    },
-  ],
+      key: "switchTitleorExcerpt"
+    }
+  ]
 }
 
 const util = {
@@ -62,7 +62,7 @@ const util = {
           const title = text.replace(item.regexp, item.newSubStr)
           return {
             title,
-            text: item.fnKey ? text : "",
+            text: item.fnKey ? text : ""
           }
         }
       }
@@ -72,7 +72,7 @@ const util = {
       const reg = RegExp(/[。.、？?！!，,；;：:]/)
       if (!reg.test(text))
         return {
-          title: text,
+          title: text
         }
     }
     // 字数达标
@@ -83,10 +83,10 @@ const util = {
       Number(anotherautotitle.wordCount) > wordCount(text)
     )
       return {
-        title: text,
+        title: text
       }
     return false
-  },
+  }
 }
 const action: IActionMethod = {
   switchTitleorExcerpt({ nodes }) {
@@ -103,6 +103,6 @@ const action: IActionMethod = {
         note.noteTitle = ""
       }
     }
-  },
+  }
 }
 export default { config, util, action }

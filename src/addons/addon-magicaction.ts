@@ -12,21 +12,21 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: "修改摘录填充",
       help: "输入填充索引，也就是顺序，1 到 3",
-      key: "changeFillSelected",
+      key: "changeFillSelected"
     },
     {
       type: cellViewType.buttonWithInput,
       label: "修改摘录颜色",
       key: "changeColorSelected",
-      help: "输入颜色索引，也就是顺序，1 到 16",
+      help: "输入颜色索引，也就是顺序，1 到 16"
     },
     {
       type: cellViewType.buttonWithInput,
       label: "批量重命名标题",
       key: "renameSelected",
-      help: "注意事项及具体输入格式见顶上帮助信息",
-    },
-  ],
+      help: "注意事项及具体输入格式见顶上帮助信息"
+    }
+  ]
 }
 
 const util = {
@@ -84,7 +84,7 @@ const util = {
         return serias.map((item: string) => replace.replace(/%\[(.*)\]/, item))
       } else throw new Error("")
     }
-  },
+  }
 }
 
 const action: IActionMethod = {
@@ -142,7 +142,7 @@ const action: IActionMethod = {
     } else {
       showHUD("输入不正确")
     }
-  },
+  }
 }
 
 export default { config, util, action }

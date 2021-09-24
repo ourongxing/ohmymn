@@ -6,36 +6,36 @@ const config: IConfig = {
     {
       key: "rightMode",
       type: cellViewType.switch,
-      label: "面板置于右侧",
+      label: "面板置于右侧"
     },
     {
       key: "doubleClick",
       type: cellViewType.switch,
-      label: "双击打开面板",
+      label: "双击打开面板"
     },
     {
       key: "clickHidden",
       type: cellViewType.switch,
-      label: "自动关闭面板",
+      label: "自动关闭面板"
     },
     {
       key: "lockExcerpt",
       type: cellViewType.switch,
-      label: "锁定摘录文字",
+      label: "锁定摘录文字"
     },
     {
       key: "selectChildren",
       type: cellViewType.switch,
-      label: "选中卡片包括子结点",
+      label: "选中卡片包括子结点"
     },
     {
       help: "【当前文档】开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
-      label: "是否开启了自动在线矫正",
-    },
+      label: "是否开启了自动在线矫正"
+    }
   ],
-  actions: [],
+  actions: []
 }
 
 const util = {}

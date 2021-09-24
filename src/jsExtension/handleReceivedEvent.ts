@@ -7,7 +7,7 @@ import {
   getSelectNodes,
   getSelectNodesAll,
   RefreshAfterDBChange,
-  undoGrouping,
+  undoGrouping
 } from "utils/note"
 import { delayBreak, log, showHUD } from "utils/common"
 import eventHandlerController from "utils/event"
@@ -18,7 +18,7 @@ export const eventCtrl = eventHandlerController([
   { event: "ButtonClick" },
   { event: "PopupMenuOnNote" },
   { event: "ProcessNewExcerpt" },
-  { event: "ChangeExcerptRange" },
+  { event: "ChangeExcerptRange" }
 ])
 
 declare interface IUserInfo {
@@ -40,7 +40,7 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
     undoGrouping(() => {
       actions[userInfo.key]({
         content: userInfo.content,
-        nodes: nodes,
+        nodes: nodes
       })
     })
   } else {
@@ -117,5 +117,5 @@ export default {
   onSwitchChange,
   onPopupMenuOnNote,
   onProcessNewExcerpt,
-  onChangeExcerptRange,
+  onChangeExcerptRange
 }

@@ -48,7 +48,7 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
     willReturn.push({
       regexp,
       newSubStr: parsing.key,
-      fnKey: fnKey ? Number(fnKey) : 0,
+      fnKey: fnKey ? Number(fnKey) : 0
     })
   }
   return willReturn

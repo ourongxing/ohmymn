@@ -7,7 +7,7 @@ declare global {
     Default = 0,
     Value1 = 1,
     Value2 = 2,
-    Subtitle = 3,
+    Subtitle = 3
   }
   class UITableViewCell {
     readonly contentView: UIView
