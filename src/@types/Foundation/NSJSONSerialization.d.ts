@@ -12,6 +12,7 @@ declare global {
     AllowFragments
   }
   class NSJSONSerialization {
+    static isValidJSONObject(obj: WrapperObj<any>): boolean
     static JSONObjectWithDataOptions(
       obj: WrapperObj<any>,
       data: NSJSONReadingOptions

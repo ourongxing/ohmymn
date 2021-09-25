@@ -17,7 +17,6 @@ declare global {
   type NSMutableArray<T = any> = Array<T>
   type NSIndexSet = any
   type NSCharacterSet = any
-  type NSError = any
   class NSNotification {
     /**
      * @param aName NSString*

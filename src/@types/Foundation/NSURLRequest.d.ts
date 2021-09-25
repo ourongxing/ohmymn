@@ -23,4 +23,13 @@ declare global {
     statusCode: number
     allHeaderFields: NSDictionary
   }
+  class NSError {
+    domain: string
+    code: number
+    userInfo: NSDictionary
+    localizedDescription: string
+    localizedFailureReason: string
+    localizedRecoverySuggestion: string
+    localizedRecoveryOptions: NSDictionary
+  }
 }

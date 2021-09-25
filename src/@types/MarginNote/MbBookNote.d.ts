@@ -157,6 +157,8 @@ declare global {
      * @param index NSInteger
      */
     removeCommentByIndex(index: number): void
+  }
+  class Note {
     /**
      * @returns MbBookNote*
      * @param title NSString*
