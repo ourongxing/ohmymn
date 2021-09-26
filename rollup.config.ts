@@ -34,7 +34,7 @@ export default {
       targets: [
         {
           src: ["assets/logo.png", "mnaddon.json", "assets/icon"],
-          dest: "dist"
+          dest: dir
         }
       ],
       copyOnce: true

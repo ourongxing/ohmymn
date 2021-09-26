@@ -65,6 +65,11 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = row.key == "space" ? 0 : 1
       cell.textLabel.text = row.label
+      if (row.key != "space")
+        cell.imageView.image = UIImage.imageWithDataScale(
+          NSData.dataWithContentsOfFile(self.mainPath + `/icon/${row.key}.png`),
+          2
+        )
       return cell
     }
     case cellViewType.switch: {
