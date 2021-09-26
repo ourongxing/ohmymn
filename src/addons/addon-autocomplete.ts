@@ -120,7 +120,7 @@ const util = {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)
         })
-        text = fill
+        text = autostandardize.util.standardizeText(fill)
       }
       return {
         title,
