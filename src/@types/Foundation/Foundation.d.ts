@@ -17,6 +17,10 @@ declare global {
   type NSMutableArray<T = any> = Array<T>
   type NSIndexSet = any
   type NSCharacterSet = any
+
+  class NSNull {
+    static new(): NSNull
+  }
   class NSNotification {
     /**
      * @param aName NSString*

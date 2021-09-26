@@ -56,6 +56,20 @@ const postNotification = (key: string, userInfo: any) => {
   )
 }
 
+const isThisWindow = (sender: any, window: any) => {
+  return Application.sharedInstance().checkNotifySenderInWindow(
+    sender,
+    self.window
+  )
+}
+
+/**
+ * 用来判断是否是 OC 的 NSNull 对象
+ */
+const isNull = (obj: any) => {
+  return obj == NSNull.new()
+}
+
 export {
   log,
   showHUD,
@@ -64,5 +78,7 @@ export {
   delayBreak,
   getObjCClassDeclar,
   openUrl,
-  postNotification
+  postNotification,
+  isThisWindow,
+  isNull
 }
