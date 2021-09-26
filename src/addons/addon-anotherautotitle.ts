@@ -25,9 +25,9 @@ const config: IConfig = {
     },
     {
       help: "以下情况会在摘录时自动转换为标题",
-      key: "isWord",
-      type: cellViewType.switch,
-      label: "是单词"
+      key: "wordCount",
+      type: cellViewType.inlineInput,
+      label: "字数不超过"
     },
     {
       help: "点号指 。.、？?！!，,；;：:",
