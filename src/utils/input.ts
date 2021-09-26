@@ -4,6 +4,9 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "wordCount":
         if (isNaN(Number(text))) throw "不是数字"
         break
+      case "customFill":
+        reverseEscape(text)
+        break
       default:
         const params = string2ReplaceParam(text)
         for (const item of params) {

@@ -9,8 +9,7 @@ const profileType = {
   },
   autocomplete: {
     on: false,
-    fillExplanation: false,
-    fillFrequency: false
+    customFill: "{{zh}}"
   },
   autostandardize: {
     on: false

@@ -1,16 +1,18 @@
+import { log } from "./common"
+
 class Response {
   data: NSData
   constructor(data: NSData) {
     this.data = data
   }
   json(): any {
-    const json = NSJSONSerialization.JSONObjectWithDataOptions(
+    const res = NSJSONSerialization.JSONObjectWithDataOptions(
       this.data,
       NSJSONReadingOptions.MutableContainers
     )
-    if (json) return json
-    // new Error 不能使用
-    throw "不能序列化为 JSON"
+    if (NSJSONSerialization.isValidJSONObject(res)) return res
+    // 无法使用 new Error
+    throw "返回值不是 JSON 格式"
   }
 }
 
@@ -57,17 +59,17 @@ const fetch = (
 ): Promise<Response> => {
   return new Promise((resolve, reject) => {
     UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    // 这里只能使用 .new()
-    const queue = NSOperationQueue.new()
+    const queue = NSOperationQueue.mainQueue()
     const request = initRequest(url, options)
     NSURLConnection.sendAsynchronousRequestQueueCompletionHandler(
       request,
       queue,
-      (res: NSHTTPURLResponse, data: NSData, error: NSError) => {
+      (res: NSHTTPURLResponse, data: NSData, err: NSError) => {
         UIApplication.sharedApplication().networkActivityIndicatorVisible =
           false
+        // 很奇怪，获取不到 res 的属性
+        if (err.localizedDescription) reject(err.localizedDescription)
         if (data) resolve(new Response(data))
-        else reject(error)
       }
     )
   })
