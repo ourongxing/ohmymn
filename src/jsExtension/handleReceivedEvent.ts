@@ -2,14 +2,14 @@ import { actions } from "addons/synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
+import { delayBreak, isThisWindow, log, showHUD } from "utils/common"
+import eventHandlerController from "utils/event"
 import {
   getNoteById,
   getSelectNodes,
   getSelectNodesAll,
   undoGrouping
 } from "utils/note"
-import { delay, delayBreak, isThisWindow, log, showHUD } from "utils/common"
-import eventHandlerController from "utils/event"
 
 export const eventCtrl = eventHandlerController([
   { event: "InputOver" },
@@ -20,12 +20,12 @@ export const eventCtrl = eventHandlerController([
   { event: "ChangeExcerptRange" }
 ])
 
-declare interface IUserInfo {
-  [k: string]: any
-}
-
 interface eventHandler {
-  (sender: { userInfo: IUserInfo }): void
+  (sender: {
+    userInfo: {
+      [k: string]: any
+    }
+  }): void
 }
 
 const onButtonClick: eventHandler = sender => {
@@ -34,8 +34,9 @@ const onButtonClick: eventHandler = sender => {
   if (profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[]
 
-  if (profile.ohmymn.selectChildren) nodes = getSelectNodesAll()
-  else nodes = getSelectNodes()
+  nodes = profile.ohmymn.selectChildren
+    ? getSelectNodesAll()
+    : (nodes = getSelectNodes())
 
   if (nodes.length) {
     undoGrouping(() => {
@@ -73,10 +74,7 @@ const onInputOver: eventHandler = sender => {
   if (!isThisWindow(sender, self.window)) return
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
-  log(profile.anotherautotitle)
-  if (content) {
-    showHUD("输入已保存")
-  } else showHUD("输入已清空")
+  content ? showHUD("输入已保存") : showHUD("输入已清空")
 }
 
 // 不管是创建摘录还是修改摘录，都会提前触发这个事件，所以要判断一下，在修改之前保存上次摘录
