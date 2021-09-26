@@ -45,8 +45,7 @@ const genSection = (config: IConfig): ISection => {
     }
   ]
   for (const setting of config.settings) {
-    // magicaction 的 help 显示在弹窗上
-    if (setting.help && config.name.toLowerCase() != "magicaction")
+    if (setting.help && setting.type != cellViewType.buttonWithInput)
       rows.push(
         {
           type: cellViewType.plainText,
