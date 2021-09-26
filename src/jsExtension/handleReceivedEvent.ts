@@ -6,16 +6,15 @@ import {
   getNoteById,
   getSelectNodes,
   getSelectNodesAll,
-  RefreshAfterDBChange,
   undoGrouping
 } from "utils/note"
-import { delayBreak, log, showHUD } from "utils/common"
+import { delay, delayBreak, isThisWindow, log, showHUD } from "utils/common"
 import eventHandlerController from "utils/event"
 
 export const eventCtrl = eventHandlerController([
   { event: "InputOver" },
-  { event: "SwitchChange" },
   { event: "ButtonClick" },
+  { event: "SwitchChange" },
   { event: "PopupMenuOnNote" },
   { event: "ProcessNewExcerpt" },
   { event: "ChangeExcerptRange" }
@@ -26,10 +25,12 @@ declare interface IUserInfo {
 }
 
 interface eventHandler {
-  ({ userInfo }: { userInfo: IUserInfo }): void
+  (sender: { userInfo: IUserInfo }): void
 }
 
-const onButtonClick: eventHandler = ({ userInfo }) => {
+const onButtonClick: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
+  const { key, content } = sender.userInfo
   if (profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[]
 
@@ -38,8 +39,8 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
 
   if (nodes.length) {
     undoGrouping(() => {
-      actions[userInfo.key]({
-        content: userInfo.content,
+      actions[key]({
+        content: content,
         nodes: nodes
       })
     })
@@ -48,29 +49,32 @@ const onButtonClick: eventHandler = ({ userInfo }) => {
   }
 }
 
-const onSwitchChange: eventHandler = ({ userInfo }) => {
-  profile[userInfo.name][userInfo.key] = userInfo.status
-  switch (userInfo.key) {
+const onSwitchChange: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
+  const { name, key, status } = sender.userInfo
+  profile[name][key] = status
+  switch (key) {
     case "rightMode":
       layoutViewController()
       break
     case "lockExcerpt":
-      if (userInfo.status && profile.ohmymn.autoCorrect)
+      if (status && profile.ohmymn.autoCorrect)
         showHUD("锁定摘录不建议和自动矫正同时开启", 2)
       break
     case "autoCorrect":
-      if (userInfo.status)
-        showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
+      if (status) showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
       break
     default:
       break
   }
 }
 
-const onInputOver: eventHandler = ({ userInfo }) => {
-  profile[userInfo.name][userInfo.key] = userInfo.content
+const onInputOver: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
+  const { name, key, content } = sender.userInfo
+  profile[name][key] = content
   log(profile.anotherautotitle)
-  if (userInfo.content) {
+  if (content) {
     showHUD("输入已保存")
   } else showHUD("输入已清空")
 }
@@ -79,8 +83,9 @@ const onInputOver: eventHandler = ({ userInfo }) => {
 let isProcessNewExcerpt = false
 let isChangeExcerptRange = false
 let lastExcerptText = "😎"
-const onPopupMenuOnNote: eventHandler = async ({ userInfo }) => {
-  const note = <MbBookNote>userInfo.note
+const onPopupMenuOnNote: eventHandler = async sender => {
+  if (!isThisWindow(sender, self.window)) return
+  const note = <MbBookNote>sender.userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
   const success = await delayBreak(
@@ -93,22 +98,22 @@ const onPopupMenuOnNote: eventHandler = async ({ userInfo }) => {
   lastExcerptText = note.excerptText!
 }
 
-const onChangeExcerptRange: eventHandler = async ({ userInfo }) => {
+const onChangeExcerptRange: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
   log("修改摘录", "excerpt")
-  const note = getNoteById(userInfo.noteid)
+  const note = getNoteById(sender.userInfo.noteid)
   isChangeExcerptRange = true
   handleExcerpt(note, lastExcerptText)
-  RefreshAfterDBChange()
 }
 
-const onProcessNewExcerpt: eventHandler = ({ userInfo }) => {
+const onProcessNewExcerpt: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
   log("创建摘录", "excerpt")
-  const note = getNoteById(userInfo.noteid)
+  const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true
   // 摘录前初始化，使得创建摘录时可以自由修改
   if (profile.ohmymn.lockExcerpt) lastExcerptText = "😎"
   handleExcerpt(note)
-  RefreshAfterDBChange()
 }
 
 export default {
