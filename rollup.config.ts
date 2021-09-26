@@ -1,5 +1,5 @@
 import typescript from "@rollup/plugin-typescript"
-import copy from "rollup-plugin-copy2"
+import copy from "rollup-plugin-copy"
 import zip from "rollup-plugin-zip"
 import { uglify } from "rollup-plugin-uglify"
 import strip from "@rollup/plugin-strip"
@@ -31,7 +31,13 @@ export default {
   plugins: [
     typescript(),
     copy({
-      assets: ["mnaddon.json", ["assets/logo.png", "logo.png"]]
+      targets: [
+        {
+          src: ["assets/logo.png", "mnaddon.json", "assets/icon"],
+          dest: "dist"
+        }
+      ],
+      copyOnce: true
     }),
     isProd() &&
       strip({

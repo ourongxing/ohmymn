@@ -22,7 +22,7 @@
     "prettier": "^2.4.1",
     "rollup": "^2.42.4",
     "rollup-plugin-banner": "^0.2.1",
-    "rollup-plugin-copy2": "^0.2.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-uglify": "^6.0.4",
     "rollup-plugin-zip": "^1.0.1",
     "ts-jest": "^26.5.4",
