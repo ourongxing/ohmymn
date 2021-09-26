@@ -64,10 +64,11 @@ const undoGrouping = (f: () => void) => {
     f()
     Database.sharedInstance().setNotebookSyncDirty(self.notebookid)
   })
+  RefreshAfterDBChange()
 }
 
 /**
- * 可撤销的动作，刷新界面
+ * 刷新界面
  */
 const RefreshAfterDBChange = () => {
   postNotification("RefreshAfterDBChange", { topicid: self.notebookid })

@@ -1,6 +1,6 @@
 import { excerptNotes } from "utils/note"
 import { log, showHUD } from "utils/common"
-import { string2ReplaceParam } from "utils/input"
+import { reverseEscape, string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
   name: "MagicAction",
@@ -50,10 +50,10 @@ const util = {
   getSerialInfo(replace: string, length: number): string[] {
     const seriaInfo = replace
       .match(/%\[(.*)\]/)![0]
-      .substr(1)
+      .slice(1)
       .replace(/'/g, '"')
     // 将序列信息转成数组
-    const seriaInfo_arr = JSON.parse(`{ "key": ${seriaInfo} }`).key
+    const seriaInfo_arr = <any[]>reverseEscape(seriaInfo)
 
     // 自定义替换字符，数组元素大于 2
     if (seriaInfo_arr.length > 2)

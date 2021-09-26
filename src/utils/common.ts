@@ -66,7 +66,8 @@ const isThisWindow = (sender: any, window: any) => {
 /**
  * 用来判断是否是 OC 的 NSNull 对象
  */
-const isNull = (obj: any) => {
+const isOCNull = (obj: any) => {
+  // 用 obj is NSNull 不大行，因为只有运行时才能判断是否是 NSNull
   return obj == NSNull.new()
 }
 
@@ -80,5 +81,5 @@ export {
   openUrl,
   postNotification,
   isThisWindow,
-  isNull
+  isOCNull
 }
