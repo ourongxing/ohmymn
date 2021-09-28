@@ -1,4 +1,5 @@
 import { dataSource } from "addons/synthesizer"
+import { isOCNull, log } from "utils/common"
 
 const indexPath2tag = (indexPath: NSIndexPath): number => {
   return indexPath.section * 100 + indexPath.row + 999
@@ -65,11 +66,15 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = row.key == "space" ? 0 : 1
       cell.textLabel.text = row.label
-      if (row.key != "space")
-        cell.imageView.image = UIImage.imageWithDataScale(
-          NSData.dataWithContentsOfFile(self.mainPath + `/icon/${row.key}.png`),
-          2
+      const iconColor =
+        Application.sharedInstance().currentTheme == "Gray" ? "light" : "dark"
+      if (row.key != "space") {
+        const image = NSData.dataWithContentsOfFile(
+          self.mainPath + `/icon/${iconColor}/${row.key}.png`
         )
+        if (!isOCNull(image))
+          cell.imageView.image = UIImage.imageWithDataScale(image, 2)
+      }
       return cell
     }
     case cellViewType.switch: {

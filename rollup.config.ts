@@ -38,8 +38,7 @@ export default {
           src: ["assets/logo.png", "mnaddon.json", "assets/icon"],
           dest: dir
         }
-      ],
-      copyOnce: true
+      ]
     }),
     isProd &&
       strip({
