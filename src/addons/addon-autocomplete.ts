@@ -25,7 +25,8 @@ const config: IConfig = {
     {
       key: "completeSelected",
       type: cellViewType.button,
-      label: "补全单词词形"
+      label: "补全单词词形",
+      option: ["仅补全单词词形", "同时填充单词信息"]
     }
   ]
 }
@@ -139,15 +140,16 @@ const util = {
 
 const action: IActionMethod = {
   // 如果有标题，摘录为空，或者摘录与标题相同时，才会起作用
-  async completeSelected({ nodes }) {
+  async completeSelected({ nodes, content }) {
     for (const note of nodes) {
+      const option = Number(content)
       const title = note?.noteTitle
       const text = note?.excerptText
       if (!title) return
       const result = await util.checkGetWord(title.split(/\s*[;；]\s*/)[0])
       if (!result) return
       note.noteTitle = result.title
-      note.excerptText = result.text
+      if (option == 1) note.excerptText = result.text
     }
   }
 }

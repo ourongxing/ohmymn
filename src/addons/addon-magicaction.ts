@@ -138,7 +138,7 @@ const action: IActionMethod = {
     }
   },
   mergeTextSelected({ content, nodes }) {
-    const index = Number(content)
+    const option = Number(content)
     for (const node of nodes) {
       const allText = getAllText(node)
       // 清除卡片内所有文字，除了链接
@@ -158,7 +158,7 @@ const action: IActionMethod = {
           node.appendTextComment(allText)
         }
       ]
-      processor[index]()
+      processor[option]()
     }
   },
   changeColorSelected({ content, nodes }) {
