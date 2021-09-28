@@ -49,7 +49,7 @@ const util = {
       arr.length > 1
         ? arr.filter(item => !/\[.*\]/.test(item)).join("\n")
         : arr[0].replace(/\[.*\]/, "")
-    return text.replace(/^a\. /, "adj. $`")
+    return text.replace(/a\. /, "adj. $`")
   },
 
   async getWordInfo(word: string): Promise<Dict> {
@@ -63,7 +63,10 @@ const util = {
 
   getWordEx(lemma: string, ex: string): string {
     // s:demands/p:demanded/i:demanding/d:demanded/3:demands
-    const arr = ex.split(/\//).map(item => item.slice(2))
+    const arr = ex
+      .split(/\//)
+      .filter(item => !/[01]:/.test(item))
+      .map(item => item.slice(2))
     return [...new Set([lemma, ...arr])].join("; ")
   },
 
@@ -92,13 +95,12 @@ const util = {
       let info = await this.getWordInfo(text)
       if (info.exchange) {
         const ex = info.exchange
-        const lemma = ex.replace(/^0:(\w*).*$/, "$1")
+        const lemma = ex.replace(/^0:(\w*)\/[^/]*$/, "$1")
         if (lemma != ex) {
           text = lemma
           info = await this.getWordInfo(lemma)
         }
         title = this.getWordEx(text, info.exchange!)
-        log(title, "autocomplete")
       }
 
       // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
@@ -147,7 +149,7 @@ const action: IActionMethod = {
       const result = await util.checkGetWord(title.split(/\s*[;；]\s*/)[0])
       if (!result) return
       note.noteTitle = result.title
-      if (!text || text == title) note.excerptText = result.text
+      note.excerptText = result.text
     }
   }
 }
