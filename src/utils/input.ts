@@ -12,16 +12,28 @@ const checkInputCorrect = (text: string, key: string): boolean => {
             input.every(item => Number.isInteger(item)))
         ) {
         } else {
-          throw "输入不正确"
+          throw ""
         }
       case "customFill":
         reverseEscape(text)
         break
+      case "changeFillSelected": {
+        const index = Number(text)
+        if (!Number.isInteger(index)) throw ""
+        if (index > 3 || index < 0) throw ""
+        break
+      }
+      case "changeColorSelected": {
+        const index = Number(text)
+        if (!Number.isInteger(index)) throw ""
+        if (index > 16 || index < 0) throw ""
+        break
+      }
+      case "renameSelected":
+        if (!/\(.*"\)/.test(text)) text = `(/^.*$/g, ${text})`
       default:
         const params = string2ReplaceParam(text)
-        for (const item of params) {
-          "test".replace(item.regexp, item.newSubStr)
-        }
+        for (const item of params) "test".replace(item.regexp, item.newSubStr)
         break
     }
   } catch {

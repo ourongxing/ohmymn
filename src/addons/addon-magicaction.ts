@@ -98,43 +98,43 @@ const action: IActionMethod = {
   renameSelected({ content, nodes }) {
     // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
     // 如果单个选中，则为选中的顺序
-    // 检查输入正确性
-    try {
-      if (!/\(.*"\)/.test(content)) content = `(/^.*$/g, ${content})`
-      const params = string2ReplaceParam(content)
-      let newReplace: string[] = []
-      // 如果含有序列信息，就把获取新的 replace 参数
-      if (/%\[(.*)\]/.test(params[0].newSubStr)) {
-        newReplace = util.getSerialInfo(params[0].newSubStr, nodes.length)
-        nodes.forEach((note, index) => {
-          const title = note.noteTitle ?? ""
-          if (newReplace[index]) {
-            note.noteTitle = title.replace(params[0].regexp, newReplace[index])
-          }
-        })
-      }
-      // 或者直接替换
-      else {
-        nodes.forEach((note, index) => {
-          const title = note.noteTitle ?? ""
-          note.noteTitle = title.replace(params[0].regexp, params[0].newSubStr)
-        })
-      }
-    } catch {
-      showHUD("输入不正确")
+    if (!/\(.*"\)/.test(content)) content = `(/^.*$/g, ${content})`
+    const params = string2ReplaceParam(content)
+    let newReplace: string[] = []
+    // 如果含有序列信息，就把获取新的 replace 参数
+    if (/%\[(.*)\]/.test(params[0].newSubStr)) {
+      newReplace = util.getSerialInfo(params[0].newSubStr, nodes.length)
+      nodes.forEach((note, index) => {
+        const title = note.noteTitle ?? ""
+        if (newReplace[index]) {
+          note.noteTitle = title.replace(params[0].regexp, newReplace[index])
+        }
+      })
+    }
+    // 或者直接替换
+    else {
+      nodes.forEach((note, index) => {
+        const title = note.noteTitle ?? ""
+        note.noteTitle = title.replace(params[0].regexp, params[0].newSubStr)
+      })
     }
   },
   changeFillSelected({ content, nodes }) {
     const index = Number(content)
-    if (!isNaN(index) && index <= 3 && index > 0) {
-      for (const node of nodes) {
-        const notes = excerptNotes(node)
-        for (const note of notes) {
-          note.fillIndex = index - 1
-        }
+    for (const node of nodes) {
+      const notes = excerptNotes(node)
+      for (const note of notes) {
+        note.fillIndex = index - 1
       }
-    } else {
-      showHUD("输入不正确")
+    }
+  },
+  changeColorSelected({ content, nodes }) {
+    const index = Number(content)
+    for (const node of nodes) {
+      const notes = excerptNotes(node)
+      for (const note of notes) {
+        note.colorIndex = index - 1
+      }
     }
   },
   mergeTextSelected({ content, nodes }) {
@@ -157,19 +157,6 @@ const action: IActionMethod = {
           node.excerptText = ""
           node.appendTextComment(allText)
       }
-    }
-  },
-  changeColorSelected({ content, nodes }) {
-    const index = Number(content)
-    if (!isNaN(index) && index <= 16 && index > 0) {
-      for (const node of nodes) {
-        const notes = excerptNotes(node)
-        for (const note of notes) {
-          note.colorIndex = index - 1
-        }
-      }
-    } else {
-      showHUD("输入不正确")
     }
   }
 }
