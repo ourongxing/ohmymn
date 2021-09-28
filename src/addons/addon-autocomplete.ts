@@ -43,13 +43,13 @@ type Dict = {
 }
 
 const util = {
-  pureTranslation(text: string) {
+  getPureZH(text: string) {
     const arr = text.split("\n")
     text =
       arr.length > 1
         ? arr.filter(item => !/\[.*\]/.test(item)).join("\n")
         : arr[0].replace(/\[.*\]/, "")
-    return text.replace(/a\. /, "adj. $`")
+    return text.replace(/\ba\. /g, "adj. ")
   },
 
   async getWordInfo(word: string): Promise<Dict> {
@@ -106,15 +106,13 @@ const util = {
       // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
       const vars = {
         word: text,
-        en: isOCNull(info.definition) ? "" : info.definition,
         phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
         tag: isOCNull(info.tag) ? "" : this.getTag(info.tag),
         collins: isOCNull(info.collins)
           ? ""
           : this.getCollinsStar(info.collins),
-        zh: isOCNull(info.translation)
-          ? ""
-          : this.pureTranslation(info.translation!)
+        en: isOCNull(info.definition) ? "" : info.definition,
+        zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
       }
       if (profile.autocomplete.customFill) {
         let fill = reverseEscape(profile.autocomplete.customFill)
