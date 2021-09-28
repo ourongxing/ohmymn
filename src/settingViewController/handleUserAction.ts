@@ -1,4 +1,4 @@
-import { log, openUrl, postNotification, showHUD } from "utils/common"
+import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "addons/synthesizer"
 import { checkInputCorrect } from "utils/input"
 
@@ -21,22 +21,32 @@ const tableViewDidSelectRowAtIndexPath = (
       if (row.link) openUrl(row.link)
       break
     case cellViewType.buttonWithInput:
-      UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
-        row.label!,
-        row.help ?? "",
-        UIAlertViewStyle.PlainTextInput,
-        "取消",
-        ["确定"],
-        (alert: UIAlertView, buttonIndex: number) => {
-          if (buttonIndex == 0) return
-          let text = alert.textFieldAtIndex(0).text
-          if (!text) return
-          postNotification("ButtonClick", {
-            key: row.key,
-            content: text
-          })
+      ;(async () => {
+        for (;;) {
+          const { key, content } = await popup(
+            row.label!,
+            row.help ?? "",
+            UIAlertViewStyle.PlainTextInput,
+            row.option ?? ["确定"],
+            (alert: UIAlertView, buttonIndex: number) => {
+              return {
+                key: row.key!,
+                content: alert.textFieldAtIndex(0).text.trim()
+              }
+            }
+          )
+          if (!content) return
+          if (checkInputCorrect(content, row.key!)) {
+            postNotification("ButtonClick", {
+              key,
+              content
+            })
+            return
+          } else {
+            showHUD("输入错误，请重新输入")
+          }
         }
-      )
+      })()
       break
     case cellViewType.button:
       if (row.key == "space") return
