@@ -46,7 +46,9 @@ const config: IConfig = {
     {
       type: cellViewType.button,
       label: "切换摘录或标题",
-      key: "switchTitleorExcerpt"
+      key: "switchTitleorExcerpt",
+      option: ["常规互相切换", "交换标题和摘录"],
+      help: "常规切换为不存在的那一个"
     }
   ]
 }
@@ -95,18 +97,26 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  switchTitleorExcerpt({ nodes }) {
+  switchTitleorExcerpt({ nodes, content }) {
+    const option = Number(content)
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
-      const text = note.excerptText ?? ""
-      // 只允许存在一个
-      if ((title || text) && !(title && text)) {
-        // 去除划重点留下的 ****
-        note.noteTitle = text.replace(/\*\*(.*?)\*\*/g, "$1")
-        note.excerptText = title
-      } else if (title == text) {
-        // 如果摘录与标题相同，MN 只显示标题，此时我们必然想切换到摘录
-        note.noteTitle = ""
+      const text = note.excerptText
+        ? note.excerptText.replace(/\*\*(.*?)\*\*/g, "$1")
+        : ""
+      switch (option) {
+        // option: [ "常规互相切换", "交换标题和摘录"],
+        case 0:
+          // 只允许存在一个
+          if ((title || text) && !(title && text)) {
+            note.noteTitle = text
+            note.excerptText = title
+          } else if (title == text) note.noteTitle = ""
+          break
+        case 1:
+          note.noteTitle = text
+          note.excerptText = title
+          break
       }
     }
   }
