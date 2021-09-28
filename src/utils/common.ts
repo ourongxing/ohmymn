@@ -63,6 +63,37 @@ const isThisWindow = (sender: any, window: any) => {
   )
 }
 
+const popup = (
+  title: string,
+  message: string,
+  type: UIAlertViewStyle,
+  buttons: string[],
+  f: (
+    alert: UIAlertView,
+    buttonIndex: number
+  ) => {
+    key: string
+    content: string
+  }
+) => {
+  return new Promise<{
+    key: string
+    content: string
+  }>(resolve =>
+    UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
+      title,
+      message,
+      type,
+      "取消",
+      buttons,
+      (alert: UIAlertView, buttonIndex: number) => {
+        if (buttonIndex == 0) return
+        resolve(f(alert, buttonIndex - 1))
+      }
+    )
+  )
+}
+
 /**
  * 用来判断是否是 OC 的 NSNull 对象
  */
@@ -81,5 +112,6 @@ export {
   openUrl,
   postNotification,
   isThisWindow,
-  isOCNull
+  isOCNull,
+  popup
 }
