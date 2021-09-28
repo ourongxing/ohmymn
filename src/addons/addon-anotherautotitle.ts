@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { log } from "utils/common"
-import { string2ReplaceParam } from "utils/input"
-import { wordCount } from "utils/text"
+import { reverseEscape, string2ReplaceParam } from "utils/input"
+import { isHalfWidth, wordCount } from "utils/text"
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
@@ -67,7 +67,7 @@ const util = {
         }
       }
     }
-    // 没有标点符号
+    // 没有点号
     if (anotherautotitle.noPunctuation) {
       const reg = RegExp(/[。.、？?！!，,；;：:]/)
       if (!reg.test(text))
@@ -76,15 +76,21 @@ const util = {
         }
     }
     // 字数达标
-    log(text, "count")
-    log(wordCount(text), "count")
-    if (
-      anotherautotitle.wordCount &&
-      Number(anotherautotitle.wordCount) > wordCount(text)
-    )
-      return {
-        title: text
-      }
+    if (anotherautotitle.wordCount) {
+      const limitedNum = reverseEscape(anotherautotitle.wordCount)
+      const actualNum = wordCount(text)
+      log("实际字数：" + actualNum, "autotitle")
+      const isTitle =
+        typeof limitedNum == "number"
+          ? actualNum <= limitedNum
+          : isHalfWidth(text)
+          ? actualNum <= limitedNum[1]
+          : actualNum <= limitedNum[0]
+      if (isTitle)
+        return {
+          title: text
+        }
+    }
     return false
   }
 }

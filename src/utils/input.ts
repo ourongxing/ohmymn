@@ -1,9 +1,19 @@
+import { log } from "./common"
+
 const checkInputCorrect = (text: string, key: string): boolean => {
   try {
     switch (key) {
       case "wordCount":
-        if (isNaN(Number(text))) throw "不是数字"
-        break
+        const input = reverseEscape(text)
+        if (
+          typeof input == "number" ||
+          (Array.isArray(input) &&
+            input.length == 2 &&
+            input.every(item => Number.isInteger(item)))
+        ) {
+        } else {
+          throw "输入不正确"
+        }
       case "customFill":
         reverseEscape(text)
         break
