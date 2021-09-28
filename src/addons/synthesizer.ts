@@ -45,7 +45,11 @@ const genSection = (config: IConfig): ISection => {
     }
   ]
   for (const setting of config.settings) {
-    if (setting.help && setting.type != cellViewType.buttonWithInput)
+    if (
+      setting.help &&
+      setting.type != cellViewType.buttonWithInput &&
+      setting.type != cellViewType.button
+    )
       rows.push(
         {
           type: cellViewType.plainText,

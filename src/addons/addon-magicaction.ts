@@ -1,4 +1,4 @@
-import { excerptNotes } from "utils/note"
+import { excerptNotes, getAllText } from "utils/note"
 import { log, showHUD } from "utils/common"
 import { reverseEscape, string2ReplaceParam } from "utils/input"
 
@@ -19,6 +19,13 @@ const config: IConfig = {
       label: "修改摘录颜色",
       key: "changeColorSelected",
       help: "输入颜色索引，也就是顺序，1 到 16"
+    },
+    {
+      type: cellViewType.button,
+      label: "合并卡片内文字",
+      key: "mergeTextSelected",
+      help: "请不要尝试合并图片",
+      option: ["合并为摘录", "合并为评论"]
     },
     {
       type: cellViewType.buttonWithInput,
@@ -128,6 +135,30 @@ const action: IActionMethod = {
       }
     } else {
       showHUD("输入不正确")
+    }
+  },
+  mergeTextSelected({ content, nodes }) {
+    const index = Number(content)
+    for (const node of nodes) {
+      const allText = getAllText(node)
+      // 清除卡片内所有文字，除了链接
+      node.comments.forEach((comment, index) => {
+        if (
+          (comment.type == "HtmlNote" || comment.type == "TextNote") &&
+          comment.text.includes("marginnote3app")
+        ) {
+        } else node.removeCommentByIndex(index)
+      })
+      const processor = [
+        () => {
+          node.excerptText = allText
+        },
+        () => {
+          node.excerptText = ""
+          node.appendTextComment(allText)
+        }
+      ]
+      processor[index]()
     }
   },
   changeColorSelected({ content, nodes }) {

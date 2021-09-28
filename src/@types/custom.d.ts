@@ -27,6 +27,7 @@ declare global {
     label?: string
     help?: string
     link?: string
+    option?: string[]
   }
 
   interface IAction {
@@ -35,6 +36,7 @@ declare global {
     label: string
     // action 中的 help 现在在弹窗中，setting 中的 help 显示在上方
     help?: string
+    option?: string[]
   }
 
   // 生成的 DataSource
@@ -57,6 +59,8 @@ declare global {
     content?: string
     // buttonWithInput
     help?: string
+    // button
+    option?: string[]
   }
   interface IActionMethod {
     [k: string]: ({
