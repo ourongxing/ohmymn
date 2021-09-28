@@ -9,7 +9,7 @@ const tag2indexPath = (tag: number): NSIndexPath => {
   }
 }
 
-const tableViewDidSelectRowAtIndexPath = (
+const tableViewDidSelectRowAtIndexPath = async (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
@@ -21,49 +21,44 @@ const tableViewDidSelectRowAtIndexPath = (
       if (row.link) openUrl(row.link)
       break
     case cellViewType.buttonWithInput:
-      ;(async () => {
-        for (;;) {
-          const { key, content } = await popup(
-            row.label!,
-            row.help ?? "",
-            UIAlertViewStyle.PlainTextInput,
-            row.option ?? ["确定"],
-            (alert: UIAlertView, buttonIndex: number) => {
-              return {
-                key: row.key!,
-                content: alert.textFieldAtIndex(0).text.trim()
-              }
-            }
-          )
-          if (!content) return
-          if (checkInputCorrect(content, row.key!)) {
-            postNotification("ButtonClick", {
-              key,
-              content
-            })
-            return
-          } else {
-            showHUD("输入错误，请重新输入")
-          }
+      for (;;) {
+        const { key, content } = await popup(
+          row.label!,
+          row.help ?? "",
+          UIAlertViewStyle.PlainTextInput,
+          ["确定"],
+          (alert: UIAlertView, buttonIndex: number) => ({
+            key: row.key!,
+            content: alert.textFieldAtIndex(0).text.trim()
+          })
+        )
+        if (!content) return
+        if (checkInputCorrect(content, row.key!)) {
+          postNotification("ButtonClick", {
+            key,
+            content
+          })
+          return
+        } else {
+          showHUD("输入错误，请重新输入")
         }
-      })()
-      break
+      }
     case cellViewType.button:
       if (row.key == "space") return
-      UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
+      const { key, content } = await popup(
         row.label!,
         row.help ?? "",
         UIAlertViewStyle.Default,
-        "取消",
         row.option ?? ["确定"],
-        (alert: UIAlertView, buttonIndex: number) => {
-          if (buttonIndex == 0) return
-          postNotification("ButtonClick", {
-            key: row.key,
-            content: String(buttonIndex - 1)
-          })
-        }
+        (alert: UIAlertView, buttonIndex: number) => ({
+          key: row.key!,
+          content: String(buttonIndex)
+        })
       )
+      postNotification("ButtonClick", {
+        key,
+        content
+      })
   }
 }
 
