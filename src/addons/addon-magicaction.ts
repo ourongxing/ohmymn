@@ -149,16 +149,14 @@ const action: IActionMethod = {
         ) {
         } else node.removeCommentByIndex(index)
       })
-      const processor = [
-        () => {
+      switch (option) {
+        case 0:
           node.excerptText = allText
-        },
-        () => {
+          break
+        case 1:
           node.excerptText = ""
           node.appendTextComment(allText)
-        }
-      ]
-      processor[option]()
+      }
     }
   },
   changeColorSelected({ content, nodes }) {
