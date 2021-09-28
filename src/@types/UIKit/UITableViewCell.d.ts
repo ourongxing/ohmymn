@@ -19,7 +19,9 @@ declare global {
     selectedBackgroundView: UIView
     selectionStyle: UITableViewCellAccessoryTypeStyle
     accessoryType: UITableViewCellSelectionStyle
+    selected: boolean
 
+    /** not available */
     setSelected(selected: boolean, animated: boolean): void
     static makeWithStyleReuseIdentifier(
       style: UITableViewCellStyle,

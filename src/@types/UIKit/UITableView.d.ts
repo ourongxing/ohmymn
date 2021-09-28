@@ -77,6 +77,8 @@ declare global {
       scrollPosition: UITableViewScrollPosition,
       animated: boolean
     ): void
+
+    /** * not available */
     deselectRowAtIndexPath(indexPath: NSIndexPath, animated: boolean): void
   }
 }

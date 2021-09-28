@@ -33,7 +33,8 @@ const config: IConfig = {
     {
       type: cellViewType.button,
       label: "序列摘录自动换行",
-      key: "listSelected"
+      key: "listSelected",
+      option: ["确定"]
     }
   ]
 }

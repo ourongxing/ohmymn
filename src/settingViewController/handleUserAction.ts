@@ -1,4 +1,4 @@
-import { openUrl, postNotification, showHUD } from "utils/common"
+import { log, openUrl, postNotification, showHUD } from "utils/common"
 import { dataSource } from "addons/synthesizer"
 import { checkInputCorrect } from "utils/input"
 
@@ -13,6 +13,7 @@ const tableViewDidSelectRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
+  tableView.cellForRowAtIndexPath(indexPath).selected = false
   const section = dataSource[indexPath.section]
   const row = section.rows[indexPath.row]
   switch (row.type) {
@@ -24,9 +25,10 @@ const tableViewDidSelectRowAtIndexPath = (
         row.label!,
         row.help ?? "",
         UIAlertViewStyle.PlainTextInput,
-        "确定",
-        [],
-        (alert: UIAlertView) => {
+        "取消",
+        ["确定"],
+        (alert: UIAlertView, buttonIndex: number) => {
+          if (buttonIndex == 0) return
           let text = alert.textFieldAtIndex(0).text
           if (!text) return
           postNotification("ButtonClick", {
