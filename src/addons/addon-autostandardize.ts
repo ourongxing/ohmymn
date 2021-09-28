@@ -16,7 +16,7 @@ const config: IConfig = {
       key: "standardizeSelected",
       type: cellViewType.button,
       label: "优化摘录和标题排版",
-      option: ["仅优化标题", "仅优化摘录", "都优化"]
+      option: ["都优化", "仅优化标题", "仅优化摘录"]
     }
   ]
 }
@@ -43,13 +43,13 @@ const util = {
 
 const action: IActionMethod = {
   standardizeSelected({ nodes, content }) {
-    // option: ["仅优化标题", "仅优化摘录", "都优化"]
+    // option: ["都优化", "仅优化标题", "仅优化摘录"]
     const option = Number(content)
     for (const node of nodes) {
       const title = node.noteTitle
-      if (title && option != 1) {
+      if (title && option != 2) {
         node.noteTitle = util.standardizeText(title)
-        if (option == 0) return
+        if (option == 1) return
       }
       const notes = excerptNotes(node)
       for (const note of notes) {

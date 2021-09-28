@@ -40,27 +40,20 @@ const tableViewDidSelectRowAtIndexPath = (
       break
     case cellViewType.button:
       if (row.key == "space") return
-      if (row.option) {
-        UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
-          row.label!,
-          row.help ?? "",
-          UIAlertViewStyle.Default,
-          "取消",
-          row.option,
-          (alert: UIAlertView, buttonIndex: number) => {
-            if (!buttonIndex) return
-            postNotification("ButtonClick", {
-              key: row.key,
-              content: String(buttonIndex - 1)
-            })
-          }
-        )
-      } else {
-        postNotification("ButtonClick", {
-          key: row.key,
-          content: ""
-        })
-      }
+      UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
+        row.label!,
+        row.help ?? "",
+        UIAlertViewStyle.Default,
+        "取消",
+        row.option ?? ["确定"],
+        (alert: UIAlertView, buttonIndex: number) => {
+          if (buttonIndex == 0) return
+          postNotification("ButtonClick", {
+            key: row.key,
+            content: String(buttonIndex - 1)
+          })
+        }
+      )
   }
 }
 
