@@ -2,6 +2,7 @@ import { profile } from "profile"
 import { isOCNull, log, showHUD } from "utils/common"
 import { reverseEscape } from "utils/input"
 import fetch from "utils/network"
+import { RefreshAfterDBChange, undoGrouping } from "utils/note"
 import { isHalfWidth, wordCount } from "utils/text"
 import autostandardize from "./addon-autostandardize"
 
@@ -144,13 +145,15 @@ const action: IActionMethod = {
     const option = Number(content)
     for (const note of nodes) {
       const title = note?.noteTitle
-      const text = note?.excerptText
       if (!title) return
       const result = await util.checkGetWord(title.split(/\s*[;；]\s*/)[0])
       if (!result) return
-      note.noteTitle = result.title
-      if (option == 1) note.excerptText = result.text
+      undoGrouping(() => {
+        note.noteTitle = result.title
+        if (option == 1) note.excerptText = result.text
+      })
     }
+    RefreshAfterDBChange()
   }
 }
 

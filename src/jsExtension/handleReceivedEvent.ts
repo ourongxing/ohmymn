@@ -8,7 +8,7 @@ import {
   getNoteById,
   getSelectNodes,
   getSelectNodesAll,
-  undoGrouping
+  undoGroupingWithRefresh
 } from "utils/note"
 
 export const eventCtrl = eventHandlerController([
@@ -39,12 +39,20 @@ const onButtonClick: eventHandler = sender => {
     : (nodes = getSelectNodes())
 
   if (nodes.length) {
-    undoGrouping(() => {
-      actions[key]({
-        content: content,
-        nodes: nodes
-      })
-    })
+    switch (key) {
+      case "completeSelected":
+        actions[key]({
+          content: content,
+          nodes: nodes
+        })
+      default:
+        undoGroupingWithRefresh(() => {
+          actions[key]({
+            content: content,
+            nodes: nodes
+          })
+        })
+    }
   } else {
     showHUD("未选中任何脑图卡片")
   }
