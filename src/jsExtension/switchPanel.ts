@@ -55,7 +55,7 @@ const switchPanel = () => {
   if (panelStatus) closePanel()
   else {
     if (profile.ohmymn.doubleClick) {
-      const now = new Date().getTime()
+      const now = Date.now()
       if (lastClickButton && now - lastClickButton < 300) openPanel()
       else lastClickButton = now
     } else openPanel()

@@ -60,17 +60,23 @@ const getNotebookById = (notebookid: string): MbTopic => {
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
 const undoGrouping = (f: () => void) => {
-  UndoManager.sharedInstance().undoGrouping("ohmymn", self.notebookid, () => {
-    f()
-    Database.sharedInstance().setNotebookSyncDirty(self.notebookid)
-  })
+  UndoManager.sharedInstance().undoGrouping(
+    String(Date.now()),
+    self.notebookid,
+    f
+  )
+}
+
+const undoGroupingWithRefresh = (f: () => void) => {
+  undoGrouping(f)
   RefreshAfterDBChange()
 }
 
 /**
- * 刷新界面
+ * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
+  Database.sharedInstance().setNotebookSyncDirty(self.notebookid)
   postNotification("RefreshAfterDBChange", { topicid: self.notebookid })
 }
 
@@ -114,10 +120,11 @@ export {
   getSelectNodes,
   getSelectNodesAll,
   excerptNotes,
-  undoGrouping,
   getCommentIndex,
   getNotebookById,
   getNoteById,
-  RefreshAfterDBChange,
-  getAllText
+  getAllText,
+  undoGrouping,
+  undoGroupingWithRefresh,
+  RefreshAfterDBChange
 }
