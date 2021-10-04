@@ -1,5 +1,4 @@
 import { excerptNotes, getAllText } from "utils/note"
-import { log, showHUD } from "utils/common"
 import { reverseEscape, string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
@@ -141,14 +140,19 @@ const action: IActionMethod = {
     const option = Number(content)
     for (const node of nodes) {
       const allText = getAllText(node)
-      // 清除卡片内所有文字，除了链接
-      node.comments.forEach((comment, index) => {
+      // MN 这个里的 API 名称设计的有毛病
+      const linkComments: textComment[] = []
+      // 从后往前删，记录链接，最后恢复
+      while (node.comments.length) {
+        const comment = node.comments[node.comments.length - 1]
         if (
-          (comment.type == "HtmlNote" || comment.type == "TextNote") &&
+          comment.type == "TextNote" &&
           comment.text.includes("marginnote3app")
         ) {
-        } else node.removeCommentByIndex(index)
-      })
+          linkComments.push(comment)
+        }
+        node.removeCommentByIndex(node.comments.length - 1)
+      }
       switch (option) {
         case 0:
           node.excerptText = allText
@@ -157,6 +161,9 @@ const action: IActionMethod = {
           node.excerptText = ""
           node.appendTextComment(allText)
       }
+      linkComments.forEach(linkComment => {
+        node.appendTextComment(linkComment.text)
+      })
     }
   }
 }
