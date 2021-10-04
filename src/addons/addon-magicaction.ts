@@ -8,10 +8,10 @@ const config: IConfig = {
   settings: [],
   actions: [
     {
-      type: cellViewType.buttonWithInput,
-      label: "修改摘录填充",
-      help: "输入填充索引，也就是顺序，1 到 3",
-      key: "changeFillSelected"
+      type: cellViewType.button,
+      label: "修改摘录样式",
+      key: "changeFillSelected",
+      option: ["边框+填充", "填充", "边框"]
     },
     {
       type: cellViewType.buttonWithInput,
@@ -123,7 +123,7 @@ const action: IActionMethod = {
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
-        note.fillIndex = index - 1
+        note.fillIndex = index
       }
     }
   },
