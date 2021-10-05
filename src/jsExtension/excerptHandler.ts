@@ -3,7 +3,7 @@ import {
   getCommentIndex,
   getNotebookById,
   getNoteById,
-  undoGrouping
+  undoGroupingWithRefresh
 } from "utils/note"
 import { delayBreak, log, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
@@ -121,7 +121,7 @@ const excerptHandler = async () => {
 }
 
 const processExcerpt = (title: string | undefined, text: string) => {
-  undoGrouping(() => {
+  undoGroupingWithRefresh(() => {
     if (text) note.excerptText = text
     // 如果摘录为空，有三种情况
     else {
