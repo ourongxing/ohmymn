@@ -128,8 +128,29 @@ const action: IActionMethod = {
     }
   },
   changeColorSelected({ content, nodes }) {
-    const index = Number(content)
+    let index
+    let param
+    if (isNaN(Number(content))) {
+      param = string2ReplaceParam(content)[0]
+      index = Number(param.newSubStr)
+    } else index = Number(content)
     for (const node of nodes) {
+      if (param) {
+        switch (param.fnKey) {
+          case 0:
+            if (!param.regexp.test(node.noteTitle ?? "")) continue
+            if (!param.regexp.test(getAllText(node))) continue
+            break
+          case 1:
+            if (!param.regexp.test(node.noteTitle ?? "")) continue
+            break
+          case 2:
+            if (!param.regexp.test(getAllText(node))) continue
+            break
+          default:
+            break
+        }
+      }
       const notes = excerptNotes(node)
       for (const note of notes) {
         note.colorIndex = index - 1

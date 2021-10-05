@@ -17,14 +17,16 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "customFill":
         reverseEscape(text)
         break
-      case "changeFillSelected": {
-        const index = Number(text)
-        if (!Number.isInteger(index)) throw ""
-        if (index > 3 || index < 0) throw ""
-        break
-      }
       case "changeColorSelected": {
-        const index = Number(text)
+        let index = 0
+        if (text[0] == "(") {
+          const param = string2ReplaceParam(text)
+          if (param.length > 1) throw ""
+          param[0].regexp.test("test")
+          index = Number(param[0].newSubStr)
+        } else {
+          index = Number(text)
+        }
         if (!Number.isInteger(index)) throw ""
         if (index > 16 || index < 0) throw ""
         break
