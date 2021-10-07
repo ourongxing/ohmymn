@@ -1,8 +1,11 @@
+import commonjs from "@rollup/plugin-commonjs"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
+import strip from "@rollup/plugin-strip"
 import typescript from "@rollup/plugin-typescript"
+import { defineConfig } from "rollup"
+import banner from "rollup-plugin-banner"
 import copy from "rollup-plugin-copy"
 import { uglify } from "rollup-plugin-uglify"
-import strip from "@rollup/plugin-strip"
-import banner from "rollup-plugin-banner"
 import mnaddon from "./mnaddon.json"
 
 // 判断是否为开发环境
@@ -19,11 +22,12 @@ version: ${mnaddon.version} by ${mnaddon.author}`
 const dir = isProd
   ? "./dist"
   : `/Users/${useName}/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.ohmymn`
-export default {
+
+export default defineConfig({
   input: ["src/main.ts"],
   output: {
     dir,
-    format: "iife",
+    format: "esm",
     exports: "none",
     sourcemap: false
   },
@@ -32,6 +36,8 @@ export default {
   },
   plugins: [
     typescript(),
+    nodeResolve({ browser: true }),
+    commonjs(),
     copy({
       targets: [
         {
@@ -48,4 +54,4 @@ export default {
     isProd && uglify(),
     isProd && banner(_banner)
   ]
-}
+})

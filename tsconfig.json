@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noEmit": true,
     "module": "ESNext",
-    "target": "es5",
+    "target": "ES2018",
     "allowJs": false,
     "sourceMap": false,
     "noImplicitAny": true,
