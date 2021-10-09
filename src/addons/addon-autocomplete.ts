@@ -18,7 +18,7 @@ const config: IConfig = {
     {
       key: "customFill",
       type: cellViewType.input,
-      help: "自定义摘录填充信息，点击查看支持变量",
+      label: "自定义摘录填充信息，点击查看支持变量",
       link: "https://www.notion.so/busiyi/AutoComplete-1eab78ee6d7648339e088c593326b5ca"
     }
   ],
@@ -145,9 +145,9 @@ const action: IActionMethod = {
     const option = Number(content)
     for (const note of nodes) {
       const title = note?.noteTitle
-      if (!title) return
+      if (!title) continue
       const result = await util.checkGetWord(title.split(/\s*[;；]\s*/)[0])
-      if (!result) return
+      if (!result) continue
       undoGrouping(() => {
         note.noteTitle = result.title
         if (option == 1) note.excerptText = result.text
