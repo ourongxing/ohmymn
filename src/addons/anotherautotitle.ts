@@ -1,6 +1,6 @@
 import { profile } from "profile"
 import { log } from "utils/common"
-import { reverseEscape, string2ReplaceParam } from "utils/input"
+import { reverseEscape, string2ReplaceParam } from "inputChecker"
 import { isHalfWidth, wordCount } from "utils/text"
 
 const config: IConfig = {

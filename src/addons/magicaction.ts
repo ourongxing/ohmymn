@@ -1,5 +1,5 @@
 import { excerptNotes, getAllText } from "utils/note"
-import { reverseEscape, string2ReplaceParam } from "utils/input"
+import { reverseEscape, string2ReplaceParam } from "inputChecker"
 
 const config: IConfig = {
   name: "MagicAction",

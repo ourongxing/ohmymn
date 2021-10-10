@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { log } from "utils/common"
-import { string2ReplaceParam } from "utils/input"
+import { string2ReplaceParam } from "inputChecker"
 
 const config: IConfig = {
   name: "AutoList",

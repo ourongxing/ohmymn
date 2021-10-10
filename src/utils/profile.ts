@@ -1,4 +1,4 @@
-import { dataSource } from "addons/synthesizer"
+import { dataSource } from "synthesizer"
 import { log, showHUD } from "utils/common"
 import { profile, docProfile, IProfile, IProfile_doc } from "profile"
 

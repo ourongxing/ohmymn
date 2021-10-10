@@ -1,4 +1,4 @@
-import { actions } from "addons/synthesizer"
+import { actions } from "synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"

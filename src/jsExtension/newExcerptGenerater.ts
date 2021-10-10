@@ -1,4 +1,4 @@
-import { utils } from "addons/synthesizer"
+import { utils } from "synthesizer"
 import { profile } from "profile"
 
 export const genTitleText = async (

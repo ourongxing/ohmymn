@@ -1,4 +1,4 @@
-import { log } from "./common"
+import { log } from "./utils/common"
 
 const checkInputCorrect = (text: string, key: string): boolean => {
   try {

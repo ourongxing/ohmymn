@@ -1,6 +1,6 @@
 import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
-import { dataSource } from "addons/synthesizer"
-import { checkInputCorrect } from "utils/input"
+import { dataSource } from "synthesizer"
+import { checkInputCorrect } from "inputChecker"
 
 const tag2indexPath = (tag: number): NSIndexPath => {
   return {

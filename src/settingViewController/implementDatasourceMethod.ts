@@ -1,4 +1,4 @@
-import { dataSource } from "addons/synthesizer"
+import { dataSource } from "synthesizer"
 import { isOCNull, log } from "utils/common"
 
 const indexPath2tag = (indexPath: NSIndexPath): number => {

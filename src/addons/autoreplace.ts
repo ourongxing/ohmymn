@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { showHUD } from "utils/common"
-import { string2ReplaceParam } from "utils/input"
+import { string2ReplaceParam } from "inputChecker"
 
 const config: IConfig = {
   name: "AutoReplace",

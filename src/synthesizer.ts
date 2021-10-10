@@ -1,10 +1,10 @@
-import autostandardize from "./addon-autostandardize"
-import ohmymn from "./addon-ohmymn"
-import magicaction from "addons/addon-magicaction"
-import autocomplete from "./addon-autocomplete"
-import anotherautotitle from "./addon-anotherautotitle"
-import autolist from "./addon-autolist"
-import autoreplace from "./addon-autoreplace"
+import anotherautotitle from "addons/anotherautotitle"
+import autocomplete from "addons/autocomplete"
+import autolist from "addons/autolist"
+import autoreplace from "addons/autoreplace"
+import autostandardize from "addons/autostandardize"
+import magicaction from "addons/magicaction"
+import ohmymn from "addons/ohmymn"
 
 interface IAddon {
   config: IConfig
