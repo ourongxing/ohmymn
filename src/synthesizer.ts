@@ -98,7 +98,11 @@ export const genDataSource = (
 }
 
 const genDataSourceIndex = (dataSource: Array<ISection>) => {
-  const dataSourceIndex: any = {}
+  const dataSourceIndex: {
+    [k: string]: {
+      [k: string]: [number, number]
+    }
+  } = {}
   dataSource.forEach((section, secIndex) => {
     const name = section.header.toLowerCase()
     if (name != "magicaction") {

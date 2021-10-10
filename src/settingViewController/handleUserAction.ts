@@ -85,11 +85,11 @@ const switchChange = (sender: UISwitch) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
   const section = dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
-  row.status = sender.on
+  row.status = sender.on ? true : false
   postNotification("SwitchChange", {
     name: section.header.toLowerCase(),
     key: row.key,
-    status: sender.on
+    status: sender.on ? true : false
   })
 }
 

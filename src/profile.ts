@@ -9,7 +9,7 @@ const profileType = {
   },
   autocomplete: {
     on: false,
-    customFill: "{{zh}}"
+    customFill: `"{{zh}}"`
   },
   autostandardize: {
     on: false
@@ -19,7 +19,7 @@ const profileType = {
     mergeTitle: false,
     noPunctuation: false,
     changeTitleNoLimit: false,
-    wordCount: "10",
+    wordCount: "[10,5]",
     customTitle: ""
   },
   autolist: {
@@ -35,17 +35,23 @@ const profileType = {
 }
 
 const docProfileType = {
-  autoCorrect: false
+  ohmymn: {
+    autoCorrect: false
+  }
 }
 
 export type IProfile = typeof profileType
 export type IProfile_doc = typeof docProfileType
 
-const profile: { [k: string]: { [k: string]: boolean | string } } & IProfile = {
+const profile: {
+  [k: string]: { [k: string]: boolean | string | number[] }
+} & IProfile = {
   ...profileType
 }
 
-const docProfile: IProfile_doc = {
+const docProfile: {
+  [k: string]: { [k: string]: boolean | string | number[] }
+} & IProfile_doc = {
   ...docProfileType
 }
 
