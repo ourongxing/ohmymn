@@ -65,10 +65,10 @@ const tableViewDidSelectRowAtIndexPath = async (
 const textFieldShouldReturn = (sender: UITextField) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
   const section = dataSource[indexPath.section]
-  const row = section.rows[indexPath.row]
+  const row = <IRowInput>section.rows[indexPath.row]
   let text = sender.text.trim()
   // 可以为空
-  if (!text || checkInputCorrect(text, row.key!)) {
+  if (!text || checkInputCorrect(text, row.key)) {
     // 输入正确则取消光标
     sender.resignFirstResponder()
     row.content = text
@@ -84,7 +84,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
 const switchChange = (sender: UISwitch) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
   const section = dataSource[indexPath.section]
-  const row = section.rows[indexPath.row]
+  const row = <IRowSwitch>section.rows[indexPath.row]
   row.status = sender.on
   postNotification("SwitchChange", {
     name: section.header.toLowerCase(),

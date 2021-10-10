@@ -5,6 +5,7 @@ import autoreplace from "addons/autoreplace"
 import autostandardize from "addons/autostandardize"
 import magicaction from "addons/magicaction"
 import ohmymn from "addons/ohmymn"
+import { log } from "utils/common"
 
 interface IAddon {
   config: IConfig
@@ -34,8 +35,6 @@ const genActionsUtils = () => {
   return { actions, utils }
 }
 
-export const { actions, utils } = genActionsUtils()
-
 const genSection = (config: IConfig): ISection => {
   const rows: Array<IRow> = [
     {
@@ -50,15 +49,19 @@ const genSection = (config: IConfig): ISection => {
       setting.type != cellViewType.buttonWithInput &&
       setting.type != cellViewType.button
     )
-      rows.push(
-        {
-          type: cellViewType.plainText,
-          label: setting.help,
-          link: setting.link ?? ""
-        },
-        setting
-      )
-    else rows.push(setting)
+      rows.push({
+        type: cellViewType.plainText,
+        label: setting.help,
+        link: setting.link ?? ""
+      })
+    else if (setting.label && setting.type == cellViewType.input)
+      rows.push({
+        type: cellViewType.plainText,
+        label: setting.label,
+        link: setting.link ?? ""
+      })
+    //@ts-ignore
+    rows.push(setting)
   }
   return {
     header: config.name,
@@ -94,7 +97,30 @@ export const genDataSource = (
   return dataSource
 }
 
+const genDataSourceIndex = (dataSource: Array<ISection>) => {
+  const dataSourceIndex: any = {}
+  dataSource.forEach((section, secIndex) => {
+    const name = section.header.toLowerCase()
+    if (name != "magicaction") {
+      dataSourceIndex[name] = {}
+      section.rows.forEach((row, rowIndex) => {
+        switch (row.type) {
+          case cellViewType.inlineInput:
+          case cellViewType.input:
+          case cellViewType.switch:
+          case cellViewType.select:
+          case cellViewType.muiltSelect:
+            dataSourceIndex[name][row.key] = [secIndex, rowIndex]
+        }
+      })
+    }
+  })
+  return dataSourceIndex
+}
+
+export const { actions, utils } = genActionsUtils()
 export const dataSource: Array<ISection> = genDataSource(
   addons.map(addon => addon.config),
   magicaction.config
 )
+export const dataSourceIndex = genDataSourceIndex(dataSource)
