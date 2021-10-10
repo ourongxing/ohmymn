@@ -10,9 +10,12 @@ import { profile, docProfile, IProfile, IProfile_doc } from "profile"
 
 const profile_doc: { [k: string]: IProfile_doc } = {}
 const reset = { ...docProfile }
+const profileKey = "marginnote_ohmymn_profile_global"
+const docProfileKey = "marginnote_ohmymn_profile_doc"
 
 const refreshDocDataSource = (docProfile: IProfile_doc) => {
   for (const row of dataSource[1].rows) {
+    if (row.type == cellViewType.plainText) continue
     const key = <keyof IProfile_doc>row.key
     if (key && docProfile[key] != undefined) {
       switch (row.type) {
@@ -24,11 +27,10 @@ const refreshDocDataSource = (docProfile: IProfile_doc) => {
   }
 }
 
-export const readProfile = (docmd5: string, readAll = false) => {
+const readProfile = (docmd5: string, readAll = false) => {
   if (readAll) {
-    let tmp_global = NSUserDefaults.standardUserDefaults().objectForKey(
-      "marginnote_ohmymn_profile_global"
-    )
+    let tmp_global =
+      NSUserDefaults.standardUserDefaults().objectForKey(profileKey)
     if (tmp_global) Object.assign(profile, JSON.parse(tmp_global))
     for (const section of dataSource) {
       for (const row of section.rows) {
@@ -47,9 +49,8 @@ export const readProfile = (docmd5: string, readAll = false) => {
       }
     }
   }
-  let tmp_doc = NSUserDefaults.standardUserDefaults().objectForKey(
-    "marginnote_ohmymn_profile_doc"
-  )
+  let tmp_doc =
+    NSUserDefaults.standardUserDefaults().objectForKey(docProfileKey)
   if (tmp_doc && JSON.parse(tmp_doc)[docmd5]) {
     // 只有 ohmymn 里的可以保存为仅本文档
     Object.assign(profile.ohmymn, JSON.parse(tmp_doc)[docmd5])
@@ -66,7 +67,7 @@ export const readProfile = (docmd5: string, readAll = false) => {
 }
 
 // 切换的时候仅保存当前文档的，退出的时候全部保存
-export const saveProfile = (docmd5: string, saveAll = false) => {
+const saveProfile = (docmd5: string, saveAll = false) => {
   const thisDocProfile: IProfile_doc = { ...docProfile }
   Object.keys(reset).forEach((key: string) => {
     //@ts-ignore
@@ -74,7 +75,7 @@ export const saveProfile = (docmd5: string, saveAll = false) => {
   })
   NSUserDefaults.standardUserDefaults().setObjectForKey(
     JSON.stringify(Object.assign(profile_doc, { [docmd5]: thisDocProfile })),
-    "marginnote_ohmymn_profile_doc"
+    docProfileKey
   )
   log("保存文档配置", "profile")
   log(thisDocProfile, "profile")
@@ -82,7 +83,14 @@ export const saveProfile = (docmd5: string, saveAll = false) => {
     log("保存全部配置", "profile")
     NSUserDefaults.standardUserDefaults().setObjectForKey(
       JSON.stringify(profile),
-      "marginnote_ohmymn_profile_global"
+      profileKey
     )
   }
 }
+
+const removeProfile = () => {
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
+}
+
+export { saveProfile, readProfile, removeProfile }

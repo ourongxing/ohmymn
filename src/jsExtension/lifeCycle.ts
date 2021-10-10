@@ -1,6 +1,6 @@
 import settingViewControllerInst from "settingViewController/main"
-import { readProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, log, showHUD } from "utils/common"
+import { readProfile, removeProfile, saveProfile } from "utils/profile"
+import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel } from "./switchPanel"
 import { eventCtrl } from "./handleReceivedEvent"
 
@@ -87,12 +87,7 @@ const addonDidConnect = () => {
 // 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
   log("插件停用", "lifeCycle")
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(
-    "marginnote_ohmymn_profile_global"
-  )
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(
-    "marginnote_ohmymn_profile_doc"
-  )
+  removeProfile()
 }
 
 // 进入后台保存配置，适合 iPad 上
@@ -108,10 +103,10 @@ const applicationWillEnterForeground = () => {
 }
 
 export const clsMethons = {
-  addonDidConnect,
+  // addonDidConnect,
   addonWillDisconnect,
-  applicationDidEnterBackground,
-  applicationWillEnterForeground
+  applicationDidEnterBackground
+  // applicationWillEnterForeground
 }
 
 export const InstMethods = {
