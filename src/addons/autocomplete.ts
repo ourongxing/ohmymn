@@ -4,7 +4,7 @@ import { reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
 import { isHalfWidth, wordCount } from "utils/text"
-import autostandardize from "./addon-autostandardize"
+import autostandardize from "./autostandardize"
 
 const config: IConfig = {
   name: "AutoComplete",
