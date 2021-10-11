@@ -20,7 +20,7 @@ const profileType = {
     noPunctuation: false,
     changeTitleNoLimit: false,
     wordCount: "[10,5]",
-    customTitle: ""
+    customBeTitle: ""
   },
   autolist: {
     on: false,

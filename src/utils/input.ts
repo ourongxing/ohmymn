@@ -6,34 +6,29 @@ const reverseEscape = (text: string) => {
 }
 
 const string2ReplaceParam = (text: string): ReplaceParam[] => {
-  // 首先通过分号来分离，格外注意，MN 无法使用(?<!)，正则很多都不支持，try catch 都没用
-  // 会导致插件无法加载，这样写或许兼容性高一点
-  const brackets = text
-    .replace(/\)\s*;/g, ")delimiter")
-    .split("delimiter")
-    .map(item => item.trim())
-  const willReturn = []
-  for (const bracket of brackets) {
-    const tmp = bracket
-      .substring(1, bracket.length - 1)
-      .replace(/(\/[gi]{0,2})\s*,/g, "$1delimiter")
-      .replace(/"\s*,/g, '"delimiter')
-      .split("delimiter")
-      .map(item => item.trim())
-    const [regString, newSubStr, fnKey] = tmp
-    if (fnKey && isNaN(Number(fnKey))) throw new Error("")
-    const regParts = regString.match(/^\/(.*?)\/([gim]*)$/)
-    let regexp = null
-    if (regParts) regexp = new RegExp(regParts[1], regParts[2])
-    else regexp = new RegExp(regString)
-
-    willReturn.push({
+  // 输入格式 (/sd/, "", 1)
+  const brackets = text.split(/;\s?(?=\()/).map(item => item.trim())
+  const params = []
+  for (let bracket of brackets) {
+    const [regString, newSubStr, fnKey] = bracket
+      // 去括号
+      .slice(1, -1)
+      .replace(/(\/[gimsuy]*)\s*,\s*"/, "$1😎")
+      .replace(/"\s*,/g, '"😎')
+      .split("😎")
+    if (fnKey && isNaN(Number(fnKey))) throw ""
+    if (!fnKey && typeof reverseEscape(newSubStr) == "number") throw ""
+    const regParts = regString.match(/^\/(.*?)\/([gimsuy]*)$/)
+    const regexp = regParts
+      ? new RegExp(regParts[1], regParts[2])
+      : new RegExp(regString)
+    params.push({
       regexp,
       newSubStr: reverseEscape(newSubStr),
       fnKey: fnKey ? Number(fnKey) : 0
     })
   }
-  return willReturn
+  return params
 }
 
 interface ReplaceParam {
