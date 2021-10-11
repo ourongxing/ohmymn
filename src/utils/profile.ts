@@ -17,9 +17,9 @@ const setDataByKey = (data: string, key: string) => {
 }
 
 const updateDataSource = (profile: IProfile_doc | IProfile) => {
-  Object.entries(profile).forEach(([name, _]) => {
-    Object.entries(_).forEach(([key, val]) => {
-      const [section, row] = dataSourceIndex[name][key]
+  for (const [name, _] of Object.entries(profile)) {
+    for (const [key, val] of Object.entries(_)) {
+      const [section, row] = dataSourceIndex?.[name]?.[key] ?? [0, 0]
       switch (typeof val) {
         case "boolean":
           // @ts-ignore
@@ -33,8 +33,8 @@ const updateDataSource = (profile: IProfile_doc | IProfile) => {
           // @ts-ignore
           dataSource[section].rows[row].selections = val
       }
-    })
-  })
+    }
+  }
 }
 
 const mergeObject = (obj: any, src: any) => {
@@ -49,6 +49,8 @@ const readProfile = (docmd5: string, readAll = false) => {
     const string_profile = getDataByKey(profileKey)
     if (string_profile) Object.assign(profile, JSON.parse(string_profile))
     updateDataSource(profile)
+    log("读取全局配置", "profile")
+    log(profile.ohmymn, "profile")
   }
 
   // 重置默认文档配置，预防后期增加新的文档配置项
@@ -63,7 +65,7 @@ const readProfile = (docmd5: string, readAll = false) => {
       mergeObject(profile, json_doc_profile)
       allDocProfile = JSON.parse(string_doc_profile)
       updateDataSource(json_doc_profile)
-      log("检测到配置，正在读取", "profile")
+      log("检测到文档配置，正在读取", "profile")
     }
   }
 }
@@ -83,6 +85,7 @@ const saveProfile = (docmd5: string, saveAll = false) => {
   log("保存文档配置", "profile")
   if (saveAll) {
     log("保存全部配置", "profile")
+    log(profile.ohmymn, "profile")
     setDataByKey(JSON.stringify(profile), profileKey)
   }
 }
