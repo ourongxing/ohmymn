@@ -19,7 +19,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       case "changeColorSelected": {
         let index = 0
-        if (text[0] == "(") {
+        if (/^\s*\(.*\)\s*$/.test(text)) {
           const param = string2ReplaceParam(text)
           if (param.length > 1) throw ""
           param[0].regexp.test("test")
@@ -32,10 +32,11 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       }
       case "renameSelected":
-        if (!/\(.*"\)/.test(text)) text = `(/^.*$/g, ${text})`
+        text = /^\s*".*"\s*$/.test(text) ? `(/^.*$/g, ${text})` : text
       default:
-        const params = string2ReplaceParam(text)
-        for (const item of params) "test".replace(item.regexp, item.newSubStr)
+        string2ReplaceParam(text).forEach(param => {
+          "test".replace(param.regexp, param.newSubStr)
+        })
         break
     }
   } catch {

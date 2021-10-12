@@ -97,7 +97,7 @@ const action: IActionMethod = {
   renameSelected({ content, nodes }) {
     // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
     // 如果单个选中，则为选中的顺序
-    if (!/\(.*"\)/.test(content)) content = `(/^.*$/g, ${content})`
+    content = /^\s*".*"\s*$/.test(content) ? `(/^.*$/g, ${content})` : content
     const params = string2ReplaceParam(content)
     let newReplace: string[] = []
     // 如果含有序列信息，就把获取新的 replace 参数
@@ -136,18 +136,19 @@ const action: IActionMethod = {
     } else index = Number(content)
     for (const node of nodes) {
       if (param) {
+        const [titleNot, allTextNot] = [
+          !param.regexp.test(node.noteTitle ?? ""),
+          !param.regexp.test(getAllText(node))
+        ]
         switch (param.fnKey) {
           case 0:
-            if (!param.regexp.test(node.noteTitle ?? "")) continue
-            if (!param.regexp.test(getAllText(node))) continue
+            if (titleNot && allTextNot) continue
             break
           case 1:
-            if (!param.regexp.test(node.noteTitle ?? "")) continue
+            if (titleNot) continue
             break
           case 2:
-            if (!param.regexp.test(getAllText(node))) continue
-            break
-          default:
+            if (allTextNot) continue
             break
         }
       }
