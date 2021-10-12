@@ -1,6 +1,6 @@
 import { profile } from "profile"
 import { log } from "utils/common"
-import { reverseEscape, string2ReplaceParam } from "utils/input"
+import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, wordCount } from "utils/text"
 
 const config: IConfig = {
@@ -57,17 +57,16 @@ const util = {
   checkGetTitle(text: string): {} | boolean {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customBeTitle) {
-      const params = string2ReplaceParam(anotherautotitle.customBeTitle)
-      for (const item of params) {
-        // 匹配到了就说明可以作为标题，然后传回 replace 的结果，越前面优先级越高
-        if (text.match(item.regexp)) {
-          const title = text.replace(item.regexp, item.newSubStr)
-          return {
-            title,
-            text: item.fnKey ? text : ""
-          }
+      const regs = string2RegArray(anotherautotitle.customBeTitle)
+      let flag = false
+      // 全部匹配到才转为标题
+      regs.forEach(reg => {
+        flag = reg.test(text) ? true : false
+      })
+      if (flag)
+        return {
+          title: text
         }
-      }
     }
     // 没有点号
     if (anotherautotitle.noPunctuation) {

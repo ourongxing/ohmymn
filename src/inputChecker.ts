@@ -1,4 +1,8 @@
-import { reverseEscape, string2ReplaceParam } from "utils/input"
+import {
+  reverseEscape,
+  string2RegArray,
+  string2ReplaceParam
+} from "utils/input"
 
 const checkInputCorrect = (text: string, key: string): boolean => {
   try {
@@ -31,6 +35,12 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         if (index > 16 || index < 0) throw ""
         break
       }
+      case "customBeTitle":
+        const regs = string2RegArray(text)
+        regs.forEach(reg => {
+          reg.test("test")
+        })
+        break
       case "renameSelected":
         text = /^\s*".*"\s*$/.test(text) ? `(/^.*$/g, ${text})` : text
       default:

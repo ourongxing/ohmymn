@@ -1,5 +1,3 @@
-import { log } from "./common"
-
 /**
  * 反转义字符串，用于处理用户输入
  */
@@ -8,7 +6,7 @@ const isNumber = (text: string) => !isNaN(Number(text))
 
 const string2ReplaceParam = (text: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1)
-  const brackets = text.split(/;\s*(?=\()/).map(item => item.trim())
+  const brackets = text.trim().split(/\s*;\s*(?=\()/)
   const params = []
   for (let bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
@@ -19,10 +17,7 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
       .split("😎")
     if (fnKey && !isNumber(fnKey)) throw ""
     if (!fnKey && isNumber(newSubStr)) throw ""
-    const regParts = regString.match(/^\/(.*?)\/([gimsuy]*)$/)
-    const regexp = regParts
-      ? new RegExp(regParts[1], regParts[2])
-      : new RegExp(regString)
+    const regexp = string2Reg(regString)
     params.push({
       regexp,
       newSubStr: reverseEscape(newSubStr),
@@ -32,10 +27,22 @@ const string2ReplaceParam = (text: string): ReplaceParam[] => {
   return params
 }
 
+const string2Reg = (str: string) => {
+  const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
+  if (!regParts) throw ""
+  return new RegExp(regParts[1], regParts[2])
+}
+
+const string2RegArray = (str: string): RegExp[] => {
+  // 输入 [/sd/,/sd/]
+  const regStrArr = str.slice(1, -1).split(/\s*,\s*(?=\/)/)
+  return regStrArr.map(str => string2Reg(str))
+}
+
 interface ReplaceParam {
   regexp: RegExp
   newSubStr: string
   fnKey: number
 }
 
-export { string2ReplaceParam, reverseEscape }
+export { string2ReplaceParam, reverseEscape, string2Reg, string2RegArray }
