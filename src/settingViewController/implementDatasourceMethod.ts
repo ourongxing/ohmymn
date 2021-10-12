@@ -1,27 +1,21 @@
 import { dataSource } from "synthesizer"
 import { isOCNull, log } from "utils/common"
 
-const indexPath2tag = (indexPath: NSIndexPath): number => {
-  return indexPath.section * 100 + indexPath.row + 999
-}
+const indexPath2tag = (indexPath: NSIndexPath): number =>
+  indexPath.section * 100 + indexPath.row + 999
 
-const numberOfSectionsInTableView = (tableView: UITableView) => {
-  return dataSource.length
-}
+const numberOfSectionsInTableView = (tableView: UITableView) =>
+  dataSource.length
 
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
-) => {
-  return dataSource[section].rows.length
-}
+) => dataSource[section].rows.length
 
 const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
-) => {
-  return dataSource[section].header
-}
+) => dataSource[section].header
 
 const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,

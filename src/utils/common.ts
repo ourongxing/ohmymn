@@ -26,11 +26,10 @@ const getObjCClassDeclar = (
   return str
 }
 
-const delay = (sec: number) => {
-  return new Promise(resolve =>
+const delay = (sec: number) =>
+  new Promise(resolve =>
     NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve)
   )
-}
 
 const delayBreak = async (
   times: number,
@@ -56,12 +55,8 @@ const postNotification = (key: string, userInfo: any) => {
   )
 }
 
-const isThisWindow = (sender: any, window: any) => {
-  return Application.sharedInstance().checkNotifySenderInWindow(
-    sender,
-    self.window
-  )
-}
+const isThisWindow = (sender: any, window: any) =>
+  Application.sharedInstance().checkNotifySenderInWindow(sender, self.window)
 
 const popup = (
   title: string,
@@ -76,8 +71,8 @@ const popup = (
     index?: number
     content?: string
   }
-) => {
-  return new Promise<{
+) =>
+  new Promise<{
     key?: string
     index?: number
     content?: string
@@ -94,7 +89,6 @@ const popup = (
       }
     )
   )
-}
 
 /**
  * 用来判断是否是 OC 的 NSNull 对象

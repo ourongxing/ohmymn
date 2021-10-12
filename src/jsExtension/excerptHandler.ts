@@ -97,13 +97,11 @@ const excerptHandler = async () => {
 
   // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
   if (isModifying) {
-    const isBroadened = (oldStr: string | undefined, newStr: string) => {
-      return (
-        oldStr &&
-        oldStr.length >= 2 &&
-        (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
-      )
-    }
+    const isBroadened = (oldStr: string | undefined, newStr: string) =>
+      oldStr &&
+      oldStr.length >= 2 &&
+      (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
+
     if (
       profile.anotherautotitle.changeTitleNoLimit &&
       !title &&

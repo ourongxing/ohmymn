@@ -47,14 +47,12 @@ const excerptNotes = (node: MbBookNote): MbBookNote[] => {
   return notes
 }
 
-const getNoteById = (noteid: string): MbBookNote => {
-  return Database.sharedInstance().getNoteById(noteid)!
-}
+const getNoteById = (noteid: string): MbBookNote =>
+  Database.sharedInstance().getNoteById(noteid)!
 
 // topic 就是 notebook
-const getNotebookById = (notebookid: string): MbTopic => {
-  return Database.sharedInstance().getNotebookById(notebookid)!
-}
+const getNotebookById = (notebookid: string): MbTopic =>
+  Database.sharedInstance().getNotebookById(notebookid)!
 
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹

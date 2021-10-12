@@ -2,12 +2,10 @@ import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 
-const tag2indexPath = (tag: number): NSIndexPath => {
-  return {
-    section: (tag - 999 - ((tag - 999) % 100)) / 100,
-    row: (tag - 999) % 100
-  }
-}
+const tag2indexPath = (tag: number): NSIndexPath => ({
+  section: (tag - 999 - ((tag - 999) % 100)) / 100,
+  row: (tag - 999) % 100
+})
 
 const tableViewDidSelectRowAtIndexPath = async (
   tableView: UITableView,
