@@ -1,4 +1,19 @@
 export {}
+
+interface LabelType {
+  type: cellViewType
+  label: string
+}
+
+interface KeyLabelType extends LabelType {
+  key: string
+}
+
+interface ISettingBasic extends KeyLabelType {
+  help?: string
+  link?: string
+}
+
 declare global {
   const enum cellViewType {
     plainText = 0,
@@ -24,37 +39,24 @@ declare global {
     | ISettingInput
     | ISettingSwitch
     | ISettingSelect
-  interface ISettingInput {
-    key: string
+
+  interface ISettingInput extends ISettingBasic {
     type: cellViewType.input | cellViewType.inlineInput
-    label: string
-    help?: string
-    link?: string
   }
 
-  interface ISettingButton {
-    key: string
+  interface ISettingButton extends ISettingBasic {
     type: cellViewType.button | cellViewType.buttonWithInput
-    label: string
-    help?: string
-    // button 的 link 不起作用
-    link?: string
+    /** button 的 link 不起作用 */
+    link?: undefined
     option?: string[]
   }
-  interface ISettingSelect {
-    key: string
+
+  interface ISettingSelect extends ISettingBasic {
     type: cellViewType.select | cellViewType.muiltSelect
-    label: string
     option: string[]
-    help?: string
-    link?: string
   }
-  interface ISettingSwitch {
-    key: string
+  interface ISettingSwitch extends ISettingBasic {
     type: cellViewType.switch
-    label: string
-    help?: string
-    link?: string
   }
 
   type IAction = IRowButton
@@ -67,38 +69,29 @@ declare global {
 
   type IRow = IRowPlainText | IRowSwitch | IRowInput | IRowButton | IRowSelect
 
-  interface IRowPlainText {
+  interface IRowPlainText extends LabelType {
     type: cellViewType.plainText
-    label: string
     link: string
   }
 
-  interface IRowSwitch {
+  interface IRowSwitch extends KeyLabelType {
     type: cellViewType.switch
-    key: string
     status: boolean
-    label: string
   }
 
-  interface IRowInput {
+  interface IRowInput extends KeyLabelType {
     type: cellViewType.input | cellViewType.inlineInput
-    key: string
     content: string
-    label: string
   }
 
-  interface IRowButton {
+  interface IRowButton extends KeyLabelType {
     type: cellViewType.button | cellViewType.buttonWithInput
-    key: string
-    label: string
     help?: string
     option?: string[]
   }
 
-  interface IRowSelect {
+  interface IRowSelect extends KeyLabelType {
     type: cellViewType.select | cellViewType.muiltSelect
-    key: string
-    label: string
     selections: number[]
     option: string[]
   }
