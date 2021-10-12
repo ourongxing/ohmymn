@@ -13,7 +13,7 @@ const getSelectNodes = (): MbBookNote[] => {
 /**
  * 获取选中的卡片，包括子节点
  */
-const getSelectNodesAll = (): MbBookNote[] => {
+const getSelectNodesAll = (onlyChildrenNode = false): MbBookNote[] => {
   const nodes = getSelectNodes()
   // 使用 set 方便去重
   const allNodes: Set<MbBookNote> = new Set()
@@ -26,8 +26,8 @@ const getSelectNodesAll = (): MbBookNote[] => {
     })
   }
   getChildren(nodes)
-  // 如果只选中一个结点，并且该结点有子结点，删除该结点
-  if (nodes.length == 1 && nodes[0].childNotes?.length)
+  // 如果只选中一个节点，并且该节点有子节点，删除该节点
+  if (nodes.length == 1 && nodes[0].childNotes?.length && onlyChildrenNode)
     allNodes.delete(nodes[0])
   // 返回数组
   return [...allNodes]

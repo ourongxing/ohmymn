@@ -4,7 +4,6 @@ const profileType = {
     doubleClick: false,
     clickHidden: false,
     lockExcerpt: false,
-    selectChildren: false,
     autoCorrect: false
   },
   autocomplete: {

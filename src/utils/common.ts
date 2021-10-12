@@ -72,13 +72,15 @@ const popup = (
     alert: UIAlertView,
     buttonIndex: number
   ) => {
-    key: string
-    content: string
+    key?: string
+    index?: number
+    content?: string
   }
 ) => {
   return new Promise<{
-    key: string
-    content: string
+    key?: string
+    index?: number
+    content?: string
   }>(resolve =>
     UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
       title,

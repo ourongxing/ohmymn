@@ -2,7 +2,7 @@ import { actions } from "synthesizer"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
-import { delayBreak, isThisWindow, log, showHUD } from "utils/common"
+import { delayBreak, isThisWindow, log, popup, showHUD } from "utils/common"
 import eventHandlerController from "utils/event"
 import {
   getNoteById,
@@ -28,33 +28,44 @@ interface eventHandler {
   }): void
 }
 
-const onButtonClick: eventHandler = sender => {
+const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender, self.window)) return
   const { key, content } = sender.userInfo
   if (profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[]
 
-  nodes = profile.ohmymn.selectChildren
-    ? getSelectNodesAll()
-    : (nodes = getSelectNodes())
-
-  if (nodes.length) {
-    switch (key) {
-      case "completeSelected":
-        actions[key]({
-          content: content,
-          nodes: nodes
-        })
-      default:
-        undoGroupingWithRefresh(() => {
-          actions[key]({
-            content: content,
-            nodes: nodes
-          })
-        })
-    }
-  } else {
+  nodes = getSelectNodes()
+  if (!nodes.length) {
     showHUD("未选中任何脑图卡片")
+    return
+  }
+
+  if (nodes.length == 1 && nodes[0].childNotes?.length) {
+    const { index } = await popup(
+      "OhMyMN",
+      "检测到您选中的唯一卡片有子节点",
+      UIAlertViewStyle.Default,
+      ["仅处理该卡片", "仅处理所有子节点", "处理该卡片及其子节点"],
+      (alert: UIAlertView, buttonIndex: number) => ({
+        index: buttonIndex
+      })
+    )
+    nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][index!]
+  }
+  switch (key) {
+    case "completeSelected":
+      actions[key]({
+        content,
+        nodes
+      })
+      break
+    default:
+      undoGroupingWithRefresh(() => {
+        actions[key]({
+          content,
+          nodes
+        })
+      })
   }
 }
 
@@ -71,7 +82,7 @@ const onSwitchChange: eventHandler = sender => {
         showHUD("锁定摘录不建议和自动矫正同时开启", 2)
       break
     case "autoCorrect":
-      if (status) showHUD("请按实际情况选择开关，不建议全部打开自动矫正", 2)
+      if (status) showHUD("请按实际情况选择开关，不建议无脑打开自动矫正", 2)
       break
     default:
       break

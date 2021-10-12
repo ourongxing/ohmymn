@@ -24,11 +24,6 @@ const config: IConfig = {
       label: "锁定摘录文字"
     },
     {
-      key: "selectChildren",
-      type: cellViewType.switch,
-      label: "选中卡片包括子结点"
-    },
-    {
       help: "【当前文档】开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
