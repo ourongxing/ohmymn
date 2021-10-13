@@ -6,22 +6,17 @@ let panelStatus = false
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = () => {
-  let frame = self.studyController.view.bounds
-  let width = 300
-  if (profile.ohmymn.rightMode) {
-    self.settingViewController.view.frame = {
-      x: frame.width - width - 50,
-      y: 110,
-      width: width,
-      height: 450
-    }
-  } else {
-    self.settingViewController.view.frame = {
-      x: 50,
-      y: 110,
-      width: width,
-      height: 450
-    }
+  const frame = self.studyController.view.bounds
+  const width = 300
+  const height = [600, 450, 300][profile.ohmymn.panelHeight[0]]
+  const x = [50, (frame.width - width) / 2, frame.width - width - 50][
+    profile.ohmymn.panelPostion[0]
+  ]
+  self.settingViewController.view.frame = {
+    x,
+    y: 110,
+    height,
+    width
   }
 }
 
@@ -69,10 +64,7 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 
 const queryAddonCommandStatus = () => {
   // 仅在学习模式下打开
-  if (
-    Application.sharedInstance().studyController(self.window).studyMode ==
-    studyMode.study
-  )
+  if (self.studyController.studyMode == studyMode.study)
     return {
       image: "logo.png",
       object: self,

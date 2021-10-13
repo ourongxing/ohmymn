@@ -1,10 +1,11 @@
 const profileType = {
   ohmymn: {
-    rightMode: false,
     doubleClick: false,
     clickHidden: false,
     lockExcerpt: false,
-    autoCorrect: false
+    autoCorrect: false,
+    panelPostion: [0],
+    panelHeight: [1]
   },
   autocomplete: {
     on: false,

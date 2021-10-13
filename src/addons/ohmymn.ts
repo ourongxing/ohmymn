@@ -4,9 +4,16 @@ const config: IConfig = {
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
-      key: "rightMode",
-      type: cellViewType.switch,
-      label: "面板置于右侧"
+      key: "panelPostion",
+      type: cellViewType.select,
+      option: ["靠左", "中间", "靠右"],
+      label: "面板显示位置"
+    },
+    {
+      key: "panelHeight",
+      type: cellViewType.select,
+      option: ["高点", "标准", "矮点"],
+      label: "面板显示高度"
     },
     {
       key: "doubleClick",
@@ -24,10 +31,10 @@ const config: IConfig = {
       label: "锁定摘录文字"
     },
     {
-      help: "【当前文档】开启后会在矫正后执行处理",
+      help: "【当前文档生效】开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
-      label: "是否开启了自动在线矫正"
+      label: "自动在线矫正"
     }
   ],
   actions: []

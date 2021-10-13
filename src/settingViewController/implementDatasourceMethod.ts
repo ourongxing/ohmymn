@@ -80,9 +80,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
-      let view = null
-      if (row.status) view = controllers.switch(row.status)
-      else view = controllers.switch()
+      const view = controllers.switch(row.status)
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -100,9 +98,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
-      let view = null
-      if (row.content) view = controllers.inlineInput(row.content)
-      else view = controllers.inlineInput()
+      const view = controllers.inlineInput(row.content)
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -121,9 +117,25 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = 0
-      let view = null
-      if (row.content) view = controllers.input(row.content)
-      else view = controllers.input()
+      const view = controllers.input(row.content)
+      view.autoresizingMask = 1 << 0
+      view.tag = indexPath2tag(indexPath)
+      cell.contentView.addSubview(view)
+      return cell
+    }
+    case cellViewType.select: {
+      const cell = UITableViewCell.makeWithStyleReuseIdentifier(
+        0,
+        "selectCellID"
+      )
+      cell.textLabel.font = UIFont.systemFontOfSize(16)
+      cell.textLabel.textColor = self.textColor
+      cell.textLabel.text = row.label
+      cell.selectionStyle = 0
+      const view = controllers.select(row.option[row.selections[0]])
+      const newFrame = view.frame
+      newFrame.x = cell.contentView.frame.width - newFrame.width - 10
+      view.frame = newFrame
       view.autoresizingMask = 1 << 0
       view.tag = indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
@@ -133,17 +145,30 @@ const tableViewCellForRowAtIndexPath = (
 }
 
 // 仅用于 SettingViewController, self 为 tableviewcontroller
-export const controllers = {
-  switch(status = false) {
-    const frame = { x: 0, y: 5, width: 50, height: 30 }
+const controllers = {
+  switch(status: boolean) {
+    const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UISwitch(frame)
     view.addTargetActionForControlEvents(self, "switchChange:", 1 << 12)
     view.backgroundColor = UIColor.clearColor()
     view.on = status
     return view
   },
-  inlineInput(text = "") {
-    const frame = { x: 0, y: 9, width: 100, height: 30 }
+  select(text: string) {
+    const frame = { x: 0, y: 5, width: 70, height: 30 }
+    const view = new UIButton(frame)
+    view.buttonType = UIButtonType.system
+    view.setTitleForState(text, 0)
+    view.setTitleColorForState(UIColor.whiteColor(), 0)
+    view.backgroundColor = UIColor.grayColor()
+    view.layer.cornerRadius = 10
+    view.layer.masksToBounds = true
+    view.titleLabel.font = UIFont.boldSystemFontOfSize(14)
+    view.addTargetActionForControlEvents(self, "clickSelectButton:", 1 << 6)
+    return view
+  },
+  inlineInput(text: string) {
+    const frame = { x: 0, y: 9, width: 70, height: 30 }
     if (Application.sharedInstance().osType == 0) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(18)
@@ -152,11 +177,10 @@ export const controllers = {
     view.delegate = self
     view.text = text
     view.placeholder = "enter"
-    view.textAlignment = 0
     view.autoresizingMask = (1 << 1) | (1 << 5)
     return view
   },
-  input(text = "") {
+  input(text: string) {
     const frame = { x: 40, y: 9, width: 250, height: 30 }
     if (Application.sharedInstance().osType == 0) frame.y = 5
     const view = new UITextField(frame)
@@ -164,7 +188,6 @@ export const controllers = {
     view.textColor = self.textColor
     view.placeholder = "enter"
     view.delegate = self
-    view.textAlignment = 0
     view.autoresizingMask = (1 << 1) | (1 << 5)
     view.text = text
     return view

@@ -47,7 +47,7 @@ const readProfile = (docmd5: string, readAll = false) => {
   // 读取全局配置
   if (readAll) {
     const string_profile = getDataByKey(profileKey)
-    if (string_profile) Object.assign(profile, JSON.parse(string_profile))
+    if (string_profile) mergeObject(profile, JSON.parse(string_profile))
     updateDataSource(profile)
     log("读取全局配置", "profile")
     log(profile.ohmymn, "profile")

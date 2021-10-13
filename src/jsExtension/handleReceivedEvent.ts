@@ -14,6 +14,7 @@ import {
 export const eventCtrl = eventHandlerController([
   { event: "InputOver" },
   { event: "ButtonClick" },
+  { event: "SelectChange" },
   { event: "SwitchChange" },
   { event: "PopupMenuOnNote" },
   { event: "ProcessNewExcerpt" },
@@ -74,9 +75,6 @@ const onSwitchChange: eventHandler = sender => {
   const { name, key, status } = sender.userInfo
   profile[name][key] = status
   switch (key) {
-    case "rightMode":
-      layoutViewController()
-      break
     case "lockExcerpt":
       if (status && profile.ohmymn.autoCorrect)
         showHUD("锁定摘录不建议和自动矫正同时开启", 2)
@@ -85,6 +83,18 @@ const onSwitchChange: eventHandler = sender => {
       if (status) showHUD("请按实际情况选择开关，不建议无脑打开自动矫正", 2)
       break
     default:
+      break
+  }
+}
+
+const onSelectChange: eventHandler = sender => {
+  if (!isThisWindow(sender, self.window)) return
+  const { name, key, selections } = sender.userInfo
+  profile[name][key] = selections
+  switch (key) {
+    case "panelPostion":
+    case "panelHeight":
+      layoutViewController()
       break
   }
 }
@@ -136,6 +146,7 @@ const onProcessNewExcerpt: eventHandler = sender => {
 export default {
   onInputOver,
   onButtonClick,
+  onSelectChange,
   onSwitchChange,
   onPopupMenuOnNote,
   onProcessNewExcerpt,

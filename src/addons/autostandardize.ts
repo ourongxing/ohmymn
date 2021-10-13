@@ -35,9 +35,9 @@ const util = {
     // 去掉重复符号，及空格
     text = this.removeRepeat(text)
     // pangu 主要是加空格，以及换成全角字符
-    text = pangu.spacing(text.replace(/\*\*/g, "占位符"))
+    text = pangu.spacing(text.replace(/\*\*/g, "😎"))
     // 划重点会产生 **包裹文字**
-    return text.replace(/\x20?占位符\x20?/g, "**")
+    return text.replace(/\x20?😎\x20?/g, "**")
   }
 }
 

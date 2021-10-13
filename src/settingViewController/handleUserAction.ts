@@ -91,8 +91,98 @@ const switchChange = (sender: UISwitch) => {
   })
 }
 
+// let selectInfo: {
+//   name?: string
+//   key?: string
+//   selection?: number[]
+// }
+
+const selectAction = (param: {
+  indexPath: NSIndexPath
+  selection: number
+  menuController: MenuController
+}) => {
+  const { indexPath, selection, menuController } = param
+  // 区分单选和多选
+  if (
+    (<IRowSelect>dataSource[indexPath.section].rows[indexPath.row]).type ==
+    cellViewType.select
+  ) {
+    ;(<IRowSelect>(
+      dataSource[indexPath.section].rows[indexPath.row]
+    )).selections = [selection]
+    const section = dataSource[indexPath.section]
+    const row = <IRowSelect>section.rows[indexPath.row]
+    postNotification("SelectChange", {
+      name: section.header.toLowerCase(),
+      key: row.key,
+      selections: [selection]
+    })
+    if (self.popoverController)
+      self.popoverController.dismissPopoverAnimated(true)
+    self.tableView.reloadData()
+  } else {
+    ;(<IRowSelect>(
+      dataSource[indexPath.section].rows[indexPath.row]
+    )).selections = [selection]
+    menuController.commandTable = menuController.commandTable?.map(
+      (item, index) => {
+        item.checked = selection == index
+        return item
+      }
+    )
+    menuController.menuTableView!.reloadData()
+  }
+}
+
+const clickSelectButton = (sender: UIButton) => {
+  const indexPath: NSIndexPath = tag2indexPath(sender.tag)
+  const section = dataSource[indexPath.section]
+  const row = <IRowSelect>section.rows[indexPath.row]
+  const menuController = MenuController.new()
+  menuController.commandTable = row.option.map((item, index) => ({
+    title: item,
+    object: self,
+    selector: "selectAction:",
+    param: {
+      indexPath,
+      menuController,
+      selection: index
+    },
+    checked: row.selections.includes(index)
+  }))
+  menuController.rowHeight = 44
+  const width =
+    row.option.reduce((a, b) => (a.length > b.length ? a : b)).length * 44 + 50
+  menuController.preferredContentSize = {
+    width: width > 300 ? 250 : width,
+    height: menuController.rowHeight * menuController.commandTable.length
+  }
+  const studyControllerView = Application.sharedInstance().studyController(
+    self.window
+  ).view
+  self.popoverController = new UIPopoverController(menuController)
+  self.popoverController.presentPopoverFromRect(
+    sender.convertRectToView(sender.bounds, studyControllerView),
+    studyControllerView,
+    1 << 3,
+    true
+  )
+  self.popoverController.delegate = self
+}
+
+// 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选
+const popoverControllerDidDismissPopover = (
+  UIPopoverController: UIPopoverController
+) => {
+  // postNotification("SelectChange", selectInfo)
+}
+
 export default {
+  popoverControllerDidDismissPopover,
   tableViewDidSelectRowAtIndexPath,
   textFieldShouldReturn,
-  switchChange
+  clickSelectButton,
+  switchChange,
+  selectAction
 }

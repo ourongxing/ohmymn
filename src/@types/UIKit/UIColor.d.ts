@@ -17,5 +17,6 @@ declare global {
     static purpleColor(): UIColor
     static brownColor(): UIColor
     static clearColor(): UIColor
+    colorWithAlphaComponent(alpha: CGFloat): UIColor
   }
 }

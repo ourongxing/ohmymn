@@ -102,4 +102,26 @@ declare global {
     writeDataFilename(data: NSData, filename: string): boolean
     close(): boolean
   }
+  class MenuController extends UIViewController {
+    static new(): MenuController
+    menuTableView?: UITableView
+    commandTable?: Array<any>
+    sections?: Array<any>
+    /**
+     *  int
+     */
+    rowHeight: number
+    /**
+     *  int
+     */
+    secHeight: number
+    /**
+     *  int
+     */
+    fontSize: number
+    preferredContentSize: {
+      width: number
+      height: number
+    }
+  }
 }
