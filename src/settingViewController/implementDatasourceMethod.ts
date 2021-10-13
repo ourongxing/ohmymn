@@ -24,7 +24,7 @@ const tableViewHeightForRowAtIndexPath = (
   const row = dataSource[indexPath.section].rows[indexPath.row]
   if (row.type == cellViewType.button && row.key == "space") return 300
   else if (row.type === cellViewType.plainText) {
-    let num = row.label!.length - row.label!.replace(/[\r\n]/g, "").length
+    let num = row.label.length - row.label.replace(/[\r\n]/g, "").length
     return 30 + num * 15
   } else return 40
 }
@@ -80,7 +80,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
-      const view = controllers.switch(row.status)
+      const view = controllers.switch(row.status ?? false)
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -98,7 +98,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
-      const view = controllers.inlineInput(row.content)
+      const view = controllers.inlineInput(row.content ?? "")
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -117,7 +117,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = 0
-      const view = controllers.input(row.content)
+      const view = controllers.input(row.content ?? "")
       view.autoresizingMask = 1 << 0
       view.tag = indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
@@ -133,10 +133,10 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
-      let view = null
-      if (row.type == cellViewType.select)
-        view = controllers.select(row.option?.[row.selections[0]] ?? "选项")
-      else view = controllers.select("选项")
+      const view =
+        row.type == cellViewType.select
+          ? controllers.select(row.option[row.selections[0] ?? 0])
+          : controllers.select("选项")
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -148,7 +148,7 @@ const tableViewCellForRowAtIndexPath = (
   }
 }
 
-// 仅用于 SettingViewController, self 为 tableviewcontroller
+// 仅用于 SettingViewController
 const controllers = {
   switch(status: boolean) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
