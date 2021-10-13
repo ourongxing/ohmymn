@@ -4,8 +4,8 @@ import autolist from "addons/autolist"
 import autoreplace from "addons/autoreplace"
 import autostandardize from "addons/autostandardize"
 import magicaction from "addons/magicaction"
+import anotherautodef from "addons/anotherautodef"
 import ohmymn from "addons/ohmymn"
-import { log } from "utils/common"
 
 interface IAddon {
   config: IConfig
@@ -17,11 +17,14 @@ interface IAddon {
 const addons: IAddon[] = [
   ohmymn,
   anotherautotitle,
+  anotherautodef,
   autostandardize,
   autocomplete,
   autoreplace,
   autolist
 ]
+
+//
 
 const genActionsUtils = () => {
   // 为了避免循环引用，配置文件还是自己写比较好
@@ -89,11 +92,19 @@ export const genDataSource = (
   }
   dataSource.splice(0, 0, genSection(magicaction))
   // 最后加块空白，防止被键盘遮挡，按理说输入框会自动上移的，但现在不知道为啥不行了
-  dataSource[dataSource.length - 1].rows.push({
-    type: cellViewType.button,
-    key: "space",
-    label: ""
-  })
+  dataSource[dataSource.length - 1].rows.push(
+    {
+      type: cellViewType.plainText,
+      label:
+        "祝考研的各位同学成功上岸，本次更新后在考研结束前将不再更新。如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码😎。\n",
+      link: "https://cdn.jsdelivr.net/gh/ourongxing/ohmymn/assets/donate.gif"
+    },
+    {
+      type: cellViewType.button,
+      key: "space",
+      label: ""
+    }
+  )
   return dataSource
 }
 
@@ -109,10 +120,10 @@ const genDataSourceIndex = (dataSource: Array<ISection>) => {
       dataSourceIndex[name] = {}
       section.rows.forEach((row, rowIndex) => {
         switch (row.type) {
-          case cellViewType.inlineInput:
           case cellViewType.input:
           case cellViewType.switch:
           case cellViewType.select:
+          case cellViewType.inlineInput:
           case cellViewType.muiltSelect:
             dataSourceIndex[name][row.key] = [secIndex, rowIndex]
         }

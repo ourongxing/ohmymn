@@ -22,7 +22,7 @@ const tableViewHeightForRowAtIndexPath = (
   indexPath: NSIndexPath
 ) => {
   const row = dataSource[indexPath.section].rows[indexPath.row]
-  if (row.type == cellViewType.button && row.key == "space") return 300
+  if (row.type == cellViewType.button && row.key == "space") return 250
   else if (row.type === cellViewType.plainText) {
     let num = row.label.length - row.label.replace(/[\r\n]/g, "").length
     return 30 + num * 15
@@ -59,16 +59,21 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = row.key == "space" ? 0 : 1
-      cell.textLabel.text = row.label
+      cell.textLabel.text =
+        row.key == "space"
+          ? "😇考研倒计时：" +
+            (
+              (Date.parse("2021-12-25T00:00:00") - Date.now()) /
+              (60 * 60 * 24 * 1000)
+            ).toFixed(6)
+          : row.label
       const iconColor =
         Application.sharedInstance().currentTheme == "Gray" ? "light" : "dark"
-      if (row.key != "space") {
-        const image = NSData.dataWithContentsOfFile(
-          self.mainPath + `/icon/${iconColor}/${row.key}.png`
-        )
-        if (!isOCNull(image))
-          cell.imageView.image = UIImage.imageWithDataScale(image, 2)
-      }
+      const image = NSData.dataWithContentsOfFile(
+        self.mainPath + `/icon/${iconColor}/${row.key}.png`
+      )
+      if (!isOCNull(image))
+        cell.imageView.image = UIImage.imageWithDataScale(image, 2)
       return cell
     }
     case cellViewType.switch: {
