@@ -31,9 +31,11 @@ const config: IConfig = {
   ],
   actions: [
     {
-      type: cellViewType.button,
+      type: cellViewType.buttonWithInput,
       label: "序列摘录自动换行",
-      key: "listSelected"
+      key: "listSelected",
+      help: "具体输入格式见顶上帮助信息",
+      option: ["使用 AutoList 的配置"]
     }
   ]
 }
@@ -67,14 +69,23 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  listSelected({ nodes }) {
+  listSelected({ nodes, content }) {
+    const params = content != "😎" ? string2ReplaceParam(content) : []
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
-        if (text) note.excerptText = util.listText(text)
+        if (!text) continue
+        let _text = text
+        if (content == "😎") _text = util.listText(text)
+        else
+          params.forEach(param => {
+            _text = _text.replace(param.regexp, param.newSubStr)
+          })
+        if (text !== _text) note.excerptText = _text
       }
     }
   }
 }
+
 export default { config, util, action }

@@ -18,7 +18,6 @@ const config: IConfig = {
       label: "摘录自动合并为标题"
     },
     {
-      help: "拓宽作为标题的摘录，不受规则限制\n直接转为标题",
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
       label: "拓宽标题摘录不受限制"

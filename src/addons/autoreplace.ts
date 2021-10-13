@@ -1,6 +1,6 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
-import { showHUD } from "utils/common"
+import { log, showHUD } from "utils/common"
 import { string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
@@ -24,7 +24,8 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: "批量替换摘录文字",
       key: "replaceSelected",
-      help: "具体输入格式见顶上帮助信息"
+      help: "具体输入格式见顶上帮助信息",
+      option: ["使用 AutoReplace 的配置"]
     }
   ]
 }
@@ -34,9 +35,9 @@ const util = {
     if (profile.autoreplace.customReplace) {
       const params = string2ReplaceParam(profile.autoreplace.customReplace)
       let _text = text
-      for (const item of params) {
-        _text = _text.replace(item.regexp, item.newSubStr)
-      }
+      params.forEach(param => {
+        _text = _text.replace(param.regexp, param.newSubStr)
+      })
       if (text != _text) return _text
     }
     return text
@@ -45,24 +46,20 @@ const util = {
 
 const action: IActionMethod = {
   replaceSelected({ content, nodes }) {
-    // 检查输入正确性
-    try {
-      const params = string2ReplaceParam(content)
-      for (const node of nodes) {
-        const notes = excerptNotes(node)
-        for (const note of notes) {
-          const text = note.excerptText
-          if (text) {
-            let _text = text
-            for (const item of params) {
-              _text = _text.replace(item.regexp, item.newSubStr)
-            }
-            if (text !== _text) note.excerptText = _text
-          }
-        }
+    const params = content != "😎" ? string2ReplaceParam(content) : []
+    for (const node of nodes) {
+      const notes = excerptNotes(node)
+      for (const note of notes) {
+        const text = note.excerptText
+        if (!text) continue
+        let _text = text
+        if (content == "😎") _text = util.replaceText(text)
+        else
+          params.forEach(param => {
+            _text = _text.replace(param.regexp, param.newSubStr)
+          })
+        if (text !== _text) note.excerptText = _text
       }
-    } catch {
-      showHUD("输入错误")
     }
   }
 }

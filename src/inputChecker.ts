@@ -1,3 +1,4 @@
+import magicaction from "addons/magicaction"
 import {
   reverseEscape,
   string2RegArray,
@@ -43,6 +44,11 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       case "renameSelected":
         text = /^\s*".*"\s*$/.test(text) ? `(/^.*$/g, ${text})` : text
+        string2ReplaceParam(text).forEach(param => {
+          "test".replace(param.regexp, param.newSubStr)
+          magicaction.util.getSerialInfo(param.newSubStr, 1)
+        })
+        break
       default:
         string2ReplaceParam(text).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)

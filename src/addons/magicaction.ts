@@ -53,8 +53,8 @@ const util = {
     }
     return numArr
   },
-  getSerialInfo(replace: string, length: number): string[] {
-    const seriaInfo = replace
+  getSerialInfo(newSubStr: string, length: number): string[] {
+    const seriaInfo = newSubStr
       .match(/%\[(.*)\]/)![0]
       .slice(1)
       .replace(/'/g, '"')
@@ -64,11 +64,10 @@ const util = {
     // 自定义替换字符，数组元素大于 2
     if (seriaInfo_arr.length > 2)
       return seriaInfo_arr.map((item: string) =>
-        replace.replace(/%\[(.*)\]/, item)
+        newSubStr.replace(/%\[(.*)\]/, item)
       )
     else {
-      if (seriaInfo_arr[1] && typeof seriaInfo_arr[1] !== "number")
-        throw new Error("")
+      if (seriaInfo_arr[1] && typeof seriaInfo_arr[1] !== "number") throw ""
       let step: number = 1
       if (seriaInfo_arr[1]) step = seriaInfo_arr[1]
       // 序列只有两种情况，字母，和数字。
@@ -77,7 +76,9 @@ const util = {
       // 字母有大写和小写
       if (/^[A-Za-z]$/.test(inival)) {
         const serias = this.genCharArray(inival, length, step)
-        return serias.map((item: string) => replace.replace(/%\[(.*)\]/, item))
+        return serias.map((item: string) =>
+          newSubStr.replace(/%\[(.*)\]/, item)
+        )
       }
       // 数字要补零
       else if (!isNaN(Number(inival))) {
@@ -87,8 +88,10 @@ const util = {
           step,
           inival.length
         )
-        return serias.map((item: string) => replace.replace(/%\[(.*)\]/, item))
-      } else throw new Error("")
+        return serias.map((item: string) =>
+          newSubStr.replace(/%\[(.*)\]/, item)
+        )
+      } else throw ""
     }
   }
 }
@@ -121,14 +124,13 @@ const action: IActionMethod = {
   changeFillSelected({ content, nodes }) {
     const index = Number(content)
     for (const node of nodes) {
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        note.fillIndex = index
-      }
+      excerptNotes(node).forEach(note => {
+        note.colorIndex = index - 1
+      })
     }
   },
   changeColorSelected({ content, nodes }) {
-    let index
+    let index: number
     let param
     if (isNaN(Number(content))) {
       param = string2ReplaceParam(content)[0]
@@ -152,10 +154,9 @@ const action: IActionMethod = {
             break
         }
       }
-      const notes = excerptNotes(node)
-      for (const note of notes) {
+      excerptNotes(node).forEach(note => {
         note.colorIndex = index - 1
-      }
+      })
     }
   },
   mergeTextSelected({ content, nodes }) {

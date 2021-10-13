@@ -21,17 +21,20 @@ const tableViewDidSelectRowAtIndexPath = async (
     case cellViewType.buttonWithInput:
       for (;;) {
         const { key, content } = await popup(
-          row.label!,
+          row.label,
           row.help ?? "",
           UIAlertViewStyle.PlainTextInput,
-          ["确定"],
+          row.option ? [...row.option, "确定"] : ["确定"],
           (alert: UIAlertView, buttonIndex: number) => ({
-            key: row.key!,
-            content: alert.textFieldAtIndex(0).text.trim()
+            key: row.key,
+            content:
+              row.option?.length && buttonIndex == 0
+                ? "😎"
+                : alert.textFieldAtIndex(0).text.trim()
           })
         )
         if (!content) return
-        if (checkInputCorrect(content, row.key!)) {
+        if (content == "😎" || checkInputCorrect(content, row.key)) {
           postNotification("ButtonClick", {
             key,
             content
@@ -44,12 +47,12 @@ const tableViewDidSelectRowAtIndexPath = async (
     case cellViewType.button:
       if (row.key == "space") return
       const { key, content } = await popup(
-        row.label!,
+        row.label,
         row.help ?? "",
         UIAlertViewStyle.Default,
         row.option ?? ["确定"],
         (alert: UIAlertView, buttonIndex: number) => ({
-          key: row.key!,
+          key: row.key,
           content: String(buttonIndex)
         })
       )

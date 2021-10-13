@@ -32,7 +32,6 @@ const util = {
   standardizeText(text: string): string {
     // 英文环境下全为半角，不处理
     if (isHalfWidth(text)) return text
-    // 去掉重复符号，及空格
     text = this.removeRepeat(text)
     // pangu 主要是加空格，以及换成全角字符
     text = pangu.spacing(text.replace(/\*\*/g, "😎"))
@@ -49,14 +48,12 @@ const action: IActionMethod = {
       const title = node.noteTitle
       if (title && option != 2) {
         node.noteTitle = util.standardizeText(title)
-        if (option == 1) return
+        if (option == 1) continue
       }
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
-        if (text) {
-          note.excerptText = util.standardizeText(text)
-        }
+        if (text) note.excerptText = util.standardizeText(text)
       }
     }
   }
