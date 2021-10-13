@@ -91,18 +91,19 @@ const switchChange = (sender: UISwitch) => {
   })
 }
 
-// let selectInfo: {
-//   name?: string
-//   key?: string
-//   selection?: number[]
-// }
-
+let lastSelectInfo: {
+  name: string
+  key: string
+  selections: number[]
+} | null
 const selectAction = (param: {
   indexPath: NSIndexPath
   selection: number
   menuController: MenuController
 }) => {
   const { indexPath, selection, menuController } = param
+  const section = dataSource[indexPath.section]
+  const row = <IRowSelect>section.rows[indexPath.row]
   // 区分单选和多选
   if (
     (<IRowSelect>dataSource[indexPath.section].rows[indexPath.row]).type ==
@@ -111,8 +112,6 @@ const selectAction = (param: {
     ;(<IRowSelect>(
       dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
-    const section = dataSource[indexPath.section]
-    const row = <IRowSelect>section.rows[indexPath.row]
     postNotification("SelectChange", {
       name: section.header.toLowerCase(),
       key: row.key,
@@ -122,12 +121,23 @@ const selectAction = (param: {
       self.popoverController.dismissPopoverAnimated(true)
     self.tableView.reloadData()
   } else {
+    const selections = row.selections
+    const nowSelect = row.selections.includes(selection)
+      ? selections.filter(item => item != selection)
+      : [selection, ...selections]
+
     ;(<IRowSelect>(
       dataSource[indexPath.section].rows[indexPath.row]
-    )).selections = [selection]
+    )).selections = nowSelect
+
+    lastSelectInfo = {
+      name: section.header.toLowerCase(),
+      key: row.key,
+      selections: nowSelect
+    }
     menuController.commandTable = menuController.commandTable?.map(
       (item, index) => {
-        item.checked = selection == index
+        item.checked = row.selections.includes(index)
         return item
       }
     )
@@ -175,7 +185,10 @@ const clickSelectButton = (sender: UIButton) => {
 const popoverControllerDidDismissPopover = (
   UIPopoverController: UIPopoverController
 ) => {
-  // postNotification("SelectChange", selectInfo)
+  if (lastSelectInfo) {
+    postNotification("SelectChange", lastSelectInfo)
+    lastSelectInfo = null
+  }
 }
 
 export default {

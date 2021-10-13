@@ -123,6 +123,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
+    case cellViewType.muiltSelect:
     case cellViewType.select: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
@@ -132,7 +133,10 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
-      const view = controllers.select(row.option[row.selections[0]])
+      let view = null
+      if (row.type == cellViewType.select)
+        view = controllers.select(row.option?.[row.selections[0]] ?? "选项")
+      else view = controllers.select("选项")
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -197,7 +201,7 @@ const controllers = {
 export default {
   numberOfSectionsInTableView,
   tableViewNumberOfRowsInSection,
+  tableViewCellForRowAtIndexPath,
   tableViewTitleForHeaderInSection,
-  tableViewHeightForRowAtIndexPath,
-  tableViewCellForRowAtIndexPath
+  tableViewHeightForRowAtIndexPath
 }
