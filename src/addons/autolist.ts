@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
-import { log } from "utils/common"
 import { string2ReplaceParam } from "utils/input"
+import { isHalfWidth } from "utils/text"
 
 const config: IConfig = {
   name: "AutoList",
@@ -13,17 +13,13 @@ const config: IConfig = {
       label: "摘录时自动执行"
     },
     {
-      key: "multipleChoiceEnhance",
-      type: cellViewType.switch,
-      label: "选择题增强"
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: ["选择题", "分号"],
+      label: "选择需要的预设"
     },
     {
-      key: "wrapWhenSemicolon",
-      type: cellViewType.switch,
-      label: "见分号换行"
-    },
-    {
-      key: "customList",
+      key: "custom",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec"
@@ -44,26 +40,25 @@ const util = {
   // 匹配到就在前面或后面添加换行
   listText(text: string): string {
     const autolist = profile.autolist
-    if (autolist.customList) {
-      const params = string2ReplaceParam(autolist.customList)
+    if (autolist.custom) {
+      const params = string2ReplaceParam(autolist.custom)
       let _text = text
-      for (const item of params) {
-        _text = _text.replace(item.regexp, item.newSubStr)
-      }
+      params.forEach(param => {
+        _text = _text.replace(param.regexp, param.newSubStr)
+      })
       if (text != _text) return _text.trim()
     }
-    if (autolist.wrapWhenSemicolon) {
-      // 有空格
-      const _text = text.replace(/([;；])\s*/g, "$1\n")
-      if (text != _text) return _text.trimEnd()
-    }
-    if (autolist.multipleChoiceEnhance) {
-      if (/^[\w,.]*$/.test(text)) return text
+    if (profile.autolist.preset.includes(0)) {
+      if (isHalfWidth(text)) return text
       let _text = text.replace(
         /\s*([ABCDabcd][.、\s]*)/g,
-        (match: string) => "\n" + match.trimStart().toUpperCase()
+        (match: string) => "\n" + match.trimStart()
       )
       if (text != _text) return _text.trimStart()
+    }
+    if (profile.autolist.preset.includes(1)) {
+      const _text = text.replace(/([;；])\s*/g, "$1\n")
+      if (text != _text) return _text.trimEnd()
     }
     return text
   }

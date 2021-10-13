@@ -19,7 +19,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         } else {
           throw ""
         }
-      case "customFill":
+      case "custom":
         reverseEscape(text)
         break
       case "changeColorSelected": {
@@ -36,7 +36,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         if (index > 16 || index < 0) throw ""
         break
       }
-      case "customBeTitle":
+      case "custom":
         const regs = string2RegArray(text)
         regs.forEach(reg => {
           reg.test("test")

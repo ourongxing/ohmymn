@@ -13,7 +13,7 @@ const config: IConfig = {
       label: "摘录时自动执行"
     },
     {
-      key: "customReplace",
+      key: "custom",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f"
@@ -32,8 +32,8 @@ const config: IConfig = {
 
 const util = {
   replaceText(text: string) {
-    if (profile.autoreplace.customReplace) {
-      const params = string2ReplaceParam(profile.autoreplace.customReplace)
+    if (profile.autoreplace.custom) {
+      const params = string2ReplaceParam(profile.autoreplace.custom)
       let _text = text
       params.forEach(param => {
         _text = _text.replace(param.regexp, param.newSubStr)

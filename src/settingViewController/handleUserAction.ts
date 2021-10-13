@@ -166,7 +166,7 @@ const clickSelectButton = (sender: UIButton) => {
   }))
   menuController.rowHeight = 44
   const width =
-    row.option.reduce((a, b) => (a.length > b.length ? a : b)).length * 44 + 50
+    row.option.reduce((a, b) => (a.length > b.length ? a : b)).length * 20 + 80
   menuController.preferredContentSize = {
     width: width > 300 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
