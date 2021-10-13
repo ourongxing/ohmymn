@@ -58,12 +58,8 @@ const util = {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.customBeTitle) {
       const regs = string2RegArray(anotherautotitle.customBeTitle)
-      let flag = false
       // 全部匹配到才转为标题
-      regs.forEach(reg => {
-        flag = reg.test(text) ? true : false
-      })
-      if (flag)
+      if (regs.every(reg => reg.test(text)))
         return {
           title: text
         }
