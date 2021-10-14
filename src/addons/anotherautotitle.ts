@@ -53,7 +53,7 @@ const config: IConfig = {
 }
 
 const util = {
-  checkGetTitle(text: string): {} | boolean {
+  checkGetTitle(text: string) {
     const anotherautotitle = profile.anotherautotitle
     if (anotherautotitle.custom) {
       const regs = string2RegArray(anotherautotitle.custom)
@@ -115,4 +115,4 @@ const action: IActionMethod = {
     }
   }
 }
-export default { config, util, action }
+export { config, util, action }

@@ -42,4 +42,4 @@ const config: IConfig = {
 
 const util = {}
 const action = {}
-export default { config, util, action }
+export { config, util, action }

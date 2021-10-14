@@ -1,20 +1,14 @@
-import anotherautotitle from "addons/anotherautotitle"
-import autocomplete from "addons/autocomplete"
-import autolist from "addons/autolist"
-import autoreplace from "addons/autoreplace"
-import autostandardize from "addons/autostandardize"
-import magicaction from "addons/magicaction"
-import anotherautodef from "addons/anotherautodef"
-import ohmymn from "addons/ohmymn"
+import * as anotherautotitle from "addons/anotherautotitle"
+import * as autocomplete from "addons/autocomplete"
+import * as autolist from "addons/autolist"
+import * as autoreplace from "addons/autoreplace"
+import * as autostandardize from "addons/autostandardize"
+import * as magicaction from "addons/magicaction"
+import * as anotherautodef from "addons/anotherautodef"
+import * as ohmymn from "addons/ohmymn"
 
-interface IAddon {
-  config: IConfig
-  util: {}
-  action: {}
-}
-
-// 不要包含 magication，不存在，顺序为显示的顺序，magiction 始终为第1个
-const addons: IAddon[] = [
+// 不要包含 magication，顺序为显示的顺序，magiction 始终为第1个
+const addons = [
   ohmymn,
   anotherautotitle,
   anotherautodef,
@@ -23,20 +17,6 @@ const addons: IAddon[] = [
   autoreplace,
   autolist
 ]
-
-//
-
-const genActionsUtils = () => {
-  // 为了避免循环引用，配置文件还是自己写比较好
-  const utils: any = {}
-  const actions: any = { ...magicaction.action }
-  for (const addon of addons) {
-    const name = addon.config.name.toLowerCase()
-    utils[name] = addon.util
-    Object.assign(actions, addon.action)
-  }
-  return { actions, utils }
-}
 
 const genSection = (config: IConfig): ISection => {
   const rows: Array<IRow> = [
@@ -133,7 +113,15 @@ const genDataSourceIndex = (dataSource: Array<ISection>) => {
   return dataSourceIndex
 }
 
-export const { actions, utils } = genActionsUtils()
+const genActionsUtils = () => {
+  const actions = { ...magicaction.action }
+  for (const addon of addons) {
+    Object.assign(actions, addon.action)
+  }
+  return actions
+}
+
+export const actions = genActionsUtils()
 export const dataSource: Array<ISection> = genDataSource(
   addons.map(addon => addon.config),
   magicaction.config

@@ -63,4 +63,4 @@ const action: IActionMethod = {
     }
   }
 }
-export default { config, util, action }
+export { config, util, action }

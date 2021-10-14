@@ -4,7 +4,7 @@ import { reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
 import { isHalfWidth, wordCount } from "utils/text"
-import autostandardize from "./autostandardize"
+import { util as autostandardize } from "./autostandardize"
 
 const config: IConfig = {
   name: "AutoComplete",
@@ -86,8 +86,8 @@ const util = {
     for (const [a, b] of re) str = str.replace(a, b)
     return str.replace(/ /g, "/")
   },
-  getCollinsStar(str: string) {
-    return Array(Number(str)).fill("⭐").join("")
+  getCollinsStar(num: number) {
+    return "⭐".repeat(num)
   },
   async checkGetWord(text: string) {
     try {
@@ -112,7 +112,7 @@ const util = {
         tag: isOCNull(info.tag) ? "" : this.getTag(info.tag),
         collins: isOCNull(info.collins)
           ? ""
-          : this.getCollinsStar(info.collins),
+          : this.getCollinsStar(Number(info.collins)),
         en: isOCNull(info.definition) ? "" : info.definition,
         zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
       }
@@ -122,7 +122,7 @@ const util = {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)
         })
-        text = autostandardize.util.standardizeText(fill)
+        text = autostandardize.standardizeText(fill)
       }
       return {
         title,
@@ -157,4 +157,4 @@ const action: IActionMethod = {
   }
 }
 
-export default { config, util, action }
+export { config, util, action }
