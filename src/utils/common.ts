@@ -1,15 +1,12 @@
-const log = (obj: any, suffix = "normal") => {
-  JSB.log(`ohmymn-${suffix} %@`, obj)
-}
+const log = (obj: any, suffix = "normal") =>
+  void JSB.log(`ohmymn-${suffix} %@`, obj)
 
-const showHUD = (message: string, duration: number = 1) => {
-  // 注意要把 window 赋给所有 OC 对象才行
-  Application.sharedInstance().showHUD(message, self.window, duration)
-}
+// 注意要把 window 赋给所有 OC 对象才行
+const showHUD = (message: string, duration: number = 1) =>
+  void Application.sharedInstance().showHUD(message, self.window, duration)
 
-const alert = (message: string) => {
-  Application.sharedInstance().alert(message)
-}
+const alert = (message: string) =>
+  void Application.sharedInstance().alert(message)
 
 const getObjCClassDeclar = (
   name: string,
@@ -43,17 +40,15 @@ const delayBreak = async (
   return false
 }
 
-const openUrl = (url: string) => {
-  Application.sharedInstance().openURL(NSURL.URLWithString(encodeURI(url)))
-}
+const openUrl = (url: string) =>
+  void Application.sharedInstance().openURL(NSURL.URLWithString(encodeURI(url)))
 
-const postNotification = (key: string, userInfo: any) => {
-  NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
+const postNotification = (key: string, userInfo: any) =>
+  void NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
     key,
     self,
     userInfo
   )
-}
 
 const isThisWindow = (sender: any, window: any) =>
   Application.sharedInstance().checkNotifySenderInWindow(sender, self.window)
@@ -93,10 +88,7 @@ const popup = (
 /**
  * 用来判断是否是 OC 的 NSNull 对象
  */
-const isOCNull = (obj: any) => {
-  // 用 obj is NSNull 不大行，因为只有运行时才能判断是否是 NSNull
-  return obj == NSNull.new()
-}
+const isOCNull = (obj: any) => obj == NSNull.new()
 
 export {
   log,

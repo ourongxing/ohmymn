@@ -21,7 +21,6 @@ const eventHandlerController = (
       NSNotificationCenter.defaultCenter().removeObserverName(self, v.event)
     })
   }
-
   return { add, remove }
 }
 

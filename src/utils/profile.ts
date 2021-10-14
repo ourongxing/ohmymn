@@ -12,9 +12,8 @@ const docProfileKey = "marginnote_ohmymn_profile_doc_110"
 
 const getDataByKey = (key: string) =>
   NSUserDefaults.standardUserDefaults().objectForKey(key)
-const setDataByKey = (data: string, key: string) => {
-  NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
-}
+const setDataByKey = (data: string, key: string) =>
+  void NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
 
 const updateDataSource = (profile: IProfile_doc | IProfile) => {
   for (const [name, _] of Object.entries(profile)) {
