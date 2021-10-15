@@ -39,13 +39,13 @@ const onButtonClick: eventHandler = async sender => {
     showHUD("未选中任何脑图卡片")
     return
   }
-  const isSiblings =
-    nodes.length > 1 &&
-    nodes.every(node => nodes[0].parentNote == node.parentNote)
-  if ((nodes.length == 1 && nodes[0]?.childNotes.length) || isSiblings) {
+  const isHavingChildren = nodes.every(
+    node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
+  )
+  if (isHavingChildren) {
     const { index } = await popup(
       "OhMyMN",
-      isSiblings
+      nodes.length > 1
         ? "检测到您选中的同层级卡片均有子节点"
         : "检测到您选中的唯一卡片有子节点",
       UIAlertViewStyle.Default,
