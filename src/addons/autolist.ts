@@ -51,7 +51,7 @@ const util = {
     if (profile.autolist.preset.includes(0)) {
       if (isHalfWidth(text)) return text
       let _text = text.replace(
-        /\s*([ABCDabcd][.、\s]*)/g,
+        /\s*([ABCDabcd][.、\s]+)/g,
         (match: string) => "\n" + match.trimStart()
       )
       if (text != _text) return _text.trimStart()
