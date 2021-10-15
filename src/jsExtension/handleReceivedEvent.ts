@@ -40,7 +40,7 @@ let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender, self.window)) return
   const { key, content } = sender.userInfo
-  if (profile.ohmymn.clickHidden) closePanel()
+  if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes
