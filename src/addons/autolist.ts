@@ -19,7 +19,7 @@ const config: IConfig = {
       label: "选择需要的预设"
     },
     {
-      key: "custom",
+      key: "customList",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec"
@@ -40,8 +40,8 @@ const util = {
   // 匹配到就在前面或后面添加换行
   listText(text: string): string {
     const autolist = profile.autolist
-    if (autolist.custom) {
-      const params = string2ReplaceParam(autolist.custom)
+    if (autolist.customList) {
+      const params = string2ReplaceParam(autolist.customList)
       let _text = text
       params.forEach(param => {
         _text = _text.replace(param.regexp, param.newSubStr)
@@ -65,14 +65,14 @@ const util = {
 }
 const action: IActionMethod = {
   listSelected({ nodes, content }) {
-    const params = content != "😎" ? string2ReplaceParam(content) : []
+    const params = content.includes("😎") ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (!text) continue
         let _text = text
-        if (content == "😎") _text = util.listText(text)
+        if (content.includes("😎")) _text = util.listText(text)
         else
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

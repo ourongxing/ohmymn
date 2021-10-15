@@ -16,7 +16,7 @@ const config: IConfig = {
       label: "摘录时自动执行"
     },
     {
-      key: "custom",
+      key: "customComplete",
       type: cellViewType.input,
       label: "自定义摘录填充信息，点击查看支持变量",
       link: "https://www.notion.so/busiyi/AutoComplete-1eab78ee6d7648339e088c593326b5ca"
@@ -116,8 +116,8 @@ const util = {
         en: isOCNull(info.definition) ? "" : info.definition,
         zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
       }
-      if (profile.autocomplete.custom) {
-        let fill = reverseEscape(profile.autocomplete.custom)
+      if (profile.autocomplete.customComplete) {
+        let fill = reverseEscape(profile.autocomplete.customComplete)
         Object.entries(vars).forEach(([key, value]) => {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)

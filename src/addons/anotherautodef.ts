@@ -23,7 +23,7 @@ const config: IConfig = {
       label: "选择需要的预设"
     },
     {
-      key: "custom",
+      key: "customDefTitle",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"

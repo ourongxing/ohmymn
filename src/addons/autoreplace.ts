@@ -13,7 +13,7 @@ const config: IConfig = {
       label: "摘录时自动执行"
     },
     {
-      key: "custom",
+      key: "customReplace",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f"
@@ -32,8 +32,8 @@ const config: IConfig = {
 
 const util = {
   replaceText(text: string) {
-    if (profile.autoreplace.custom) {
-      const params = string2ReplaceParam(profile.autoreplace.custom)
+    if (profile.autoreplace.customReplace) {
+      const params = string2ReplaceParam(profile.autoreplace.customReplace)
       let _text = text
       params.forEach(param => {
         _text = _text.replace(param.regexp, param.newSubStr)
@@ -46,14 +46,14 @@ const util = {
 
 const action: IActionMethod = {
   replaceSelected({ content, nodes }) {
-    const params = content != "😎" ? string2ReplaceParam(content) : []
+    const params = content.includes("😎") ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (!text) continue
         let _text = text
-        if (content == "😎") _text = util.replaceText(text)
+        if (content.includes("😎")) _text = util.replaceText(text)
         else
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

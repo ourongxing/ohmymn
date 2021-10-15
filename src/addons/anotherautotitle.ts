@@ -35,7 +35,7 @@ const config: IConfig = {
       label: "不含有点号"
     },
     {
-      key: "custom",
+      key: "customBeTitle",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"
@@ -55,8 +55,8 @@ const config: IConfig = {
 const util = {
   checkGetTitle(text: string) {
     const anotherautotitle = profile.anotherautotitle
-    if (anotherautotitle.custom) {
-      const regs = string2RegArray(anotherautotitle.custom)
+    if (anotherautotitle.customBeTitle) {
+      const regs = string2RegArray(anotherautotitle.customBeTitle)
       // 全部匹配到才转为标题
       if (regs.every(reg => reg.test(text)))
         return {

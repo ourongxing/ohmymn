@@ -1,4 +1,5 @@
 import { util as magicaction } from "addons/magicaction"
+import { log } from "utils/common"
 import {
   reverseEscape,
   string2RegArray,
@@ -19,24 +20,16 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         } else {
           throw ""
         }
-      case "custom":
+      case "customComplete":
         reverseEscape(text)
         break
       case "changeColorSelected": {
-        let index = 0
-        if (/^\s*\(.*\)\s*$/.test(text)) {
-          const param = string2ReplaceParam(text)
-          if (param.length > 1) throw ""
-          param[0].regexp.test("test")
-          index = Number(param[0].newSubStr)
-        } else {
-          index = Number(text)
-        }
+        const index = Number(text)
         if (!Number.isInteger(index)) throw ""
         if (index > 16 || index < 0) throw ""
         break
       }
-      case "custom":
+      case "customBeTitle":
         const regs = string2RegArray(text)
         regs.forEach(reg => {
           reg.test("test")

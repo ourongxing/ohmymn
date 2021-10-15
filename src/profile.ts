@@ -9,7 +9,7 @@ const profileType = {
   },
   autocomplete: {
     on: false,
-    custom: `"{{zh}}"`
+    customComplete: `"{{zh}}"`
   },
   autostandardize: {
     on: false
@@ -20,22 +20,22 @@ const profileType = {
     noPunctuation: false,
     changeTitleNoLimit: false,
     wordCount: "[10,5]",
-    custom: ""
+    customBeTitle: ""
   },
   anotherautodef: {
     on: false,
     firstLetterCaps: false,
     preset: [0],
-    custom: ""
+    customDefTitle: ""
   },
   autolist: {
     on: false,
     preset: [0],
-    custom: ""
+    customList: ""
   },
   autoreplace: {
     on: false,
-    custom: ""
+    customReplace: ""
   }
 }
 
