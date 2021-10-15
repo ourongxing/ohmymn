@@ -182,7 +182,7 @@ const action: IActionMethod = {
   filterCards({ nodes, content }) {
     // 0 判断标题 1 判断整个内容
     const option = Number(content.split("😎")[1] ?? 1)
-    const regs = string2RegArray(content)
+    const regs = string2RegArray(content.split("😎")[0])
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
       const content = `${title}\n${getAllText(node)}`
