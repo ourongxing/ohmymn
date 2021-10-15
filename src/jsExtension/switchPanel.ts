@@ -1,5 +1,5 @@
 import { profile } from "profile"
-import { showHUD } from "utils/common"
+import { delay, log, showHUD } from "utils/common"
 
 // 面板和按键状态
 let panelStatus = false
@@ -9,7 +9,21 @@ export const layoutViewController = () => {
   const frame = self.studyController.view.bounds
   const width = 300
   const height = [600, 450, 300][profile.ohmymn.panelHeight[0]]
-  const x = [50, (frame.width - width) / 2, frame.width - width - 50][
+  const autoX = () => {
+    const readerView = <UIView>self.studyController.readerController.view
+    const isHidden = readerView.hidden
+    if (self.studyController.rightMapMode) {
+      const x = readerView.frame.width - width - 40
+      return x < 50 || isHidden ? 50 : x
+    } else {
+      const x = frame.width - readerView.frame.width + 40
+      log(x)
+      return x > frame.width - width - 50 || isHidden
+        ? frame.width - width - 50
+        : x
+    }
+  }
+  const x = [autoX(), 50, (frame.width - width) / 2, frame.width - width - 50][
     profile.ohmymn.panelPostion[0]
   ]
   self.settingViewController.view.frame = {
@@ -23,24 +37,22 @@ export const layoutViewController = () => {
 export const closePanel = () => {
   if (panelStatus) {
     self.settingViewController.view.removeFromSuperview()
-    // 刷新按钮状态
     panelStatus = false
     self.studyController.refreshAddonCommands()
   }
 }
 
+let lastOpenPanel = 0
 const openPanel = () => {
   if (!panelStatus) {
     self.studyController.view.addSubview(self.settingViewController.view)
-    if (self.studyController.docMapSplitMode == 2) {
-      self.studyController.docMapSplitMode = 1
+    if (self.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
+      self.studyController.docMapSplitMode = docMapSplitMode.half
       showHUD("OhMyMN 与脑图更配喔", 1)
     }
-    // 开启面板时，若键盘处于开启状态，关闭键盘
-    NSTimer.scheduledTimerWithTimeInterval(0.2, false, function () {
-      self.studyController.becomeFirstResponder()
-    })
+    delay(0.2).then(() => void self.studyController.becomeFirstResponder())
     panelStatus = true
+    lastOpenPanel = Date.now()
     self.studyController.refreshAddonCommands()
   }
 }
@@ -51,15 +63,18 @@ const switchPanel = () => {
   else {
     if (profile.ohmymn.doubleClick) {
       const now = Date.now()
-      if (lastClickButton && now - lastClickButton < 300) openPanel()
-      else lastClickButton = now
+      lastClickButton && now - lastClickButton < 300
+        ? openPanel()
+        : (lastClickButton = now)
     } else openPanel()
   }
 }
 
-// addSubview 的时候会执行，也就是打开操作面板的时候
+// 改变各个 view 的时候就会触发，非常频繁，我们只需要在打开面板的时候触发一次，记录一下最近一次面板打开的时间
 const controllerWillLayoutSubviews = (controller: UIViewController) => {
-  if (controller == self.studyController) layoutViewController()
+  if (controller != self.studyController) return
+  if (!panelStatus) return
+  if (Date.now() - lastOpenPanel < 200) layoutViewController()
 }
 
 const queryAddonCommandStatus = () => {

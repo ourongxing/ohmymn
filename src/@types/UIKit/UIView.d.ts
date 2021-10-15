@@ -7,6 +7,7 @@ declare global {
     bounds: CGRect
     frame: CGRect
     layer: CALayer
+    hidden: boolean
     addSubview(view: UIView): void
     autoresizingMask: UIViewAutoresizing
     superview: UIView

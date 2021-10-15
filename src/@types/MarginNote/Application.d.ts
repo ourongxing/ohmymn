@@ -47,6 +47,7 @@ declare global {
   class ReaderController {
     readonly currentDocumentController: WrapperObj<DocumentController>
     readonly documentControllers?: NSMutableArray
+    view: UIView
   }
 
   const enum studyMode {

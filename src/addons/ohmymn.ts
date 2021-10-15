@@ -6,7 +6,7 @@ const config: IConfig = {
     {
       key: "panelPostion",
       type: cellViewType.select,
-      option: ["靠左", "中间", "靠右"],
+      option: ["自动", "靠左", "中间", "靠右"],
       label: "面板显示位置"
     },
     {

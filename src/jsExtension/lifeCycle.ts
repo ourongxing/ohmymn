@@ -1,7 +1,7 @@
 import settingViewControllerInst from "settingViewController/main"
 import { readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, log } from "utils/common"
-import { closePanel } from "./switchPanel"
+import { closePanel, layoutViewController } from "./switchPanel"
 import { eventCtrl } from "./handleReceivedEvent"
 
 const SettingViewController = JSB.defineClass(
@@ -90,30 +90,30 @@ const addonWillDisconnect = () => {
   removeProfile()
 }
 
-// 进入后台保存配置，适合 iPad 上
-const applicationDidEnterBackground = () => {
+const sceneWillResignActive = () => {
   log("应用进入后台", "lifeCycle")
   if (thisDocMd5) {
     saveProfile(thisDocMd5, true)
   }
 }
 
-const applicationWillEnterForeground = () => {
+const sceneDidBecomeActive = () => {
+  // iPad 上切换后台面板会变宽
+  layoutViewController()
   log("应用进入前台", "lifeCycle")
 }
 
 export const clsMethons = {
-  // addonDidConnect,
-  addonWillDisconnect,
-  applicationDidEnterBackground
-  // applicationWillEnterForeground
+  addonWillDisconnect
 }
 
-export const InstMethods = {
+export default {
   sceneWillConnect,
   sceneDidDisconnect,
-  notebookWillOpen,
+  sceneWillResignActive,
+  sceneDidBecomeActive,
   notebookWillClose,
-  documentDidOpen,
-  documentWillClose
+  documentWillClose,
+  notebookWillOpen,
+  documentDidOpen
 }
