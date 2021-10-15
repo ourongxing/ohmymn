@@ -17,7 +17,6 @@ export const layoutViewController = () => {
       return x < 50 || isHidden ? 50 : x
     } else {
       const x = frame.width - readerView.frame.width + 40
-      log(x)
       return x > frame.width - width - 50 || isHidden
         ? frame.width - width - 50
         : x
@@ -45,9 +44,9 @@ let lastOpenPanel = 0
 const openPanel = () => {
   if (panelStatus) return
   self.studyController.view.addSubview(self.settingViewController.view)
+  panelStatus = true
   self.studyController.refreshAddonCommands()
   lastOpenPanel = Date.now()
-  panelStatus = true
   if (self.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
     self.studyController.docMapSplitMode = docMapSplitMode.half
     showHUD("OhMyMN 与脑图更配喔", 1)
