@@ -35,26 +35,24 @@ export const layoutViewController = () => {
 }
 
 export const closePanel = () => {
-  if (panelStatus) {
-    self.settingViewController.view.removeFromSuperview()
-    panelStatus = false
-    self.studyController.refreshAddonCommands()
-  }
+  if (!panelStatus) return
+  self.settingViewController.view.removeFromSuperview()
+  panelStatus = false
+  self.studyController.refreshAddonCommands()
 }
 
 let lastOpenPanel = 0
 const openPanel = () => {
-  if (!panelStatus) {
-    self.studyController.view.addSubview(self.settingViewController.view)
-    if (self.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
-      self.studyController.docMapSplitMode = docMapSplitMode.half
-      showHUD("OhMyMN 与脑图更配喔", 1)
-    }
-    delay(0.2).then(() => void self.studyController.becomeFirstResponder())
-    panelStatus = true
-    lastOpenPanel = Date.now()
-    self.studyController.refreshAddonCommands()
+  if (panelStatus) return
+  self.studyController.view.addSubview(self.settingViewController.view)
+  self.studyController.refreshAddonCommands()
+  lastOpenPanel = Date.now()
+  panelStatus = true
+  if (self.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
+    self.studyController.docMapSplitMode = docMapSplitMode.half
+    showHUD("OhMyMN 与脑图更配喔", 1)
   }
+  delay(0.2).then(() => void self.studyController.becomeFirstResponder())
 }
 
 let lastClickButton = 0
@@ -63,9 +61,8 @@ const switchPanel = () => {
   else {
     if (profile.ohmymn.doubleClick) {
       const now = Date.now()
-      lastClickButton && now - lastClickButton < 300
-        ? openPanel()
-        : (lastClickButton = now)
+      if (lastClickButton && now - lastClickButton < 300) openPanel()
+      else lastClickButton = now
     } else openPanel()
   }
 }
