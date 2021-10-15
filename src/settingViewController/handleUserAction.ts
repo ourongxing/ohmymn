@@ -30,7 +30,8 @@ const tableViewDidSelectRowAtIndexPath = async (
             return {
               key: row.key,
               content:
-                row.option?.length && buttonIndex == 0
+                // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
+                row.option?.length && buttonIndex != row.option?.length - 1
                   ? input + "😎" + String(buttonIndex)
                   : input
             }

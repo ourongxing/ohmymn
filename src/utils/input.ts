@@ -34,9 +34,13 @@ const string2Reg = (str: string) => {
 }
 
 const string2RegArray = (str: string): RegExp[] => {
-  // 输入 [/sd/,/sd/]
-  // /sd/
-  if (!/^\[.*\]$/.test(str)) return [string2Reg(str)]
+  /**
+   * 输入 [/sd/,/sd/]
+   * /sd/
+   *  sd
+   */
+  if (!/^\[.*\]$/.test(str))
+    return [string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/g`)]
   const regStrArr = str.slice(1, -1).split(/\s*,\s*(?=\/)/)
   return regStrArr.map(str => string2Reg(str))
 }

@@ -1,5 +1,4 @@
 import { util as magicaction } from "addons/magicaction"
-import { log } from "utils/common"
 import {
   reverseEscape,
   string2RegArray,
@@ -17,9 +16,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
             input.length == 2 &&
             input.every(item => Number.isInteger(item)))
         ) {
-        } else {
-          throw ""
-        }
+        } else throw ""
       case "customComplete":
         reverseEscape(text)
         break
@@ -30,6 +27,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       }
       case "customBeTitle":
+      case "filterCards":
         const regs = string2RegArray(text)
         regs.forEach(reg => {
           reg.test("test")
@@ -37,10 +35,11 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       case "renameSelected":
         text = /^\s*".*"\s*$/.test(text) ? `(/^.*$/g, ${text})` : text
-        string2ReplaceParam(text).forEach(param => {
-          "test".replace(param.regexp, param.newSubStr)
-          magicaction.getSerialInfo(param.newSubStr, 1)
-        })
+        const params = string2ReplaceParam(text)
+        if (params.length > 1) throw ""
+        "test".replace(params[0].regexp, params[0].newSubStr)
+        if (/%\[(.*)\]/.test(params[0].newSubStr))
+          magicaction.getSerialInfo(params[0].newSubStr, 1)
         break
       default:
         string2ReplaceParam(text).forEach(param => {

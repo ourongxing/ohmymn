@@ -1,5 +1,10 @@
 import { excerptNotes, getAllText } from "utils/note"
-import { reverseEscape, string2ReplaceParam } from "utils/input"
+import {
+  reverseEscape,
+  string2RegArray,
+  string2ReplaceParam
+} from "utils/input"
+import { HUDController, log, showHUD } from "utils/common"
 
 const config: IConfig = {
   name: "MagicAction",
@@ -109,15 +114,15 @@ const action: IActionMethod = {
     // 如果单个选中，则为选中的顺序
     content = /^\s*".*"\s*$/.test(content) ? `(/^.*$/g, ${content})` : content
     const params = string2ReplaceParam(content)
+    if (params.length > 1) return
     let newReplace: string[] = []
     // 如果含有序列信息，就把获取新的 replace 参数
     if (/%\[(.*)\]/.test(params[0].newSubStr)) {
       newReplace = util.getSerialInfo(params[0].newSubStr, nodes.length)
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
-        if (newReplace[index]) {
+        if (newReplace[index])
           note.noteTitle = title.replace(params[0].regexp, newReplace[index])
-        }
       })
     }
     // 或者直接替换
@@ -172,6 +177,23 @@ const action: IActionMethod = {
       linkComments.forEach(linkComment => {
         node.appendTextComment(linkComment.text)
       })
+    }
+  },
+  filterCards({ nodes, content }) {
+    // 0 判断标题 1 判断整个内容
+    const option = Number(content.split("😎")[1] ?? 1)
+    const regs = string2RegArray(content)
+    const customSelectedNodes = nodes.filter(node => {
+      const title = node.noteTitle ?? ""
+      const content = `${title}\n${getAllText(node)}`
+      return regs.every(reg => reg.test(option ? content : title))
+    })
+    if (customSelectedNodes.length) {
+      HUDController("您需要的卡片已选中，请继续操作").show()
+      return customSelectedNodes
+    } else {
+      showHUD("未找到符合的卡片")
+      return []
     }
   }
 }

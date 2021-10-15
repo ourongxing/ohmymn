@@ -2,7 +2,14 @@ import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
 import { actions } from "synthesizer"
-import { delayBreak, isThisWindow, log, popup, showHUD } from "utils/common"
+import {
+  delayBreak,
+  HUDController,
+  isThisWindow,
+  log,
+  popup,
+  showHUD
+} from "utils/common"
 import eventHandlerController from "utils/event"
 import {
   getNoteById,
@@ -29,46 +36,62 @@ interface eventHandler {
   }): void
 }
 
+let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender, self.window)) return
   const { key, content } = sender.userInfo
   if (profile.ohmymn.clickHidden) closePanel()
-  let nodes: MbBookNote[]
-  nodes = getSelectNodes()
-  if (!nodes.length) {
-    showHUD("未选中任何脑图卡片")
-    return
-  }
-  const isHavingChildren = nodes.every(
-    node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
-  )
-  if (isHavingChildren) {
-    const { index } = await popup(
-      "OhMyMN",
-      nodes.length > 1
-        ? "检测到您选中的同层级卡片均有子节点"
-        : "检测到您选中的唯一卡片有子节点",
-      UIAlertViewStyle.Default,
-      ["仅处理选中的卡片", "仅处理所有子节点", "处理选中的卡片及其子节点"],
-      (alert: UIAlertView, buttonIndex: number) => ({
-        index: buttonIndex
-      })
+  let nodes: MbBookNote[] = []
+  if (customSelectedNodes.length) {
+    nodes = customSelectedNodes
+    customSelectedNodes = []
+    HUDController().hidden()
+  } else {
+    nodes = getSelectNodes()
+    if (!nodes.length) {
+      showHUD("未选中任何脑图卡片")
+      return
+    }
+    const isHavingChildren = nodes.every(
+      node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
     )
-    nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][index!]
+    if (isHavingChildren) {
+      const { index } = await popup(
+        "OhMyMN",
+        nodes.length > 1
+          ? "检测到您选中的同层级卡片均有子节点"
+          : "检测到您选中的唯一卡片有子节点",
+        UIAlertViewStyle.Default,
+        ["仅处理选中的卡片", "仅处理所有子节点", "处理选中的卡片及其子节点"],
+        (alert: UIAlertView, buttonIndex: number) => ({
+          index: buttonIndex
+        })
+      )
+      nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][index!]
+    }
   }
-  // 异步函数，不要包裹在 undoGrouping 里面
-  if (["completeSelected"].includes(key))
-    actions[key]({
-      content,
-      nodes
-    })
-  else
-    undoGroupingWithRefresh(() => {
+  switch (key) {
+    case "filterCards":
+      customSelectedNodes = actions[key]({
+        content,
+        nodes
+      })
+      break
+    // 异步函数，不要包裹在 undoGrouping 里面
+    case "completeSelected":
       actions[key]({
         content,
         nodes
       })
-    })
+      break
+    default:
+      undoGroupingWithRefresh(() => {
+        actions[key]({
+          content,
+          nodes
+        })
+      })
+  }
 }
 
 const onSwitchChange: eventHandler = sender => {

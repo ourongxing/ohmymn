@@ -103,6 +103,6 @@ declare global {
     }: {
       content: string
       nodes: MbBookNote[]
-    }) => void
+    }) => any
   }
 }

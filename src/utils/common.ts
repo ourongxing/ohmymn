@@ -5,6 +5,17 @@ const log = (obj: any, suffix = "normal") =>
 const showHUD = (message: string, duration: number = 1) =>
   void Application.sharedInstance().showHUD(message, self.window, duration)
 
+const HUDController = (message = "请等待") => {
+  const show = () =>
+    void Application.sharedInstance().waitHUDOnView(message, self.window)
+  const hidden = () =>
+    void Application.sharedInstance().stopWaitHUDOnView(self.window)
+  return {
+    show,
+    hidden
+  }
+}
+
 const alert = (message: string) =>
   void Application.sharedInstance().alert(message)
 
@@ -93,6 +104,7 @@ const isOCNull = (obj: any) => obj == NSNull.new()
 export {
   log,
   showHUD,
+  HUDController,
   alert,
   delay,
   delayBreak,
