@@ -3,6 +3,7 @@ import { util as autolist } from "addons/autolist"
 import { util as autoreplace } from "addons/autoreplace"
 import { util as autocomplete } from "addons/autocomplete"
 import { util as anotherautotitle } from "addons/anotherautotitle"
+import { util as anotherautodef } from "addons/anotherautodef"
 import { profile } from "profile"
 
 export const genTitleText = async (
@@ -18,10 +19,13 @@ export const genTitleText = async (
     const result = await autocomplete.checkGetWord(text)
     if (result) return result
   }
+  if (profile.anotherautodef.on) {
+    const result = anotherautodef.checkGetDefTitle(text)
+    if (result) return { title: result.title, text: "" }
+  }
   if (profile.anotherautotitle.on) {
     const result = anotherautotitle.checkGetTitle(text)
-    // 可以作为标题
-    if (result) return { text, title: result.title }
+    if (result) return { title: result.title, text: "" }
   }
   return { text }
 }

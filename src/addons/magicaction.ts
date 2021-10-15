@@ -8,6 +8,12 @@ const config: IConfig = {
   settings: [],
   actions: [
     {
+      type: cellViewType.buttonWithInput,
+      label: "筛选卡片",
+      help: "注意事项及具体输入格式见顶上帮助信息",
+      key: "filterCards"
+    },
+    {
       type: cellViewType.button,
       label: "修改摘录样式",
       key: "changeFillSelected",
@@ -191,4 +197,4 @@ const action: IActionMethod = {
   }
 }
 
-export default { config, util, action }
+export { config, util, action }

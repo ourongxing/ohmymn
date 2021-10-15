@@ -15,22 +15,15 @@ const getSelectNodes = (): MbBookNote[] => {
  */
 const getSelectNodesAll = (onlyChildrenNode = false): MbBookNote[] => {
   const nodes = getSelectNodes()
-  // 使用 set 方便去重
-  const allNodes: Set<MbBookNote> = new Set()
-  const getChildren = (nodes: MbBookNote[]) => {
+  const allNodes: MbBookNote[] = []
+  const getChildren = (nodes: MbBookNote[], onlyChildrenNode = false) => {
     nodes.forEach((node: MbBookNote) => {
-      if (node.childNotes?.length) {
-        allNodes.add(node)
-        getChildren(node.childNotes)
-      } else allNodes.add(node)
+      if (!onlyChildrenNode) allNodes.push(node)
+      if (node.childNotes?.length) getChildren(node.childNotes)
     })
   }
-  getChildren(nodes)
-  // 如果只选中一个节点，并且该节点有子节点，删除该节点
-  if (nodes.length == 1 && nodes[0].childNotes?.length && onlyChildrenNode)
-    allNodes.delete(nodes[0])
-  // 返回数组
-  return [...allNodes]
+  getChildren(nodes, onlyChildrenNode)
+  return allNodes
 }
 
 /**

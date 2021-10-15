@@ -64,8 +64,8 @@ export const genDataSource = (
     }
     magicaction.settings = magicaction.actions.sort(
       (a: ISetting, b: ISetting) => {
-        const val1 = a.label!.length
-        const val2 = b.label!.length
+        const val1 = a.label.length
+        const val2 = b.label.length
         return val1 - val2
       }
     )
@@ -122,7 +122,7 @@ const genActionsUtils = () => {
 }
 
 export const actions = genActionsUtils()
-export const dataSource: Array<ISection> = genDataSource(
+export const dataSource = genDataSource(
   addons.map(addon => addon.config),
   magicaction.config
 )
