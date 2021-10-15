@@ -25,7 +25,7 @@ const config: IConfig = {
       label: "批量替换摘录文字",
       key: "replaceSelected",
       help: "具体输入格式见顶上帮助信息",
-      option: ["使用 AutoReplace 的配置"]
+      option: ["使用 AutoReplace 的配置", "确定"]
     }
   ]
 }

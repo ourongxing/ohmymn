@@ -31,7 +31,7 @@ const config: IConfig = {
       label: "序列摘录自动换行",
       key: "listSelected",
       help: "具体输入格式见顶上帮助信息",
-      option: ["使用 AutoList 的配置"]
+      option: ["使用 AutoList 的配置", "确定"]
     }
   ]
 }

@@ -11,6 +11,7 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: "筛选卡片",
       help: "注意事项及具体输入格式见顶上帮助信息",
+      option: ["仅判断标题", "判断整个卡片内容"],
       key: "filterCards"
     },
     {

@@ -24,25 +24,29 @@ const tableViewDidSelectRowAtIndexPath = async (
           row.label,
           row.help ?? "",
           UIAlertViewStyle.PlainTextInput,
-          row.option ? [...row.option, "确定"] : ["确定"],
-          (alert: UIAlertView, buttonIndex: number) => ({
-            key: row.key,
-            content:
-              row.option?.length && buttonIndex == 0
-                ? "😎"
-                : alert.textFieldAtIndex(0).text.trim()
-          })
+          row.option ? row.option : ["确定"],
+          (alert: UIAlertView, buttonIndex: number) => {
+            const input = alert.textFieldAtIndex(0).text.trim()
+            return {
+              key: row.key,
+              content:
+                row.option?.length && buttonIndex == 0
+                  ? input + "😎" + String(buttonIndex)
+                  : input
+            }
+          }
         )
         if (!content) return
-        if (content == "😎" || checkInputCorrect(content, row.key)) {
+        if (
+          !content.split("😎")[0] ||
+          checkInputCorrect(content.split("😎")[0], row.key)
+        ) {
           postNotification("ButtonClick", {
             key,
             content
           })
           return
-        } else {
-          showHUD("输入错误，请重新输入")
-        }
+        } else showHUD("输入错误，请重新输入")
       }
     case cellViewType.button:
       if (row.key == "space") return
