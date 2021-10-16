@@ -2,10 +2,11 @@ import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 
-const tag2indexPath = (tag: number): NSIndexPath => ({
-  section: (tag - 999 - ((tag - 999) % 100)) / 100,
-  row: (tag - 999) % 100
-})
+const tag2indexPath = (tag: number): NSIndexPath =>
+  NSIndexPath.indexPathForRowInSection(
+    (tag - 999) % 100,
+    (tag - 999 - ((tag - 999) % 100)) / 100
+  )
 
 const tableViewDidSelectRowAtIndexPath = async (
   tableView: UITableView,
@@ -127,7 +128,7 @@ const selectAction = (param: {
     })
     if (self.popoverController)
       self.popoverController.dismissPopoverAnimated(true)
-    self.tableView.reloadData()
+    self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
   } else {
     const selections = row.selections
     const nowSelect = row.selections.includes(selection)

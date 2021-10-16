@@ -4,6 +4,7 @@ declare global {
   const enum UITableViewStyle {}
   const enum UITableViewCellSeparatorStyle {}
   const enum UITableViewScrollPosition {}
+  const enum UITableViewRowAnimation {}
   class UITableView {
     readonly style: UITableViewStyle
     dataSource: WrapperObj<any>
@@ -23,6 +24,10 @@ declare global {
 
     reloadData(): void
     reloadSectionIndexTitles(): void
+    reloadRowsAtIndexPathsWithRowAnimation(
+      indexPath: NSIndexPath,
+      animation: UITableViewRowAnimation
+    ): void
     /**
      *  NSInteger
      */

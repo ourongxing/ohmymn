@@ -10,10 +10,6 @@ declare global {
   type JSValue = any
   type NSDictionary = any
   type NSRange = any
-  type NSIndexPath = {
-    section: number
-    row: number
-  }
   type NSMutableArray<T = any> = Array<T>
   type NSIndexSet = any
   type NSCharacterSet = any
@@ -336,5 +332,10 @@ declare global {
      * @param domain NSString*
      */
     objectIsForcedForKeyInDomain(key: string, domain: string): boolean
+  }
+  class NSIndexPath {
+    static indexPathForRowInSection(row: number, section: number): NSIndexPath
+    row: number
+    section: number
   }
 }
