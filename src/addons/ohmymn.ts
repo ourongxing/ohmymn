@@ -1,6 +1,7 @@
+import mnaddon from "../../mnaddon.json"
 const config: IConfig = {
   name: "OhMyMN",
-  intro: "version: 2.0.0 beta 1 \nmade by @ourongxing",
+  intro: `version: ${mnaddon.version} \nmade by @ourongxing`,
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {

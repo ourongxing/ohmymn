@@ -5,7 +5,8 @@ import typescript from "@rollup/plugin-typescript"
 import { defineConfig } from "rollup"
 import banner from "rollup-plugin-banner"
 import copy from "rollup-plugin-copy"
-import { uglify } from "rollup-plugin-uglify"
+import { terser } from "rollup-plugin-terser"
+import json from "@rollup/plugin-json"
 import mnaddon from "./mnaddon.json"
 
 // 判断是否为开发环境
@@ -38,6 +39,14 @@ export default defineConfig({
     typescript(),
     nodeResolve({ browser: true }),
     commonjs(),
+    json(),
+    isProd &&
+      strip({
+        include: ["**/*.ts"],
+        functions: ["log"]
+      }),
+    isProd && terser(),
+    isProd && banner(_banner),
     copy({
       targets: [
         {
@@ -45,13 +54,6 @@ export default defineConfig({
           dest: dir
         }
       ]
-    }),
-    isProd &&
-      strip({
-        include: ["**/*.ts"],
-        functions: ["log"]
-      }),
-    isProd && uglify(),
-    isProd && banner(_banner)
+    })
   ]
 })
