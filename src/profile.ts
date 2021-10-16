@@ -4,6 +4,7 @@ const profileType = {
     clickHidden: false,
     lockExcerpt: false,
     autoCorrect: false,
+    quickSwitch: [0],
     panelPostion: [0],
     panelHeight: [1]
   },
@@ -16,7 +17,7 @@ const profileType = {
     toTitleCase: false
   },
   anotherautotitle: {
-    on: false,
+    on: true,
     mergeTitle: false,
     noPunctuation: false,
     changeTitleNoLimit: false,

@@ -17,6 +17,7 @@ import {
   getSelectNodesAll,
   undoGroupingWithRefresh
 } from "utils/note"
+import { updateDataSource } from "utils/profile"
 
 export const eventCtrl = eventHandlerController([
   { event: "InputOver" },
@@ -120,6 +121,19 @@ const onSelectChange: eventHandler = sender => {
     case "panelHeight":
       layoutViewController()
       break
+    case "quickSwitch":
+      const addons = [
+        "anotherautotitle",
+        "anotherautodef",
+        "autostandardize",
+        "autocomplete",
+        "autoreplace",
+        "autolist"
+      ]
+      addons.forEach((name, index) => {
+        profile[name].on = (<number[]>selections).includes(index)
+      })
+      updateDataSource(profile)
   }
 }
 

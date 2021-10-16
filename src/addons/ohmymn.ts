@@ -1,8 +1,21 @@
 const config: IConfig = {
   name: "OhMyMN",
-  intro: "version: 1.1.0 beta 3 \nmade by @ourongxing",
+  intro: "version: 2.0.0 beta 1 \nmade by @ourongxing",
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
+    {
+      label: "插件快捷开关",
+      key: "quickSwitch",
+      type: cellViewType.muiltSelect,
+      option: [
+        "① AnotherAutoTitle",
+        "② AnotherAutoDef",
+        "③ AutoStandardize",
+        "④ AutoComplete",
+        "⑤ AutoReplace",
+        "⑥ AutoList"
+      ]
+    },
     {
       key: "panelPostion",
       type: cellViewType.select,
@@ -34,7 +47,7 @@ const config: IConfig = {
       help: "【当前文档生效】开启后会在矫正后执行处理",
       key: "autoCorrect",
       type: cellViewType.switch,
-      label: "自动在线矫正"
+      label: "是否开启自动在线矫正"
     }
   ],
   actions: []

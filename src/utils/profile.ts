@@ -15,7 +15,7 @@ const getDataByKey = (key: string) =>
 const setDataByKey = (data: string, key: string) =>
   void NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
 
-const updateDataSource = (profile: IProfile_doc | IProfile) => {
+export const updateDataSource = (profile: IProfile_doc | IProfile) => {
   for (const [name, _] of Object.entries(profile)) {
     for (const [key, val] of Object.entries(_)) {
       const [section, row] = dataSourceIndex?.[name]?.[key] ?? [0, 0]
