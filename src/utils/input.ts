@@ -40,7 +40,7 @@ const string2RegArray = (str: string): RegExp[] => {
    *  sd
    */
   if (!/^\[.*\]$/.test(str))
-    return [string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/g`)]
+    return [string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/`)]
   const regStrArr = str.slice(1, -1).split(/\s*,\s*(?=\/)/)
   return regStrArr.map(str => string2Reg(str))
 }
