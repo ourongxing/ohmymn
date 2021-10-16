@@ -5,7 +5,7 @@ import { isHalfWidth } from "utils/text"
 
 const config: IConfig = {
   name: "AutoList",
-  intro: "针对有序号的文本，自动换行",
+  intro: "针对序列文本，自动换行",
   settings: [
     {
       key: "on",
@@ -15,7 +15,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["选择题", "分号"],
+      option: ["选择题", "句首中文编号", "句末分号", "句末句号"],
       label: "选择需要的预设"
     },
     {
@@ -44,23 +44,41 @@ const util = {
       const params = string2ReplaceParam(autolist.customList)
       let _text = text
       params.forEach(param => {
-        _text = _text.replace(param.regexp, param.newSubStr)
+        _text = _text.replace(param.regexp, param.newSubStr).trim()
       })
-      if (text != _text) return _text.trim()
+      if (text != _text) text = _text
     }
-    if (profile.autolist.preset.includes(0)) {
-      if (isHalfWidth(text)) return text
-      let _text = text.replace(
-        /\s*([ABCDabcd][.、\s]+)/g,
-        (match: string) => "\n" + match.trimStart()
-      )
-      if (text != _text) return _text.trimStart()
+    const preset = profile.autolist.preset
+    for (const set of preset) {
+      switch (set) {
+        case 0: {
+          if (isHalfWidth(text)) return text
+          const _text = text.replace(/\s*([ABCD][.、]+)/g, "\n$1").trimStart()
+          if (text.match(/\s*([ABCD][.、\s]+)/g)?.length ?? 0 > 1) text = _text
+        }
+        case 1: {
+          if (isHalfWidth(text)) return text
+          const _text = text
+            .replace(/\s*([其第][一二三四五六七八][、，])/g, "\n$1")
+            .trimStart()
+          if (
+            text.match(/\s*([其第][一二三四五六七八][、，])/g)?.length ??
+            0 > 1
+          )
+            text = _text
+        }
+        case 2: {
+          const _text = text.replace(/([;；])\s*/g, "$1\n").trimEnd()
+          if (text.match(/([;；])\s*/g)?.length ?? 0 > 1) text = _text
+        }
+        case 3: {
+          const reg = new RegExp(`(${isHalfWidth(text) ? "." : "。"})\s*`, "g")
+          const _text = text.replace(reg, "$1\n").trimEnd()
+          if (text.match(reg)?.length ?? 0 > 1) text = _text
+        }
+      }
     }
-    if (profile.autolist.preset.includes(1)) {
-      const _text = text.replace(/([;；])\s*/g, "$1\n")
-      if (text != _text) return _text.trimEnd()
-    }
-    return text
+    return text.trim().replace(/\n{2,}/g, "\n")
   }
 }
 const action: IActionMethod = {

@@ -38,7 +38,7 @@ const util = {
       params.forEach(param => {
         _text = _text.replace(param.regexp, param.newSubStr)
       })
-      if (text != _text) return _text
+      if (text != _text) text = _text
     }
     return text
   }
