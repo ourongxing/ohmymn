@@ -1,7 +1,7 @@
 {
   "name": "ohmymn",
   "author": "ourongxing",
-  "version": "1.1.0 beta 3",
+  "version": "2.0.0 beta 1",
   "license": "MIT",
   "description": "Maybe the most powerful addon of Marginnote3",
   "main": "",
@@ -17,6 +17,7 @@
   ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-strip": "^2.1.0",
     "@rollup/plugin-typescript": "^8.2.0",
@@ -24,7 +25,7 @@
     "rollup": "^2.42.4",
     "rollup-plugin-banner": "^0.2.1",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-uglify": "^6.0.4",
+    "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.1.0",
     "typescript": "^4.2.3"
   },
