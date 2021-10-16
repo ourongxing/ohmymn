@@ -21,11 +21,23 @@ export const genTitleText = async (
   }
   if (profile.anotherautodef.on) {
     const result = anotherautodef.checkGetDefTitle(text)
-    if (result) return { title: result.title, text: "" }
+    if (result)
+      return {
+        title: profile.autostandardize.toTitleCase
+          ? autostandardize.toTitleCase(result.title)
+          : result.title,
+        text: ""
+      }
   }
   if (profile.anotherautotitle.on) {
     const result = anotherautotitle.checkGetTitle(text)
-    if (result) return { title: result.title, text: "" }
+    if (result)
+      return {
+        title: profile.autostandardize.toTitleCase
+          ? autostandardize.toTitleCase(result.title)
+          : result.title,
+        text: ""
+      }
   }
   return { text }
 }

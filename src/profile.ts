@@ -12,7 +12,8 @@ const profileType = {
     customComplete: `"{{zh}}"`
   },
   autostandardize: {
-    on: false
+    on: false,
+    toTitleCase: false
   },
   anotherautotitle: {
     on: false,
@@ -24,7 +25,6 @@ const profileType = {
   },
   anotherautodef: {
     on: false,
-    firstLetterCaps: false,
     preset: [0],
     customDefTitle: ""
   },
