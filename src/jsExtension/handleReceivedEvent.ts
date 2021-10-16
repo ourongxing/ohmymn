@@ -100,6 +100,20 @@ const onSwitchChange: eventHandler = sender => {
   const { name, key, status } = sender.userInfo
   profile[name][key] = status
   switch (key) {
+    case "on":
+      const addons = [
+        "anotherautotitle",
+        "anotherautodef",
+        "autostandardize",
+        "autocomplete",
+        "autoreplace",
+        "autolist"
+      ]
+      const isON = profile.ohmymn.quickSwitch
+      profile.ohmymn.quickSwitch = status
+        ? [...isON, addons.indexOf(name)]
+        : isON.filter(item => item != addons.indexOf(name))
+      updateDataSource({ ohmymn: profile.ohmymn })
     case "lockExcerpt":
       if (status && profile.ohmymn.autoCorrect)
         showHUD("锁定摘录不建议和自动矫正同时开启", 2)
