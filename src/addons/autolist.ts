@@ -28,7 +28,7 @@ const config: IConfig = {
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "序列摘录自动换行",
+      label: "序列摘录换行",
       key: "listSelected",
       help: "具体输入格式见顶上帮助信息",
       option: ["使用 AutoList 的配置", "确定"]
