@@ -15,4 +15,4 @@ const wordCount = (text: string): number => {
   return en.length + zh.length
 }
 
-export { isHalfWidth, isCJK, wordCount }
+export { isHalfWidth, isCJK, wordCount, CJK }
