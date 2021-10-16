@@ -5,7 +5,7 @@ import { isHalfWidth } from "utils/text"
 
 const config: IConfig = {
   name: "AutoList",
-  intro: "针对序列文本，自动换行",
+  intro: "针对序列文本，自动换行，仅适配中文",
   settings: [
     {
       key: "on",
@@ -58,14 +58,9 @@ const util = {
         }
         case 1: {
           if (isHalfWidth(text)) return text
-          const _text = text
-            .replace(/\s*([其第][一二三四五六七八][、，])/g, "\n$1")
-            .trimStart()
-          if (
-            text.match(/\s*([其第][一二三四五六七八][、，])/g)?.length ??
-            0 > 1
-          )
-            text = _text
+          const reg = /\s*([其第][一二三四五六七八][、，])/g
+          const _text = text.replace(reg, "\n$1").trimStart()
+          if (text.match(reg)?.length ?? 0 > 1) text = _text
         }
         case 2: {
           const _text = text.replace(/([;；])\s*/g, "$1\n").trimEnd()

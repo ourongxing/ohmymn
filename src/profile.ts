@@ -26,6 +26,8 @@ const profileType = {
   },
   anotherautodef: {
     on: false,
+    onlyDesc: false,
+    toTitleLink: false,
     preset: [0],
     customDefTitle: ""
   },

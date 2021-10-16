@@ -26,7 +26,7 @@ export const genTitleText = async (
         title: profile.autostandardize.toTitleCase
           ? autostandardize.toTitleCase(result.title)
           : result.title,
-        text: ""
+        text: result.text
       }
   }
   if (profile.anotherautotitle.on) {

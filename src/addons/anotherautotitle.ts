@@ -65,7 +65,7 @@ const util = {
     }
     // 没有点号
     if (anotherautotitle.noPunctuation) {
-      const reg = RegExp(/[。.、？?！!，,；;：:]/)
+      const reg = /[。.、？?！!，,；;：:]/
       if (!reg.test(text))
         return {
           title: text
@@ -87,7 +87,6 @@ const util = {
           title: text
         }
     }
-    return false
   }
 }
 const action: IActionMethod = {
