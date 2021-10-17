@@ -9,15 +9,12 @@ const profileType = {
     panelHeight: [1]
   },
   autocomplete: {
-    on: false,
     customComplete: `"{{zh}}"`
   },
   autostandardize: {
-    on: false,
     toTitleCase: false
   },
   anotherautotitle: {
-    on: true,
     mergeTitle: false,
     noPunctuation: false,
     changeTitleNoLimit: false,
@@ -25,21 +22,30 @@ const profileType = {
     customBeTitle: ""
   },
   anotherautodef: {
-    on: false,
     onlyDesc: false,
     toTitleLink: false,
     preset: [0],
     customDefTitle: ""
   },
   autolist: {
-    on: false,
     preset: [0],
     customList: ""
   },
   autoreplace: {
-    on: false,
     customReplace: ""
   }
+}
+
+/**
+ * 单个插件开关
+ */
+export const enum on {
+  anotherautotitle = 0,
+  anotherautodef,
+  autostandardize,
+  autocomplete,
+  autoreplace,
+  autolist
 }
 
 const docProfileType = {

@@ -7,8 +7,8 @@ import { profile, docProfile, IProfile, IProfile_doc } from "profile"
 // 2.切换文档，只需要读取 doc 配置
 
 let allDocProfile: { [k: string]: IProfile_doc } = {}
-const profileKey = "marginnote_ohmymn_profile_global_110"
-const docProfileKey = "marginnote_ohmymn_profile_doc_110"
+const profileKey = "marginnote_ohmymn_profile_global_200"
+const docProfileKey = "marginnote_ohmymn_profile_doc_200"
 
 const getDataByKey = (key: string) =>
   NSUserDefaults.standardUserDefaults().objectForKey(key)

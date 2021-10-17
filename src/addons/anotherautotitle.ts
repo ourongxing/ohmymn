@@ -8,11 +8,6 @@ const config: IConfig = {
   intro: "更强大的自动转换标题插件",
   settings: [
     {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
-    {
       key: "mergeTitle",
       type: cellViewType.switch,
       label: "摘录自动合并为标题"

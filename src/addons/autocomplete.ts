@@ -8,13 +8,8 @@ import { util as autostandardize } from "./autostandardize"
 
 const config: IConfig = {
   name: "AutoComplete",
-  intro: "补全单词词形，只支持动词和名词\n并自动设置为标题",
+  intro: "补全单词词形，只支持动词和名词",
   settings: [
-    {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
     {
       key: "customComplete",
       type: cellViewType.input,

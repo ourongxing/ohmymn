@@ -8,11 +8,6 @@ const config: IConfig = {
   intro: "针对序列文本，自动换行，仅适配中文",
   settings: [
     {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
-    {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: ["选择题", "句首中文编号", "句末分号", "句末句号"],

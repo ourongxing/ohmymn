@@ -22,8 +22,7 @@ const tableViewHeightForRowAtIndexPath = (
   indexPath: NSIndexPath
 ) => {
   const row = dataSource[indexPath.section].rows[indexPath.row]
-  if (row.type == cellViewType.button && row.key == "space") return 250
-  else if (row.type === cellViewType.plainText) {
+  if (row.type === cellViewType.plainText) {
     let num = row.label.length - row.label.replace(/[\r\n]/g, "").length
     return 30 + num * 15
   } else return 40
@@ -47,7 +46,13 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.numberOfLines = 0
       cell.textLabel.textColor = UIColor.grayColor()
       cell.textLabel.font = UIFont.systemFontOfSize(12)
-      cell.textLabel.text = row.label
+      cell.textLabel.text = row.label.includes("考研倒计时")
+        ? row.label +
+          (
+            (Date.parse("2021-12-25T00:00:00") - Date.now()) /
+            (60 * 60 * 24 * 1000)
+          ).toFixed(6)
+        : row.label
       return cell
     }
     case cellViewType.button:
@@ -58,15 +63,7 @@ const tableViewCellForRowAtIndexPath = (
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
-      cell.selectionStyle = row.key == "space" ? 0 : 1
-      cell.textLabel.text =
-        row.key == "space"
-          ? "😇考研倒计时：" +
-            (
-              (Date.parse("2021-12-25T00:00:00") - Date.now()) /
-              (60 * 60 * 24 * 1000)
-            ).toFixed(6)
-          : row.label
+      cell.textLabel.text = row.label
       const iconColor =
         Application.sharedInstance().currentTheme == "Gray" ? "light" : "dark"
       const image = NSData.dataWithContentsOfFile(

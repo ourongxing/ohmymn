@@ -8,11 +8,6 @@ const config: IConfig = {
   intro: "自动替换摘录中的某些错误",
   settings: [
     {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
-    {
       key: "customReplace",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",

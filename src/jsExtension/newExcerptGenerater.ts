@@ -4,40 +4,57 @@ import { util as autoreplace } from "addons/autoreplace"
 import { util as autocomplete } from "addons/autocomplete"
 import { util as anotherautotitle } from "addons/anotherautotitle"
 import { util as anotherautodef } from "addons/anotherautodef"
-import { profile } from "profile"
+import { on, profile } from "profile"
 
 export const genTitleText = async (
   text: string
 ): Promise<{ title?: string; text: string }> => {
-  if (profile.autostandardize.on) text = autostandardize.standardizeText(text)
-  if (profile.autolist.on) text = autolist.listText(text)
-  if (profile.autoreplace.on) text = autoreplace.replaceText(text)
+  // 处理摘录
+  for (const addon of profile.ohmymn.quickSwitch) {
+    switch (addon) {
+      case on.autostandardize:
+        text = autostandardize.standardizeText(text)
+        break
+      case on.autolist:
+        text = autolist.listText(text)
+        break
+      case on.autoreplace:
+        text = autoreplace.replaceText(text)
+        break
+    }
+  }
 
-  // 判断是否能成为标题
-  // autotitle 优先级应该是最低的
-  if (profile.autocomplete.on) {
-    const result = await autocomplete.checkGetWord(text)
-    if (result) return result
-  }
-  if (profile.anotherautodef.on) {
-    const result = anotherautodef.checkGetDefTitle(text)
-    if (result)
-      return {
-        title: profile.autostandardize.toTitleCase
-          ? autostandardize.toTitleCase(result.title)
-          : result.title,
-        text: result.text
+  // 返回标题
+  for (const addon of profile.ohmymn.quickSwitch) {
+    switch (addon) {
+      case on.autocomplete: {
+        const result = await autocomplete.checkGetWord(text)
+        if (result) return result
+        break
       }
-  }
-  if (profile.anotherautotitle.on) {
-    const result = anotherautotitle.checkGetTitle(text)
-    if (result)
-      return {
-        title: profile.autostandardize.toTitleCase
-          ? autostandardize.toTitleCase(result.title)
-          : result.title,
-        text: ""
+      case on.anotherautodef: {
+        const result = anotherautodef.checkGetDefTitle(text)
+        if (result)
+          return {
+            title: profile.autostandardize.toTitleCase
+              ? autostandardize.toTitleCase(result.title)
+              : result.title,
+            text: result.text
+          }
+        break
       }
+      case on.anotherautotitle: {
+        const result = anotherautotitle.checkGetTitle(text)
+        if (result)
+          return {
+            title: profile.autostandardize.toTitleCase
+              ? autostandardize.toTitleCase(result.title)
+              : result.title,
+            text: ""
+          }
+        break
+      }
+    }
   }
   return { text }
 }

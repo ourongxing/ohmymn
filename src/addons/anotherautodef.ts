@@ -6,14 +6,9 @@ import { getAllText } from "utils/note"
 const config: IConfig = {
   name: "AnotherAutoDef",
   intro:
-    "提取定义或任意内容为标题或标题链接。目前该功能处于预览版本，只提供无冲突的预设\n",
+    "提取定义或任意内容为标题或标题链接。目前\n该功能处于预览版本，只提供无冲突的预设",
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
-    {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
     {
       key: "onlyDesc",
       type: cellViewType.switch,

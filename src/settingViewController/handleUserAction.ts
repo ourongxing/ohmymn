@@ -51,7 +51,6 @@ const tableViewDidSelectRowAtIndexPath = async (
         } else showHUD("输入错误，请重新输入")
       }
     case cellViewType.button:
-      if (row.key == "space") return
       const { key, content } = await popup(
         row.label,
         row.help ?? "",

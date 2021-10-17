@@ -8,11 +8,6 @@ const config: IConfig = {
   intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
   settings: [
     {
-      key: "on",
-      type: cellViewType.switch,
-      label: "摘录时自动执行"
-    },
-    {
       key: "toTitleCase",
       type: cellViewType.switch,
       label: "英文标题规范化"

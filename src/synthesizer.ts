@@ -70,21 +70,39 @@ export const genDataSource = (
       }
     )
   }
-  dataSource.splice(0, 0, genSection(magicaction))
-  // 最后加块空白，防止被键盘遮挡，按理说输入框会自动上移的，但现在不知道为啥不行了
-  dataSource[dataSource.length - 1].rows.push(
-    {
-      type: cellViewType.plainText,
-      label:
-        "祝考研的各位同学成功上岸，本次更新后在考研结束前将不再更新。如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码😎。\n",
-      link: "https://cdn.jsdelivr.net/gh/ourongxing/ohmymn/assets/donate.gif"
-    },
-    {
-      type: cellViewType.button,
-      key: "space",
-      label: ""
-    }
-  )
+  dataSource.unshift(genSection(magicaction))
+  const about: ISection = {
+    header: "More",
+    rows: [
+      {
+        type: cellViewType.plainText,
+        label: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击\n即可直达二维码。",
+        link: "https://cdn.jsdelivr.net/gh/ourongxing/ohmymn/assets/donate.gif"
+      },
+      {
+        type: cellViewType.plainText,
+        label:
+          "ohmymn 完全开源，容易扩展，欢迎参与开发。\n点击直达 Github 查看源码，欢迎 star 和 fork。",
+        link: "https://github.com/ourongxing/ohmymn"
+      },
+      {
+        type: cellViewType.plainText,
+        label: "祝考研的各位同学成功上岸，本次更新后在考研\n结束前将不再更新。",
+        link: ""
+      },
+      {
+        type: cellViewType.plainText,
+        label: "考研倒计时：",
+        link: ""
+      },
+      {
+        type: cellViewType.plainText,
+        label: "\n\n\n\n\n",
+        link: ""
+      }
+    ]
+  }
+  dataSource.push(about)
   return dataSource
 }
 
