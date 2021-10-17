@@ -68,9 +68,9 @@ const util = {
     for (const set of preset)
       switch (set) {
         case 0: {
-          const reg = /^(.+)[——:：]+(.+)$/
+          const reg = /^(.+)\s*[——:：]+\s*(.+)$/
           if (reg.test(text)) {
-            const [def, desc] = text.split(/\s*[——:：]+\s*/)
+            const [def, desc] = text.split(reg).filter(item => item)
             return {
               title: profile.anotherautodef.toTitleLink
                 ? util.toTitleLink(def)
