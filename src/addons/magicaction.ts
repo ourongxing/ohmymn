@@ -137,7 +137,7 @@ const action: IActionMethod = {
     const index = Number(content)
     for (const node of nodes) {
       excerptNotes(node).forEach(note => {
-        note.colorIndex = index - 1
+        note.fillIndex = index
       })
     }
   },
