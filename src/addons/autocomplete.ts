@@ -19,7 +19,7 @@ const config: IConfig = {
       key: "customComplete",
       type: cellViewType.input,
       label: "自定义摘录填充信息，点击查看支持变量",
-      link: "https://www.notion.so/busiyi/AutoComplete-1eab78ee6d7648339e088c593326b5ca"
+      link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca"
     }
   ],
   actions: [

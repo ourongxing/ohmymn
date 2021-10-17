@@ -34,7 +34,7 @@ const config: IConfig = {
       key: "customDefTitle",
       type: cellViewType.input,
       label: "自定义，点击查看具体格式",
-      link: "https://www.notion.so/busiyi/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     }
   ],
   actions: [
@@ -72,7 +72,7 @@ const util = {
     const preset = profile.anotherautodef.preset
     for (const set of preset)
       switch (set) {
-        case 0:
+        case 0: {
           const reg = /^(.+)[——:：]+(.+)$/
           if (reg.test(text)) {
             const [def, desc] = text.split(/\s*[——:：]+\s*/)
@@ -83,6 +83,8 @@ const util = {
               text: profile.anotherautodef.onlyDesc ? desc : text
             }
           }
+          break
+        }
       }
   }
 }

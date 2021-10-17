@@ -128,7 +128,10 @@ const selectAction = (param: {
     })
     if (self.popoverController)
       self.popoverController.dismissPopoverAnimated(true)
-    self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
+    // 貌似 iPad 上无法使用 reloadRow
+    Application.sharedInstance().osType == osType.macOS
+      ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
+      : self.tableView.reloadData()
   } else {
     const selections = row.selections
     const nowSelect = row.selections.includes(selection)

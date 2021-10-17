@@ -55,21 +55,25 @@ const util = {
           if (isHalfWidth(text)) return text
           const _text = text.replace(/\s*([ABCD][.、]+)/g, "\n$1").trimStart()
           if (text.match(/\s*([ABCD][.、\s]+)/g)?.length ?? 0 > 1) text = _text
+          break
         }
         case 1: {
           if (isHalfWidth(text)) return text
           const reg = /\s*([其第][一二三四五六七八][、，])/g
           const _text = text.replace(reg, "\n$1").trimStart()
           if (text.match(reg)?.length ?? 0 > 1) text = _text
+          break
         }
         case 2: {
           const _text = text.replace(/([;；])\s*/g, "$1\n").trimEnd()
           if (text.match(/([;；])\s*/g)?.length ?? 0 > 1) text = _text
+          break
         }
         case 3: {
           const reg = new RegExp(`(${isHalfWidth(text) ? "." : "。"})\s*`, "g")
           const _text = text.replace(reg, "$1\n").trimEnd()
           if (text.match(reg)?.length ?? 0 > 1) text = _text
+          break
         }
       }
     }
