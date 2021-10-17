@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://github.com/ourongxing/ohmymn/network/members"><img src="https://img.shields.io/github/forks/ourongxing/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/ourongxing/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/ourongxing/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v2.0.0 beta 1-orange" alt="version"></a>
+  <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v2.0.0 beta 2-orange" alt="version"></a>
   <a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <a href="https://github.com/ourongxing/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
 </p>
@@ -24,7 +24,7 @@
 
 > ohmymn is the project name and OhMyMN is the addon name. Since OhMyMN is mainly for Chinese users and I am preparing for my exams, I have no plans to internationalize, but PR is welcome !
 
-OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。[**查看使用文档**](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)
+OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。更多信息请直接查看[使用文档](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)
 
 ## Development
 
@@ -49,6 +49,7 @@ ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同�
 * [mn-addon-api](https://github.com/aidenlx/mn-addon-api)  MN API 的类型声明文件。
 * [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) 这是第一个使用 TS 开发 MN 插件的项目，使得我在使用 TS 重构 ohmymn 时非常顺利。
 * [pangu.js](https://github.com/vinta/pangu.js) 为中英文之间添加空格，十分有效。
+* [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) 为 AutoComplete 提供数据支持。
 
 ## Sponsor
 
