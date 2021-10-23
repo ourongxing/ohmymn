@@ -85,8 +85,7 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  switchTitleorExcerpt({ nodes, content }) {
-    const option = Number(content)
+  switchTitleorExcerpt({ nodes, option }) {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
       const text = note.excerptText

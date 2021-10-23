@@ -99,10 +99,12 @@ declare global {
   interface IActionMethod {
     [k: string]: ({
       content,
-      nodes
+      nodes,
+      option
     }: {
       content: string
       nodes: MbBookNote[]
+      option: number
     }) => any
   }
 }

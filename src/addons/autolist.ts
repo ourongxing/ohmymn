@@ -76,15 +76,15 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  listSelected({ nodes, content }) {
-    const params = content.includes("😎") ? [] : string2ReplaceParam(content)
+  listSelected({ nodes, content, option }) {
+    const params = option === 0 ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (!text) continue
         let _text = text
-        if (content.includes("😎")) _text = util.listText(text)
+        if (option === 0) _text = util.listText(text)
         else
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

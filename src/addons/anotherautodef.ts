@@ -22,7 +22,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["xxx :—— yyy"],
+      option: ["xxx : yyy", "xxx —— yyy", "xxx 是指 yyy", "xxx ，是(指) yyy"],
       label: "选择需要的预设"
     },
     {
@@ -45,11 +45,12 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    return text
+    const defs = text
       .replace(reg, "😎")
       .split("😎")
       .filter(item => item)
-      .join("；")
+    if (defs.length > 1) return defs.join("；")
+    else return false
   },
   checkGetDefTitle(text: string) {
     if (profile.anotherautodef.customDefTitle) {
@@ -67,16 +68,38 @@ const util = {
     const preset = profile.anotherautodef.preset
     for (const set of preset)
       switch (set) {
-        case 0: {
-          const reg = /^(.+)\s*[——:：]+\s*(.+)$/
+        case 0:
+        case 1:
+        case 2:
+        case 3: {
+          const reg = [/[：:]/, /[一\-—]{1,2}/, /[,，]\s*是指?/, /是指/][set]
           if (reg.test(text)) {
-            const [def, desc] = text.split(reg).filter(item => item)
+            const [def, desc] = text
+              .split(reg)
+              .filter(item => item)
+              .map(item => item.trim())
+            const titleLink = util.toTitleLink(def)
             return {
-              title: profile.anotherautodef.toTitleLink
-                ? util.toTitleLink(def)
-                : def,
+              title:
+                profile.anotherautodef.toTitleLink && titleLink
+                  ? titleLink
+                  : def,
               text: profile.anotherautodef.onlyDesc ? desc : text
             }
+          }
+          break
+        }
+        case 3: {
+          const reg = /是/
+          if (reg.test(text)) {
+            const [def, desc] = text.split(reg).filter(item => item)
+            // 由于这个容易误触发，所以限定条件，必须是有别名才可以
+            const titleLink = util.toTitleLink(def)
+            if (titleLink)
+              return {
+                title: profile.anotherautodef.toTitleLink ? titleLink : def,
+                text: profile.anotherautodef.onlyDesc ? desc : text
+              }
           }
           break
         }
@@ -84,12 +107,12 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  extractTitle({ nodes, content }) {
-    const params = content.includes("😎") ? [] : string2ReplaceParam(content)
+  extractTitle({ nodes, content, option }) {
+    const params = option === 0 ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const text = getAllText(node)
       if (!text) continue
-      if (content.includes("😎")) {
+      if (option === 0) {
         const result = util.checkGetDefTitle(text)
         if (result) node.noteTitle = result.title
       } else

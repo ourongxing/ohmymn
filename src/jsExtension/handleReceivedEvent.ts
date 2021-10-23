@@ -39,8 +39,10 @@ interface eventHandler {
 let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender, self.window)) return
-  const { key, content } = sender.userInfo
+  let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
+  if (!content && key != "mergeTextSelected" && key != "renameSelected") return
+
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes
@@ -56,7 +58,7 @@ const onButtonClick: eventHandler = async sender => {
       node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
     )
     if (isHavingChildren) {
-      const { index } = await popup(
+      const { option } = await popup(
         "OhMyMN",
         nodes.length > 1
           ? "检测到您选中的同层级卡片均有子节点"
@@ -64,31 +66,34 @@ const onButtonClick: eventHandler = async sender => {
         UIAlertViewStyle.Default,
         ["仅处理选中的卡片", "仅处理所有子节点", "处理选中的卡片及其子节点"],
         (alert: UIAlertView, buttonIndex: number) => ({
-          index: buttonIndex
+          option: buttonIndex
         })
       )
-      nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][index!]
+      nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][option!]
     }
   }
   switch (key) {
     case "filterCards":
       customSelectedNodes = actions[key]({
         content,
-        nodes
+        nodes,
+        option
       })
       break
     // 异步函数，不要包裹在 undoGrouping 里面
     case "completeSelected":
       actions[key]({
         content,
-        nodes
+        nodes,
+        option
       })
       break
     default:
       undoGroupingWithRefresh(() => {
         actions[key]({
           content,
-          nodes
+          nodes,
+          option
         })
       })
   }

@@ -136,8 +136,7 @@ const util = {
 
 const action: IActionMethod = {
   // 如果有标题，摘录为空，或者摘录与标题相同时，才会起作用
-  async completeSelected({ nodes, content }) {
-    const option = Number(content)
+  async completeSelected({ nodes, option }) {
     for (const note of nodes) {
       const title = note?.noteTitle
       if (!title) continue

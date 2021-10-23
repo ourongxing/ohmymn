@@ -21,49 +21,43 @@ const tableViewDidSelectRowAtIndexPath = async (
       break
     case cellViewType.buttonWithInput:
       for (;;) {
-        const { key, content } = await popup(
+        const { key, option, content } = await popup(
           row.label,
           row.help ?? "",
           UIAlertViewStyle.PlainTextInput,
           row.option ? row.option : ["确定"],
           (alert: UIAlertView, buttonIndex: number) => {
-            const input = alert.textFieldAtIndex(0).text.trim()
+            // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
             return {
               key: row.key,
-              content:
-                // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
-                row.option?.length && buttonIndex != row.option?.length - 1
-                  ? input + "😎" + String(buttonIndex)
-                  : input
+              content: alert.textFieldAtIndex(0).text.trim(),
+              option: buttonIndex
             }
           }
         )
-        if (!content) return
-        if (
-          !content.split("😎")[0] ||
-          checkInputCorrect(content.split("😎")[0], row.key)
-        ) {
+        if (!content || checkInputCorrect(content, row.key)) {
           postNotification("ButtonClick", {
             key,
+            option,
             content
           })
           return
         } else showHUD("输入错误，请重新输入")
       }
     case cellViewType.button:
-      const { key, content } = await popup(
+      const { key, option } = await popup(
         row.label,
         row.help ?? "",
         UIAlertViewStyle.Default,
         row.option ?? ["确定"],
         (alert: UIAlertView, buttonIndex: number) => ({
           key: row.key,
-          content: String(buttonIndex)
+          option: buttonIndex
         })
       )
       postNotification("ButtonClick", {
         key,
-        content
+        option
       })
   }
 }

@@ -17,6 +17,9 @@ const checkInputCorrect = (text: string, key: string): boolean => {
             input.every(item => Number.isInteger(item)))
         ) {
         } else throw ""
+      case "mergeTextSelected":
+        reverseEscape(`"${text}"`)
+        break
       case "customComplete":
         reverseEscape(text)
         break
@@ -34,7 +37,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         })
         break
       case "renameSelected":
-        text = /^\s*".*"\s*$/.test(text) ? `(/^.*$/g, ${text})` : text
+        text = /^\(.*\)$/.test(text) ? text : `(/^.*$/g, "${text}")`
         const params = string2ReplaceParam(text)
         if (params.length > 1) throw ""
         "test".replace(params[0].regexp, params[0].newSubStr)

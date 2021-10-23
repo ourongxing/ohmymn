@@ -46,9 +46,8 @@ const util = {
 }
 
 const action: IActionMethod = {
-  standardizeSelected({ nodes, content }) {
+  standardizeSelected({ nodes, option }) {
     // option: ["都优化", "仅优化标题", "仅优化摘录"]
-    const option = Number(content)
     for (const node of nodes) {
       const title = node.noteTitle
       if (title && option != 2) {
