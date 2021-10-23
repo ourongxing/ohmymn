@@ -90,7 +90,7 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
 /**
  * 获取卡片内所有的文字
  */
-const getAllText = (note: MbBookNote) => {
+const getAllText = (note: MbBookNote, separator = "\n") => {
   const textArr = []
   if (note.excerptText) textArr.push(note.excerptText)
   note.comments.forEach(comment => {
@@ -104,7 +104,7 @@ const getAllText = (note: MbBookNote) => {
         if (comment.q_htext) textArr.push(comment.q_htext.trim())
     }
   })
-  return textArr.join("\n")
+  return textArr.join(separator)
 }
 
 export {

@@ -32,10 +32,10 @@ const config: IConfig = {
       help: "输入颜色索引，也就是顺序，1 到 16"
     },
     {
-      type: cellViewType.button,
+      type: cellViewType.buttonWithInput,
       label: "合并卡片内文字",
       key: "mergeTextSelected",
-      help: "请不要尝试合并图片",
+      help: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
       option: ["合并为摘录", "合并为评论"]
     },
     {
@@ -112,7 +112,7 @@ const action: IActionMethod = {
   renameSelected({ content, nodes }) {
     // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
     // 如果单个选中，则为选中的顺序
-    content = /^\s*".*"\s*$/.test(content) ? `(/^.*$/g, ${content})` : content
+    content = /^\(.*\)$/.test(content) ? content : `(/^.*$/g, "${content}")`
     const params = string2ReplaceParam(content)
     if (params.length > 1) return
     let newReplace: string[] = []
@@ -133,11 +133,10 @@ const action: IActionMethod = {
       })
     }
   },
-  changeFillSelected({ content, nodes }) {
-    const index = Number(content)
+  changeFillSelected({ option, nodes }) {
     for (const node of nodes) {
       excerptNotes(node).forEach(note => {
-        note.fillIndex = index
+        note.fillIndex = option
       })
     }
   },
@@ -149,22 +148,19 @@ const action: IActionMethod = {
       })
     }
   },
-  mergeTextSelected({ content, nodes }) {
-    const option = Number(content)
+  mergeTextSelected({ option, nodes, content }) {
     for (const node of nodes) {
-      const allText = getAllText(node)
+      const allText = getAllText(node, reverseEscape(`"${content}"`))
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []
-      // 从后往前删，记录链接，最后恢复
       while (node.comments.length) {
-        const comment = node.comments[node.comments.length - 1]
+        const comment = node.comments[0]
         if (
           comment.type == "TextNote" &&
           comment.text.includes("marginnote3app")
-        ) {
+        )
           linkComments.push(comment)
-        }
-        node.removeCommentByIndex(node.comments.length - 1)
+        node.removeCommentByIndex(0)
       }
       switch (option) {
         case 0:
@@ -179,10 +175,9 @@ const action: IActionMethod = {
       })
     }
   },
-  filterCards({ nodes, content }) {
+  filterCards({ nodes, content, option }) {
     // 0 判断标题 1 判断整个内容
-    const option = Number(content.split("😎")[1] ?? 1)
-    const regs = string2RegArray(content.split("😎")[0])
+    const regs = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
       const content = `${title}\n${getAllText(node)}`
