@@ -52,8 +52,8 @@ const util = {
       .join("；")
   },
   checkGetDefTitle(text: string) {
-    if (profile.anotherautotitle.customBeTitle) {
-      const params = string2ReplaceParam(profile.anotherautotitle.customBeTitle)
+    if (profile.anotherautodef.customDefTitle) {
+      const params = string2ReplaceParam(profile.anotherautodef.customDefTitle)
       for (const item of params) {
         if (item.regexp.test(text)) {
           const title = text.replace(item.regexp, item.newSubStr)
