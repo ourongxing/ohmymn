@@ -189,7 +189,7 @@ const action: IActionMethod = {
       return regs.every(reg => reg.test(option ? content : title))
     })
     if (customSelectedNodes.length) {
-      HUDController("您需要的卡片已选中，请继续操作").show()
+      HUDController.show("您需要的卡片已选中，请继续操作")
       return customSelectedNodes
     } else {
       showHUD("未找到符合的卡片")

@@ -144,7 +144,7 @@ const selectAction = (param: {
     lastSelectInfo = {
       name: section.header.toLowerCase(),
       key: row.key,
-      selections: nowSelect
+      selections: nowSelect.sort()
     }
     menuController.commandTable = menuController.commandTable?.map(
       (item, index) => {

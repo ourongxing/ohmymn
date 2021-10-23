@@ -45,7 +45,7 @@ const onButtonClick: eventHandler = async sender => {
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes
     customSelectedNodes = []
-    HUDController().hidden()
+    HUDController.hidden()
   } else {
     nodes = getSelectNodes()
     if (!nodes.length) {
