@@ -43,18 +43,19 @@ export const genTitleText = async (
           }
         break
       }
-      case on.anotherautotitle: {
-        const result = anotherautotitle.checkGetTitle(text)
-        if (result)
-          return {
-            title: profile.autostandardize.toTitleCase
-              ? autostandardize.toTitleCase(result.title)
-              : result.title,
-            text: ""
-          }
-        break
-      }
     }
+  }
+
+  // autotitle 始终最后执行
+  if (profile.ohmymn.quickSwitch.includes(on.anotherautotitle)) {
+    const result = anotherautotitle.checkGetTitle(text)
+    if (result)
+      return {
+        title: profile.autostandardize.toTitleCase
+          ? autostandardize.toTitleCase(result.title)
+          : result.title,
+        text: ""
+      }
   }
   return { text }
 }
