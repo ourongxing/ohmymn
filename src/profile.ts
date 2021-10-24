@@ -25,6 +25,7 @@ const profileType = {
     onlyDesc: false,
     toTitleLink: false,
     preset: [0],
+    customSplit: "",
     customDefTitle: ""
   },
   autolist: {

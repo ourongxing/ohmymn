@@ -1,18 +1,16 @@
 import { profile } from "profile"
 import { log } from "utils/common"
-import { string2ReplaceParam } from "utils/input"
+import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 
 const config: IConfig = {
   name: "AnotherAutoDef",
-  intro:
-    "提取定义或任意内容为标题或标题链接。目前\n该功能处于预览版本，只提供无冲突的预设",
-  link: "https://github.com/ourongxing/ohmymn",
+  intro: "提取定义或任意内容为标题或标题链接",
   settings: [
     {
       key: "onlyDesc",
       type: cellViewType.switch,
-      label: "仅保留描述内容"
+      label: "摘录仅保留描述内容"
     },
     {
       key: "toTitleLink",
@@ -22,13 +20,25 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["xxx : yyy", "xxx —— yyy", "xxx 是指 yyy", "xxx ，是(指) yyy"],
+      option: [
+        "xxx : yyy",
+        "xxx —— yyy",
+        "xxx ，是(指) yyy",
+        "xxx 是指 yyy",
+        "* xxx 是 yyy"
+      ],
       label: "选择需要的预设"
+    },
+    {
+      key: "customSplit",
+      type: cellViewType.input,
+      label: "自定义分词，点击查看具体格式",
+      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     },
     {
       key: "customDefTitle",
       type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
+      label: "自定义提取，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     }
   ],
@@ -49,7 +59,7 @@ const util = {
       .replace(reg, "😎")
       .split("😎")
       .filter(item => item)
-    if (defs.length > 1) return defs.join("；")
+    if (defs.length > 1) return defs.join("; ")
     else return false
   },
   checkGetDefTitle(text: string) {
@@ -65,6 +75,24 @@ const util = {
         }
       }
     }
+
+    if (profile.anotherautodef.customSplit) {
+      const regs = string2RegArray(profile.anotherautodef.customSplit)
+      for (const reg of regs)
+        if (reg.test(text)) {
+          const [def, desc] = text
+            .split(reg)
+            .filter(item => item)
+            .map(item => item.trim())
+          const titleLink = util.toTitleLink(def)
+          return {
+            title:
+              profile.anotherautodef.toTitleLink && titleLink ? titleLink : def,
+            text: profile.anotherautodef.onlyDesc ? desc : text
+          }
+        }
+    }
+
     const preset = profile.anotherautodef.preset
     for (const set of preset)
       switch (set) {
@@ -72,7 +100,12 @@ const util = {
         case 1:
         case 2:
         case 3: {
-          const reg = [/[：:]/, /[一\-—]{1,2}/, /[,，]\s*是指?/, /是指/][set]
+          const reg = [
+            /[：:]/,
+            /[一\-—]{1,2}/,
+            /[,，]\s*(?:通常|一般)*是指?/,
+            /(?:通常|一般)*是指/
+          ][set]
           if (reg.test(text)) {
             const [def, desc] = text
               .split(reg)
@@ -89,7 +122,7 @@ const util = {
           }
           break
         }
-        case 3: {
+        case 4: {
           const reg = /是/
           if (reg.test(text)) {
             const [def, desc] = text.split(reg).filter(item => item)
