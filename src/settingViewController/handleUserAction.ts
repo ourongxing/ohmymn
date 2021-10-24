@@ -30,11 +30,12 @@ const tableViewDidSelectRowAtIndexPath = async (
             // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
             return {
               key: row.key,
-              content: alert.textFieldAtIndex(0).text.trim(),
+              content: alert.textFieldAtIndex(0).text,
               option: buttonIndex
             }
           }
         )
+        // 允许为空
         if (!content || checkInputCorrect(content, row.key)) {
           postNotification("ButtonClick", {
             key,

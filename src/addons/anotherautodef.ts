@@ -141,6 +141,7 @@ const util = {
 }
 const action: IActionMethod = {
   extractTitle({ nodes, content, option }) {
+    if (option !== 0 && !content) return
     const params = option === 0 ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const text = getAllText(node)

@@ -41,7 +41,6 @@ const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender, self.window)) return
   let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
-  if (!content && key != "mergeTextSelected" && key != "renameSelected") return
 
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {

@@ -141,6 +141,7 @@ const action: IActionMethod = {
     }
   },
   changeColorSelected({ content, nodes }) {
+    if (!content) return
     const index = Number(content)
     for (const node of nodes) {
       excerptNotes(node).forEach(note => {
@@ -176,6 +177,7 @@ const action: IActionMethod = {
     }
   },
   filterCards({ nodes, content, option }) {
+    if (!content) return
     // 0 判断标题 1 判断整个内容
     const regs = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {

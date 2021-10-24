@@ -41,6 +41,7 @@ const util = {
 
 const action: IActionMethod = {
   replaceSelected({ content, nodes, option }) {
+    if (option !== 0 && !content) return
     const params = option === 0 ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)

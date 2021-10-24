@@ -26,7 +26,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "changeColorSelected": {
         const index = Number(text)
         if (!Number.isInteger(index)) throw ""
-        if (index > 16 || index < 0) throw ""
+        if (index > 16 || index < 1) throw ""
         break
       }
       case "customBeTitle":
