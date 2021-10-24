@@ -59,6 +59,7 @@ const util = {
       .replace(reg, "😎")
       .split("😎")
       .filter(item => item)
+      .map(item => item.trim())
     if (defs.length > 1) return defs.join("; ")
     else return false
   },
