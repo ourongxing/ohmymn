@@ -7,7 +7,7 @@ const CJK =
 const isCJK = (text: string) =>
   text.match(new RegExp(`^[${CJK}]*$`)) ? true : false
 
-const wordCount = (text: string): number => {
+const countWord = (text: string): number => {
   const en = text
     .split(new RegExp(`[^a-zA-Z-']`, "g"))
     .filter(item => (item ? true : false))
@@ -15,4 +15,4 @@ const wordCount = (text: string): number => {
   return en.length + zh.length
 }
 
-export { isHalfWidth, isCJK, wordCount, CJK }
+export { isHalfWidth, isCJK, countWord, CJK }

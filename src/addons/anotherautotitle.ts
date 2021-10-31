@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { log } from "utils/common"
 import { reverseEscape, string2RegArray } from "utils/input"
-import { isHalfWidth, wordCount } from "utils/text"
+import { isHalfWidth, countWord } from "utils/text"
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
@@ -48,12 +48,12 @@ const config: IConfig = {
 
 const util = {
   checkGetTitle(text: string) {
-    const preset = profile.anotherautotitle.preset
+    const { preset, wordCount, customBeTitle } = profile.anotherautotitle
     for (const set of preset) {
       switch (set) {
         case 0:
-          if (!profile.anotherautotitle.customBeTitle) break
-          const regs = string2RegArray(profile.anotherautotitle.customBeTitle)
+          if (!customBeTitle) break
+          const regs = string2RegArray(customBeTitle)
           // 全部匹配到才转为标题
           if (regs.every(reg => reg.test(text)))
             return {
@@ -61,9 +61,9 @@ const util = {
             }
           break
         case 1:
-          if (!profile.anotherautotitle.wordCount) break
-          const limitedNum = reverseEscape(profile.anotherautotitle.wordCount)
-          const actualNum = wordCount(text)
+          if (!wordCount) break
+          const limitedNum = reverseEscape(wordCount)
+          const actualNum = countWord(text)
           log("实际字数：" + actualNum, "autotitle")
           const isTitle =
             typeof limitedNum == "number"

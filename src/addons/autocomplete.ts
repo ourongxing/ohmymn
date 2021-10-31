@@ -3,7 +3,7 @@ import { isOCNull, log, showHUD } from "utils/common"
 import { reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
-import { isHalfWidth, wordCount } from "utils/text"
+import { isHalfWidth, countWord } from "utils/text"
 import { util as autostandardize } from "./autostandardize"
 
 const config: IConfig = {
@@ -86,7 +86,7 @@ const util = {
   },
   async checkGetWord(text: string) {
     try {
-      if (!isHalfWidth(text) || wordCount(text) != 1) throw "不是单词"
+      if (!isHalfWidth(text) || countWord(text) != 1) throw "不是单词"
       text = text.toLowerCase()
       let title = text
       let info = await this.getWordInfo(text)

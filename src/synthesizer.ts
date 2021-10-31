@@ -87,6 +87,12 @@ export const genDataSource = (
       },
       {
         type: cellViewType.plainText,
+        label:
+          "欢迎加入飞书话题群，一起交流 ohmymn 使用\n技巧，我不定期为大家解决疑问。",
+        link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750"
+      },
+      {
+        type: cellViewType.plainText,
         label: "祝考研的各位同学成功上岸，本次更新后在考研\n结束前将不再更新。",
         link: ""
       },

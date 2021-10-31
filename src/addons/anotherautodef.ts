@@ -64,9 +64,8 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const regs = profile.anotherautodef.customSplitName
-      ? string2RegArray(profile.anotherautodef.customSplitName)
-      : []
+    const { customSplitName } = profile.anotherautodef
+    const regs = customSplitName ? string2RegArray(customSplitName) : []
     regs.push(reg)
     regs.forEach(reg => {
       text = text.replace(reg, "😎")
@@ -80,14 +79,13 @@ const util = {
   },
 
   checkGetDefTitle(text: string) {
-    const preset = profile.anotherautodef.preset
+    const { preset, onlyDesc, toTitleLink, customSplit, customDefTitle } =
+      profile.anotherautodef
     for (const set of preset)
       switch (set) {
         case 0:
-          if (!profile.anotherautodef.customDefTitle) break
-          const params = string2ReplaceParam(
-            profile.anotherautodef.customDefTitle
-          )
+          if (!customDefTitle) break
+          const params = string2ReplaceParam(customDefTitle)
           for (const item of params) {
             if (item.regexp.test(text)) {
               const title = text.replace(item.regexp, item.newSubStr)
@@ -99,8 +97,8 @@ const util = {
           }
           break
         case 1:
-          if (!profile.anotherautodef.customSplit) break
-          const regs = string2RegArray(profile.anotherautodef.customSplit)
+          if (!customSplit) break
+          const regs = string2RegArray(customSplit)
           for (const reg of regs)
             if (reg.test(text)) {
               const [def, desc] = text
@@ -109,11 +107,8 @@ const util = {
                 .map(item => item.trim())
               const titleLink = util.toTitleLink(def)
               return {
-                title:
-                  profile.anotherautodef.toTitleLink && titleLink
-                    ? titleLink
-                    : def,
-                text: profile.anotherautodef.onlyDesc ? desc : text
+                title: toTitleLink && titleLink ? titleLink : def,
+                text: onlyDesc ? desc : text
               }
             }
           break
@@ -136,11 +131,8 @@ const util = {
               .map(item => item.trim())
             const titleLink = util.toTitleLink(def)
             return {
-              title:
-                profile.anotherautodef.toTitleLink && titleLink
-                  ? titleLink
-                  : def,
-              text: profile.anotherautodef.onlyDesc ? desc : text
+              title: toTitleLink && titleLink ? titleLink : def,
+              text: onlyDesc ? desc : text
             }
           }
           break
@@ -153,8 +145,8 @@ const util = {
             const titleLink = util.toTitleLink(def)
             if (titleLink)
               return {
-                title: profile.anotherautodef.toTitleLink ? titleLink : def,
-                text: profile.anotherautodef.onlyDesc ? desc : text
+                title: toTitleLink ? titleLink : def,
+                text: onlyDesc ? desc : text
               }
           }
           break
