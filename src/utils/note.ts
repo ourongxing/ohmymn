@@ -73,11 +73,6 @@ const RefreshAfterDBChange = () => {
 
 const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
   const comments = node.comments
-  // 除了抛出异常，没办法终止 foreach
-  // comments.forEach((value, index) => {
-  //   if (value.type == "LinkNote" && value.noteid == commentNote.noteId)
-  //     return index
-  // })
   for (let i = 0; i < comments.length; i++) {
     const comment = comments[i]
     // 如果直接用 comments[i] 貌似不能触发类型保护
@@ -90,9 +85,12 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
 /**
  * 获取卡片内所有的文字
  */
-const getAllText = (note: MbBookNote, separator = "\n") => {
+const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
   const textArr = []
-  if (note.excerptText) textArr.push(note.excerptText)
+  if (note.excerptText)
+    textArr.push(
+      highlight ? note.excerptText : note.excerptText.replace(/\*\*/g, "")
+    )
   note.comments.forEach(comment => {
     switch (comment.type) {
       case "TextNote":

@@ -10,12 +10,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: [
-        "英文标题规范化",
-        "去除重复符号",
-        "半全角符号转换",
-        "中英文加空格"
-      ],
+      option: ["英文标题规范化", "半角转全角", "中英文加空格", "去除重复空格"],
       label: "选择需要的预设"
     }
   ],
@@ -30,13 +25,6 @@ const config: IConfig = {
 }
 
 const util = {
-  removeRepeat(text: string): string {
-    for (const char of `！!。，, `) {
-      const reg = new RegExp(`${char}{2,}`, "g")
-      text = text.replace(reg, char)
-    }
-    return text
-  },
   toTitleCase(text: string) {
     return profile.autostandardize.preset.includes(0) && isHalfWidth(text)
       ? toTitleCase(text)
@@ -45,21 +33,22 @@ const util = {
   standardizeText(text: string): string {
     if (isHalfWidth(text)) return text
     const preset = profile.autostandardize.preset
-    text = text.replace(/\*\*/g, "占位符")
+    text = text
+      .replace(/\*\*([\b-']*?)\*\*/g, "placeholder$1placeholder")
+      .replace(/\*\*/g, "占位符")
     for (const set of preset) {
       switch (set) {
         case 1:
-          text = this.removeRepeat(text)
-          break
-        case 2:
           text = pangu.toFullwidth(text)
           break
-        case 3:
+        case 2:
           text = pangu.spacing(text)
+        case 3:
+          text = text.replace(/\x20{2,}/g, "\x20")
+          break
       }
     }
-    // 划重点会产生 **包裹文字**
-    return text.replace(/占位符/g, "**")
+    return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
   }
 }
 

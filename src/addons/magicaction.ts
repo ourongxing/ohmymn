@@ -169,7 +169,7 @@ const action: IActionMethod = {
           break
         case 1:
           node.excerptText = ""
-          node.appendTextComment(allText)
+          node.appendTextComment(allText.replace(/\*\*/g, ""))
       }
       linkComments.forEach(linkComment => {
         node.appendTextComment(linkComment.text)
@@ -182,7 +182,7 @@ const action: IActionMethod = {
     const regs = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
-      const content = `${title}\n${getAllText(node)}`
+      const content = `${title}\n${getAllText(node, "\n", false)}`
       return regs.every(reg => reg.test(option ? content : title))
     })
     if (customSelectedNodes.length) {
