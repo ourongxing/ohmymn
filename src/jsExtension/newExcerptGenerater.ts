@@ -36,9 +36,7 @@ export const genTitleText = async (
         const result = anotherautodef.checkGetDefTitle(text)
         if (result)
           return {
-            title: profile.autostandardize.toTitleCase
-              ? autostandardize.toTitleCase(result.title)
-              : result.title,
+            title: autostandardize.toTitleCase(result.title),
             text: result.text
           }
         break
@@ -51,9 +49,7 @@ export const genTitleText = async (
     const result = anotherautotitle.checkGetTitle(text)
     if (result)
       return {
-        title: profile.autostandardize.toTitleCase
-          ? autostandardize.toTitleCase(result.title)
-          : result.title,
+        title: autostandardize.toTitleCase(result.title),
         text: ""
       }
   }

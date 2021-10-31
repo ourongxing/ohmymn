@@ -20,6 +20,7 @@ const config: IConfig = {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: [
+        "自定义",
         "xxx : yyy",
         "xxx —— yyy",
         "xxx ，是(指) yyy",
@@ -44,7 +45,7 @@ const config: IConfig = {
     {
       key: "customDefTitle",
       type: cellViewType.input,
-      label: "自定义提取，点击查看具体格式",
+      label: "自定义提取内容，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     }
   ],
@@ -90,27 +91,29 @@ const util = {
       }
     }
 
-    if (profile.anotherautodef.customSplit) {
-      const regs = string2RegArray(profile.anotherautodef.customSplit)
-      for (const reg of regs)
-        if (reg.test(text)) {
-          const [def, desc] = text
-            .split(reg)
-            .filter(item => item)
-            .map(item => item.trim())
-          const titleLink = util.toTitleLink(def)
-          return {
-            title:
-              profile.anotherautodef.toTitleLink && titleLink ? titleLink : def,
-            text: profile.anotherautodef.onlyDesc ? desc : text
-          }
-        }
-    }
-
     const preset = profile.anotherautodef.preset
+
     for (const set of preset)
       switch (set) {
         case 0:
+          if (!profile.anotherautodef.customSplit) break
+          const regs = string2RegArray(profile.anotherautodef.customSplit)
+          for (const reg of regs)
+            if (reg.test(text)) {
+              const [def, desc] = text
+                .split(reg)
+                .filter(item => item)
+                .map(item => item.trim())
+              const titleLink = util.toTitleLink(def)
+              return {
+                title:
+                  profile.anotherautodef.toTitleLink && titleLink
+                    ? titleLink
+                    : def,
+                text: profile.anotherautodef.onlyDesc ? desc : text
+              }
+            }
+          break
         case 1:
         case 2:
         case 3: {

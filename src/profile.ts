@@ -12,19 +12,19 @@ const profileType = {
     customComplete: `"{{zh}}"`
   },
   autostandardize: {
-    toTitleCase: false
+    preset: [0]
   },
   anotherautotitle: {
+    preset: [0],
     mergeTitle: false,
-    noPunctuation: false,
     changeTitleNoLimit: false,
     wordCount: "[10,5]",
     customBeTitle: ""
   },
   anotherautodef: {
+    preset: [0],
     onlyDesc: false,
     toTitleLink: false,
-    preset: [0],
     customSplit: "",
     customSplitName: "",
     customDefTitle: ""
@@ -34,6 +34,7 @@ const profileType = {
     customList: ""
   },
   autoreplace: {
+    preset: [0],
     customReplace: ""
   }
 }

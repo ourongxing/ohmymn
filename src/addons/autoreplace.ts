@@ -1,12 +1,17 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
-import { log, showHUD } from "utils/common"
 import { string2ReplaceParam } from "utils/input"
 
 const config: IConfig = {
   name: "AutoReplace",
   intro: "自动替换摘录中的某些错误",
   settings: [
+    {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: ["自定义"],
+      label: "选择需要的预设"
+    },
     {
       key: "customReplace",
       type: cellViewType.input,
@@ -27,13 +32,18 @@ const config: IConfig = {
 
 const util = {
   replaceText(text: string) {
-    if (profile.autoreplace.customReplace) {
-      const params = string2ReplaceParam(profile.autoreplace.customReplace)
-      let _text = text
-      params.forEach(param => {
-        _text = _text.replace(param.regexp, param.newSubStr)
-      })
-      if (text != _text) text = _text
+    const preset = profile.autoreplace.preset
+    for (const set of preset) {
+      switch (set) {
+        case 0:
+          if (!profile.autoreplace.customReplace) break
+          const params = string2ReplaceParam(profile.autoreplace.customReplace)
+          let _text = text
+          params.forEach(param => {
+            _text = _text.replace(param.regexp, param.newSubStr)
+          })
+          if (text != _text) text = _text
+      }
     }
     return text
   }

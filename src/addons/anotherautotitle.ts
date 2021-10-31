@@ -18,16 +18,15 @@ const config: IConfig = {
       label: "拓宽标题摘录不受限制"
     },
     {
-      help: "以下情况会在摘录时自动转换为标题",
-      key: "wordCount",
-      type: cellViewType.inlineInput,
-      label: "字数不超过"
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: ["自定义", "字数限制", "不含有点号"],
+      label: "选择需要的预设"
     },
     {
-      help: "点号指 。.、？?！!，,；;：:",
-      key: "noPunctuation",
-      type: cellViewType.switch,
-      label: "不含有点号"
+      key: "wordCount",
+      type: cellViewType.inlineInput,
+      label: "设定最多字数"
     },
     {
       key: "customBeTitle",
@@ -49,38 +48,41 @@ const config: IConfig = {
 
 const util = {
   checkGetTitle(text: string) {
-    const anotherautotitle = profile.anotherautotitle
-    if (anotherautotitle.customBeTitle) {
-      const regs = string2RegArray(anotherautotitle.customBeTitle)
-      // 全部匹配到才转为标题
-      if (regs.every(reg => reg.test(text)))
-        return {
-          title: text
-        }
-    }
-    // 没有点号
-    if (anotherautotitle.noPunctuation) {
-      const reg = /[。.、？?！!，,；;：:]/
-      if (!reg.test(text))
-        return {
-          title: text
-        }
-    }
-    // 字数达标
-    if (anotherautotitle.wordCount) {
-      const limitedNum = reverseEscape(anotherautotitle.wordCount)
-      const actualNum = wordCount(text)
-      log("实际字数：" + actualNum, "autotitle")
-      const isTitle =
-        typeof limitedNum == "number"
-          ? actualNum <= limitedNum
-          : isHalfWidth(text)
-          ? actualNum <= limitedNum[1]
-          : actualNum <= limitedNum[0]
-      if (isTitle)
-        return {
-          title: text
-        }
+    const preset = profile.anotherautotitle.preset
+    for (const set of preset) {
+      switch (set) {
+        case 0:
+          if (!profile.anotherautotitle.customBeTitle) break
+          const regs = string2RegArray(profile.anotherautotitle.customBeTitle)
+          // 全部匹配到才转为标题
+          if (regs.every(reg => reg.test(text)))
+            return {
+              title: text
+            }
+          break
+        case 1:
+          if (!profile.anotherautotitle.wordCount) break
+          const limitedNum = reverseEscape(profile.anotherautotitle.wordCount)
+          const actualNum = wordCount(text)
+          log("实际字数：" + actualNum, "autotitle")
+          const isTitle =
+            typeof limitedNum == "number"
+              ? actualNum <= limitedNum
+              : isHalfWidth(text)
+              ? actualNum <= limitedNum[1]
+              : actualNum <= limitedNum[0]
+          if (isTitle)
+            return {
+              title: text
+            }
+          break
+        case 2:
+          const reg = /[。.、？?！!，,；;：:]/
+          if (!reg.test(text))
+            return {
+              title: text
+            }
+      }
     }
   }
 }

@@ -104,29 +104,9 @@ class Pangu {
       .replace(/\./g, "。")
       .replace(/\?/g, "？")
   }
-  spacing(text: string): string {
-    if (typeof text !== "string") {
-      console.warn(`spacing(text) only accepts string but got ${typeof text}`) // eslint-disable-line no-console
-      return text
-    }
-    if (text.length <= 1 || !ANY_CJK.test(text)) {
-      return text
-    }
-    const that = this
-    // DEBUG
-    // String.prototype.rawReplace = String.prototype.replace;
-    // String.prototype.replace = function(regexp, newSubstr) {
-    //   const oldText = this;
-    //   const newText = this.rawReplace(regexp, newSubstr);
-    //   if (oldText !== newText) {
-    //     console.log(`regexp: ${regexp}`);
-    //     console.log(`oldText: ${oldText}`);
-    //     console.log(`newText: ${newText}`);
-    //   }
-    //   return newText;
-    // };
+  toFullwidth(text: string) {
     let newText = text
-    // https://stackoverflow.com/questions/4285472/multiple-regex-replace
+    let that = this
     newText = newText.replace(
       CONVERT_TO_FULLWIDTH_CJK_SYMBOLS_CJK,
       (match, leftCjk, symbols, rightCjk) => {
@@ -141,6 +121,12 @@ class Pangu {
         return `${cjk}${fullwidthSymbols}`
       }
     )
+    return newText
+  }
+  spacing(text: string): string {
+    const that = this
+    let newText = text
+    // https://stackoverflow.com/questions/4285472/multiple-regex-replace
     newText = newText.replace(DOTS_CJK, "$1 $2")
     newText = newText.replace(FIX_CJK_COLON_ANS, "$1：$2")
     newText = newText.replace(CJK_QUOTE, "$1 $2")

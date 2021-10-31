@@ -8,9 +8,15 @@ const config: IConfig = {
   intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
   settings: [
     {
-      key: "toTitleCase",
-      type: cellViewType.switch,
-      label: "英文标题规范化"
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: [
+        "英文标题规范化",
+        "去除重复符号",
+        "半全角符号转换",
+        "中英文加空格"
+      ],
+      label: "选择需要的预设"
     }
   ],
   actions: [
@@ -32,16 +38,28 @@ const util = {
     return text
   },
   toTitleCase(text: string) {
-    return toTitleCase(text)
+    return profile.autostandardize.preset.includes(0) && isHalfWidth(text)
+      ? toTitleCase(text)
+      : text
   },
   standardizeText(text: string): string {
-    // 英文环境下全为半角，不处理
     if (isHalfWidth(text)) return text
-    text = this.removeRepeat(text)
-    // pangu 主要是加空格，以及换成全角字符
-    text = pangu.spacing(text.replace(/\*\*/g, "😎"))
+    const preset = profile.autostandardize.preset
+    text = text.replace(/\*\*/g, "占位符")
+    for (const set of preset) {
+      switch (set) {
+        case 1:
+          text = this.removeRepeat(text)
+          break
+        case 2:
+          text = pangu.toFullwidth(text)
+          break
+        case 3:
+          text = pangu.spacing(text)
+      }
+    }
     // 划重点会产生 **包裹文字**
-    return text.replace(/\x20?😎\x20?/g, "**")
+    return text.replace(/占位符/g, "**")
   }
 }
 
@@ -52,9 +70,7 @@ const action: IActionMethod = {
       const title = node.noteTitle
       if (title && option != 2) {
         const newTitle = util.standardizeText(title)
-        node.noteTitle = profile.autostandardize.toTitleCase
-          ? util.toTitleCase(newTitle)
-          : newTitle
+        node.noteTitle = util.toTitleCase(newTitle)
         if (option == 1) continue
       }
       const notes = excerptNotes(node)

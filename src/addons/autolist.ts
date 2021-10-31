@@ -10,7 +10,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["选择题", "句首中文编号", "句末分号", "句末句号"],
+      option: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
       label: "选择需要的预设"
     },
     {
@@ -35,36 +35,36 @@ const util = {
   // 匹配到就在前面或后面添加换行
   listText(text: string): string {
     const autolist = profile.autolist
-    if (autolist.customList) {
-      const params = string2ReplaceParam(autolist.customList)
-      let _text = text
-      params.forEach(param => {
-        _text = _text.replace(param.regexp, param.newSubStr).trim()
-      })
-      if (text != _text) text = _text
-    }
     const preset = profile.autolist.preset
     for (const set of preset) {
       switch (set) {
-        case 0: {
+        case 0:
+          if (!autolist.customList) break
+          const params = string2ReplaceParam(autolist.customList)
+          let _text = text
+          params.forEach(param => {
+            _text = _text.replace(param.regexp, param.newSubStr).trim()
+          })
+          if (text != _text) text = _text
+        case 1: {
           if (isHalfWidth(text)) return text
           const _text = text.replace(/\s*([ABCD][.、]+)/g, "\n$1").trimStart()
           if (text.match(/\s*([ABCD][.、\s]+)/g)?.length ?? 0 > 1) text = _text
           break
         }
-        case 1: {
+        case 2: {
           if (isHalfWidth(text)) return text
-          const reg = /\s*([其第][一二三四五六七八][、，])/g
+          const reg = /\s*([其第][一二三四五六七八九十][、，])/g
           const _text = text.replace(reg, "\n$1").trimStart()
           if (text.match(reg)?.length ?? 0 > 1) text = _text
           break
         }
-        case 2: {
+        case 3: {
           const _text = text.replace(/([;；])\s*/g, "$1\n").trimEnd()
           if (text.match(/([;；])\s*/g)?.length ?? 0 > 1) text = _text
           break
         }
-        case 3: {
+        case 4: {
           const reg = new RegExp(`(${isHalfWidth(text) ? "." : "。"})\s*`, "g")
           const _text = text.replace(reg, "$1\n").trimEnd()
           if (text.match(reg)?.length ?? 0 > 1) text = _text
