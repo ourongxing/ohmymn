@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://github.com/ourongxing/ohmymn/network/members"><img src="https://img.shields.io/github/forks/ourongxing/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/ourongxing/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/ourongxing/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v2.1.2-orange" alt="version"></a>
+  <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v2.2.1-orange" alt="version"></a>
   <a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <a href="https://github.com/ourongxing/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
 </p>
@@ -24,22 +24,17 @@
 
 > ohmymn is the project name and OhMyMN is the addon name. Since OhMyMN is mainly for Chinese users and I am preparing for my exams, I have no plans to internationalize, but PR is welcome !
 
-OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。更多信息请直接查看[使用文档](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)
+OhMyMN 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。OhMyMN 专注于**摘录，评论，标题，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后点击按钮执行指定操作，避免了一切误触的可能性（我甚至提供了双击展开控制面板的选项）。更多信息请直接查看 [使用文档](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)。
 
 ## Development
 
 ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同我的设计理念，那么你可以为 ohmymn 开发插件，使得 ohmymn 更加强大。
-更多信息请直接查看 [开发文档](https://busiyi.notion.site/busiyi/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01#c5a601fcf71a4dda9bb05efdd5a1cf6f)
+更多信息请直接查看 [开发文档](https://busiyi.notion.site/busiyi/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01#c5a601fcf71a4dda9bb05efdd5a1cf6f)。
 
 当然你也可以另起炉灶，毕竟 ohmymn 已经踩过了大部分的坑。但是不建议使用 ohmymn 作为开发模板，ohmymn 并没有对此做任何优化，可能会出现冲突，不过我已经给大家准备了专门的 [MN插件开发模板](https://github.com/ourongxing/copysearch)，同时还有 [MN 插件开发指南](https://busiyi.notion.site/CopySearch-MN-856b316ec2854a70aa00e8bc1873892a)，帮助大家快速开发。
-## Contact
 
-除了 Github，你还可以在下面三个平台找到我。
-
-* 即刻: [ourongxing](https://m.okjike.com/users/7f422d5d-d79a-4f45-9880-b89d64d7f37a)
-* 知乎: [ourongxing](https://www.zhihu.com/people/ourongxing)
-* Telegram: [ourongxing](https://t.me/orongxing)
-
+## Discussion
+- [OhMyMN 飞书话题群](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750)
 ## License
 
 该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/ourongxing/ohmymn/blob/main/LICENSE)
