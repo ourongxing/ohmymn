@@ -150,6 +150,7 @@ const onPopupMenuOnNote: eventHandler = async sender => {
   )
   if (success) return
   // 保存修改摘录前的内容
+  // 这里有可能转为了标题，所以摘录为空
   lastExcerptText = note.excerptText!
 }
 

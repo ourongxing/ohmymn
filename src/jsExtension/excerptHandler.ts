@@ -14,20 +14,21 @@ let nodeNote: MbBookNote
 let isOCR: boolean
 let isComment: boolean
 let isModifying: boolean
-let lastExcerptText: string
+let lastExcerptText: string | undefined
 
-export default async (_note: MbBookNote, _lastExcerptText = "") => {
+export default async (_note: MbBookNote, _lastExcerptText?: string) => {
   log("正在处理摘录", "excerpt")
   // 初始化全局变量
   note = _note
   isOCR = false
   lastExcerptText = _lastExcerptText
   isComment = note.groupNoteId ? true : false
-  isModifying = lastExcerptText ? true : false
+  // lastExcerptText 有可能为空字符串
+  isModifying = lastExcerptText !== undefined
   if (isComment) nodeNote = getNoteById(note.groupNoteId!)
-  if (isModifying && profile.ohmymn.lockExcerpt && lastExcerptText != "😎") {
+  if (profile.ohmymn.lockExcerpt && isModifying && lastExcerptText != "😎") {
     log("检测到开启锁定摘录选项，还原摘录", "excerpt")
-    processExcerpt(undefined, lastExcerptText)
+    processExcerpt(undefined, lastExcerptText!)
     return
   }
 
@@ -95,9 +96,8 @@ const excerptHandler = async () => {
     }
   }
 
-  // 拓宽作为标题的摘录，可以不受到规则的限制，直接转为标题
   if (isModifying) {
-    const isBroadened = (oldStr: string | undefined, newStr: string) =>
+    const isBroadened = (oldStr: string, newStr: string) =>
       oldStr &&
       oldStr.length >= 2 &&
       (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
@@ -105,9 +105,9 @@ const excerptHandler = async () => {
     if (
       profile.anotherautotitle.changeTitleNoLimit &&
       !title &&
-      isBroadened(note?.noteTitle, text)
+      isBroadened(note?.noteTitle ?? "", text)
     ) {
-      log("正在拓宽作为标题的摘录", "excerpt")
+      log("正在拓宽作为标题的摘录，不受限制", "excerpt")
       title = text
       text = ""
     }
