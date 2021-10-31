@@ -18,10 +18,17 @@ const config: IConfig = {
       label: "别名转为标题链接"
     },
     {
+      key: "customSplitName",
+      type: cellViewType.input,
+      label: "自定义别名分词，点击查看具体格式",
+      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+    },
+    {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: [
-        "自定义",
+        "自定义提取",
+        "自定义定义分词",
         "xxx : yyy",
         "xxx —— yyy",
         "xxx ，是(指) yyy",
@@ -35,12 +42,6 @@ const config: IConfig = {
       key: "customSplit",
       type: cellViewType.input,
       label: "自定义定义分词，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
-    },
-    {
-      key: "customSplitName",
-      type: cellViewType.input,
-      label: "自定义别名分词，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     },
     {
@@ -79,24 +80,25 @@ const util = {
   },
 
   checkGetDefTitle(text: string) {
-    if (profile.anotherautodef.customDefTitle) {
-      const params = string2ReplaceParam(profile.anotherautodef.customDefTitle)
-      for (const item of params) {
-        if (item.regexp.test(text)) {
-          const title = text.replace(item.regexp, item.newSubStr)
-          return {
-            title,
-            text: ["", text][item.fnKey]
-          }
-        }
-      }
-    }
-
     const preset = profile.anotherautodef.preset
-
     for (const set of preset)
       switch (set) {
         case 0:
+          if (!profile.anotherautodef.customDefTitle) break
+          const params = string2ReplaceParam(
+            profile.anotherautodef.customDefTitle
+          )
+          for (const item of params) {
+            if (item.regexp.test(text)) {
+              const title = text.replace(item.regexp, item.newSubStr)
+              return {
+                title,
+                text: [text, ""][item.fnKey]
+              }
+            }
+          }
+          break
+        case 1:
           if (!profile.anotherautodef.customSplit) break
           const regs = string2RegArray(profile.anotherautodef.customSplit)
           for (const reg of regs)
@@ -115,16 +117,18 @@ const util = {
               }
             }
           break
-        case 1:
         case 2:
-        case 3: {
+        case 3:
+        case 4:
+        case 5:
+        case 6: {
           const reg = [
             /[：:]/,
             /[一—]{2}/,
             /[,，]\s*(?:通常|一般)*是指?/,
             /(?:通常|一般)*是指?\s*[,，]/,
             /(?:通常|一般)*是指/
-          ][set]
+          ][set - 2]
           if (reg.test(text)) {
             const [def, desc] = text
               .split(reg)
@@ -141,7 +145,7 @@ const util = {
           }
           break
         }
-        case 4: {
+        case 7: {
           const reg = /是/
           if (reg.test(text)) {
             const [def, desc] = text.split(reg).filter(item => item)
