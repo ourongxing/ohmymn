@@ -9,8 +9,9 @@ import { on, profile } from "profile"
 export const genTitleText = async (
   text: string
 ): Promise<{ title?: string; text: string }> => {
+  const { quickSwitch } = profile.ohmymn
   // 处理摘录
-  for (const addon of profile.ohmymn.quickSwitch) {
+  for (const addon of quickSwitch) {
     switch (addon) {
       case on.autostandardize:
         text = autostandardize.standardizeText(text)
@@ -25,7 +26,7 @@ export const genTitleText = async (
   }
 
   // 返回标题
-  for (const addon of profile.ohmymn.quickSwitch) {
+  for (const addon of quickSwitch) {
     switch (addon) {
       case on.autocomplete: {
         const result = await autocomplete.checkGetWord(text)
@@ -47,7 +48,7 @@ export const genTitleText = async (
   }
 
   // autotitle 始终最后执行
-  if (profile.ohmymn.quickSwitch.includes(on.anotherautotitle)) {
+  if (quickSwitch.includes(on.anotherautotitle)) {
     const result = anotherautotitle.checkGetTitle(text)
     if (result)
       return {
