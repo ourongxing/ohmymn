@@ -36,7 +36,9 @@ export const genTitleText = async (
         const result = anotherautodef.checkGetDefTitle(text)
         if (result)
           return {
-            title: autostandardize.toTitleCase(result.title),
+            title: autostandardize
+              .toTitleCase(result.title)
+              .replace(/\*\*/g, ""),
             text: result.text
           }
         break
@@ -49,7 +51,7 @@ export const genTitleText = async (
     const result = anotherautotitle.checkGetTitle(text)
     if (result)
       return {
-        title: autostandardize.toTitleCase(result.title),
+        title: autostandardize.toTitleCase(result.title).replace(/\*\*/g, ""),
         text: ""
       }
   }

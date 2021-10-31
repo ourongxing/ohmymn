@@ -90,9 +90,7 @@ const action: IActionMethod = {
   switchTitleorExcerpt({ nodes, option }) {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
-      const text = note.excerptText
-        ? note.excerptText.replace(/\*\*(.*?)\*\*/g, "$1")
-        : ""
+      const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
       switch (option) {
         // option: [ "常规互相切换", "交换标题和摘录"],
         case 0:
