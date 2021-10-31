@@ -29,6 +29,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         if (index > 16 || index < 1) throw ""
         break
       }
+      case "customSplitName":
       case "customBeTitle":
       case "customSplit":
       case "filterCards":

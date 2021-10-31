@@ -1,5 +1,4 @@
 import { profile } from "profile"
-import { log } from "utils/common"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 
@@ -24,6 +23,7 @@ const config: IConfig = {
         "xxx : yyy",
         "xxx —— yyy",
         "xxx ，是(指) yyy",
+        "xxx 是(指)，yyy",
         "xxx 是指 yyy",
         "* xxx 是 yyy"
       ],
@@ -32,7 +32,13 @@ const config: IConfig = {
     {
       key: "customSplit",
       type: cellViewType.input,
-      label: "自定义分词，点击查看具体格式",
+      label: "自定义定义分词，点击查看具体格式",
+      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+    },
+    {
+      key: "customSplitName",
+      type: cellViewType.input,
+      label: "自定义别名分词，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     },
     {
@@ -55,14 +61,21 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
+    const regs = profile.anotherautodef.customSplitName
+      ? string2RegArray(profile.anotherautodef.customSplitName)
+      : []
+    regs.push(reg)
+    regs.forEach(reg => {
+      text = text.replace(reg, "😎")
+    })
     const defs = text
-      .replace(reg, "😎")
       .split("😎")
       .filter(item => item)
       .map(item => item.trim())
     if (defs.length > 1) return defs.join("; ")
     else return false
   },
+
   checkGetDefTitle(text: string) {
     if (profile.anotherautodef.customDefTitle) {
       const params = string2ReplaceParam(profile.anotherautodef.customDefTitle)
@@ -103,8 +116,9 @@ const util = {
         case 3: {
           const reg = [
             /[：:]/,
-            /[一\-—]{1,2}/,
+            /[一—]{2}/,
             /[,，]\s*(?:通常|一般)*是指?/,
+            /(?:通常|一般)*是指?[,，]\s*/,
             /(?:通常|一般)*是指/
           ][set]
           if (reg.test(text)) {
