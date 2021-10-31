@@ -44,7 +44,7 @@ const util = {
         case 2:
           text = pangu.spacing(text)
         case 3:
-          text = text.replace(/\x20{2,}/g, "\x20")
+          text = text.replace(/\x20{2,}/g, "\x20").replace(/\x20*\n\x20/, "\n")
           break
       }
     }

@@ -46,6 +46,7 @@ const util = {
             _text = _text.replace(param.regexp, param.newSubStr).trim()
           })
           if (text != _text) text = _text
+          break
         case 1: {
           if (isHalfWidth(text)) return text
           const _text = text.replace(/\s*([ABCD][.、]+)/g, "\n$1").trimStart()
