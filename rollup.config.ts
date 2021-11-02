@@ -28,7 +28,7 @@ export default defineConfig({
   input: ["src/main.ts"],
   output: {
     dir,
-    format: "esm",
+    format: "iife",
     exports: "none",
     sourcemap: false
   },
