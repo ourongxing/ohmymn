@@ -28,7 +28,7 @@ const util = {
   toTitleCase(text: string) {
     if (!profile.autostandardize.preset.includes(0)) return text
     return text
-      .split(/[；;]/)
+      .split(/\s*[；;]\s*/)
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
       .join("; ")
   },
