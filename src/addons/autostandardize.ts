@@ -26,9 +26,11 @@ const config: IConfig = {
 
 const util = {
   toTitleCase(text: string) {
-    return profile.autostandardize.preset.includes(0) && isHalfWidth(text)
-      ? toTitleCase(text)
-      : text
+    if (!profile.autostandardize.preset.includes(0)) return text
+    return text
+      .split(/[；;]/)
+      .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
+      .join("; ")
   },
   standardizeText(text: string): string {
     if (isHalfWidth(text)) return text

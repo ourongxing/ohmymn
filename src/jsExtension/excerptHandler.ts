@@ -7,7 +7,6 @@ import {
 } from "utils/note"
 import { delayBreak, log, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
-import { isHalfWidth } from "utils/text"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -91,8 +90,7 @@ const excerptHandler = async () => {
     log("当前摘录作为评论", "excerpt")
     const nodeTitle = nodeNote?.noteTitle
     if (profile.anotherautotitle.mergeTitle && nodeTitle && title) {
-      const semi = isHalfWidth(nodeTitle) ? "; " : "；"
-      title = nodeTitle + semi + title
+      title = nodeTitle + "; " + title
     }
   }
 

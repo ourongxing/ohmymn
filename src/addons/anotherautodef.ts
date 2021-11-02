@@ -5,12 +5,13 @@ import { isHalfWidth } from "utils/text"
 
 const config: IConfig = {
   name: "AnotherAutoDef",
-  intro: "提取定义或任意内容为标题或标题链接",
+  intro:
+    "提取被定义项或任意内容为标题或标题链接\n定义 = 被定义项 + 定义联项 + 定义项",
   settings: [
     {
       key: "onlyDesc",
       type: cellViewType.switch,
-      label: "摘录仅保留描述内容"
+      label: "摘录仅保留定义项"
     },
     {
       key: "toTitleLink",
@@ -27,8 +28,8 @@ const config: IConfig = {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: [
-        "自定义提取",
-        "自定义定义分词",
+        "自定义提取内容",
+        "自定义定义联项",
         "xxx : yyy",
         "xxx —— yyy",
         "xxx ，是(指) yyy",
@@ -41,7 +42,7 @@ const config: IConfig = {
     {
       key: "customSplit",
       type: cellViewType.input,
-      label: "自定义定义分词，点击查看具体格式",
+      label: "自定义定义联项，点击查看具体格式",
       link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
     },
     {
@@ -63,7 +64,7 @@ const config: IConfig = {
 
 const util = {
   toTitleLink(text: string) {
-    const reg = /[、\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
+    const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
     const { customSplitName } = profile.anotherautodef
     const regs = customSplitName ? string2RegArray(customSplitName) : []
     regs.push(reg)
@@ -74,7 +75,7 @@ const util = {
       .split("😎")
       .filter(item => item)
       .map(item => item.trim())
-    if (defs.length > 1) return defs.join(isHalfWidth(text) ? "; " : "；")
+    if (defs.length > 1) return defs.join("; ")
     else return false
   },
 

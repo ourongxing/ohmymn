@@ -163,7 +163,6 @@ const controllers = {
   select(text: string) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
-    view.buttonType = UIButtonType.system
     view.setTitleForState(text, 0)
     view.setTitleColorForState(UIColor.whiteColor(), 0)
     view.backgroundColor = UIColor.grayColor()
