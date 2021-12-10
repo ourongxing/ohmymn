@@ -60,7 +60,7 @@ const util = {
         }
         case 3:
         case 4: {
-          const regs = [/([;；])\s*/g, /。/g]
+          const regs = [/([;；])\s*/g, /(。)\s*/g]
           const reg = regs[set - 3]
           const _text = text.replace(reg, "$1\n").trimEnd()
           if (text.match(reg)?.length ?? 0 > 1) text = _text
