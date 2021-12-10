@@ -40,6 +40,11 @@ const config: IConfig = {
       label: "自动关闭面板"
     },
     {
+      key: "screenAlwaysOn",
+      type: cellViewType.switch,
+      label: "保持屏幕常亮"
+    },
+    {
       key: "lockExcerpt",
       type: cellViewType.switch,
       label: "锁定摘录文字"

@@ -3,6 +3,7 @@ import { readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { eventCtrl } from "./handleReceivedEvent"
+import { profile } from "profile"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -67,6 +68,8 @@ const documentDidOpen = (docmd5: string) => {
   // 如果 thisDocMd5 没有值，说明是刚打开 MN，此时读取所有配置
   else {
     readProfile(docmd5, true)
+    UIApplication.sharedApplication().idleTimerDisabled =
+      profile.ohmymn.screenAlwaysOn
   }
   log("打开文档", "lifeCycle")
   thisDocMd5 = docmd5

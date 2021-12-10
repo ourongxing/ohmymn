@@ -4,6 +4,7 @@ declare global {
   class UIApplication {
     static sharedApplication(): UIApplication
     networkActivityIndicatorVisible: boolean
+    idleTimerDisabled: boolean
     openURL(url: NSURL): boolean
     canOpenURL(url: NSURL): boolean
     openURLOptionsCompletionHandler(

@@ -4,6 +4,7 @@ const profileType = {
     clickHidden: false,
     lockExcerpt: false,
     autoCorrect: false,
+    screenAlwaysOn: false,
     quickSwitch: [0],
     panelPostion: [0],
     panelHeight: [1]

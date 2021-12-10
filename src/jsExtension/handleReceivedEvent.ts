@@ -110,6 +110,10 @@ const onSwitchChange: eventHandler = sender => {
     case "autoCorrect":
       if (status) showHUD("请按实际情况选择开关，不建议无脑打开自动矫正", 2)
       break
+    case "screenAlwaysOn":
+      UIApplication.sharedApplication().idleTimerDisabled =
+        profile.ohmymn.screenAlwaysOn
+      break
     default:
       break
   }
