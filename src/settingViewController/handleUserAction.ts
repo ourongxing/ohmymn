@@ -78,7 +78,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
     sender.resignFirstResponder()
     row.content = text
     postNotification(Addon.key + "InputOver", {
-      name: section.header.toLocaleLowerCase(),
+      name: section.header.toLowerCase(),
       key: row.key,
       content: text
     })
@@ -186,7 +186,8 @@ const clickSelectButton = (sender: UIButton) => {
     1 << 3,
     true
   )
-  self.popoverController.delegate = self
+  //@ts-ignore
+  popoverController.delegate = self
 }
 
 // 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选

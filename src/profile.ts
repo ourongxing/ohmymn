@@ -52,21 +52,9 @@ export const enum on {
   autolist
 }
 
-const docProfilePreset = {
-  ohmymn: {
-    autoCorrect: false
-  }
-}
-
-export type IProfile = typeof profilePreset
-export type IProfile_doc = typeof docProfilePreset
-
+type IProfile = typeof profilePreset
 const profile: {
   [k: string]: { [k: string]: boolean | string | number[] }
 } & IProfile = JSON.parse(JSON.stringify(profilePreset))
 
-const docProfile: {
-  [k: string]: { [k: string]: boolean | string | number[] }
-} & IProfile_doc = JSON.parse(JSON.stringify(profilePreset))
-
-export { profile, docProfile, profilePreset, docProfilePreset }
+export { profile, profilePreset, IProfile }
