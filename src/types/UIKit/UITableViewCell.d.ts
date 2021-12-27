@@ -1,3 +1,5 @@
+import { UIImageView, UILabel, UIView } from "."
+
 export {}
 
 declare global {

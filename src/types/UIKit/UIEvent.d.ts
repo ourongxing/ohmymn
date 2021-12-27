@@ -1,5 +1,1 @@
-export {}
-
-declare global {
-  class UIEvent {}
-}
+export class UIEvent {}

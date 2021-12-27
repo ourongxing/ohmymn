@@ -1,3 +1,5 @@
+import { UIWindow, UIViewController, UITableView } from "types/UIKit"
+
 export {}
 declare global {
   class SpeechManager {

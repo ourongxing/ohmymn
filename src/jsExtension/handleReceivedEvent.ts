@@ -11,7 +11,6 @@ import {
   popup,
   showHUD
 } from "utils/common"
-import { MN } from "utils/const"
 import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
@@ -19,6 +18,7 @@ import {
   getSelectNodesAll,
   undoGroupingWithRefresh
 } from "utils/note"
+import { UIAlertViewStyle } from "types/UIKit"
 
 export const eventCtrl = eventHandlerController([
   { event: "InputOver" },

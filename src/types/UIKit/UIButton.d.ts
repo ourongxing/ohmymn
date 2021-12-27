@@ -1,10 +1,10 @@
-export {}
+import { UIControl, UILabel } from "."
 
+export const enum UIButtonType {
+  system = 0
+}
+export const enum UIControlState {}
 declare global {
-  const enum UIButtonType {
-    system = 0
-  }
-  const enum UIControlState {}
   class UIButton extends UIControl {
     static buttonWithType(buttonType: UIButtonType): UIButton
     buttonType: UIButtonType

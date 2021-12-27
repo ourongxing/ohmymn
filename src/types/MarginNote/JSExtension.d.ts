@@ -1,3 +1,5 @@
+import { UILocalNotification, UIViewController, UIWindow } from "types/UIKit"
+
 declare class JSExtension {
   [k: string]: any
   readonly window?: UIWindow

@@ -1,9 +1,10 @@
 import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
-import { MN } from "utils/const"
+import { MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
 import { osType } from "types/MarginNote"
+import { UIAlertViewStyle, UITableView } from "types/UIKit"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(

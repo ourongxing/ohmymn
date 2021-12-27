@@ -1,4 +1,5 @@
-import { MN } from "./const"
+import { UIAlertViewStyle } from "types/UIKit"
+import { MN } from "../const"
 
 const log = (obj: any, suffix = "normal") =>
   void JSB.log(`ohmymn-${suffix} %@`, obj)

@@ -2,7 +2,7 @@ import handleReceivedEvent from "jsExtension/handleReceivedEvent"
 import switchPanel from "jsExtension/switchPanel"
 import { getObjCClassDeclar } from "utils/common"
 import lifeCycle, { clsMethons } from "jsExtension/lifeCycle"
-import { MN } from "utils/const"
+import { MN } from "const"
 
 const inst = {
   ...lifeCycle,

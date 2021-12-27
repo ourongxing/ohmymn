@@ -1,7 +1,8 @@
 import { dataSource } from "synthesizer"
 import { cellViewType } from "types/Addon"
 import { isOCNull, log } from "utils/common"
-import { MN } from "utils/const"
+import { MN } from "const"
+import { UITableView } from "types/UIKit"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999

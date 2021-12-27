@@ -4,7 +4,8 @@ import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { eventCtrl } from "./handleReceivedEvent"
 import { profile } from "profile"
-import { MN } from "utils/const"
+import { MN } from "const"
+import { UITableViewController } from "types/UIKit"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),

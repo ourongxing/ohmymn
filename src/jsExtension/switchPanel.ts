@@ -1,7 +1,8 @@
 import { profile } from "profile"
 import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, log, showHUD } from "utils/common"
-import { MN } from "utils/const"
+import { MN } from "const"
+import { UIViewController } from "types/UIKit"
 
 // 面板和按键状态
 let panelStatus = false
