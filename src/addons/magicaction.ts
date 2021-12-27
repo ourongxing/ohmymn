@@ -5,6 +5,8 @@ import {
   string2ReplaceParam
 } from "utils/input"
 import { HUDController, log, showHUD } from "utils/common"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { textComment } from "types/MarginNote"
 
 const config: IConfig = {
   name: "MagicAction",

@@ -2,6 +2,7 @@ import { profile } from "profile"
 import { log } from "utils/common"
 import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
 const config: IConfig = {
   name: "AnotherAutoTitle",

@@ -1,6 +1,7 @@
 import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
 const config: IConfig = {
   name: "AutoReplace",

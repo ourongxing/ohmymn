@@ -1,3 +1,4 @@
+import { MbBookNote } from "types/MarginNote"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"

@@ -3,6 +3,8 @@ import pangu from "utils/pangu"
 import { toTitleCase } from "utils/toTitleCase"
 import { isHalfWidth } from "utils/text"
 import { profile } from "profile"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+
 const config: IConfig = {
   name: "AutoStandardize",
   intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",

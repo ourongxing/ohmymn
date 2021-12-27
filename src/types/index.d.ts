@@ -14,15 +14,7 @@ declare global {
   const self: {
     [k: string]: any
   }
-
-  type InstMembers = {
-    [k: string]: any
-  }
-  type ClsMembers = {
-    [k: string]: any
-  }
   type WrapperObj<T> = T
-
   type DictObj = {
     [k: string]: any
   }

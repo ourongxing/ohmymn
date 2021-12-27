@@ -2,6 +2,7 @@ import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { isHalfWidth } from "utils/text"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
 const config: IConfig = {
   name: "AutoList",

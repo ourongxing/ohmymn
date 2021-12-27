@@ -1,90 +1,93 @@
-export {}
+import { MbBookNote } from "./MbBookNote"
+import { MbBook } from "./NoteDatabase"
+
+export const enum osType {
+  iPadOS = 0,
+  iPhoneOS = 1,
+  macOS = 2
+}
+
+export class DocumentController {
+  readonly document?: MbBook
+  readonly docMd5?: string
+  readonly notebookId?: string
+  readonly focusNote?: MbBookNote
+  readonly visibleFocusNote?: MbBookNote
+  readonly selectionText?: string
+}
+
+export class MindMapNode {
+  readonly note?: MbBookNote
+  readonly parentNode?: MindMapNode
+  readonly summaryLinks?: Array<any>
+  readonly childNodes?: Array<MindMapNode>
+  readonly frame: CGRect
+}
+
+export class MindMapView {
+  readonly mindmapNodes?: Array<MindMapNode>
+  readonly selViewLst?: Array<any>
+}
+
+export class NotebookController {
+  readonly outlineView: WrapperObj<OutlineView>
+  readonly mindmapView: WrapperObj<MindMapView>
+  readonly notebookId?: string
+  readonly focusNote?: MbBookNote
+  readonly visibleFocusNote?: MbBookNote
+}
+
+export class OutlineView {
+  /**
+   * @returns MbBookNote*
+   * @param indexPath NSIndexPath*
+   */
+  noteFromIndexPath(indexPath: NSIndexPath): MbBookNote
+}
+
+export class ReaderController {
+  readonly currentDocumentController: WrapperObj<DocumentController>
+  readonly documentControllers?: NSMutableArray
+  view: UIView
+}
+
+export const enum studyMode {
+  doc0 = 0,
+  doc1 = 1,
+  study = 2,
+  review = 3
+}
+
+export const enum docMapSplitMode {
+  allMap = 0,
+  /** halfMap or halfDoc */
+  half = 1,
+  allDoc = 2
+}
+
+export class StudyController extends UIViewController {
+  view: UIView
+  readonly studyMode: studyMode
+  readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
+  /**
+   *  int
+   */
+  docMapSplitMode: docMapSplitMode
+  rightMapMode: boolean
+  readonly notebookController: WrapperObj<NotebookController>
+  readonly readerController: WrapperObj<ReaderController>
+  /**
+   * @param noteId NSString*
+   */
+  focusNoteInMindMapById(noteId: string): void
+  /**
+   * @param noteId NSString*
+   */
+  focusNoteInDocumentById(noteId: string): void
+  refreshAddonCommands(): void
+}
+
 declare global {
-  const enum osType {
-    iPadOS = 0,
-    iPhoneOS = 1,
-    macOS = 2
-  }
-
-  class DocumentController {
-    readonly document?: MbBook
-    readonly docMd5?: string
-    readonly notebookId?: string
-    readonly focusNote?: MbBookNote
-    readonly visibleFocusNote?: MbBookNote
-    readonly selectionText?: string
-  }
-
-  class MindMapNode {
-    readonly note?: MbBookNote
-    readonly parentNode?: MindMapNode
-    readonly summaryLinks?: Array<any>
-    readonly childNodes?: Array<MindMapNode>
-    readonly frame: CGRect
-  }
-
-  class MindMapView {
-    readonly mindmapNodes?: Array<MindMapNode>
-    readonly selViewLst?: Array<any>
-  }
-
-  class NotebookController {
-    readonly outlineView: WrapperObj<OutlineView>
-    readonly mindmapView: WrapperObj<MindMapView>
-    readonly notebookId?: string
-    readonly focusNote?: MbBookNote
-    readonly visibleFocusNote?: MbBookNote
-  }
-
-  class OutlineView {
-    /**
-     * @returns MbBookNote*
-     * @param indexPath NSIndexPath*
-     */
-    noteFromIndexPath(indexPath: NSIndexPath): MbBookNote
-  }
-
-  class ReaderController {
-    readonly currentDocumentController: WrapperObj<DocumentController>
-    readonly documentControllers?: NSMutableArray
-    view: UIView
-  }
-
-  const enum studyMode {
-    doc0 = 0,
-    doc1 = 1,
-    study = 2,
-    review = 3
-  }
-
-  const enum docMapSplitMode {
-    allMap = 0,
-    /** halfMap or halfDoc */
-    half = 1,
-    allDoc = 2
-  }
-
-  class StudyController extends UIViewController {
-    readonly studyMode: studyMode
-    readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
-    /**
-     *  int
-     */
-    docMapSplitMode: docMapSplitMode
-    rightMapMode: boolean
-    readonly notebookController: WrapperObj<NotebookController>
-    readonly readerController: WrapperObj<ReaderController>
-    /**
-     * @param noteId NSString*
-     */
-    focusNoteInMindMapById(noteId: string): void
-    /**
-     * @param noteId NSString*
-     */
-    focusNoteInDocumentById(noteId: string): void
-    refreshAddonCommands(): void
-  }
-
   class Application {
     static sharedInstance(): Application
 

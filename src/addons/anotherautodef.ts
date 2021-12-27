@@ -1,7 +1,7 @@
 import { profile } from "profile"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
-import { isHalfWidth } from "utils/text"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
 const config: IConfig = {
   name: "AnotherAutoDef",

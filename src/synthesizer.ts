@@ -6,6 +6,7 @@ import * as autostandardize from "addons/autostandardize"
 import * as magicaction from "addons/magicaction"
 import * as anotherautodef from "addons/anotherautodef"
 import * as ohmymn from "addons/ohmymn"
+import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
 
 // 不要包含 magication，顺序为显示的顺序，magiction 始终为第1个
 const addons = [

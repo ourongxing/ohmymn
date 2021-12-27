@@ -1,4 +1,5 @@
 import { profile } from "profile"
+import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { isOCNull, log, showHUD } from "utils/common"
 import { reverseEscape } from "utils/input"
 import fetch from "utils/network"

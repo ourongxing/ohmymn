@@ -1,4 +1,5 @@
 import { profile } from "profile"
+import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, log, showHUD } from "utils/common"
 import { MN } from "utils/const"
 
