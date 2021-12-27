@@ -10,7 +10,8 @@ import {
   popup,
   showHUD
 } from "utils/common"
-import eventHandlerController from "utils/event"
+import { MN } from "utils/const"
+import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
   getSelectNodes,
@@ -38,7 +39,7 @@ interface eventHandler {
 
 let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
 
@@ -99,7 +100,7 @@ const onButtonClick: eventHandler = async sender => {
 }
 
 const onSwitchChange: eventHandler = sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   const { name, key, status } = sender.userInfo
   profile[name][key] = status
   switch (key) {
@@ -120,7 +121,7 @@ const onSwitchChange: eventHandler = sender => {
 }
 
 const onSelectChange: eventHandler = sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
   profile[name][key] = selections
   switch (key) {
@@ -132,7 +133,7 @@ const onSelectChange: eventHandler = sender => {
 }
 
 const onInputOver: eventHandler = sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
   content ? showHUD("输入已保存") : showHUD("输入已清空")
@@ -143,7 +144,7 @@ let isProcessNewExcerpt = false
 let isChangeExcerptRange = false
 let lastExcerptText = "😎"
 const onPopupMenuOnNote: eventHandler = async sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   const note = <MbBookNote>sender.userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
@@ -159,7 +160,7 @@ const onPopupMenuOnNote: eventHandler = async sender => {
 }
 
 const onChangeExcerptRange: eventHandler = sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   log("修改摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isChangeExcerptRange = true
@@ -167,7 +168,7 @@ const onChangeExcerptRange: eventHandler = sender => {
 }
 
 const onProcessNewExcerpt: eventHandler = sender => {
-  if (!isThisWindow(sender, self.window)) return
+  if (!isThisWindow(sender)) return
   log("创建摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true

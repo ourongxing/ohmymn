@@ -1,4 +1,4 @@
-const profileType = {
+const profilePreset = {
   ohmymn: {
     doubleClick: false,
     clickHidden: false,
@@ -52,25 +52,21 @@ export const enum on {
   autolist
 }
 
-const docProfileType = {
+const docProfilePreset = {
   ohmymn: {
     autoCorrect: false
   }
 }
 
-export type IProfile = typeof profileType
-export type IProfile_doc = typeof docProfileType
+export type IProfile = typeof profilePreset
+export type IProfile_doc = typeof docProfilePreset
 
 const profile: {
   [k: string]: { [k: string]: boolean | string | number[] }
-} & IProfile = {
-  ...profileType
-}
+} & IProfile = JSON.parse(JSON.stringify(profilePreset))
 
 const docProfile: {
   [k: string]: { [k: string]: boolean | string | number[] }
-} & IProfile_doc = {
-  ...docProfileType
-}
+} & IProfile_doc = JSON.parse(JSON.stringify(profilePreset))
 
-export { profile, docProfile }
+export { profile, docProfile, profilePreset, docProfilePreset }

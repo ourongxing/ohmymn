@@ -4,6 +4,7 @@ import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { eventCtrl } from "./handleReceivedEvent"
 import { profile } from "profile"
+import { MN } from "utils/const"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -22,21 +23,12 @@ const SettingViewController = JSB.defineClass(
  * 7. 关闭窗口
  */
 
-let mainPath = ""
-export const deliverMainPath = (_mainPath: string) => {
-  mainPath = _mainPath
-}
-
 // 打开窗口，可以用来初始化
 const sceneWillConnect = () => {
   log("打开窗口", "lifeCycle")
-  self.studyController = Application.sharedInstance().studyController(
-    self.window
-  )
-  self.settingViewController = new SettingViewController()
-  self.settingViewController.window = self.window
-  self.mainPath = mainPath
-  self.settingViewController.mainPath = self.mainPath
+  MN.window = self.window
+  MN.studyController = Application.sharedInstance().studyController(MN.window)
+  MN.settingViewController = <UITableViewController>new SettingViewController()
 }
 
 // 关闭窗口，不会调用关闭笔记本和关闭文档的方法

@@ -1,16 +1,18 @@
+import { MN } from "./const"
+
 const log = (obj: any, suffix = "normal") =>
   void JSB.log(`ohmymn-${suffix} %@`, obj)
 
 // 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration: number = 1) =>
-  void Application.sharedInstance().showHUD(message, self.window, duration)
+  void Application.sharedInstance().showHUD(message, MN.window, duration)
 
 const HUDController = {
   show(message: string) {
-    Application.sharedInstance().waitHUDOnView(message, self.window)
+    Application.sharedInstance().waitHUDOnView(message, MN.window)
   },
   hidden() {
-    Application.sharedInstance().stopWaitHUDOnView(self.window)
+    Application.sharedInstance().stopWaitHUDOnView(MN.window)
   }
 }
 
@@ -59,8 +61,8 @@ const postNotification = (key: string, userInfo: any) =>
     userInfo
   )
 
-const isThisWindow = (sender: any, window: any) =>
-  Application.sharedInstance().checkNotifySenderInWindow(sender, self.window)
+const isThisWindow = (sender: any) =>
+  Application.sharedInstance().checkNotifySenderInWindow(sender, MN.window)
 
 const popup = (
   title: string,

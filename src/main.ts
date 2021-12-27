@@ -1,7 +1,8 @@
 import handleReceivedEvent from "jsExtension/handleReceivedEvent"
 import switchPanel from "jsExtension/switchPanel"
 import { getObjCClassDeclar } from "utils/common"
-import lifeCycle, { clsMethons, deliverMainPath } from "jsExtension/lifeCycle"
+import lifeCycle, { clsMethons } from "jsExtension/lifeCycle"
+import { MN } from "utils/const"
 
 const inst: InstMembers = {
   ...lifeCycle,
@@ -12,6 +13,6 @@ const inst: InstMembers = {
 const cls: ClsMembers = clsMethons
 
 JSB.newAddon = (mainPath): WrapperObj<any> => {
-  deliverMainPath(mainPath)
+  MN.mainPath = mainPath
   return JSB.defineClass(getObjCClassDeclar("OhMyMN", "JSExtension"), inst, cls)
 }

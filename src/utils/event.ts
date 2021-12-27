@@ -1,4 +1,4 @@
-const eventHandlerController = (
+export const eventHandlerController = (
   handlerList: {
     event: string
     handler?: string
@@ -23,5 +23,3 @@ const eventHandlerController = (
   }
   return { add, remove }
 }
-
-export default eventHandlerController

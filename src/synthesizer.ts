@@ -63,11 +63,7 @@ export const genDataSource = (
       for (let action of config.actions) magicaction.actions.push(action)
     }
     magicaction.settings = magicaction.actions.sort(
-      (a: ISetting, b: ISetting) => {
-        const val1 = a.label.length
-        const val2 = b.label.length
-        return val1 - val2
-      }
+      (a: ISetting, b: ISetting) => a.label.length - b.label.length
     )
   }
   dataSource.unshift(genSection(magicaction))
@@ -90,16 +86,6 @@ export const genDataSource = (
         label:
           "欢迎加入飞书话题群，一起交流 ohmymn 使用\n技巧，我会不定期为大家解决疑问。",
         link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750"
-      },
-      {
-        type: cellViewType.plainText,
-        label: "祝考研的各位同学成功上岸，本次更新后在考研\n结束前将不再更新。",
-        link: ""
-      },
-      {
-        type: cellViewType.plainText,
-        label: "考研倒计时：",
-        link: ""
       },
       {
         type: cellViewType.plainText,

@@ -1,6 +1,7 @@
 import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
+import { MN } from "utils/const"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -99,6 +100,7 @@ let lastSelectInfo: {
   key: string
   selections: number[]
 } | null
+let popoverController: UIPopoverController
 const selectAction = (param: {
   indexPath: NSIndexPath
   selection: number
@@ -120,8 +122,7 @@ const selectAction = (param: {
       key: row.key,
       selections: [selection]
     })
-    if (self.popoverController)
-      self.popoverController.dismissPopoverAnimated(true)
+    if (popoverController) popoverController.dismissPopoverAnimated(true)
     // 貌似 iPad 上无法使用 reloadRow
     Application.sharedInstance().osType == osType.macOS
       ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
@@ -174,11 +175,9 @@ const clickSelectButton = (sender: UIButton) => {
     width: width > 300 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
-  const studyControllerView = Application.sharedInstance().studyController(
-    self.window
-  ).view
-  self.popoverController = new UIPopoverController(menuController)
-  self.popoverController.presentPopoverFromRect(
+  const studyControllerView = MN.studyController.view
+  popoverController = new UIPopoverController(menuController)
+  popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),
     studyControllerView,
     1 << 3,

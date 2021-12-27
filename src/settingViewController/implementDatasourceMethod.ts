@@ -1,5 +1,6 @@
 import { dataSource } from "synthesizer"
 import { isOCNull, log } from "utils/common"
+import { MN } from "utils/const"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -67,7 +68,7 @@ const tableViewCellForRowAtIndexPath = (
       const iconColor =
         Application.sharedInstance().currentTheme == "Gray" ? "light" : "dark"
       const image = NSData.dataWithContentsOfFile(
-        self.mainPath + `/icon/${iconColor}/${row.key}.png`
+        MN.mainPath + `/icon/${iconColor}/${row.key}.png`
       )
       if (!isOCNull(image))
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)

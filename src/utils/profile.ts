@@ -1,6 +1,7 @@
 import { dataSource, dataSourceIndex } from "synthesizer"
 import { log, showHUD } from "utils/common"
-import { profile, docProfile, IProfile, IProfile_doc } from "profile"
+import { profile, docProfile, docProfilePreset } from "profile"
+import type { IProfile, IProfile_doc } from "profile"
 
 // 读配置包含两种情况
 // 1.刚打开 MN 然后打开笔记本，读两个配置文件，然后合并
@@ -71,8 +72,7 @@ const readProfile = (docmd5: string, readAll = false) => {
 
 // 切换的时候仅保存当前文档的，退出的时候全部保存
 const saveProfile = (docmd5: string, saveAll = false) => {
-  // 深复制，防止修改 docProfile
-  const thisDocProfile: IProfile_doc = JSON.parse(JSON.stringify(docProfile))
+  const thisDocProfile: IProfile_doc = docProfilePreset
   Object.entries(thisDocProfile).forEach(([name, _]) => {
     Object.keys(_).forEach(key => {
       //@ts-ignore

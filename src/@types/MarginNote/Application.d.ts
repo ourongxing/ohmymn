@@ -64,8 +64,7 @@ declare global {
     allDoc = 2
   }
 
-  class StudyController {
-    view: UIView
+  class StudyController extends UIViewController {
     readonly studyMode: studyMode
     readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
     /**
