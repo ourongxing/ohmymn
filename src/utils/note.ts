@@ -1,4 +1,5 @@
-import { MbBookNote, MbTopic, UndoManager } from "types/MarginNote"
+import { MbTopic } from "types/MarginNote/NoteDatabase"
+import { MbBookNote } from "types/MarginNote/MbBookNote"
 import { delay, log, postNotification } from "./common"
 
 /**

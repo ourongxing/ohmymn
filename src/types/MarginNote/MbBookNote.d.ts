@@ -158,16 +158,18 @@ export class MbBookNote {
   removeCommentByIndex(index: number): void
 }
 
-export class Note {
-  /**
-   * @returns MbBookNote*
-   * @param title NSString*
-   * @param topic MbTopic*
-   * @param book MbBook*
-   */
-  static createWithTitleNotebookDocument(
-    title: string,
-    topic: MbTopic,
-    book: MbBook
-  ): MbBookNote
+declare global {
+  class Note {
+    /**
+     * @returns MbBookNote*
+     * @param title NSString*
+     * @param topic MbTopic*
+     * @param book MbBook*
+     */
+    static createWithTitleNotebookDocument(
+      title: string,
+      topic: MbTopic,
+      book: MbBook
+    ): MbBookNote
+  }
 }

@@ -3,7 +3,7 @@ import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 import { MN } from "utils/const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { MenuController, osType } from "types/MarginNote"
+import { osType } from "types/MarginNote"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
