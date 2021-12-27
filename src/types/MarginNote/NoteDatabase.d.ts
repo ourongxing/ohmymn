@@ -129,11 +129,11 @@ export class MbModelTool {
 }
 
 declare global {
-  const Database: {
+  class Database {
     /**
      * accessor to MbModelTool in global scope
      * @returns MbModelTool*
      */
-    sharedInstance(): MbModelTool
+    static sharedInstance(): MbModelTool
   }
 }

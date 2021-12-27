@@ -30,6 +30,7 @@ const sceneWillConnect = () => {
   MN.window = self.window
   MN.studyController = Application.sharedInstance().studyController(MN.window)
   MN.settingViewController = <UITableViewController>new SettingViewController()
+  MN.notebookController = MN.studyController.notebookController
 }
 
 // 关闭窗口，不会调用关闭笔记本和关闭文档的方法
@@ -43,7 +44,7 @@ const sceneDidDisconnect = () => {
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
   log("打开笔记本", "lifeCycle")
-  self.notebookid = notebookid
+  MN.notebookId = notebookid
   eventCtrl.add()
 }
 

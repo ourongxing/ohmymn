@@ -4,15 +4,15 @@ import { getObjCClassDeclar } from "utils/common"
 import lifeCycle, { clsMethons } from "jsExtension/lifeCycle"
 import { MN } from "const"
 
-const inst = {
-  ...lifeCycle,
-  ...switchPanel,
-  ...handleReceivedEvent
-}
-
-const cls = clsMethons
-
 JSB.newAddon = mainPath => {
   MN.mainPath = mainPath
-  return JSB.defineClass(getObjCClassDeclar("OhMyMN", "JSExtension"), inst, cls)
+  return JSB.defineClass(
+    getObjCClassDeclar("OhMyMN", "JSExtension"),
+    {
+      ...lifeCycle,
+      ...switchPanel,
+      ...handleReceivedEvent
+    },
+    clsMethons
+  )
 }

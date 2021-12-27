@@ -1,9 +1,9 @@
-import mnaddon from "../../mnaddon.json"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { Addon } from "const"
+import { cellViewType, IConfig } from "types/Addon"
 
 const config: IConfig = {
-  name: "OhMyMN",
-  intro: `version: ${mnaddon.version} \nmade by @ourongxing`,
+  name: Addon.title,
+  intro: `version: ${Addon.version} \nmade by ${Addon.author}`,
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {

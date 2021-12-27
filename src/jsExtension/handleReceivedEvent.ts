@@ -19,12 +19,13 @@ import {
   undoGroupingWithRefresh
 } from "utils/note"
 import { UIAlertViewStyle } from "types/UIKit"
+import { Addon } from "const"
 
 export const eventCtrl = eventHandlerController([
-  { event: "InputOver" },
-  { event: "ButtonClick" },
-  { event: "SelectChange" },
-  { event: "SwitchChange" },
+  { event: Addon.key + "InputOver" },
+  { event: Addon.key + "ButtonClick" },
+  { event: Addon.key + "SelectChange" },
+  { event: Addon.key + "SwitchChange" },
   { event: "PopupMenuOnNote" },
   { event: "ProcessNewExcerpt" },
   { event: "ChangeExcerptRange" }
@@ -43,7 +44,6 @@ const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender)) return
   let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
-
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes

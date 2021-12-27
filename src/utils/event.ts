@@ -1,3 +1,6 @@
+import { Addon } from "const"
+import { log } from "./common"
+
 export const eventHandlerController = (
   handlerList: {
     event: string
@@ -11,7 +14,11 @@ export const eventHandlerController = (
     handlerList.forEach(v => {
       NSNotificationCenter.defaultCenter().addObserverSelectorName(
         self,
-        v.handler ? `${v.handler}:` : `on${v.event}:`,
+        v.handler
+          ? `${v.handler}:`
+          : v.event.includes(Addon.key)
+          ? `on${v.event.replace(Addon.key, "")}:`
+          : `on${v.event}:`,
         v.event
       )
     })

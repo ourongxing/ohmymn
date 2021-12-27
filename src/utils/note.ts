@@ -1,13 +1,13 @@
-import { MbTopic } from "types/MarginNote/NoteDatabase"
-import { MbBookNote } from "types/MarginNote/MbBookNote"
+import { MbBookNote, MbTopic } from "types/MarginNote"
 import { delay, log, postNotification } from "./common"
+import { MN } from "const"
 
 /**
  * 获取选中的卡片
  */
 const getSelectNodes = (): MbBookNote[] => {
-  const MindMapNodes: any[] =
-    self.studyController.notebookController.mindmapView.selViewLst
+  const MindMapNodes: any[] | undefined =
+    MN.notebookController.mindmapView.selViewLst
   if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }
@@ -55,7 +55,7 @@ const getNotebookById = (notebookid: string): MbTopic =>
 const undoGrouping = (f: () => void) => {
   UndoManager.sharedInstance().undoGrouping(
     String(Date.now()),
-    self.notebookid,
+    MN.notebookId,
     f
   )
 }
@@ -69,8 +69,10 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  Database.sharedInstance().setNotebookSyncDirty(self.notebookid)
-  postNotification("RefreshAfterDBChange", { topicid: self.notebookid })
+  Database.sharedInstance().setNotebookSyncDirty(MN.notebookId)
+  postNotification("RefreshAfterDBChange", {
+    topicid: MN.notebookId
+  })
 }
 
 const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {

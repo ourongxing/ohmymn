@@ -1,7 +1,7 @@
 import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
-import { MN } from "const"
+import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
 import { osType } from "types/MarginNote"
 import { UIAlertViewStyle, UITableView } from "types/UIKit"
@@ -41,7 +41,7 @@ const tableViewDidSelectRowAtIndexPath = async (
         )
         // 允许为空
         if (!content || checkInputCorrect(content, row.key)) {
-          postNotification("ButtonClick", {
+          postNotification(Addon.key + "ButtonClick", {
             key,
             option,
             content
@@ -60,7 +60,7 @@ const tableViewDidSelectRowAtIndexPath = async (
           option: buttonIndex
         })
       )
-      postNotification("ButtonClick", {
+      postNotification(Addon.key + "ButtonClick", {
         key,
         option
       })
@@ -77,7 +77,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
     // 输入正确则取消光标
     sender.resignFirstResponder()
     row.content = text
-    postNotification("InputOver", {
+    postNotification(Addon.key + "InputOver", {
       name: section.header.toLocaleLowerCase(),
       key: row.key,
       content: text
@@ -91,7 +91,7 @@ const switchChange = (sender: UISwitch) => {
   const section = dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
   row.status = sender.on ? true : false
-  postNotification("SwitchChange", {
+  postNotification(Addon.key + "SwitchChange", {
     name: section.header.toLowerCase(),
     key: row.key,
     status: sender.on ? true : false
@@ -120,7 +120,7 @@ const selectAction = (param: {
     ;(<IRowSelect>(
       dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
-    postNotification("SelectChange", {
+    postNotification(Addon.key + "SelectChange", {
       name: section.header.toLowerCase(),
       key: row.key,
       selections: [selection]
@@ -194,7 +194,7 @@ const popoverControllerDidDismissPopover = (
   UIPopoverController: UIPopoverController
 ) => {
   if (lastSelectInfo) {
-    postNotification("SelectChange", lastSelectInfo)
+    postNotification(Addon.key + "SelectChange", lastSelectInfo)
     lastSelectInfo = null
   }
 }

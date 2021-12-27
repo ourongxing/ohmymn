@@ -40,9 +40,8 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
    */
 
   if (note.excerptPic) {
-    let autoOCR = false
-    const noteBook = getNotebookById(note.notebookId!)
-    if (noteBook?.options?.autoOCRMode) autoOCR = true
+    const autoOCR =
+      getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
     log("摘录是图片", "excerpt")
     if (autoOCR) {
       const success = await delayBreak(20, 0.1, () =>
@@ -112,8 +111,8 @@ const excerptHandler = async () => {
     }
   }
 
-  log(title ? "当前标题是：" + title : "没有标题", "excerpt")
-  log(text ? "当前摘录内容是：" + text : "摘录转为了标题", "excerpt")
+  log(title ? `当前标题是：${title}` : "没有标题", "excerpt")
+  log(text ? `当前摘录内容是：${text}` : "摘录转为了标题", "excerpt")
   processExcerpt(title, text)
 }
 

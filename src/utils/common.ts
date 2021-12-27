@@ -1,8 +1,8 @@
 import { UIAlertViewStyle } from "types/UIKit"
-import { MN } from "../const"
+import { Addon, MN } from "../const"
 
 const log = (obj: any, suffix = "normal") =>
-  void JSB.log(`ohmymn-${suffix} %@`, obj)
+  void JSB.log(`${Addon.key}-${suffix} %@`, obj)
 
 // 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration: number = 1) =>
