@@ -3,14 +3,7 @@ import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
 import { actions } from "synthesizer"
-import {
-  delayBreak,
-  HUDController,
-  isThisWindow,
-  log,
-  popup,
-  showHUD
-} from "utils/common"
+import { delayBreak, HUDController, log, popup, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
@@ -34,10 +27,6 @@ export const eventHandlers = eventHandlerController([
 
 let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
-  if (!isThisWindow(sender)) {
-    showHUD("不是当前窗口")
-    return
-  }
   let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[] = []
@@ -97,7 +86,6 @@ const onButtonClick: eventHandler = async sender => {
 }
 
 const onSwitchChange: eventHandler = sender => {
-  if (!isThisWindow(sender)) return
   const { name, key, status } = sender.userInfo
   profile[name][key] = status
   switch (key) {
@@ -118,9 +106,9 @@ const onSwitchChange: eventHandler = sender => {
 }
 
 const onSelectChange: eventHandler = sender => {
-  if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
   profile[name][key] = selections
+  log(sender.userInfo, "gesture")
   switch (key) {
     case "panelPostion":
     case "panelHeight":
@@ -130,7 +118,6 @@ const onSelectChange: eventHandler = sender => {
 }
 
 const onInputOver: eventHandler = sender => {
-  if (!isThisWindow(sender)) return
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
   content ? showHUD("输入已保存") : showHUD("输入已清空")
@@ -141,7 +128,6 @@ let isProcessNewExcerpt = false
 let isChangeExcerptRange = false
 let lastExcerptText = "😎"
 const onPopupMenuOnNote: eventHandler = async sender => {
-  if (!isThisWindow(sender)) return
   const note = sender.userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
@@ -157,7 +143,6 @@ const onPopupMenuOnNote: eventHandler = async sender => {
 }
 
 const onChangeExcerptRange: eventHandler = sender => {
-  if (!isThisWindow(sender)) return
   log("修改摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isChangeExcerptRange = true
@@ -165,7 +150,6 @@ const onChangeExcerptRange: eventHandler = sender => {
 }
 
 const onProcessNewExcerpt: eventHandler = sender => {
-  if (!isThisWindow(sender)) return
   log("创建摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true

@@ -3,7 +3,7 @@ export const enum UIGestureRecognizerState {}
 export const enum UISwipeGestureRecognizerDirection {
   Right = 1 << 0,
   Left = 1 << 1,
-  Up = 1 << 0,
+  Up = 1 << 2,
   Down = 1 << 3
 }
 

@@ -59,10 +59,9 @@ const tableViewCellForRowAtIndexPath = (
         "ButtonCellID"
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = self.textColor
+      cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
-      const iconColor =
-        Application.sharedInstance().currentTheme == "Gray" ? "light" : "dark"
+      const iconColor = MN.app.currentTheme == "Gray" ? "light" : "dark"
       const image = NSData.dataWithContentsOfFile(
         MN.mainPath + `/icon/${iconColor}/${row.key}.png`
       )
@@ -78,7 +77,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = self.textColor
+      cell.textLabel.textColor = MN.textColor
       const view = initCellView.switch(row.status ?? false)
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
@@ -95,7 +94,7 @@ const tableViewCellForRowAtIndexPath = (
       )
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = self.textColor
+      cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
       const view = initCellView.inlineInput(row.content ?? "")
       let newFrame = view.frame
@@ -114,7 +113,7 @@ const tableViewCellForRowAtIndexPath = (
         "inputCellID"
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = self.textColor
+      cell.textLabel.textColor = MN.textColor
       cell.selectionStyle = 0
       const view = initCellView.input(row.content ?? "")
       view.autoresizingMask = 1 << 0
@@ -129,7 +128,7 @@ const tableViewCellForRowAtIndexPath = (
         "selectCellID"
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = self.textColor
+      cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
       const view = initCellView.select(
@@ -175,10 +174,10 @@ const initCellView = {
   },
   inlineInput(text: string) {
     const frame = { x: 0, y: 9, width: 70, height: 30 }
-    if (Application.sharedInstance().osType == 0) frame.y = 5
+    if (MN.app.osType == 0) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(18)
-    view.textColor = self.textColor
+    view.textColor = MN.textColor
     // 把协议和控制器连接
     view.delegate = self
     view.text = text
@@ -188,10 +187,10 @@ const initCellView = {
   },
   input(text: string) {
     const frame = { x: 40, y: 9, width: 250, height: 30 }
-    if (Application.sharedInstance().osType == 0) frame.y = 5
+    if (MN.app.osType == 0) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
-    view.textColor = self.textColor
+    view.textColor = MN.textColor
     view.placeholder = "enter"
     view.delegate = self
     view.autoresizingMask = (1 << 1) | (1 << 5)

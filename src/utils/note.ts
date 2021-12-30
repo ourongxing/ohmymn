@@ -7,7 +7,7 @@ import { MN } from "const"
  */
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] | undefined =
-    self.notebookController.mindmapView.selViewLst
+    MN.notebookController.mindmapView.selViewLst
   if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }
@@ -37,17 +37,17 @@ const excerptNotes = (node: MbBookNote): MbBookNote[] => {
   const comments = node.comments
   for (const comment of comments) {
     if (comment.type == "LinkNote")
-      notes.push(Database.sharedInstance().getNoteById(comment.noteid)!)
+      notes.push(MN.database.getNoteById(comment.noteid)!)
   }
   return notes
 }
 
 const getNoteById = (noteid: string): MbBookNote =>
-  Database.sharedInstance().getNoteById(noteid)!
+  MN.database.getNoteById(noteid)!
 
 // topic 就是 notebook
 const getNotebookById = (notebookid: string): MbTopic =>
-  Database.sharedInstance().getNotebookById(notebookid)!
+  MN.database.getNotebookById(notebookid)!
 
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
@@ -69,7 +69,7 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  Database.sharedInstance().setNotebookSyncDirty(MN.notebookId)
+  MN.database.setNotebookSyncDirty(MN.notebookId)
   postNotification("RefreshAfterDBChange", {
     topicid: MN.notebookId
   })

@@ -109,19 +109,11 @@ const genDataSourceIndex = (dataSource: Array<ISection>) => {
   } = {}
   dataSource.forEach((section, secIndex) => {
     const name = section.header.toLowerCase()
-    if (name != "magicaction") {
-      dataSourceIndex[name] = {}
-      section.rows.forEach((row, rowIndex) => {
-        switch (row.type) {
-          case cellViewType.input:
-          case cellViewType.switch:
-          case cellViewType.select:
-          case cellViewType.inlineInput:
-          case cellViewType.muiltSelect:
-            dataSourceIndex[name][row.key] = [secIndex, rowIndex]
-        }
-      })
-    }
+    dataSourceIndex[name] = {}
+    section.rows.forEach((row, rowIndex) => {
+      if (row.type != cellViewType.plainText)
+        dataSourceIndex[name][row.key] = [secIndex, rowIndex]
+    })
   })
   return dataSourceIndex
 }

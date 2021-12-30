@@ -1,4 +1,5 @@
 import { cellViewType, IConfig } from "types/Addon"
+import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
 
 const option = [
   "无",
@@ -72,6 +73,40 @@ const config: IConfig = {
   actions: []
 }
 
-const util = {}
+const util = {
+  initGesture: {
+    swipe(
+      touchNumber: number,
+      direction: UISwipeGestureRecognizerDirection,
+      action: string
+    ) {
+      const swipe = new UISwipeGestureRecognizer(self, `on${action}:`)
+      swipe.numberOfTouchesRequired = touchNumber
+      swipe.direction = direction
+      return swipe
+    }
+  },
+  gestureHandlerController(
+    handlerList: {
+      view: () => UIView
+      handler: () => UIGestureRecognizer
+    }[]
+  ): {
+    add: () => void
+    remove: () => void
+  } {
+    const add = () => {
+      handlerList.forEach(v => {
+        v.view().addGestureRecognizer(v.handler())
+      })
+    }
+    const remove = () => {
+      handlerList.forEach(v => {
+        v.view().removeGestureRecognizer(v.handler())
+      })
+    }
+    return { add, remove }
+  }
+}
 const action = {}
 export { config, util, action }

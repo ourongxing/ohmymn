@@ -153,7 +153,7 @@ const selectAction = (param: {
     menuController.menuTableView!.reloadData()
   }
   // 貌似 iPad 上无法使用 reloadRow
-  Application.sharedInstance().osType == osType.macOS
+  MN.app.osType == osType.macOS
     ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
     : self.tableView.reloadData()
 }
@@ -181,7 +181,7 @@ const clickSelectButton = (sender: UIButton) => {
     width: width > 300 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
-  const studyControllerView = self.studyController.view
+  const studyControllerView = MN.studyController.view
   popoverController = new UIPopoverController(menuController)
   popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),
