@@ -1,6 +1,6 @@
 import settingViewControllerInst from "settingViewController/main"
 import { readProfile, removeProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, log } from "utils/common"
+import { getObjCClassDeclar, log, postNotification } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { profile } from "profile"
 import { MN } from "const"

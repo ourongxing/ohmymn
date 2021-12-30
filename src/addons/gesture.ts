@@ -89,7 +89,7 @@ const util = {
   gestureHandlerController(
     handlerList: {
       view: () => UIView
-      handler: () => UIGestureRecognizer
+      gesture: () => UIGestureRecognizer
     }[]
   ): {
     add: () => void
@@ -97,12 +97,12 @@ const util = {
   } {
     const add = () => {
       handlerList.forEach(v => {
-        v.view().addGestureRecognizer(v.handler())
+        v.view().addGestureRecognizer(v.gesture())
       })
     }
     const remove = () => {
       handlerList.forEach(v => {
-        v.view().removeGestureRecognizer(v.handler())
+        v.view().removeGestureRecognizer(v.gesture())
       })
     }
     return { add, remove }

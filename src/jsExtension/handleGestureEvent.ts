@@ -7,12 +7,27 @@ import { util as gesture } from "addons/gesture"
 import { dataSourceIndex } from "synthesizer"
 import { profile } from "profile"
 
+const actionKey = [
+  "none",
+  "filterCards",
+  "changeFillSelected",
+  "changeColorSelected",
+  "completeSelected",
+  "listSelected",
+  "mergeTextSelected",
+  "renameSelected",
+  "switchTitleorExcerpt",
+  "standardizeSelected",
+  "replaceSelected",
+  "extractTitle"
+]
+
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
   {
     // 如果直接传递 view 和 gesture，此时无法获取到 self
     view: () => MN.studyController.view,
-    handler: () =>
+    gesture: () =>
       gesture.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
@@ -21,7 +36,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   },
   {
     view: () => MN.studyController.view,
-    handler: () =>
+    gesture: () =>
       gesture.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
@@ -30,7 +45,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   },
   {
     view: () => MN.studyController.view,
-    handler: () =>
+    gesture: () =>
       gesture.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
@@ -39,7 +54,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   },
   {
     view: () => MN.studyController.view,
-    handler: () =>
+    gesture: () =>
       gesture.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,
@@ -84,21 +99,6 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
     // alert(JSON.stringify({ swipeX, swipeY, height}))
   }
 }
-
-const actionKey = [
-  "none",
-  "filterCards",
-  "changeFillSelected",
-  "changeColorSelected",
-  "completeSelected",
-  "listSelected",
-  "mergeTextSelected",
-  "renameSelected",
-  "switchTitleorExcerpt",
-  "standardizeSelected",
-  "replaceSelected",
-  "extractTitle"
-]
 
 const getActionIndex = (key: string) => dataSourceIndex.magicaction[key]
 const trigger = async (

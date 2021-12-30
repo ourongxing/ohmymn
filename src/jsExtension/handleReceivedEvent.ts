@@ -3,7 +3,15 @@ import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { profile } from "profile"
 import { actions } from "synthesizer"
-import { delayBreak, HUDController, log, popup, showHUD } from "utils/common"
+import {
+  alert,
+  delayBreak,
+  HUDController,
+  isThisWindow,
+  log,
+  popup,
+  showHUD
+} from "utils/common"
 import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
@@ -108,7 +116,6 @@ const onSwitchChange: eventHandler = sender => {
 const onSelectChange: eventHandler = sender => {
   const { name, key, selections } = sender.userInfo
   profile[name][key] = selections
-  log(sender.userInfo, "gesture")
   switch (key) {
     case "panelPostion":
     case "panelHeight":

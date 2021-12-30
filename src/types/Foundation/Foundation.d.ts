@@ -19,18 +19,18 @@ declare global {
   }
   class NSNotification {
     /**
-     * @param aName NSString*
+     * @param name NSString*
      */
     static notificationWithNameObject(
-      aName: string,
+      name: string,
       anObject: WrapperObj<any>
     ): NSNotification
     /**
-     * @param aName NSString*
+     * @param name NSString*
      * @param aUserInfo NSDictionary*
      */
     static notificationWithNameObjectUserInfo(
-      aName: string,
+      name: string,
       anObject: WrapperObj<any>,
       aUserInfo: DictObj
     ): NSNotification
@@ -147,36 +147,36 @@ declare global {
     static defaultCenter(): NSNotificationCenter
     init(): NSNotificationCenter
     /**
-     * @param aSelector the function name of {@link EventHandler} in {@link InstMember}
-     * @param aName event name
+     * @param selector the function name of {@link EventHandler} in {@link InstMember}
+     * @param name event name
      */
     addObserverSelectorName(
       observer: WrapperObj<any>,
-      aSelector: string,
-      aName: string
+      selector: string,
+      name: string
     ): void
     /**
      * @param notification NSNotification*
      */
     postNotification(notification: NSNotification): void
     /**
-     * @param aName NSString*
+     * @param name NSString*
      */
-    postNotificationNameObject(aName: string, anObject: WrapperObj<any>): void
+    postNotificationNameObject(name: string, anObject: WrapperObj<any>): void
     /**
-     * @param aName NSString*
+     * @param name NSString*
      * @param aUserInfo NSDictionary*
      */
     postNotificationNameObjectUserInfo(
-      aName: string,
+      name: string,
       anObject: WrapperObj<any>,
       aUserInfo: DictObj
     ): void
     removeObserver(observer: WrapperObj<any>): void
     /**
-     * @param aName NSString*
+     * @param name NSString*
      */
-    removeObserverName(observer: WrapperObj<any>, aName: string): void
+    removeObserverName(observer: WrapperObj<any>, name: string): void
   }
 
   class NSUserDefaults {
