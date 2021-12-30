@@ -18,19 +18,23 @@ export class DocumentController {
 }
 
 export class MindMapNode {
-  readonly note?: MbBookNote
+  readonly note: MbBookNote
   readonly parentNode?: MindMapNode
   readonly summaryLinks?: Array<any>
   readonly childNodes?: Array<MindMapNode>
   readonly frame: CGRect
 }
 
-export class MindMapView {
+export class MindMapView extends UIView {
   readonly mindmapNodes?: Array<MindMapNode>
-  readonly selViewLst?: Array<any>
+  readonly selViewLst?: Array<{
+    note: MindMapNode
+    view: UIView
+  }>
 }
 
 export class NotebookController {
+  readonly view: UIView
   readonly outlineView: WrapperObj<OutlineView>
   readonly mindmapView: WrapperObj<MindMapView>
   readonly notebookId?: string

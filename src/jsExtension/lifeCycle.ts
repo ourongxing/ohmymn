@@ -2,10 +2,12 @@ import settingViewControllerInst from "settingViewController/main"
 import { readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { eventCtrl } from "./handleReceivedEvent"
 import { profile } from "profile"
 import { MN } from "const"
 import { UITableViewController } from "types/UIKit"
+import { gestureHandlers } from "./handleGestureEvent"
+import { eventHandlers } from "./handleReceivedEvent"
+import { magicAction } from "settingViewController/handleUserAction"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -27,10 +29,12 @@ const SettingViewController = JSB.defineClass(
 // 打开窗口，可以用来初始化
 const sceneWillConnect = () => {
   log("打开窗口", "lifeCycle")
-  MN.window = self.window
-  MN.studyController = Application.sharedInstance().studyController(MN.window)
-  MN.settingViewController = <UITableViewController>new SettingViewController()
-  MN.notebookController = MN.studyController.notebookController
+  self.studyController = Application.sharedInstance().studyController(
+    self.window
+  )
+  self.settingViewController = new SettingViewController()
+  self.settingViewController.window = self.window
+  self.notebookController = self.studyController.notebookController
 }
 
 // 关闭窗口，不会调用关闭笔记本和关闭文档的方法
@@ -45,13 +49,16 @@ const sceneDidDisconnect = () => {
 const notebookWillOpen = (notebookid: string) => {
   log("打开笔记本", "lifeCycle")
   MN.notebookId = notebookid
-  eventCtrl.add()
+  eventHandlers.add()
+  gestureHandlers.add()
+  magicAction(NSIndexPath.indexPathForRowInSection(3, 0))
 }
 
 // 关闭笔记本
 const notebookWillClose = (notebookid: string) => {
   log("关闭笔记本", "lifeCycle")
-  eventCtrl.remove()
+  eventHandlers.remove()
+  gestureHandlers.remove()
 }
 
 const documentDidOpen = (docmd5: string) => {

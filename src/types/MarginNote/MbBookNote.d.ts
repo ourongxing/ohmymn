@@ -74,7 +74,7 @@ export class MbBookNote {
   colorIndex: number
   /**int */
   fillIndex: number
-  mindmapPosition: CGPoint
+  // mindmapPosition: CGPoint
 
   readonly noteId?: string
   readonly docMd5?: string

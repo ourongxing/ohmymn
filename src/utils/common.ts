@@ -6,14 +6,14 @@ const log = (obj: any, suffix = "normal") =>
 
 // 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration: number = 1) =>
-  void Application.sharedInstance().showHUD(message, MN.window, duration)
+  void Application.sharedInstance().showHUD(message, self.window, duration)
 
 const HUDController = {
   show(message: string) {
-    Application.sharedInstance().waitHUDOnView(message, MN.window)
+    Application.sharedInstance().waitHUDOnView(message, self.window)
   },
   hidden() {
-    Application.sharedInstance().stopWaitHUDOnView(MN.window)
+    Application.sharedInstance().stopWaitHUDOnView(self.window)
   }
 }
 
@@ -55,15 +55,16 @@ const delayBreak = async (
 const openUrl = (url: string) =>
   void Application.sharedInstance().openURL(NSURL.URLWithString(encodeURI(url)))
 
-const postNotification = (key: string, userInfo: any) =>
-  void NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
+const postNotification = (key: string, userInfo: any) => {
+  NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
     key,
     self,
     userInfo
   )
+}
 
 const isThisWindow = (sender: any) =>
-  Application.sharedInstance().checkNotifySenderInWindow(sender, MN.window)
+  Application.sharedInstance().checkNotifySenderInWindow(sender, self.window)
 
 const popup = (
   title: string,

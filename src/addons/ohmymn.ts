@@ -11,13 +11,13 @@ const config: IConfig = {
       key: "quickSwitch",
       type: cellViewType.muiltSelect,
       option: [
-        "① AnotherAutoTitle",
-        "② AnotherAutoDef",
-        "③ AutoStandardize",
-        "④ AutoComplete",
-        "⑤ AutoReplace",
-        "⑥ AutoList"
-      ]
+        "AnotherAutoTitle",
+        "AnotherAutoDef",
+        "AutoStandardize",
+        "AutoComplete",
+        "AutoReplace",
+        "AutoList"
+      ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value)
     },
     {
       key: "panelPostion",

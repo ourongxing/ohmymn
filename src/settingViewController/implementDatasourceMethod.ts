@@ -49,13 +49,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.numberOfLines = 0
       cell.textLabel.textColor = UIColor.grayColor()
       cell.textLabel.font = UIFont.systemFontOfSize(12)
-      cell.textLabel.text = row.label.includes("考研倒计时")
-        ? row.label +
-          (
-            (Date.parse("2021-12-25T00:00:00") - Date.now()) /
-            (60 * 60 * 24 * 1000)
-          ).toFixed(6)
-        : row.label
+      cell.textLabel.text = row.label
       return cell
     }
     case cellViewType.button:
@@ -85,7 +79,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
-      const view = controllers.switch(row.status ?? false)
+      const view = initCellView.switch(row.status ?? false)
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -103,7 +97,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
-      const view = controllers.inlineInput(row.content ?? "")
+      const view = initCellView.inlineInput(row.content ?? "")
       let newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -122,7 +116,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = self.textColor
       cell.selectionStyle = 0
-      const view = controllers.input(row.content ?? "")
+      const view = initCellView.input(row.content ?? "")
       view.autoresizingMask = 1 << 0
       view.tag = indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
@@ -138,10 +132,13 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = self.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
-      const view =
+      const view = initCellView.select(
         row.type == cellViewType.select
-          ? controllers.select(row.option[row.selections[0] ?? 0])
-          : controllers.select("选项")
+          ? row.option[row?.selections[0] ?? 0]
+          : !row?.selections.length
+          ? "无"
+          : `${row.selections.length} 个`
+      )
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
@@ -154,7 +151,7 @@ const tableViewCellForRowAtIndexPath = (
 }
 
 // 仅用于 SettingViewController
-const controllers = {
+const initCellView = {
   switch(status: boolean) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UISwitch(frame)
@@ -166,12 +163,13 @@ const controllers = {
   select(text: string) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
-    view.setTitleForState(text, 0)
+    view.setTitleForState(text.length > 4 ? text.slice(0, 4) : text, 0)
     view.setTitleColorForState(UIColor.whiteColor(), 0)
     view.backgroundColor = UIColor.grayColor()
     view.layer.cornerRadius = 10
     view.layer.masksToBounds = true
     view.titleLabel.font = UIFont.boldSystemFontOfSize(14)
+    view.titleLabel.lineBreakMode = 4
     view.addTargetActionForControlEvents(self, "clickSelectButton:", 1 << 6)
     return view
   },

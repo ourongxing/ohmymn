@@ -5,25 +5,36 @@ const profilePreset = {
     lockExcerpt: false,
     autoCorrect: false,
     screenAlwaysOn: false,
-    quickSwitch: [0],
+    quickSwitch: [] as number[],
     panelPostion: [0],
     panelHeight: [1]
+  },
+  gesture: {
+    // 单选不允许为空，一般设置一个选项为空
+    singleBarSwipeUp: [0],
+    singleBarSwipeDown: [0],
+    singleBarSwipeRight: [0],
+    singleBarSwipeLeft: [0],
+    muiltBarSwipeUp: [0],
+    muiltBarSwipeDown: [0],
+    muiltBarSwipeRight: [0],
+    muiltBarSwipeLeft: [0]
   },
   autocomplete: {
     customComplete: `"{{zh}}"`
   },
   autostandardize: {
-    preset: [0]
+    preset: [] as number[]
   },
   anotherautotitle: {
-    preset: [0],
+    preset: [] as number[],
     mergeTitle: false,
     changeTitleNoLimit: false,
     wordCount: "[10,5]",
     customBeTitle: ""
   },
   anotherautodef: {
-    preset: [0],
+    preset: [] as number[],
     onlyDesc: false,
     toTitleLink: false,
     customSplit: "",
@@ -31,7 +42,7 @@ const profilePreset = {
     customDefTitle: ""
   },
   autolist: {
-    preset: [0],
+    preset: [] as number[],
     customList: ""
   },
   autoreplace: {
@@ -45,11 +56,11 @@ const profilePreset = {
  */
 export const enum on {
   anotherautotitle = 0,
-  anotherautodef,
-  autostandardize,
-  autocomplete,
-  autoreplace,
-  autolist
+  anotherautodef = 1,
+  autostandardize = 2,
+  autocomplete = 3,
+  autoreplace = 4,
+  autolist = 5
 }
 
 type IProfile = typeof profilePreset

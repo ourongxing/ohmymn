@@ -6,11 +6,13 @@ import * as autostandardize from "addons/autostandardize"
 import * as magicaction from "addons/magicaction"
 import * as anotherautodef from "addons/anotherautodef"
 import * as ohmymn from "addons/ohmymn"
+import * as gesture from "addons/gesture"
 import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
 
 // 不要包含 magication，顺序为显示的顺序，magiction 始终为第1个
 const addons = [
   ohmymn,
+  gesture,
   anotherautotitle,
   anotherautodef,
   autostandardize,
@@ -28,6 +30,8 @@ const genSection = (config: IConfig): ISection => {
     }
   ]
   for (const setting of config.settings) {
+    //@ts-ignore
+    rows.push(setting)
     if (
       setting.help &&
       setting.type != cellViewType.buttonWithInput &&
@@ -35,17 +39,15 @@ const genSection = (config: IConfig): ISection => {
     )
       rows.push({
         type: cellViewType.plainText,
-        label: setting.help,
+        label: "↑ " + setting.help,
         link: setting.link ?? ""
       })
     else if (setting.label && setting.type == cellViewType.input)
       rows.push({
         type: cellViewType.plainText,
-        label: setting.label,
+        label: "↑ " + setting.label,
         link: setting.link ?? ""
       })
-    //@ts-ignore
-    rows.push(setting)
   }
   return {
     header: config.name,

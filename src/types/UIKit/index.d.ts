@@ -17,18 +17,20 @@ export * from "./UITableViewController"
 export * from "./UITextField"
 export * from "./UIVIewController"
 export * from "./UIView"
+export * from "./UIGestureRecognizer"
 
 export type UIWindow = any
 export type UILocalNotification = any
 export type UILabel = any
 export type UIImageView = any
 export type UIEdgeInsets = any
+export type UITouch = any
 
 declare global {
-  type CGPoint = any
-  type CGSize = any
   type CGFloat = number
   type CGBlendMode = any
+  type CGPoint = { x: number; y: number }
+  type CGSize = { width: number; height: number }
   type CGRect = {
     x: number
     y: number

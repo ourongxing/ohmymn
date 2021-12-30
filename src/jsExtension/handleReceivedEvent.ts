@@ -20,28 +20,24 @@ import {
 } from "utils/note"
 import { UIAlertViewStyle } from "types/UIKit"
 import { Addon } from "const"
+import { eventHandler } from "types/Addon"
 
-export const eventCtrl = eventHandlerController([
-  { event: Addon.key + "InputOver" },
-  { event: Addon.key + "ButtonClick" },
-  { event: Addon.key + "SelectChange" },
-  { event: Addon.key + "SwitchChange" },
-  { event: "PopupMenuOnNote" },
-  { event: "ProcessNewExcerpt" },
-  { event: "ChangeExcerptRange" }
+export const eventHandlers = eventHandlerController([
+  Addon.key + "InputOver",
+  Addon.key + "ButtonClick",
+  Addon.key + "SelectChange",
+  Addon.key + "SwitchChange",
+  "PopupMenuOnNote",
+  "ProcessNewExcerpt",
+  "ChangeExcerptRange"
 ])
-
-interface eventHandler {
-  (sender: {
-    userInfo: {
-      [k: string]: any
-    }
-  }): void
-}
 
 let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
-  if (!isThisWindow(sender)) return
+  if (!isThisWindow(sender)) {
+    showHUD("不是当前窗口")
+    return
+  }
   let { key, option, content } = sender.userInfo
   if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[] = []
@@ -146,7 +142,7 @@ let isChangeExcerptRange = false
 let lastExcerptText = "😎"
 const onPopupMenuOnNote: eventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  const note = <MbBookNote>sender.userInfo.note
+  const note = sender.userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
   const success = await delayBreak(

@@ -7,14 +7,17 @@ export class UIView extends UIResponder {
   frame: CGRect
   layer: CALayer
   hidden: boolean
-  addSubview(view: UIView): void
   autoresizingMask: UIViewAutoresizing
   superview: UIView
+  subviews: Array<UIView>
   center: CGPoint
   tag: number
-  convertRectToView(rect: CGRect, view: UIView): CGRect
   autoresizesSubviews: boolean
   backgroundColor: UIColor
+  convertRectToView(rect: CGRect, view: UIView): CGRect
+  addSubview(view: UIView): void
+  addGestureRecognizer(gestureRecognizer: UIGestureRecognizer): void
+  removeGestureRecognizer(gestureRecognizer: UIGestureRecognizer): void
 }
 export class CALayer {
   masksToBounds: boolean

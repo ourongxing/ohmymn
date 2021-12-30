@@ -2,16 +2,20 @@ import { Addon } from "const"
 import { log } from "./common"
 
 export const eventHandlerController = (
-  handlerList: {
-    event: string
-    handler?: string
-  }[]
+  handlerList: Array<
+    | {
+        event: string
+        handler?: string
+      }
+    | string
+  >
 ): {
   add: () => void
   remove: () => void
 } => {
   const add = () => {
     handlerList.forEach(v => {
+      v = typeof v == "string" ? { event: v } : v
       NSNotificationCenter.defaultCenter().addObserverSelectorName(
         self,
         v.handler
@@ -25,7 +29,10 @@ export const eventHandlerController = (
   }
   const remove = () => {
     handlerList.forEach(v => {
-      NSNotificationCenter.defaultCenter().removeObserverName(self, v.event)
+      NSNotificationCenter.defaultCenter().removeObserverName(
+        self,
+        typeof v == "string" ? v : v.event
+      )
     })
   }
   return { add, remove }

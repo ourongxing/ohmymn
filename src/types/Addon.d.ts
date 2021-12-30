@@ -112,3 +112,23 @@ export interface IActionMethod {
     option: number
   }) => any
 }
+
+export interface eventHandler {
+  (sender: {
+    // 不是都有哈，具体要看发送了什么
+    userInfo: {
+      key: string
+      option: number
+      content: string
+      name: string
+      status: boolean
+      note: MbBookNote
+      selections: number[]
+      noteid: string
+    }
+  }): void
+}
+
+export interface gestureHandler {
+  (sender: UIGestureRecognizer): void
+}

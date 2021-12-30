@@ -12,11 +12,7 @@ const tag2indexPath = (tag: number): NSIndexPath =>
     (tag - 999 - ((tag - 999) % 100)) / 100
   )
 
-const tableViewDidSelectRowAtIndexPath = async (
-  tableView: UITableView,
-  indexPath: NSIndexPath
-) => {
-  tableView.cellForRowAtIndexPath(indexPath).selected = false
+export const magicAction = async (indexPath: NSIndexPath) => {
   const section = dataSource[indexPath.section]
   const row = section.rows[indexPath.row]
   switch (row.type) {
@@ -65,6 +61,13 @@ const tableViewDidSelectRowAtIndexPath = async (
         option
       })
   }
+}
+const tableViewDidSelectRowAtIndexPath = async (
+  tableView: UITableView,
+  indexPath: NSIndexPath
+) => {
+  tableView.cellForRowAtIndexPath(indexPath).selected = false
+  await magicAction(indexPath)
 }
 
 const textFieldShouldReturn = (sender: UITextField) => {
@@ -126,10 +129,6 @@ const selectAction = (param: {
       selections: [selection]
     })
     if (popoverController) popoverController.dismissPopoverAnimated(true)
-    // 貌似 iPad 上无法使用 reloadRow
-    Application.sharedInstance().osType == osType.macOS
-      ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
-      : self.tableView.reloadData()
   } else {
     const selections = row.selections
     const nowSelect = row.selections.includes(selection)
@@ -153,6 +152,10 @@ const selectAction = (param: {
     )
     menuController.menuTableView!.reloadData()
   }
+  // 貌似 iPad 上无法使用 reloadRow
+  Application.sharedInstance().osType == osType.macOS
+    ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
+    : self.tableView.reloadData()
 }
 
 const clickSelectButton = (sender: UIButton) => {
@@ -178,7 +181,7 @@ const clickSelectButton = (sender: UIButton) => {
     width: width > 300 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
-  const studyControllerView = MN.studyController.view
+  const studyControllerView = self.studyController.view
   popoverController = new UIPopoverController(menuController)
   popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),
