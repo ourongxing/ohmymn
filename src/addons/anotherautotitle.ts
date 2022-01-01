@@ -4,14 +4,37 @@ import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
+const option = {
+  hasTitleThen: ["仍然作为摘录", "作为标题链接", "覆盖现有标题"],
+  preset: ["自定义", "字数限制", "不含有点号"],
+  switchTitle: ["切换为不存在的", "交换标题和摘录"]
+}
+
+export const enum HasTitleThen {
+  ExpertText,
+  TitleLink,
+  OverrideTitle
+}
+
+export const enum AutoTitlePreset {
+  Custom,
+  WordLimit,
+  NoPunctuation
+}
+export const enum SwitchTitle {
+  ToNonexistent,
+  Exchange
+}
+
 const config: IConfig = {
   name: "AnotherAutoTitle",
   intro: "更强大的自动转换标题插件",
   settings: [
     {
-      key: "mergeTitle",
-      type: cellViewType.switch,
-      label: "摘录自动合并为标题"
+      key: "hasTitleThen",
+      type: cellViewType.select,
+      label: "已有标题，符合条件的摘录将",
+      option: option.hasTitleThen
     },
     {
       key: "changeTitleNoLimit",
@@ -21,7 +44,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["自定义", "字数限制", "不含有点号"],
+      option: option.preset,
       label: "选择需要的预设"
     },
     {
@@ -40,9 +63,9 @@ const config: IConfig = {
     {
       type: cellViewType.button,
       label: "切换摘录或标题",
-      key: "switchTitleorExcerpt",
-      option: ["常规互相切换", "交换标题和摘录"],
-      help: "常规切换为不存在的那一个"
+      key: "switchTitle",
+      option: option.switchTitle,
+      help: "当两者都存在时请使用「交换标题和摘录」"
     }
   ]
 }
@@ -52,7 +75,7 @@ const util = {
     const { preset, wordCount, customBeTitle } = profile.anotherautotitle
     for (const set of preset) {
       switch (set) {
-        case 0:
+        case AutoTitlePreset.Custom:
           if (!customBeTitle) break
           const regs = string2RegArray(customBeTitle)
           // 全部匹配到才转为标题
@@ -61,7 +84,7 @@ const util = {
               title: text
             }
           break
-        case 1:
+        case AutoTitlePreset.NoPunctuation:
           if (!wordCount) break
           const limitedNum = reverseEscape(wordCount)
           const actualNum = countWord(text)
@@ -77,7 +100,7 @@ const util = {
               title: text
             }
           break
-        case 2:
+        case AutoTitlePreset.WordLimit:
           const reg = /[。.、？?！!，,；;：:]/
           if (!reg.test(text))
             return {
@@ -88,20 +111,19 @@ const util = {
   }
 }
 const action: IActionMethod = {
-  switchTitleorExcerpt({ nodes, option }) {
+  switchTitle({ nodes, option }) {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
       const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
-      switch (option) {
-        // option: [ "常规互相切换", "交换标题和摘录"],
-        case 0:
+      switch (<SwitchTitle>option) {
+        case SwitchTitle.ToNonexistent:
           // 只允许存在一个
           if ((title || text) && !(title && text)) {
             note.noteTitle = text
             note.excerptText = title
           } else if (title == text) note.noteTitle = ""
           break
-        case 1:
+        case SwitchTitle.Exchange:
           note.noteTitle = text
           note.excerptText = title
           break

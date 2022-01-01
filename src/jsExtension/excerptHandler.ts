@@ -8,6 +8,7 @@ import {
 import { delayBreak, log, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
+import { HasTitleThen } from "addons/anotherautotitle"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -85,12 +86,20 @@ const excerptHandler = async () => {
   if (!note.excerptText) return
   let { title, text } = await genTitleText(note.excerptText!.trim())
 
-  // 如果摘录是作为评论，反正是卡片已经存在的情况下摘录
-  if (isComment) {
+  // 摘录是作为评论，反正是卡片已经存在的情况下摘录，如果继续满足成为标题的条件
+  if (isComment && title) {
     log("当前摘录作为评论", "excerpt")
-    const nodeTitle = nodeNote?.noteTitle
-    if (profile.anotherautotitle.mergeTitle && nodeTitle && title) {
-      title = nodeTitle + "; " + title
+    switch (profile.anotherautotitle.hasTitleThen[0]) {
+      case HasTitleThen.TitleLink:
+        const nodeTitle = nodeNote?.noteTitle
+        if (nodeTitle) title = nodeTitle + "; " + title
+        break
+      case HasTitleThen.ExpertText:
+        // 如果 titile 不存在，那本来就是摘录
+        text = title
+        title = undefined
+        break
+      case HasTitleThen.OverrideTitle:
     }
   }
 
