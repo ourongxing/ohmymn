@@ -7,6 +7,13 @@ const config: IConfig = {
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
+      help: "【当前文档生效】可用于不同情景",
+      key: "profile",
+      type: cellViewType.select,
+      option: ["配置 1", "配置 2", "配置 3", "配置 4", "配置 5"],
+      label: "选择配置文件"
+    },
+    {
       label: "插件快捷开关",
       key: "quickSwitch",
       type: cellViewType.muiltSelect,

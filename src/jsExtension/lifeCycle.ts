@@ -1,8 +1,8 @@
 import settingViewControllerInst from "settingViewController/main"
-import { readProfile, removeProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, log, postNotification } from "utils/common"
+import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
+import { getObjCClassDeclar, log } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { profile } from "profile"
+import { docProfile, profile } from "profile"
 import { MN } from "const"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
@@ -35,16 +35,17 @@ const sceneWillConnect = () => {
 }
 
 // 关闭窗口，不会调用关闭笔记本和关闭文档的方法
-// iPad 上貌似不触发，切换到后台可以
+// iPad 上不触发，切换到后台可以
 const sceneDidDisconnect = () => {
   log("关闭窗口", "lifeCycle")
   // 只要打开过文档，再关闭窗口就保存
-  if (thisDocMd5) saveProfile(thisDocMd5, true)
+  if (thisDocMd5) saveProfile(thisDocMd5)
 }
 
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
   log("打开笔记本", "lifeCycle")
+  closePanel()
   MN.notebookId = notebookid
   eventHandlers.add()
   gestureHandlers.add()
@@ -59,12 +60,10 @@ const notebookWillClose = (notebookid: string) => {
 
 const documentDidOpen = (docmd5: string) => {
   // 如果 thisDocMd5 有值，说明是换书，反正不是第一次打开书，此时读取本文档配置
-  if (thisDocMd5) {
-    readProfile(docmd5)
-  }
+  if (thisDocMd5) readProfile(docmd5, Range.doc)
   // 如果 thisDocMd5 没有值，说明是刚打开 MN，此时读取所有配置
   else {
-    readProfile(docmd5, true)
+    readProfile(docmd5, Range.first)
     UIApplication.sharedApplication().idleTimerDisabled =
       profile.ohmymn.screenAlwaysOn
   }
@@ -72,12 +71,11 @@ const documentDidOpen = (docmd5: string) => {
   thisDocMd5 = docmd5
 }
 
-// 关闭文档，为了在关闭 MN 时，也能保存文档的配置
-export let thisDocMd5 = ""
+// 关闭文档，用于切换时保存上一个文档的配置
+let thisDocMd5 = ""
 const documentWillClose = (docmd5: string) => {
   log("关闭文档", "lifeCycle")
   saveProfile(docmd5)
-  closePanel()
 }
 
 const addonDidConnect = () => {
@@ -92,9 +90,7 @@ const addonWillDisconnect = () => {
 
 const sceneWillResignActive = () => {
   log("应用进入后台", "lifeCycle")
-  if (thisDocMd5) {
-    saveProfile(thisDocMd5, true)
-  }
+  if (thisDocMd5) saveProfile(thisDocMd5)
 }
 
 const sceneDidBecomeActive = () => {

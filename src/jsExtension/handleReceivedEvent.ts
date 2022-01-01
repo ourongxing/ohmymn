@@ -1,17 +1,11 @@
 import { MbBookNote } from "types/MarginNote"
+import { eventHandler } from "types/Addon"
+import { UIAlertViewStyle } from "types/UIKit"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
-import { profile } from "profile"
+import { docProfile, profile } from "profile"
 import { actions } from "synthesizer"
-import {
-  alert,
-  delayBreak,
-  HUDController,
-  isThisWindow,
-  log,
-  popup,
-  showHUD
-} from "utils/common"
+import { delayBreak, HUDController, log, popup, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
@@ -19,9 +13,8 @@ import {
   getSelectNodesAll,
   undoGroupingWithRefresh
 } from "utils/note"
-import { UIAlertViewStyle } from "types/UIKit"
 import { Addon } from "const"
-import { eventHandler } from "types/Addon"
+import { Range, readProfile, saveProfile } from "utils/profile"
 
 export const eventHandlers = eventHandlerController([
   Addon.key + "InputOver",
@@ -95,14 +88,14 @@ const onButtonClick: eventHandler = async sender => {
 
 const onSwitchChange: eventHandler = sender => {
   const { name, key, status } = sender.userInfo
-  profile[name][key] = status
+  if (key == "autoCorrect") {
+    docProfile.ohmymn.autoCorrect = status
+    if (status) showHUD("请按!实际情况选择开关，不建议无脑打开自动矫正", 2)
+  } else profile[name][key] = status
   switch (key) {
     case "lockExcerpt":
-      if (status && profile.ohmymn.autoCorrect)
+      if (status && docProfile.ohmymn.autoCorrect)
         showHUD("锁定摘录不建议和自动矫正同时开启", 2)
-      break
-    case "autoCorrect":
-      if (status) showHUD("请按实际情况选择开关，不建议无脑打开自动矫正", 2)
       break
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
@@ -115,12 +108,19 @@ const onSwitchChange: eventHandler = sender => {
 
 const onSelectChange: eventHandler = sender => {
   const { name, key, selections } = sender.userInfo
-  profile[name][key] = selections
-  switch (key) {
-    case "panelPostion":
-    case "panelHeight":
-      layoutViewController()
-      break
+  if (key == "profile") {
+    const lastProfileNum = docProfile.ohmymn.profile[0]
+    docProfile.ohmymn.profile = selections
+    saveProfile(undefined, lastProfileNum)
+    readProfile("", Range.global)
+  } else {
+    profile[name][key] = selections
+    switch (key) {
+      case "panelPostion":
+      case "panelHeight":
+        layoutViewController()
+        break
+    }
   }
 }
 

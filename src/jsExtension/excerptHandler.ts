@@ -1,4 +1,4 @@
-import { profile } from "profile"
+import { docProfile, profile } from "profile"
 import {
   getCommentIndex,
   getNotebookById,
@@ -60,7 +60,7 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
     }
   }
 
-  if (profile.ohmymn.autoCorrect) {
+  if (docProfile.ohmymn.autoCorrect) {
     log("开始矫正", "excerpt")
     log(note.excerptText, "highlight")
     const originText = note.excerptText!

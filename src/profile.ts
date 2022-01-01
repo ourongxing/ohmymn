@@ -1,11 +1,10 @@
 const profilePreset = {
   ohmymn: {
+    quickSwitch: [] as number[],
     doubleClick: false,
     clickHidden: false,
     lockExcerpt: false,
-    autoCorrect: false,
     screenAlwaysOn: false,
-    quickSwitch: [] as number[],
     panelPostion: [0],
     panelHeight: [1]
   },
@@ -51,6 +50,13 @@ const profilePreset = {
   }
 }
 
+const docProfilePreset = {
+  ohmymn: {
+    profile: [0],
+    autoCorrect: false
+  }
+}
+
 /**
  * 单个插件开关
  */
@@ -64,8 +70,20 @@ export const enum on {
 }
 
 type IProfile = typeof profilePreset
+type IDocProfile = typeof docProfilePreset
+
 const profile: {
   [k: string]: { [k: string]: boolean | string | number[] }
 } & IProfile = JSON.parse(JSON.stringify(profilePreset))
+const docProfile: {
+  [k: string]: { [k: string]: boolean | string | number[] }
+} & IDocProfile = JSON.parse(JSON.stringify(docProfilePreset))
 
-export { profile, profilePreset, IProfile }
+export {
+  profile,
+  profilePreset,
+  docProfile,
+  docProfilePreset,
+  IProfile,
+  IDocProfile
+}
