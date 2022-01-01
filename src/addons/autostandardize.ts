@@ -4,6 +4,23 @@ import { toTitleCase } from "utils/toTitleCase"
 import { isHalfWidth } from "utils/text"
 import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+const option = {
+  preset: ["半角转全角", "中英文加空格", "去除重复空格", "英文标题规范化"],
+  standardizeSelected: ["都优化", "仅优化标题", "仅优化摘录"]
+}
+
+export const enum AutoStandardizePreset {
+  HalfToFull,
+  AddSpace,
+  RemoveExtraSpace,
+  StandardizeTitle
+}
+
+const enum StandardizeSelected {
+  All,
+  OnlyTitle,
+  OnlyExcerptText
+}
 
 const config: IConfig = {
   name: "AutoStandardize",
@@ -12,7 +29,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["英文标题规范化", "半角转全角", "中英文加空格", "去除重复空格"],
+      option: option.preset,
       label: "选择需要的预设"
     }
   ],
@@ -21,14 +38,19 @@ const config: IConfig = {
       key: "standardizeSelected",
       type: cellViewType.button,
       label: "优化排版和格式",
-      option: ["都优化", "仅优化标题", "仅优化摘录"]
+      option: option.standardizeSelected
     }
   ]
 }
 
 const util = {
   toTitleCase(text: string) {
-    if (!profile.autostandardize.preset.includes(0)) return text
+    if (
+      !profile.autostandardize.preset.includes(
+        AutoStandardizePreset.StandardizeTitle
+      )
+    )
+      return text
     return text
       .split(/\s*[；;]\s*/)
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
@@ -42,12 +64,12 @@ const util = {
       .replace(/\*\*/g, "占位符")
     for (const set of preset) {
       switch (set) {
-        case 1:
+        case AutoStandardizePreset.HalfToFull:
           text = pangu.toFullwidth(text)
           break
-        case 2:
+        case AutoStandardizePreset.AddSpace:
           text = pangu.spacing(text)
-        case 3:
+        case AutoStandardizePreset.RemoveExtraSpace:
           text = text.replace(/\x20{2,}/g, "\x20").replace(/\x20*\n\x20/, "\n")
           break
       }
@@ -58,13 +80,12 @@ const util = {
 
 const action: IActionMethod = {
   standardizeSelected({ nodes, option }) {
-    // option: ["都优化", "仅优化标题", "仅优化摘录"]
     for (const node of nodes) {
       const title = node.noteTitle
-      if (title && option != 2) {
+      if (title && option != StandardizeSelected.OnlyExcerptText) {
         const newTitle = util.standardizeText(title)
         node.noteTitle = util.toTitleCase(newTitle)
-        if (option == 1) continue
+        if (option == StandardizeSelected.OnlyTitle) continue
       }
       const notes = excerptNotes(node)
       for (const note of notes) {

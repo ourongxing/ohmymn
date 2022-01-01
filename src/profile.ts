@@ -1,12 +1,18 @@
+import { AutoTitlePreset, HasTitleThen } from "addons/anotherautotitle"
+import { AutoListPreset } from "addons/autolist"
+import { AutoReplacePreset } from "addons/autoreplace"
+import { AutoStandardizePreset } from "addons/autostandardize"
+import { PanelHeight, PanelPosition, QuickSwitch } from "addons/ohmymn"
+
 const profilePreset = {
   ohmymn: {
-    quickSwitch: [] as number[],
+    quickSwitch: [] as QuickSwitch[],
     doubleClick: false,
     clickHidden: false,
     lockExcerpt: false,
     screenAlwaysOn: false,
-    panelPostion: [0],
-    panelHeight: [1]
+    panelPosition: [PanelPosition.Auto],
+    panelHeight: [PanelHeight.Standard]
   },
   gesture: {
     // 单选不允许为空，一般设置一个选项为空
@@ -23,11 +29,11 @@ const profilePreset = {
     customComplete: `"{{zh}}"`
   },
   autostandardize: {
-    preset: [] as number[]
+    preset: [] as AutoStandardizePreset[]
   },
   anotherautotitle: {
-    preset: [] as number[],
-    mergeTitle: false,
+    preset: [] as AutoTitlePreset[],
+    hasTitleThen: [HasTitleThen.ExpertText],
     changeTitleNoLimit: false,
     wordCount: "[10,5]",
     customBeTitle: ""
@@ -41,11 +47,11 @@ const profilePreset = {
     customDefTitle: ""
   },
   autolist: {
-    preset: [] as number[],
+    preset: [] as AutoListPreset[],
     customList: ""
   },
   autoreplace: {
-    preset: [0],
+    preset: [] as AutoReplacePreset[],
     customReplace: ""
   }
 }
@@ -55,18 +61,6 @@ const docProfilePreset = {
     profile: [0],
     autoCorrect: false
   }
-}
-
-/**
- * 单个插件开关
- */
-export const enum on {
-  anotherautotitle = 0,
-  anotherautodef = 1,
-  autostandardize = 2,
-  autocomplete = 3,
-  autoreplace = 4,
-  autolist = 5
 }
 
 type IProfile = typeof profilePreset

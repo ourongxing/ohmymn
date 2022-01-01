@@ -17,13 +17,13 @@ const checkInputCorrect = (text: string, key: string): boolean => {
             input.every(item => Number.isInteger(item)))
         ) {
         } else throw ""
-      case "mergeTextSelected":
+      case "mergeText":
         reverseEscape(`"${text}"`)
         break
       case "customComplete":
         reverseEscape(text)
         break
-      case "changeColorSelected": {
+      case "changeColor": {
         const index = Number(text)
         if (!Number.isInteger(index)) throw ""
         if (index > 16 || index < 1) throw ""
@@ -38,7 +38,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
           reg.test("test")
         })
         break
-      case "renameSelected":
+      case "renameTitle":
         text = /^\(.*\)$/.test(text) ? text : `(/^.*$/g, "${text}")`
         const params = string2ReplaceParam(text)
         if (params.length > 1) throw ""

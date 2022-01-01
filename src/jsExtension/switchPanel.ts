@@ -26,7 +26,7 @@ export const layoutViewController = () => {
     }
   }
   const x = [autoX(), 50, (frame.width - width) / 2, frame.width - width - 50][
-    profile.ohmymn.panelPostion[0]
+    profile.ohmymn.panelPosition[0]
   ]
   MN.settingViewController.view.frame = {
     x,

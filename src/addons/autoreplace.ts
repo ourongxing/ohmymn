@@ -3,6 +3,13 @@ import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
+export const enum AutoReplacePreset {
+  Custom
+}
+const enum ReplaceSelected {
+  AsAutoReplace
+}
+
 const config: IConfig = {
   name: "AutoReplace",
   intro: "自动替换摘录中的某些错误",
@@ -36,7 +43,7 @@ const util = {
     const preset = profile.autoreplace.preset
     for (const set of preset) {
       switch (set) {
-        case 0:
+        case AutoReplacePreset.Custom:
           if (!profile.autoreplace.customReplace) break
           const params = string2ReplaceParam(profile.autoreplace.customReplace)
           let _text = text
@@ -52,15 +59,19 @@ const util = {
 
 const action: IActionMethod = {
   replaceSelected({ content, nodes, option }) {
-    if (option !== 0 && !content) return
-    const params = option === 0 ? [] : string2ReplaceParam(content)
+    if (option !== ReplaceSelected.AsAutoReplace && !content) return
+    const params =
+      option === ReplaceSelected.AsAutoReplace
+        ? []
+        : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (!text) continue
         let _text = text
-        if (option === 0) _text = util.replaceText(text)
+        if (option === ReplaceSelected.AsAutoReplace)
+          _text = util.replaceText(text)
         else
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

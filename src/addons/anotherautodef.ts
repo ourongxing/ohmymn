@@ -34,8 +34,7 @@ const config: IConfig = {
         "xxx —— yyy",
         "xxx ，是(指) yyy",
         "xxx 是(指)，yyy",
-        "xxx 是指 yyy",
-        "* xxx 是 yyy"
+        "xxx 是指 yyy"
       ],
       label: "选择需要的预设"
     },
@@ -135,20 +134,6 @@ const util = {
               title: toTitleLink && titleLink ? titleLink : def,
               text: onlyDesc ? desc : text
             }
-          }
-          break
-        }
-        case 7: {
-          const reg = /是/
-          if (reg.test(text)) {
-            const [def, desc] = text.split(reg).filter(item => item)
-            // 由于这个容易误触发，所以限定条件，必须是有别名才可以
-            const titleLink = util.toTitleLink(def)
-            if (titleLink)
-              return {
-                title: toTitleLink ? titleLink : def,
-                text: onlyDesc ? desc : text
-              }
           }
           break
         }

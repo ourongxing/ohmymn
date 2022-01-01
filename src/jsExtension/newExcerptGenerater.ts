@@ -4,7 +4,8 @@ import { util as autoreplace } from "addons/autoreplace"
 import { util as autocomplete } from "addons/autocomplete"
 import { util as anotherautotitle } from "addons/anotherautotitle"
 import { util as anotherautodef } from "addons/anotherautodef"
-import { on, profile } from "profile"
+import { profile } from "profile"
+import { QuickSwitch } from "addons/ohmymn"
 
 export const genTitleText = async (
   text: string
@@ -13,13 +14,13 @@ export const genTitleText = async (
   // 处理摘录
   for (const addon of quickSwitch) {
     switch (addon) {
-      case on.autostandardize:
+      case QuickSwitch.AutoStandardize:
         text = autostandardize.standardizeText(text)
         break
-      case on.autolist:
+      case QuickSwitch.AutoList:
         text = autolist.listText(text)
         break
-      case on.autoreplace:
+      case QuickSwitch.AutoReplace:
         text = autoreplace.replaceText(text)
         break
     }
@@ -28,12 +29,12 @@ export const genTitleText = async (
   // 返回标题
   for (const addon of quickSwitch) {
     switch (addon) {
-      case on.autocomplete: {
+      case QuickSwitch.AutoComplete: {
         const result = await autocomplete.checkGetWord(text)
         if (result) return result
         break
       }
-      case on.anotherautodef: {
+      case QuickSwitch.AnotherAutoDef: {
         const result = anotherautodef.checkGetDefTitle(text)
         if (result)
           return {
@@ -48,7 +49,7 @@ export const genTitleText = async (
   }
 
   // autotitle 始终最后执行
-  if (quickSwitch.includes(on.anotherautotitle)) {
+  if (quickSwitch.includes(QuickSwitch.AnotherAutoTitle)) {
     const result = anotherautotitle.checkGetTitle(text)
     if (result)
       return {

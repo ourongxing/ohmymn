@@ -28,6 +28,10 @@ const config: IConfig = {
   ]
 }
 
+const enum CompleteSelected {
+  OnlyComplete,
+  AlsoFillWordInfo
+}
 type Dict = {
   word: string
   sw: string
@@ -145,7 +149,8 @@ const action: IActionMethod = {
       if (!result) continue
       undoGrouping(() => {
         note.noteTitle = result.title
-        if (option == 1) note.excerptText = result.text
+        if (option == CompleteSelected.AlsoFillWordInfo)
+          note.excerptText = result.text
       })
     }
     RefreshAfterDBChange()

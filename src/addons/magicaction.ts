@@ -8,6 +8,22 @@ import { HUDController, log, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
 
+const option = {
+  filterCards: ["仅判断标题", "判断整个卡片内容"],
+  changeFillStyle: ["边框+填充", "填充", "边框"],
+  mergeText: ["合并为摘录", "合并为评论"]
+}
+
+const enum FilterCards {
+  OnlyTitle,
+  AllText
+}
+
+const enum MergeText {
+  ToExpertText,
+  ToComment
+}
+
 const config: IConfig = {
   name: "MagicAction",
   intro: "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
@@ -18,32 +34,32 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: "筛选卡片",
       help: "注意事项及具体输入格式见顶上帮助信息",
-      option: ["仅判断标题", "判断整个卡片内容"],
+      option: option.filterCards,
       key: "filterCards"
     },
     {
       type: cellViewType.button,
       label: "修改摘录样式",
-      key: "changeFillSelected",
-      option: ["边框+填充", "填充", "边框"]
+      key: "changeFillStyle",
+      option: option.changeFillStyle
     },
     {
       type: cellViewType.buttonWithInput,
       label: "修改摘录颜色",
-      key: "changeColorSelected",
+      key: "changeColor",
       help: "输入颜色索引，也就是顺序，1 到 16"
     },
     {
       type: cellViewType.buttonWithInput,
       label: "合并卡片内文字",
-      key: "mergeTextSelected",
+      key: "mergeText",
       help: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-      option: ["合并为摘录", "合并为评论"]
+      option: option.mergeText
     },
     {
       type: cellViewType.buttonWithInput,
       label: "批量重命名标题",
-      key: "renameSelected",
+      key: "renameTitle",
       help: "注意事项及具体输入格式见顶上帮助信息"
     }
   ]
@@ -111,7 +127,7 @@ const util = {
 }
 
 const action: IActionMethod = {
-  renameSelected({ content, nodes }) {
+  renameTitle({ content, nodes }) {
     // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
     // 如果单个选中，则为选中的顺序
     content = /^\(.*\)$/.test(content) ? content : `(/^.*$/g, "${content}")`
@@ -135,14 +151,14 @@ const action: IActionMethod = {
       })
     }
   },
-  changeFillSelected({ option, nodes }) {
+  changeFillStyle({ option, nodes }) {
     for (const node of nodes) {
       excerptNotes(node).forEach(note => {
         note.fillIndex = option
       })
     }
   },
-  changeColorSelected({ content, nodes }) {
+  changeColor({ content, nodes }) {
     if (!content) return
     const index = Number(content)
     for (const node of nodes) {
@@ -151,7 +167,7 @@ const action: IActionMethod = {
       })
     }
   },
-  mergeTextSelected({ option, nodes, content }) {
+  mergeText({ option, nodes, content }) {
     for (const node of nodes) {
       const allText = getAllText(node, reverseEscape(`"${content}"`))
       // MN 这个里的 API 名称设计的有毛病
@@ -165,11 +181,11 @@ const action: IActionMethod = {
           linkComments.push(comment)
         node.removeCommentByIndex(0)
       }
-      switch (option) {
-        case 0:
+      switch (<MergeText>option) {
+        case MergeText.ToExpertText:
           node.excerptText = allText
           break
-        case 1:
+        case MergeText.ToComment:
           node.excerptText = ""
           node.appendTextComment(allText.replace(/\*\*/g, ""))
       }

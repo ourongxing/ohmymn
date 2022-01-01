@@ -116,7 +116,7 @@ const onSelectChange: eventHandler = sender => {
   } else {
     profile[name][key] = selections
     switch (key) {
-      case "panelPostion":
+      case "panelPosition":
       case "panelHeight":
         layoutViewController()
         break

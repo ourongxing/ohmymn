@@ -4,6 +4,23 @@ import { string2ReplaceParam } from "utils/input"
 import { isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
+const option = {
+  preset: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
+  listSelected: ["使用 AutoList 的配置", "确定"]
+}
+
+export const enum AutoListPreset {
+  Custom,
+  ChoiceQuestion,
+  ChineseNumber,
+  Semicolon,
+  Period
+}
+
+const enum ListSelected {
+  AsAutoList
+}
+
 const config: IConfig = {
   name: "AutoList",
   intro: "针对序列文本，自动换行，仅适配中文",
@@ -11,7 +28,7 @@ const config: IConfig = {
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
+      option: option.preset,
       label: "选择需要的预设"
     },
     {
@@ -27,7 +44,7 @@ const config: IConfig = {
       label: "序列摘录换行",
       key: "listSelected",
       help: "具体输入格式见顶上帮助信息",
-      option: ["使用 AutoList 的配置", "确定"]
+      option: option.listSelected
     }
   ]
 }
@@ -39,7 +56,7 @@ const util = {
     const { preset, customList } = profile.autolist
     for (const set of preset) {
       switch (set) {
-        case 0:
+        case AutoListPreset.Custom:
           if (!customList) break
           const params = string2ReplaceParam(customList)
           let _text = text
@@ -48,8 +65,8 @@ const util = {
           })
           if (text != _text) text = _text
           break
-        case 1:
-        case 2: {
+        case AutoListPreset.ChoiceQuestion:
+        case AutoListPreset.ChineseNumber: {
           const regs = [
             /\s*([ABCD][.、]+)/g,
             /\s*([其第][一二三四五六七八九十][、，])/g
@@ -59,8 +76,8 @@ const util = {
           if (text.match(reg)?.length ?? 0 > 1) text = _text
           break
         }
-        case 3:
-        case 4: {
+        case AutoListPreset.Semicolon:
+        case AutoListPreset.Period: {
           const regs = [/([;；])\s*/g, /(。)\s*/g]
           const reg = regs[set - 3]
           const _text = text.replace(reg, "$1\n").trimEnd()
@@ -74,15 +91,16 @@ const util = {
 }
 const action: IActionMethod = {
   listSelected({ nodes, content, option }) {
-    if (option !== 0 && !content) return
-    const params = option === 0 ? [] : string2ReplaceParam(content)
+    if (option !== ListSelected.AsAutoList && !content) return
+    const params =
+      option === ListSelected.AsAutoList ? [] : string2ReplaceParam(content)
     for (const node of nodes) {
       const notes = excerptNotes(node)
       for (const note of notes) {
         const text = note.excerptText
         if (!text) continue
         let _text = text
-        if (option === 0) _text = util.listText(text)
+        if (option === ListSelected.AsAutoList) _text = util.listText(text)
         else
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

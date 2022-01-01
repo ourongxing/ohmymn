@@ -10,13 +10,13 @@ import { profile } from "profile"
 const actionKey = [
   "none",
   "filterCards",
-  "changeFillSelected",
-  "changeColorSelected",
+  "changeFillStyle",
+  "changeColor",
   "completeSelected",
   "listSelected",
-  "mergeTextSelected",
-  "renameSelected",
-  "switchTitleorExcerpt",
+  "mergeText",
+  "renameTitle",
+  "switchTitle",
   "standardizeSelected",
   "replaceSelected",
   "extractTitle"

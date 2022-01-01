@@ -17,6 +17,7 @@ const option = [
     "提取卡片中的文字为标题"
   ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value)
 ]
+
 const config: IConfig = {
   name: "Gesture",
   intro: "自定义手势触发动作",
