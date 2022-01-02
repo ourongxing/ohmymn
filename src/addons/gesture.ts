@@ -18,6 +18,21 @@ const option = [
   ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value)
 ]
 
+export const actionKey = [
+  "none",
+  "filterCards",
+  "changeFillStyle",
+  "changeColor",
+  "completeSelected",
+  "listSelected",
+  "mergeText",
+  "renameTitle",
+  "switchTitle",
+  "standardizeSelected",
+  "replaceSelected",
+  "extractTitle"
+]
+
 const config: IConfig = {
   name: "Gesture",
   intro: "自定义手势触发动作",

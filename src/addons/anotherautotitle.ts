@@ -5,7 +5,7 @@ import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 
 const option = {
-  hasTitleThen: ["仍然作为摘录", "作为标题链接", "覆盖现有标题"],
+  hasTitleThen: ["作为摘录", "标题链接", "覆盖标题"],
   preset: ["自定义", "字数限制", "不含有点号"],
   switchTitle: ["切换为不存在的", "交换标题和摘录"]
 }

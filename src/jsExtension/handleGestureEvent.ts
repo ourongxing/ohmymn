@@ -3,24 +3,9 @@ import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
 import { magicAction } from "settingViewController/handleUserAction"
 import { studyMode } from "types/MarginNote"
-import { util as gesture } from "addons/gesture"
+import { actionKey, util as gesture } from "addons/gesture"
 import { dataSourceIndex } from "synthesizer"
 import { profile } from "profile"
-
-const actionKey = [
-  "none",
-  "filterCards",
-  "changeFillStyle",
-  "changeColor",
-  "completeSelected",
-  "listSelected",
-  "mergeText",
-  "renameTitle",
-  "switchTitle",
-  "standardizeSelected",
-  "replaceSelected",
-  "extractTitle"
-]
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
