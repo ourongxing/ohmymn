@@ -79,7 +79,6 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
   const comments = node.comments
   for (let i = 0; i < comments.length; i++) {
     const comment = comments[i]
-    // 如果直接用 comments[i] 貌似不能触发类型保护
     if (comment.type == "LinkNote" && comment.noteid == commentNote.noteId)
       return i
   }

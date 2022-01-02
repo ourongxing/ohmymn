@@ -4,19 +4,25 @@ import {
   string2RegArray,
   string2ReplaceParam
 } from "utils/input"
-import { HUDController, log, showHUD } from "utils/common"
+import { HUDController, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
 
 const option = {
   filterCards: ["仅判断标题", "判断整个卡片内容"],
   changeFillStyle: ["边框+填充", "填充", "边框"],
-  mergeText: ["合并为摘录", "合并为评论"]
+  mergeText: ["合并为摘录", "合并为评论"],
+  mergeCards: ["同时合并标题", "不合并标题"]
 }
 
 const enum FilterCards {
   OnlyTitle,
   AllText
+}
+
+const enum MergeCards {
+  MergeTitle,
+  NotMergeTitile
 }
 
 const enum MergeText {
@@ -48,6 +54,12 @@ const config: IConfig = {
       label: "修改摘录颜色",
       key: "changeColor",
       help: "输入颜色索引，也就是顺序，1 到 16"
+    },
+    {
+      type: cellViewType.button,
+      label: "合并多张卡片",
+      key: "mergeCards",
+      option: option.mergeCards
     },
     {
       type: cellViewType.buttonWithInput,
@@ -201,7 +213,9 @@ const action: IActionMethod = {
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
       const content = `${title}\n${getAllText(node, "\n", false)}`
-      return regs.every(reg => reg.test(option ? content : title))
+      return regs.every(reg =>
+        reg.test(option == FilterCards.AllText ? content : title)
+      )
     })
     if (customSelectedNodes.length) {
       HUDController.show("您需要的卡片已选中，请继续操作")
@@ -210,6 +224,22 @@ const action: IActionMethod = {
       showHUD("未找到符合的卡片")
       return []
     }
+  },
+  mergeCards({ option, nodes }) {
+    const node = nodes[0]
+    let titles = [node.noteTitle]
+    for (let i = 1; i < nodes.length; i++) {
+      titles.push(nodes[i].noteTitle ?? "")
+      node.merge(nodes[i])
+    }
+    titles = titles.filter(item => item)
+    const len = node.comments.length
+    // 从后往前删，索引不会乱
+    node.comments.reverse().forEach((comment, index) => {
+      if (comment.type == "TextNote" && titles.includes(comment.text))
+        node.removeCommentByIndex(len - index - 1)
+    })
+    if (option == MergeCards.MergeTitle) node.noteTitle = titles.join("; ")
   }
 }
 
