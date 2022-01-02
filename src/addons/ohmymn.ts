@@ -1,16 +1,20 @@
 import { Addon } from "const"
 import { cellViewType, IConfig } from "types/Addon"
 
+export const quickSwitch = [
+  "AnotherAutoTitle",
+  "AnotherAutoDef",
+  "AutoStandardize",
+  "AutoComplete",
+  "AutoReplace",
+  "AutoList"
+]
+
 const option = {
   profile: ["配置 1", "配置 2", "配置 3", "配置 4", "配置 5"],
-  quickSwitch: [
-    "AnotherAutoTitle",
-    "AnotherAutoDef",
-    "AutoStandardize",
-    "AutoComplete",
-    "AutoReplace",
-    "AutoList"
-  ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value),
+  quickSwitch: quickSwitch.map(
+    (value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value
+  ),
   panelPosition: ["自动", "靠左", "中间", "靠右"],
   panelHeight: ["高点", "标准", "矮点"]
 }

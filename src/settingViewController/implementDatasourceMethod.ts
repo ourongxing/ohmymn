@@ -3,6 +3,8 @@ import { cellViewType } from "types/Addon"
 import { isOCNull, log } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
+import { profile } from "profile"
+import { quickSwitch as quickSwitchOption } from "addons/ohmymn"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -10,15 +12,28 @@ const indexPath2tag = (indexPath: NSIndexPath): number =>
 const numberOfSectionsInTableView = (tableView: UITableView) =>
   dataSource.length
 
+const isSelected = (header: string): boolean => {
+  const { quickSwitch } = profile.ohmymn
+  return (
+    !quickSwitchOption.includes(header) ||
+    quickSwitch.includes(quickSwitchOption.findIndex(key => key == header))
+  )
+}
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
-) => dataSource[section].rows.length
+) => {
+  const header = dataSource[section].header
+  return isSelected(header) ? dataSource[section].rows.length : 0
+}
 
 const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
-) => dataSource[section].header
+) => {
+  const header = dataSource[section].header
+  return isSelected(header) ? header : new NSNull()
+}
 
 const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,

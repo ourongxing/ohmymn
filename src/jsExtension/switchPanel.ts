@@ -3,15 +3,19 @@ import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, log, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
+import { PanelHeight, PanelPosition } from "addons/ohmymn"
 
 // 面板和按键状态
 let panelStatus = false
 
 // 设置窗口面板的位置和大小
-export const layoutViewController = () => {
+export const layoutViewController = (
+  heightNum = profile.ohmymn.panelHeight[0],
+  positionNum = profile.ohmymn.panelPosition[0]
+) => {
   const frame = MN.studyController.view.bounds
   const width = 300
-  const height = [600, 450, 300][profile.ohmymn.panelHeight[0]]
+  const height = [600, 450, 300][heightNum]
   const autoX = () => {
     const readerView = MN.studyController.readerController.view
     const isHidden = readerView.hidden
@@ -26,7 +30,7 @@ export const layoutViewController = () => {
     }
   }
   const x = [autoX(), 50, (frame.width - width) / 2, frame.width - width - 50][
-    profile.ohmymn.panelPosition[0]
+    positionNum
   ]
   MN.settingViewController.view.frame = {
     x,

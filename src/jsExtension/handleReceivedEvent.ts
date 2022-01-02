@@ -13,7 +13,7 @@ import {
   getSelectNodesAll,
   undoGroupingWithRefresh
 } from "utils/note"
-import { Addon } from "const"
+import { Addon, MN } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 
 export const eventHandlers = eventHandlerController([
@@ -113,12 +113,16 @@ const onSelectChange: eventHandler = sender => {
     docProfile.ohmymn.profile = selections
     saveProfile(undefined, lastProfileNum)
     readProfile("", Range.global)
+    layoutViewController()
   } else {
     profile[name][key] = selections
     switch (key) {
       case "panelPosition":
       case "panelHeight":
         layoutViewController()
+        break
+      case "quickSwitch":
+        MN.settingViewController.tableView?.reloadData()
         break
     }
   }

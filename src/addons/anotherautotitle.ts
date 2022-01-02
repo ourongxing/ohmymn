@@ -34,6 +34,7 @@ const config: IConfig = {
       key: "hasTitleThen",
       type: cellViewType.select,
       label: "标题存在，继续摘录",
+      help: "也要先满足预设条件",
       option: option.hasTitleThen
     },
     {
