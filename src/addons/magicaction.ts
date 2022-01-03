@@ -226,6 +226,7 @@ const action: IActionMethod = {
     }
   },
   mergeCards({ option, nodes }) {
+    if (nodes.length == 1) return
     const node = nodes[0]
     let titles = [node.noteTitle]
     for (let i = 1; i < nodes.length; i++) {

@@ -64,15 +64,6 @@ export const enum Range {
 }
 
 const readProfile = (docmd5: string, range: Range) => {
-  const readDoc = () => {
-    updateDataSource(docProfile, allDocProfile?.[docmd5] ?? docProfilePreset)
-    log("读取当前文档配置", "profile")
-  }
-  const readGlobal = () => {
-    updateDataSource(profile, allProfile[docProfile.ohmymn.profile[0]], true)
-    log("读取全局配置", "profile")
-  }
-
   switch (range) {
     case Range.first:
       // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
@@ -86,10 +77,12 @@ const readProfile = (docmd5: string, range: Range) => {
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
     case Range.doc:
       // 打开文档时读文档配置，此时也必须读全局配置
-      readDoc()
+      updateDataSource(docProfile, allDocProfile?.[docmd5] ?? docProfilePreset)
+      log("读取当前文档配置", "profile")
     case Range.global:
       // 切换配置时只读全局配置，读全局配置不需要 md5
-      readGlobal()
+      updateDataSource(profile, allProfile[docProfile.ohmymn.profile[0]], true)
+      log("读取全局配置", "profile")
   }
 }
 

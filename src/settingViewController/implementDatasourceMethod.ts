@@ -1,10 +1,9 @@
-import { dataSource } from "synthesizer"
+import { addonList, dataSource } from "synthesizer"
 import { cellViewType } from "types/Addon"
 import { isOCNull, log } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
 import { profile } from "profile"
-import { quickSwitch as quickSwitchOption } from "addons/ohmymn"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -15,10 +14,11 @@ const numberOfSectionsInTableView = (tableView: UITableView) =>
 const isSelected = (header: string): boolean => {
   const { quickSwitch } = profile.ohmymn
   return (
-    !quickSwitchOption.includes(header) ||
-    quickSwitch.includes(quickSwitchOption.findIndex(key => key == header))
+    !addonList.includes(header) ||
+    quickSwitch.includes(addonList.findIndex(key => key == header))
   )
 }
+
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number

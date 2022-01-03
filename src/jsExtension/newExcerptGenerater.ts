@@ -4,8 +4,7 @@ import { util as autoreplace } from "addons/autoreplace"
 import { util as autocomplete } from "addons/autocomplete"
 import { util as anotherautotitle } from "addons/anotherautotitle"
 import { util as anotherautodef } from "addons/anotherautodef"
-import { profile } from "profile"
-import { QuickSwitch } from "addons/ohmymn"
+import { profile, QuickSwitch } from "profile"
 
 export const genTitleText = async (
   text: string

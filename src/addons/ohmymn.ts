@@ -1,31 +1,12 @@
 import { Addon } from "const"
 import { cellViewType, IConfig } from "types/Addon"
 
-export const quickSwitch = [
-  "AnotherAutoTitle",
-  "AnotherAutoDef",
-  "AutoStandardize",
-  "AutoComplete",
-  "AutoReplace",
-  "AutoList"
-]
-
 const option = {
-  profile: ["配置 1", "配置 2", "配置 3", "配置 4", "配置 5"],
-  quickSwitch: quickSwitch.map(
-    (value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value
-  ),
+  profile: Array(5)
+    .fill("配置")
+    .map((_, index) => _ + " " + (index + 1)),
   panelPosition: ["自动", "靠左", "中间", "靠右"],
   panelHeight: ["高点", "标准", "矮点"]
-}
-
-export const enum QuickSwitch {
-  AnotherAutoTitle,
-  AnotherAutoDef,
-  AutoStandardize,
-  AutoComplete,
-  AutoReplace,
-  AutoList
 }
 
 export const enum PanelPosition {
@@ -57,7 +38,7 @@ const config: IConfig = {
       label: "插件快捷开关",
       key: "quickSwitch",
       type: cellViewType.muiltSelect,
-      option: option.quickSwitch
+      option: []
     },
     {
       key: "panelPosition",

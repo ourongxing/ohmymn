@@ -1,39 +1,9 @@
+import { dataSource } from "synthesizer"
 import { cellViewType, IConfig } from "types/Addon"
 import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
+import { log } from "utils/common"
 
-const option = [
-  "无",
-  ...[
-    "筛选卡片",
-    "修改摘录样式",
-    "修改摘录颜色",
-    "合并多张卡片",
-    "补全单词词形",
-    "序列摘录换行",
-    "合并卡片内文字",
-    "批量重命名标题",
-    "切换摘录或标题",
-    "优化排版和格式",
-    "批量替换摘录文字",
-    "提取卡片中的文字为标题"
-  ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value)
-]
-
-export const actionKey = [
-  "none",
-  "filterCards",
-  "changeFillStyle",
-  "changeColor",
-  "mergeCards",
-  "completeSelected",
-  "listSelected",
-  "mergeText",
-  "renameTitle",
-  "switchTitle",
-  "standardizeSelected",
-  "replaceSelected",
-  "extractTitle"
-]
+const option: string[] = []
 
 const config: IConfig = {
   name: "Gesture",
