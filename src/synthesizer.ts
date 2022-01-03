@@ -20,6 +20,16 @@ const addons = [
   autolist
 ]
 
+// 插件总开关，按显示的顺序
+export const enum QuickSwitch {
+  AnotherAutoTitle,
+  AnotherAutoDef,
+  AutoStandardize,
+  AutoComplete,
+  AutoReplace,
+  AutoList
+}
+
 const more: ISection = {
   header: "More",
   rows: [
@@ -123,7 +133,6 @@ export const genDataSource = (
   dataSource[0].rows.forEach(row =>
     actionKey.push(row.type != cellViewType.plainText ? row.key : "none")
   )
-  log(actionKey)
 
   dataSource.push(more)
   return dataSource

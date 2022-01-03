@@ -3,16 +3,7 @@ import { AutoListPreset } from "addons/autolist"
 import { AutoReplacePreset } from "addons/autoreplace"
 import { AutoStandardizePreset } from "addons/autostandardize"
 import { PanelHeight, PanelPosition } from "addons/ohmymn"
-
-// 插件总开关，按显示的顺序
-export const enum QuickSwitch {
-  AnotherAutoTitle,
-  AnotherAutoDef,
-  AutoStandardize,
-  AutoComplete,
-  AutoReplace,
-  AutoList
-}
+import { QuickSwitch } from "synthesizer"
 
 const profilePreset = {
   ohmymn: {

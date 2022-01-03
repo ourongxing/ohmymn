@@ -206,6 +206,7 @@ const action: IActionMethod = {
       })
     }
   },
+
   filterCards({ nodes, content, option }) {
     if (!content) return
     // 0 判断标题 1 判断整个内容
