@@ -165,11 +165,11 @@ const dict = {
       }
     },
     more: {
-      donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击\n即可直达二维码。",
+      donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
       github:
-        "ohmymn 完全开源，容易扩展，欢迎参与开发。\n点击直达 Github 查看源码，欢迎 star 和 fork。",
+        "ohmymn 完全开源，容易扩展，欢迎参与开发。点击直达 Github 查看源码。",
       feishu:
-        "点击加入飞书话题群，一起交流 ohmymn 使用\n技巧，我会不定期为大家解决疑问。"
+        "点击加入飞书话题群，一起交流 ohmymn 使用技巧，我会不定期为大家解决疑问。"
     }
   },
   handle_received_event: {

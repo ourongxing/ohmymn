@@ -22,4 +22,5 @@ const byteLength = (text: string) => {
   })
   return length
 }
+
 export { isHalfWidth, isCJK, countWord, CJK, byteLength }

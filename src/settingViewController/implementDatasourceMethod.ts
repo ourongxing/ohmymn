@@ -4,7 +4,7 @@ import { isOCNull, log } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
 import { profile } from "profile"
-import { isHalfWidth } from "utils/text"
+import { byteLength, isHalfWidth } from "utils/text"
 import lang from "lang"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
@@ -43,8 +43,10 @@ const tableViewHeightForRowAtIndexPath = (
 ) => {
   const row = dataSource[indexPath.section].rows[indexPath.row]
   if (row.type === cellViewType.plainText) {
-    let num = row.label.length - row.label.replace(/[\r\n]/g, "").length
-    return 30 + num * 15
+    // 每行大约可以容纳 42 个半角字符
+    const lines = (byteLength(row.label) - (byteLength(row.label) % 42)) / 42
+    const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
+    return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
   } else return 40
 }
 
