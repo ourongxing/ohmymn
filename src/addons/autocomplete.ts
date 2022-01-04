@@ -1,3 +1,4 @@
+import lang from "lang"
 import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { isOCNull, log, showHUD } from "utils/common"
@@ -7,23 +8,24 @@ import { RefreshAfterDBChange, undoGrouping } from "utils/note"
 import { isHalfWidth, countWord } from "utils/text"
 import { util as autostandardize } from "./autostandardize"
 
+const { error, intro, link, option, label } = lang.addon.autocomplete
 const config: IConfig = {
   name: "AutoComplete",
-  intro: "补全单词词形，只支持动词和名词",
+  intro,
   settings: [
     {
       key: "customComplete",
       type: cellViewType.input,
-      label: "自定义摘录填充信息，点击查看支持变量",
-      link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca"
+      label: label.custom_complete,
+      link
     }
   ],
   actions: [
     {
       key: "completeSelected",
       type: cellViewType.button,
-      label: "补全单词词形",
-      option: ["仅补全单词词形", "同时填充单词信息"]
+      label: label.complete_selected,
+      option: option.complete_selected
     }
   ]
 }
@@ -59,7 +61,7 @@ const util = {
       res => res.json()
     )
     const info = <Dict[]>res.filter((info: any) => info.word == info.sw)
-    if (!info.length) throw "查询不到该单词"
+    if (!info.length) throw error.not_find_word
     return info[0]
   },
 
@@ -130,10 +132,7 @@ const util = {
       }
     } catch (error) {
       log(error, "autocomplete")
-      switch (error) {
-        case "请求超时。":
-          showHUD("请求超时，请检查网络连接！")
-      }
+      if (error != "不是单词") showHUD(String(error))
       return false
     }
   }

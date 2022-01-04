@@ -37,17 +37,16 @@ const excerptNotes = (node: MbBookNote): MbBookNote[] => {
   const comments = node.comments
   for (const comment of comments) {
     if (comment.type == "LinkNote")
-      notes.push(MN.database.getNoteById(comment.noteid)!)
+      notes.push(MN.db.getNoteById(comment.noteid)!)
   }
   return notes
 }
 
-const getNoteById = (noteid: string): MbBookNote =>
-  MN.database.getNoteById(noteid)!
+const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
 
 // topic 就是 notebook
 const getNotebookById = (notebookid: string): MbTopic =>
-  MN.database.getNotebookById(notebookid)!
+  MN.db.getNotebookById(notebookid)!
 
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
@@ -69,7 +68,7 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  MN.database.setNotebookSyncDirty(MN.notebookId)
+  MN.db.setNotebookSyncDirty(MN.notebookId)
   postNotification("RefreshAfterDBChange", {
     topicid: MN.notebookId
   })

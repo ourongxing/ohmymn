@@ -15,6 +15,7 @@ import {
 } from "utils/note"
 import { Addon, MN } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
+import lang from "lang"
 
 export const eventHandlers = eventHandlerController([
   Addon.key + "InputOver",
@@ -25,6 +26,7 @@ export const eventHandlers = eventHandlerController([
   "ProcessNewExcerpt",
   "ChangeExcerptRange"
 ])
+const { hud, smart_select } = lang.handle_received_event
 
 let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
@@ -38,7 +40,7 @@ const onButtonClick: eventHandler = async sender => {
   } else {
     nodes = getSelectNodes()
     if (!nodes.length) {
-      showHUD("未选中任何脑图卡片")
+      showHUD(hud.not_selected)
       return
     }
     const isHavingChildren = nodes.every(
@@ -48,10 +50,10 @@ const onButtonClick: eventHandler = async sender => {
       const { option } = await popup(
         "OhMyMN",
         nodes.length > 1
-          ? "检测到您选中的同层级卡片均有子节点"
-          : "检测到您选中的唯一卡片有子节点",
+          ? smart_select.cards_with_children
+          : smart_select.card_with_children,
         UIAlertViewStyle.Default,
-        ["仅处理选中的卡片", "仅处理所有子节点", "处理选中的卡片及其子节点"],
+        smart_select.option,
         (alert: UIAlertView, buttonIndex: number) => ({
           option: buttonIndex
         })
@@ -90,12 +92,11 @@ const onSwitchChange: eventHandler = sender => {
   const { name, key, status } = sender.userInfo
   if (key == "autoCorrect") {
     docProfile.ohmymn.autoCorrect = status
-    if (status) showHUD("请按!实际情况选择开关，不建议无脑打开自动矫正", 2)
+    if (status) showHUD(hud.auto_correct)
   } else profile[name][key] = status
   switch (key) {
     case "lockExcerpt":
-      if (status && docProfile.ohmymn.autoCorrect)
-        showHUD("锁定摘录不建议和自动矫正同时开启", 2)
+      if (status && docProfile.ohmymn.autoCorrect) showHUD(hud.lock_excerpt, 2)
       break
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
@@ -131,7 +132,7 @@ const onSelectChange: eventHandler = sender => {
 const onInputOver: eventHandler = sender => {
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
-  content ? showHUD("输入已保存") : showHUD("输入已清空")
+  content ? showHUD(hud.input_saved) : showHUD(hud.input_clear)
 }
 
 // 不管是创建摘录还是修改摘录，都会提前触发这个事件，所以要判断一下，在修改之前保存上次摘录

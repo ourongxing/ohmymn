@@ -3,12 +3,9 @@ import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
 
-const option = {
-  preset: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
-  listSelected: ["使用 AutoList 的配置", "确定"]
-}
-
+const { help, intro, option, label, link } = lang.addon.autolist
 export const enum AutoListPreset {
   Custom,
   ChoiceQuestion,
@@ -23,28 +20,28 @@ const enum ListSelected {
 
 const config: IConfig = {
   name: "AutoList",
-  intro: "针对序列文本，自动换行，仅适配中文",
+  intro,
   settings: [
     {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: option.preset,
-      label: "选择需要的预设"
+      label: label.preset
     },
     {
       key: "customList",
       type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec"
+      label: label.custom_list,
+      link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "序列摘录换行",
+      label: label.list_selected,
       key: "listSelected",
-      help: "具体输入格式见顶上帮助信息",
-      option: option.listSelected
+      help: help.list_selected,
+      option: option.list_selected
     }
   ]
 }

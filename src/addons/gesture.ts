@@ -1,3 +1,4 @@
+import lang from "lang"
 import { dataSource } from "synthesizer"
 import { cellViewType, IConfig } from "types/Addon"
 import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
@@ -5,54 +6,55 @@ import { log } from "utils/common"
 
 const option: string[] = []
 
+const { intro, singleBar, muiltBar } = lang.addon.gesture
 const config: IConfig = {
   name: "Gesture",
-  intro: "自定义手势触发动作",
+  intro,
   settings: [
     {
-      label: "单选工具栏 ↑",
+      label: singleBar + " ↑",
       key: "singleBarSwipeUp",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 ↓",
+      label: singleBar + " ↓",
       key: "singleBarSwipeDown",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 ←",
+      label: singleBar + " ←",
       key: "singleBarSwipeLeft",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 →",
+      label: singleBar + " →",
       key: "singleBarSwipeRight",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ↑",
+      label: muiltBar + " ↑",
       key: "muiltBarSwipeUp",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ↓",
+      label: muiltBar + " ↓",
       key: "muiltBarSwipeDown",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ←",
+      label: muiltBar + " ←",
       key: "muiltBarSwipeLeft",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 →",
+      label: muiltBar + " →",
       key: "muiltBarSwipeRight",
       type: cellViewType.select,
       option

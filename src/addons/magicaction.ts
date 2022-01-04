@@ -7,13 +7,9 @@ import {
 import { HUDController, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
+import lang from "lang"
 
-const option = {
-  filterCards: ["仅判断标题", "判断整个卡片内容"],
-  changeFillStyle: ["边框+填充", "填充", "边框"],
-  mergeText: ["合并为摘录", "合并为评论"],
-  mergeCards: ["同时合并标题", "不合并标题"]
-}
+const { help, option, intro, label, link, hud } = lang.addon.magicaction
 
 const enum FilterCards {
   OnlyTitle,
@@ -32,47 +28,47 @@ const enum MergeText {
 
 const config: IConfig = {
   name: "MagicAction",
-  intro: "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
-  link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
+  intro,
+  link,
   settings: [],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "筛选卡片",
-      help: "注意事项及具体输入格式见顶上帮助信息",
-      option: option.filterCards,
+      label: label.filter_cards,
+      help: help.filter_cards,
+      option: option.filter_cards,
       key: "filterCards"
     },
     {
       type: cellViewType.button,
-      label: "修改摘录样式",
+      label: label.change_fill_style,
       key: "changeFillStyle",
-      option: option.changeFillStyle
+      option: option.change_fill_style
     },
     {
       type: cellViewType.buttonWithInput,
-      label: "修改摘录颜色",
+      label: label.change_color,
       key: "changeColor",
-      help: "输入颜色索引，也就是顺序，1 到 16"
+      help: help.change_color
     },
     {
       type: cellViewType.button,
-      label: "合并多张卡片",
+      label: label.merge_cards,
       key: "mergeCards",
-      option: option.mergeCards
+      option: option.merge_cards
     },
     {
       type: cellViewType.buttonWithInput,
-      label: "合并卡片内文字",
+      label: label.merge_text,
       key: "mergeText",
-      help: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-      option: option.mergeText
+      help: help.merge_text,
+      option: option.merge_text
     },
     {
       type: cellViewType.buttonWithInput,
-      label: "批量重命名标题",
+      label: label.rename_title,
       key: "renameTitle",
-      help: "注意事项及具体输入格式见顶上帮助信息"
+      help: help.rename_title
     }
   ]
 }
@@ -219,10 +215,10 @@ const action: IActionMethod = {
       )
     })
     if (customSelectedNodes.length) {
-      HUDController.show("您需要的卡片已选中，请继续操作")
+      HUDController.show(hud.is_clicked)
       return customSelectedNodes
     } else {
-      showHUD("未找到符合的卡片")
+      showHUD(hud.none_card)
       return []
     }
   },

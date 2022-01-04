@@ -1,13 +1,8 @@
 import { Addon } from "const"
+import lang from "lang"
 import { cellViewType, IConfig } from "types/Addon"
 
-const option = {
-  profile: Array(5)
-    .fill("配置")
-    .map((_, index) => _ + " " + (index + 1)),
-  panelPosition: ["自动", "靠左", "中间", "靠右"],
-  panelHeight: ["高点", "标准", "矮点"]
-}
+const { label, help, option } = lang.addon.ohmymn
 
 export const enum PanelPosition {
   Auto,
@@ -28,14 +23,16 @@ const config: IConfig = {
   link: "https://github.com/ourongxing/ohmymn",
   settings: [
     {
-      help: "【当前文档生效】可用于不同情景",
+      help: help.profile,
       key: "profile",
       type: cellViewType.select,
-      option: option.profile,
-      label: "选择配置文件"
+      option: Array(5)
+        .fill(option.profile)
+        .map((_, index) => _ + " " + (index + 1)),
+      label: label.profile
     },
     {
-      label: "插件快捷开关",
+      label: label.quick_switch,
       key: "quickSwitch",
       type: cellViewType.muiltSelect,
       option: []
@@ -43,40 +40,40 @@ const config: IConfig = {
     {
       key: "panelPosition",
       type: cellViewType.select,
-      option: option.panelPosition,
-      label: "面板显示位置"
+      option: option.panel_position,
+      label: label.panel_position
     },
     {
       key: "panelHeight",
       type: cellViewType.select,
-      option: option.panelHeight,
-      label: "面板显示高度"
+      option: option.panel_height,
+      label: label.panel_height
     },
     {
       key: "doubleClick",
       type: cellViewType.switch,
-      label: "双击打开面板"
+      label: label.double_click
     },
     {
       key: "clickHidden",
       type: cellViewType.switch,
-      label: "自动关闭面板"
+      label: label.click_hidden
     },
     {
       key: "screenAlwaysOn",
       type: cellViewType.switch,
-      label: "保持屏幕常亮"
+      label: label.screen_always_on
     },
     {
       key: "lockExcerpt",
       type: cellViewType.switch,
-      label: "锁定摘录文字"
+      label: label.lock_excerpt
     },
     {
-      help: "【当前文档生效】开启后会在矫正后执行处理",
+      help: help.auto_correct,
       key: "autoCorrect",
       type: cellViewType.switch,
-      label: "是否开启自动在线矫正"
+      label: label.auto_correct
     }
   ],
   actions: []

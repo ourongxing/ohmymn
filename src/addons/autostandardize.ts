@@ -4,11 +4,9 @@ import { toTitleCase } from "utils/toTitleCase"
 import { isHalfWidth } from "utils/text"
 import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
-const option = {
-  preset: ["半角转全角", "中英文加空格", "去除重复空格", "英文标题规范化"],
-  standardizeSelected: ["都优化", "仅优化标题", "仅优化摘录"]
-}
+import lang from "lang"
 
+const { intro, option, label } = lang.addon.autostandardize
 export const enum AutoStandardizePreset {
   HalfToFull,
   AddSpace,
@@ -24,21 +22,21 @@ const enum StandardizeSelected {
 
 const config: IConfig = {
   name: "AutoStandardize",
-  intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
+  intro,
   settings: [
     {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: option.preset,
-      label: "选择需要的预设"
+      label: label.preset
     }
   ],
   actions: [
     {
       key: "standardizeSelected",
       type: cellViewType.button,
-      label: "优化排版和格式",
-      option: option.standardizeSelected
+      label: label.standardize_selected,
+      option: option.standardize_selected
     }
   ]
 }

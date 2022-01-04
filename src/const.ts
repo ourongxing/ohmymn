@@ -17,8 +17,8 @@ class MNCore {
   textColor!: UIColor
   mainPath!: string
   notebookId!: string
-  app!: Application
-  database!: MbModelTool
+  app = Application.sharedInstance()
+  db = Database.sharedInstance()
 }
 
 export const Addon = {
@@ -29,5 +29,3 @@ export const Addon = {
 }
 
 export const MN = new MNCore()
-MN.app = Application.sharedInstance()
-MN.database = Database.sharedInstance()

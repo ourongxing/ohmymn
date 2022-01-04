@@ -15,4 +15,11 @@ const countWord = (text: string): number => {
   return en.length + zh.length
 }
 
-export { isHalfWidth, isCJK, countWord, CJK }
+const byteLength = (text: string) => {
+  let length = 0
+  Array.from(text).forEach(char => {
+    length += char.charCodeAt(0) > 255 ? 2 : 1
+  })
+  return length
+}
+export { isHalfWidth, isCJK, countWord, CJK, byteLength }

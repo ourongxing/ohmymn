@@ -2,7 +2,9 @@ import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
 
+const { intro, link, label, help, option } = lang.addon.autoreplace
 export const enum AutoReplacePreset {
   Custom
 }
@@ -12,28 +14,28 @@ const enum ReplaceSelected {
 
 const config: IConfig = {
   name: "AutoReplace",
-  intro: "自动替换摘录中的某些错误",
+  intro,
   settings: [
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["自定义"],
-      label: "选择需要的预设"
+      option: option.preset,
+      label: label.preset
     },
     {
       key: "customReplace",
       type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f"
+      label: label.custom_replace,
+      link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "批量替换摘录文字",
+      label: label.replace_selected,
       key: "replaceSelected",
-      help: "具体输入格式见顶上帮助信息",
-      option: ["使用 AutoReplace 的配置", "确定"]
+      help: help.replace_selected,
+      option: option.replace_selected
     }
   ]
 }
@@ -81,4 +83,5 @@ const action: IActionMethod = {
     }
   }
 }
+
 export { config, util, action }

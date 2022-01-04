@@ -4,6 +4,8 @@ import { isOCNull, log } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
 import { profile } from "profile"
+import { isHalfWidth } from "utils/text"
+import lang from "lang"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -149,9 +151,9 @@ const tableViewCellForRowAtIndexPath = (
       const view = initCellView.select(
         row.type == cellViewType.select
           ? row.option[row?.selections?.[0] ?? 0]
-          : !row?.selections?.length
-          ? "无"
-          : `${row.selections.length} 个`
+          : row?.selections?.length
+          ? `${row.selections.length} ${lang.implement_datasource_method.clicked}`
+          : lang.implement_datasource_method.none
       )
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
@@ -177,7 +179,16 @@ const initCellView = {
   select(text: string) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
-    view.setTitleForState(text.length > 4 ? text.slice(0, 4) : text, 0)
+    view.setTitleForState(
+      isHalfWidth(text)
+        ? text.length > 10
+          ? text.slice(0, 10)
+          : text
+        : text.length > 4
+        ? text.slice(0, 4)
+        : text,
+      0
+    )
     view.setTitleColorForState(UIColor.whiteColor(), 0)
     view.backgroundColor = UIColor.grayColor()
     view.layer.cornerRadius = 10

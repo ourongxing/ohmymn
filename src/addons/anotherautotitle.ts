@@ -1,14 +1,10 @@
 import { profile } from "profile"
-import { log } from "utils/common"
 import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
 
-const option = {
-  hasTitleThen: ["作为摘录", "标题链接", "覆盖标题"],
-  preset: ["自定义", "字数限制", "不含有点号"],
-  switchTitle: ["切换为不存在的", "交换标题和摘录"]
-}
+const { option, intro, help, link, label } = lang.addon.anotherautotitle
 
 export const enum HasTitleThen {
   ExpertText,
@@ -28,45 +24,45 @@ export const enum SwitchTitle {
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
-  intro: "更强大的自动转换标题插件",
+  intro,
   settings: [
     {
       key: "hasTitleThen",
       type: cellViewType.select,
-      label: "标题存在，继续摘录",
-      help: "也要先满足预设条件",
-      option: option.hasTitleThen
+      label: label.has_title_then,
+      help: help.has_title_then,
+      option: option.has_title_then
     },
     {
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
-      label: "拓宽标题摘录不受限制"
+      label: label.change_title_no_limit
     },
     {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: option.preset,
-      label: "选择需要的预设"
+      label: label.preset
     },
     {
       key: "wordCount",
       type: cellViewType.inlineInput,
-      label: "设定最多字数"
+      label: label.word_count
     },
     {
       key: "customBeTitle",
       type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"
+      label: label.custom_be_title,
+      link
     }
   ],
   actions: [
     {
-      type: cellViewType.button,
-      label: "切换摘录或标题",
       key: "switchTitle",
-      option: option.switchTitle,
-      help: "当两者都存在时请使用「交换标题和摘录」"
+      type: cellViewType.button,
+      label: label.switch_title,
+      option: option.switch_title,
+      help: help.switch_title
     }
   ]
 }
@@ -89,7 +85,6 @@ const util = {
           if (!wordCount) break
           const limitedNum = reverseEscape(wordCount)
           const actualNum = countWord(text)
-          log("实际字数：" + actualNum, "autotitle")
           const isTitle =
             typeof limitedNum == "number"
               ? actualNum <= limitedNum

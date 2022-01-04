@@ -5,6 +5,8 @@ import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
 import { osType } from "types/MarginNote"
 import { UIAlertViewStyle, UITableView } from "types/UIKit"
+import { byteLength } from "utils/text"
+import lang from "lang"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -25,7 +27,7 @@ export const magicAction = async (indexPath: NSIndexPath) => {
           row.label,
           row.help ?? "",
           UIAlertViewStyle.PlainTextInput,
-          row.option ? row.option : ["确定"],
+          row.option ? row.option : [lang.handle_user_action.sure],
           (alert: UIAlertView, buttonIndex: number) => {
             // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
             return {
@@ -43,14 +45,14 @@ export const magicAction = async (indexPath: NSIndexPath) => {
             content
           })
           return
-        } else showHUD("输入错误，请重新输入")
+        } else showHUD(lang.handle_user_action.input_error)
       }
     case cellViewType.button:
       const { key, option } = await popup(
         row.label,
         row.help ?? "",
         UIAlertViewStyle.Default,
-        row.option ?? ["确定"],
+        row.option ?? [lang.handle_user_action.sure],
         (alert: UIAlertView, buttonIndex: number) => ({
           key: row.key,
           option: buttonIndex
@@ -85,7 +87,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
       key: row.key,
       content: text
     })
-  } else showHUD("输入错误，请查看相关说明")
+  } else showHUD(lang.handle_user_action.input_error)
   return true
 }
 
@@ -176,9 +178,13 @@ const clickSelectButton = (sender: UIButton) => {
   }))
   menuController.rowHeight = 44
   const width =
-    row.option.reduce((a, b) => (a.length > b.length ? a : b)).length * 20 + 80
+    byteLength(
+      row.option.reduce((a, b) => (byteLength(a) > byteLength(b) ? a : b))
+    ) *
+      10 +
+    80
   menuController.preferredContentSize = {
-    width: width > 300 ? 250 : width,
+    width: width > 250 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
   const studyControllerView = MN.studyController.view

@@ -3,7 +3,7 @@ import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, log, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
-import { PanelHeight, PanelPosition } from "addons/ohmymn"
+import lang from "lang"
 
 // 面板和按键状态
 let panelStatus = false
@@ -56,7 +56,7 @@ const openPanel = () => {
   lastOpenPanel = Date.now()
   if (MN.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
     MN.studyController.docMapSplitMode = docMapSplitMode.half
-    showHUD("OhMyMN 与脑图更配喔", 1)
+    showHUD(lang.switch_panel.better_with_mindmap, 1)
   }
   delay(0.2).then(() => void MN.studyController.view.becomeFirstResponder())
 }

@@ -59,9 +59,9 @@ const notebookWillClose = (notebookid: string) => {
 }
 
 const documentDidOpen = (docmd5: string) => {
-  // 如果 thisDocMd5 有值，说明是换书，反正不是第一次打开书，此时读取本文档配置
+  // 如果 thisDocMd5 有值，说明是换书，反正不是第一次打开书
   if (thisDocMd5) readProfile(docmd5, Range.doc)
-  // 如果 thisDocMd5 没有值，说明是刚打开 MN，此时读取所有配置
+  // 如果 thisDocMd5 没有值，说明是刚打开 MN
   else {
     readProfile(docmd5, Range.first)
     UIApplication.sharedApplication().idleTimerDisabled =

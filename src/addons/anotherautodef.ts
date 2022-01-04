@@ -2,59 +2,52 @@ import { profile } from "profile"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
 
+const { label, option, intro, link } = lang.addon.anotherautodef
 const config: IConfig = {
   name: "AnotherAutoDef",
-  intro:
-    "提取被定义项或任意内容为标题或标题链接\n定义 = 被定义项 + 定义联项 + 定义项",
+  intro,
   settings: [
     {
       key: "onlyDesc",
       type: cellViewType.switch,
-      label: "摘录仅保留定义项"
+      label: label.only_desc
     },
     {
       key: "toTitleLink",
       type: cellViewType.switch,
-      label: "别名转为标题链接"
+      label: label.to_title_link
     },
     {
       key: "customSplitName",
       type: cellViewType.input,
-      label: "自定义别名分词，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+      label: label.custom_split_name,
+      link
     },
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: [
-        "自定义提取内容",
-        "自定义定义联项",
-        "xxx : yyy",
-        "xxx —— yyy",
-        "xxx ，是(指) yyy",
-        "xxx 是(指)，yyy",
-        "xxx 是指 yyy"
-      ],
-      label: "选择需要的预设"
+      option: option.preset,
+      label: label.preset
     },
     {
       key: "customSplit",
       type: cellViewType.input,
-      label: "自定义定义联项，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+      label: label.custom_split,
+      link
     },
     {
       key: "customDefTitle",
       type: cellViewType.input,
-      label: "自定义提取内容，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+      label: label.custom_def_title,
+      link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "提取卡片中的内容为标题",
+      label: label.extraTitle,
       option: ["使用 AutoDef 中的配置", "确定"],
       key: "extractTitle"
     }
