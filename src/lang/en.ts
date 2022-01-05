@@ -11,23 +11,23 @@ const dict: Dict = {
       label: {
         quick_switch: "Quick Switch",
         profile: "Choose Profile",
-        panel_position: "面板显示位置",
-        panel_height: "面板显示高度",
-        double_click: "双击打开面板",
-        click_hidden: "自动关闭面板",
-        screen_always_on: "保持屏幕常亮",
-        lock_excerpt: "锁定摘录文字",
-        auto_correct: "是否开启自动在线矫正"
+        panel_position: "Panel Position",
+        panel_height: "Panel Height",
+        double_click: "Double-click to Open the Panel",
+        click_hidden: "Auto Close Panel",
+        screen_always_on: "Keep Screen Always On",
+        lock_excerpt: "Lock Excerpt Text",
+        auto_correct: "Auto Correct Excerpt Text Online"   
       },
       help: {
-        profile: "【当前文档生效】可用于不同情景",
-        auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
+        profile: "[Current Document Takes Effect] Can be used in different scenarios",
+        auto_correct: "[Current Document Takes Effect] After opening, it will be processed after auto-correction"
       }
     },
     gesture: {
-      intro: "自定义手势触发动作",
-      singleBar: "单选工具栏",
-      muiltBar: "多选工具栏"
+      intro: "Custom Gestures to Trigger Actions",
+      singleBar: "Single Selection Toolbar",
+      muiltBar: "Multi Selection Toolbar"
     },
     anotherautodef: {
       intro:
