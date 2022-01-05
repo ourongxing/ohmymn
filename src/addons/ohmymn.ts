@@ -20,7 +20,7 @@ export const enum PanelHeight {
 const config: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version} \nmade by ${Addon.author}`,
-  link: "https://github.com/ourongxing/ohmymn",
+  link: Addon.link,
   settings: [
     {
       help: help.profile,

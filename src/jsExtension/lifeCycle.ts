@@ -27,7 +27,6 @@ const SettingViewController = JSB.defineClass(
 // 打开窗口，可以用来初始化
 const sceneWillConnect = () => {
   log("打开窗口", "lifeCycle")
-  MN.self = self
   MN.window = self.window
   MN.studyController = MN.app.studyController(MN.window)
   MN.settingViewController = new SettingViewController()
