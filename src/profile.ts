@@ -2,6 +2,7 @@ import { AutoTitlePreset, HasTitleThen } from "addons/anotherautotitle"
 import { AutoListPreset } from "addons/autolist"
 import { AutoReplacePreset } from "addons/autoreplace"
 import { AutoStandardizePreset } from "addons/autostandardize"
+import { AutoTagPreset } from "addons/autotag"
 import { PanelHeight, PanelPosition } from "addons/ohmymn"
 import { QuickSwitch } from "synthesizer"
 
@@ -54,6 +55,10 @@ const profilePreset = {
   autoreplace: {
     preset: [] as AutoReplacePreset[],
     customReplace: ""
+  },
+  autotag: {
+    preset: [] as AutoTagPreset[],
+    customTag: ""
   }
 }
 

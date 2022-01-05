@@ -4,9 +4,9 @@
 const reverseEscape = (text: string) => JSON.parse(`{"key": ${text}}`).key
 const isNumber = (text: string) => !isNaN(Number(text))
 
-const string2ReplaceParam = (text: string): ReplaceParam[] => {
+const string2ReplaceParam = (str: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1)
-  const brackets = text.trim().split(/\s*;\s*(?=\()/)
+  const brackets = str.trim().split(/\s*;\s*(?=\()/)
   const params = []
   for (let bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
@@ -33,16 +33,23 @@ const string2Reg = (str: string) => {
   return new RegExp(regParts[1], regParts[2])
 }
 
-const string2RegArray = (str: string): RegExp[] => {
+const string2RegArray = (str: string): RegExp[][] => {
   /**
-   * 输入 [/sd/,/sd/]
+   * 输入 [/sd/,/sd/];[/sd/,/sd/]
    * /sd/
-   *  sd
+   * sd
+   * 输出 [[/sd/]]
    */
+
   if (!/^\[.*\]$/.test(str))
-    return [string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/`)]
-  const regStrArr = str.slice(1, -1).split(/\s*,\s*(?=\/)/)
-  return regStrArr.map(str => string2Reg(str))
+    return [[string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/`)]]
+  const brackets = str.trim().split(/\s*;\s*(?=\[)/)
+  return brackets.map(bracket =>
+    bracket
+      .slice(1, -1)
+      .split(/\s*,\s*(?=\/)/)
+      .map(str => string2Reg(str))
+  )
 }
 
 interface ReplaceParam {

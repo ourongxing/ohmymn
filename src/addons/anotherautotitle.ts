@@ -74,9 +74,8 @@ const util = {
       switch (set) {
         case AutoTitlePreset.Custom:
           if (!customBeTitle) break
-          const regs = string2RegArray(customBeTitle)
-          // 全部匹配到才转为标题
-          if (regs.every(reg => reg.test(text)))
+          const regGroup = string2RegArray(customBeTitle)
+          if (regGroup.some(regs => regs.every(reg => reg.test(text))))
             return {
               title: text
             }

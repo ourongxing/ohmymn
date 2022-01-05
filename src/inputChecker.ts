@@ -34,7 +34,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "customSplit":
       case "filterCards":
         const regs = string2RegArray(text)
-        regs.forEach(reg => {
+        regs.flat().forEach(reg => {
           reg.test("test")
         })
         break

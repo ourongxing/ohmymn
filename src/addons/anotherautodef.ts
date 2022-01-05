@@ -58,7 +58,7 @@ const util = {
   toTitleLink(text: string) {
     const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
     const { customSplitName } = profile.anotherautodef
-    const regs = customSplitName ? string2RegArray(customSplitName) : []
+    const regs = customSplitName ? string2RegArray(customSplitName)[0] : []
     regs.push(reg)
     regs.forEach(reg => {
       text = text.replace(reg, "😎")
@@ -91,7 +91,7 @@ const util = {
           break
         case 1:
           if (!customSplit) break
-          const regs = string2RegArray(customSplit)
+          const regs = string2RegArray(customSplit)[0]
           for (const reg of regs)
             if (reg.test(text)) {
               const [def, desc] = text

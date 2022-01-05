@@ -206,12 +206,14 @@ const action: IActionMethod = {
   filterCards({ nodes, content, option }) {
     if (!content) return
     // 0 判断标题 1 判断整个内容
-    const regs = string2RegArray(content)
+    const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
       const content = `${title}\n${getAllText(node, "\n", false)}`
-      return regs.every(reg =>
-        reg.test(option == FilterCards.AllText ? content : title)
+      return regGroup.some(regs =>
+        regs.every(reg =>
+          reg.test(option == FilterCards.AllText ? content : title)
+        )
       )
     })
     if (customSelectedNodes.length) {

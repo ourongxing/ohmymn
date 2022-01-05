@@ -5,6 +5,7 @@ import * as autoreplace from "addons/autoreplace"
 import * as autostandardize from "addons/autostandardize"
 import * as magicaction from "addons/magicaction"
 import * as anotherautodef from "addons/anotherautodef"
+import * as autotag from "addons/autotag"
 import * as ohmymn from "addons/ohmymn"
 import * as gesture from "addons/gesture"
 import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
@@ -18,7 +19,8 @@ const addons = [
   autostandardize,
   autocomplete,
   autoreplace,
-  autolist
+  autolist,
+  autotag
 ]
 
 // 插件总开关，按显示的顺序

@@ -164,6 +164,19 @@ const dict = {
         switch_title: "当两者都存在时请使用「交换标题和摘录」"
       }
     },
+    autotag: {
+      intro: "自动加标签",
+      link: "",
+      option: {
+        preset: ["自定义"],
+        tag_selected: ["使用 AutoTag 的配置", "确定"]
+      },
+      label: {
+        preset: "选择需要的预设",
+        custom_tag: "自定义，点击查看具体格式",
+        tag_selected: "给卡片加标签"
+      }
+    },
     more: {
       donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
       github:

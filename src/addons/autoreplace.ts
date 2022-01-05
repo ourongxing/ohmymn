@@ -8,6 +8,7 @@ const { intro, link, label, help, option } = lang.addon.autoreplace
 export const enum AutoReplacePreset {
   Custom
 }
+
 const enum ReplaceSelected {
   AsAutoReplace
 }
