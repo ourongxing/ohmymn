@@ -16,6 +16,7 @@ import {
 import { Addon, MN } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import lang from "lang"
+import { updateProfileTemp } from "utils/profile/updateDataSource"
 
 export const eventHandlers = eventHandlerController([
   Addon.key + "InputOver",
@@ -132,6 +133,7 @@ const onSelectChange: eventHandler = sender => {
 const onInputOver: eventHandler = sender => {
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
+  updateProfileTemp(key, content)
   content ? showHUD(hud.input_saved) : showHUD(hud.input_clear)
 }
 

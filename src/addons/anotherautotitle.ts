@@ -1,4 +1,4 @@
-import { profile } from "profile"
+import { profile, profileTemp } from "profile"
 import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
@@ -69,19 +69,19 @@ const config: IConfig = {
 
 const util = {
   checkGetTitle(text: string) {
-    const { preset, wordCount, customBeTitle } = profile.anotherautotitle
+    const { preset, wordCount } = profile.anotherautotitle
     for (const set of preset) {
       switch (set) {
         case AutoTitlePreset.Custom:
-          if (!customBeTitle) break
-          const regGroup = string2RegArray(customBeTitle)
+          const { customBeTitle: regGroup } = profileTemp.regArray
+          if (!regGroup) continue
           if (regGroup.some(regs => regs.every(reg => reg.test(text))))
             return {
               title: text
             }
           break
         case AutoTitlePreset.NoPunctuation:
-          if (!wordCount) break
+          if (!wordCount) continue
           const limitedNum = reverseEscape(wordCount)
           const actualNum = countWord(text)
           const isTitle =

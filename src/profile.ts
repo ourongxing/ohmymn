@@ -5,6 +5,7 @@ import { AutoStandardizePreset } from "addons/autostandardize"
 import { AutoTagPreset } from "addons/autotag"
 import { PanelHeight, PanelPosition } from "addons/ohmymn"
 import { QuickSwitch } from "synthesizer"
+import { ReplaceParam } from "utils/input"
 
 const profilePreset = {
   ohmymn: {
@@ -70,36 +71,45 @@ const docProfilePreset = {
 }
 
 // 感觉转换这么复杂，每次使用的时候都需要转换，有点浪费，应该在读配置的时候预先缓存
-// 主要还是 [//,//];[//,//] 和 (//,"",);
-const profileTemp = {
+// 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
+const profileTempPreset = {
   replaceParam: {
-    customReplace: "",
-    customList: "",
-    customTag: "",
-    customExtractTitle: ""
+    customReplace: [{}] as ReplaceParam[] | undefined,
+    customList: [{}] as ReplaceParam[] | undefined,
+    customTag: [{}] as ReplaceParam[] | undefined,
+    customExtractTitle: [{}] as ReplaceParam[] | undefined
   },
   regArray: {
-    customBeTitle: "",
-    customDefLink: "",
-    customSplit: ""
+    customBeTitle: [[]] as RegExp[][] | undefined,
+    customDefLink: [[]] as RegExp[][] | undefined,
+    customSplit: [[]] as RegExp[][] | undefined
   }
 }
 
+type IProfileTemp = typeof profileTempPreset
 type IProfile = typeof profilePreset
 type IDocProfile = typeof docProfilePreset
 
 const profile: {
   [k: string]: { [k: string]: boolean | string | number[] }
 } & IProfile = JSON.parse(JSON.stringify(profilePreset))
+
 const docProfile: {
   [k: string]: { [k: string]: boolean | string | number[] }
 } & IDocProfile = JSON.parse(JSON.stringify(docProfilePreset))
+
+const profileTemp: {
+  [k: string]: { [k: string]: RegExp[][] | ReplaceParam[] | undefined }
+} & IProfileTemp = JSON.parse(JSON.stringify(profileTempPreset))
 
 export {
   profile,
   profilePreset,
   docProfile,
   docProfilePreset,
+  profileTemp,
+  profileTempPreset,
   IProfile,
-  IDocProfile
+  IDocProfile,
+  IProfileTemp
 }

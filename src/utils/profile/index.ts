@@ -1,8 +1,8 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { docProfile, profile } from "profile"
-import { dataSource, dataSourceIndex } from "synthesizer"
 import { log } from "utils/common"
-import { Addon, MN } from "const"
+import { Addon } from "const"
+import { updateProfileDataSource } from "./updateDataSource"
 
 let allProfile: IProfile[]
 let allDocProfile: { [k: string]: IDocProfile }
@@ -15,43 +15,6 @@ const setDataByKey = (
   data: IProfile[] | { [k: string]: IDocProfile },
   key: string
 ) => void NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
-
-export const updateDataSource = (
-  profile: IProfile | IDocProfile,
-  profileSaved: any,
-  refresh = false
-) => {
-  // 更新 DateSouce 和 Profile
-  for (const [name, _] of Object.entries(profile)) {
-    for (let [key, val] of Object.entries(_)) {
-      if (!dataSourceIndex?.[name]?.[key]) continue
-      const [section, row] = dataSourceIndex[name][key]
-      val = profileSaved?.[name]?.[key] ?? val
-      switch (typeof val) {
-        case "boolean":
-          // @ts-ignore
-          dataSource[section].rows[row].status = val
-          // @ts-ignore
-          _[key] = val
-          break
-        case "string":
-          // @ts-ignore
-          dataSource[section].rows[row].content = val
-          // @ts-ignore
-          _[key] = val
-          break
-        // number[]
-        default:
-          // @ts-ignore
-          dataSource[section].rows[row].selections = [...val]
-          // @ts-ignore
-          _[key] = [...val]
-      }
-    }
-  }
-  // 刷新控制面板
-  if (refresh) MN.settingViewController.tableView?.reloadData()
-}
 
 export const enum Range {
   first,
@@ -73,11 +36,18 @@ const readProfile = (docmd5: string, range: Range) => {
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
     case Range.doc:
       // 打开文档时读文档配置，此时也必须读全局配置
-      updateDataSource(docProfile, allDocProfile?.[docmd5] ?? docProfilePreset)
+      updateProfileDataSource(
+        docProfile,
+        allDocProfile?.[docmd5] ?? docProfilePreset
+      )
       log("读取当前文档配置", "profile")
     case Range.global:
       // 切换配置时只读全局配置，读全局配置不需要 md5
-      updateDataSource(profile, allProfile[docProfile.ohmymn.profile[0]], true)
+      updateProfileDataSource(
+        profile,
+        allProfile[docProfile.ohmymn.profile[0]],
+        true
+      )
       log("读取全局配置", "profile")
   }
 }

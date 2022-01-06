@@ -52,7 +52,7 @@ const string2RegArray = (str: string): RegExp[][] => {
   )
 }
 
-interface ReplaceParam {
+export interface ReplaceParam {
   regexp: RegExp
   newSubStr: string
   fnKey: number

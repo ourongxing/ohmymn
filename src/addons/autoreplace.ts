@@ -1,8 +1,9 @@
-import { profile } from "profile"
+import { profile, profileTemp } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
+import { log } from "utils/common"
 
 const { intro, link, label, help, option } = lang.addon.autoreplace
 export const enum AutoReplacePreset {
@@ -43,12 +44,12 @@ const config: IConfig = {
 
 const util = {
   replaceText(text: string) {
-    const preset = profile.autoreplace.preset
+    const { preset } = profile.autoreplace
     for (const set of preset) {
       switch (set) {
         case AutoReplacePreset.Custom:
-          if (!profile.autoreplace.customReplace) break
-          const params = string2ReplaceParam(profile.autoreplace.customReplace)
+          const { customReplace: params } = profileTemp.replaceParam
+          if (!params) continue
           let _text = text
           params.forEach(param => {
             _text = _text.replace(param.regexp, param.newSubStr)

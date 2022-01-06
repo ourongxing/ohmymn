@@ -1,10 +1,16 @@
-import { profile } from "profile"
+import { profile, profileTemp } from "profile"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
+import { log } from "utils/common"
 
 const { label, option, intro, link } = lang.addon.anotherautodef
+const enum AutoDefPreset {
+  CustomExtract,
+  CustomSplit
+}
+
 const config: IConfig = {
   name: "AnotherAutoDef",
   intro,
@@ -72,13 +78,12 @@ const util = {
   },
 
   checkGetDefTitle(text: string) {
-    const { preset, onlyDesc, toTitleLink, customDefLink, customExtractTitle } =
-      profile.anotherautodef
+    const { preset, onlyDesc, toTitleLink } = profile.anotherautodef
     for (const set of preset)
       switch (set) {
-        case 0:
-          if (!customExtractTitle) break
-          const params = string2ReplaceParam(customExtractTitle)
+        case AutoDefPreset.CustomExtract:
+          const { customExtractTitle: params } = profileTemp.replaceParam
+          if (!params) continue
           for (const item of params) {
             if (item.regexp.test(text)) {
               const title = text.replace(item.regexp, item.newSubStr)
@@ -89,9 +94,10 @@ const util = {
             }
           }
           break
-        case 1:
-          if (!customDefLink) break
-          const regs = string2RegArray(customDefLink)[0]
+        case AutoDefPreset.CustomSplit:
+          const { customDefLink } = profileTemp.regArray
+          if (!customDefLink) continue
+          const regs = customDefLink[0]
           for (const reg of regs)
             if (reg.test(text)) {
               const [def, desc] = text
