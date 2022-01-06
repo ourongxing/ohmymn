@@ -1,10 +1,29 @@
-//@ts-nocheck 有点黑魔法了，不过效果不错
+// @ts-nocheck 有点黑魔法了，不过效果不错
 import { MN } from "const"
 import { IProfile, IDocProfile, profileTemp } from "profile"
 import { dataSource, dataSourceIndex } from "synthesizer"
+import { log } from "utils/common"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 
+export const getMNLinkValue = (val: string) => {
+  const noteid = val.replace("marginnote3app://note/", "")
+  if (noteid != val) {
+    const node = MN.db.getNoteById(noteid)
+    return node && node.childNotes.length
+      ? node.childNotes
+          .filter(
+            note =>
+              note.colorIndex !== 13 && note.comments[0].type == "TextNote"
+          )
+          .map(note => note.comments[0].text.trim())
+          .join("; ")
+      : ""
+  }
+  return val
+}
+
 export const updateProfileTemp = (key: string, val: string) => {
+  val = getMNLinkValue(val)
   if (key in profileTemp.regArray) {
     profileTemp.regArray[key] = val ? string2RegArray(val) : undefined
   }

@@ -87,7 +87,10 @@ const textFieldShouldReturn = (sender: UITextField) => {
       key: row.key,
       content: text
     })
-  } else showHUD(lang.handle_user_action.input_error)
+  } else {
+    showHUD(lang.handle_user_action.input_error)
+    if (/^marginnote3app:/.test(text)) openUrl(text)
+  }
   return true
 }
 
