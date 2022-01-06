@@ -25,7 +25,9 @@ export const Addon = {
   title: mnaddon.title,
   author: mnaddon.author,
   version: mnaddon.version,
-  link: "https://github.com/mnaddon/ohmymn"
+  link: "https://github.com/mnaddon/ohmymn",
+  profileKey: "marginnote_ohmymn_profile_global_v3",
+  docProfileKey: "marginnote_ohmymn_profile_doc_v3"
 }
 
 export const MN = new MNCore()

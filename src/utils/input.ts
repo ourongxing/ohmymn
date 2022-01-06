@@ -5,7 +5,7 @@ const reverseEscape = (text: string) => JSON.parse(`{"key": ${text}}`).key
 const isNumber = (text: string) => !isNaN(Number(text))
 
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
-  // 输入格式 (/sd/, "", 1)
+  // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
   const brackets = str.trim().split(/\s*;\s*(?=\()/)
   const params = []
   for (let bracket of brackets) {

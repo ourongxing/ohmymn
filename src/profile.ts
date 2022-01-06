@@ -45,8 +45,8 @@ const profilePreset = {
     onlyDesc: false,
     toTitleLink: false,
     customSplit: "",
-    customSplitName: "",
-    customDefTitle: ""
+    customDefLink: "",
+    customExtractTitle: ""
   },
   autolist: {
     preset: [] as AutoListPreset[],
@@ -66,6 +66,22 @@ const docProfilePreset = {
   ohmymn: {
     profile: [0],
     autoCorrect: false
+  }
+}
+
+// 感觉转换这么复杂，每次使用的时候都需要转换，有点浪费，应该在读配置的时候预先缓存
+// 主要还是 [//,//];[//,//] 和 (//,"",);
+const profileTemp = {
+  replaceParam: {
+    customReplace: "",
+    customList: "",
+    customTag: "",
+    customExtractTitle: ""
+  },
+  regArray: {
+    customBeTitle: "",
+    customDefLink: "",
+    customSplit: ""
   }
 }
 

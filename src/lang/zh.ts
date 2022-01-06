@@ -34,11 +34,11 @@ const dict = {
       label: {
         only_desc: "摘录仅保留定义项",
         to_title_link: "别名转为标题链接",
-        custom_split_name: "自定义别名分词，点击查看具体格式",
+        custom_split: "自定义别名分词，点击查看具体格式",
         preset: "选择需要的预设",
-        custom_split: "自定义定义联项，点击查看具体格式",
-        custom_def_title: "自定义提取内容，点击查看具体格式",
-        extraTitle: "从卡片中提取标题"
+        custom_def_link: "自定义定义联项，点击查看具体格式",
+        custom_extract_title: "自定义提取内容，点击查看具体格式",
+        extract_title: "从卡片中提取标题"
       },
       option: {
         preset: [
@@ -49,7 +49,8 @@ const dict = {
           "xxx ，是(指) yyy",
           "xxx 是(指)，yyy",
           "xxx 是指 yyy"
-        ]
+        ],
+        extract_title: ["使用 AutoDef 中的配置", "确定"]
       }
     },
     magicaction: {

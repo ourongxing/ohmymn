@@ -20,9 +20,9 @@ const config: IConfig = {
       label: label.to_title_link
     },
     {
-      key: "customSplitName",
+      key: "customSplit",
       type: cellViewType.input,
-      label: label.custom_split_name,
+      label: label.custom_split,
       link
     },
     {
@@ -32,23 +32,23 @@ const config: IConfig = {
       label: label.preset
     },
     {
-      key: "customSplit",
+      key: "customDefLink",
       type: cellViewType.input,
-      label: label.custom_split,
+      label: label.custom_def_link,
       link
     },
     {
-      key: "customDefTitle",
+      key: "customExtractTitle",
       type: cellViewType.input,
-      label: label.custom_def_title,
+      label: label.custom_extract_title,
       link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: label.extraTitle,
-      option: ["使用 AutoDef 中的配置", "确定"],
+      label: label.extract_title,
+      option: option.extract_title,
       key: "extractTitle"
     }
   ]
@@ -57,8 +57,8 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const { customSplitName } = profile.anotherautodef
-    const regs = customSplitName ? string2RegArray(customSplitName)[0] : []
+    const { customSplit } = profile.anotherautodef
+    const regs = customSplit ? string2RegArray(customSplit)[0] : []
     regs.push(reg)
     regs.forEach(reg => {
       text = text.replace(reg, "😎")
@@ -72,13 +72,13 @@ const util = {
   },
 
   checkGetDefTitle(text: string) {
-    const { preset, onlyDesc, toTitleLink, customSplit, customDefTitle } =
+    const { preset, onlyDesc, toTitleLink, customDefLink, customExtractTitle } =
       profile.anotherautodef
     for (const set of preset)
       switch (set) {
         case 0:
-          if (!customDefTitle) break
-          const params = string2ReplaceParam(customDefTitle)
+          if (!customExtractTitle) break
+          const params = string2ReplaceParam(customExtractTitle)
           for (const item of params) {
             if (item.regexp.test(text)) {
               const title = text.replace(item.regexp, item.newSubStr)
@@ -90,8 +90,8 @@ const util = {
           }
           break
         case 1:
-          if (!customSplit) break
-          const regs = string2RegArray(customSplit)[0]
+          if (!customDefLink) break
+          const regs = string2RegArray(customDefLink)[0]
           for (const reg of regs)
             if (reg.test(text)) {
               const [def, desc] = text

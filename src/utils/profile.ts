@@ -2,16 +2,12 @@ import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { docProfile, profile } from "profile"
 import { dataSource, dataSourceIndex } from "synthesizer"
 import { log } from "utils/common"
-import { MN } from "const"
+import { Addon, MN } from "const"
 
-// 读配置包含两种情况
-// 1.刚打开 MN 然后打开笔记本，读两个配置文件，然后合并
-// 2.切换文档，只需要读取 doc 配置
-
-const profileKey = "marginnote_ohmymn_profile_global_v3"
-const docProfileKey = "marginnote_ohmymn_profile_doc_v3"
 let allProfile: IProfile[]
 let allDocProfile: { [k: string]: IDocProfile }
+
+const { profileKey, docProfileKey } = Addon
 
 const getDataByKey = (key: string): any =>
   NSUserDefaults.standardUserDefaults().objectForKey(key)
