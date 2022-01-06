@@ -83,14 +83,14 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 
 const queryAddonCommandStatus = () => {
   // 仅在学习模式下打开
-  if (MN.studyController.studyMode == studyMode.study)
-    return {
-      image: "logo.png",
-      object: self,
-      selector: "switchPanel:",
-      checked: panelStatus ? true : false
-    }
-  return null
+  return MN.studyController.studyMode == studyMode.study
+    ? {
+        image: "logo.png",
+        object: self,
+        selector: "switchPanel:",
+        checked: panelStatus
+      }
+    : null
 }
 
 export default {

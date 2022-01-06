@@ -1,4 +1,4 @@
-import { MbBookNote } from "types/MarginNote"
+import { MbBookNote, studyMode } from "types/MarginNote"
 import { eventHandler } from "types/Addon"
 import { UIAlertViewStyle } from "types/UIKit"
 import handleExcerpt from "jsExtension/excerptHandler"

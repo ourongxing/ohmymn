@@ -1,6 +1,6 @@
 import { Dict } from "lang"
 
-const dict: Dict = {
+const dict = {
   addon: {
     ohmymn: {
       option: {
