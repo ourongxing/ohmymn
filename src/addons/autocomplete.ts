@@ -1,7 +1,7 @@
 import lang from "lang"
 import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
-import { isOCNull, log, showHUD } from "utils/common"
+import { isOCNull, showHUD } from "utils/common"
 import { reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
@@ -131,7 +131,7 @@ const util = {
         text
       }
     } catch (error) {
-      log(error, "autocomplete")
+      console.log(error, "autocomplete")
       if (error != "不是单词") showHUD(String(error))
       return false
     }

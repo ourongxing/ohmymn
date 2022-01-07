@@ -1,5 +1,5 @@
 import { util as magicaction } from "addons/magicaction"
-import { log } from "utils/common"
+import { console } from "utils/common"
 import {
   reverseEscape,
   string2RegArray,
@@ -56,7 +56,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "customList":
       case "customTag": {
         const res = getMNLinkValue(text)
-        log(res)
+        console.log(res)
         if (!res) throw ""
         string2ReplaceParam(res).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)

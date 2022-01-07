@@ -5,7 +5,7 @@ import {
   getNoteById,
   undoGroupingWithRefresh
 } from "utils/note"
-import { delayBreak, log, showHUD } from "utils/common"
+import { delayBreak, showHUD } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
 import { HasTitleThen } from "addons/anotherautotitle"
@@ -18,7 +18,7 @@ let isModifying: boolean
 let lastExcerptText: string | undefined
 
 export default async (_note: MbBookNote, _lastExcerptText?: string) => {
-  log("正在处理摘录", "excerpt")
+  console.log("正在处理摘录", "excerpt")
   // 初始化全局变量
   note = _note
   isOCR = false
@@ -28,7 +28,7 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
   isModifying = lastExcerptText !== undefined
   if (isComment) nodeNote = getNoteById(note.groupNoteId!)
   if (profile.ohmymn.lockExcerpt && isModifying && lastExcerptText != "😎") {
-    log("检测到开启锁定摘录选项，还原摘录", "excerpt")
+    console.log("检测到开启锁定摘录选项，还原摘录", "excerpt")
     processExcerpt(undefined, lastExcerptText!)
     return
   }
@@ -43,27 +43,27 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
   if (note.excerptPic) {
     const autoOCR =
       getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
-    log("摘录是图片", "excerpt")
+    console.log("摘录是图片", "excerpt")
     if (autoOCR) {
       const success = await delayBreak(20, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
-        log("OCR 成功", "excerpt")
+        console.log("OCR 成功", "excerpt")
         isOCR = true
       } else {
-        log("OCR 失败，没有文字", "excerpt")
+        console.log("OCR 失败，没有文字", "excerpt")
         return
       }
     } else {
-      log("没有开启自动 OCR 选项，不处理图片", "excerpt")
+      console.log("没有开启自动 OCR 选项，不处理图片", "excerpt")
       return
     }
   }
 
   if (docProfile.ohmymn.autoCorrect) {
-    log("开始矫正", "excerpt")
-    log(note.excerptText, "highlight")
+    console.log("开始矫正", "excerpt")
+    console.log(note.excerptText, "highlight")
     const originText = note.excerptText!
     // 强制进行自动矫正
     note.excerptText = originText + "??????????"
@@ -73,9 +73,9 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
       0.1,
       () => note.excerptText != originText + "??????????"
     )
-    if (success) log("矫正成功", "excerpt")
+    if (success) console.log("矫正成功", "excerpt")
     else {
-      log("矫正失败", "excerpt")
+      console.log("矫正失败", "excerpt")
       note.excerptText = originText
     }
   }
@@ -88,7 +88,7 @@ const excerptHandler = async () => {
 
   // 摘录是作为评论，反正是卡片已经存在的情况下摘录，如果继续满足成为标题的条件
   if (isComment && title) {
-    log("当前摘录作为评论", "excerpt")
+    console.log("当前摘录作为评论", "excerpt")
     switch (profile.anotherautotitle.hasTitleThen[0]) {
       case HasTitleThen.TitleLink:
         const nodeTitle = nodeNote?.noteTitle
@@ -114,14 +114,14 @@ const excerptHandler = async () => {
       !title &&
       isBroadened(note?.noteTitle ?? "", text)
     ) {
-      log("正在拓宽作为标题的摘录，不受限制", "excerpt")
+      console.log("正在拓宽作为标题的摘录，不受限制", "excerpt")
       title = text
       text = ""
     }
   }
 
-  log(title ? `当前标题是：${title}` : "没有标题", "excerpt")
-  log(text ? `当前摘录内容是：${text}` : "摘录转为了标题", "excerpt")
+  console.log(title ? `当前标题是：${title}` : "没有标题", "excerpt")
+  console.log(text ? `当前摘录内容是：${text}` : "摘录转为了标题", "excerpt")
   processExcerpt(title, text)
 }
 

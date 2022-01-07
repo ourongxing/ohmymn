@@ -41,6 +41,7 @@ export type ISetting =
 
 export interface ISettingInput extends ISettingBasic {
   type: cellViewType.input | cellViewType.inlineInput
+  bind?: [string, number]
 }
 
 export interface ISettingButton extends ISettingBasic {
@@ -77,6 +78,7 @@ export type IRow =
 export interface IRowPlainText extends LabelType {
   type: cellViewType.plainText
   link: string
+  bind?: [string, number]
 }
 
 export interface IRowSwitch extends KeyLabelType {
@@ -87,6 +89,7 @@ export interface IRowSwitch extends KeyLabelType {
 export interface IRowInput extends KeyLabelType {
   type: cellViewType.input | cellViewType.inlineInput
   content: string
+  bind?: [string, number]
 }
 
 export interface IRowButton extends KeyLabelType {

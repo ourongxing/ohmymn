@@ -9,7 +9,6 @@ import * as autotag from "addons/autotag"
 import * as ohmymn from "addons/ohmymn"
 import * as gesture from "addons/gesture"
 import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
-import { log } from "utils/common"
 import lang from "lang"
 
 // magicaction, ohmymn, gesture 默认前三个，不用包含在内
@@ -60,7 +59,7 @@ const more: ISection = {
 }
 
 const genSection = (config: IConfig): ISection => {
-  const rows: Array<IRow> = [
+  const rows: IRow[] = [
     {
       type: cellViewType.plainText,
       label: config.intro,
@@ -72,8 +71,11 @@ const genSection = (config: IConfig): ISection => {
     rows.push(setting)
     if (
       setting.help &&
-      setting.type != cellViewType.buttonWithInput &&
-      setting.type != cellViewType.button
+      [
+        cellViewType.select,
+        cellViewType.muiltSelect,
+        cellViewType.switch
+      ].includes(setting.type)
     )
       rows.push({
         type: cellViewType.plainText,
@@ -84,8 +86,17 @@ const genSection = (config: IConfig): ISection => {
       rows.push({
         type: cellViewType.plainText,
         label: "↑ " + setting.label,
-        link: setting.link ?? ""
+        link: setting.link ?? "",
+        bind: setting.bind
       })
+    else if (setting.help && setting.type == cellViewType.inlineInput) {
+      rows.push({
+        type: cellViewType.plainText,
+        label: "↑ " + setting.help,
+        link: setting.link ?? "",
+        bind: setting.bind
+      })
+    }
   }
   return {
     header: config.name,
@@ -97,10 +108,10 @@ export const actionKey: string[] = []
 export const addonList: string[] = []
 
 export const genDataSource = (
-  configs: Array<IConfig>,
+  configs: IConfig[],
   magicaction: IConfig
-): Array<ISection> => {
-  const dataSource: Array<ISection> = []
+): ISection[] => {
+  const dataSource: ISection[] = []
   for (let config of configs) {
     dataSource.push(genSection(config))
     if (config.actions.length) {
@@ -139,7 +150,7 @@ export const genDataSource = (
   return dataSource
 }
 
-const genDataSourceIndex = (dataSource: Array<ISection>) => {
+const genDataSourceIndex = (dataSource: ISection[]) => {
   const dataSourceIndex: {
     [k: string]: {
       [k: string]: [number, number]

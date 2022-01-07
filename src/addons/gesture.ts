@@ -2,7 +2,6 @@ import lang from "lang"
 import { dataSource } from "synthesizer"
 import { cellViewType, IConfig } from "types/Addon"
 import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
-import { log } from "utils/common"
 
 const option: string[] = []
 

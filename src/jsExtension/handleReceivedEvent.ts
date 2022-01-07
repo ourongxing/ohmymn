@@ -1,11 +1,11 @@
-import { MbBookNote, studyMode } from "types/MarginNote"
+import { MbBookNote } from "types/MarginNote"
 import { eventHandler } from "types/Addon"
 import { UIAlertViewStyle } from "types/UIKit"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { closePanel, layoutViewController } from "jsExtension/switchPanel"
 import { docProfile, profile } from "profile"
 import { actions } from "synthesizer"
-import { delayBreak, HUDController, log, popup, showHUD } from "utils/common"
+import { delayBreak, HUDController, popup, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import {
   getNoteById,
@@ -13,7 +13,7 @@ import {
   getSelectNodesAll,
   undoGroupingWithRefresh
 } from "utils/note"
-import { Addon, MN } from "const"
+import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import lang from "lang"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
@@ -123,9 +123,6 @@ const onSelectChange: eventHandler = sender => {
       case "panelHeight":
         layoutViewController()
         break
-      case "quickSwitch":
-        MN.settingViewController.tableView?.reloadData()
-        break
     }
   }
 }
@@ -157,14 +154,14 @@ const onPopupMenuOnNote: eventHandler = async sender => {
 }
 
 const onChangeExcerptRange: eventHandler = sender => {
-  log("修改摘录", "excerpt")
+  console.log("修改摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isChangeExcerptRange = true
   handleExcerpt(note, lastExcerptText)
 }
 
 const onProcessNewExcerpt: eventHandler = sender => {
-  log("创建摘录", "excerpt")
+  console.log("创建摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true
   // 摘录前初始化，使得创建摘录时可以自由修改

@@ -10,6 +10,7 @@ import { defineConfig } from "rollup"
 import banner from "rollup-plugin-banner"
 import copy from "rollup-plugin-copy"
 import mnaddon from "./mnaddon.json"
+import AutoImport from "unplugin-auto-import/rollup"
 
 // 判断是否为开发环境
 const isProd = process.env.NODE_ENV === "production"
@@ -56,13 +57,20 @@ export default defineConfig({
   },
   plugins: [
     typescript(),
+    AutoImport({
+      imports: [
+        {
+          "utils/common": ["console"]
+        }
+      ]
+    }),
     nodeResolve({ browser: true }),
     commonjs(),
     json(),
     isProd &&
       strip({
         include: ["**/*.ts"],
-        functions: ["log"]
+        functions: ["console.*"]
       }),
     isProd && minify(),
     isProd && banner(bannerText),

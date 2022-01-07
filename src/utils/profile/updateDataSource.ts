@@ -2,7 +2,7 @@
 import { MN } from "const"
 import { IProfile, IDocProfile, profileTemp } from "profile"
 import { dataSource, dataSourceIndex } from "synthesizer"
-import { log } from "utils/common"
+
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 
 export const getMNLinkValue = (val: string) => {

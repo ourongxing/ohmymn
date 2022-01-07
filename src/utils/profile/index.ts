@@ -1,6 +1,6 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { docProfile, profile } from "profile"
-import { log, showHUD } from "utils/common"
+import { showHUD } from "utils/common"
 import { Addon, MN } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
 import { MbBookNote } from "types/MarginNote"
@@ -77,10 +77,10 @@ const readProfile = (
       const docProfileSaved: {
         [k: string]: IDocProfile
       } = getDataByKey(docProfileKey)
-      if (!docProfileSaved) log("初始化文档配置", "profile")
+      if (!docProfileSaved) console.log("初始化文档配置", "profile")
       allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
       const profileSaved: IProfile[] = getDataByKey(profileKey)
-      if (!profileSaved) log("初始化全局配置", "profile")
+      if (!profileSaved) console.log("初始化全局配置", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
     case Range.doc:
       // 打开文档时读文档配置，此时也必须读全局配置
@@ -88,7 +88,7 @@ const readProfile = (
         docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
-      log("读取当前文档配置", "profile")
+      console.log("读取当前文档配置", "profile")
     case Range.global:
       // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
@@ -96,7 +96,7 @@ const readProfile = (
         allProfile[docProfile.ohmymn.profile[0]],
         true
       )
-      log("读取全局配置", "profile")
+      console.log("读取全局配置", "profile")
   }
 }
 
@@ -110,14 +110,14 @@ const saveProfile = (
   if (num != undefined) {
     allProfile[num] = deepCopy(profile)
     setDataByKey(allProfile, profileKey)
-    log("保存全局配置", "profile")
+    console.log("保存全局配置", "profile")
   }
   if (docmd5 != undefined) {
     // 这传的是引用，我靠，气死了，折腾好久
     // allDocProfile[docmd5] = docProfile
     allDocProfile[docmd5] = deepCopy(docProfile)
     setDataByKey(allDocProfile, docProfileKey)
-    log("保存当前文档配置", "profile")
+    console.log("保存当前文档配置", "profile")
   }
 }
 

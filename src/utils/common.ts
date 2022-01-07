@@ -1,8 +1,14 @@
 import { UIAlertViewStyle } from "types/UIKit"
 import { Addon, MN } from "../const"
 
-const log = (obj: any, suffix = "normal") =>
-  void JSB.log(`${Addon.key}-${suffix} %@`, obj)
+const console = {
+  log(obj: any, suffix = "normal") {
+    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+  },
+  error(obj: any, suffix = "error") {
+    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+  }
+}
 
 // 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration: number = 1) =>
@@ -103,7 +109,7 @@ const popup = (
 const isOCNull = (obj: any) => obj == NSNull.new()
 
 export {
-  log,
+  console,
   showHUD,
   HUDController,
   alert,

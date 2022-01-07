@@ -1,6 +1,6 @@
 import { profile } from "profile"
 import { docMapSplitMode, studyMode } from "types/MarginNote"
-import { delay, log, showHUD } from "utils/common"
+import { delay, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
 import lang from "lang"

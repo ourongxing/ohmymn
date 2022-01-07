@@ -3,7 +3,6 @@ import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
-import { log } from "utils/common"
 
 const { label, option, intro, link } = lang.addon.anotherautodef
 const enum AutoDefPreset {

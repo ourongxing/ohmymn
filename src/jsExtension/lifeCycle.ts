@@ -1,6 +1,6 @@
 import settingViewControllerInst from "settingViewController/main"
 import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, log, showHUD } from "utils/common"
+import { getObjCClassDeclar, isThisWindow, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { profile } from "profile"
 import { MN } from "const"
@@ -27,7 +27,7 @@ const SettingViewController = JSB.defineClass(
 
 // 打开窗口，可以用来初始化
 const sceneWillConnect = () => {
-  log("打开窗口", "lifeCycle")
+  console.log("打开窗口", "lifeCycle")
   MN.window = self.window
   MN.studyController = MN.app.studyController(MN.window)
   MN.settingViewController = new SettingViewController()
@@ -37,14 +37,14 @@ const sceneWillConnect = () => {
 // 关闭窗口，不会调用关闭笔记本和关闭文档的方法
 // iPad 上不触发，切换到后台可以
 const sceneDidDisconnect = () => {
-  log("关闭窗口", "lifeCycle")
+  console.log("关闭窗口", "lifeCycle")
   // 只要打开过文档，再关闭窗口就保存
   if (thisDocMd5) saveProfile(thisDocMd5)
 }
 
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
-  log("打开笔记本", "lifeCycle")
+  console.log("打开笔记本", "lifeCycle")
   MN.notebookId = notebookid
   eventHandlers.add()
   gestureHandlers.add()
@@ -52,7 +52,7 @@ const notebookWillOpen = (notebookid: string) => {
 
 // 关闭笔记本
 const notebookWillClose = (notebookid: string) => {
-  log("关闭笔记本", "lifeCycle")
+  console.log("关闭笔记本", "lifeCycle")
   closePanel()
   eventHandlers.remove()
   gestureHandlers.remove()
@@ -67,38 +67,40 @@ const documentDidOpen = (docmd5: string) => {
     UIApplication.sharedApplication().idleTimerDisabled =
       profile.ohmymn.screenAlwaysOn
   }
-  log("打开文档", "lifeCycle")
+  console.log("打开文档", "lifeCycle")
   thisDocMd5 = docmd5
 }
 
 // 关闭文档，用于切换时保存上一个文档的配置
 let thisDocMd5 = ""
 const documentWillClose = (docmd5: string) => {
-  log("关闭文档", "lifeCycle")
+  console.log("关闭文档", "lifeCycle")
   saveProfile(docmd5)
 }
 
 const addonDidConnect = () => {
-  log("插件启用", "lifeCycle")
+  console.log("插件启用", "lifeCycle")
 }
 
 // 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
-  log("插件停用", "lifeCycle")
-  log(MN.studyController.readerController.currentDocumentController.docMd5)
+  console.log("插件停用", "lifeCycle")
+  console.log(
+    MN.studyController.readerController.currentDocumentController.docMd5
+  )
   showHUD(lang.addon_life_cycle.remove, 2)
   removeProfile()
 }
 
 const sceneWillResignActive = () => {
-  log("应用进入后台", "lifeCycle")
+  console.log("应用进入后台", "lifeCycle")
   if (thisDocMd5) saveProfile(thisDocMd5)
 }
 
 const sceneDidBecomeActive = () => {
   // iPad 上切换后台面板会变宽
   layoutViewController()
-  log("应用进入前台", "lifeCycle")
+  console.log("应用进入前台", "lifeCycle")
 }
 
 export const clsMethons = {

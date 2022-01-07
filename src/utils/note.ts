@@ -1,5 +1,5 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
-import { delay, log, postNotification } from "./common"
+import { delay, postNotification } from "./common"
 import { MN } from "const"
 
 /**
