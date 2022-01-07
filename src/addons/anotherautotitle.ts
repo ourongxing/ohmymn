@@ -27,6 +27,26 @@ const config: IConfig = {
   intro,
   settings: [
     {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: option.preset,
+      label: label.preset
+    },
+    {
+      key: "wordCount",
+      type: cellViewType.inlineInput,
+      bind: ["preset", 1],
+      help: help.word_count,
+      label: label.word_count
+    },
+    {
+      key: "customBeTitle",
+      type: cellViewType.input,
+      label: label.custom_be_title,
+      bind: ["preset", 0],
+      link
+    },
+    {
       key: "hasTitleThen",
       type: cellViewType.select,
       label: label.has_title_then,
@@ -37,23 +57,6 @@ const config: IConfig = {
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
       label: label.change_title_no_limit
-    },
-    {
-      key: "preset",
-      type: cellViewType.muiltSelect,
-      option: option.preset,
-      label: label.preset
-    },
-    {
-      key: "wordCount",
-      type: cellViewType.inlineInput,
-      label: label.word_count
-    },
-    {
-      key: "customBeTitle",
-      type: cellViewType.input,
-      label: label.custom_be_title,
-      link
     }
   ],
   actions: [

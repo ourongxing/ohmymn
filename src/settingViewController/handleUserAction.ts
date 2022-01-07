@@ -1,4 +1,4 @@
-import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
+import { openUrl, popup, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
@@ -157,10 +157,7 @@ const selectAction = (param: {
     )
     menuController.menuTableView!.reloadData()
   }
-  // 貌似 iPad 上无法使用 reloadRow
-  MN.app.osType == osType.macOS
-    ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
-    : self.tableView.reloadData()
+  self.tableView.reloadData()
 }
 
 const clickSelectButton = (sender: UIButton) => {

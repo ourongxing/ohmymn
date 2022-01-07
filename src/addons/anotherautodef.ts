@@ -15,6 +15,26 @@ const config: IConfig = {
   intro,
   settings: [
     {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: option.preset,
+      label: label.preset
+    },
+    {
+      key: "customExtractTitle",
+      type: cellViewType.input,
+      bind: ["preset", 0],
+      label: label.custom_extract_title,
+      link
+    },
+    {
+      key: "customDefLink",
+      type: cellViewType.input,
+      bind: ["preset", 1],
+      label: label.custom_def_link,
+      link
+    },
+    {
       key: "onlyDesc",
       type: cellViewType.switch,
       label: label.only_desc
@@ -28,24 +48,6 @@ const config: IConfig = {
       key: "customSplit",
       type: cellViewType.input,
       label: label.custom_split,
-      link
-    },
-    {
-      key: "preset",
-      type: cellViewType.muiltSelect,
-      option: option.preset,
-      label: label.preset
-    },
-    {
-      key: "customDefLink",
-      type: cellViewType.input,
-      label: label.custom_def_link,
-      link
-    },
-    {
-      key: "customExtractTitle",
-      type: cellViewType.input,
-      label: label.custom_extract_title,
       link
     }
   ],

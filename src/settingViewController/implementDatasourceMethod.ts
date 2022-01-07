@@ -1,6 +1,6 @@
 import { addonList, dataSource } from "synthesizer"
-import { cellViewType } from "types/Addon"
-import { isOCNull, log } from "utils/common"
+import { cellViewType, IRow, IRowSelect } from "types/Addon"
+import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
 import { profile } from "profile"
@@ -10,22 +10,35 @@ import lang from "lang"
 const indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
 
-const numberOfSectionsInTableView = (tableView: UITableView) =>
-  dataSource.length
+const getSelections = (rows: IRow[], key: string) => {
+  const index = rows.findIndex(
+    _row =>
+      (_row.type == cellViewType.muiltSelect ||
+        _row.type == cellViewType.select) &&
+      _row.key == key
+  )
+  return index == -1 ? -1 : (rows[index] as IRowSelect).selections
+}
 
 const isSelected = (header: string): boolean => {
-  const { quickSwitch } = profile.ohmymn
+  const quickSwitch = getSelections(
+    dataSource[1].rows,
+    "quickSwitch"
+  ) as number[]
   return (
     !addonList.includes(header) ||
     quickSwitch.includes(addonList.findIndex(key => key == header))
   )
 }
 
+const numberOfSectionsInTableView = (tableView: UITableView) =>
+  dataSource.length
+
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const header = dataSource[section].header
+  const { header } = dataSource[section]
   return isSelected(header) ? dataSource[section].rows.length : 0
 }
 
@@ -33,7 +46,7 @@ const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const header = dataSource[section].header
+  const { header } = dataSource[section]
   return isSelected(header) ? header : new NSNull()
 }
 
@@ -41,13 +54,38 @@ const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const row = dataSource[indexPath.section].rows[indexPath.row]
+  const section = dataSource[indexPath.section]
+  const row = section.rows[indexPath.row]
   if (row.type === cellViewType.plainText) {
-    // 每行大约可以容纳 42 个半角字符
-    const lines = (byteLength(row.label) - (byteLength(row.label) % 42)) / 42
+    if (row.bind) {
+      const [key, index] = row.bind
+      const selections = getSelections(section.rows, key)
+      if (selections == -1) {
+        console.error("bind key 输入错误")
+        return 0
+      } else if (!selections.includes(index)) {
+        return 0
+      }
+    }
+    // 每行大约可以容纳 44 个半角字符
+    const byte = byteLength(row.label)
+    const lines = (byte - (byte % 44)) / 44 - (byte % 44 ? 0 : 1)
     const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
     return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
-  } else return 40
+  } else if (
+    (row.type == cellViewType.inlineInput || row.type == cellViewType.input) &&
+    row.bind
+  ) {
+    const [key, index] = row.bind
+    const selections = getSelections(section.rows, key)
+    if (selections == -1) {
+      console.error(lang.implement_datasource_method.bind_key)
+      return 0
+    } else if (!selections.includes(index)) {
+      return 0
+    }
+  }
+  return 40
 }
 
 const tableViewCellForRowAtIndexPath = (

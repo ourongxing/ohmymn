@@ -19,6 +19,7 @@ const dict = {
       },
       help: {
         profile: "【当前文档生效】可用于不同情景",
+        click_hidden: "在 MagicAction 执行后自动关闭控制面板",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
       }
     },
@@ -165,7 +166,8 @@ const dict = {
       },
       help: {
         has_title_then: "也要先满足预设条件",
-        switch_title: "当两者都存在时请使用「交换标题和摘录」"
+        switch_title: "当两者都存在时请使用「交换标题和摘录」",
+        word_count: "[中文字数, 英文单词个数]"
       }
     },
     autotag: {
@@ -216,7 +218,8 @@ const dict = {
   },
   implement_datasource_method: {
     none: "无",
-    clicked: "选中"
+    clicked: "选中",
+    bind_key: "bind key 输入错误"
   },
   addon_life_cycle: {
     remove: "OhMyMN 已停用，配置已重置"

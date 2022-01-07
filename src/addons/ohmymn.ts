@@ -57,7 +57,8 @@ const config: IConfig = {
     {
       key: "clickHidden",
       type: cellViewType.switch,
-      label: label.click_hidden
+      label: label.click_hidden,
+      help: help.click_hidden
     },
     {
       key: "screenAlwaysOn",
