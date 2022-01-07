@@ -1,7 +1,8 @@
 import {
   StudyController,
   NotebookController,
-  MbModelTool
+  MbModelTool,
+  osType
 } from "types/MarginNote"
 import { UIWindow, UITableViewController } from "types/UIKit"
 import mnaddon from "../mnaddon.json"
@@ -16,6 +17,7 @@ class MNCore {
   textColor!: UIColor
   mainPath!: string
   notebookId!: string
+  isMac = Application.sharedInstance().osType == osType.macOS
   app = Application.sharedInstance()
   db = Database.sharedInstance()
 }

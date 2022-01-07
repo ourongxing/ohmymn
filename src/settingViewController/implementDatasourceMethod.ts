@@ -3,7 +3,6 @@ import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
-import { profile } from "profile"
 import { byteLength, isHalfWidth } from "utils/text"
 import lang from "lang"
 
@@ -17,7 +16,11 @@ const getSelections = (rows: IRow[], key: string) => {
         _row.type == cellViewType.select) &&
       _row.key == key
   )
-  return index == -1 ? -1 : (rows[index] as IRowSelect).selections
+  if (index == -1) {
+    console.error(lang.implement_datasource_method.bind_key)
+    return null
+  }
+  return (rows[index] as IRowSelect).selections
 }
 
 const isSelected = (header: string): boolean => {
@@ -29,6 +32,13 @@ const isSelected = (header: string): boolean => {
     !addonList.includes(header) ||
     quickSwitch.includes(addonList.findIndex(key => key == header))
   )
+}
+
+const isHidden = (bind: [string, number], rows: IRow[]) => {
+  const [key, index] = bind
+  const selections = getSelections(rows, key)
+  if (!selections || !selections.includes(index)) return true
+  return false
 }
 
 const numberOfSectionsInTableView = (tableView: UITableView) =>
@@ -54,19 +64,10 @@ const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const section = dataSource[indexPath.section]
-  const row = section.rows[indexPath.row]
+  const { rows } = dataSource[indexPath.section]
+  const row = rows[indexPath.row]
   if (row.type === cellViewType.plainText) {
-    if (row.bind) {
-      const [key, index] = row.bind
-      const selections = getSelections(section.rows, key)
-      if (selections == -1) {
-        console.error("bind key 输入错误")
-        return 0
-      } else if (!selections.includes(index)) {
-        return 0
-      }
-    }
+    if (row.bind && isHidden(row.bind, rows)) return 0
     // 每行大约可以容纳 44 个半角字符
     const byte = byteLength(row.label)
     const lines = (byte - (byte % 44)) / 44 - (byte % 44 ? 0 : 1)
@@ -74,17 +75,11 @@ const tableViewHeightForRowAtIndexPath = (
     return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
   } else if (
     (row.type == cellViewType.inlineInput || row.type == cellViewType.input) &&
-    row.bind
-  ) {
-    const [key, index] = row.bind
-    const selections = getSelections(section.rows, key)
-    if (selections == -1) {
-      console.error(lang.implement_datasource_method.bind_key)
-      return 0
-    } else if (!selections.includes(index)) {
-      return 0
-    }
-  }
+    row.bind &&
+    isHidden(row.bind, rows)
+  )
+    return 0
+
   return 40
 }
 
@@ -92,7 +87,8 @@ const tableViewCellForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const row = dataSource[indexPath.section].rows[indexPath.row]
+  const { rows } = dataSource[indexPath.section]
+  const row = rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
@@ -149,6 +145,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inlineInputCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
@@ -169,6 +166,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inputCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.selectionStyle = 0
@@ -240,7 +238,7 @@ const initCellView = {
   },
   inlineInput(text: string) {
     const frame = { x: 0, y: 9, width: 70, height: 30 }
-    if (MN.app.osType == 0) frame.y = 5
+    if (!MN.isMac) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(18)
     view.textColor = MN.textColor
@@ -253,7 +251,7 @@ const initCellView = {
   },
   input(text: string) {
     const frame = { x: 40, y: 9, width: 250, height: 30 }
-    if (MN.app.osType == 0) frame.y = 5
+    if (!MN.isMac) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
     view.textColor = MN.textColor

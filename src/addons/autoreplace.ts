@@ -27,6 +27,7 @@ const config: IConfig = {
       key: "customReplace",
       type: cellViewType.input,
       label: label.custom_replace,
+      bind: ["preset", 0],
       link
     }
   ],
