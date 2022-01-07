@@ -158,9 +158,7 @@ const genDataSourceIndex = (dataSource: Array<ISection>) => {
 
 const mergeActions = () => {
   const actions = { ...magicaction.action }
-  for (const addon of addons) {
-    Object.assign(actions, addon.action)
-  }
+  addons.forEach(addon => Object.assign(actions, addon.action))
   return actions
 }
 

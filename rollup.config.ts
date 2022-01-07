@@ -1,4 +1,5 @@
 import os from "os"
+import path from "path"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
@@ -23,7 +24,26 @@ const dir = isProd
   : os.homedir() +
     `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/${mnaddon.addonid}`
 
+const onwarn = (warning, rollupWarn) => {
+  const ignoredWarnings = [
+    {
+      ignoredCode: "CIRCULAR_DEPENDENCY",
+      ignoredPath: "src/synthesizer.ts"
+    }
+  ]
+  if (
+    !ignoredWarnings.some(
+      ({ ignoredCode, ignoredPath }) =>
+        warning.code === ignoredCode &&
+        warning.importer.includes(path.normalize(ignoredPath))
+    )
+  ) {
+    rollupWarn(warning)
+  }
+}
+
 export default defineConfig({
+  onwarn,
   input: ["src/main.ts"],
   output: {
     dir,

@@ -1,11 +1,12 @@
 import settingViewControllerInst from "settingViewController/main"
 import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, log } from "utils/common"
+import { getObjCClassDeclar, log, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { profile } from "profile"
 import { MN } from "const"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
+import lang from "lang"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -44,7 +45,6 @@ const sceneDidDisconnect = () => {
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
   log("打开笔记本", "lifeCycle")
-  closePanel()
   MN.notebookId = notebookid
   eventHandlers.add()
   gestureHandlers.add()
@@ -53,16 +53,17 @@ const notebookWillOpen = (notebookid: string) => {
 // 关闭笔记本
 const notebookWillClose = (notebookid: string) => {
   log("关闭笔记本", "lifeCycle")
+  closePanel()
   eventHandlers.remove()
   gestureHandlers.remove()
 }
 
 const documentDidOpen = (docmd5: string) => {
   // 如果 thisDocMd5 有值，说明是换书，反正不是第一次打开书
-  if (thisDocMd5) readProfile(docmd5, Range.doc)
+  if (thisDocMd5) readProfile(Range.doc, docmd5)
   // 如果 thisDocMd5 没有值，说明是刚打开 MN
   else {
-    readProfile(docmd5, Range.first)
+    readProfile(Range.first, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
       profile.ohmymn.screenAlwaysOn
   }
@@ -84,6 +85,8 @@ const addonDidConnect = () => {
 // 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
   log("插件停用", "lifeCycle")
+  log(MN.studyController.readerController.currentDocumentController.docMd5)
+  showHUD(lang.addon_life_cycle.remove, 2)
   removeProfile()
 }
 

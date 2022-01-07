@@ -1,20 +1,64 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { docProfile, profile } from "profile"
-import { log } from "utils/common"
-import { Addon } from "const"
+import { log, showHUD } from "utils/common"
+import { Addon, MN } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
+import { MbBookNote } from "types/MarginNote"
+import Base64 from "utils/base64"
+import { layoutViewController } from "jsExtension/switchPanel"
+import lang from "lang"
 
 let allProfile: IProfile[]
 let allDocProfile: { [k: string]: IDocProfile }
 
 const { profileKey, docProfileKey } = Addon
 
-const getDataByKey = (key: string): any =>
-  NSUserDefaults.standardUserDefaults().objectForKey(key)
+const getDataByKey = (key: string): any => {
+  return NSUserDefaults.standardUserDefaults().objectForKey(key)
+}
+
 const setDataByKey = (
   data: IProfile[] | { [k: string]: IDocProfile },
   key: string
-) => void NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
+) => {
+  NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
+}
+
+export const getDataFromCard = (node: MbBookNote) => {
+  const str = node.excerptText
+  if (str) {
+    try {
+      const {
+        allDocProfileTemp,
+        allProfileTemp
+      }: {
+        allDocProfileTemp: typeof allDocProfile
+        allProfileTemp: typeof allProfile
+      } = JSON.parse(Base64.decode(str))
+      setDataByKey(allProfileTemp, Addon.profileKey)
+      setDataByKey(allDocProfileTemp, Addon.docProfileKey)
+      readProfile(Range.first)
+      layoutViewController()
+      showHUD(lang.profile_manage.success)
+    } catch {
+      showHUD(lang.profile_manage.fail)
+    }
+  } else {
+    showHUD(lang.profile_manage.not_find)
+  }
+}
+
+export const setDataToCard = (node: MbBookNote) => {
+  saveProfile()
+  node.excerptText = Base64.encode(
+    JSON.stringify({
+      allProfileTemp: allProfile,
+      allDocProfileTemp: allDocProfile
+    })
+  )
+  node.noteTitle = lang.profile_manage.prohifit + new Date().toLocaleString()
+  node.colorIndex = 11
+}
 
 export const enum Range {
   first,
@@ -22,7 +66,11 @@ export const enum Range {
   global
 }
 
-const readProfile = (docmd5: string, range: Range) => {
+const readProfile = (
+  range: Range,
+  docmd5 = MN.studyController.readerController.currentDocumentController
+    .docMd5 ?? "init"
+) => {
   switch (range) {
     case Range.first:
       // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
@@ -53,7 +101,11 @@ const readProfile = (docmd5: string, range: Range) => {
 }
 
 // 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
-const saveProfile = (docmd5?: string, num = docProfile.ohmymn.profile[0]) => {
+// 传入 undefine 会使用默认参数
+const saveProfile = (
+  docmd5 = MN.studyController.readerController.currentDocumentController.docMd5,
+  num = docProfile.ohmymn.profile[0]
+) => {
   const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
   if (num != undefined) {
     allProfile[num] = deepCopy(profile)
@@ -72,6 +124,7 @@ const saveProfile = (docmd5?: string, num = docProfile.ohmymn.profile[0]) => {
 const removeProfile = () => {
   NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
+  readProfile(Range.first)
 }
 
 export { saveProfile, readProfile, removeProfile }

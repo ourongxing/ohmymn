@@ -114,7 +114,7 @@ const onSelectChange: eventHandler = sender => {
     const lastProfileNum = docProfile.ohmymn.profile[0]
     docProfile.ohmymn.profile = selections
     saveProfile(undefined, lastProfileNum)
-    readProfile("", Range.global)
+    readProfile(Range.global)
     layoutViewController()
   } else {
     profile[name][key] = selections

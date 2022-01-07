@@ -61,13 +61,15 @@ const dict = {
         filter_cards: ["仅判断标题", "判断整个卡片内容"],
         change_fill_style: ["边框+填充", "填充", "边框"],
         merge_text: ["合并为摘录", "合并为评论"],
-        merge_cards: ["同时合并标题", "不合并标题"]
+        merge_cards: ["同时合并标题", "不合并标题"],
+        manage_profile: ["读取配置信息", "写入配置信息"]
       },
       help: {
         filter_cards: "注意事项及具体输入格式见顶上帮助信息",
         change_color: "输入颜色索引，也就是顺序，1 到 16",
         merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-        rename_title: "注意事项及具体输入格式见顶上帮助信息"
+        rename_title: "注意事项及具体输入格式见顶上帮助信息",
+        manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
       },
       label: {
         filter_cards: "筛选卡片",
@@ -75,7 +77,8 @@ const dict = {
         change_color: "修改摘录颜色",
         merge_cards: "合并多张卡片",
         merge_text: "合并卡片内文字",
-        rename_title: "批量重命名标题"
+        rename_title: "批量重命名标题",
+        manage_profile: "配置管理"
       },
       hud: {
         is_clicked: "您需要的卡片已选中，请继续操作",
@@ -214,6 +217,15 @@ const dict = {
   implement_datasource_method: {
     none: "无",
     clicked: "选中"
+  },
+  addon_life_cycle: {
+    remove: "OhMyMN 已停用，配置已重置"
+  },
+  profile_manage: {
+    success: "配置读取成功",
+    fail: "配置读取失败",
+    not_find: "未找到配置信息",
+    prohifit: "「OhMyMN」配置（禁止直接修改）"
   }
 }
 
