@@ -11,8 +11,9 @@ import * as gesture from "addons/gesture"
 import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
 import lang from "lang"
 
-// magicaction, ohmymn, gesture 默认前三个，不用包含在内
+// magicaction, ohmymn 默认前两个，不用包含在内
 const addons = [
+  gesture,
   anotherautotitle,
   anotherautodef,
   autostandardize,
@@ -24,6 +25,7 @@ const addons = [
 
 // 插件总开关，按显示的顺序
 export const enum QuickSwitch {
+  Gesture,
   AnotherAutoTitle,
   AnotherAutoDef,
   AutoStandardize,
@@ -121,7 +123,7 @@ export const genDataSource = (
   }
   dataSource.unshift(genSection(magicaction))
   dataSource.forEach((sec, index) => {
-    if (index > 2) addonList.push(sec.header)
+    if (index > 1) addonList.push(sec.header)
   })
 
   // 更新 quickSwitch 为 addonList
@@ -175,7 +177,7 @@ const mergeActions = () => {
 
 export const actions = mergeActions()
 export const dataSource = genDataSource(
-  [ohmymn, gesture, ...addons].map(addon => addon.config),
+  [ohmymn, ...addons].map(addon => addon.config),
   magicaction.config
 )
 export const dataSourceIndex = genDataSourceIndex(dataSource)

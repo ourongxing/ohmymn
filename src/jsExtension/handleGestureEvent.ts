@@ -4,7 +4,7 @@ import { MN } from "const"
 import { magicAction } from "settingViewController/handleUserAction"
 import { studyMode } from "types/MarginNote"
 import { util as gesture } from "addons/gesture"
-import { actionKey, dataSourceIndex } from "synthesizer"
+import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import { profile } from "profile"
 
 // Mac 上无法使用触摸
@@ -91,6 +91,7 @@ const trigger = async (
   muiltOption: number,
   sender: UIGestureRecognizer
 ) => {
+  if (profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
   switch (checkSwipePosition(sender)) {
     case swipePositon.None:
       return
