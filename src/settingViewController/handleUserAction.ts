@@ -1,9 +1,9 @@
-import { openUrl, popup, postNotification, showHUD } from "utils/common"
+import { openUrl, postNotification, showHUD } from "utils/common"
 import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { UIAlertViewStyle, UITableView } from "types/UIKit"
+import { UITableView } from "types/UIKit"
 import { byteLength } from "utils/text"
 import lang from "lang"
 
@@ -13,68 +13,28 @@ const tag2indexPath = (tag: number): NSIndexPath =>
     (tag - 999 - ((tag - 999) % 100)) / 100
   )
 
-export const magicAction = async (indexPath: NSIndexPath) => {
-  const section = dataSource[indexPath.section]
-  const row = section.rows[indexPath.row]
-  switch (row.type) {
-    case cellViewType.plainText:
-      if (row.link) openUrl(row.link)
-      break
-    case cellViewType.buttonWithInput:
-      for (;;) {
-        const { key, option, content } = await popup(
-          row.label,
-          row.help ?? "",
-          UIAlertViewStyle.PlainTextInput,
-          row.option ? row.option : [lang.handle_user_action.sure],
-          (alert: UIAlertView, buttonIndex: number) => {
-            // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
-            return {
-              key: row.key,
-              content: alert.textFieldAtIndex(0).text,
-              option: buttonIndex
-            }
-          }
-        )
-        // 允许为空
-        if (!content || checkInputCorrect(content, row.key)) {
-          postNotification(Addon.key + "ButtonClick", {
-            key,
-            option,
-            content
-          })
-          return
-        } else showHUD(lang.handle_user_action.input_error)
-      }
-    case cellViewType.button:
-      const { key, option } = await popup(
-        row.label,
-        row.help ?? "",
-        UIAlertViewStyle.Default,
-        row.option ?? [lang.handle_user_action.sure],
-        (alert: UIAlertView, buttonIndex: number) => ({
-          key: row.key,
-          option: buttonIndex
-        })
-      )
-      postNotification(Addon.key + "ButtonClick", {
-        key,
-        option
-      })
-  }
-}
 const tableViewDidSelectRowAtIndexPath = async (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
-  await magicAction(indexPath)
+  const row = dataSource[indexPath.section].rows[indexPath.row]
+  switch (row.type) {
+    case cellViewType.plainText:
+      if (row.link) openUrl(row.link)
+      break
+    case cellViewType.buttonWithInput:
+    case cellViewType.button:
+      postNotification(Addon.key + "ButtonClick", {
+        row
+      })
+  }
 }
 
 const textFieldShouldReturn = (sender: UITextField) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
   const section = dataSource[indexPath.section]
-  const row = <IRowInput>section.rows[indexPath.row]
+  const row = section.rows[indexPath.row] as IRowInput
   let text = sender.text.trim()
   // 可以为空
   if (!text || checkInputCorrect(text, row.key)) {

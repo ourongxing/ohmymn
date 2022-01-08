@@ -1,22 +1,17 @@
-import { MbBookNote } from "types/MarginNote"
 import { eventHandler } from "types/Addon"
-import { UIAlertViewStyle } from "types/UIKit"
 import handleExcerpt from "jsExtension/excerptHandler"
-import { closePanel, layoutViewController } from "jsExtension/switchPanel"
+import { layoutViewController } from "jsExtension/switchPanel"
 import { docProfile, profile } from "profile"
-import { actions } from "synthesizer"
-import { delayBreak, HUDController, popup, showHUD } from "utils/common"
+import { delayBreak, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
-import {
-  getNoteById,
-  getSelectNodes,
-  getSelectNodesAll,
-  undoGroupingWithRefresh
-} from "utils/note"
+import { getNoteById } from "utils/note"
+import handleMagicAction from "./magicActionHandler"
 import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import lang from "lang"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
+const { input_clear, input_saved, lock_excerpt, auto_correct } =
+  lang.handle_received_event
 
 export const eventHandlers = eventHandlerController([
   Addon.key + "InputOver",
@@ -27,77 +22,20 @@ export const eventHandlers = eventHandlerController([
   "ProcessNewExcerpt",
   "ChangeExcerptRange"
 ])
-const { hud, smart_select } = lang.handle_received_event
-
-let customSelectedNodes: MbBookNote[] = []
 const onButtonClick: eventHandler = async sender => {
-  let { key, option, content } = sender.userInfo
-  if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
-  let nodes: MbBookNote[] = []
-  if (customSelectedNodes.length) {
-    nodes = customSelectedNodes
-    customSelectedNodes = []
-    HUDController.hidden()
-  } else {
-    nodes = getSelectNodes()
-    if (!nodes.length) {
-      showHUD(hud.not_selected)
-      return
-    }
-    const isHavingChildren = nodes.every(
-      node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
-    )
-    if (isHavingChildren) {
-      const { option } = await popup(
-        "OhMyMN",
-        nodes.length > 1
-          ? smart_select.cards_with_children
-          : smart_select.card_with_children,
-        UIAlertViewStyle.Default,
-        smart_select.option,
-        (alert: UIAlertView, buttonIndex: number) => ({
-          option: buttonIndex
-        })
-      )
-      nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][option!]
-    }
-  }
-  switch (key) {
-    case "filterCards":
-      customSelectedNodes = actions[key]({
-        content,
-        nodes,
-        option
-      })
-      break
-    // 异步函数，不要包裹在 undoGrouping 里面
-    case "completeSelected":
-      actions[key]({
-        content,
-        nodes,
-        option
-      })
-      break
-    default:
-      undoGroupingWithRefresh(() => {
-        actions[key]({
-          content,
-          nodes,
-          option
-        })
-      })
-  }
+  const { row } = sender.userInfo
+  handleMagicAction(row)
 }
 
 const onSwitchChange: eventHandler = sender => {
   const { name, key, status } = sender.userInfo
   if (key == "autoCorrect") {
     docProfile.ohmymn.autoCorrect = status
-    if (status) showHUD(hud.auto_correct)
+    if (status) showHUD(auto_correct)
   } else profile[name][key] = status
   switch (key) {
     case "lockExcerpt":
-      if (status && docProfile.ohmymn.autoCorrect) showHUD(hud.lock_excerpt, 2)
+      if (status && docProfile.ohmymn.autoCorrect) showHUD(lock_excerpt, 2)
       break
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
@@ -131,7 +69,7 @@ const onInputOver: eventHandler = sender => {
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
   updateProfileTemp(key, content)
-  content ? showHUD(hud.input_saved) : showHUD(hud.input_clear)
+  content ? showHUD(input_saved) : showHUD(input_clear)
 }
 
 // 不管是创建摘录还是修改摘录，都会提前触发这个事件，所以要判断一下，在修改之前保存上次摘录

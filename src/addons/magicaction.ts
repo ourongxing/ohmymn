@@ -8,7 +8,6 @@ import { HUDController, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
 import lang from "lang"
-import { getDataFromCard, setDataToCard } from "utils/profile"
 
 const { help, option, intro, label, link, hud } = lang.addon.magicaction
 
@@ -25,11 +24,6 @@ const enum MergeCards {
 const enum MergeText {
   ToExpertText,
   ToComment
-}
-
-const enum ManageProfile {
-  Get,
-  Set
 }
 
 const config: IConfig = {
@@ -252,17 +246,6 @@ const action: IActionMethod = {
         node.removeCommentByIndex(len - index - 1)
     })
     if (option == MergeCards.MergeTitle) node.noteTitle = titles.join("; ")
-  },
-  manageProfile({ option, nodes }) {
-    const node = nodes[0]
-    switch (option) {
-      case ManageProfile.Get:
-        getDataFromCard(node)
-        break
-      case ManageProfile.Set:
-        setDataToCard(node)
-        break
-    }
   }
 }
 

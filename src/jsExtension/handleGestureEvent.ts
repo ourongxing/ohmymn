@@ -1,10 +1,15 @@
-import type { gestureHandler } from "types/Addon"
+import type { gestureHandler, IRowButton } from "types/Addon"
 import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
-import { magicAction } from "settingViewController/handleUserAction"
 import { studyMode } from "types/MarginNote"
 import { util as gesture } from "addons/gesture"
-import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
+import {
+  actionKey,
+  dataSource,
+  dataSourceIndex,
+  QuickSwitch
+} from "synthesizer"
+import handleMagicAction from "./magicActionHandler"
 import { profile } from "profile"
 
 // Mac 上无法使用触摸
@@ -81,30 +86,28 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
     return height - swipeY > 50 && height - swipeY < 150
       ? swipePositon.MuiltBar
       : swipePositon.None
-    // alert(JSON.stringify({ swipeX, swipeY, height}))
   }
 }
 
-const getActionIndex = (key: string) => dataSourceIndex.magicaction[key]
 const trigger = async (
   sigleOption: number,
   muiltOption: number,
   sender: UIGestureRecognizer
 ) => {
-  if (profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
+  if (!profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
   switch (checkSwipePosition(sender)) {
     case swipePositon.None:
       return
     case swipePositon.SingleBar: {
       if (!sigleOption) return
-      const [sec, row] = getActionIndex(actionKey[sigleOption])
-      await magicAction(NSIndexPath.indexPathForRowInSection(row, sec))
+      const [sec, row] = dataSourceIndex.magicaction[actionKey[sigleOption]]
+      await handleMagicAction(<IRowButton>dataSource[sec].rows[row])
       break
     }
     case swipePositon.MuiltBar: {
       if (!muiltOption) return
-      const [sec, row] = getActionIndex(actionKey[muiltOption])
-      await magicAction(NSIndexPath.indexPathForRowInSection(row, sec))
+      const [sec, row] = dataSourceIndex.magicaction[actionKey[muiltOption]]
+      await handleMagicAction(<IRowButton>dataSource[sec].rows[row])
       break
     }
   }

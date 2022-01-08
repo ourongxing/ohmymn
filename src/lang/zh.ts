@@ -192,13 +192,13 @@ const dict = {
     }
   },
   handle_received_event: {
-    hud: {
-      not_selected: "未选中任何脑图卡片",
-      auto_correct: "请按实际情况选择开关，不建议无脑打开自动矫正",
-      lock_excerpt: "锁定摘录不建议和自动矫正同时开启",
-      input_saved: "输入已保存",
-      input_clear: "输入已清空"
-    },
+    input_saved: "输入已保存",
+    input_clear: "输入已清空",
+    auto_correct: "请按实际情况选择开关，不建议无脑打开自动矫正",
+    lock_excerpt: "锁定摘录不建议和自动矫正同时开启"
+  },
+  magic_action_handler: {
+    not_selected: "未选中任何脑图卡片",
     smart_select: {
       option: [
         "仅处理选中的卡片",

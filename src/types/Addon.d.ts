@@ -122,6 +122,7 @@ export interface eventHandler {
     userInfo: {
       key: string
       option: number
+      row: IRowButton
       content: string
       name: string
       status: boolean

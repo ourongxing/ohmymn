@@ -44,7 +44,7 @@ const onwarn = (warning, rollupWarn) => {
 }
 
 export default defineConfig({
-  onwarn,
+  // onwarn,
   input: ["src/main.ts"],
   output: {
     dir,

@@ -80,13 +80,11 @@ const popup = (
     alert: UIAlertView,
     buttonIndex: number
   ) => {
-    key?: string
     option?: number
     content?: string
   }
 ) =>
   new Promise<{
-    key?: string
     option?: number
     content?: string
   }>(resolve =>

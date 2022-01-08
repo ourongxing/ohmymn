@@ -24,42 +24,6 @@ const setDataByKey = (
   NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
 }
 
-export const getDataFromCard = (node: MbBookNote) => {
-  const str = node.excerptText
-  if (str) {
-    try {
-      const {
-        allDocProfileTemp,
-        allProfileTemp
-      }: {
-        allDocProfileTemp: typeof allDocProfile
-        allProfileTemp: typeof allProfile
-      } = JSON.parse(Base64.decode(str))
-      setDataByKey(allProfileTemp, Addon.profileKey)
-      setDataByKey(allDocProfileTemp, Addon.docProfileKey)
-      readProfile(Range.first)
-      layoutViewController()
-      showHUD(lang.profile_manage.success)
-    } catch {
-      showHUD(lang.profile_manage.fail)
-    }
-  } else {
-    showHUD(lang.profile_manage.not_find)
-  }
-}
-
-export const setDataToCard = (node: MbBookNote) => {
-  saveProfile()
-  node.excerptText = Base64.encode(
-    JSON.stringify({
-      allProfileTemp: allProfile,
-      allDocProfileTemp: allDocProfile
-    })
-  )
-  node.noteTitle = lang.profile_manage.prohifit + new Date().toLocaleString()
-  node.colorIndex = 11
-}
-
 export const enum Range {
   first,
   doc,
@@ -128,3 +92,44 @@ const removeProfile = () => {
 }
 
 export { saveProfile, readProfile, removeProfile }
+
+export const manageProfileAction = (params: {
+  nodes: MbBookNote[]
+  option: number
+}) => {
+  const { option, nodes } = params
+  const node = nodes[0]
+  if (option) {
+    saveProfile()
+    node.excerptText = Base64.encode(
+      JSON.stringify({
+        allProfileTemp: allProfile,
+        allDocProfileTemp: allDocProfile
+      })
+    )
+    node.noteTitle = lang.profile_manage.prohifit + new Date().toLocaleString()
+    node.colorIndex = 11
+  } else {
+    const str = node.excerptText
+    if (str) {
+      try {
+        const {
+          allDocProfileTemp,
+          allProfileTemp
+        }: {
+          allDocProfileTemp: typeof allDocProfile
+          allProfileTemp: typeof allProfile
+        } = JSON.parse(Base64.decode(str))
+        setDataByKey(allProfileTemp, Addon.profileKey)
+        setDataByKey(allDocProfileTemp, Addon.docProfileKey)
+        readProfile(Range.first)
+        layoutViewController()
+        showHUD(lang.profile_manage.success)
+      } catch {
+        showHUD(lang.profile_manage.fail)
+      }
+    } else {
+      showHUD(lang.profile_manage.not_find)
+    }
+  }
+}
