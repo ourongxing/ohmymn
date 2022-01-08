@@ -8,7 +8,7 @@ import * as anotherautodef from "addons/anotherautodef"
 import * as autotag from "addons/autotag"
 import * as ohmymn from "addons/ohmymn"
 import * as gesture from "addons/gesture"
-import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
+import { cellViewType, IConfig, IRow, ISection } from "types/Addon"
 import lang from "lang"
 
 // magicaction, ohmymn 默认前两个，不用包含在内
