@@ -1,8 +1,8 @@
 // @ts-nocheck 有点黑魔法了，不过效果不错
 import { MN } from "const"
 import { layoutViewController } from "jsExtension/switchPanel"
-import { IProfile, IDocProfile, profileTemp } from "profile"
-import { dataSource, dataSourceIndex } from "synthesizer"
+import { IProfile, IDocProfile } from "profile"
+import { dataSourceIndex } from "synthesizer"
 
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 
@@ -25,11 +25,13 @@ export const getMNLinkValue = (val: string) => {
 
 export const updateProfileTemp = (key: string, val: string) => {
   val = getMNLinkValue(val)
-  if (key in profileTemp.regArray) {
-    profileTemp.regArray[key] = val ? string2RegArray(val) : undefined
+  if (key in self.profileTemp.regArray) {
+    self.profileTemp.regArray[key] = val ? string2RegArray(val) : undefined
   }
-  if (key in profileTemp.replaceParam) {
-    profileTemp.replaceParam[key] = val ? string2ReplaceParam(val) : undefined
+  if (key in self.profileTemp.replaceParam) {
+    self.profileTemp.replaceParam[key] = val
+      ? string2ReplaceParam(val)
+      : undefined
   }
 }
 
@@ -46,17 +48,17 @@ export const updateProfileDataSource = (
       val = profileSaved?.[name]?.[key] ?? val
       switch (typeof val) {
         case "boolean":
-          dataSource[section].rows[row].status = val
+          self.dataSource[section].rows[row].status = val
           _[key] = val
           break
         case "string":
-          dataSource[section].rows[row].content = val
+          self.dataSource[section].rows[row].content = val
           _[key] = val
           updateProfileTemp(key, val)
           break
         default:
           // number[]
-          dataSource[section].rows[row].selections = [...val]
+          self.dataSource[section].rows[row].selections = [...val]
           _[key] = [...val]
       }
     }

@@ -1,4 +1,3 @@
-import { profile, profileTemp } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
@@ -44,11 +43,11 @@ const config: IConfig = {
 
 const util = {
   replaceText(text: string) {
-    const { preset } = profile.autoreplace
+    const { preset } = self.profile.autoreplace
     for (const set of preset) {
       switch (set) {
         case AutoReplacePreset.Custom:
-          const { customReplace: params } = profileTemp.replaceParam
+          const { customReplace: params } = self.profileTemp.replaceParam
           if (!params) continue
           let _text = text
           params.forEach(param => {

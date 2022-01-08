@@ -90,24 +90,9 @@ type IProfileTemp = typeof profileTempPreset
 type IProfile = typeof profilePreset
 type IDocProfile = typeof docProfilePreset
 
-const profile: {
-  [k: string]: { [k: string]: boolean | string | number[] }
-} & IProfile = JSON.parse(JSON.stringify(profilePreset))
-
-const docProfile: {
-  [k: string]: { [k: string]: boolean | string | number[] }
-} & IDocProfile = JSON.parse(JSON.stringify(docProfilePreset))
-
-const profileTemp: {
-  [k: string]: { [k: string]: RegExp[][] | ReplaceParam[] | undefined }
-} & IProfileTemp = JSON.parse(JSON.stringify(profileTempPreset))
-
 export {
-  profile,
   profilePreset,
-  docProfile,
   docProfilePreset,
-  profileTemp,
   profileTempPreset,
   IProfile,
   IDocProfile,

@@ -1,4 +1,3 @@
-import { profile } from "profile"
 import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, showHUD } from "utils/common"
 import { MN } from "const"
@@ -7,8 +6,8 @@ import lang from "lang"
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = (
-  heightNum = profile.ohmymn.panelHeight[0],
-  positionNum = profile.ohmymn.panelPosition[0]
+  heightNum = self.profile.ohmymn.panelHeight[0],
+  positionNum = self.profile.ohmymn.panelPosition[0]
 ) => {
   const studyController = MN.studyController()
   const frame = studyController.view.bounds
@@ -64,7 +63,7 @@ let lastClickButton = 0
 const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
-    if (profile.ohmymn.doubleClick) {
+    if (self.profile.ohmymn.doubleClick) {
       const now = Date.now()
       if (lastClickButton && now - lastClickButton < 300) openPanel()
       else lastClickButton = now

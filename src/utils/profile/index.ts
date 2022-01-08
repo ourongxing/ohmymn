@@ -1,5 +1,4 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
-import { docProfile, profile } from "profile"
 import { showHUD } from "utils/common"
 import { Addon, MN } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
@@ -7,6 +6,7 @@ import { MbBookNote } from "types/MarginNote"
 import Base64 from "utils/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
 import lang from "lang"
+import { deepCopy } from "utils"
 
 let allProfile: IProfile[]
 let allDocProfile: { [k: string]: IDocProfile }
@@ -45,15 +45,15 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
     case Range.doc:
       // 打开文档时读文档配置，此时也必须读全局配置
       updateProfileDataSource(
-        docProfile,
+        self.docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
       console.log("读取当前文档配置", "profile")
     case Range.global:
       // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
-        profile,
-        allProfile[docProfile.ohmymn.profile[0]],
+        self.profile,
+        allProfile[self.docProfile.ohmymn.profile[0]],
         true
       )
       console.log("读取全局配置", "profile")
@@ -64,18 +64,15 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
 // 传入 undefine 会使用默认参数
 const saveProfile = (
   docmd5 = self.docMD5,
-  num = docProfile.ohmymn.profile[0]
+  num = self.docProfile.ohmymn.profile[0]
 ) => {
-  const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
   if (num != undefined) {
-    allProfile[num] = deepCopy(profile)
+    allProfile[num] = deepCopy(self.profile)
     setDataByKey(allProfile, profileKey)
     console.log("保存全局配置", "profile")
   }
   if (docmd5 != undefined) {
-    // 这传的是引用，我靠，气死了，折腾好久
-    // allDocProfile[docmd5] = docProfile
-    allDocProfile[docmd5] = deepCopy(docProfile)
+    allDocProfile[docmd5] = deepCopy(self.docProfile)
     setDataByKey(allDocProfile, docProfileKey)
     console.log("保存当前文档配置", "profile")
   }

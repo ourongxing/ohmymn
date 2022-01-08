@@ -1,4 +1,4 @@
-import { addonList, dataSource } from "synthesizer"
+import { addonList } from "synthesizer"
 import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
@@ -25,7 +25,7 @@ const getSelections = (rows: IRow[], key: string) => {
 
 const isSelected = (header: string): boolean => {
   const quickSwitch = getSelections(
-    dataSource[1].rows,
+    self.dataSource[1].rows,
     "quickSwitch"
   ) as number[]
   return (
@@ -42,21 +42,21 @@ const isHidden = (bind: [string, number], rows: IRow[]) => {
 }
 
 const numberOfSectionsInTableView = (tableView: UITableView) =>
-  dataSource.length
+  self.dataSource.length
 
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = dataSource[section]
-  return isSelected(header) ? dataSource[section].rows.length : 0
+  const { header } = self.dataSource[section]
+  return isSelected(header) ? self.dataSource[section].rows.length : 0
 }
 
 const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = dataSource[section]
+  const { header } = self.dataSource[section]
   return isSelected(header) ? header : new NSNull()
 }
 
@@ -64,7 +64,7 @@ const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows } = dataSource[indexPath.section]
+  const { rows } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   if (row.type === cellViewType.plainText) {
     if (row.bind && isHidden(row.bind, rows)) return 0
@@ -87,7 +87,7 @@ const tableViewCellForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows } = dataSource[indexPath.section]
+  const { rows } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText: {

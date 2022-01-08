@@ -1,4 +1,3 @@
-import { docProfile, profile } from "profile"
 import {
   getCommentIndex,
   getNotebookById,
@@ -27,7 +26,11 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
   // lastExcerptText 有可能为空字符串
   isModifying = lastExcerptText !== undefined
   if (isComment) nodeNote = getNoteById(note.groupNoteId!)
-  if (profile.ohmymn.lockExcerpt && isModifying && lastExcerptText != "😎") {
+  if (
+    self.profile.ohmymn.lockExcerpt &&
+    isModifying &&
+    lastExcerptText != "😎"
+  ) {
     console.log("检测到开启锁定摘录选项，还原摘录", "excerpt")
     processExcerpt(undefined, lastExcerptText!)
     return
@@ -61,7 +64,7 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
     }
   }
 
-  if (docProfile.ohmymn.autoCorrect) {
+  if (self.docProfile.ohmymn.autoCorrect) {
     console.log("开始矫正", "excerpt")
     console.log(note.excerptText, "highlight")
     const originText = note.excerptText!
@@ -89,7 +92,7 @@ const excerptHandler = async () => {
   // 摘录是作为评论，反正是卡片已经存在的情况下摘录，如果继续满足成为标题的条件
   if (isComment && title) {
     console.log("当前摘录作为评论", "excerpt")
-    switch (profile.anotherautotitle.hasTitleThen[0]) {
+    switch (self.profile.anotherautotitle.hasTitleThen[0]) {
       case HasTitleThen.TitleLink:
         const nodeTitle = nodeNote?.noteTitle
         if (nodeTitle) title = nodeTitle + "; " + title
@@ -110,7 +113,7 @@ const excerptHandler = async () => {
       (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
 
     if (
-      profile.anotherautotitle.changeTitleNoLimit &&
+      self.profile.anotherautotitle.changeTitleNoLimit &&
       !title &&
       isBroadened(note?.noteTitle ?? "", text)
     ) {

@@ -1,5 +1,4 @@
 import { openUrl, postNotification, showHUD } from "utils/common"
-import { dataSource } from "synthesizer"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
@@ -18,7 +17,7 @@ const tableViewDidSelectRowAtIndexPath = async (
   indexPath: NSIndexPath
 ) => {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
-  const row = dataSource[indexPath.section].rows[indexPath.row]
+  const row = self.dataSource[indexPath.section].rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText:
       if (row.link) openUrl(row.link)
@@ -33,7 +32,7 @@ const tableViewDidSelectRowAtIndexPath = async (
 
 const textFieldShouldReturn = (sender: UITextField) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
   let text = sender.text.trim()
   // 可以为空
@@ -55,7 +54,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
 
 const switchChange = (sender: UISwitch) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
   row.status = sender.on ? true : false
   postNotification(Addon.key + "SwitchChange", {
@@ -77,15 +76,15 @@ const selectAction = (param: {
   menuController: MenuController
 }) => {
   const { indexPath, selection, menuController } = param
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   // 区分单选和多选
   if (
-    (<IRowSelect>dataSource[indexPath.section].rows[indexPath.row]).type ==
+    (<IRowSelect>self.dataSource[indexPath.section].rows[indexPath.row]).type ==
     cellViewType.select
   ) {
     ;(<IRowSelect>(
-      dataSource[indexPath.section].rows[indexPath.row]
+      self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
     postNotification(Addon.key + "SelectChange", {
       name: section.header.toLowerCase(),
@@ -100,7 +99,7 @@ const selectAction = (param: {
       : [selection, ...selections]
 
     ;(<IRowSelect>(
-      dataSource[indexPath.section].rows[indexPath.row]
+      self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = nowSelect
 
     lastSelectInfo = {
@@ -121,7 +120,7 @@ const selectAction = (param: {
 
 const clickSelectButton = (sender: UIButton) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   const menuController = MenuController.new()
   menuController.commandTable = row.option.map((item, index) => ({

@@ -1,4 +1,3 @@
-import { profile, profileTemp } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { isHalfWidth } from "utils/text"
@@ -51,11 +50,11 @@ const util = {
   // 匹配到就在前面或后面添加换行
   listText(text: string): string {
     if (isHalfWidth(text)) return text
-    const { preset } = profile.autolist
+    const { preset } = self.profile.autolist
     for (const set of preset) {
       switch (set) {
         case AutoListPreset.Custom:
-          const { customList: params } = profileTemp.replaceParam
+          const { customList: params } = self.profileTemp.replaceParam
           if (!params) continue
           let _text = text
           params.forEach(param => {

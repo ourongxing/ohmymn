@@ -2,7 +2,6 @@ import { excerptNotes } from "utils/note"
 import pangu from "utils/pangu"
 import { toTitleCase } from "utils/toTitleCase"
 import { isHalfWidth } from "utils/text"
-import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
@@ -43,12 +42,8 @@ const config: IConfig = {
 
 const util = {
   toTitleCase(text: string) {
-    if (
-      !profile.autostandardize.preset.includes(
-        AutoStandardizePreset.StandardizeTitle
-      )
-    )
-      return text
+    const { preset } = self.profile.autostandardize
+    if (!preset.includes(AutoStandardizePreset.StandardizeTitle)) return text
     return text
       .split(/\s*[；;]\s*/)
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
@@ -56,7 +51,7 @@ const util = {
   },
   standardizeText(text: string): string {
     if (isHalfWidth(text)) return text
-    const preset = profile.autostandardize.preset
+    const { preset } = self.profile.autostandardize
     text = text
       .replace(/\*\*([\b-']*?)\*\*/g, "placeholder$1placeholder")
       .replace(/\*\*/g, "占位符")

@@ -3,14 +3,8 @@ import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
 import { studyMode } from "types/MarginNote"
 import { util as gesture } from "addons/gesture"
-import {
-  actionKey,
-  dataSource,
-  dataSourceIndex,
-  QuickSwitch
-} from "synthesizer"
+import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
-import { profile } from "profile"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -93,39 +87,39 @@ const trigger = async (
   muiltOption: number,
   sender: UIGestureRecognizer
 ) => {
-  if (!profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
+  if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
   switch (checkSwipePosition(sender)) {
     case swipePositon.None:
       return
     case swipePositon.SingleBar: {
       if (!sigleOption) return
       const [sec, row] = dataSourceIndex.magicaction[actionKey[sigleOption]]
-      await handleMagicAction(<IRowButton>dataSource[sec].rows[row])
+      await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
       break
     }
     case swipePositon.MuiltBar: {
       if (!muiltOption) return
       const [sec, row] = dataSourceIndex.magicaction[actionKey[muiltOption]]
-      await handleMagicAction(<IRowButton>dataSource[sec].rows[row])
+      await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
       break
     }
   }
 }
 
 const onSwipeUpOnMindMapView: gestureHandler = sender => {
-  const { singleBarSwipeUp, muiltBarSwipeUp } = profile.gesture
+  const { singleBarSwipeUp, muiltBarSwipeUp } = self.profile.gesture
   trigger(singleBarSwipeUp[0], muiltBarSwipeUp[0], sender)
 }
 const onSwipeDownOnMindMapView: gestureHandler = sender => {
-  const { singleBarSwipeDown, muiltBarSwipeDown } = profile.gesture
+  const { singleBarSwipeDown, muiltBarSwipeDown } = self.profile.gesture
   trigger(singleBarSwipeDown[0], muiltBarSwipeDown[0], sender)
 }
 const onSwipeLeftOnMindMapView: gestureHandler = sender => {
-  const { singleBarSwipeLeft, muiltBarSwipeLeft } = profile.gesture
+  const { singleBarSwipeLeft, muiltBarSwipeLeft } = self.profile.gesture
   trigger(singleBarSwipeLeft[0], muiltBarSwipeLeft[0], sender)
 }
 const onSwipeRightOnMindMapView: gestureHandler = sender => {
-  const { singleBarSwipeRight, muiltBarSwipeRight } = profile.gesture
+  const { singleBarSwipeRight, muiltBarSwipeRight } = self.profile.gesture
   trigger(singleBarSwipeRight[0], muiltBarSwipeRight[0], sender)
 }
 

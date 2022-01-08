@@ -1,5 +1,4 @@
 import lang from "lang"
-import { profile } from "profile"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { isOCNull, showHUD } from "utils/common"
 import { reverseEscape } from "utils/input"
@@ -118,8 +117,8 @@ const util = {
         en: isOCNull(info.definition) ? "" : info.definition,
         zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
       }
-      if (profile.autocomplete.customComplete) {
-        let fill = reverseEscape(profile.autocomplete.customComplete)
+      if (self.profile.autocomplete.customComplete) {
+        let fill = reverseEscape(self.profile.autocomplete.customComplete)
         Object.entries(vars).forEach(([key, value]) => {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)

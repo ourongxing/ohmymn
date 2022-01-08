@@ -1,4 +1,3 @@
-import { profile, profileTemp } from "profile"
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
@@ -64,7 +63,7 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const { customSplit } = profile.anotherautodef
+    const { customSplit } = self.profile.anotherautodef
     const regs = customSplit ? string2RegArray(customSplit)[0] : []
     regs.push(reg)
     regs.forEach(reg => {
@@ -79,11 +78,11 @@ const util = {
   },
 
   checkGetDefTitle(text: string) {
-    const { preset, onlyDesc, toTitleLink } = profile.anotherautodef
+    const { preset, onlyDesc, toTitleLink } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
         case AutoDefPreset.CustomExtract:
-          const { customExtractTitle: params } = profileTemp.replaceParam
+          const { customExtractTitle: params } = self.profileTemp.replaceParam
           if (!params) continue
           for (const item of params) {
             if (item.regexp.test(text)) {
@@ -96,7 +95,7 @@ const util = {
           }
           break
         case AutoDefPreset.CustomSplit:
-          const { customDefLink } = profileTemp.regArray
+          const { customDefLink } = self.profileTemp.regArray
           if (!customDefLink) continue
           const regs = customDefLink[0]
           for (const reg of regs)

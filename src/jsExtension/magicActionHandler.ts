@@ -1,6 +1,5 @@
 import checkInputCorrect from "inputChecker"
 import lang from "lang"
-import { profile } from "profile"
 import { actions } from "synthesizer"
 import { cellViewType, IRowButton } from "types/Addon"
 import { MbBookNote } from "types/MarginNote"
@@ -53,7 +52,7 @@ export default async (row: IRowButton) => {
 
 let customSelectedNodes: MbBookNote[] = []
 const handleMagicAction = async (key: string, option: number, content = "") => {
-  if (key != "filterCards" && profile.ohmymn.clickHidden) closePanel()
+  if (key != "filterCards" && self.profile.ohmymn.clickHidden) closePanel()
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes

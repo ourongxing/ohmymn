@@ -2,10 +2,12 @@ import settingViewControllerInst from "settingViewController/main"
 import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { profile } from "profile"
+import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import lang from "lang"
+import { dataSourcePreset } from "synthesizer"
+import { deepCopy } from "utils"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -29,7 +31,12 @@ const sceneWillConnect = () => {
   console.log("打开窗口", "lifeCycle")
   // 面板和按键状态
   self.panelStatus = false
+  self.profile = deepCopy(profilePreset)
+  self.docProfile = deepCopy(docProfilePreset)
+  self.profileTemp = deepCopy(profileTempPreset)
+  self.dataSource = deepCopy(dataSourcePreset)
   self.settingViewController = new SettingViewController()
+  self.settingViewController.dataSource = self.dataSource
   self.settingViewController.window = self.window
 }
 
@@ -64,13 +71,13 @@ const documentDidOpen = (docmd5: string) => {
   else {
     readProfile(Range.first, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
-      profile.ohmymn.screenAlwaysOn
+      self.profile.ohmymn.screenAlwaysOn
   }
   console.log("打开文档", "lifeCycle")
   self.docMD5 = docmd5
 }
 
-// 关闭文档，用于切换时保存上一个文档的配置
+// 关闭文档
 const documentWillClose = (docmd5: string) => {
   console.log("关闭文档", "lifeCycle")
   saveProfile(docmd5)

@@ -1,7 +1,6 @@
 import { eventHandler } from "types/Addon"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { layoutViewController } from "jsExtension/switchPanel"
-import { docProfile, profile } from "profile"
 import { delayBreak, isThisWindow, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import { getNoteById } from "utils/note"
@@ -32,16 +31,16 @@ const onSwitchChange: eventHandler = sender => {
   if (!isThisWindow(sender)) return
   const { name, key, status } = sender.userInfo
   if (key == "autoCorrect") {
-    docProfile.ohmymn.autoCorrect = status
+    self.docProfile.ohmymn.autoCorrect = status
     if (status) showHUD(auto_correct)
-  } else profile[name][key] = status
+  } else self.profile[name][key] = status
   switch (key) {
     case "lockExcerpt":
-      if (status && docProfile.ohmymn.autoCorrect) showHUD(lock_excerpt, 2)
+      if (status && self.docProfile.ohmymn.autoCorrect) showHUD(lock_excerpt, 2)
       break
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
-        profile.ohmymn.screenAlwaysOn
+        self.profile.ohmymn.screenAlwaysOn
       break
     default:
       break
@@ -52,12 +51,12 @@ const onSelectChange: eventHandler = sender => {
   if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
   if (key == "profile") {
-    const lastProfileNum = docProfile.ohmymn.profile[0]
-    docProfile.ohmymn.profile = selections
+    const lastProfileNum = self.docProfile.ohmymn.profile[0]
+    self.docProfile.ohmymn.profile = selections
     saveProfile(undefined, lastProfileNum)
     readProfile(Range.global)
   } else {
-    profile[name][key] = selections
+    self.profile[name][key] = selections
     switch (key) {
       case "panelPosition":
       case "panelHeight":
@@ -70,7 +69,7 @@ const onSelectChange: eventHandler = sender => {
 const onInputOver: eventHandler = sender => {
   if (!isThisWindow(sender)) return
   const { name, key, content } = sender.userInfo
-  profile[name][key] = content
+  self.profile[name][key] = content
   updateProfileTemp(key, content)
   content ? showHUD(input_saved) : showHUD(input_clear)
 }
@@ -109,7 +108,7 @@ const onProcessNewExcerpt: eventHandler = sender => {
   const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true
   // 摘录前初始化，使得创建摘录时可以自由修改
-  if (profile.ohmymn.lockExcerpt) lastExcerptText = "😎"
+  if (self.profile.ohmymn.lockExcerpt) lastExcerptText = "😎"
   handleExcerpt(note)
 }
 

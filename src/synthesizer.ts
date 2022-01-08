@@ -176,8 +176,8 @@ const mergeActions = () => {
 }
 
 export const actions = mergeActions()
-export const dataSource = genDataSource(
+export const dataSourcePreset = genDataSource(
   [ohmymn, ...addons].map(addon => addon.config),
   magicaction.config
 )
-export const dataSourceIndex = genDataSourceIndex(dataSource)
+export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

@@ -1,4 +1,8 @@
+import { IDocProfile, IProfile, IProfileTemp } from "profile"
+import { ReplaceParam } from "utils/input"
+import { StudyController } from "./MarginNote"
 import { MbBookNote } from "./MarginNote/MbBookNote"
+import { UIWindow, UITableView, UITableViewController } from "./UIKit"
 
 interface LabelType {
   type: cellViewType
@@ -135,4 +139,27 @@ export interface eventHandler {
 
 export interface gestureHandler {
   (sender: UIGestureRecognizer): void
+}
+
+declare global {
+  const self: {
+    [k: string]: any
+    studyController: StudyController
+    window: UIWindow
+    docMD5?: string
+    notebookid: string
+    tableView: UITableView
+    panelStatus: boolean
+    docProfile: {
+      [k: string]: { [k: string]: boolean | string | number[] }
+    } & IDocProfile
+    profile: {
+      [k: string]: { [k: string]: boolean | string | number[] }
+    } & IProfile
+    profileTemp: {
+      [k: string]: { [k: string]: RegExp[][] | ReplaceParam[] | undefined }
+    } & IProfileTemp
+    dataSource: ISection[]
+    settingViewController: UITableViewController
+  }
 }
