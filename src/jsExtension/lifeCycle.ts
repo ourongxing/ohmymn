@@ -8,6 +8,7 @@ import { eventHandlers } from "./handleReceivedEvent"
 import lang from "lang"
 import { dataSourcePreset } from "synthesizer"
 import { deepCopy } from "utils"
+import { UIWindow } from "types/UIKit"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -26,10 +27,11 @@ const SettingViewController = JSB.defineClass(
  * 7. 关闭窗口
  */
 
+let _window: UIWindow
 // 打开窗口，可以用来初始化
 const sceneWillConnect = () => {
   console.log("打开窗口", "lifeCycle")
-  // 面板和按键状态
+  _window = self.window
   self.panelStatus = false
   self.profile = deepCopy(profilePreset)
   self.docProfile = deepCopy(docProfilePreset)
@@ -90,7 +92,8 @@ const addonDidConnect = () => {
 // 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
 const addonWillDisconnect = () => {
   console.log("插件停用", "lifeCycle")
-  showHUD(lang.addon_life_cycle.remove, 2)
+  // 这里竟然无法获取 self.window
+  showHUD(lang.addon_life_cycle.remove, 2, _window)
   removeProfile()
 }
 
