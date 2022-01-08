@@ -12,14 +12,14 @@ const console = {
 
 // 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration: number = 1) =>
-  void MN.app.showHUD(message, MN.window, duration)
+  void MN.app.showHUD(message, self.window, duration)
 
 const HUDController = {
   show(message: string) {
-    MN.app.waitHUDOnView(message, MN.window)
+    MN.app.waitHUDOnView(message, self.window)
   },
   hidden() {
-    MN.app.stopWaitHUDOnView(MN.window)
+    MN.app.stopWaitHUDOnView(self.window)
   }
 }
 
@@ -69,7 +69,7 @@ const postNotification = (key: string, userInfo: any) => {
 }
 
 const isThisWindow = (sender: any) =>
-  MN.app.checkNotifySenderInWindow(sender, MN.window)
+  MN.app.checkNotifySenderInWindow(sender, self.window)
 
 const popup = (
   title: string,

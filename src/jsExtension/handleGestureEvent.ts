@@ -16,7 +16,7 @@ import { profile } from "profile"
 export const gestureHandlers = gesture.gestureHandlerController([
   {
     // 如果直接传递 view 和 gesture，此时无法获取到 self
-    view: () => MN.studyController.view,
+    view: () => MN.studyController().view,
     gesture: () =>
       gesture.initGesture.swipe(
         1,
@@ -25,7 +25,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
       )
   },
   {
-    view: () => MN.studyController.view,
+    view: () => MN.studyController().view,
     gesture: () =>
       gesture.initGesture.swipe(
         1,
@@ -34,7 +34,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
       )
   },
   {
-    view: () => MN.studyController.view,
+    view: () => MN.studyController().view,
     gesture: () =>
       gesture.initGesture.swipe(
         1,
@@ -43,7 +43,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
       )
   },
   {
-    view: () => MN.studyController.view,
+    view: () => MN.studyController().view,
     gesture: () =>
       gesture.initGesture.swipe(
         1,
@@ -60,20 +60,19 @@ const enum swipePositon {
 }
 
 const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
-  const MindMapNodeViews = MN.notebookController.mindmapView.selViewLst
+  const studyController = MN.studyController()
+  const { mindmapView } = studyController.notebookController
+  const { selViewLst } = mindmapView
   // 必须打开脑图，并且选中卡片
-  if (
-    MN.studyController.studyMode != studyMode.study ||
-    !MindMapNodeViews?.length
-  )
+  if (studyController.studyMode != studyMode.study || !selViewLst?.length)
     return swipePositon.None
-  const { y: swipeY } = sender.locationInView(MN.studyController.view)
-  if (MindMapNodeViews.length == 1) {
-    const view = MindMapNodeViews![0].view
+  const { y: swipeY } = sender.locationInView(studyController.view)
+  if (selViewLst.length == 1) {
+    const view = selViewLst![0].view
     const { x, y, height } =
-      MN.notebookController.mindmapView.subviews[0].subviews[0].convertRectToView(
+      mindmapView.subviews[0].subviews[0].convertRectToView(
         view.frame,
-        MN.studyController.view
+        studyController.view
       )
     // 工具栏在上面
     return (y - swipeY < 50 && y - swipeY > 0) ||
@@ -82,7 +81,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
       ? swipePositon.SingleBar
       : swipePositon.None
   } else {
-    const { height } = MN.studyController.view.bounds
+    const { height } = studyController.view.bounds
     return height - swipeY > 50 && height - swipeY < 150
       ? swipePositon.MuiltBar
       : swipePositon.None

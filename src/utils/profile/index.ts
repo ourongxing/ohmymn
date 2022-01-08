@@ -32,7 +32,7 @@ export const enum Range {
 
 const readProfile = (
   range: Range,
-  docmd5 = MN.studyController.readerController.currentDocumentController
+  docmd5 = MN.studyController().readerController.currentDocumentController
     .docMd5 ?? "init"
 ) => {
   switch (range) {
@@ -67,7 +67,8 @@ const readProfile = (
 // 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
 // 传入 undefine 会使用默认参数
 const saveProfile = (
-  docmd5 = MN.studyController.readerController.currentDocumentController.docMd5,
+  docmd5 = MN.studyController().readerController.currentDocumentController
+    .docMd5,
   num = docProfile.ohmymn.profile[0]
 ) => {
   const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))

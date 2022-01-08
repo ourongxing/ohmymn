@@ -5,7 +5,7 @@ import {
   getNoteById,
   undoGroupingWithRefresh
 } from "utils/note"
-import { delayBreak, showHUD } from "utils/common"
+import { delayBreak } from "utils/common"
 import { genTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
 import { HasTitleThen } from "addons/anotherautotitle"

@@ -61,5 +61,5 @@ export const updateProfileDataSource = (
     }
   }
   // 刷新控制面板
-  if (refresh) MN.settingViewController.tableView?.reloadData()
+  if (refresh) self.settingViewController.tableView?.reloadData()
 }

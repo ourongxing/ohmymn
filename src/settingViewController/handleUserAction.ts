@@ -146,7 +146,7 @@ const clickSelectButton = (sender: UIButton) => {
     width: width > 250 ? 250 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
-  const studyControllerView = MN.studyController.view
+  const studyControllerView = MN.studyController().view
   popoverController = new UIPopoverController(menuController)
   popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),

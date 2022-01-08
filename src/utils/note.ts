@@ -7,7 +7,7 @@ import { MN } from "const"
  */
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] | undefined =
-    MN.notebookController.mindmapView.selViewLst
+    MN.studyController().notebookController.mindmapView.selViewLst
   if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }

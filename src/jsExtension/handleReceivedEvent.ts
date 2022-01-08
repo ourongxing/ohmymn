@@ -2,7 +2,7 @@ import { eventHandler } from "types/Addon"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { docProfile, profile } from "profile"
-import { delayBreak, showHUD } from "utils/common"
+import { delayBreak, isThisWindow, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import { getNoteById } from "utils/note"
 import handleMagicAction from "./magicActionHandler"
@@ -23,11 +23,13 @@ export const eventHandlers = eventHandlerController([
   "ChangeExcerptRange"
 ])
 const onButtonClick: eventHandler = async sender => {
+  if (!isThisWindow(sender)) return
   const { row } = sender.userInfo
   handleMagicAction(row)
 }
 
 const onSwitchChange: eventHandler = sender => {
+  if (!isThisWindow(sender)) return
   const { name, key, status } = sender.userInfo
   if (key == "autoCorrect") {
     docProfile.ohmymn.autoCorrect = status
@@ -47,6 +49,7 @@ const onSwitchChange: eventHandler = sender => {
 }
 
 const onSelectChange: eventHandler = sender => {
+  if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
   if (key == "profile") {
     const lastProfileNum = docProfile.ohmymn.profile[0]
@@ -66,6 +69,7 @@ const onSelectChange: eventHandler = sender => {
 }
 
 const onInputOver: eventHandler = sender => {
+  if (!isThisWindow(sender)) return
   const { name, key, content } = sender.userInfo
   profile[name][key] = content
   updateProfileTemp(key, content)
@@ -77,6 +81,7 @@ let isProcessNewExcerpt = false
 let isChangeExcerptRange = false
 let lastExcerptText = "😎"
 const onPopupMenuOnNote: eventHandler = async sender => {
+  if (!isThisWindow(sender)) return
   const note = sender.userInfo.note
   isChangeExcerptRange = false
   isProcessNewExcerpt = false
@@ -92,6 +97,7 @@ const onPopupMenuOnNote: eventHandler = async sender => {
 }
 
 const onChangeExcerptRange: eventHandler = sender => {
+  if (!isThisWindow(sender)) return
   console.log("修改摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isChangeExcerptRange = true
@@ -99,6 +105,7 @@ const onChangeExcerptRange: eventHandler = sender => {
 }
 
 const onProcessNewExcerpt: eventHandler = sender => {
+  if (!isThisWindow(sender)) return
   console.log("创建摘录", "excerpt")
   const note = getNoteById(sender.userInfo.noteid)
   isProcessNewExcerpt = true

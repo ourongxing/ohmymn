@@ -19,8 +19,8 @@ declare global {
     studyController: StudyController
     window: UIWindow
     tableView: UITableView
+    panelStatus: boolean
     settingViewController: UITableViewController
-    notebookController: NotebookController
   }
   type WrapperObj<T> = T
   type DictObj = {
