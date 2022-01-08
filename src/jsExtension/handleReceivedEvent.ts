@@ -56,7 +56,6 @@ const onSelectChange: eventHandler = sender => {
     docProfile.ohmymn.profile = selections
     saveProfile(undefined, lastProfileNum)
     readProfile(Range.global)
-    layoutViewController()
   } else {
     profile[name][key] = selections
     switch (key) {

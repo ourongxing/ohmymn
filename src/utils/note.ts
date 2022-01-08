@@ -54,7 +54,7 @@ const getNotebookById = (notebookid: string): MbTopic =>
 const undoGrouping = (f: () => void) => {
   UndoManager.sharedInstance().undoGrouping(
     String(Date.now()),
-    MN.notebookId,
+    self.notebookid,
     f
   )
 }
@@ -68,9 +68,9 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  MN.db.setNotebookSyncDirty(MN.notebookId)
+  MN.db.setNotebookSyncDirty(self.notebookid)
   postNotification("RefreshAfterDBChange", {
-    topicid: MN.notebookId
+    topicid: self.notebookid
   })
 }
 

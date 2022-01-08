@@ -6,7 +6,6 @@ import mnaddon from "../mnaddon.json"
 class MNCore {
   textColor!: UIColor
   mainPath!: string
-  notebookId!: string
   studyController = () =>
     Application.sharedInstance().studyController(self.window)
   isMac = Application.sharedInstance().osType == osType.macOS

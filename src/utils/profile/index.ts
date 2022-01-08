@@ -30,11 +30,7 @@ export const enum Range {
   global
 }
 
-const readProfile = (
-  range: Range,
-  docmd5 = MN.studyController().readerController.currentDocumentController
-    .docMd5 ?? "init"
-) => {
+const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
   switch (range) {
     case Range.first:
       // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
@@ -67,8 +63,7 @@ const readProfile = (
 // 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
 // 传入 undefine 会使用默认参数
 const saveProfile = (
-  docmd5 = MN.studyController().readerController.currentDocumentController
-    .docMd5,
+  docmd5 = self.docMD5,
   num = docProfile.ohmymn.profile[0]
 ) => {
   const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))

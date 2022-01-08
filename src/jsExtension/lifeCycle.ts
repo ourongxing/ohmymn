@@ -3,7 +3,6 @@ import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { profile } from "profile"
-import { MN } from "const"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import lang from "lang"
@@ -39,13 +38,13 @@ const sceneWillConnect = () => {
 const sceneDidDisconnect = () => {
   console.log("关闭窗口", "lifeCycle")
   // 只要打开过文档，再关闭窗口就保存
-  if (self.thisDocMd5) saveProfile(self.thisDocMd5)
+  if (self.docMD5) saveProfile(self.docMD5)
 }
 
 // 打开笔记本
 const notebookWillOpen = (notebookid: string) => {
   console.log("打开笔记本", "lifeCycle")
-  MN.notebookId = notebookid
+  self.notebookid = notebookid
   eventHandlers.add()
   gestureHandlers.add()
 }
@@ -59,16 +58,16 @@ const notebookWillClose = (notebookid: string) => {
 }
 
 const documentDidOpen = (docmd5: string) => {
-  // 如果 self.thisDocMd5 有值，说明是换书，反正不是第一次打开书
-  if (self.thisDocMd5) readProfile(Range.doc, docmd5)
-  // 如果 self.thisDocMd5 没有值，说明是刚打开 MN
+  // 如果 docMD5 有值，说明是换书，反正不是第一次打开书
+  if (self.docMD5) readProfile(Range.doc, docmd5)
+  // 如果 docMD5 没有值，说明是刚打开 MN
   else {
     readProfile(Range.first, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
       profile.ohmymn.screenAlwaysOn
   }
   console.log("打开文档", "lifeCycle")
-  self.thisDocMd5 = docmd5
+  self.docMD5 = docmd5
 }
 
 // 关闭文档，用于切换时保存上一个文档的配置
@@ -90,7 +89,7 @@ const addonWillDisconnect = () => {
 
 const sceneWillResignActive = () => {
   console.log("应用进入后台", "lifeCycle")
-  if (self.thisDocMd5) saveProfile(self.thisDocMd5)
+  if (self.docMD5) saveProfile(self.docMD5)
 }
 
 const sceneDidBecomeActive = () => {

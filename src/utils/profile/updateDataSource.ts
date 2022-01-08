@@ -1,5 +1,6 @@
 // @ts-nocheck 有点黑魔法了，不过效果不错
 import { MN } from "const"
+import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile, profileTemp } from "profile"
 import { dataSource, dataSourceIndex } from "synthesizer"
 
@@ -61,5 +62,8 @@ export const updateProfileDataSource = (
     }
   }
   // 刷新控制面板
-  if (refresh) self.settingViewController.tableView?.reloadData()
+  if (refresh) {
+    self.settingViewController.tableView?.reloadData()
+    layoutViewController()
+  }
 }

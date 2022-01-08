@@ -18,6 +18,8 @@ declare global {
     [k: string]: any
     studyController: StudyController
     window: UIWindow
+    docMD5: string
+    notebookid: string
     tableView: UITableView
     panelStatus: boolean
     settingViewController: UITableViewController
