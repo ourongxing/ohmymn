@@ -31,41 +31,41 @@ const dict = {
     },
     anotherautodef: {
       intro:
-        "提取被定义项或任意内容为标题或标题链接\n定义 = 被定义项 + 定义联项 + 定义项",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22",
+        "Extract the defined terms and any other content as title or title link\n Definition = Defined Term + Connective of Definition + Definiens", //Question:有待商议
+      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22", //Todo:修改英文版Notion
       label: {
-        only_desc: "摘录仅保留定义项",
-        to_title_link: "别名转为标题链接",
-        custom_split_name: "自定义别名分词，点击查看具体格式",
-        preset: "选择需要的预设",
-        custom_split: "自定义定义联项，点击查看具体格式",
-        custom_def_title: "自定义提取内容，点击查看具体格式",
-        extraTitle: "从卡片中提取标题"
+        only_desc: "Excerpts only keep definiens",
+        to_title_link: "Convert alias to title link",
+        custom_split_name: "Customize alias participle, click to view specific format",
+        preset: "Choose the desired preset",
+        custom_split: "Customize connective of definition, click to view the specific format",
+        custom_def_title: "Customize extract content, click to view specific format",
+        extraTitle: "Extract title from card"
       },
       option: {
         preset: [
-          "自定义提取内容",
-          "自定义定义联项",
+          "Custom Extraction",
+          "Custom Connective of Definition",
           "xxx : yyy",
           "xxx —— yyy",
-          "xxx ，是(指) yyy",
-          "xxx 是(指)，yyy",
-          "xxx 是指 yyy"
+          "xxx ，是(指) yyy",  //Todo:由开发者定
+          "xxx 是(指)，yyy",  //Todo:由开发者定
+          "xxx 是指 yyy"  //Todo:由开发者定
         ]
       }
     },
     magicaction: {
       intro:
-        "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
+        "Please note that the following functions are used after selecting the card.\n Click to view specific usage and precautions", 
       link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
       option: {
-        filter_cards: ["仅判断标题", "判断整个卡片内容"],
-        change_fill_style: ["边框+填充", "填充", "边框"],
-        merge_text: ["合并为摘录", "合并为评论"],
-        merge_cards: ["同时合并标题", "不合并标题"]
+        filter_cards: ["Detect Only Title", "Detect Entire Card"],
+        change_fill_style: ["Frame+Color Fill", "Color Fill", "Frame"],
+        merge_text: ["Merged as Excerpt", "Merged as Comment"],
+        merge_cards: ["Merge Title Simultaneously", "Do not Merge Titles"]
       },
       help: {
-        filter_cards: "注意事项及具体输入格式见顶上帮助信息",
+        filter_cards: "Please see the help document for more precautions and specific input format",
         change_color: "输入颜色索引，也就是顺序，1 到 16",
         merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
         rename_title: "注意事项及具体输入格式见顶上帮助信息"
