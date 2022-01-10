@@ -23,7 +23,7 @@ const addons = [
   autotag
 ]
 
-// 插件总开关，与上面顺序一致
+// 插件总开关，与上面顺序一致，新插件只能加在最后，因为配置文件只记录索引
 export const enum QuickSwitch {
   gesture,
   anotherautotitle,

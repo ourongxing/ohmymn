@@ -1,4 +1,4 @@
-import { excerptNotes, getAllText } from "utils/note"
+import { addTags, excerptNotes, getAllText } from "utils/note"
 import {
   reverseEscape,
   string2RegArray,
@@ -246,6 +246,8 @@ const action: IActionMethod = {
         node.removeCommentByIndex(len - index - 1)
     })
     if (option == MergeCards.MergeTitle) node.noteTitle = titles.join("; ")
+    // 合并标签
+    addTags(node, [], true)
   }
 }
 

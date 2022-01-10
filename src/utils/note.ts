@@ -114,6 +114,7 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
 
 /**
  * 添加标签
+ * @param force 强制整理合并标签，就算没有添加标签
  */
 const addTags = (node: MbBookNote, tags: string[], force = false) => {
   const existingTags: string[] = []
