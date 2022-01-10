@@ -87,7 +87,7 @@ const trigger = async (
   muiltOption: number,
   sender: UIGestureRecognizer
 ) => {
-  if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.Gesture)) return
+  if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.gesture)) return
   switch (checkSwipePosition(sender)) {
     case swipePositon.None:
       return

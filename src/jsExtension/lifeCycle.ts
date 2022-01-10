@@ -32,6 +32,7 @@ let _window: UIWindow
 const sceneWillConnect = () => {
   console.log("打开窗口", "lifeCycle")
   _window = self.window
+  // MN 插件多窗口会共用全局变量，所以需要保存到 self 上。
   self.panelStatus = false
   self.profile = deepCopy(profilePreset)
   self.docProfile = deepCopy(docProfilePreset)

@@ -12,11 +12,6 @@ export const enum AutoListPreset {
   Semicolon,
   Period
 }
-
-const enum ListSelected {
-  AsAutoList
-}
-
 const config: IConfig = {
   name: "AutoList",
   intro,
@@ -86,6 +81,11 @@ const util = {
     return text.replace(/\n{2,}/g, "\n").trim()
   }
 }
+
+const enum ListSelected {
+  AsAutoList
+}
+
 const action: IActionMethod = {
   listSelected({ nodes, content, option }) {
     if (option !== ListSelected.AsAutoList && !content) return

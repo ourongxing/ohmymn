@@ -36,6 +36,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
   const row = section.rows[indexPath.row] as IRowInput
   let text = sender.text.trim()
   // 可以为空
+  if (/^marginnote3app:/.test(text)) openUrl(text)
   if (!text || checkInputCorrect(text, row.key)) {
     // 输入正确则取消光标
     sender.resignFirstResponder()
@@ -47,7 +48,6 @@ const textFieldShouldReturn = (sender: UITextField) => {
     })
   } else {
     showHUD(lang.handle_user_action.input_error)
-    if (/^marginnote3app:/.test(text)) openUrl(text)
   }
   return true
 }

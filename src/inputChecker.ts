@@ -50,10 +50,9 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         })
         break
       }
-      case "customExtractTitle":
-      case "customReplace":
-      case "customList":
-      case "customTag": {
+      case "tagSelected":
+        text = /^\(.*\)$/.test(text) ? text : `(/./, "${text}")`
+      default: {
         const res = getMNLinkValue(text)
         if (!res) throw ""
         string2ReplaceParam(res).forEach(param => {
@@ -61,8 +60,6 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         })
         break
       }
-      default:
-        throw ""
     }
   } catch {
     return false

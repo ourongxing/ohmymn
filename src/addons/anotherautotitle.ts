@@ -70,7 +70,7 @@ const config: IConfig = {
 }
 
 const util = {
-  checkGetTitle(text: string) {
+  getTitle(text: string) {
     const { preset, wordCount } = self.profile.anotherautotitle
     for (const set of preset) {
       switch (set) {

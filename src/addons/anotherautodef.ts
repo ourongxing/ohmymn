@@ -63,8 +63,8 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const { customSplit } = self.profile.anotherautodef
-    const regs = customSplit ? string2RegArray(customSplit)[0] : []
+    const { customSplit } = self.profileTemp.regArray
+    const regs = customSplit ? customSplit[0] : []
     regs.push(reg)
     regs.forEach(reg => {
       text = text.replace(reg, "😎")
@@ -77,7 +77,7 @@ const util = {
     else return false
   },
 
-  checkGetDefTitle(text: string) {
+  getDefTitle(text: string) {
     const { preset, onlyDesc, toTitleLink } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
@@ -147,7 +147,7 @@ const action: IActionMethod = {
       const text = getAllText(node)
       if (!text) continue
       if (option === 0) {
-        const result = util.checkGetDefTitle(text)
+        const result = util.getDefTitle(text)
         if (result) node.noteTitle = result.title
       } else
         for (const item of params) {

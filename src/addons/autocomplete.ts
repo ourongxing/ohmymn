@@ -90,7 +90,7 @@ const util = {
   getCollinsStar(num: number) {
     return "⭐".repeat(num)
   },
-  async checkGetWord(text: string) {
+  async getCompletedWord(text: string) {
     try {
       if (!isHalfWidth(text) || countWord(text) != 1) throw "不是单词"
       text = text.toLowerCase()
@@ -98,7 +98,7 @@ const util = {
       let info = await this.getWordInfo(text)
       if (info.exchange) {
         const ex = info.exchange
-        const lemma = ex.replace(/^0:(\w*)\/[^/]*$/, "$1")
+        const lemma = ex.replace(/^0:(\w*).*$/, "$1")
         if (lemma != ex) {
           text = lemma
           info = await this.getWordInfo(lemma)
@@ -117,13 +117,13 @@ const util = {
         en: isOCNull(info.definition) ? "" : info.definition,
         zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
       }
-      if (self.profile.autocomplete.customComplete) {
-        let fill = reverseEscape(self.profile.autocomplete.customComplete)
+      const { customComplete } = self.profile.autocomplete
+      if (customComplete) {
+        let fill = reverseEscape(customComplete)
         Object.entries(vars).forEach(([key, value]) => {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)
         })
-        text = autostandardize.standardizeText(fill)
       }
       return {
         title,
@@ -132,7 +132,7 @@ const util = {
     } catch (error) {
       console.log(error, "autocomplete")
       if (error != "不是单词") showHUD(String(error))
-      return false
+      return undefined
     }
   }
 }
@@ -143,7 +143,7 @@ const action: IActionMethod = {
     for (const note of nodes) {
       const title = note?.noteTitle
       if (!title) continue
-      const result = await util.checkGetWord(title.split(/\s*[;；]\s*/)[0])
+      const result = await util.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
       if (!result) continue
       undoGrouping(() => {
         note.noteTitle = result.title
