@@ -74,11 +74,16 @@ const RefreshAfterDBChange = () => {
   })
 }
 
-const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
-  const comments = node.comments
+/**
+ * 获取评论的索引
+ */
+const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
+  const comments = note.comments
   for (let i = 0; i < comments.length; i++) {
-    const comment = comments[i]
-    if (comment.type == "LinkNote" && comment.noteid == commentNote.noteId)
+    const _comment = comments[i]
+    if (typeof comment == "string") {
+      if (_comment.type == "TextNote" && _comment.text == comment) return i
+    } else if (_comment.type == "LinkNote" && _comment.noteid == comment.noteId)
       return i
   }
   return -1
@@ -107,6 +112,41 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
   return textArr.join(separator)
 }
 
+/**
+ * 添加标签
+ */
+const addTags = (node: MbBookNote, tags: string[], force = false) => {
+  const existingTags: string[] = []
+  const tagCommentIndex: number[] = []
+  console.log(getAllText(node))
+  node.comments.forEach((comment, index) => {
+    if (comment.type == "TextNote") {
+      const _tags = comment.text.split(" ")
+      if (_tags.every(tag => tag.startsWith("#"))) {
+        existingTags.push(..._tags.map(tag => tag.slice(1)))
+        tagCommentIndex.push(index)
+      }
+    }
+  })
+
+  // console.log("已存在的标签：" + existingTags.join(", "))
+  // console.log("提取到的标签：" + tags.join(", "))
+
+  // 如果该标签已存在，而且不是强制，就退出
+  if (!force && tags.every(tag => existingTags.includes(tag))) return
+
+  // 从后往前删，索引不会变
+  tagCommentIndex
+    .reverse()
+    .forEach(index => void node.removeCommentByIndex(index))
+
+  node.appendTextComment(
+    Array.from(new Set([...existingTags, ...tags]))
+      .map(tag => `#${tag}`)
+      .join(" ")
+  )
+}
+
 export {
   getSelectNodes,
   getSelectNodesAll,
@@ -117,5 +157,6 @@ export {
   getAllText,
   undoGrouping,
   undoGroupingWithRefresh,
-  RefreshAfterDBChange
+  RefreshAfterDBChange,
+  addTags
 }

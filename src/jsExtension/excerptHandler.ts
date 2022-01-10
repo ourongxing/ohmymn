@@ -1,11 +1,12 @@
 import {
+  addTags,
   getCommentIndex,
   getNotebookById,
   getNoteById,
   undoGroupingWithRefresh
 } from "utils/note"
 import { delayBreak } from "utils/common"
-import { genTitleText } from "./newExcerptGenerater"
+import { newTagStyle, newTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
 import { HasTitleThen } from "addons/anotherautotitle"
 
@@ -32,7 +33,7 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
     lastExcerptText != "😎"
   ) {
     console.log("检测到开启锁定摘录选项，还原摘录", "excerpt")
-    processExcerpt(undefined, lastExcerptText!)
+    processExcerpt(lastExcerptText!)
     return
   }
 
@@ -66,7 +67,6 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
 
   if (self.docProfile.ohmymn.autoCorrect) {
     console.log("开始矫正", "excerpt")
-    console.log(note.excerptText, "highlight")
     const originText = note.excerptText!
     // 强制进行自动矫正
     note.excerptText = originText + "??????????"
@@ -86,8 +86,10 @@ export default async (_note: MbBookNote, _lastExcerptText?: string) => {
 }
 
 const excerptHandler = async () => {
-  if (!note.excerptText) return
-  let { title, text } = await genTitleText(note.excerptText!.trim())
+  const excerptText = note.excerptText?.trim()
+  if (!excerptText) return
+  let { title, text } = await newTitleText(excerptText)
+  let { tags, color, fill } = newTagStyle(excerptText)
 
   // 摘录是作为评论，反正是卡片已经存在的情况下摘录，如果继续满足成为标题的条件
   if (isComment && title) {
@@ -125,10 +127,16 @@ const excerptHandler = async () => {
 
   console.log(title ? `当前标题是：${title}` : "没有标题", "excerpt")
   console.log(text ? `当前摘录内容是：${text}` : "摘录转为了标题", "excerpt")
-  processExcerpt(title, text)
+  processExcerpt(text, title, tags, color, fill)
 }
 
-const processExcerpt = (title: string | undefined, text: string) => {
+const processExcerpt = (
+  text: string,
+  title?: string,
+  tags?: string[],
+  color?: number,
+  fill?: number
+) => {
   undoGroupingWithRefresh(() => {
     if (text) note.excerptText = text
     // 如果摘录为空，有三种情况
@@ -146,7 +154,7 @@ const processExcerpt = (title: string | undefined, text: string) => {
       else note.excerptText = ""
     }
     // 设置标题必须放在后面，前面会用到以前的标题
-    if (title)
-      isComment ? (nodeNote.noteTitle = title) : (note.noteTitle = title)
+    if (title) (isComment ? nodeNote : note).noteTitle = title
+    if (tags?.length) addTags(isComment ? nodeNote : note, tags)
   })
 }

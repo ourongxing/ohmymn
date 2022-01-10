@@ -1,5 +1,8 @@
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
+import { addAbortSignal } from "stream"
+import { addTags, getAllText } from "utils/note"
+import { string2ReplaceParam } from "utils/input"
 
 const { intro, option, label, link } = lang.addon.autotag
 
@@ -35,7 +38,39 @@ const config: IConfig = {
   ]
 }
 
-const util = {}
-const action: IActionMethod = {}
+const util = {
+  getTag(text: string) {
+    const { customTag: params } = self.profileTemp.replaceParam
+    if (params)
+      return params
+        .filter(param => param.regexp.test(text))
+        .map(param => param.newSubStr)
+  }
+}
+
+const enum TagSelected {
+  AsAutoTag
+}
+
+const action: IActionMethod = {
+  tagSelected({ nodes, option, content }) {
+    if (option != TagSelected.AsAutoTag && !content) return
+    content = /^\(.*\)$/.test(content) ? content : `(/./, "${content}")`
+    let params = string2ReplaceParam(content)
+    const { customTag } = self.profileTemp.replaceParam
+    if (option == TagSelected.AsAutoTag) {
+      if (!customTag) return
+      params = customTag
+    }
+
+    nodes.forEach(node => {
+      const allText = getAllText(node)
+      const tags = params
+        .filter(param => param.regexp.test(allText))
+        .map(param => param.newSubStr)
+      addTags(node, tags)
+    })
+  }
+}
 
 export { config, util, action }

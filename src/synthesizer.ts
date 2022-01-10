@@ -23,15 +23,16 @@ const addons = [
   autotag
 ]
 
-// 插件总开关，按显示的顺序
+// 插件总开关，与上面顺序一致
 export const enum QuickSwitch {
-  Gesture,
-  AnotherAutoTitle,
-  AnotherAutoDef,
-  AutoStandardize,
-  AutoComplete,
-  AutoReplace,
-  AutoList
+  gesture,
+  anotherautotitle,
+  anotherautodef,
+  autostandardize,
+  autocomplete,
+  autoreplace,
+  autolist,
+  autotag
 }
 
 const more: ISection = {
