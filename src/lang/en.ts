@@ -176,32 +176,32 @@ const dict = {
   },
   handle_received_event: {
     hud: {
-      not_selected: "未选中任何脑图卡片",
-      auto_correct: "请按实际情况选择开关，不建议无脑打开自动矫正",
-      lock_excerpt: "锁定摘录不建议和自动矫正同时开启",
-      input_saved: "输入已保存",
-      input_clear: "输入已清空"
+      not_selected: "No mindmap card selected",
+      auto_correct: "Please select the switch according to the actual situation, it is not recommended to turn on the automatic correction carelessly",
+      lock_excerpt: "it's not recommended to turn on locked excerpts and automatic correction at the same time",
+      input_saved: "Input saved",
+      input_clear: "Input is cleared"
     },
     smart_select: {
       option: [
-        "仅处理选中的卡片",
-        "仅处理所有子节点",
-        "处理选中的卡片及其子节点"
+        "Process only selected cards",
+        "Process all child nodes",
+        "Process child nodes and seected cards"
       ],
-      card_with_children: "检测到您选中的唯一卡片有子节点",
-      cards_with_children: "检测到您选中的同层级卡片均有子节点"
+      card_with_children: "Detect only one selected card has child nodes",
+      cards_with_children: "Detect all selected cards of the same level have child nodes"
     }
   },
   switch_panel: {
-    better_with_mindmap: "OhMyMN 与脑图更配喔"
+    better_with_mindmap: "OhMyMN is more compatible with mindmap"
   },
   handle_user_action: {
-    sure: "确定",
-    input_error: "输入错误，请重新输入"
+    sure: "Confirm",
+    input_error: "Input errors, please re-enter"
   },
   implement_datasource_method: {
-    none: "无",
-    clicked: "选中"
+    none: "None",
+    clicked: "Selected"
   }
 }
 
