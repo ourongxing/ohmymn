@@ -12,10 +12,10 @@ class MNCore {
 }
 
 export const Addon = {
-  key: mnaddon.addonid.split(".")[2],
   title: mnaddon.title,
   author: mnaddon.author,
   version: mnaddon.version,
+  key: mnaddon.addonid.split(".")[2],
   link: "https://github.com/mnaddon/ohmymn",
   profileKey: "marginnote_ohmymn_profile_global_v3",
   docProfileKey: "marginnote_ohmymn_profile_doc_v3"

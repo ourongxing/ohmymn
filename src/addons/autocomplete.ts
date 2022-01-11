@@ -1,11 +1,10 @@
 import lang from "lang"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { isOCNull, showHUD } from "utils/common"
-import { reverseEscape } from "utils/input"
+import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
 import { isHalfWidth, countWord } from "utils/text"
-import { util as autostandardize } from "./autostandardize"
 
 const { error, intro, link, option, label } = lang.addon.autocomplete
 const config: IConfig = {
@@ -119,7 +118,7 @@ const util = {
       }
       const { customComplete } = self.profile.autocomplete
       if (customComplete) {
-        let fill = reverseEscape(`"${customComplete}"`)
+        let fill = reverseEscape(`"${escapeDoubleQuote(customComplete)}"`)
         Object.entries(vars).forEach(([key, value]) => {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)

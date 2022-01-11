@@ -38,7 +38,9 @@ const profilePreset = {
     customComplete: "{{zh}}"
   },
   autostandardize: {
-    preset: [] as AutoStandardizePreset[]
+    preset: [] as AutoStandardizePreset[],
+    customStandardize: "",
+    standardizeTitle: false
   },
   anotherautotitle: {
     preset: [] as AutoTitlePreset[],
@@ -91,7 +93,8 @@ const profileTempPreset = {
     customTag: [{}] as ReplaceParam[] | undefined,
     customList: [{}] as ReplaceParam[] | undefined,
     customReplace: [{}] as ReplaceParam[] | undefined,
-    customExtractTitle: [{}] as ReplaceParam[] | undefined
+    customExtractTitle: [{}] as ReplaceParam[] | undefined,
+    customStandardize: [{}] as ReplaceParam[] | undefined
   },
   regArray: {
     customSplit: [[]] as RegExp[][] | undefined,

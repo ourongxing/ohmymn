@@ -1,23 +1,11 @@
 import { excerptNotes } from "utils/note"
 import pangu from "utils/pangu"
 import { toTitleCase } from "utils/toTitleCase"
-import { isHalfWidth } from "utils/text"
+import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { intro, option, label } = lang.addon.autostandardize
-export const enum AutoStandardizePreset {
-  HalfToFull,
-  AddSpace,
-  RemoveExtraSpace,
-  StandardizeTitle
-}
-
-const enum StandardizeSelected {
-  All,
-  OnlyTitle,
-  OnlyExcerptText
-}
+const { help, intro, option, label, link } = lang.addon.autostandardize
 
 const config: IConfig = {
   name: "AutoStandardize",
@@ -28,6 +16,20 @@ const config: IConfig = {
       type: cellViewType.muiltSelect,
       option: option.preset,
       label: label.preset
+    },
+    {
+      key: "customStandardize",
+      type: cellViewType.input,
+      label: label.custom_standardize,
+      bind: ["preset", 0],
+      link
+    },
+    {
+      key: "standardizeTitle",
+      type: cellViewType.switch,
+      label: label.standardize_title,
+      help: help.standardize_title,
+      link
     }
   ],
   actions: [
@@ -40,10 +42,19 @@ const config: IConfig = {
   ]
 }
 
+export const enum AutoStandardizePreset {
+  Custom,
+  RemoveAllSpace,
+  HalfToFull,
+  AddSpace,
+  RemoveCHSpace,
+  RemoveRepeatSpace
+}
+
 const util = {
   toTitleCase(text: string) {
-    const { preset } = self.profile.autostandardize
-    if (!preset.includes(AutoStandardizePreset.StandardizeTitle)) return text
+    const { standardizeTitle } = self.profile.autostandardize
+    if (!standardizeTitle) return text
     return text
       .split(/\s*[；;]\s*/)
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
@@ -57,19 +68,41 @@ const util = {
       .replace(/\*\*/g, "占位符")
     for (const set of preset) {
       switch (set) {
+        case AutoStandardizePreset.Custom:
+          const { customStandardize: params } = self.profileTemp.replaceParam
+          if (!params) continue
+          params.forEach(param => {
+            text = text.replace(param.regexp, param.newSubStr)
+          })
+          break
+        case AutoStandardizePreset.RemoveAllSpace:
+          text = text.replace(/\x20/g, "")
+          break
         case AutoStandardizePreset.HalfToFull:
           text = pangu.toFullwidth(text)
           break
         case AutoStandardizePreset.AddSpace:
           text = pangu.spacing(text)
           break
-        case AutoStandardizePreset.RemoveExtraSpace:
-          text = text.replace(/\x20{2,}/g, "\x20").replace(/\x20*\n\x20/, "\n")
+        case AutoStandardizePreset.RemoveCHSpace:
+          text = text.replace(
+            new RegExp(`([${CJK}])\x20+([${CJK}])`, "g"),
+            "$1$2"
+          )
+          break
+        case AutoStandardizePreset.RemoveRepeatSpace:
+          text = text.replace(/\x20{2,}/g, "\x20")
           break
       }
     }
     return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
   }
+}
+
+const enum StandardizeSelected {
+  All,
+  OnlyTitle,
+  OnlyExcerptText
 }
 
 const action: IActionMethod = {

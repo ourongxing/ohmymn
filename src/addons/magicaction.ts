@@ -1,5 +1,6 @@
-import { addTags, excerptNotes, getAllText } from "utils/note"
+import { addTags, getAllText } from "utils/note"
 import {
+  escapeDoubleQuote,
   reverseEscape,
   string2RegArray,
   string2ReplaceParam
@@ -10,21 +11,6 @@ import { textComment } from "types/MarginNote"
 import lang from "lang"
 
 const { help, option, intro, label, link, hud } = lang.addon.magicaction
-
-const enum FilterCards {
-  OnlyTitle,
-  AllText
-}
-
-const enum MergeCards {
-  MergeTitle,
-  NotMergeTitile
-}
-
-const enum MergeText {
-  ToExpertText,
-  ToComment
-}
 
 const config: IConfig = {
   name: "MagicAction",
@@ -66,6 +52,21 @@ const config: IConfig = {
       help: help.rename_title
     }
   ]
+}
+
+const enum FilterCards {
+  OnlyTitle,
+  AllText
+}
+
+const enum MergeCards {
+  MergeTitle,
+  NotMergeTitile
+}
+
+const enum MergeText {
+  ToExpertText,
+  ToComment
 }
 
 const util = {
@@ -133,7 +134,9 @@ const action: IActionMethod = {
   renameTitle({ content, nodes }) {
     // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
     // 如果单个选中，则为选中的顺序
-    content = /^\(.*\)$/.test(content) ? content : `(/^.*$/g, "${content}")`
+    content = /^\(.*\)$/.test(content)
+      ? content
+      : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
     const params = string2ReplaceParam(content)
     if (params.length > 1) return
     let newReplace: string[] = []
@@ -183,7 +186,6 @@ const action: IActionMethod = {
   },
   filterCards({ nodes, content, option }) {
     if (!content) return
-    // 0 判断标题 1 判断整个内容
     const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""

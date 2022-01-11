@@ -1,16 +1,17 @@
-import { util as magicaction } from "addons/magicaction"
 import {
+  escapeDoubleQuote,
   reverseEscape,
   string2RegArray,
   string2ReplaceParam
 } from "utils/input"
+import { util as magicaction } from "addons/magicaction"
 import { getMNLinkValue } from "utils/profile/updateDataSource"
 
-const checkInputCorrect = (text: string, key: string): boolean => {
+const checkInputCorrect = (str: string, key: string): boolean => {
   try {
     switch (key) {
       case "wordCount": {
-        const input = reverseEscape(text)
+        const input = reverseEscape(str)
         if (
           Array.isArray(input) &&
           input.length == 2 &&
@@ -20,7 +21,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       }
       case "wordCountArea": {
-        const input = reverseEscape(text)
+        const input = reverseEscape(str)
         if (
           Array.isArray(input) &&
           input.length == 3 &&
@@ -31,17 +32,19 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       }
       case "mergeText":
       case "customComplete":
-        reverseEscape(`"${text}"`)
+        reverseEscape(`"${escapeDoubleQuote(str)}"`)
         break
       case "changeColor": {
-        const index = Number(text)
+        const index = Number(str)
         if (!Number.isInteger(index)) throw ""
         if (index > 16 || index < 1) throw ""
         break
       }
       case "renameTitle":
-        text = /^\(.*\)$/.test(text) ? text : `(/^.*$/g, "${text}")`
-        const params = string2ReplaceParam(text)
+        str = /^\(.*\)$/.test(str)
+          ? str
+          : `(/^.*$/g, "${escapeDoubleQuote(str)}")`
+        const params = string2ReplaceParam(str)
         if (params.length > 1) throw ""
         "test".replace(params[0].regexp, params[0].newSubStr)
         if (/%\[(.*)\]/.test(params[0].newSubStr))
@@ -51,7 +54,7 @@ const checkInputCorrect = (text: string, key: string): boolean => {
       case "customBeTitle":
       case "customSplit":
       case "filterCards": {
-        const res = getMNLinkValue(text)
+        const res = getMNLinkValue(str)
         if (!res) throw ""
         const regs = string2RegArray(res)
         regs.flat().forEach(reg => {
@@ -60,9 +63,9 @@ const checkInputCorrect = (text: string, key: string): boolean => {
         break
       }
       case "tagSelected":
-        text = /^\(.*\)$/.test(text) ? text : `(/./, "${text}")`
+        str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
       default: {
-        const res = getMNLinkValue(text)
+        const res = getMNLinkValue(str)
         if (!res) throw ""
         string2ReplaceParam(res).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)

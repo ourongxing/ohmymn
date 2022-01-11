@@ -91,17 +91,25 @@ const dict = {
     },
     autostandardize: {
       intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
+      link: "https://busiyi.notion.site/AutoStandrize-b5e0d381d4814139a1b73d305ebc12d1",
       option: {
         preset: [
+          "自定义",
+          "去除全部空格",
           "半角转全角",
           "中英文加空格",
-          "去除重复空格",
-          "英文标题规范化"
+          "去除中文间空格",
+          "去除重复空格"
         ],
         standardize_selected: ["都优化", "仅优化标题", "仅优化摘录"]
       },
+      help: {
+        standardize_title: "点击查看具体规范"
+      },
       label: {
         standardize_selected: "优化排版和格式",
+        standardize_title: "英文标题规范化",
+        custom_standardize: "自定义，点击查看具体格式",
         preset: "选择需要的预设"
       }
     },

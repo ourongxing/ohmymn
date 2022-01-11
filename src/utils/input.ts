@@ -1,7 +1,8 @@
 /**
  * 反转义字符串，用于处理用户输入
  */
-const reverseEscape = (text: string) => JSON.parse(`{"key": ${text}}`).key
+const reverseEscape = (str: string) => JSON.parse(`{"key": ${str}}`).key
+const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
 const isNumber = (text: string) => !isNaN(Number(text))
 
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
@@ -20,6 +21,7 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
     const regexp = string2Reg(regString)
     params.push({
       regexp,
+      // newSubStr 始终有双引号，反转义也是字符串
       newSubStr: reverseEscape(newSubStr),
       fnKey: fnKey ? Number(fnKey) : 0
     })
@@ -33,16 +35,26 @@ const string2Reg = (str: string) => {
   return new RegExp(regParts[1], regParts[2])
 }
 
+// https://github.com/sindresorhus/escape-string-regexp/blob/main/index.js
+const escapeStringRegexp = (str: string) =>
+  str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
+
 const string2RegArray = (str: string): RegExp[][] => {
   /**
    * 输入 [/sd/,/sd/];[/sd/,/sd/]
    * /sd/
-   * sd
+   * sd => 会转义，相当于普通字符串
    * 输出 [[/sd/]]
    */
 
   if (!/^\[.*\]$/.test(str))
-    return [[string2Reg(/^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : `/${str}/`)]]
+    return [
+      [
+        string2Reg(
+          /^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : escapeStringRegexp(str)
+        )
+      ]
+    ]
   const brackets = str.trim().split(/\s*;\s*(?=\[)/)
   return brackets.map(bracket =>
     bracket
@@ -58,4 +70,11 @@ export interface ReplaceParam {
   fnKey: number
 }
 
-export { string2ReplaceParam, reverseEscape, string2Reg, string2RegArray }
+export {
+  string2ReplaceParam,
+  reverseEscape,
+  string2Reg,
+  string2RegArray,
+  escapeDoubleQuote,
+  escapeStringRegexp
+}

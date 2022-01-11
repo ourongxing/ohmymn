@@ -1,7 +1,7 @@
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { addTags, getAllText } from "utils/note"
-import { string2ReplaceParam } from "utils/input"
+import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
 
 const { intro, option, label, link } = lang.addon.autotag
 
@@ -55,7 +55,9 @@ const enum TagSelected {
 const action: IActionMethod = {
   tagSelected({ nodes, option, content }) {
     if (option != TagSelected.AsAutoTag && !content) return
-    content = /^\(.*\)$/.test(content) ? content : `(/./, "${content}")`
+    content = /^\(.*\)$/.test(content)
+      ? content
+      : `(/./, "${escapeDoubleQuote(content)}")`
     let params = string2ReplaceParam(content)
     const { customTag } = self.profileTemp.replaceParam
     if (option == TagSelected.AsAutoTag) {
