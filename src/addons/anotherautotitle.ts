@@ -2,24 +2,9 @@ import { reverseEscape, string2RegArray } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
+import { MbBookNote } from "types/MarginNote"
 
 const { option, intro, help, link, label } = lang.addon.anotherautotitle
-
-export const enum HasTitleThen {
-  ExpertText,
-  TitleLink,
-  OverrideTitle
-}
-
-export const enum AutoTitlePreset {
-  Custom,
-  WordLimit,
-  NoPunctuation
-}
-export const enum SwitchTitle {
-  ToNonexistent,
-  Exchange
-}
 
 const config: IConfig = {
   name: "AnotherAutoTitle",
@@ -33,9 +18,8 @@ const config: IConfig = {
     },
     {
       key: "wordCount",
-      type: cellViewType.inlineInput,
+      type: cellViewType.input,
       bind: ["preset", 1],
-      help: help.word_count,
       label: label.word_count
     },
     {
@@ -44,13 +28,6 @@ const config: IConfig = {
       label: label.custom_be_title,
       bind: ["preset", 0],
       link
-    },
-    {
-      key: "hasTitleThen",
-      type: cellViewType.select,
-      label: label.has_title_then,
-      help: help.has_title_then,
-      option: option.has_title_then
     },
     {
       key: "changeTitleNoLimit",
@@ -68,10 +45,32 @@ const config: IConfig = {
     }
   ]
 }
+export const enum AutoTitlePreset {
+  Custom,
+  WordLimit,
+  NoPunctuation
+}
 
 const util = {
-  getTitle(text: string) {
-    const { preset, wordCount } = self.profile.anotherautotitle
+  isBroadened(oldStr: string, newStr: string) {
+    return (
+      oldStr &&
+      oldStr.length >= 2 &&
+      (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
+    )
+  },
+  getTitle(text: string, note: MbBookNote) {
+    const { preset, wordCount, changeTitleNoLimit } =
+      self.profile.anotherautotitle
+    if (
+      changeTitleNoLimit &&
+      note.noteTitle &&
+      this.isBroadened(note.noteTitle, text)
+    )
+      return {
+        title: text
+      }
+
     for (const set of preset) {
       switch (set) {
         case AutoTitlePreset.Custom:
@@ -84,15 +83,8 @@ const util = {
           break
         case AutoTitlePreset.NoPunctuation:
           if (!wordCount) continue
-          const limitedNum = reverseEscape(wordCount)
-          const actualNum = countWord(text)
-          const isTitle =
-            typeof limitedNum == "number"
-              ? actualNum <= limitedNum
-              : isHalfWidth(text)
-              ? actualNum <= limitedNum[1]
-              : actualNum <= limitedNum[0]
-          if (isTitle)
+          const [zh, en] = reverseEscape(wordCount) as number[]
+          if (countWord(text) <= (isHalfWidth(text) ? en : zh))
             return {
               title: text
             }
@@ -107,6 +99,12 @@ const util = {
     }
   }
 }
+
+export const enum SwitchTitle {
+  ToNonexistent,
+  Exchange
+}
+
 const action: IActionMethod = {
   switchTitle({ nodes, option }) {
     for (const note of nodes) {
@@ -128,4 +126,5 @@ const action: IActionMethod = {
     }
   }
 }
+
 export { config, util, action }

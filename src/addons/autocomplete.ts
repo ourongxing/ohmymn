@@ -119,11 +119,12 @@ const util = {
       }
       const { customComplete } = self.profile.autocomplete
       if (customComplete) {
-        let fill = reverseEscape(customComplete)
+        let fill = reverseEscape(`"${customComplete}"`)
         Object.entries(vars).forEach(([key, value]) => {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)
         })
+        text = fill
       }
       return {
         title,

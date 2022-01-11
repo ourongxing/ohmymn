@@ -66,20 +66,14 @@ const tableViewHeightForRowAtIndexPath = (
 ) => {
   const { rows } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
+  if (row.bind && isHidden(row.bind, rows)) return 0
   if (row.type === cellViewType.plainText) {
-    if (row.bind && isHidden(row.bind, rows)) return 0
     // 每行大约可以容纳 44 个半角字符
     const byte = byteLength(row.label)
     const lines = (byte - (byte % 44)) / 44 - (byte % 44 ? 0 : 1)
     const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
     return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
-  } else if (
-    (row.type == cellViewType.inlineInput || row.type == cellViewType.input) &&
-    row.bind &&
-    isHidden(row.bind, rows)
-  )
-    return 0
-
+  }
   return 40
 }
 
@@ -95,6 +89,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "PlainTextCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.opaque = false
       cell.textLabel.textAlignment = 0
@@ -111,6 +106,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "ButtonCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
@@ -127,6 +123,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "SwitchCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
@@ -182,6 +179,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "selectCellID"
       )
+      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label

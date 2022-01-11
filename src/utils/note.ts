@@ -1,5 +1,5 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
-import { delay, postNotification } from "./common"
+import { postNotification } from "./common"
 import { MN } from "const"
 
 /**
@@ -52,11 +52,7 @@ const getNotebookById = (notebookid: string): MbTopic =>
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
 const undoGrouping = (f: () => void) => {
-  UndoManager.sharedInstance().undoGrouping(
-    String(Date.now()),
-    self.notebookid,
-    f
-  )
+  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
 }
 
 const undoGroupingWithRefresh = (f: () => void) => {
@@ -91,7 +87,12 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
 
 /**
  * 获取卡片内所有的文字
+ * @param note
+ * @param separator 分隔符号
+ * @param highlight 是否保留划重点
+ * @returns
  */
+
 const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
   const textArr = []
   if (note.excerptText)
@@ -119,7 +120,6 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
 const addTags = (node: MbBookNote, tags: string[], force = false) => {
   const existingTags: string[] = []
   const tagCommentIndex: number[] = []
-  console.log(getAllText(node))
   node.comments.forEach((comment, index) => {
     if (comment.type == "TextNote") {
       const _tags = comment.text.split(" ")
@@ -129,9 +129,6 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
       }
     }
   })
-
-  // console.log("已存在的标签：" + existingTags.join(", "))
-  // console.log("提取到的标签：" + tags.join(", "))
 
   // 如果该标签已存在，而且不是强制，就退出
   if (!force && tags.every(tag => existingTags.includes(tag))) return

@@ -1,14 +1,9 @@
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
-import { addAbortSignal } from "stream"
 import { addTags, getAllText } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 
 const { intro, option, label, link } = lang.addon.autotag
-
-export const enum AutoTagPreset {
-  Custom
-}
 
 const config: IConfig = {
   name: "AutoTag",
@@ -38,10 +33,15 @@ const config: IConfig = {
   ]
 }
 
+export const enum AutoTagPreset {
+  Custom
+}
+
 const util = {
   getTag(text: string) {
     const { customTag: params } = self.profileTemp.replaceParam
-    if (params)
+    const { preset } = self.profile.autotag
+    if (preset.includes(AutoTagPreset.Custom) && params)
       return params
         .filter(param => param.regexp.test(text))
         .map(param => param.newSubStr)
