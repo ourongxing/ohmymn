@@ -17,6 +17,18 @@ export const enum PanelHeight {
   Lower
 }
 
+export const enum PanelControl {
+  DoubleClickOpen,
+  DoubleClickClose,
+  CompleteClose
+}
+
+export const enum HasTitleThen {
+  ExpertText,
+  TitleLink,
+  OverrideTitle
+}
+
 const config: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version} \nmade by ${Addon.author}`,
@@ -50,15 +62,10 @@ const config: IConfig = {
       label: label.panel_height
     },
     {
-      key: "doubleClick",
-      type: cellViewType.switch,
-      label: label.double_click
-    },
-    {
-      key: "clickHidden",
-      type: cellViewType.switch,
-      label: label.click_hidden,
-      help: help.click_hidden
+      key: "panelControl",
+      type: cellViewType.muiltSelect,
+      option: option.panle_control,
+      label: label.panle_control
     },
     {
       key: "screenAlwaysOn",
@@ -69,6 +76,13 @@ const config: IConfig = {
       key: "lockExcerpt",
       type: cellViewType.switch,
       label: label.lock_excerpt
+    },
+    {
+      key: "hasTitleThen",
+      type: cellViewType.select,
+      label: label.has_title_then,
+      help: help.has_title_then,
+      option: option.has_title_then
     },
     {
       help: help.auto_correct,

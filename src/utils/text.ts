@@ -4,6 +4,13 @@ const isHalfWidth = (text: string) =>
 const CJK =
   "\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff"
 
+// 数字序号 https://www.qqxiuzi.cn/wz/zixun/1704.htm
+const SerialNumber = {
+  hollow_circle_number:
+    "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿",
+  solid_circle_number: "❶❷❸❹❺❻❼❽❾❿⓫⓬⓭⓮⓯⓰⓱⓲⓳⓴"
+}
+
 const isCJK = (text: string) =>
   text.match(new RegExp(`^[${CJK}]*$`)) ? true : false
 
@@ -23,4 +30,4 @@ const byteLength = (text: string) => {
   return length
 }
 
-export { isHalfWidth, isCJK, countWord, CJK, byteLength }
+export { isHalfWidth, isCJK, countWord, CJK, byteLength, SerialNumber }

@@ -1,3 +1,4 @@
+import { PanelControl } from "addons/ohmymn"
 import checkInputCorrect from "inputChecker"
 import lang from "lang"
 import { actions } from "synthesizer"
@@ -52,7 +53,11 @@ export default async (row: IRowButton) => {
 
 let customSelectedNodes: MbBookNote[] = []
 const handleMagicAction = async (key: string, option: number, content = "") => {
-  if (key != "filterCards" && self.profile.ohmymn.clickHidden) closePanel()
+  if (
+    key != "filterCards" &&
+    self.profile.ohmymn.panelControl.includes(PanelControl.CompleteClose)
+  )
+    closePanel()
   let nodes: MbBookNote[] = []
   if (customSelectedNodes.length) {
     nodes = customSelectedNodes

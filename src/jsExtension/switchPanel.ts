@@ -3,6 +3,7 @@ import { delay, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
 import lang from "lang"
+import { PanelControl } from "addons/ohmymn"
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = (
@@ -45,7 +46,7 @@ export const closePanel = () => {
 }
 
 let lastOpenPanel = 0
-const openPanel = () => {
+export const openPanel = () => {
   if (self.panelStatus) return
   const studyController = MN.studyController()
   studyController.view.addSubview(self.settingViewController.view)
@@ -63,7 +64,9 @@ let lastClickButton = 0
 const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
-    if (self.profile.ohmymn.doubleClick) {
+    if (
+      self.profile.ohmymn.panelControl.includes(PanelControl.DoubleClickOpen)
+    ) {
       const now = Date.now()
       if (lastClickButton && now - lastClickButton < 300) openPanel()
       else lastClickButton = now

@@ -48,18 +48,6 @@ const config: IConfig = {
     },
     {
       type: cellViewType.button,
-      label: label.change_fill_style,
-      key: "changeFillStyle",
-      option: option.change_fill_style
-    },
-    {
-      type: cellViewType.buttonWithInput,
-      label: label.change_color,
-      key: "changeColor",
-      help: help.change_color
-    },
-    {
-      type: cellViewType.button,
       label: label.merge_cards,
       key: "mergeCards",
       option: option.merge_cards
@@ -163,22 +151,6 @@ const action: IActionMethod = {
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
         note.noteTitle = title.replace(params[0].regexp, params[0].newSubStr)
-      })
-    }
-  },
-  changeFillStyle({ option, nodes }) {
-    for (const node of nodes) {
-      excerptNotes(node).forEach(note => {
-        note.fillIndex = option
-      })
-    }
-  },
-  changeColor({ content, nodes }) {
-    if (!content) return
-    const index = Number(content)
-    for (const node of nodes) {
-      excerptNotes(node).forEach(note => {
-        note.colorIndex = index - 1
       })
     }
   },

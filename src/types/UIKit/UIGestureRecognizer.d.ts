@@ -28,7 +28,10 @@ declare global {
     reset(): void
     locationInView(view: UIView): CGPoint
   }
-  class UITapGestureRecognizer extends UIGestureRecognizer {}
+  class UITapGestureRecognizer extends UIGestureRecognizer {
+    numberOfTapsRequired: number
+    numberOfTouchesRequired: number
+  }
   class UISwipeGestureRecognizer extends UIGestureRecognizer {
     direction: UISwipeGestureRecognizerDirection
     numberOfTouchesRequired: number

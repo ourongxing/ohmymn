@@ -6,10 +6,12 @@ import * as autostandardize from "addons/autostandardize"
 import * as magicaction from "addons/magicaction"
 import * as anotherautodef from "addons/anotherautodef"
 import * as autotag from "addons/autotag"
+import * as autostyle from "addons/autostyle"
 import * as ohmymn from "addons/ohmymn"
 import * as gesture from "addons/gesture"
 import { cellViewType, IConfig, IRow, ISection } from "types/Addon"
 import lang from "lang"
+import { SerialNumber } from "utils/text"
 
 // magicaction, ohmymn 默认前两个，不用包含在内
 const addons = [
@@ -20,7 +22,8 @@ const addons = [
   autocomplete,
   autoreplace,
   autolist,
-  autotag
+  autotag,
+  autostyle
 ]
 
 // 插件总开关，与上面顺序一致，新插件只能加在最后，因为配置文件只记录索引
@@ -32,7 +35,8 @@ export const enum QuickSwitch {
   autocomplete,
   autoreplace,
   autolist,
-  autotag
+  autotag,
+  autostyle
 }
 
 const more: ISection = {
@@ -107,7 +111,7 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-export const actionKey: string[] = []
+export const actionKey: string[] = ["none"]
 export const addonList: string[] = []
 
 export const genDataSource = (
@@ -131,22 +135,30 @@ export const genDataSource = (
   for (const row of dataSource[1].rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
       row.option = addonList.map(
-        (value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value
+        (value, index) => SerialNumber.hollow_circle_number[index] + " " + value
       )
   }
 
   // 同步 gesture 的 option 为 magicaction 列表
-  const gestureOption = dataSource[0].rows.map((row, index) =>
+  const gestureOption = dataSource[0].rows.map(row =>
     row.type != cellViewType.plainText
-      ? "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index - 1] + " " + row.label
-      : lang.implement_datasource_method.none
+      ? row.label
+      : lang.implement_datasource_method.open_panel
   )
   dataSource[2].rows = dataSource[2].rows.map(row => {
-    if (row.type == cellViewType.select) row.option = gestureOption
+    if (row.type == cellViewType.select)
+      row.option = [
+        lang.implement_datasource_method.none,
+        ...gestureOption.map(
+          (option, index) =>
+            SerialNumber.hollow_circle_number[index] + " " + option
+        )
+      ]
     return row
   })
+
   dataSource[0].rows.forEach(row =>
-    actionKey.push(row.type != cellViewType.plainText ? row.key : "none")
+    actionKey.push(row.type != cellViewType.plainText ? row.key : "open_panel")
   )
 
   dataSource.push(more)

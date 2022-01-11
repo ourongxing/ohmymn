@@ -5,6 +5,7 @@ import { studyMode } from "types/MarginNote"
 import { util as gesture } from "addons/gesture"
 import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
+import { closePanel, openPanel } from "./switchPanel"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -44,6 +45,10 @@ export const gestureHandlers = gesture.gestureHandlerController([
         UISwipeGestureRecognizerDirection.Right,
         "SwipeRightOnMindMapView"
       )
+  },
+  {
+    view: () => self.settingViewController.tableView!,
+    gesture: () => gesture.initGesture.tap(1, 2, "DoubleClickOnTableView")
   }
 ])
 
@@ -82,7 +87,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   }
 }
 
-const trigger = async (
+const actionTrigger = async (
   sigleOption: number,
   muiltOption: number,
   sender: UIGestureRecognizer
@@ -93,14 +98,20 @@ const trigger = async (
       return
     case swipePositon.SingleBar: {
       if (!sigleOption) return
-      const [sec, row] = dataSourceIndex.magicaction[actionKey[sigleOption]]
-      await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+      if (actionKey[sigleOption] == "open_panel") openPanel()
+      else {
+        const [sec, row] = dataSourceIndex.magicaction[actionKey[sigleOption]]
+        await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+      }
       break
     }
     case swipePositon.MuiltBar: {
       if (!muiltOption) return
-      const [sec, row] = dataSourceIndex.magicaction[actionKey[muiltOption]]
-      await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+      if (actionKey[muiltOption] == "open_panel") openPanel()
+      else {
+        const [sec, row] = dataSourceIndex.magicaction[actionKey[muiltOption]]
+        await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+      }
       break
     }
   }
@@ -108,24 +119,29 @@ const trigger = async (
 
 const onSwipeUpOnMindMapView: gestureHandler = sender => {
   const { singleBarSwipeUp, muiltBarSwipeUp } = self.profile.gesture
-  trigger(singleBarSwipeUp[0], muiltBarSwipeUp[0], sender)
+  actionTrigger(singleBarSwipeUp[0], muiltBarSwipeUp[0], sender)
 }
 const onSwipeDownOnMindMapView: gestureHandler = sender => {
   const { singleBarSwipeDown, muiltBarSwipeDown } = self.profile.gesture
-  trigger(singleBarSwipeDown[0], muiltBarSwipeDown[0], sender)
+  actionTrigger(singleBarSwipeDown[0], muiltBarSwipeDown[0], sender)
 }
 const onSwipeLeftOnMindMapView: gestureHandler = sender => {
   const { singleBarSwipeLeft, muiltBarSwipeLeft } = self.profile.gesture
-  trigger(singleBarSwipeLeft[0], muiltBarSwipeLeft[0], sender)
+  actionTrigger(singleBarSwipeLeft[0], muiltBarSwipeLeft[0], sender)
 }
 const onSwipeRightOnMindMapView: gestureHandler = sender => {
   const { singleBarSwipeRight, muiltBarSwipeRight } = self.profile.gesture
-  trigger(singleBarSwipeRight[0], muiltBarSwipeRight[0], sender)
+  actionTrigger(singleBarSwipeRight[0], muiltBarSwipeRight[0], sender)
+}
+
+const onDoubleClickOnTableView: gestureHandler = sender => {
+  closePanel()
 }
 
 export default {
   onSwipeUpOnMindMapView,
   onSwipeDownOnMindMapView,
   onSwipeLeftOnMindMapView,
-  onSwipeRightOnMindMapView
+  onSwipeRightOnMindMapView,
+  onDoubleClickOnTableView
 }

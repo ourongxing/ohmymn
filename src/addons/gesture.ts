@@ -72,6 +72,12 @@ const util = {
       swipe.numberOfTouchesRequired = touchNumber
       swipe.direction = direction
       return swipe
+    },
+    tap(touchNumber: number, tapNumber: number, action: string) {
+      const tap = new UITapGestureRecognizer(self, `on${action}:`)
+      tap.numberOfTapsRequired = tapNumber
+      tap.numberOfTouchesRequired = touchNumber
+      return tap
     }
   },
   gestureHandlerController(
