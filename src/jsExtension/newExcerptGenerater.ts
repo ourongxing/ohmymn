@@ -1,15 +1,15 @@
 import { QuickSwitch } from "synthesizer"
 import { util as autotag } from "addons/autotag"
 import { util as autolist } from "addons/autolist"
+import { util as autostyle } from "addons/autostyle"
 import { util as autoreplace } from "addons/autoreplace"
 import { util as autocomplete } from "addons/autocomplete"
 import { util as anotherautodef } from "addons/anotherautodef"
 import { util as autostandardize } from "addons/autostandardize"
 import { util as anotherautotitle } from "addons/anotherautotitle"
+import { MbBookNote } from "types/MarginNote"
 
-export const newTitleText = async (
-  text: string
-): Promise<{ title?: string; text: string }> => {
+export const newTitleText = async (text: string, note: MbBookNote) => {
   const { quickSwitch } = self.profile.ohmymn
   // 处理摘录
   for (const addon of quickSwitch) {
@@ -34,6 +34,7 @@ export const newTitleText = async (
 
   const standardizeTitle = (title: string) =>
     autostandardize.toTitleCase(title).replace(/\*\*/g, "")
+
   if (quickSwitch.includes(QuickSwitch.anotherautodef)) {
     const result = anotherautodef.getDefTitle(text)
     if (result)
@@ -42,8 +43,9 @@ export const newTitleText = async (
         text: result.text
       }
   }
+
   if (quickSwitch.includes(QuickSwitch.anotherautotitle)) {
-    const result = anotherautotitle.getTitle(text)
+    const result = anotherautotitle.getTitle(text, note)
     if (result)
       return {
         title: standardizeTitle(result.title),
@@ -51,21 +53,19 @@ export const newTitleText = async (
       }
   }
 
-  return { text }
+  return {
+    text,
+    title: undefined
+  }
 }
 
-export const newTagStyle = (
-  text: string
-): {
-  tags?: string[]
-  color?: number
-  fill?: number
-} => {
+export const newTag = (text: string) => {
   const { quickSwitch } = self.profile.ohmymn
-  if (quickSwitch.includes(QuickSwitch.autotag)) {
-    return {
-      tags: autotag.getTag(text)
-    }
-  }
-  return {}
+  if (quickSwitch.includes(QuickSwitch.autotag)) return autotag.getTag(text)
+}
+
+export const newColorStyle = (note: MbBookNote) => {
+  const { quickSwitch } = self.profile.ohmymn
+  if (quickSwitch.includes(QuickSwitch.autostyle))
+    return autostyle.getColorStyle(note)
 }

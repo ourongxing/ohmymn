@@ -9,20 +9,29 @@ import { getMNLinkValue } from "utils/profile/updateDataSource"
 const checkInputCorrect = (text: string, key: string): boolean => {
   try {
     switch (key) {
-      case "wordCount":
+      case "wordCount": {
         const input = reverseEscape(text)
         if (
-          typeof input == "number" ||
-          (Array.isArray(input) &&
-            input.length == 2 &&
-            input.every(item => Number.isInteger(item)))
+          Array.isArray(input) &&
+          input.length == 2 &&
+          input.every(item => Number.isInteger(item))
         ) {
         } else throw ""
-      case "mergeText":
-        reverseEscape(`"${text}"`)
         break
+      }
+      case "wordCountArea": {
+        const input = reverseEscape(text)
+        if (
+          Array.isArray(input) &&
+          input.length == 3 &&
+          input.every(item => Number.isInteger(item))
+        ) {
+        } else throw ""
+        break
+      }
+      case "mergeText":
       case "customComplete":
-        reverseEscape(text)
+        reverseEscape(`"${text}"`)
         break
       case "changeColor": {
         const index = Number(text)

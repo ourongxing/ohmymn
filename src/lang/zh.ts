@@ -3,23 +3,30 @@ const dict = {
     ohmymn: {
       option: {
         profile: "配置",
+        has_title_then: ["作为摘录", "标题链接", "覆盖标题"],
         panel_position: ["自动", "靠左", "居中", "靠右"],
-        panel_height: ["高点", "标准", "矮点"]
+        panel_height: ["高点", "标准", "矮点"],
+        panle_control: [
+          "双击 Logo 打开面板",
+          "双击面板关闭面板",
+          "Action 执行完关闭面板"
+        ]
       },
       label: {
+        has_title_then: "标题存在，继续摘录",
         quick_switch: "插件快捷开关",
         profile: "选择配置文件",
         panel_position: "面板显示位置",
         panel_height: "面板显示高度",
-        double_click: "双击打开面板",
-        click_hidden: "自动关闭面板",
+        panle_control: "面板开启关闭",
         screen_always_on: "保持屏幕常亮",
         lock_excerpt: "锁定摘录文字",
         auto_correct: "是否开启自动在线矫正"
       },
       help: {
         profile: "【当前文档生效】可用于不同情景",
-        click_hidden: "在 MagicAction 执行后自动关闭控制面板",
+        has_title_then: "如果可以转为标题，则",
+        complete_close: "在 MagicAction 执行后自动关闭控制面板",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
       }
     },
@@ -60,22 +67,18 @@ const dict = {
       link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
       option: {
         filter_cards: ["仅判断标题", "判断整个卡片内容"],
-        change_fill_style: ["边框+填充", "填充", "边框"],
         merge_text: ["合并为摘录", "合并为评论"],
         merge_cards: ["同时合并标题", "不合并标题"],
         manage_profile: ["读取配置信息", "写入配置信息"]
       },
       help: {
         filter_cards: "注意事项及具体输入格式见顶上帮助信息",
-        change_color: "输入颜色索引，也就是顺序，1 到 16",
         merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
         rename_title: "注意事项及具体输入格式见顶上帮助信息",
         manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
       },
       label: {
         filter_cards: "筛选卡片",
-        change_fill_style: "修改摘录样式",
-        change_color: "修改摘录颜色",
         merge_cards: "合并多张卡片",
         merge_text: "合并卡片内文字",
         rename_title: "批量重命名标题",
@@ -152,22 +155,18 @@ const dict = {
       intro: "更强大的自动转换标题插件",
       link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
       option: {
-        has_title_then: ["作为摘录", "标题链接", "覆盖标题"],
         preset: ["自定义", "字数限制", "不含有点号"],
         switch_title: ["切换为不存在的", "交换标题和摘录"]
       },
       label: {
-        has_title_then: "标题存在，继续摘录",
         change_title_no_limit: "拓宽标题摘录不受限制",
         preset: "选择需要的预设",
         custom_be_title: "自定义，点击查看具体格式",
         switch_title: "切换摘录或标题",
-        word_count: "设定最多字数"
+        word_count: "[中文字数, 英文单词个数]，没超过就自动设置为标题"
       },
       help: {
-        has_title_then: "也要先满足预设条件",
-        switch_title: "当两者都存在时请使用「交换标题和摘录」",
-        word_count: "[中文字数, 英文单词个数]"
+        switch_title: "当两者都存在时请使用「交换标题和摘录」"
       }
     },
     autotag: {
@@ -181,6 +180,56 @@ const dict = {
         preset: "选择需要的预设",
         custom_tag: "自定义，点击查看具体格式",
         tag_selected: "给卡片加标签"
+      }
+    },
+    autostyle: {
+      link: "",
+      intro: "自动修改摘录颜色和样式",
+      area: "面积",
+      label: {
+        preset: "选择需要的预设",
+        change_style: "修改摘录样式",
+        change_color: "修改摘录颜色",
+        show_area: "显示摘录面积",
+        default_text_excerpt_color: "文本摘录默认颜色",
+        default_pic_excerpt_color: "图片摘录默认颜色",
+        default_text_excerpt_style: "文本摘录默认样式",
+        default_pic_excerpt_style: "图片摘录默认样式",
+        word_count_area:
+          "[中文字数, 英文单词个数, 面积]，超过则将摘录样式设置为线框，否则默认"
+      },
+      help: {
+        change_color: "输入颜色索引，也就是顺序，1 到 16"
+      },
+      option: {
+        change_style: ["使用 AutoStyle 的配置", "线框+填充", "填充", "线框"],
+        change_color: ["使用 AutoStyle 的配置", "确定"],
+        preset: [
+          "样式由字数或面积决定",
+          "颜色跟随卡片",
+          "颜色跟随兄弟节点",
+          "颜色跟随父节点"
+        ],
+        style: ["无", "线框+填充", "填充", "线框"],
+        color: [
+          "无",
+          "浅黄",
+          "浅绿",
+          "浅蓝",
+          "浅红",
+          "黄",
+          "绿",
+          "蓝",
+          "红",
+          "橘",
+          "深绿",
+          "深蓝",
+          "深红",
+          "白",
+          "浅灰",
+          "深灰",
+          "紫"
+        ]
       }
     },
     more: {
@@ -219,7 +268,8 @@ const dict = {
   implement_datasource_method: {
     none: "无",
     clicked: "选中",
-    bind_key: "bind key 输入错误"
+    bind_key: "bind key 输入错误",
+    open_panel: "打开控制面板"
   },
   addon_life_cycle: {
     remove: "OhMyMN 已停用，配置已重置"

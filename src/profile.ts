@@ -1,19 +1,25 @@
-import { AutoTitlePreset, HasTitleThen } from "addons/anotherautotitle"
+import {
+  PanelHeight,
+  PanelPosition,
+  HasTitleThen,
+  PanelControl
+} from "addons/ohmymn"
+import { AutoTitlePreset } from "addons/anotherautotitle"
 import { AutoListPreset } from "addons/autolist"
 import { AutoReplacePreset } from "addons/autoreplace"
 import { AutoStandardizePreset } from "addons/autostandardize"
+import { AutoStylePreset } from "addons/autostyle"
 import { AutoTagPreset } from "addons/autotag"
-import { PanelHeight, PanelPosition } from "addons/ohmymn"
 import { QuickSwitch } from "synthesizer"
 import { ReplaceParam } from "utils/input"
 
 const profilePreset = {
   ohmymn: {
     quickSwitch: [] as QuickSwitch[],
-    doubleClick: false,
-    clickHidden: false,
     lockExcerpt: false,
     screenAlwaysOn: false,
+    hasTitleThen: [HasTitleThen.ExpertText],
+    panelControl: [] as PanelControl[],
     panelPosition: [PanelPosition.Auto],
     panelHeight: [PanelHeight.Standard]
   },
@@ -29,16 +35,15 @@ const profilePreset = {
     muiltBarSwipeLeft: [0]
   },
   autocomplete: {
-    customComplete: `"{{zh}}"`
+    customComplete: "{{zh}}"
   },
   autostandardize: {
     preset: [] as AutoStandardizePreset[]
   },
   anotherautotitle: {
     preset: [] as AutoTitlePreset[],
-    hasTitleThen: [HasTitleThen.ExpertText],
     changeTitleNoLimit: false,
-    wordCount: "[10,5]",
+    wordCount: "[10, 5]",
     customBeTitle: ""
   },
   anotherautodef: {
@@ -60,6 +65,15 @@ const profilePreset = {
   autotag: {
     preset: [] as AutoTagPreset[],
     customTag: ""
+  },
+  autostyle: {
+    preset: [] as AutoStylePreset[],
+    wordCountArea: "[10, 5, 10]",
+    showArea: false,
+    defaultTextExcerptColor: [0],
+    defaultPicExcerptColor: [0],
+    defaultTextExcerptStyle: [0],
+    defaultPicExcerptStyle: [0]
   }
 }
 
@@ -74,15 +88,15 @@ const docProfilePreset = {
 // 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
 const profileTempPreset = {
   replaceParam: {
-    customReplace: [{}] as ReplaceParam[] | undefined,
-    customList: [{}] as ReplaceParam[] | undefined,
     customTag: [{}] as ReplaceParam[] | undefined,
+    customList: [{}] as ReplaceParam[] | undefined,
+    customReplace: [{}] as ReplaceParam[] | undefined,
     customExtractTitle: [{}] as ReplaceParam[] | undefined
   },
   regArray: {
+    customSplit: [[]] as RegExp[][] | undefined,
     customBeTitle: [[]] as RegExp[][] | undefined,
-    customDefLink: [[]] as RegExp[][] | undefined,
-    customSplit: [[]] as RegExp[][] | undefined
+    customDefLink: [[]] as RegExp[][] | undefined
   }
 }
 
