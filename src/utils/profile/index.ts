@@ -25,14 +25,14 @@ const setDataByKey = (
 }
 
 export const enum Range {
-  first,
-  doc,
-  global
+  First,
+  Doc,
+  Global
 }
 
 const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
   switch (range) {
-    case Range.first:
+    case Range.First:
       // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
       const docProfileSaved: {
         [k: string]: IDocProfile
@@ -42,14 +42,14 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       const profileSaved: IProfile[] = getDataByKey(profileKey)
       if (!profileSaved) console.log("初始化全局配置", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
-    case Range.doc:
+    case Range.Doc:
       // 打开文档时读文档配置，此时也必须读全局配置
       updateProfileDataSource(
         self.docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
       console.log("读取当前文档配置", "profile")
-    case Range.global:
+    case Range.Global:
       // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
         self.profile,
@@ -81,7 +81,7 @@ const saveProfile = (
 const removeProfile = () => {
   NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
-  readProfile(Range.first)
+  readProfile(Range.First)
 }
 
 export { saveProfile, readProfile, removeProfile }
@@ -100,7 +100,7 @@ export const manageProfileAction = (params: {
         allDocProfileTemp: allDocProfile
       })
     )
-    node.noteTitle = lang.profile_manage.prohifit + new Date().toLocaleString()
+    node.noteTitle = lang.profile_manage.prohibit + new Date().toLocaleString()
     node.colorIndex = 11
   } else {
     const str = node.excerptText
@@ -115,7 +115,7 @@ export const manageProfileAction = (params: {
         } = JSON.parse(Base64.decode(str))
         setDataByKey(allProfileTemp, Addon.profileKey)
         setDataByKey(allDocProfileTemp, Addon.docProfileKey)
-        readProfile(Range.first)
+        readProfile(Range.First)
         layoutViewController()
         showHUD(lang.profile_manage.success)
       } catch {

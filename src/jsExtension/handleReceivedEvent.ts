@@ -21,6 +21,7 @@ export const eventHandlers = eventHandlerController([
   "ProcessNewExcerpt",
   "ChangeExcerptRange"
 ])
+
 const onButtonClick: eventHandler = async sender => {
   if (!isThisWindow(sender)) return
   const { row } = sender.userInfo
@@ -54,7 +55,7 @@ const onSelectChange: eventHandler = sender => {
     const lastProfileNum = self.docProfile.ohmymn.profile[0]
     self.docProfile.ohmymn.profile = selections
     saveProfile(undefined, lastProfileNum)
-    readProfile(Range.global)
+    readProfile(Range.Global)
   } else {
     self.profile[name][key] = selections
     switch (key) {

@@ -1,3 +1,4 @@
+import lang from "lang"
 import { UIAlertViewStyle } from "types/UIKit"
 import { Addon, MN } from "../const"
 
@@ -92,11 +93,10 @@ const popup = (
       title,
       message,
       type,
-      "取消",
+      lang.other.cancel,
       buttons,
       (alert: UIAlertView, buttonIndex: number) => {
-        if (buttonIndex == 0) return
-        resolve(f(alert, buttonIndex - 1))
+        if (buttonIndex != 0) resolve(f(alert, buttonIndex - 1))
       }
     )
   )

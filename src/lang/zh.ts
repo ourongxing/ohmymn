@@ -10,12 +10,20 @@ const dict = {
           "双击 Logo 打开面板",
           "双击面板关闭面板",
           "Action 执行完关闭面板"
+        ],
+        detect_update: [
+          "无",
+          "每天",
+          "每周一",
+          "每天仅签名版本",
+          "每周一仅签名版本"
         ]
       },
       label: {
         has_title_then: "标题存在，继续摘录",
         quick_switch: "插件快捷开关",
         profile: "选择配置文件",
+        detect_update: "自动检测更新",
         panel_position: "面板显示位置",
         panel_height: "面板显示高度",
         panle_control: "面板开启关闭",
@@ -28,6 +36,11 @@ const dict = {
         has_title_then: "如果可以转为标题，则",
         complete_close: "在 MagicAction 执行后自动关闭控制面板",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
+      },
+      detect_update: {
+        tip: (time: string, version: string, signed: boolean) =>
+          `${time} 更新，版本：${version}\n是否签名：${signed ? "是" : "否"}`,
+        check_update: "查看更新"
       }
     },
     gesture: {
@@ -286,7 +299,10 @@ const dict = {
     success: "配置读取成功",
     fail: "配置读取失败",
     not_find: "未找到配置信息",
-    prohifit: "「OhMyMN」配置（禁止直接修改）"
+    prohibit: "「OhMyMN」配置（禁止直接修改）"
+  },
+  other: {
+    cancel: "取消"
   }
 }
 
