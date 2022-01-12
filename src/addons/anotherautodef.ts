@@ -1,4 +1,4 @@
-import { string2RegArray, string2ReplaceParam } from "utils/input"
+import { addFlags, string2RegArray, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
@@ -84,12 +84,16 @@ const util = {
         case AutoDefPreset.CustomExtract:
           const { customExtractTitle: params } = self.profileTemp.replaceParam
           if (!params) continue
-          for (const item of params) {
-            if (item.regexp.test(text)) {
-              const title = text.replace(item.regexp, item.newSubStr)
+          for (const param of params) {
+            param.regexp = addFlags(param.regexp, "g")
+            if (param.regexp.test(text)) {
+              const title = text
+                .match(param.regexp)!
+                .map(item => item.replace(param.regexp, param.newSubStr))
+                .join("; ")
               return {
                 title,
-                text: [text, ""][item.fnKey]
+                text: [text, ""][param.fnKey]
               }
             }
           }
@@ -150,9 +154,13 @@ const action: IActionMethod = {
         const result = util.getDefTitle(text)
         if (result) node.noteTitle = result.title
       } else
-        for (const item of params) {
-          if (item.regexp.test(text)) {
-            const newTitle = text.replace(item.regexp, item.newSubStr)
+        for (const param of params) {
+          param.regexp = addFlags(param.regexp, "g")
+          if (param.regexp.test(text)) {
+            const newTitle = text
+              .match(param.regexp)!
+              .map(item => item.replace(param.regexp, param.newSubStr))
+              .join("; ")
             if (newTitle) node.noteTitle = newTitle
             continue
           }

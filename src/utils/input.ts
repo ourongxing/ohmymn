@@ -64,6 +64,18 @@ const string2RegArray = (str: string): RegExp[][] => {
   )
 }
 
+const addFlags = (reg: RegExp, flags: string) => {
+  // 去重
+  let allFlags: string
+  if (flags.length == 1)
+    allFlags = reg.flags.includes(flags) ? reg.flags : reg.flags + flags
+  else
+    allFlags = [...new Set(reg.flags + flags)]
+      .filter(flag => "gimuy".includes(flag))
+      .join("")
+  return new RegExp(reg.source, allFlags)
+}
+
 export interface ReplaceParam {
   regexp: RegExp
   newSubStr: string
@@ -76,5 +88,6 @@ export {
   string2Reg,
   string2RegArray,
   escapeDoubleQuote,
-  escapeStringRegexp
+  escapeStringRegexp,
+  addFlags
 }

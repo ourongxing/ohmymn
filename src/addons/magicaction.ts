@@ -159,7 +159,10 @@ const action: IActionMethod = {
   },
   mergeText({ option, nodes, content }) {
     for (const node of nodes) {
-      const allText = getAllText(node, reverseEscape(`"${content}"`))
+      const allText = getAllText(
+        node,
+        reverseEscape(`"${escapeDoubleQuote(content)}"`)
+      )
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []
       while (node.comments.length) {
