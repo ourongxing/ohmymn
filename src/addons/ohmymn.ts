@@ -34,11 +34,7 @@ export const enum HasTitleThen {
 
 const config: IConfig = {
   name: Addon.title,
-  intro: `version: ${
-    Addon.version
-  }\nupdate time: ${new Date().toLocaleDateString()}\nmade by ${
-    Addon.author
-  } with ❤️`,
+  intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,
   link: Addon.link,
   settings: [
     {
