@@ -2,7 +2,8 @@ import {
   PanelHeight,
   PanelPosition,
   HasTitleThen,
-  PanelControl
+  PanelControl,
+  DetectUpdate
 } from "addons/ohmymn"
 import { AutoTitlePreset } from "addons/anotherautotitle"
 import { AutoListPreset } from "addons/autolist"
@@ -21,7 +22,11 @@ const profilePreset = {
     hasTitleThen: [HasTitleThen.ExpertText],
     panelControl: [] as PanelControl[],
     panelPosition: [PanelPosition.Auto],
-    panelHeight: [PanelHeight.Standard]
+    panelHeight: [PanelHeight.Standard],
+    detectUpdate: [DetectUpdate.None],
+    detectUpdateInfo: {
+      day: new Date().getDay()
+    }
   },
   gesture: {
     // 单选不允许为空，一般设置一个选项为空

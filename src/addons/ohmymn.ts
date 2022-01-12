@@ -1,8 +1,11 @@
 import { Addon } from "const"
 import lang from "lang"
 import { cellViewType, IConfig } from "types/Addon"
+import { UIAlertViewStyle } from "types/UIKit"
+import { alert, openUrl, popup, showHUD } from "utils/common"
+import fetch from "utils/network"
 
-const { label, help, option } = lang.addon.ohmymn
+const { label, help, option, detect_update } = lang.addon.ohmymn
 
 export const enum PanelPosition {
   Auto,
@@ -31,7 +34,11 @@ export const enum HasTitleThen {
 
 const config: IConfig = {
   name: Addon.title,
-  intro: `version: ${Addon.version} \nmade by ${Addon.author}`,
+  intro: `version: ${
+    Addon.version
+  }\nupdate time: ${new Date().toLocaleDateString()}\nmade by ${
+    Addon.author
+  } with ❤️`,
   link: Addon.link,
   settings: [
     {
@@ -68,6 +75,12 @@ const config: IConfig = {
       label: label.panle_control
     },
     {
+      key: "detectUpdate",
+      type: cellViewType.select,
+      option: option.detect_update,
+      label: label.detect_update
+    },
+    {
       key: "screenAlwaysOn",
       type: cellViewType.switch,
       label: label.screen_always_on
@@ -94,6 +107,65 @@ const config: IConfig = {
   actions: []
 }
 
-const util = {}
+export const enum DetectUpdate {
+  None,
+  EveryDay,
+  EveryMonday,
+  EveryDayOnlySigned,
+  EveryMondayOnlySigned
+}
+
+type UpdateInfo = {
+  name?: string
+  version: string
+  signed: boolean
+  link: string
+  time: string
+}
+
+const util = {
+  async detect(onlySigned = false) {
+    const updateInfo: UpdateInfo = await fetch(
+      "https://mnaddon-update-reminder.vercel.app/" + Addon.key
+    ).then(res => res.json())
+    const { name, version, signed, link, time } = updateInfo
+    if (name && name == Addon.key) {
+      if ((onlySigned && !signed) || version == Addon.version) return
+      const { option } = await popup(
+        "OhMyMN",
+        detect_update.tip(time, version, signed),
+        UIAlertViewStyle.Default,
+        [detect_update.check_update],
+        (alert: UIAlertView, buttonIndex: number) => ({
+          option: buttonIndex
+        })
+      )
+      if (option === 0) openUrl(link)
+    }
+  },
+  async detectUpdate() {
+    const { detectUpdate, detectUpdateInfo } = self.profile.ohmymn
+    if (detectUpdate[0] == DetectUpdate.None) return
+
+    const thisDay = new Date().getDay()
+    if (detectUpdateInfo.day == thisDay) return
+    else detectUpdateInfo.day = thisDay
+
+    switch (detectUpdate[0]) {
+      case DetectUpdate.EveryDay:
+        this.detect()
+        break
+      case DetectUpdate.EveryDayOnlySigned:
+        this.detect(true)
+        break
+      case DetectUpdate.EveryMonday:
+        if (thisDay == 1) this.detect()
+        break
+      case DetectUpdate.EveryMondayOnlySigned:
+        if (thisDay == 1) this.detect(true)
+        break
+    }
+  }
+}
 const action = {}
 export { config, util, action }

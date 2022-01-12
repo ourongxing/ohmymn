@@ -3,6 +3,7 @@ import { MN } from "const"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile } from "profile"
 import { dataSourceIndex } from "synthesizer"
+import { deepCopy } from "utils"
 
 import { string2RegArray, string2ReplaceParam } from "utils/input"
 
@@ -57,9 +58,11 @@ export const updateProfileDataSource = (
           updateProfileTemp(key, val)
           break
         default:
-          // number[]
-          self.dataSource[section].rows[row].selections = [...val]
-          _[key] = [...val]
+          if (Array.isArray(val)) {
+            // number[]
+            self.dataSource[section].rows[row].selections = [...val]
+            _[key] = [...val]
+          } else _[key] = deepCopy(val)
       }
     }
   }

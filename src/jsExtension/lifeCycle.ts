@@ -9,6 +9,7 @@ import lang from "lang"
 import { dataSourcePreset } from "synthesizer"
 import { deepCopy } from "utils"
 import { UIWindow } from "types/UIKit"
+import { util as ohmymn } from "addons/ohmymn"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -69,12 +70,13 @@ const notebookWillClose = (notebookid: string) => {
 
 const documentDidOpen = (docmd5: string) => {
   // 如果 docMD5 有值，说明是换书，反正不是第一次打开书
-  if (self.docMD5) readProfile(Range.doc, docmd5)
+  if (self.docMD5) readProfile(Range.Doc, docmd5)
   // 如果 docMD5 没有值，说明是刚打开 MN
   else {
-    readProfile(Range.first, docmd5)
+    readProfile(Range.First, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
       self.profile.ohmymn.screenAlwaysOn
+    ohmymn.detectUpdate()
   }
   console.log("打开文档", "lifeCycle")
   self.docMD5 = docmd5
