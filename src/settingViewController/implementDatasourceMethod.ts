@@ -216,17 +216,11 @@ const initCellView = {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
     text = text.replace(
-      new RegExp(`^[\s——${SerialNumber.hollow_circle_number}]*`),
+      new RegExp(`^[\x20—${SerialNumber.hollow_circle_number}]+`),
       ""
     )
     view.setTitleForState(
-      isHalfWidth(text)
-        ? text.length > 10
-          ? text.slice(0, 10)
-          : text
-        : text.length > 4
-        ? text.slice(0, 4)
-        : text,
+      isHalfWidth(text) ? text.slice(0, 10) : text.slice(0, 4),
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)

@@ -6,6 +6,7 @@ import { util as gesture } from "addons/gesture"
 import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
+import { PanelControl } from "addons/ohmymn"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -143,7 +144,8 @@ const onSwipeRightOnMindMapView: gestureHandler = sender => {
 }
 
 const onDoubleClickOnTableView: gestureHandler = sender => {
-  closePanel()
+  const { panelControl } = self.profile.ohmymn
+  if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
 }
 
 export default {
