@@ -1,21 +1,21 @@
 <p align="center">
-  <a href="https://github.com/ourongxing/ohmymn">
+  <a href="https://github.com/mnaddon/ohmymn">
     <img src="assets/logo.svg" alt="Logo" width="100" height="100">
   </a>
   <h3 align="center">OhMyMN</h3>
   <p align="center">可能是最强大的 Marginnote3 插件</p>
 </p>
 <p align="center">
-  <a href="https://github.com/ourongxing/ohmymn/network/members"><img src="https://img.shields.io/github/forks/ourongxing/ohmymn.svg?style=flat" alt="forks"></a>
-  <a href="https://github.com/ourongxing/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/ourongxing/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/ourongxing/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v3.0.0 beta4-orange" alt="version"></a>
-  <a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
-  <a href="https://github.com/ourongxing/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
+  <a href="https://github.com/mnaddon/ohmymn/network/members"><img src="https://img.shields.io/github/forks/mnaddon/ohmymn.svg?style=flat" alt="forks"></a>
+  <a href="https://github.com/mnaddon/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/mnaddon/ohmymn.svg?style=flat" alt="stars"></a>
+  <a href="https://github.com/mnaddon/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v3.0.0 beta5-orange" alt="version"></a>
+  <a href="https://github.com/mnaddon/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <a href="https://github.com/mnaddon/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/ourongxing/ohmymn/releases">下载</a> ·
-  <a href="https://github.com/ourongxing/ohmymn/issues">报告 Bug</a> ·
-  <a href="https://github.com/ourongxing/ohmymn/issues">提出新需求</a>
+  <a href="https://github.com/mnaddon/ohmymn/releases">下载</a> ·
+  <a href="https://github.com/mnaddon/ohmymn/issues">报告 Bug</a> ·
+  <a href="https://github.com/mnaddon/ohmymn/issues">提出新需求</a>
 </p>
 
 <img src="assets/p1.png">
@@ -34,10 +34,10 @@ ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同�
 当然你也可以另起炉灶，毕竟 ohmymn 已经踩过了大部分的坑。但是不建议使用 ohmymn 作为开发模板，ohmymn 并没有对此做任何优化，可能会出现冲突，不过我已经给大家准备了专门的 [MN插件开发模板](https://github.com/ourongxing/copysearch)，同时还有 [MN 插件开发指南](https://busiyi.notion.site/CopySearch-MN-856b316ec2854a70aa00e8bc1873892a)，帮助大家快速开发。
 
 ## Discussion
-- [OhMyMN 飞书话题群](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750)
+- [OhMyMN 飞书讨论群](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b48nfc45-22ff-4a3f-a1e3-f0f84c50db53)
 ## License
 
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/ourongxing/ohmymn/blob/main/LICENSE)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/mnaddon/ohmymn/blob/main/LICENSE)
 
 ## Acknowledgements
 
