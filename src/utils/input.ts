@@ -11,16 +11,12 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
   const params = []
   for (let bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
-      // 去括号
-      .slice(1, -1)
-      .replace(/(\/[gimsuy]*)\s*,\s*"/, `$1😎"`)
-      .replace(/"\s*,/g, '"😎')
+      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\)?/, `$1😎"$2`)
+      .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
-    if (fnKey && !isNumber(fnKey)) throw ""
-    if (!fnKey && isNumber(newSubStr)) throw ""
-    const regexp = string2Reg(regString)
+    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""
     params.push({
-      regexp,
+      regexp: string2Reg(regString),
       // newSubStr 始终有双引号，反转义也是字符串
       newSubStr: reverseEscape(newSubStr),
       fnKey: fnKey ? Number(fnKey) : 0

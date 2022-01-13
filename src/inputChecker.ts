@@ -40,38 +40,51 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         if (index > 16 || index < 1) throw ""
         break
       }
-      case "renameTitle":
+
+      // 目前 MagicAction 无法使用 URL 导入配置，架构问题，暂无解
+      case "filterCards": {
+        string2RegArray(str)
+          .flat()
+          .forEach(reg => void reg.test("test"))
+      }
+      case "customDefLink":
+      case "customBeTitle":
+      case "customSplit": {
+        const res = getMNLinkValue(str)
+        if (!res) throw ""
+        string2RegArray(res)
+          .flat()
+          .forEach(reg => void reg.test("test"))
+        break
+      }
+
+      case "renameTitle": {
         str = /^\(.*\)$/.test(str)
           ? str
           : `(/^.*$/g, "${escapeDoubleQuote(str)}")`
-        const params = string2ReplaceParam(str)
-        if (params.length > 1) throw ""
-        "test".replace(params[0].regexp, params[0].newSubStr)
-        if (/%\[(.*)\]/.test(params[0].newSubStr))
-          magicaction.getSerialInfo(params[0].newSubStr, 1)
-        break
-      case "customDefLink":
-      case "customBeTitle":
-      case "customSplit":
-      case "filterCards": {
-        const res = getMNLinkValue(str)
-        if (!res) throw ""
-        const regs = string2RegArray(res)
-        regs.flat().forEach(reg => {
-          reg.test("test")
-        })
+        const { regexp, newSubStr } = string2ReplaceParam(str)[0]
+        "test".replace(regexp, newSubStr)
+        if (/%\[.*\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
         break
       }
       case "tagSelected":
         str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
-      default: {
+      case "customTag":
+      case "customList":
+      case "customReplace":
+      case "customExtractTitle":
+      case "customStandardize": {
         const res = getMNLinkValue(str)
         if (!res) throw ""
         string2ReplaceParam(res).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)
         })
-        break
       }
+      default:
+        string2ReplaceParam(str).forEach(param => {
+          "test".replace(param.regexp, param.newSubStr)
+        })
+        break
     }
   } catch {
     return false
