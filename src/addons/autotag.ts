@@ -8,6 +8,7 @@ const { intro, option, label, link } = lang.addon.autotag
 const config: IConfig = {
   name: "AutoTag",
   intro,
+  link,
   settings: [
     {
       key: "preset",

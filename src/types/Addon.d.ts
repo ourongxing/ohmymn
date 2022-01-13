@@ -136,7 +136,7 @@ export interface eventHandler {
   }): void
 }
 
-export interface gestureHandler {
+export interface GestureHandler {
   (sender: UIGestureRecognizer): void
 }
 

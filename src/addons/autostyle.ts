@@ -15,6 +15,7 @@ const colors = option.color.map((color, index) =>
 const config: IConfig = {
   name: "AutoStyle",
   intro,
+  link,
   settings: [
     {
       key: "preset",

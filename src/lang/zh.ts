@@ -1,6 +1,7 @@
 const dict = {
   addon: {
     ohmymn: {
+      link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
       option: {
         profile: "配置",
         has_title_then: ["作为摘录", "标题链接", "覆盖标题"],
@@ -45,6 +46,7 @@ const dict = {
     },
     gesture: {
       intro: "自定义手势触发动作",
+      link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
       singleBar: "单选工具栏",
       muiltBar: "多选工具栏"
     },
@@ -103,7 +105,7 @@ const dict = {
       }
     },
     autostandardize: {
-      intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
+      intro: "优化摘录和标题的排版与格式",
       link: "https://busiyi.notion.site/AutoStandrize-b5e0d381d4814139a1b73d305ebc12d1",
       option: {
         preset: [
@@ -192,7 +194,7 @@ const dict = {
     },
     autotag: {
       intro: "自动加标签",
-      link: "",
+      link: "https://busiyi.notion.site/AutoTag-3a7fc5e0b84e47d18366d4cb60c4943d",
       option: {
         preset: ["自定义"],
         tag_selected: ["使用 AutoTag 的配置", "确定"]
@@ -204,7 +206,7 @@ const dict = {
       }
     },
     autostyle: {
-      link: "",
+      link: "https://busiyi.notion.site/AutoStyle-008cc0fae7844e7fb171ca948da91cb5",
       intro: "自动修改摘录颜色和样式",
       area: "面积",
       label: {

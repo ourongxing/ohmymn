@@ -1,4 +1,4 @@
-import type { gestureHandler, IRowButton } from "types/Addon"
+import type { GestureHandler, IRowButton } from "types/Addon"
 import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
 import { studyMode } from "types/MarginNote"
@@ -126,24 +126,24 @@ const actionTrigger = async (
   }
 }
 
-const onSwipeUpOnMindMapView: gestureHandler = sender => {
+const onSwipeUpOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeUp, muiltBarSwipeUp } = self.profile.gesture
   actionTrigger(singleBarSwipeUp[0], muiltBarSwipeUp[0], sender)
 }
-const onSwipeDownOnMindMapView: gestureHandler = sender => {
+const onSwipeDownOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeDown, muiltBarSwipeDown } = self.profile.gesture
   actionTrigger(singleBarSwipeDown[0], muiltBarSwipeDown[0], sender)
 }
-const onSwipeLeftOnMindMapView: gestureHandler = sender => {
+const onSwipeLeftOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeLeft, muiltBarSwipeLeft } = self.profile.gesture
   actionTrigger(singleBarSwipeLeft[0], muiltBarSwipeLeft[0], sender)
 }
-const onSwipeRightOnMindMapView: gestureHandler = sender => {
+const onSwipeRightOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeRight, muiltBarSwipeRight } = self.profile.gesture
   actionTrigger(singleBarSwipeRight[0], muiltBarSwipeRight[0], sender)
 }
 
-const onDoubleClickOnTableView: gestureHandler = sender => {
+const onDoubleClickOnTableView: GestureHandler = sender => {
   const { panelControl } = self.profile.ohmymn
   if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
 }

@@ -2,10 +2,8 @@ import { Addon } from "const"
 import lang from "lang"
 import { cellViewType, IConfig } from "types/Addon"
 import { UIAlertViewStyle } from "types/UIKit"
-import { alert, openUrl, popup, showHUD } from "utils/common"
+import { openUrl, popup } from "utils/common"
 import fetch from "utils/network"
-
-const { label, help, option, detect_update } = lang.addon.ohmymn
 
 export const enum PanelPosition {
   Auto,
@@ -32,10 +30,11 @@ export const enum HasTitleThen {
   OverrideTitle
 }
 
+const { link, label, help, option, detect_update } = lang.addon.ohmymn
 const config: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,
-  link: Addon.link,
+  link,
   settings: [
     {
       help: help.profile,

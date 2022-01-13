@@ -10,6 +10,7 @@ const { error, intro, link, option, label } = lang.addon.autocomplete
 const config: IConfig = {
   name: "AutoComplete",
   intro,
+  link,
   settings: [
     {
       key: "customComplete",

@@ -15,6 +15,7 @@ export const enum AutoListPreset {
 const config: IConfig = {
   name: "AutoList",
   intro,
+  link,
   settings: [
     {
       key: "preset",

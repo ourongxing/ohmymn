@@ -10,6 +10,7 @@ const { help, intro, option, label, link } = lang.addon.autostandardize
 const config: IConfig = {
   name: "AutoStandardize",
   intro,
+  link,
   settings: [
     {
       key: "preset",

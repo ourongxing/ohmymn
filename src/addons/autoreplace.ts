@@ -15,6 +15,7 @@ const enum ReplaceSelected {
 const config: IConfig = {
   name: "AutoReplace",
   intro,
+  link,
   settings: [
     {
       key: "preset",

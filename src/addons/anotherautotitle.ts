@@ -9,6 +9,7 @@ const { option, intro, help, link, label } = lang.addon.anotherautotitle
 const config: IConfig = {
   name: "AnotherAutoTitle",
   intro,
+  link,
   settings: [
     {
       key: "preset",

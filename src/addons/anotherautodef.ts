@@ -1,4 +1,4 @@
-import { addFlags, string2RegArray, string2ReplaceParam } from "utils/input"
+import { addFlags, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
@@ -12,6 +12,7 @@ const enum AutoDefPreset {
 const config: IConfig = {
   name: "AnotherAutoDef",
   intro,
+  link,
   settings: [
     {
       key: "preset",
