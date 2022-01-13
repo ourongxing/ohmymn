@@ -1,6 +1,7 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
 import { postNotification } from "./common"
 import { MN } from "const"
+import { unique } from "utils"
 
 /**
  * 获取选中的卡片
@@ -131,18 +132,19 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
   })
 
   // 如果该标签已存在，而且不是强制，就退出
-  if (!force && tags.every(tag => existingTags.includes(tag))) return
+  if (!force && (!tags.length || tags.every(tag => existingTags.includes(tag))))
+    return
 
   // 从后往前删，索引不会变
   tagCommentIndex
     .reverse()
     .forEach(index => void node.removeCommentByIndex(index))
 
-  node.appendTextComment(
-    Array.from(new Set([...existingTags, ...tags]))
-      .map(tag => `#${tag}`)
-      .join(" ")
-  )
+  const tagLine = unique([...existingTags, ...tags])
+    .map(tag => `#${tag}`)
+    .join(" ")
+
+  if (tagLine) node.appendTextComment(tagLine)
 }
 
 export {

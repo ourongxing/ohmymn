@@ -98,19 +98,27 @@ const actionTrigger = async (
       return
     case swipePositon.SingleBar: {
       if (!sigleOption) return
-      if (actionKey[sigleOption] == "open_panel") openPanel()
+      if (actionKey[sigleOption].key == "open_panel") openPanel()
       else {
-        const [sec, row] = dataSourceIndex.magicaction[actionKey[sigleOption]]
-        await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+        const [sec, row] =
+          dataSourceIndex.magicaction[actionKey[sigleOption].key]
+        await handleMagicAction(
+          <IRowButton>self.dataSource[sec].rows[row],
+          actionKey[sigleOption].option
+        )
       }
       break
     }
     case swipePositon.MuiltBar: {
       if (!muiltOption) return
-      if (actionKey[muiltOption] == "open_panel") openPanel()
+      if (actionKey[muiltOption].key == "open_panel") openPanel()
       else {
-        const [sec, row] = dataSourceIndex.magicaction[actionKey[muiltOption]]
-        await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row])
+        const [sec, row] =
+          dataSourceIndex.magicaction[actionKey[muiltOption].key]
+        await handleMagicAction(
+          <IRowButton>self.dataSource[sec].rows[row],
+          actionKey[muiltOption].option
+        )
       }
       break
     }

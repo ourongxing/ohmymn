@@ -55,7 +55,7 @@ const more: ISection = {
     {
       type: cellViewType.plainText,
       label: lang.addon.more.feishu,
-      link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750"
+      link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b48nfc45-22ff-4a3f-a1e3-f0f84c50db53"
     },
     {
       type: cellViewType.plainText,
@@ -111,7 +111,11 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-export const actionKey: string[] = ["none"]
+export const actionKey: { key: string; option?: number }[] = [
+  { key: "none" },
+  { key: "open_panel" }
+]
+
 export const addonList: string[] = []
 
 export const genDataSource = (
@@ -140,26 +144,39 @@ export const genDataSource = (
   }
 
   // 同步 gesture 的 option 为 magicaction 列表
-  const gestureOption = dataSource[0].rows.map(row =>
-    row.type != cellViewType.plainText
-      ? row.label
-      : lang.implement_datasource_method.open_panel
-  )
+  const gestureOption = [lang.implement_datasource_method.open_panel]
+  dataSource[0].rows.forEach(row => {
+    if (row.type != cellViewType.plainText) {
+      gestureOption.push(row.label)
+      actionKey.push({
+        key: row.key
+      })
+      if (row.type == cellViewType.button && row.option) {
+        row.option.forEach((option, index) => {
+          gestureOption.push("——" + option)
+          actionKey.push({
+            key: row.key,
+            option: index
+          })
+        })
+      } else if (
+        row.type == cellViewType.buttonWithInput &&
+        row.option?.length &&
+        row.option[0].includes("Auto")
+      ) {
+        gestureOption.push("——" + row.option[0])
+        actionKey.push({
+          key: row.key,
+          option: 0
+        })
+      }
+    }
+  })
   dataSource[2].rows = dataSource[2].rows.map(row => {
     if (row.type == cellViewType.select)
-      row.option = [
-        lang.implement_datasource_method.none,
-        ...gestureOption.map(
-          (option, index) =>
-            SerialNumber.hollow_circle_number[index] + " " + option
-        )
-      ]
+      row.option = [lang.implement_datasource_method.none, ...gestureOption]
     return row
   })
-
-  dataSource[0].rows.forEach(row =>
-    actionKey.push(row.type != cellViewType.plainText ? row.key : "open_panel")
-  )
 
   dataSource.push(more)
   return dataSource

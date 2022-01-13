@@ -1,4 +1,4 @@
-import { eventHandler } from "types/Addon"
+import { eventHandler, IRowButton } from "types/Addon"
 import handleExcerpt from "jsExtension/excerptHandler"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { delayBreak, isThisWindow, showHUD } from "utils/common"
@@ -9,6 +9,7 @@ import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import lang from "lang"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
+import { dataSourceIndex, actionKey } from "synthesizer"
 const { input_clear, input_saved, lock_excerpt, auto_correct } =
   lang.handle_received_event
 
@@ -48,9 +49,15 @@ const onSwitchChange: eventHandler = sender => {
   }
 }
 
-const onSelectChange: eventHandler = sender => {
+const onSelectChange: eventHandler = async sender => {
   if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
+  // 调试 Gesture
+  // const [sec, row] = dataSourceIndex.magicaction[actionKey[selections[0]].key]
+  // await handleMagicAction(
+  //   <IRowButton>self.dataSource[sec].rows[row],
+  //   actionKey[selections[0]].option
+  // )
   if (key == "profile") {
     const lastProfileNum = self.docProfile.ohmymn.profile[0]
     self.docProfile.ohmymn.profile = selections

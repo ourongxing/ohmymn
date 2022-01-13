@@ -9,6 +9,7 @@ import { HUDController, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
 import lang from "lang"
+import { unique } from "utils"
 
 const { help, option, intro, label, link, hud } = lang.addon.magicaction
 
@@ -210,19 +211,20 @@ const action: IActionMethod = {
   mergeCards({ option, nodes }) {
     if (nodes.length == 1) return
     const node = nodes[0]
-    let titles = [node.noteTitle]
+    const titles = node.noteTitle ? [node.noteTitle] : []
     for (let i = 1; i < nodes.length; i++) {
-      titles.push(nodes[i].noteTitle ?? "")
+      const title = nodes[i].noteTitle
+      if (title) titles.push(title)
       node.merge(nodes[i])
     }
-    titles = titles.filter(item => item)
     const len = node.comments.length
     // 从后往前删，索引不会乱
     node.comments.reverse().forEach((comment, index) => {
       if (comment.type == "TextNote" && titles.includes(comment.text))
         node.removeCommentByIndex(len - index - 1)
     })
-    if (option == MergeCards.MergeTitle) node.noteTitle = titles.join("; ")
+    if (option == MergeCards.MergeTitle)
+      node.noteTitle = unique(titles).join("; ")
     // 合并标签
     addTags(node, [], true)
   }

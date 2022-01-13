@@ -93,7 +93,8 @@ const excerptHandler = async () => {
     switch (self.profile.ohmymn.hasTitleThen[0]) {
       case HasTitleThen.TitleLink:
         const nodeTitle = nodeNote.noteTitle
-        if (nodeTitle) title = nodeTitle + "; " + title
+        if (nodeTitle && !nodeTitle.includes(title))
+          title = nodeTitle + "; " + title
         break
       case HasTitleThen.ExpertText:
         // 如果 titile 不存在，那本来就是摘录
