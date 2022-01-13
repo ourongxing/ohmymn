@@ -145,33 +145,38 @@ export const genDataSource = (
 
   // 同步 gesture 的 option 为 magicaction 列表
   const gestureOption = [lang.implement_datasource_method.open_panel]
-  dataSource[0].rows.forEach(row => {
-    if (row.type != cellViewType.plainText) {
-      gestureOption.push(row.label)
-      actionKey.push({
-        key: row.key
-      })
-      if (row.type == cellViewType.button && row.option) {
-        row.option.forEach((option, index) => {
-          gestureOption.push("——" + option)
-          actionKey.push({
-            key: row.key,
-            option: index
-          })
-        })
-      } else if (
-        row.type == cellViewType.buttonWithInput &&
+  for (const row of dataSource[0].rows) {
+    if (row.type == cellViewType.plainText) continue
+    gestureOption.push(row.label)
+    actionKey.push({
+      key: row.key
+    })
+    if (
+      (row.type == cellViewType.button && row.option?.length) ||
+      (row.type == cellViewType.buttonWithInput &&
         row.option?.length &&
-        row.option[0].includes("Auto")
-      ) {
-        gestureOption.push("——" + row.option[0])
+        row.key == "mergeText")
+    ) {
+      row.option.forEach((option, index) => {
+        gestureOption.push("——" + option)
         actionKey.push({
           key: row.key,
-          option: 0
+          option: index
         })
-      }
+      })
+    } else if (
+      row.type == cellViewType.buttonWithInput &&
+      row.option?.length &&
+      row.option[0].includes("Auto")
+    ) {
+      gestureOption.push("——" + row.option[0])
+      actionKey.push({
+        key: row.key,
+        option: 0
+      })
     }
-  })
+  }
+
   dataSource[2].rows = dataSource[2].rows.map(row => {
     if (row.type == cellViewType.select)
       row.option = [lang.implement_datasource_method.none, ...gestureOption]

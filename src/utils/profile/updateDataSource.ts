@@ -19,7 +19,7 @@ export const getMNLinkValue = (val: string) => {
           )
           .map(note => note.comments[0].text.trim())
           .join("; ")
-      : ""
+      : undefined
   }
   return val
 }
