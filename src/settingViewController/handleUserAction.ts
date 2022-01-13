@@ -142,7 +142,7 @@ const clickSelectButton = (sender: UIButton) => {
       10 +
     80
   menuController.preferredContentSize = {
-    width: width > 250 ? 250 : width,
+    width: width > 300 ? 300 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
   const studyControllerView = MN.studyController().view

@@ -3,7 +3,7 @@ import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
-import { byteLength, isHalfWidth } from "utils/text"
+import { byteLength, isHalfWidth, SerialNumber } from "utils/text"
 import lang from "lang"
 
 const indexPath2tag = (indexPath: NSIndexPath): number =>
@@ -215,6 +215,10 @@ const initCellView = {
   select(text: string) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
+    text = text.replace(
+      new RegExp(`^[\s——${SerialNumber.hollow_circle_number}]*`),
+      ""
+    )
     view.setTitleForState(
       isHalfWidth(text)
         ? text.length > 10

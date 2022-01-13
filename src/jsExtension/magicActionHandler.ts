@@ -14,41 +14,43 @@ import {
 import { manageProfileAction } from "utils/profile"
 import { closePanel } from "./switchPanel"
 
-export default async (row: IRowButton) => {
-  switch (row.type) {
-    case cellViewType.buttonWithInput:
-      for (;;) {
-        const { option, content } = await popup(
+export default async (row: IRowButton, option?: number) => {
+  if (option !== undefined) await handleMagicAction(row.key, option)
+  else
+    switch (row.type) {
+      case cellViewType.buttonWithInput:
+        for (;;) {
+          const { option, content } = await popup(
+            row.label,
+            row.help ?? "",
+            UIAlertViewStyle.PlainTextInput,
+            row.option ? row.option : [lang.handle_user_action.sure],
+            (alert: UIAlertView, buttonIndex: number) => {
+              // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
+              return {
+                content: alert.textFieldAtIndex(0).text,
+                option: buttonIndex
+              }
+            }
+          )
+          // 允许为空
+          if (!content || checkInputCorrect(content, row.key)) {
+            await handleMagicAction(row.key, option!, content)
+            return
+          } else showHUD(lang.handle_user_action.input_error)
+        }
+      case cellViewType.button:
+        const { option } = await popup(
           row.label,
           row.help ?? "",
-          UIAlertViewStyle.PlainTextInput,
-          row.option ? row.option : [lang.handle_user_action.sure],
-          (alert: UIAlertView, buttonIndex: number) => {
-            // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
-            return {
-              content: alert.textFieldAtIndex(0).text,
-              option: buttonIndex
-            }
-          }
+          UIAlertViewStyle.Default,
+          row.option ?? [lang.handle_user_action.sure],
+          (_, buttonIndex: number) => ({
+            option: buttonIndex
+          })
         )
-        // 允许为空
-        if (!content || checkInputCorrect(content, row.key)) {
-          await handleMagicAction(row.key, option!, content)
-          return
-        } else showHUD(lang.handle_user_action.input_error)
-      }
-    case cellViewType.button:
-      const { option } = await popup(
-        row.label,
-        row.help ?? "",
-        UIAlertViewStyle.Default,
-        row.option ?? [lang.handle_user_action.sure],
-        (_, buttonIndex: number) => ({
-          option: buttonIndex
-        })
-      )
-      await handleMagicAction(row.key, option!)
-  }
+        await handleMagicAction(row.key, option!)
+    }
 }
 
 let customSelectedNodes: MbBookNote[] = []

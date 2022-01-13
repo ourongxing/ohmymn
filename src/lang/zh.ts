@@ -258,7 +258,7 @@ const dict = {
       github:
         "ohmymn 完全开源，容易扩展，欢迎参与开发。点击直达 Github 查看源码。",
       feishu:
-        "点击加入飞书话题群，一起交流 ohmymn 使用技巧，我会不定期为大家解决疑问。"
+        "点击加入飞书讨论群，一起交流 ohmymn 使用技巧，我会不定期为大家解决疑问。"
     }
   },
   handle_received_event: {
