@@ -2,6 +2,7 @@ import { addFlags, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
+import { unique } from "utils"
 
 const { label, option, intro, link } = lang.addon.anotherautodef
 const enum AutoDefPreset {
@@ -74,7 +75,7 @@ const util = {
       .split("😎")
       .filter(item => item)
       .map(item => item.trim())
-    if (defs.length > 1) return defs.join("; ")
+    if (defs.length > 1) return unique(defs).join("; ")
     else return false
   },
 
@@ -88,10 +89,11 @@ const util = {
           for (const param of params) {
             param.regexp = addFlags(param.regexp, "g")
             if (param.regexp.test(text)) {
-              const title = text
-                .match(param.regexp)!
-                .map(item => item.replace(param.regexp, param.newSubStr))
-                .join("; ")
+              const title = unique(
+                text
+                  .match(param.regexp)!
+                  .map(item => item.replace(param.regexp, param.newSubStr))
+              ).join("; ")
               return {
                 title,
                 text: [text, ""][param.fnKey]
@@ -158,10 +160,11 @@ const action: IActionMethod = {
         for (const param of params) {
           param.regexp = addFlags(param.regexp, "g")
           if (param.regexp.test(text)) {
-            const newTitle = text
-              .match(param.regexp)!
-              .map(item => item.replace(param.regexp, param.newSubStr))
-              .join("; ")
+            const newTitle = unique(
+              text
+                .match(param.regexp)!
+                .map(item => item.replace(param.regexp, param.newSubStr))
+            ).join("; ")
             if (newTitle) node.noteTitle = newTitle
             continue
           }

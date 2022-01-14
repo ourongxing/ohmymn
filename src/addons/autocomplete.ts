@@ -133,8 +133,8 @@ const util = {
             (match: string, bracket: string, brace: keyof typeof vars) =>
               /**
                * ((星级：{{collins}}))
-               * bracket()  星级：{{collins}}
-               * brace{}   collins
+               * bracket (())  星级：{{collins}}
+               * brace {{}}   collins
                */
               vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
           )
