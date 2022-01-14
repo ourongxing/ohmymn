@@ -120,12 +120,29 @@ const util = {
       }
       const { customComplete } = self.profile.autocomplete
       if (customComplete) {
-        let fill = reverseEscape(`"${escapeDoubleQuote(customComplete)}"`)
-        Object.entries(vars).forEach(([key, value]) => {
-          const reg = new RegExp(`{{${key}}}`, "g")
-          fill = fill.replace(reg, <string>value)
-        })
-        text = pangu.toFullwidth(pangu.spacing(fill))
+        const varsReg = `(?:${Object.keys(vars).join("|")})`
+        const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
+        const bracketReg = new RegExp(
+          `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
+          "g"
+        )
+        const template = reverseEscape(`"${escapeDoubleQuote(customComplete)}"`)
+        text = template
+          .replace(
+            bracketReg,
+            (match: string, bracket: string, brace: keyof typeof vars) =>
+              /**
+               * ((星级：{{collins}}))
+               * bracket()  星级：{{collins}}
+               * brace{}   collins
+               */
+              vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
+          )
+          .replace(braceReg, (match: string, brace: keyof typeof vars) =>
+            vars[brace] ? vars[brace] : ""
+          )
+          .replace(/^\s*[\r\n]/gm, "")
+        text = pangu.toFullwidth(pangu.spacing(text))
       }
       return {
         title,
