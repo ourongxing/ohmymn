@@ -57,7 +57,7 @@ const dict = {
     magicaction: {
       intro:
         "Please note that the following functions are used after selecting the card.\n Click to view specific usage and precautions", 
-      link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
+      link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c", //Todo:修改英文版Notion
       option: {
         filter_cards: ["Detect Only Title", "Detect Entire Card"],
         change_fill_style: ["Frame+Color Fill", "Color Fill", "Frame"],
@@ -66,112 +66,112 @@ const dict = {
       },
       help: {
         filter_cards: "Please see the help document for more precautions and specific input format",
-        change_color: "输入颜色索引，也就是顺序，1 到 16",
-        merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-        rename_title: "注意事项及具体输入格式见顶上帮助信息"
+        change_color: "input color index (1~16)",
+        merge_text: "input delimiter. Please read the reference guide at the top for precautions and specific input formats.",
+        rename_title: "Reference guide for precuations and specific input formats is at the top."
       },
       label: {
-        filter_cards: "筛选卡片",
-        change_fill_style: "修改摘录样式",
-        change_color: "修改摘录颜色",
-        merge_cards: "合并多张卡片",
-        merge_text: "合并卡片内文字",
-        rename_title: "批量重命名标题"
+        filter_cards: "Filter Card",
+        change_fill_style: "Change Fill Style",
+        change_color: "Change Excerption Color",
+        merge_cards: "Merge Multiple Cards",
+        merge_text: "Merge Text in Cards",
+        rename_title: "Bulk Rename Titles"
       },
       hud: {
-        is_clicked: "您需要的卡片已选中，请继续操作",
-        none_card: "未找到符合的卡片"
+        is_clicked: "The card is selected, please continue",
+        none_card: "No matching cards found"
       }
     },
     autostandardize: {
-      intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
+      intro: "Optimize the typography and formatting of excerpts & titles\nPowerd by Pangu.js",
       option: {
         preset: [
-          "半角转全角",
-          "中英文加空格",
-          "去除重复空格",
-          "英文标题规范化"
+          "Half angle to double angle",
+          "中英文加空格",  // Todo: 是否需要修改
+          "remove multiple spaces",
+          "English Title Normalization"  //Todo:我认为 Title Normalization 更好
         ],
-        standardize_selected: ["都优化", "仅优化标题", "仅优化摘录"]
+        standardize_selected: ["Optimize All", "Only Optimize Title", "Only Optimize Excerption"]
       },
       label: {
-        standardize_selected: "优化排版和格式",
-        preset: "选择需要的预设"
+        standardize_selected: "Optimize typography and formatting",
+        preset: "Select the desired preset"
       }
     },
     autoreplace: {
-      intro: "自动替换摘录中的某些错误",
-      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
+      intro: "Automatically replace errors in excerpts",
+      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f", //Todo:修改英文版Notion
       option: {
-        preset: ["自定义"],
-        replace_selected: ["使用 AutoReplace 的配置", "确定"]
+        preset: ["Customize"],
+        replace_selected: ["Use AutoReplace Configuration", "Confirm"]
       },
       help: {
-        replace_selected: "具体输入格式见顶上帮助信息"
+        replace_selected: "For the specific input format, see the reference guide at the top"
       },
       label: {
-        preset: "选择需要的预设",
-        replace_selected: "批量替换摘录文字",
-        custom_replace: "自定义，点击查看具体格式"
+        preset: "Select Presets",
+        replace_selected: "Bulk Replace Excerptions",
+        custom_replace: "Customize. click to view the specific format"
       }
     },
     autolist: {
-      intro: "针对序列文本，自动换行，仅适配中文",
-      link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec",
+      intro: "针对序列文本，自动换行，仅适配中文", //Todo: 需要修改
+      link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec", //Todo:修改英文版Notion
       option: {
-        preset: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
-        list_selected: ["使用 AutoList 的配置", "确定"]
+        preset: ["Customize", "Multiple Choice", "句首中文编号", "Semicolon at the end of the sentence", "Period at the end of the Sentence"], //Todo:需要修改
+        list_selected: ["Use AutoList Configuration", "Confirm"]
       },
       help: {
-        list_selected: "具体输入格式见顶上帮助信息"
+        list_selected: "For the specific input format, see the reference guide at the top"
       },
       label: {
-        preset: "选择需要的预设",
-        custom_list: "自定义，点击查看具体格式",
-        list_selected: "序列摘录换行"
+        preset: "Select Presets",
+        custom_list: "Customize. click to view the specific format",
+        list_selected: "Sequence Excerption Wrapping"
       }
     },
     autocomplete: {
-      intro: "补全单词词形，只支持动词和名词",
-      link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca",
+      intro: "Complete word form. Only support verbs and nouns",
+      link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca", //Todo:修改英文版Notion
       label: {
-        custom_complete: "自定义摘录填充信息，点击查看支持变量",
-        complete_selected: "补全单词词形"
+        custom_complete: "Custom excerption filling template, click to view support variables",
+        complete_selected: "Complete Word Form"
       },
       option: {
-        complete_selected: ["仅补全单词词形", "同时填充单词信息"]
+        complete_selected: ["Only complete word form", "Fill the word information as well"]
       },
       error: {
-        not_find_word: "查询不到该单词"
+        not_find_word: "No matching words found"
       }
     },
     anotherautotitle: {
-      intro: "更强大的自动转换标题插件",
-      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
+      intro: "More powerful Autotitle plugin",
+      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6", //Todo:修改英文版Notion
       option: {
-        has_title_then: ["作为摘录", "标题链接", "覆盖标题"],
-        preset: ["自定义", "字数限制", "不含有点号"],
-        switch_title: ["切换为不存在的", "交换标题和摘录"]
+        has_title_then: ["Convert to Excerption", "Convert to Title Link", "Override Title"],
+        preset: ["Customize", "Word Count Limit", "Do not Contain Dots"],
+        switch_title: ["Switch to Another", "Swap Titles and Excerpts"]
       },
       label: {
-        has_title_then: "标题存在，继续摘录",
-        change_title_no_limit: "拓宽标题摘录不受限制",
-        preset: "选择需要的预设",
-        custom_be_title: "自定义，点击查看具体格式",
-        switch_title: "切换摘录或标题",
-        word_count: "设定最多字数"
+        has_title_then: "Title exists, continue excerpt",
+        change_title_no_limit: "Broaden title excerption without limtation",
+        preset: "Select Preset",
+        custom_be_title: "Customize. click to view the specific format",
+        switch_title: "Switch excerption or title",
+        word_count: "Set the maximum number of characters"
       },
       help: {
-        has_title_then: "也要先满足预设条件",
-        switch_title: "当两者都存在时请使用「交换标题和摘录」"
+        has_title_then: "Preconditions must also be met",
+        switch_title: "Use [Swap Title and Excerpt] when both are present"
       }
     },
     more: {
-      donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
+      donate: "If you want to help me out, please click and go directly to the QR code.",
       github:
-        "ohmymn 完全开源，容易扩展，欢迎参与开发。点击直达 Github 查看源码。",
+        "ohmymn is completely open source, easy to extend, welcome to participate in development. Click to go directly to Github and view the source code.",
       feishu:
-        "点击加入飞书话题群，一起交流 ohmymn 使用技巧，我会不定期为大家解决疑问。"
+        "Click to join the Feishu Group to exchange ohmymn usage skills. I will solve your questions from time to time."
     }
   },
   handle_received_event: {
