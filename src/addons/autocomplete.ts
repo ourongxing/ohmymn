@@ -4,6 +4,7 @@ import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { RefreshAfterDBChange, undoGrouping } from "utils/note"
+import pangu from "utils/pangu"
 import { isHalfWidth, countWord } from "utils/text"
 
 const { error, intro, link, option, label } = lang.addon.autocomplete
@@ -124,7 +125,7 @@ const util = {
           const reg = new RegExp(`{{${key}}}`, "g")
           fill = fill.replace(reg, <string>value)
         })
-        text = fill
+        text = pangu.toFullwidth(pangu.spacing(fill))
       }
       return {
         title,

@@ -66,26 +66,27 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   // 必须打开脑图，并且选中卡片
   if (studyController.studyMode != studyMode.study || !selViewLst?.length)
     return swipePositon.None
+
   const { y: swipeY } = sender.locationInView(studyController.view)
+  const { height } = studyController.view.bounds
+  if (height - swipeY > 50 && height - swipeY < 150)
+    return swipePositon.MuiltBar
   if (selViewLst.length == 1) {
     const view = selViewLst![0].view
-    const { x, y, height } =
-      mindmapView.subviews[0].subviews[0].convertRectToView(
-        view.frame,
-        studyController.view
-      )
-    // 工具栏在上面
-    return (y - swipeY < 50 && y - swipeY > 0) ||
+    const { y, height } = mindmapView.subviews[0].subviews[0].convertRectToView(
+      view.frame,
+      studyController.view
+    )
+
+    if (
+      // 工具栏在上面
+      (y - swipeY < 50 && y - swipeY > 0) ||
       // 工具栏在下面
       (swipeY - y < height + 50 && swipeY - y > height)
-      ? swipePositon.SingleBar
-      : swipePositon.None
-  } else {
-    const { height } = studyController.view.bounds
-    return height - swipeY > 50 && height - swipeY < 150
-      ? swipePositon.MuiltBar
-      : swipePositon.None
+    )
+      return swipePositon.SingleBar
   }
+  return swipePositon.None
 }
 
 const actionTrigger = async (
