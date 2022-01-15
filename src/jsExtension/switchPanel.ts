@@ -1,4 +1,4 @@
-import { docMapSplitMode, osType, studyMode } from "types/MarginNote"
+import { docMapSplitMode, studyMode } from "types/MarginNote"
 import { delay, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
@@ -82,9 +82,8 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 }
 
 const queryAddonCommandStatus = () => {
-  // 仅在学习模式下打开，阻止在 iPhone 使用
-  return MN.app.osType !== osType.iPadOS ||
-    MN.studyController().studyMode == studyMode.study
+  // 仅在学习模式下打开
+  return MN.studyController().studyMode == studyMode.study
     ? {
         image: "logo.png",
         object: self,

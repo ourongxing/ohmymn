@@ -22,6 +22,11 @@ interface excerptPic extends pic {
   }
 }
 
+export const enum groupMode {
+  Tree,
+  Frame
+}
+
 export type noteComment = textComment | htmlComment | linkComment | paintComment
 
 /**
@@ -119,7 +124,7 @@ export class MbBookNote {
   readonly annotation?: boolean
   readonly textFirst?: boolean
   /** int */
-  readonly groupMode?: number
+  readonly groupMode?: groupMode
   /** int */
   readonly flashcard?: number
   /** int */

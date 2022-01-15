@@ -1,12 +1,13 @@
 import type { GestureHandler, IRowButton } from "types/Addon"
 import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
-import { studyMode } from "types/MarginNote"
+import { docMapSplitMode, studyMode, groupMode } from "types/MarginNote"
 import { util as gesture } from "addons/gesture"
 import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
 import { PanelControl } from "addons/ohmymn"
+import { alert } from "utils/common"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -64,28 +65,85 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
   // 必须打开脑图，并且选中卡片
-  if (studyController.studyMode != studyMode.study || !selViewLst?.length)
+  if (
+    studyController.studyMode != studyMode.study ||
+    studyController.docMapSplitMode == docMapSplitMode.allDoc ||
+    !selViewLst?.length
+  )
     return swipePositon.None
 
-  const { y: swipeY } = sender.locationInView(studyController.view)
-  const { height } = studyController.view.bounds
-  if (height - swipeY > 50 && height - swipeY < 150)
-    return swipePositon.MuiltBar
-  if (selViewLst.length == 1) {
-    const view = selViewLst![0].view
-    const { y, height } = mindmapView.subviews[0].subviews[0].convertRectToView(
-      view.frame,
-      studyController.view
+  const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
+  const { width, height } = studyController.view.bounds
+  // 屏蔽一些会误触的 UI
+  if (swipeY < 60 || swipeX < 70 || swipeX > width - 70)
+    return swipePositon.None
+
+  if (selViewLst.length > 1) {
+    const barWidth = width > 510 ? 500 : width - 50
+    /**
+     * 多选工具栏
+     * iPad Pro 12.9
+     * 高度 y(900-850 = 50) 窗口宽度 980
+     * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
+     * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
+     *
+     * 宽度 x(930 - 430 = 500) 窗口宽度 1366
+     * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
+     * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
+     * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
+     */
+    if (
+      swipeY < height - 80 &&
+      swipeY > height - 130 &&
+      swipeX > (width - barWidth) / 2 &&
+      swipeX < (width - barWidth) / 2 + barWidth
     )
+      return swipePositon.MuiltBar
+  }
+
+  if (selViewLst.length == 1) {
+    // 不响应文档上的滑动，y < 60 是顶部工具栏的位置
+    const { width: readerViewWidth } =
+      studyController.readerController.view.frame
 
     if (
-      // 工具栏在上面
-      (y - swipeY < 50 && y - swipeY > 0) ||
-      // 工具栏在下面
-      (swipeY - y < height + 50 && swipeY - y > height)
+      studyController.docMapSplitMode == docMapSplitMode.half &&
+      ((studyController.rightMapMode && swipeX < readerViewWidth) ||
+        (!studyController.rightMapMode && swipeX > width - readerViewWidth))
+    )
+      return swipePositon.None
+
+    const view = selViewLst![0].view
+    const { y: cardY, height: cardHeight } =
+      mindmapView.subviews[0].subviews[0].convertRectToView(
+        view.frame,
+        studyController.view
+      )
+    const mode = selViewLst[0].note.note.groupMode
+    /** 单选工具栏
+     * 高度 30
+     * 与卡片相距 20
+     */
+    if (
+      mode === groupMode.Tree &&
+      // y > 60，单选工具栏在卡片上方
+      ((cardY > 60 && swipeY > cardY - 20 - 30 && swipeY < cardY - 20) ||
+        // y < 60 单选工具栏在卡片下方
+        (cardY < 60 &&
+          swipeY < cardY + cardHeight + 20 + 30 &&
+          swipeY > cardY + cardHeight + 20))
+    )
+      return swipePositon.SingleBar
+
+    // 框架形式的单选工具栏在卡片中间和上方
+    if (
+      mode === groupMode.Frame &&
+      swipeY > cardY - 20 - 30 &&
+      swipeY < cardY + cardHeight
     )
       return swipePositon.SingleBar
   }
+
   return swipePositon.None
 }
 
