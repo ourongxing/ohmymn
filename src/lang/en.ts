@@ -32,7 +32,7 @@ const dict = {
     anotherautodef: {
       intro:
         "Extract the defined terms and any other content as title or title link\n Definition = Defined Term + Connective of Definition + Definiens", //Question:有待商议
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22", //Todo:修改英文版Notion
+      link: "https://huangkewei.notion.site/AnotherAutoDef-1852d4876891455681a90864ea35c828", //Todo:修改英文版Notion
       label: {
         only_desc: "Excerpts only keep definiens",
         to_title_link: "Convert alias to title link",
@@ -57,7 +57,7 @@ const dict = {
     magicaction: {
       intro:
         "Please note that the following functions are used after selecting the card.\n Click to view specific usage and precautions", 
-      link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c", //Todo:修改英文版Notion
+      link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734", //Todo:修改英文版Notion
       option: {
         filter_cards: ["Detect Only Title", "Detect Entire Card"],
         change_fill_style: ["Frame+Color Fill", "Color Fill", "Frame"],
@@ -88,9 +88,9 @@ const dict = {
       option: {
         preset: [
           "Half angle to double angle",
-          "中英文加空格",  // Todo: 是否需要修改
+          "Add Space",  // Todo: 是否需要修改
           "remove multiple spaces",
-          "English Title Normalization"  //Todo:我认为 Title Normalization 更好
+          "Title Normalization"  //Todo:我认为 Title Normalization 更好
         ],
         standardize_selected: ["Optimize All", "Only Optimize Title", "Only Optimize Excerption"]
       },
@@ -101,7 +101,7 @@ const dict = {
     },
     autoreplace: {
       intro: "Automatically replace errors in excerpts",
-      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f", //Todo:修改英文版Notion
+      link: "https://www.notion.so/huangkewei/AutoReplace-1cf1399ed90e4fc7a3e16843d37f2a56", //Todo:修改英文版Notion
       option: {
         preset: ["Customize"],
         replace_selected: ["Use AutoReplace Configuration", "Confirm"]
@@ -116,10 +116,10 @@ const dict = {
       }
     },
     autolist: {
-      intro: "针对序列文本，自动换行，仅适配中文", //Todo: 需要修改
-      link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec", //Todo:修改英文版Notion
+      intro: "For sequence text, automatic line wrapping", //Todo: 需要修改
+      link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882", //Todo:修改英文版Notion
       option: {
-        preset: ["Customize", "Multiple Choice", "句首中文编号", "Semicolon at the end of the sentence", "Period at the end of the Sentence"], //Todo:需要修改
+        preset: ["Customize", "Multiple Choice", "Number at the beginning of the sentence", "Semicolon at the end of the sentence", "Period at the end of the Sentence"], //Todo:需要修改
         list_selected: ["Use AutoList Configuration", "Confirm"]
       },
       help: {
@@ -133,7 +133,7 @@ const dict = {
     },
     autocomplete: {
       intro: "Complete word form. Only support verbs and nouns",
-      link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca", //Todo:修改英文版Notion
+      link: "https://www.notion.so/huangkewei/AutoComplete-3b9b27baef8f414cb86c454a6128b608", //Todo:修改英文版Notion
       label: {
         custom_complete: "Custom excerption filling template, click to view support variables",
         complete_selected: "Complete Word Form"
@@ -147,7 +147,7 @@ const dict = {
     },
     anotherautotitle: {
       intro: "More powerful Autotitle plugin",
-      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6", //Todo:修改英文版Notion
+      link: "https://www.notion.so/huangkewei/AnotherAutoTitle-bdd09b713c844a82aeea1c0d3bd4cb48", //Todo:修改英文版Notion
       option: {
         has_title_then: ["Convert to Excerption", "Convert to Title Link", "Override Title"],
         preset: ["Customize", "Word Count Limit", "Do not Contain Dots"],
