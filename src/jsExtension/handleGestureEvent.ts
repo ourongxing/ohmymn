@@ -7,7 +7,6 @@ import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
 import { PanelControl } from "addons/ohmymn"
-import { alert } from "utils/common"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -78,40 +77,41 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   if (swipeY < 60 || swipeX < 70 || swipeX > width - 70)
     return swipePositon.None
 
-  if (selViewLst.length > 1) {
-    const barWidth = width > 510 ? 500 : width - 50
-    /**
-     * 多选工具栏
-     * iPad Pro 12.9
-     * 高度 y(900-850 = 50) 窗口宽度 980
-     * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
-     * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
-     *
-     * 宽度 x(930 - 430 = 500) 窗口宽度 1366
-     * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
-     * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
-     * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
-     */
-    if (
-      swipeY < height - 80 &&
-      swipeY > height - 130 &&
-      swipeX > (width - barWidth) / 2 &&
-      swipeX < (width - barWidth) / 2 + barWidth
-    )
-      return swipePositon.MuiltBar
-  }
+  /**
+   * 多选工具栏
+   * iPad Pro 12.9
+   * 高度 y(900-850 = 50) 窗口宽度 980
+   * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
+   * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
+   *
+   * 宽度 x(930 - 430 = 500) 窗口宽度 1366
+   * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
+   * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
+   * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
+   */
+  const barWidth = width > 510 ? 500 : width - 50
+  const isSwipeOnMuiltBar =
+    swipeY < height - 80 &&
+    swipeY > height - 130 &&
+    swipeX > (width - barWidth) / 2 &&
+    swipeX < (width - barWidth) / 2 + barWidth
+
+  if (selViewLst.length > 1 && isSwipeOnMuiltBar) return swipePositon.MuiltBar
 
   if (selViewLst.length == 1) {
-    // 不响应文档上的滑动，y < 60 是顶部工具栏的位置
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 
+    // 不响应文档区域的滑动
     if (
       studyController.docMapSplitMode == docMapSplitMode.half &&
       ((studyController.rightMapMode && swipeX < readerViewWidth) ||
         (!studyController.rightMapMode && swipeX > width - readerViewWidth))
     )
       return swipePositon.None
+
+    // 选中一张卡片，如果手动打开多选工具栏
+    if (isSwipeOnMuiltBar) return swipePositon.MuiltBar
 
     const view = selViewLst![0].view
     const { y: cardY, height: cardHeight } =
@@ -120,7 +120,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
         studyController.view
       )
     const mode = selViewLst[0].note.note.groupMode
-    /** 单选工具栏
+    /**
+     * 单选工具栏
      * 高度 30
      * 与卡片相距 20
      */
