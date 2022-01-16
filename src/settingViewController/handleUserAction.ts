@@ -1,10 +1,10 @@
-import { log, openUrl, popup, postNotification, showHUD } from "utils/common"
-import { dataSource } from "synthesizer"
+import { openUrl, postNotification, showHUD } from "utils/common"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { osType } from "types/MarginNote"
-import { UIAlertViewStyle, UITableView } from "types/UIKit"
+import { UITableView } from "types/UIKit"
+import { byteLength } from "utils/text"
+import lang from "lang"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -12,70 +12,31 @@ const tag2indexPath = (tag: number): NSIndexPath =>
     (tag - 999 - ((tag - 999) % 100)) / 100
   )
 
-export const magicAction = async (indexPath: NSIndexPath) => {
-  const section = dataSource[indexPath.section]
-  const row = section.rows[indexPath.row]
-  switch (row.type) {
-    case cellViewType.plainText:
-      if (row.link) openUrl(row.link)
-      break
-    case cellViewType.buttonWithInput:
-      for (;;) {
-        const { key, option, content } = await popup(
-          row.label,
-          row.help ?? "",
-          UIAlertViewStyle.PlainTextInput,
-          row.option ? row.option : ["确定"],
-          (alert: UIAlertView, buttonIndex: number) => {
-            // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
-            return {
-              key: row.key,
-              content: alert.textFieldAtIndex(0).text,
-              option: buttonIndex
-            }
-          }
-        )
-        // 允许为空
-        if (!content || checkInputCorrect(content, row.key)) {
-          postNotification(Addon.key + "ButtonClick", {
-            key,
-            option,
-            content
-          })
-          return
-        } else showHUD("输入错误，请重新输入")
-      }
-    case cellViewType.button:
-      const { key, option } = await popup(
-        row.label,
-        row.help ?? "",
-        UIAlertViewStyle.Default,
-        row.option ?? ["确定"],
-        (alert: UIAlertView, buttonIndex: number) => ({
-          key: row.key,
-          option: buttonIndex
-        })
-      )
-      postNotification(Addon.key + "ButtonClick", {
-        key,
-        option
-      })
-  }
-}
 const tableViewDidSelectRowAtIndexPath = async (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
-  await magicAction(indexPath)
+  const row = self.dataSource[indexPath.section].rows[indexPath.row]
+  switch (row.type) {
+    case cellViewType.plainText:
+      if (row.link) openUrl(row.link)
+      break
+    case cellViewType.buttonWithInput:
+    case cellViewType.button:
+      postNotification(Addon.key + "ButtonClick", {
+        row
+      })
+  }
 }
 
 const textFieldShouldReturn = (sender: UITextField) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
-  const row = <IRowInput>section.rows[indexPath.row]
+  const section = self.dataSource[indexPath.section]
+  const row = section.rows[indexPath.row] as IRowInput
   let text = sender.text.trim()
   // 可以为空
+  if (/^marginnote3app:/.test(text)) openUrl(text)
   if (!text || checkInputCorrect(text, row.key)) {
     // 输入正确则取消光标
     sender.resignFirstResponder()
@@ -85,13 +46,15 @@ const textFieldShouldReturn = (sender: UITextField) => {
       key: row.key,
       content: text
     })
-  } else showHUD("输入错误，请查看相关说明")
+  } else {
+    showHUD(lang.handle_user_action.input_error)
+  }
   return true
 }
 
 const switchChange = (sender: UISwitch) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
   row.status = sender.on ? true : false
   postNotification(Addon.key + "SwitchChange", {
@@ -106,29 +69,29 @@ let lastSelectInfo: {
   key: string
   selections: number[]
 } | null
-let popoverController: UIPopoverController
 const selectAction = (param: {
   indexPath: NSIndexPath
   selection: number
   menuController: MenuController
 }) => {
   const { indexPath, selection, menuController } = param
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   // 区分单选和多选
   if (
-    (<IRowSelect>dataSource[indexPath.section].rows[indexPath.row]).type ==
+    (<IRowSelect>self.dataSource[indexPath.section].rows[indexPath.row]).type ==
     cellViewType.select
   ) {
     ;(<IRowSelect>(
-      dataSource[indexPath.section].rows[indexPath.row]
+      self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
     postNotification(Addon.key + "SelectChange", {
       name: section.header.toLowerCase(),
       key: row.key,
       selections: [selection]
     })
-    if (popoverController) popoverController.dismissPopoverAnimated(true)
+    if (self.popoverController)
+      self.popoverController.dismissPopoverAnimated(true)
   } else {
     const selections = row.selections
     const nowSelect = row.selections.includes(selection)
@@ -136,7 +99,7 @@ const selectAction = (param: {
       : [selection, ...selections]
 
     ;(<IRowSelect>(
-      dataSource[indexPath.section].rows[indexPath.row]
+      self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = nowSelect
 
     lastSelectInfo = {
@@ -152,15 +115,12 @@ const selectAction = (param: {
     )
     menuController.menuTableView!.reloadData()
   }
-  // 貌似 iPad 上无法使用 reloadRow
-  MN.app.osType == osType.macOS
-    ? self.tableView.reloadRowsAtIndexPathsWithRowAnimation(indexPath, 0)
-    : self.tableView.reloadData()
+  self.tableView.reloadData()
 }
 
 const clickSelectButton = (sender: UIButton) => {
   const indexPath: NSIndexPath = tag2indexPath(sender.tag)
-  const section = dataSource[indexPath.section]
+  const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   const menuController = MenuController.new()
   menuController.commandTable = row.option.map((item, index) => ({
@@ -176,21 +136,24 @@ const clickSelectButton = (sender: UIButton) => {
   }))
   menuController.rowHeight = 44
   const width =
-    row.option.reduce((a, b) => (a.length > b.length ? a : b)).length * 20 + 80
+    byteLength(
+      row.option.reduce((a, b) => (byteLength(a) > byteLength(b) ? a : b))
+    ) *
+      10 +
+    80
   menuController.preferredContentSize = {
-    width: width > 300 ? 250 : width,
+    width: width > 300 ? 300 : width,
     height: menuController.rowHeight * menuController.commandTable.length
   }
-  const studyControllerView = MN.studyController.view
-  popoverController = new UIPopoverController(menuController)
-  popoverController.presentPopoverFromRect(
+  const studyControllerView = MN.studyController().view
+  self.popoverController = new UIPopoverController(menuController)
+  self.popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),
     studyControllerView,
     1 << 3,
     true
   )
-  //@ts-ignore
-  popoverController.delegate = self
+  self.popoverController.delegate = self
 }
 
 // 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选

@@ -1,13 +1,14 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
-import { delay, log, postNotification } from "./common"
+import { postNotification } from "./common"
 import { MN } from "const"
+import { unique } from "utils"
 
 /**
  * 获取选中的卡片
  */
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] | undefined =
-    MN.notebookController.mindmapView.selViewLst
+    MN.studyController().notebookController.mindmapView.selViewLst
   if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
   else return []
 }
@@ -37,27 +38,22 @@ const excerptNotes = (node: MbBookNote): MbBookNote[] => {
   const comments = node.comments
   for (const comment of comments) {
     if (comment.type == "LinkNote")
-      notes.push(MN.database.getNoteById(comment.noteid)!)
+      notes.push(MN.db.getNoteById(comment.noteid)!)
   }
   return notes
 }
 
-const getNoteById = (noteid: string): MbBookNote =>
-  MN.database.getNoteById(noteid)!
+const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
 
 // topic 就是 notebook
 const getNotebookById = (notebookid: string): MbTopic =>
-  MN.database.getNotebookById(notebookid)!
+  MN.db.getNotebookById(notebookid)!
 
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
 const undoGrouping = (f: () => void) => {
-  UndoManager.sharedInstance().undoGrouping(
-    String(Date.now()),
-    MN.notebookId,
-    f
-  )
+  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
 }
 
 const undoGroupingWithRefresh = (f: () => void) => {
@@ -69,18 +65,22 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * 保存数据，刷新界面
  */
 const RefreshAfterDBChange = () => {
-  MN.database.setNotebookSyncDirty(MN.notebookId)
+  MN.db.setNotebookSyncDirty(self.notebookid)
   postNotification("RefreshAfterDBChange", {
-    topicid: MN.notebookId
+    topicid: self.notebookid
   })
 }
 
-const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
-  const comments = node.comments
+/**
+ * 获取评论的索引
+ */
+const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
+  const comments = note.comments
   for (let i = 0; i < comments.length; i++) {
-    const comment = comments[i]
-    // 如果直接用 comments[i] 貌似不能触发类型保护
-    if (comment.type == "LinkNote" && comment.noteid == commentNote.noteId)
+    const _comment = comments[i]
+    if (typeof comment == "string") {
+      if (_comment.type == "TextNote" && _comment.text == comment) return i
+    } else if (_comment.type == "LinkNote" && _comment.noteid == comment.noteId)
       return i
   }
   return -1
@@ -88,8 +88,13 @@ const getCommentIndex = (node: MbBookNote, commentNote: MbBookNote) => {
 
 /**
  * 获取卡片内所有的文字
+ * @param note
+ * @param separator 分隔符号
+ * @param highlight 是否保留划重点
+ * @returns
  */
-const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
+
+const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
   const textArr = []
   if (note.excerptText)
     textArr.push(
@@ -109,6 +114,39 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
   return textArr.join(separator)
 }
 
+/**
+ * 添加标签
+ * @param force 强制整理合并标签，就算没有添加标签
+ */
+const addTags = (node: MbBookNote, tags: string[], force = false) => {
+  const existingTags: string[] = []
+  const tagCommentIndex: number[] = []
+  node.comments.forEach((comment, index) => {
+    if (comment.type == "TextNote") {
+      const _tags = comment.text.split(" ")
+      if (_tags.every(tag => tag.startsWith("#"))) {
+        existingTags.push(..._tags.map(tag => tag.slice(1)))
+        tagCommentIndex.push(index)
+      }
+    }
+  })
+
+  // 如果该标签已存在，而且不是强制，就退出
+  if (!force && (!tags.length || tags.every(tag => existingTags.includes(tag))))
+    return
+
+  // 从后往前删，索引不会变
+  tagCommentIndex
+    .reverse()
+    .forEach(index => void node.removeCommentByIndex(index))
+
+  const tagLine = unique([...existingTags, ...tags])
+    .map(tag => `#${tag}`)
+    .join(" ")
+
+  if (tagLine) node.appendTextComment(tagLine)
+}
+
 export {
   getSelectNodes,
   getSelectNodesAll,
@@ -119,5 +157,6 @@ export {
   getAllText,
   undoGrouping,
   undoGroupingWithRefresh,
-  RefreshAfterDBChange
+  RefreshAfterDBChange,
+  addTags
 }

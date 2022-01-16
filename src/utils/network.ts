@@ -1,5 +1,3 @@
-import { log } from "./common"
-
 class Response {
   data: NSData
   constructor(data: NSData) {

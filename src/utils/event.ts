@@ -1,5 +1,4 @@
 import { Addon } from "const"
-import { log } from "./common"
 
 export const eventHandlerController = (
   handlerList: Array<

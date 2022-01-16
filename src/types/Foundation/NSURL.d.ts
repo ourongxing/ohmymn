@@ -1,46 +1,28 @@
-export {}
+import { NSStringEncoding } from "./NSData"
+
+export const enum NSURLBookmarkResolutionOptions {
+  WithoutMounting = 512,
+  WithoutUI = 256,
+  WithSecurityScope = 1024
+}
+
+export const enum NSURLBookmarkFileCreationOptions {
+  MinimalBookmark = 512,
+  PreferFileIDResolution = 256,
+  SecurityScopeAllowOnlyReadAccess = 4096,
+  SuitableForBookmarkFile = 1024,
+  WithSecurityScope = 2048
+}
+
+export const enum NSURLBookmarkCreationOptions {
+  MinimalBookmark = 512,
+  PreferFileIDResolution = 256,
+  SecurityScopeAllowOnlyReadAccess = 4096,
+  SuitableForBookmarkFile = 1024,
+  WithSecurityScope = 2048
+}
+
 declare global {
-  const enum NSStringEncoding /** ASCII encoding contains, 7-bit of information stored in 8 bits. */ {
-    ASCIIStringEncoding = 1,
-
-    ISO2022JP = 21,
-    /** 8-bit ISO/IEC 8859-1, also knows as Latin1 encoding. */
-    ISOLatin1 = 5,
-
-    /** 8-bit ISO/IEC 8859-2, also knows as Latin2 encoding. */
-    ISOLatin2 = 9,
-
-    JapaneseEUC = 3,
-    MacOSRoman = 30,
-    NEXTSTEP = 2,
-    NonLossyASCII = 7,
-    ShiftJIS = 8,
-    Symbol = 6,
-    Unicode = 10,
-    /** 16 bit-based variable length encoding, blocks are interpreted as big endian. */
-    UTF16BigEndian = 2415919360,
-
-    /** 16 bit-based variable length encoding, blocks are interpreted as litle endian. */
-    UTF16LittleEndian = 2483028224,
-
-    /** 32-bit unicode encoding. */
-    UTF32 = 2348810496,
-
-    /** 32 bit encoding, blocks are interpreted as big endian. */
-    UTF32BigEndian = 2550137088,
-
-    /** 32 bit encoding, blocks are interpreted as little endian. */
-    UTF32LittleEndian = 2617245952,
-
-    /** 8-bit based variable-length character encoding for Unicode. */
-    UTF8 = 4,
-
-    WindowsCP1250 = 15,
-    WindowsCP1251 = 11,
-    WindowsCP1252 = 12,
-    WindowsCP1253 = 13,
-    WindowsCP1254 = 14
-  }
   class NSURL {
     percentEncodedFragment?: string
     percentEncodedPath?: string
@@ -361,8 +343,7 @@ declare global {
      */
     URLByDeletingPathExtension(): NSURL
     /**
-     * @returns NSURL*
-     */
+     * @returns NSURL* */
     URLByStandardizingPath(): NSURL
     /**
      * @returns NSURL*
@@ -371,26 +352,4 @@ declare global {
     readonly previewItemURL?: NSURL
     readonly previewItemTitle?: string
   }
-}
-
-export const enum NSURLBookmarkResolutionOptions {
-  WithoutMounting = 512,
-  WithoutUI = 256,
-  WithSecurityScope = 1024
-}
-
-export const enum NSURLBookmarkFileCreationOptions {
-  MinimalBookmark = 512,
-  PreferFileIDResolution = 256,
-  SecurityScopeAllowOnlyReadAccess = 4096,
-  SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048
-}
-
-export const enum NSURLBookmarkCreationOptions {
-  MinimalBookmark = 512,
-  PreferFileIDResolution = 256,
-  SecurityScopeAllowOnlyReadAccess = 4096,
-  SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048
 }

@@ -1,71 +1,59 @@
+import lang from "lang"
 import { cellViewType, IConfig } from "types/Addon"
 import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
 
-const option = [
-  "无",
-  ...[
-    "筛选卡片",
-    "修改摘录样式",
-    "修改摘录颜色",
-    "补全单词词形",
-    "序列摘录换行",
-    "合并卡片内文字",
-    "批量重命名标题",
-    "切换摘录或标题",
-    "优化排版和格式",
-    "批量替换摘录文字",
-    "提取卡片中的文字为标题"
-  ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value)
-]
+const option: string[] = []
 
+const { link, intro, singleBar, muiltBar } = lang.addon.gesture
 const config: IConfig = {
   name: "Gesture",
-  intro: "自定义手势触发动作",
+  intro,
+  link,
   settings: [
     {
-      label: "单选工具栏 ↑",
+      label: singleBar + " ↑",
       key: "singleBarSwipeUp",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 ↓",
+      label: singleBar + " ↓",
       key: "singleBarSwipeDown",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 ←",
+      label: singleBar + " ←",
       key: "singleBarSwipeLeft",
       type: cellViewType.select,
       option
     },
     {
-      label: "单选工具栏 →",
+      label: singleBar + " →",
       key: "singleBarSwipeRight",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ↑",
+      label: muiltBar + " ↑",
       key: "muiltBarSwipeUp",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ↓",
+      label: muiltBar + " ↓",
       key: "muiltBarSwipeDown",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 ←",
+      label: muiltBar + " ←",
       key: "muiltBarSwipeLeft",
       type: cellViewType.select,
       option
     },
     {
-      label: "多选工具栏 →",
+      label: muiltBar + " →",
       key: "muiltBarSwipeRight",
       type: cellViewType.select,
       option
@@ -85,6 +73,12 @@ const util = {
       swipe.numberOfTouchesRequired = touchNumber
       swipe.direction = direction
       return swipe
+    },
+    tap(touchNumber: number, tapNumber: number, action: string) {
+      const tap = new UITapGestureRecognizer(self, `on${action}:`)
+      tap.numberOfTapsRequired = tapNumber
+      tap.numberOfTouchesRequired = touchNumber
+      return tap
     }
   },
   gestureHandlerController(

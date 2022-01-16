@@ -1,19 +1,26 @@
+import lang from "lang"
 import { UIAlertViewStyle } from "types/UIKit"
 import { Addon, MN } from "../const"
 
-const log = (obj: any, suffix = "normal") =>
-  void JSB.log(`${Addon.key}-${suffix} %@`, obj)
+const console = {
+  log(obj: any, suffix = "normal") {
+    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+  },
+  error(obj: any, suffix = "error") {
+    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+  }
+}
 
 // 注意要把 window 赋给所有 OC 对象才行
-const showHUD = (message: string, duration: number = 1) =>
-  void MN.app.showHUD(message, MN.window, duration)
+const showHUD = (message: string, duration: number = 1, window = self.window) =>
+  void MN.app.showHUD(message, window, duration)
 
 const HUDController = {
-  show(message: string) {
-    MN.app.waitHUDOnView(message, MN.window)
+  show(message: string, window = self.window) {
+    MN.app.waitHUDOnView(message, window)
   },
-  hidden() {
-    MN.app.stopWaitHUDOnView(MN.window)
+  hidden(window = self.window) {
+    MN.app.stopWaitHUDOnView(window)
   }
 }
 
@@ -62,8 +69,8 @@ const postNotification = (key: string, userInfo: any) => {
   )
 }
 
-const isThisWindow = (sender: any) =>
-  MN.app.checkNotifySenderInWindow(sender, MN.window)
+const isThisWindow = (sender: any, window = self.window) =>
+  MN.app.checkNotifySenderInWindow(sender, window)
 
 const popup = (
   title: string,
@@ -74,13 +81,11 @@ const popup = (
     alert: UIAlertView,
     buttonIndex: number
   ) => {
-    key?: string
     option?: number
     content?: string
   }
 ) =>
   new Promise<{
-    key?: string
     option?: number
     content?: string
   }>(resolve =>
@@ -88,11 +93,10 @@ const popup = (
       title,
       message,
       type,
-      "取消",
+      lang.other.cancel,
       buttons,
       (alert: UIAlertView, buttonIndex: number) => {
-        if (buttonIndex == 0) return
-        resolve(f(alert, buttonIndex - 1))
+        if (buttonIndex != 0) resolve(f(alert, buttonIndex - 1))
       }
     )
   )
@@ -103,7 +107,7 @@ const popup = (
 const isOCNull = (obj: any) => obj == NSNull.new()
 
 export {
-  log,
+  console,
   showHUD,
   HUDController,
   alert,

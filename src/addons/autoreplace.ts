@@ -1,84 +1,88 @@
-import { profile } from "profile"
 import { excerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
 
+const { intro, link, label, help, option } = lang.addon.autoreplace
 export const enum AutoReplacePreset {
   Custom
-}
-const enum ReplaceSelected {
-  AsAutoReplace
 }
 
 const config: IConfig = {
   name: "AutoReplace",
-  intro: "自动替换摘录中的某些错误",
+  intro,
+  link,
   settings: [
     {
       key: "preset",
       type: cellViewType.muiltSelect,
-      option: ["自定义"],
-      label: "选择需要的预设"
+      option: option.preset,
+      label: label.preset
     },
     {
       key: "customReplace",
       type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f"
+      label: label.custom_replace,
+      bind: ["preset", 0],
+      link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "批量替换摘录文字",
+      label: label.replace_selected,
       key: "replaceSelected",
-      help: "具体输入格式见顶上帮助信息",
-      option: ["使用 AutoReplace 的配置", "确定"]
+      help: help.replace_selected,
+      option: option.replace_selected
     }
   ]
 }
 
 const util = {
   replaceText(text: string) {
-    const preset = profile.autoreplace.preset
+    const { preset } = self.profile.autoreplace
     for (const set of preset) {
       switch (set) {
         case AutoReplacePreset.Custom:
-          if (!profile.autoreplace.customReplace) break
-          const params = string2ReplaceParam(profile.autoreplace.customReplace)
-          let _text = text
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr)
-          })
-          if (text != _text) text = _text
+          const { customReplace: params } = self.profileTemp.replaceParam
+          if (!params) continue
+          text = params.reduce(
+            (acc, param) => acc.replace(param.regexp, param.newSubStr),
+            text
+          )
       }
     }
     return text
   }
 }
 
+const enum ReplaceSelected {
+  UseAutoReplace
+}
+
 const action: IActionMethod = {
   replaceSelected({ content, nodes, option }) {
-    if (option !== ReplaceSelected.AsAutoReplace && !content) return
-    const params =
-      option === ReplaceSelected.AsAutoReplace
-        ? []
-        : string2ReplaceParam(content)
-    for (const node of nodes) {
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        const text = note.excerptText
-        if (!text) continue
-        let _text = text
-        if (option === ReplaceSelected.AsAutoReplace)
-          _text = util.replaceText(text)
-        else
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr)
-          })
-        if (text !== _text) note.excerptText = _text
-      }
+    if (option == ReplaceSelected.UseAutoReplace) {
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text) note.excerptText = util.replaceText(text)
+        })
+      })
+    } else if (content) {
+      const params = string2ReplaceParam(content)
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text)
+            note.excerptText = params.reduce(
+              (acc, params) => acc.replace(params.regexp, params.newSubStr),
+              text
+            )
+        })
+      })
     }
   }
 }
+
 export { config, util, action }

@@ -1,21 +1,23 @@
-import { profile } from "profile"
 import { docMapSplitMode, studyMode } from "types/MarginNote"
-import { delay, log, showHUD } from "utils/common"
+import { delay, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
-
-// 面板和按键状态
-let panelStatus = false
+import lang from "lang"
+import { PanelControl } from "addons/ohmymn"
 
 // 设置窗口面板的位置和大小
-export const layoutViewController = () => {
-  const frame = MN.studyController.view.bounds
+export const layoutViewController = (
+  heightNum = self.profile.ohmymn.panelHeight[0],
+  positionNum = self.profile.ohmymn.panelPosition[0]
+) => {
+  const studyController = MN.studyController()
+  const frame = studyController.view.bounds
   const width = 300
-  const height = [600, 450, 300][profile.ohmymn.panelHeight[0]]
+  const height = [600, 450, 300][heightNum]
   const autoX = () => {
-    const readerView = MN.studyController.readerController.view
+    const readerView = studyController.readerController.view
     const isHidden = readerView.hidden
-    if (MN.studyController.rightMapMode) {
+    if (studyController.rightMapMode) {
       const x = readerView.frame.width - width - 40
       return x < 50 || isHidden ? 50 : x
     } else {
@@ -26,9 +28,9 @@ export const layoutViewController = () => {
     }
   }
   const x = [autoX(), 50, (frame.width - width) / 2, frame.width - width - 50][
-    profile.ohmymn.panelPosition[0]
+    positionNum
   ]
-  MN.settingViewController.view.frame = {
+  self.settingViewController.view.frame = {
     x,
     y: 110,
     height,
@@ -37,31 +39,34 @@ export const layoutViewController = () => {
 }
 
 export const closePanel = () => {
-  if (!panelStatus) return
-  MN.settingViewController.view.removeFromSuperview()
-  panelStatus = false
-  MN.studyController.refreshAddonCommands()
+  if (!self.panelStatus) return
+  self.settingViewController.view.removeFromSuperview()
+  self.panelStatus = false
+  MN.studyController().refreshAddonCommands()
 }
 
 let lastOpenPanel = 0
-const openPanel = () => {
-  if (panelStatus) return
-  MN.studyController.view.addSubview(MN.settingViewController.view)
-  panelStatus = true
-  MN.studyController.refreshAddonCommands()
+export const openPanel = () => {
+  if (self.panelStatus) return
+  const studyController = MN.studyController()
+  studyController.view.addSubview(self.settingViewController.view)
+  self.panelStatus = true
+  studyController.refreshAddonCommands()
   lastOpenPanel = Date.now()
-  if (MN.studyController.docMapSplitMode == docMapSplitMode.allDoc) {
-    MN.studyController.docMapSplitMode = docMapSplitMode.half
-    showHUD("OhMyMN 与脑图更配喔", 1)
+  if (studyController.docMapSplitMode == docMapSplitMode.allDoc) {
+    studyController.docMapSplitMode = docMapSplitMode.half
+    showHUD(lang.switch_panel.better_with_mindmap, 1)
   }
-  delay(0.2).then(() => void MN.studyController.view.becomeFirstResponder())
+  delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
 let lastClickButton = 0
 const switchPanel = () => {
-  if (panelStatus) closePanel()
+  if (self.panelStatus) closePanel()
   else {
-    if (profile.ohmymn.doubleClick) {
+    if (
+      self.profile.ohmymn.panelControl.includes(PanelControl.DoubleClickOpen)
+    ) {
       const now = Date.now()
       if (lastClickButton && now - lastClickButton < 300) openPanel()
       else lastClickButton = now
@@ -71,22 +76,21 @@ const switchPanel = () => {
 
 // 改变各个 view 的时候就会触发，非常频繁，我们只需要在打开面板的时候触发一次，记录一下最近一次面板打开的时间
 const controllerWillLayoutSubviews = (controller: UIViewController) => {
-  //@ts-ignore
-  if (controller != MN.studyController) return
-  if (!panelStatus) return
+  if (controller != MN.studyController()) return
+  if (!self.panelStatus) return
   if (Date.now() - lastOpenPanel < 200) layoutViewController()
 }
 
 const queryAddonCommandStatus = () => {
   // 仅在学习模式下打开
-  if (MN.studyController.studyMode == studyMode.study)
-    return {
-      image: "logo.png",
-      object: self,
-      selector: "switchPanel:",
-      checked: panelStatus ? true : false
-    }
-  return null
+  return MN.studyController().studyMode == studyMode.study
+    ? {
+        image: "logo.png",
+        object: self,
+        selector: "switchPanel:",
+        checked: self.panelStatus
+      }
+    : null
 }
 
 export default {

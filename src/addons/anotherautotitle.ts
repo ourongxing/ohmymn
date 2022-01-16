@@ -1,101 +1,91 @@
-import { profile } from "profile"
-import { log } from "utils/common"
-import { reverseEscape, string2RegArray } from "utils/input"
+import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
+import { MbBookNote } from "types/MarginNote"
 
-const option = {
-  hasTitleThen: ["仍然作为摘录", "作为标题链接", "覆盖现有标题"],
-  preset: ["自定义", "字数限制", "不含有点号"],
-  switchTitle: ["切换为不存在的", "交换标题和摘录"]
+const { option, intro, help, link, label } = lang.addon.anotherautotitle
+
+const config: IConfig = {
+  name: "AnotherAutoTitle",
+  intro,
+  link,
+  settings: [
+    {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: option.preset,
+      label: label.preset
+    },
+    {
+      key: "wordCount",
+      type: cellViewType.input,
+      bind: ["preset", 1],
+      label: label.word_count
+    },
+    {
+      key: "customBeTitle",
+      type: cellViewType.input,
+      label: label.custom_be_title,
+      bind: ["preset", 0],
+      link
+    },
+    {
+      key: "changeTitleNoLimit",
+      type: cellViewType.switch,
+      label: label.change_title_no_limit
+    }
+  ],
+  actions: [
+    {
+      key: "switchTitle",
+      type: cellViewType.button,
+      label: label.switch_title,
+      option: option.switch_title,
+      help: help.switch_title
+    }
+  ]
 }
-
-export const enum HasTitleThen {
-  ExpertText,
-  TitleLink,
-  OverrideTitle
-}
-
 export const enum AutoTitlePreset {
   Custom,
   WordLimit,
   NoPunctuation
 }
-export const enum SwitchTitle {
-  ToNonexistent,
-  Exchange
-}
-
-const config: IConfig = {
-  name: "AnotherAutoTitle",
-  intro: "更强大的自动转换标题插件",
-  settings: [
-    {
-      key: "hasTitleThen",
-      type: cellViewType.select,
-      label: "标题存在，继续摘录",
-      option: option.hasTitleThen
-    },
-    {
-      key: "changeTitleNoLimit",
-      type: cellViewType.switch,
-      label: "拓宽标题摘录不受限制"
-    },
-    {
-      key: "preset",
-      type: cellViewType.muiltSelect,
-      option: option.preset,
-      label: "选择需要的预设"
-    },
-    {
-      key: "wordCount",
-      type: cellViewType.inlineInput,
-      label: "设定最多字数"
-    },
-    {
-      key: "customBeTitle",
-      type: cellViewType.input,
-      label: "自定义，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6"
-    }
-  ],
-  actions: [
-    {
-      type: cellViewType.button,
-      label: "切换摘录或标题",
-      key: "switchTitle",
-      option: option.switchTitle,
-      help: "当两者都存在时请使用「交换标题和摘录」"
-    }
-  ]
-}
 
 const util = {
-  checkGetTitle(text: string) {
-    const { preset, wordCount, customBeTitle } = profile.anotherautotitle
+  isBroadened(oldStr: string, newStr: string) {
+    return (
+      oldStr &&
+      oldStr.length >= 2 &&
+      (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
+    )
+  },
+  getTitle(text: string, note: MbBookNote) {
+    const { preset, wordCount, changeTitleNoLimit } =
+      self.profile.anotherautotitle
+    if (
+      changeTitleNoLimit &&
+      note.noteTitle &&
+      this.isBroadened(note.noteTitle, text)
+    )
+      return {
+        title: text
+      }
+
     for (const set of preset) {
       switch (set) {
         case AutoTitlePreset.Custom:
-          if (!customBeTitle) break
-          const regs = string2RegArray(customBeTitle)
-          // 全部匹配到才转为标题
-          if (regs.every(reg => reg.test(text)))
+          const { customBeTitle: regGroup } = self.profileTemp.regArray
+          if (!regGroup) continue
+          if (regGroup.some(regs => regs.every(reg => reg.test(text))))
             return {
               title: text
             }
           break
         case AutoTitlePreset.NoPunctuation:
-          if (!wordCount) break
-          const limitedNum = reverseEscape(wordCount)
-          const actualNum = countWord(text)
-          log("实际字数：" + actualNum, "autotitle")
-          const isTitle =
-            typeof limitedNum == "number"
-              ? actualNum <= limitedNum
-              : isHalfWidth(text)
-              ? actualNum <= limitedNum[1]
-              : actualNum <= limitedNum[0]
-          if (isTitle)
+          if (!wordCount) continue
+          const [zh, en] = reverseEscape(wordCount) as number[]
+          if (countWord(text) <= (isHalfWidth(text) ? en : zh))
             return {
               title: text
             }
@@ -110,12 +100,18 @@ const util = {
     }
   }
 }
+
+export const enum SwitchTitle {
+  ToNonexistent,
+  Exchange
+}
+
 const action: IActionMethod = {
   switchTitle({ nodes, option }) {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
       const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
-      switch (<SwitchTitle>option) {
+      switch (option) {
         case SwitchTitle.ToNonexistent:
           // 只允许存在一个
           if ((title || text) && !(title && text)) {
@@ -131,4 +127,5 @@ const action: IActionMethod = {
     }
   }
 }
+
 export { config, util, action }

@@ -16,6 +16,7 @@ declare global {
     readonly textLabel: UILabel
     readonly detailTextLabel: UILabel
     readonly imageView: UIImageView
+    hidden: boolean
     indexPath: NSIndexSet
     backgroundView: UIView
     selectedBackgroundView: UIView

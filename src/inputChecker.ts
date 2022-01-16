@@ -1,53 +1,87 @@
-import { util as magicaction } from "addons/magicaction"
 import {
+  escapeDoubleQuote,
   reverseEscape,
   string2RegArray,
   string2ReplaceParam
 } from "utils/input"
+import { util as magicaction } from "addons/magicaction"
+import { getMNLinkValue } from "utils/profile/updateDataSource"
 
-const checkInputCorrect = (text: string, key: string): boolean => {
+const checkInputCorrect = (str: string, key: string): boolean => {
   try {
     switch (key) {
-      case "wordCount":
-        const input = reverseEscape(text)
+      case "wordCount": {
+        const input = reverseEscape(str)
         if (
-          typeof input == "number" ||
-          (Array.isArray(input) &&
-            input.length == 2 &&
-            input.every(item => Number.isInteger(item)))
+          Array.isArray(input) &&
+          input.length == 2 &&
+          input.every(item => Number.isInteger(item))
         ) {
         } else throw ""
-      case "mergeText":
-        reverseEscape(`"${text}"`)
         break
+      }
+      case "wordCountArea": {
+        const input = reverseEscape(str)
+        if (
+          Array.isArray(input) &&
+          input.length == 3 &&
+          input.every(item => Number.isInteger(item))
+        ) {
+        } else throw ""
+        break
+      }
+      case "mergeText":
       case "customComplete":
-        reverseEscape(text)
+        reverseEscape(`"${escapeDoubleQuote(str)}"`)
         break
       case "changeColor": {
-        const index = Number(text)
+        const index = Number(str)
         if (!Number.isInteger(index)) throw ""
         if (index > 16 || index < 1) throw ""
         break
       }
-      case "customSplitName":
+
+      // 目前 MagicAction 无法使用 URL 导入配置，架构问题，暂无解
+      case "filterCards": {
+        string2RegArray(str)
+          .flat()
+          .forEach(reg => void reg.test("test"))
+      }
+      case "customDefLink":
       case "customBeTitle":
-      case "customSplit":
-      case "filterCards":
-        const regs = string2RegArray(text)
-        regs.forEach(reg => {
-          reg.test("test")
+      case "customSplit": {
+        const res = getMNLinkValue(str)
+        if (!res) throw ""
+        string2RegArray(res)
+          .flat()
+          .forEach(reg => void reg.test("test"))
+        break
+      }
+
+      case "renameTitle": {
+        str = /^\(.*\)$/.test(str)
+          ? str
+          : `(/^.*$/g, "${escapeDoubleQuote(str)}")`
+        const { regexp, newSubStr } = string2ReplaceParam(str)[0]
+        "test".replace(regexp, newSubStr)
+        if (/%\[.*\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
+        break
+      }
+      case "customTag":
+      case "customList":
+      case "customReplace":
+      case "customExtractTitle":
+      case "customStandardize": {
+        const res = getMNLinkValue(str)
+        if (!res) throw ""
+        string2ReplaceParam(res).forEach(param => {
+          "test".replace(param.regexp, param.newSubStr)
         })
-        break
-      case "renameTitle":
-        text = /^\(.*\)$/.test(text) ? text : `(/^.*$/g, "${text}")`
-        const params = string2ReplaceParam(text)
-        if (params.length > 1) throw ""
-        "test".replace(params[0].regexp, params[0].newSubStr)
-        if (/%\[(.*)\]/.test(params[0].newSubStr))
-          magicaction.getSerialInfo(params[0].newSubStr, 1)
-        break
+      }
+      case "tagSelected":
+        str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
       default:
-        string2ReplaceParam(text).forEach(param => {
+        string2ReplaceParam(str).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)
         })
         break

@@ -1,61 +1,63 @@
-import { profile } from "profile"
-import { string2RegArray, string2ReplaceParam } from "utils/input"
+import { addFlags, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import lang from "lang"
+import { unique } from "utils"
+import { extractArray } from "utils/custom"
+
+const { label, option, intro, link } = lang.addon.anotherautodef
+const enum AutoDefPreset {
+  CustomExtract,
+  CustomSplit
+}
 
 const config: IConfig = {
   name: "AnotherAutoDef",
-  intro:
-    "提取被定义项或任意内容为标题或标题链接\n定义 = 被定义项 + 定义联项 + 定义项",
+  intro,
+  link,
   settings: [
+    {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: option.preset,
+      label: label.preset
+    },
+    {
+      key: "customExtractTitle",
+      type: cellViewType.input,
+      bind: ["preset", 0],
+      label: label.custom_extract_title,
+      link
+    },
+    {
+      key: "customDefLink",
+      type: cellViewType.input,
+      bind: ["preset", 1],
+      label: label.custom_def_link,
+      link
+    },
     {
       key: "onlyDesc",
       type: cellViewType.switch,
-      label: "摘录仅保留定义项"
+      label: label.only_desc
     },
     {
       key: "toTitleLink",
       type: cellViewType.switch,
-      label: "别名转为标题链接"
-    },
-    {
-      key: "customSplitName",
-      type: cellViewType.input,
-      label: "自定义别名分词，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
-    },
-    {
-      key: "preset",
-      type: cellViewType.muiltSelect,
-      option: [
-        "自定义提取内容",
-        "自定义定义联项",
-        "xxx : yyy",
-        "xxx —— yyy",
-        "xxx ，是(指) yyy",
-        "xxx 是(指)，yyy",
-        "xxx 是指 yyy"
-      ],
-      label: "选择需要的预设"
+      label: label.to_title_link
     },
     {
       key: "customSplit",
       type: cellViewType.input,
-      label: "自定义定义联项，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
-    },
-    {
-      key: "customDefTitle",
-      type: cellViewType.input,
-      label: "自定义提取内容，点击查看具体格式",
-      link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22"
+      label: label.custom_split,
+      link
     }
   ],
   actions: [
     {
       type: cellViewType.buttonWithInput,
-      label: "提取卡片中的内容为标题",
-      option: ["使用 AutoDef 中的配置", "确定"],
+      label: label.extract_title,
+      option: option.extract_title,
       key: "extractTitle"
     }
   ]
@@ -64,8 +66,8 @@ const config: IConfig = {
 const util = {
   toTitleLink(text: string) {
     const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const { customSplitName } = profile.anotherautodef
-    const regs = customSplitName ? string2RegArray(customSplitName) : []
+    const { customSplit } = self.profileTemp.regArray
+    const regs = customSplit ? customSplit[0] : []
     regs.push(reg)
     regs.forEach(reg => {
       text = text.replace(reg, "😎")
@@ -74,31 +76,42 @@ const util = {
       .split("😎")
       .filter(item => item)
       .map(item => item.trim())
-    if (defs.length > 1) return defs.join("; ")
+    if (defs.length > 1) return unique(defs).join("; ")
     else return false
   },
 
-  checkGetDefTitle(text: string) {
-    const { preset, onlyDesc, toTitleLink, customSplit, customDefTitle } =
-      profile.anotherautodef
+  getDefTitle(text: string) {
+    const { preset, onlyDesc, toTitleLink } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
-        case 0:
-          if (!customDefTitle) break
-          const params = string2ReplaceParam(customDefTitle)
-          for (const item of params) {
-            if (item.regexp.test(text)) {
-              const title = text.replace(item.regexp, item.newSubStr)
-              return {
-                title,
-                text: [text, ""][item.fnKey]
-              }
+        case AutoDefPreset.CustomExtract: {
+          const { customExtractTitle: params } = self.profileTemp.replaceParam
+          if (!params) continue
+          let fnKey = 0
+          const allTitles = unique(
+            params
+              .filter(param => param.regexp.test(text))
+              .map(param => {
+                // 有 1 则为1
+                if (fnKey == 0) fnKey = param.fnKey
+                param.regexp = addFlags(param.regexp, "g")
+                return text
+                  .match(param.regexp)!
+                  .map(item => item.replace(param.regexp, param.newSubStr))
+              })
+              .flat()
+          )
+          if (allTitles.length)
+            return {
+              title: allTitles.join("; "),
+              text: fnKey ? "" : text
             }
-          }
           break
-        case 1:
-          if (!customSplit) break
-          const regs = string2RegArray(customSplit)
+        }
+        case AutoDefPreset.CustomSplit:
+          const { customDefLink } = self.profileTemp.regArray
+          if (!customDefLink) continue
+          const regs = customDefLink[0]
           for (const reg of regs)
             if (reg.test(text)) {
               const [def, desc] = text
@@ -140,24 +153,26 @@ const util = {
       }
   }
 }
+const enum ExtractTitle {
+  UseAutoDef
+}
 const action: IActionMethod = {
   extractTitle({ nodes, content, option }) {
-    if (option !== 0 && !content) return
-    const params = option === 0 ? [] : string2ReplaceParam(content)
-    for (const node of nodes) {
-      const text = getAllText(node)
-      if (!text) continue
-      if (option === 0) {
-        const result = util.checkGetDefTitle(text)
-        if (result) node.noteTitle = result.title
-      } else
-        for (const item of params) {
-          if (item.regexp.test(text)) {
-            const newTitle = text.replace(item.regexp, item.newSubStr)
-            if (newTitle) node.noteTitle = newTitle
-            continue
-          }
+    if (option == ExtractTitle.UseAutoDef) {
+      nodes.forEach(node => {
+        const text = getAllText(node)
+        if (text) {
+          const result = util.getDefTitle(text)
+          if (result) node.noteTitle = result.title
         }
+      })
+    } else if (content) {
+      const params = string2ReplaceParam(content)
+      nodes.forEach(node => {
+        const text = getAllText(node)
+        const allTitles = extractArray(text, params)
+        if (allTitles.length) node.noteTitle = allTitles.join("; ")
+      })
     }
   }
 }

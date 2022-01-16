@@ -1,28 +1,9 @@
 import { Addon } from "const"
+import lang from "lang"
 import { cellViewType, IConfig } from "types/Addon"
-
-const option = {
-  profile: ["配置 1", "配置 2", "配置 3", "配置 4", "配置 5"],
-  quickSwitch: [
-    "AnotherAutoTitle",
-    "AnotherAutoDef",
-    "AutoStandardize",
-    "AutoComplete",
-    "AutoReplace",
-    "AutoList"
-  ].map((value, index) => "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"[index] + " " + value),
-  panelPosition: ["自动", "靠左", "中间", "靠右"],
-  panelHeight: ["高点", "标准", "矮点"]
-}
-
-export const enum QuickSwitch {
-  AnotherAutoTitle,
-  AnotherAutoDef,
-  AutoStandardize,
-  AutoComplete,
-  AutoReplace,
-  AutoList
-}
+import { UIAlertViewStyle } from "types/UIKit"
+import { openUrl, popup } from "utils/common"
+import fetch from "utils/network"
 
 export const enum PanelPosition {
   Auto,
@@ -37,66 +18,149 @@ export const enum PanelHeight {
   Lower
 }
 
+export const enum PanelControl {
+  DoubleClickOpen,
+  DoubleClickClose,
+  CompleteClose
+}
+
+export const enum HasTitleThen {
+  ExpertText,
+  TitleLink,
+  OverrideTitle
+}
+
+const { link, label, help, option, detect_update } = lang.addon.ohmymn
 const config: IConfig = {
   name: Addon.title,
-  intro: `version: ${Addon.version} \nmade by ${Addon.author}`,
-  link: "https://github.com/ourongxing/ohmymn",
+  intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,
+  link,
   settings: [
     {
-      help: "【当前文档生效】可用于不同情景",
+      help: help.profile,
       key: "profile",
       type: cellViewType.select,
-      option: option.profile,
-      label: "选择配置文件"
+      option: Array(5)
+        .fill(option.profile)
+        .map((_, index) => _ + " " + (index + 1)),
+      label: label.profile
     },
     {
-      label: "插件快捷开关",
+      label: label.quick_switch,
       key: "quickSwitch",
       type: cellViewType.muiltSelect,
-      option: option.quickSwitch
+      option: []
     },
     {
       key: "panelPosition",
       type: cellViewType.select,
-      option: option.panelPosition,
-      label: "面板显示位置"
+      option: option.panel_position,
+      label: label.panel_position
     },
     {
       key: "panelHeight",
       type: cellViewType.select,
-      option: option.panelHeight,
-      label: "面板显示高度"
+      option: option.panel_height,
+      label: label.panel_height
     },
     {
-      key: "doubleClick",
-      type: cellViewType.switch,
-      label: "双击打开面板"
+      key: "panelControl",
+      type: cellViewType.muiltSelect,
+      option: option.panle_control,
+      label: label.panle_control
     },
     {
-      key: "clickHidden",
-      type: cellViewType.switch,
-      label: "自动关闭面板"
+      key: "detectUpdate",
+      type: cellViewType.select,
+      option: option.detect_update,
+      label: label.detect_update
     },
     {
       key: "screenAlwaysOn",
       type: cellViewType.switch,
-      label: "保持屏幕常亮"
+      label: label.screen_always_on
     },
     {
       key: "lockExcerpt",
       type: cellViewType.switch,
-      label: "锁定摘录文字"
+      label: label.lock_excerpt
     },
     {
-      help: "【当前文档生效】开启后会在矫正后执行处理",
+      key: "hasTitleThen",
+      type: cellViewType.select,
+      label: label.has_title_then,
+      help: help.has_title_then,
+      option: option.has_title_then
+    },
+    {
+      help: help.auto_correct,
       key: "autoCorrect",
       type: cellViewType.switch,
-      label: "是否开启自动在线矫正"
+      label: label.auto_correct
     }
   ],
   actions: []
 }
 
-const util = {}
+export const enum DetectUpdate {
+  None,
+  EveryDay,
+  EveryMonday,
+  EveryDayOnlySigned,
+  EveryMondayOnlySigned
+}
+
+type UpdateInfo = {
+  name?: string
+  version: string
+  signed: boolean
+  link: string
+  time: string
+}
+
+const util = {
+  async detect(onlySigned = false) {
+    const updateInfo: UpdateInfo = await fetch(
+      "https://mnaddon-update-reminder.vercel.app/" + Addon.key
+    ).then(res => res.json())
+    const { name, version, signed, link, time } = updateInfo
+    if (name && name == Addon.key) {
+      if ((onlySigned && !signed) || version == Addon.version) return
+      const { option } = await popup(
+        "OhMyMN",
+        detect_update.tip(time, version, signed),
+        UIAlertViewStyle.Default,
+        [detect_update.check_update],
+        (alert: UIAlertView, buttonIndex: number) => ({
+          option: buttonIndex
+        })
+      )
+      if (option === 0) openUrl(link)
+    }
+  },
+  async detectUpdate() {
+    const { detectUpdate, detectUpdateInfo } = self.profile.ohmymn
+    if (detectUpdate[0] == DetectUpdate.None) return
+
+    const thisDay = new Date().getDay()
+    if (detectUpdateInfo.day == thisDay) return
+    else detectUpdateInfo.day = thisDay
+
+    switch (detectUpdate[0]) {
+      case DetectUpdate.EveryDay:
+        this.detect()
+        break
+      case DetectUpdate.EveryDayOnlySigned:
+        this.detect(true)
+        break
+      case DetectUpdate.EveryMonday:
+        if (thisDay == 1) this.detect()
+        break
+      case DetectUpdate.EveryMondayOnlySigned:
+        if (thisDay == 1) this.detect(true)
+        break
+    }
+  }
+}
 const action = {}
 export { config, util, action }

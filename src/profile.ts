@@ -1,18 +1,32 @@
-import { AutoTitlePreset, HasTitleThen } from "addons/anotherautotitle"
+import {
+  PanelHeight,
+  PanelPosition,
+  HasTitleThen,
+  PanelControl,
+  DetectUpdate
+} from "addons/ohmymn"
+import { AutoTitlePreset } from "addons/anotherautotitle"
 import { AutoListPreset } from "addons/autolist"
 import { AutoReplacePreset } from "addons/autoreplace"
 import { AutoStandardizePreset } from "addons/autostandardize"
-import { PanelHeight, PanelPosition, QuickSwitch } from "addons/ohmymn"
+import { AutoStylePreset } from "addons/autostyle"
+import { AutoTagPreset } from "addons/autotag"
+import { QuickSwitch } from "synthesizer"
+import { ReplaceParam } from "utils/input"
 
 const profilePreset = {
   ohmymn: {
     quickSwitch: [] as QuickSwitch[],
-    doubleClick: false,
-    clickHidden: false,
     lockExcerpt: false,
     screenAlwaysOn: false,
+    hasTitleThen: [HasTitleThen.ExpertText],
+    panelControl: [] as PanelControl[],
     panelPosition: [PanelPosition.Auto],
-    panelHeight: [PanelHeight.Standard]
+    panelHeight: [PanelHeight.Standard],
+    detectUpdate: [DetectUpdate.None],
+    detectUpdateInfo: {
+      day: new Date().getDay()
+    }
   },
   gesture: {
     // 单选不允许为空，一般设置一个选项为空
@@ -26,16 +40,17 @@ const profilePreset = {
     muiltBarSwipeLeft: [0]
   },
   autocomplete: {
-    customComplete: `"{{zh}}"`
+    customComplete: "{{zh}}"
   },
   autostandardize: {
-    preset: [] as AutoStandardizePreset[]
+    preset: [] as AutoStandardizePreset[],
+    customStandardize: "",
+    standardizeTitle: false
   },
   anotherautotitle: {
     preset: [] as AutoTitlePreset[],
-    hasTitleThen: [HasTitleThen.ExpertText],
     changeTitleNoLimit: false,
-    wordCount: "[10,5]",
+    wordCount: "[10, 5]",
     customBeTitle: ""
   },
   anotherautodef: {
@@ -43,8 +58,8 @@ const profilePreset = {
     onlyDesc: false,
     toTitleLink: false,
     customSplit: "",
-    customSplitName: "",
-    customDefTitle: ""
+    customDefLink: "",
+    customExtractTitle: ""
   },
   autolist: {
     preset: [] as AutoListPreset[],
@@ -53,6 +68,19 @@ const profilePreset = {
   autoreplace: {
     preset: [] as AutoReplacePreset[],
     customReplace: ""
+  },
+  autotag: {
+    preset: [] as AutoTagPreset[],
+    customTag: ""
+  },
+  autostyle: {
+    preset: [] as AutoStylePreset[],
+    wordCountArea: "[10, 5, 10]",
+    showArea: false,
+    defaultTextExcerptColor: [0],
+    defaultPicExcerptColor: [0],
+    defaultTextExcerptStyle: [0],
+    defaultPicExcerptStyle: [0]
   }
 }
 
@@ -63,21 +91,32 @@ const docProfilePreset = {
   }
 }
 
+// 感觉转换这么复杂，每次使用的时候都需要转换，有点浪费，应该在读配置的时候预先缓存
+// 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
+const profileTempPreset = {
+  replaceParam: {
+    customTag: [{}] as ReplaceParam[] | undefined,
+    customList: [{}] as ReplaceParam[] | undefined,
+    customReplace: [{}] as ReplaceParam[] | undefined,
+    customExtractTitle: [{}] as ReplaceParam[] | undefined,
+    customStandardize: [{}] as ReplaceParam[] | undefined
+  },
+  regArray: {
+    customSplit: [[]] as RegExp[][] | undefined,
+    customBeTitle: [[]] as RegExp[][] | undefined,
+    customDefLink: [[]] as RegExp[][] | undefined
+  }
+}
+
+type IProfileTemp = typeof profileTempPreset
 type IProfile = typeof profilePreset
 type IDocProfile = typeof docProfilePreset
 
-const profile: {
-  [k: string]: { [k: string]: boolean | string | number[] }
-} & IProfile = JSON.parse(JSON.stringify(profilePreset))
-const docProfile: {
-  [k: string]: { [k: string]: boolean | string | number[] }
-} & IDocProfile = JSON.parse(JSON.stringify(docProfilePreset))
-
 export {
-  profile,
   profilePreset,
-  docProfile,
   docProfilePreset,
+  profileTempPreset,
   IProfile,
-  IDocProfile
+  IDocProfile,
+  IProfileTemp
 }

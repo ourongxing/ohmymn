@@ -1,4 +1,5 @@
 import os from "os"
+import path from "path"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
@@ -9,6 +10,7 @@ import { defineConfig } from "rollup"
 import banner from "rollup-plugin-banner"
 import copy from "rollup-plugin-copy"
 import mnaddon from "./mnaddon.json"
+import AutoImport from "unplugin-auto-import/rollup"
 
 // 判断是否为开发环境
 const isProd = process.env.NODE_ENV === "production"
@@ -23,7 +25,26 @@ const dir = isProd
   : os.homedir() +
     `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/${mnaddon.addonid}`
 
+const onwarn = (warning, rollupWarn) => {
+  const ignoredWarnings = [
+    {
+      ignoredCode: "CIRCULAR_DEPENDENCY",
+      ignoredPath: "src/synthesizer.ts"
+    }
+  ]
+  if (
+    !ignoredWarnings.some(
+      ({ ignoredCode, ignoredPath }) =>
+        warning.code === ignoredCode &&
+        warning.importer.includes(path.normalize(ignoredPath))
+    )
+  ) {
+    rollupWarn(warning)
+  }
+}
+
 export default defineConfig({
+  // onwarn,
   input: ["src/main.ts"],
   output: {
     dir,
@@ -36,13 +57,20 @@ export default defineConfig({
   },
   plugins: [
     typescript(),
+    AutoImport({
+      imports: [
+        {
+          "utils/common": ["console"]
+        }
+      ]
+    }),
     nodeResolve({ browser: true }),
     commonjs(),
     json(),
     isProd &&
       strip({
         include: ["**/*.ts"],
-        functions: ["log"]
+        functions: ["console.*"]
       }),
     isProd && minify(),
     isProd && banner(bannerText),

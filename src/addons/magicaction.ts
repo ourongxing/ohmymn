@@ -1,17 +1,58 @@
-import { excerptNotes, getAllText } from "utils/note"
+import { addTags, getAllText } from "utils/note"
 import {
+  escapeDoubleQuote,
   reverseEscape,
   string2RegArray,
   string2ReplaceParam
 } from "utils/input"
-import { HUDController, log, showHUD } from "utils/common"
+import { HUDController, showHUD } from "utils/common"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
+import lang from "lang"
+import { unique } from "utils"
 
-const option = {
-  filterCards: ["仅判断标题", "判断整个卡片内容"],
-  changeFillStyle: ["边框+填充", "填充", "边框"],
-  mergeText: ["合并为摘录", "合并为评论"]
+const { help, option, intro, label, link, hud } = lang.addon.magicaction
+
+const config: IConfig = {
+  name: "MagicAction",
+  intro,
+  link,
+  settings: [],
+  actions: [
+    {
+      key: "manageProfile",
+      type: cellViewType.button,
+      label: label.manage_profile,
+      option: option.manage_profile,
+      help: help.manage_profile
+    },
+    {
+      type: cellViewType.buttonWithInput,
+      label: label.filter_cards,
+      help: help.filter_cards,
+      option: option.filter_cards,
+      key: "filterCards"
+    },
+    {
+      type: cellViewType.button,
+      label: label.merge_cards,
+      key: "mergeCards",
+      option: option.merge_cards
+    },
+    {
+      type: cellViewType.buttonWithInput,
+      label: label.rename_title,
+      key: "renameTitle",
+      help: help.rename_title
+    },
+    {
+      type: cellViewType.buttonWithInput,
+      label: label.merge_text,
+      key: "mergeText",
+      help: help.merge_text,
+      option: option.merge_text
+    }
+  ]
 }
 
 const enum FilterCards {
@@ -19,50 +60,14 @@ const enum FilterCards {
   AllText
 }
 
+const enum MergeCards {
+  MergeTitle,
+  NotMergeTitile
+}
+
 const enum MergeText {
   ToExpertText,
   ToComment
-}
-
-const config: IConfig = {
-  name: "MagicAction",
-  intro: "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
-  link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
-  settings: [],
-  actions: [
-    {
-      type: cellViewType.buttonWithInput,
-      label: "筛选卡片",
-      help: "注意事项及具体输入格式见顶上帮助信息",
-      option: option.filterCards,
-      key: "filterCards"
-    },
-    {
-      type: cellViewType.button,
-      label: "修改摘录样式",
-      key: "changeFillStyle",
-      option: option.changeFillStyle
-    },
-    {
-      type: cellViewType.buttonWithInput,
-      label: "修改摘录颜色",
-      key: "changeColor",
-      help: "输入颜色索引，也就是顺序，1 到 16"
-    },
-    {
-      type: cellViewType.buttonWithInput,
-      label: "合并卡片内文字",
-      key: "mergeText",
-      help: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-      option: option.mergeText
-    },
-    {
-      type: cellViewType.buttonWithInput,
-      label: "批量重命名标题",
-      key: "renameTitle",
-      help: "注意事项及具体输入格式见顶上帮助信息"
-    }
-  ]
 }
 
 const util = {
@@ -83,93 +88,64 @@ const util = {
     }
     return numArr
   },
-  getSerialInfo(newSubStr: string, length: number): string[] {
-    const seriaInfo = newSubStr
-      .match(/%\[(.*)\]/)![0]
-      .slice(1)
-      .replace(/'/g, '"')
-    // 将序列信息转成数组
-    const seriaInfo_arr = <any[]>reverseEscape(seriaInfo)
-
-    // 自定义替换字符，数组元素大于 2
-    if (seriaInfo_arr.length > 2)
-      return seriaInfo_arr.map((item: string) =>
-        newSubStr.replace(/%\[(.*)\]/, item)
-      )
-    else {
-      if (seriaInfo_arr[1] && typeof seriaInfo_arr[1] !== "number") throw ""
-      let step: number = 1
-      if (seriaInfo_arr[1]) step = seriaInfo_arr[1]
-      // 序列只有两种情况，字母，和数字。
-      const inival = seriaInfo_arr[0]
-
+  getSerialInfo(newSubStr: string, length: number) {
+    const serialArr = reverseEscape(
+      newSubStr
+        .match(/%\[(.*)\]/g)![0]
+        .slice(1)
+        .replace(/'/g, '"')
+    ) as [string, string, ...string[]] | [string, number] | [string]
+    const len = serialArr.length
+    if (len == 0 || typeof serialArr[0] !== "string") throw ""
+    else if (len == 1 || (len == 2 && typeof serialArr[1] == "number")) {
+      const step = len == 1 ? 1 : (serialArr[1] as number)
+      const first = serialArr[0]
       // 字母有大写和小写
-      if (/^[A-Za-z]$/.test(inival)) {
-        const serias = this.genCharArray(inival, length, step)
-        return serias.map((item: string) =>
-          newSubStr.replace(/%\[(.*)\]/, item)
-        )
-      }
-      // 数字要补零
-      else if (!isNaN(Number(inival))) {
-        const serias = this.genNumArr(
-          Number(inival),
-          length,
-          step,
-          inival.length
-        )
-        return serias.map((item: string) =>
-          newSubStr.replace(/%\[(.*)\]/, item)
-        )
+      if (/^[A-Za-z]$/.test(first)) {
+        const serial = this.genCharArray(first, length, step)
+        return serial.map(k => newSubStr.replace(/%\[(.*)\]/, k))
+      } // 数字要补零
+      else if (!isNaN(Number(first))) {
+        const serial = this.genNumArr(Number(first), length, step, first.length)
+        return serial.map(k => newSubStr.replace(/%\[(.*)\]/, k))
       } else throw ""
-    }
+    } // 自定义替换字符，数组元素长度大于 1，如果长度为 2，则第二个为字符串
+    else if (len > 1 && serialArr.every(k => typeof k == "string"))
+      return (serialArr as string[]).map(k => newSubStr.replace(/%\[(.*)\]/, k))
+    else throw ""
   }
 }
 
 const action: IActionMethod = {
   renameTitle({ content, nodes }) {
-    // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
-    // 如果单个选中，则为选中的顺序
-    content = /^\(.*\)$/.test(content) ? content : `(/^.*$/g, "${content}")`
-    const params = string2ReplaceParam(content)
-    if (params.length > 1) return
-    let newReplace: string[] = []
+    content = /^\(.*\)$/.test(content)
+      ? content
+      : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
+    const { newSubStr, regexp } = string2ReplaceParam(content)[0]
     // 如果含有序列信息，就把获取新的 replace 参数
-    if (/%\[(.*)\]/.test(params[0].newSubStr)) {
-      newReplace = util.getSerialInfo(params[0].newSubStr, nodes.length)
+    if (/%\[(.*)\]/.test(newSubStr)) {
+      const newTitles = util.getSerialInfo(newSubStr, nodes.length)
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
-        if (newReplace[index])
-          note.noteTitle = title.replace(params[0].regexp, newReplace[index])
+        if (newTitles[index])
+          note.noteTitle = title.replace(regexp, newTitles[index])
       })
     }
     // 或者直接替换
     else {
-      nodes.forEach((note, index) => {
+      nodes.forEach(note => {
         const title = note.noteTitle ?? ""
-        note.noteTitle = title.replace(params[0].regexp, params[0].newSubStr)
-      })
-    }
-  },
-  changeFillStyle({ option, nodes }) {
-    for (const node of nodes) {
-      excerptNotes(node).forEach(note => {
-        note.fillIndex = option
-      })
-    }
-  },
-  changeColor({ content, nodes }) {
-    if (!content) return
-    const index = Number(content)
-    for (const node of nodes) {
-      excerptNotes(node).forEach(note => {
-        note.colorIndex = index - 1
+        note.noteTitle = title.replace(regexp, newSubStr)
       })
     }
   },
   mergeText({ option, nodes, content }) {
     for (const node of nodes) {
-      const allText = getAllText(node, reverseEscape(`"${content}"`))
+      const allText = getAllText(
+        node,
+        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`),
+        true
+      )
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []
       while (node.comments.length) {
@@ -181,7 +157,7 @@ const action: IActionMethod = {
           linkComments.push(comment)
         node.removeCommentByIndex(0)
       }
-      switch (<MergeText>option) {
+      switch (option) {
         case MergeText.ToExpertText:
           node.excerptText = allText
           break
@@ -196,20 +172,43 @@ const action: IActionMethod = {
   },
   filterCards({ nodes, content, option }) {
     if (!content) return
-    // 0 判断标题 1 判断整个内容
-    const regs = string2RegArray(content)
+    const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
-      const content = `${title}\n${getAllText(node, "\n", false)}`
-      return regs.every(reg => reg.test(option ? content : title))
+      const content = `${title}\n${getAllText(node, "\n")}`
+      return regGroup.some(regs =>
+        regs.every(reg =>
+          reg.test(option == FilterCards.AllText ? content : title)
+        )
+      )
     })
     if (customSelectedNodes.length) {
-      HUDController.show("您需要的卡片已选中，请继续操作")
+      HUDController.show(hud.is_clicked)
       return customSelectedNodes
     } else {
-      showHUD("未找到符合的卡片")
+      showHUD(hud.none_card)
       return []
     }
+  },
+  mergeCards({ option, nodes }) {
+    if (nodes.length == 1) return
+    const node = nodes[0]
+    const titles = node.noteTitle ? [node.noteTitle] : []
+    for (let i = 1; i < nodes.length; i++) {
+      const title = nodes[i].noteTitle
+      if (title) titles.push(title)
+      node.merge(nodes[i])
+    }
+    const len = node.comments.length
+    // 从后往前删，索引不会乱
+    node.comments.reverse().forEach((comment, index) => {
+      if (comment.type == "TextNote" && titles.includes(comment.text))
+        node.removeCommentByIndex(len - index - 1)
+    })
+    if (option == MergeCards.MergeTitle)
+      node.noteTitle = unique(titles).join("; ")
+    // 合并标签
+    addTags(node, [], true)
   }
 }
 

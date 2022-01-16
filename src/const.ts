@@ -1,33 +1,24 @@
-import {
-  StudyController,
-  NotebookController,
-  MbModelTool
-} from "types/MarginNote"
-import { UIWindow, UITableViewController } from "types/UIKit"
+import { osType, studyMode } from "types/MarginNote"
 import mnaddon from "../mnaddon.json"
 
-// 尽量不要在 self 加属性，没法检查，也没有提示，
-// 但是如果把 self 相关的属性放到这上面，会导致多窗口互相影响，目前不清楚原因，暂时放弃多窗口支持
 class MNCore {
-  self!: any
-  studyController!: StudyController
-  window!: UIWindow
-  settingViewController!: UITableViewController
-  notebookController!: NotebookController
   textColor!: UIColor
   mainPath!: string
-  notebookId!: string
-  app!: Application
-  database!: MbModelTool
+  studyController = () =>
+    Application.sharedInstance().studyController(self.window)
+  isMac = Application.sharedInstance().osType == osType.macOS
+  app = Application.sharedInstance()
+  db = Database.sharedInstance()
 }
 
 export const Addon = {
-  key: mnaddon.addonid.split(".")[2],
+  signed: false,
   title: mnaddon.title,
   author: mnaddon.author,
-  version: mnaddon.version
+  version: mnaddon.version,
+  key: mnaddon.addonid.split(".")[2],
+  profileKey: "marginnote_ohmymn_profile_global_v300",
+  docProfileKey: "marginnote_ohmymn_profile_doc_v300"
 }
 
 export const MN = new MNCore()
-MN.app = Application.sharedInstance()
-MN.database = Database.sharedInstance()

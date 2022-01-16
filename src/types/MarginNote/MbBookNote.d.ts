@@ -9,11 +9,22 @@ interface excerptPic extends pic {
   selLst: {
     [key: number]: {
       rotation: number
-      imgRect: unknown
-      rect: unknown
+      /**
+       * CGRectValue，但是读不出来，不过可以用 end pos 和 start pos 来获取位置和大小
+       */
+      imgRect: NSValue
+      /**
+       * CGRectValue
+       */
+      rect: NSValue
       pageNo: number
     }
   }
+}
+
+export const enum groupMode {
+  Tree,
+  Frame
 }
 
 export type noteComment = textComment | htmlComment | linkComment | paintComment
@@ -113,7 +124,7 @@ export class MbBookNote {
   readonly annotation?: boolean
   readonly textFirst?: boolean
   /** int */
-  readonly groupMode?: number
+  readonly groupMode?: groupMode
   /** int */
   readonly flashcard?: number
   /** int */

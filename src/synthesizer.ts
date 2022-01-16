@@ -5,24 +5,68 @@ import * as autoreplace from "addons/autoreplace"
 import * as autostandardize from "addons/autostandardize"
 import * as magicaction from "addons/magicaction"
 import * as anotherautodef from "addons/anotherautodef"
+import * as autotag from "addons/autotag"
+import * as autostyle from "addons/autostyle"
 import * as ohmymn from "addons/ohmymn"
 import * as gesture from "addons/gesture"
-import { cellViewType, IConfig, IRow, ISection, ISetting } from "types/Addon"
+import { cellViewType, IConfig, IRow, ISection } from "types/Addon"
+import lang from "lang"
+import { SerialNumber } from "utils/text"
 
-// 不要包含 magication，顺序为显示的顺序，magiction 始终为第1个
+// magicaction, ohmymn 默认前两个，不用包含在内
 const addons = [
-  ohmymn,
   gesture,
   anotherautotitle,
   anotherautodef,
   autostandardize,
   autocomplete,
   autoreplace,
-  autolist
+  autolist,
+  autotag,
+  autostyle
 ]
 
+// 插件总开关，与上面顺序一致，新插件只能加在最后，因为配置文件只记录索引
+export const enum QuickSwitch {
+  gesture,
+  anotherautotitle,
+  anotherautodef,
+  autostandardize,
+  autocomplete,
+  autoreplace,
+  autolist,
+  autotag,
+  autostyle
+}
+
+const more: ISection = {
+  header: "More",
+  rows: [
+    {
+      type: cellViewType.plainText,
+      label: lang.addon.more.donate,
+      link: "https://cdn.jsdelivr.net/gh/mnaddon/ohmymn/assets/donate.gif"
+    },
+    {
+      type: cellViewType.plainText,
+      label: lang.addon.more.github,
+      link: "https://github.com/mnaddon/ohmymn"
+    },
+    {
+      type: cellViewType.plainText,
+      label: lang.addon.more.feishu,
+      link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b48nfc45-22ff-4a3f-a1e3-f0f84c50db53"
+    },
+    {
+      type: cellViewType.plainText,
+      label: "\n\n\n\n\n",
+      link: ""
+    }
+  ]
+}
+
 const genSection = (config: IConfig): ISection => {
-  const rows: Array<IRow> = [
+  const rows: IRow[] = [
     {
       type: cellViewType.plainText,
       label: config.intro,
@@ -34,8 +78,11 @@ const genSection = (config: IConfig): ISection => {
     rows.push(setting)
     if (
       setting.help &&
-      setting.type != cellViewType.buttonWithInput &&
-      setting.type != cellViewType.button
+      [
+        cellViewType.select,
+        cellViewType.muiltSelect,
+        cellViewType.switch
+      ].includes(setting.type)
     )
       rows.push({
         type: cellViewType.plainText,
@@ -46,8 +93,17 @@ const genSection = (config: IConfig): ISection => {
       rows.push({
         type: cellViewType.plainText,
         label: "↑ " + setting.label,
-        link: setting.link ?? ""
+        link: setting.link ?? "",
+        bind: setting.bind
       })
+    else if (setting.help && setting.type == cellViewType.inlineInput) {
+      rows.push({
+        type: cellViewType.plainText,
+        label: "↑ " + setting.help,
+        link: setting.link ?? "",
+        bind: setting.bind
+      })
+    }
   }
   return {
     header: config.name,
@@ -55,53 +111,83 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
+export const actionKey: { key: string; option?: number }[] = [
+  { key: "none" },
+  { key: "open_panel" }
+]
+
+export const addonList: string[] = []
+
 export const genDataSource = (
-  configs: Array<IConfig>,
+  configs: IConfig[],
   magicaction: IConfig
-): Array<ISection> => {
-  const dataSource: Array<ISection> = []
+): ISection[] => {
+  const dataSource: ISection[] = []
   for (let config of configs) {
     dataSource.push(genSection(config))
     if (config.actions.length) {
       for (let action of config.actions) magicaction.actions.push(action)
     }
-    magicaction.settings = magicaction.actions.sort(
-      (a: ISetting, b: ISetting) => a.label.length - b.label.length
-    )
+    magicaction.settings = magicaction.actions
   }
   dataSource.unshift(genSection(magicaction))
-  const about: ISection = {
-    header: "More",
-    rows: [
-      {
-        type: cellViewType.plainText,
-        label: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击\n即可直达二维码。",
-        link: "https://cdn.jsdelivr.net/gh/ourongxing/ohmymn/assets/donate.gif"
-      },
-      {
-        type: cellViewType.plainText,
-        label:
-          "ohmymn 完全开源，容易扩展，欢迎参与开发。\n点击直达 Github 查看源码，欢迎 star 和 fork。",
-        link: "https://github.com/ourongxing/ohmymn"
-      },
-      {
-        type: cellViewType.plainText,
-        label:
-          "欢迎加入飞书话题群，一起交流 ohmymn 使用\n技巧，我会不定期为大家解决疑问。",
-        link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f82q9d4d-fbe2-4487-95ec-86b4a5374750"
-      },
-      {
-        type: cellViewType.plainText,
-        label: "\n\n\n\n\n",
-        link: ""
-      }
-    ]
+  dataSource.forEach((sec, index) => {
+    if (index > 1) addonList.push(sec.header)
+  })
+
+  // 更新 quickSwitch 为 addonList
+  for (const row of dataSource[1].rows) {
+    if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
+      row.option = addonList.map(
+        (value, index) => SerialNumber.hollow_circle_number[index] + " " + value
+      )
   }
-  dataSource.push(about)
+
+  // 同步 gesture 的 option 为 magicaction 列表
+  const gestureOption = [lang.implement_datasource_method.open_panel]
+  for (const row of dataSource[0].rows) {
+    if (row.type == cellViewType.plainText) continue
+    gestureOption.push(row.label)
+    actionKey.push({
+      key: row.key
+    })
+    if (
+      (row.type == cellViewType.button && row.option?.length) ||
+      (row.type == cellViewType.buttonWithInput &&
+        row.option?.length &&
+        row.key == "mergeText")
+    ) {
+      row.option.forEach((option, index) => {
+        gestureOption.push("——" + option)
+        actionKey.push({
+          key: row.key,
+          option: index
+        })
+      })
+    } else if (
+      row.type == cellViewType.buttonWithInput &&
+      row.option?.length &&
+      row.option[0].includes("Auto")
+    ) {
+      gestureOption.push("——" + row.option[0])
+      actionKey.push({
+        key: row.key,
+        option: 0
+      })
+    }
+  }
+
+  dataSource[2].rows = dataSource[2].rows.map(row => {
+    if (row.type == cellViewType.select)
+      row.option = [lang.implement_datasource_method.none, ...gestureOption]
+    return row
+  })
+
+  dataSource.push(more)
   return dataSource
 }
 
-const genDataSourceIndex = (dataSource: Array<ISection>) => {
+const genDataSourceIndex = (dataSource: ISection[]) => {
   const dataSourceIndex: {
     [k: string]: {
       [k: string]: [number, number]
@@ -118,17 +204,15 @@ const genDataSourceIndex = (dataSource: Array<ISection>) => {
   return dataSourceIndex
 }
 
-const genActionsUtils = () => {
+const mergeActions = () => {
   const actions = { ...magicaction.action }
-  for (const addon of addons) {
-    Object.assign(actions, addon.action)
-  }
+  addons.forEach(addon => Object.assign(actions, addon.action))
   return actions
 }
 
-export const actions = genActionsUtils()
-export const dataSource = genDataSource(
-  addons.map(addon => addon.config),
+export const actions = mergeActions()
+export const dataSourcePreset = genDataSource(
+  [ohmymn, ...addons].map(addon => addon.config),
   magicaction.config
 )
-export const dataSourceIndex = genDataSourceIndex(dataSource)
+export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

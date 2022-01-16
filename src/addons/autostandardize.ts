@@ -1,19 +1,103 @@
 import { excerptNotes } from "utils/note"
 import pangu from "utils/pangu"
 import { toTitleCase } from "utils/toTitleCase"
-import { isHalfWidth } from "utils/text"
-import { profile } from "profile"
+import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
-const option = {
-  preset: ["半角转全角", "中英文加空格", "去除重复空格", "英文标题规范化"],
-  standardizeSelected: ["都优化", "仅优化标题", "仅优化摘录"]
+import lang from "lang"
+
+const { help, intro, option, label, link } = lang.addon.autostandardize
+
+const config: IConfig = {
+  name: "AutoStandardize",
+  intro,
+  link,
+  settings: [
+    {
+      key: "preset",
+      type: cellViewType.muiltSelect,
+      option: option.preset,
+      label: label.preset
+    },
+    {
+      key: "customStandardize",
+      type: cellViewType.input,
+      label: label.custom_standardize,
+      bind: ["preset", 0],
+      link
+    },
+    {
+      key: "standardizeTitle",
+      type: cellViewType.switch,
+      label: label.standardize_title,
+      help: help.standardize_title,
+      link
+    }
+  ],
+  actions: [
+    {
+      key: "standardizeSelected",
+      type: cellViewType.button,
+      label: label.standardize_selected,
+      option: option.standardize_selected
+    }
+  ]
 }
 
 export const enum AutoStandardizePreset {
+  Custom,
+  RemoveAllSpace,
   HalfToFull,
   AddSpace,
-  RemoveExtraSpace,
-  StandardizeTitle
+  RemoveCHSpace,
+  RemoveRepeatSpace
+}
+
+const util = {
+  toTitleCase(text: string) {
+    const { standardizeTitle } = self.profile.autostandardize
+    if (!standardizeTitle) return text
+    return text
+      .split(/\s*[；;]\s*/)
+      .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
+      .join("; ")
+  },
+  standardizeText(text: string): string {
+    if (isHalfWidth(text)) return text
+    const { preset } = self.profile.autostandardize
+    text = text
+      .replace(/\*\*([\b-']*?)\*\*/g, "placeholder$1placeholder")
+      .replace(/\*\*/g, "占位符")
+    for (const set of preset) {
+      switch (set) {
+        case AutoStandardizePreset.Custom:
+          const { customStandardize: params } = self.profileTemp.replaceParam
+          if (!params) continue
+          params.forEach(param => {
+            text = text.replace(param.regexp, param.newSubStr)
+          })
+          break
+        case AutoStandardizePreset.RemoveAllSpace:
+          text = text.replace(/\x20/g, "")
+          break
+        case AutoStandardizePreset.HalfToFull:
+          text = pangu.toFullwidth(text)
+          break
+        case AutoStandardizePreset.AddSpace:
+          text = pangu.spacing(text)
+          break
+        case AutoStandardizePreset.RemoveCHSpace:
+          text = text.replace(
+            new RegExp(`([${CJK}])\x20+([${CJK}])`, "g"),
+            "$1$2"
+          )
+          break
+        case AutoStandardizePreset.RemoveRepeatSpace:
+          text = text.replace(/\x20{2,}/g, "\x20")
+          break
+      }
+    }
+    return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
+  }
 }
 
 const enum StandardizeSelected {
@@ -22,77 +106,23 @@ const enum StandardizeSelected {
   OnlyExcerptText
 }
 
-const config: IConfig = {
-  name: "AutoStandardize",
-  intro: "优化摘录和标题的排版与格式\nPowerd by Pangu.js",
-  settings: [
-    {
-      key: "preset",
-      type: cellViewType.muiltSelect,
-      option: option.preset,
-      label: "选择需要的预设"
-    }
-  ],
-  actions: [
-    {
-      key: "standardizeSelected",
-      type: cellViewType.button,
-      label: "优化排版和格式",
-      option: option.standardizeSelected
-    }
-  ]
-}
-
-const util = {
-  toTitleCase(text: string) {
-    if (
-      !profile.autostandardize.preset.includes(
-        AutoStandardizePreset.StandardizeTitle
-      )
-    )
-      return text
-    return text
-      .split(/\s*[；;]\s*/)
-      .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
-      .join("; ")
-  },
-  standardizeText(text: string): string {
-    if (isHalfWidth(text)) return text
-    const preset = profile.autostandardize.preset
-    text = text
-      .replace(/\*\*([\b-']*?)\*\*/g, "placeholder$1placeholder")
-      .replace(/\*\*/g, "占位符")
-    for (const set of preset) {
-      switch (set) {
-        case AutoStandardizePreset.HalfToFull:
-          text = pangu.toFullwidth(text)
-          break
-        case AutoStandardizePreset.AddSpace:
-          text = pangu.spacing(text)
-        case AutoStandardizePreset.RemoveExtraSpace:
-          text = text.replace(/\x20{2,}/g, "\x20").replace(/\x20*\n\x20/, "\n")
-          break
-      }
-    }
-    return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
-  }
-}
-
 const action: IActionMethod = {
   standardizeSelected({ nodes, option }) {
-    for (const node of nodes) {
+    nodes.forEach(node => {
       const title = node.noteTitle
-      if (title && option != StandardizeSelected.OnlyExcerptText) {
-        const newTitle = util.standardizeText(title)
-        node.noteTitle = util.toTitleCase(newTitle)
-        if (option == StandardizeSelected.OnlyTitle) continue
+      if (option != StandardizeSelected.OnlyExcerptText && title) {
+        let newTitle = util.standardizeText(title)
+        if (self.profile.autostandardize.standardizeTitle)
+          newTitle = util.toTitleCase(newTitle)
+        node.noteTitle = newTitle
       }
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        const text = note.excerptText
-        if (text) note.excerptText = util.standardizeText(text)
+      if (option != StandardizeSelected.OnlyTitle) {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text) note.excerptText = util.standardizeText(text)
+        })
       }
-    }
+    })
   }
 }
 
