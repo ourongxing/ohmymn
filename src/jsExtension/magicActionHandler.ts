@@ -90,6 +90,7 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
       nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][option!]
     }
   }
+  if (content) content = content.trim()
   switch (key) {
     case "filterCards":
       customSelectedNodes = actions[key]({

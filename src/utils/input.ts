@@ -7,7 +7,7 @@ const isNumber = (text: string) => !isNaN(Number(text))
 
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
-  const brackets = str.trim().split(/\s*;\s*(?=\()/)
+  const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
   for (let bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
@@ -47,11 +47,13 @@ const string2RegArray = (str: string): RegExp[][] => {
     return [
       [
         string2Reg(
-          /^\/(.*?)\/([gimsuy]*)$/.test(str) ? str : escapeStringRegexp(str)
+          /^\/(.*?)\/([gimsuy]*)$/.test(str)
+            ? str
+            : `/${escapeStringRegexp(str)}/g`
         )
       ]
     ]
-  const brackets = str.trim().split(/\s*;\s*(?=\[)/)
+  const brackets = str.split(/\s*;\s*(?=\[)/)
   return brackets.map(bracket =>
     bracket
       .slice(1, -1)

@@ -92,8 +92,8 @@ const util = {
             params
               .filter(param => param.regexp.test(text))
               .map(param => {
-                // fnKey 取最后一个满足条件的 key
-                fnKey = param.fnKey
+                // 有 1 则为1
+                if (fnKey == 0) fnKey = param.fnKey
                 param.regexp = addFlags(param.regexp, "g")
                 return text
                   .match(param.regexp)!
