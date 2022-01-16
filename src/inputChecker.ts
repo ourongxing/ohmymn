@@ -67,8 +67,6 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         if (/%\[.*\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
         break
       }
-      case "tagSelected":
-        str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
       case "customTag":
       case "customList":
       case "customReplace":
@@ -80,6 +78,8 @@ const checkInputCorrect = (str: string, key: string): boolean => {
           "test".replace(param.regexp, param.newSubStr)
         })
       }
+      case "tagSelected":
+        str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
       default:
         string2ReplaceParam(str).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)

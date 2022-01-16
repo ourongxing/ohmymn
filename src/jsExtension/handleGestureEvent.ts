@@ -59,6 +59,35 @@ const enum swipePositon {
   MuiltBar
 }
 
+const isWithinArea = (
+  pos: {
+    swipeX?: number
+    swipeY?: number
+  },
+  area: {
+    x?: number
+    y?: number
+    height?: number
+    width?: number
+  }
+) => {
+  const { swipeX, swipeY } = pos
+  const { x, y, width, height } = area
+  const xx =
+    x === undefined ||
+    width === undefined ||
+    swipeX === undefined ||
+    (swipeX > x && swipeX < x + width)
+
+  const yy =
+    y === undefined ||
+    height === undefined ||
+    swipeY === undefined ||
+    (swipeY > y && swipeY < y + height)
+
+  return xx && yy
+}
+
 const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   const studyController = MN.studyController()
   const { mindmapView } = studyController.notebookController
@@ -76,6 +105,11 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   // 屏蔽一些会误触的 UI
   if (swipeY < 60 || swipeX < 70 || swipeX > width - 70)
     return swipePositon.None
+  if (
+    self.panelStatus &&
+    isWithinArea({ swipeX, swipeY }, self.settingViewController.view.frame)
+  )
+    return swipePositon.None
 
   /**
    * 多选工具栏
@@ -90,13 +124,15 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
    * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
    */
   const barWidth = width > 510 ? 500 : width - 50
-  const isSwipeOnMuiltBar =
-    swipeY < height - 80 &&
-    swipeY > height - 130 &&
-    swipeX > (width - barWidth) / 2 &&
-    swipeX < (width - barWidth) / 2 + barWidth
+  const muiltBarArea = {
+    x: (width - barWidth) / 2,
+    y: height - 130,
+    height: 50,
+    width: barWidth
+  }
 
-  if (selViewLst.length > 1 && isSwipeOnMuiltBar) return swipePositon.MuiltBar
+  if (selViewLst.length > 1 && isWithinArea({ swipeX, swipeY }, muiltBarArea))
+    return swipePositon.MuiltBar
 
   if (selViewLst.length == 1) {
     const { width: readerViewWidth } =
@@ -111,7 +147,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
       return swipePositon.None
 
     // 选中一张卡片，如果手动打开多选工具栏
-    if (isSwipeOnMuiltBar) return swipePositon.MuiltBar
+    if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
+      return swipePositon.MuiltBar
 
     const view = selViewLst![0].view
     const { y: cardY, height: cardHeight } =
@@ -128,19 +165,30 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
     if (
       mode === groupMode.Tree &&
       // y > 60，单选工具栏在卡片上方
-      ((cardY > 60 && swipeY > cardY - 20 - 30 && swipeY < cardY - 20) ||
+      ((cardY > 60 &&
+        isWithinArea({ swipeY }, { y: cardY - 20 - 30, height: 30 })) ||
         // y < 60 单选工具栏在卡片下方
         (cardY < 60 &&
-          swipeY < cardY + cardHeight + 20 + 30 &&
-          swipeY > cardY + cardHeight + 20))
+          isWithinArea(
+            { swipeY },
+            {
+              y: cardY + cardHeight + 20,
+              height: 30
+            }
+          )))
     )
       return swipePositon.SingleBar
 
     // 框架形式的单选工具栏在卡片中间和上方
     if (
       mode === groupMode.Frame &&
-      swipeY > cardY - 20 - 30 &&
-      swipeY < cardY + cardHeight
+      isWithinArea(
+        { swipeY },
+        {
+          y: cardY - 20 - 30,
+          height: cardHeight + 20 + 30
+        }
+      )
     )
       return swipePositon.SingleBar
   }

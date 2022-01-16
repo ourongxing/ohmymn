@@ -141,7 +141,8 @@ const decorateExecrpt = () => {
   const { color, style } = res
   if (color === undefined && style == undefined) return
   undoGroupingWithRefresh(() => {
-    if (color !== undefined) note.colorIndex = color
+    // 貌似默认的白色是 -1
+    if (color !== undefined) note.colorIndex = color !== -1 ? color : 12
     if (style !== undefined) note.fillIndex = style
   })
 }
