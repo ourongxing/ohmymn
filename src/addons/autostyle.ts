@@ -177,7 +177,7 @@ const action: IActionMethod = {
       for (const node of nodes) {
         excerptNotes(node).forEach(note => {
           const { color } = util.getColorStyle(note)
-          if (color !== undefined) note.colorIndex = color
+          if (color !== undefined) note.colorIndex = color !== -1 ? color : 12
         })
       }
     } else if (content) {
