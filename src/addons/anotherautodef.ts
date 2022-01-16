@@ -3,6 +3,7 @@ import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { unique } from "utils"
+import { extractArray } from "utils/custom"
 
 const { label, option, intro, link } = lang.addon.anotherautodef
 const enum AutoDefPreset {
@@ -83,24 +84,30 @@ const util = {
     const { preset, onlyDesc, toTitleLink } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
-        case AutoDefPreset.CustomExtract:
+        case AutoDefPreset.CustomExtract: {
           const { customExtractTitle: params } = self.profileTemp.replaceParam
           if (!params) continue
-          for (const param of params) {
-            param.regexp = addFlags(param.regexp, "g")
-            if (param.regexp.test(text)) {
-              const title = unique(
-                text
+          let fnKey = 0
+          const allTitles = unique(
+            params
+              .filter(param => param.regexp.test(text))
+              .map(param => {
+                // fnKey 取最后一个满足条件的 key
+                fnKey = param.fnKey
+                param.regexp = addFlags(param.regexp, "g")
+                return text
                   .match(param.regexp)!
                   .map(item => item.replace(param.regexp, param.newSubStr))
-              ).join("; ")
-              return {
-                title,
-                text: [text, ""][param.fnKey]
-              }
+              })
+              .flat()
+          )
+          if (allTitles.length)
+            return {
+              title: allTitles.join("; "),
+              text: fnKey ? "" : text
             }
-          }
           break
+        }
         case AutoDefPreset.CustomSplit:
           const { customDefLink } = self.profileTemp.regArray
           if (!customDefLink) continue
@@ -146,29 +153,26 @@ const util = {
       }
   }
 }
+const enum ExtractTitle {
+  UseAutoDef
+}
 const action: IActionMethod = {
   extractTitle({ nodes, content, option }) {
-    if (option !== 0 && !content) return
-    const params = option === 0 ? [] : string2ReplaceParam(content)
-    for (const node of nodes) {
-      const text = getAllText(node)
-      if (!text) continue
-      if (option === 0) {
-        const result = util.getDefTitle(text)
-        if (result) node.noteTitle = result.title
-      } else
-        for (const param of params) {
-          param.regexp = addFlags(param.regexp, "g")
-          if (param.regexp.test(text)) {
-            const newTitle = unique(
-              text
-                .match(param.regexp)!
-                .map(item => item.replace(param.regexp, param.newSubStr))
-            ).join("; ")
-            if (newTitle) node.noteTitle = newTitle
-            continue
-          }
+    if (option == ExtractTitle.UseAutoDef) {
+      nodes.forEach(node => {
+        const text = getAllText(node)
+        if (text) {
+          const result = util.getDefTitle(text)
+          if (result) node.noteTitle = result.title
         }
+      })
+    } else if (content) {
+      const params = string2ReplaceParam(content)
+      nodes.forEach(node => {
+        const text = getAllText(node)
+        const allTitles = extractArray(text, params)
+        if (allTitles.length) node.noteTitle = allTitles.join("; ")
+      })
     }
   }
 }
