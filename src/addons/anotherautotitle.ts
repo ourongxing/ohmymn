@@ -67,10 +67,11 @@ const util = {
       changeTitleNoLimit &&
       note.noteTitle &&
       this.isBroadened(note.noteTitle, text)
-    )
+    ) {
       return {
         title: text
       }
+    }
 
     for (const set of preset) {
       switch (set) {
@@ -82,7 +83,7 @@ const util = {
               title: text
             }
           break
-        case AutoTitlePreset.NoPunctuation:
+        case AutoTitlePreset.WordLimit:
           if (!wordCount) continue
           const [zh, en] = reverseEscape(wordCount) as number[]
           if (countWord(text) <= (isHalfWidth(text) ? en : zh))
@@ -90,7 +91,7 @@ const util = {
               title: text
             }
           break
-        case AutoTitlePreset.WordLimit:
+        case AutoTitlePreset.NoPunctuation:
           const reg = /[。.、？?！!，,；;：:]/
           if (!reg.test(text))
             return {
