@@ -17,11 +17,13 @@ const dict = {
         click_hidden: "Auto Close Panel",
         screen_always_on: "Keep Screen Always On",
         lock_excerpt: "Lock Excerpt Text",
-        auto_correct: "Auto Correct Excerpt Text Online"   
+        auto_correct: "Auto Correct Excerpt Text Online"
       },
       help: {
-        profile: "[Current Document Takes Effect] Can be used in different scenarios",
-        auto_correct: "[Current Document Takes Effect] After opening, it will be processed after auto-correction"
+        profile:
+          "[Current Document Takes Effect] Can be used in different scenarios",
+        auto_correct:
+          "[Current Document Takes Effect] After opening, it will be processed after auto-correction"
       }
     },
     gesture: {
@@ -36,10 +38,13 @@ const dict = {
       label: {
         only_desc: "Excerpts only keep definiens",
         to_title_link: "Convert alias to title link",
-        custom_split_name: "Customize alias participle, click to view specific format",
+        custom_split_name:
+          "Customize alias participle, click to view specific format",
         preset: "Choose the desired preset",
-        custom_split: "Customize connective of definition, click to view the specific format",
-        custom_def_title: "Customize extract content, click to view specific format",
+        custom_split:
+          "Customize connective of definition, click to view the specific format",
+        custom_def_title:
+          "Customize extract content, click to view specific format",
         extraTitle: "Extract title from card"
       },
       option: {
@@ -48,15 +53,15 @@ const dict = {
           "Custom Connective of Definition",
           "xxx : yyy",
           "xxx —— yyy",
-          "xxx ，是(指) yyy",  //Todo:由开发者定
-          "xxx 是(指)，yyy",  //Todo:由开发者定
-          "xxx 是指 yyy"  //Todo:由开发者定
+          "xxx ，是(指) yyy", //Todo:由开发者定
+          "xxx 是(指)，yyy", //Todo:由开发者定
+          "xxx 是指 yyy" //Todo:由开发者定
         ]
       }
     },
     magicaction: {
       intro:
-        "Please note that the following functions are used after selecting the card.\n Click to view specific usage and precautions", 
+        "Please note that the following functions are used after selecting the card.\n Click to view specific usage and precautions",
       link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734", //Todo:修改英文版Notion
       option: {
         filter_cards: ["Detect Only Title", "Detect Entire Card"],
@@ -65,10 +70,13 @@ const dict = {
         merge_cards: ["Merge Title Simultaneously", "Do not Merge Titles"]
       },
       help: {
-        filter_cards: "Please see the help document for more precautions and specific input format",
+        filter_cards:
+          "Please see the help document for more precautions and specific input format",
         change_color: "input color index (1~16)",
-        merge_text: "input delimiter. Please read the reference guide at the top for precautions and specific input formats.",
-        rename_title: "Reference guide for precuations and specific input formats is at the top."
+        merge_text:
+          "input delimiter. Please read the reference guide at the top for precautions and specific input formats.",
+        rename_title:
+          "Reference guide for precuations and specific input formats is at the top."
       },
       label: {
         filter_cards: "Filter Card",
@@ -84,15 +92,20 @@ const dict = {
       }
     },
     autostandardize: {
-      intro: "Optimize the typography and formatting of excerpts & titles\nPowerd by Pangu.js",
+      intro:
+        "Optimize the typography and formatting of excerpts & titles\nPowerd by Pangu.js",
       option: {
         preset: [
           "Half angle to double angle",
-          "Add Space",  // Todo: 是否需要修改
+          "Add Space", // Todo: 是否需要修改
           "remove multiple spaces",
-          "Title Normalization"  //Todo:我认为 Title Normalization 更好
+          "Title Normalization" //Todo:我认为 Title Normalization 更好
         ],
-        standardize_selected: ["Optimize All", "Only Optimize Title", "Only Optimize Excerption"]
+        standardize_selected: [
+          "Optimize All",
+          "Only Optimize Title",
+          "Only Optimize Excerption"
+        ]
       },
       label: {
         standardize_selected: "Optimize typography and formatting",
@@ -107,7 +120,8 @@ const dict = {
         replace_selected: ["Use AutoReplace Configuration", "Confirm"]
       },
       help: {
-        replace_selected: "For the specific input format, see the reference guide at the top"
+        replace_selected:
+          "For the specific input format, see the reference guide at the top"
       },
       label: {
         preset: "Select Presets",
@@ -119,11 +133,18 @@ const dict = {
       intro: "For sequence text, automatic line wrapping", //Todo: 需要修改
       link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882", //Todo:修改英文版Notion
       option: {
-        preset: ["Customize", "Multiple Choice", "Number at the beginning of the sentence", "Semicolon at the end of the sentence", "Period at the end of the Sentence"], //Todo:需要修改
+        preset: [
+          "Customize",
+          "Multiple Choice",
+          "Number at the beginning of the sentence",
+          "Semicolon at the end of the sentence",
+          "Period at the end of the Sentence"
+        ], //Todo:需要修改
         list_selected: ["Use AutoList Configuration", "Confirm"]
       },
       help: {
-        list_selected: "For the specific input format, see the reference guide at the top"
+        list_selected:
+          "For the specific input format, see the reference guide at the top"
       },
       label: {
         preset: "Select Presets",
@@ -135,11 +156,15 @@ const dict = {
       intro: "Complete word form. Only support verbs and nouns",
       link: "https://www.notion.so/huangkewei/AutoComplete-3b9b27baef8f414cb86c454a6128b608", //Todo:修改英文版Notion
       label: {
-        custom_complete: "Custom excerption filling template, click to view support variables",
+        custom_complete:
+          "Custom excerption filling template, click to view support variables",
         complete_selected: "Complete Word Form"
       },
       option: {
-        complete_selected: ["Only complete word form", "Fill the word information as well"]
+        complete_selected: [
+          "Only complete word form",
+          "Fill the word information as well"
+        ]
       },
       error: {
         not_find_word: "No matching words found"
@@ -149,7 +174,11 @@ const dict = {
       intro: "More powerful Autotitle plugin",
       link: "https://www.notion.so/huangkewei/AnotherAutoTitle-bdd09b713c844a82aeea1c0d3bd4cb48", //Todo:修改英文版Notion
       option: {
-        has_title_then: ["Convert to Excerption", "Convert to Title Link", "Override Title"],
+        has_title_then: [
+          "Convert to Excerption",
+          "Convert to Title Link",
+          "Override Title"
+        ],
         preset: ["Customize", "Word Count Limit", "Do not Contain Dots"],
         switch_title: ["Switch to Another", "Swap Titles and Excerpts"]
       },
@@ -167,7 +196,8 @@ const dict = {
       }
     },
     more: {
-      donate: "If you want to help me out, please click and go directly to the QR code.",
+      donate:
+        "If you want to help me out, please click and go directly to the QR code.",
       github:
         "ohmymn is completely open source, easy to extend, welcome to participate in development. Click to go directly to Github and view the source code.",
       feishu:
@@ -177,8 +207,10 @@ const dict = {
   handle_received_event: {
     hud: {
       not_selected: "No mindmap card selected",
-      auto_correct: "Please select the switch according to the actual situation, it is not recommended to turn on the automatic correction carelessly",
-      lock_excerpt: "it's not recommended to turn on locked excerpts and automatic correction at the same time",
+      auto_correct:
+        "Please select the switch according to the actual situation, it is not recommended to turn on the automatic correction carelessly",
+      lock_excerpt:
+        "it's not recommended to turn on locked excerpts and automatic correction at the same time",
       input_saved: "Input saved",
       input_clear: "Input is cleared"
     },
@@ -189,7 +221,8 @@ const dict = {
         "Process child nodes and seected cards"
       ],
       card_with_children: "Detect only one selected card has child nodes",
-      cards_with_children: "Detect all selected cards of the same level have child nodes"
+      cards_with_children:
+        "Detect all selected cards of the same level have child nodes"
     }
   },
   switch_panel: {

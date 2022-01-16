@@ -121,7 +121,9 @@ type UpdateInfo = {
 const util = {
   async detect(onlySigned = false) {
     const updateInfo: UpdateInfo = await fetch(
-      "https://mnaddon-update-reminder.vercel.app/" + Addon.key
+      `https://mnaddon-update-reminder.vercel.app/${
+        Addon.key
+      }?timestamp=${Date.now()}`
     ).then(res => res.json())
     const { name, version, signed, link, time } = updateInfo
     if (name && name == Addon.key) {

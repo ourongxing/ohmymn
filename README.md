@@ -13,7 +13,7 @@
   <a href="https://github.com/mnaddon/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
 </p>
 
-![ohmymn](assets/p1.png)
+![ohmymn](assets/pic-l.png)
 
 # ohmymn
 
