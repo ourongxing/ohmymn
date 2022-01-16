@@ -8,10 +8,6 @@ export const enum AutoReplacePreset {
   Custom
 }
 
-const enum ReplaceSelected {
-  AsAutoReplace
-}
-
 const config: IConfig = {
   name: "AutoReplace",
   intro,
@@ -50,38 +46,41 @@ const util = {
         case AutoReplacePreset.Custom:
           const { customReplace: params } = self.profileTemp.replaceParam
           if (!params) continue
-          let _text = text
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr)
-          })
-          if (text != _text) text = _text
+          text = params.reduce(
+            (acc, param) => acc.replace(param.regexp, param.newSubStr),
+            text
+          )
       }
     }
     return text
   }
 }
 
+const enum ReplaceSelected {
+  UseAutoReplace
+}
+
 const action: IActionMethod = {
   replaceSelected({ content, nodes, option }) {
-    if (option !== ReplaceSelected.AsAutoReplace && !content) return
-    const params =
-      option === ReplaceSelected.AsAutoReplace
-        ? []
-        : string2ReplaceParam(content)
-    for (const node of nodes) {
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        const text = note.excerptText
-        if (!text) continue
-        let _text = text
-        if (option === ReplaceSelected.AsAutoReplace)
-          _text = util.replaceText(text)
-        else
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr)
-          })
-        if (text !== _text) note.excerptText = _text
-      }
+    if (option == ReplaceSelected.UseAutoReplace) {
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text) note.excerptText = util.replaceText(text)
+        })
+      })
+    } else if (content) {
+      const params = string2ReplaceParam(content)
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text)
+            note.excerptText = params.reduce(
+              (acc, params) => acc.replace(params.regexp, params.newSubStr),
+              text
+            )
+        })
+      })
     }
   }
 }

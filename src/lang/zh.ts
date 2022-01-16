@@ -94,9 +94,9 @@ const dict = {
       },
       label: {
         filter_cards: "筛选卡片",
-        merge_cards: "合并多张卡片",
-        merge_text: "合并卡片内文字",
-        rename_title: "批量重命名标题",
+        merge_cards: "合并卡片",
+        merge_text: "合并卡片文字",
+        rename_title: "重命名标题",
         manage_profile: "配置管理"
       },
       hud: {
@@ -122,7 +122,7 @@ const dict = {
         standardize_title: "点击查看具体规范"
       },
       label: {
-        standardize_selected: "优化排版和格式",
+        standardize_selected: "优化排版格式",
         standardize_title: "英文标题规范化",
         custom_standardize: "自定义，点击查看具体格式",
         preset: "选择需要的预设"
@@ -140,7 +140,7 @@ const dict = {
       },
       label: {
         preset: "选择需要的预设",
-        replace_selected: "批量替换摘录文字",
+        replace_selected: "替换摘录文字",
         custom_replace: "自定义，点击查看具体格式"
       }
     },
@@ -171,7 +171,8 @@ const dict = {
         complete_selected: ["仅补全单词词形", "同时填充单词信息"]
       },
       error: {
-        not_find_word: "查询不到该单词"
+        not_find_word: "查询不到该单词",
+        forbid: "为减小服务器压力，禁止同时处理超过 5 张卡片"
       }
     },
     anotherautotitle: {
@@ -185,7 +186,7 @@ const dict = {
         change_title_no_limit: "拓宽标题摘录不受限制",
         preset: "选择需要的预设",
         custom_be_title: "自定义，点击查看具体格式",
-        switch_title: "切换摘录或标题",
+        switch_title: "切换摘录标题",
         word_count: "[中文字数, 英文单词个数]，没超过就自动设置为标题"
       },
       help: {

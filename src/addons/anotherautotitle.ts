@@ -1,4 +1,4 @@
-import { reverseEscape, string2RegArray } from "utils/input"
+import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
@@ -111,7 +111,7 @@ const action: IActionMethod = {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
       const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
-      switch (<SwitchTitle>option) {
+      switch (option) {
         case SwitchTitle.ToNonexistent:
           // 只允许存在一个
           if ((title || text) && !(title && text)) {

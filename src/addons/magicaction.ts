@@ -41,16 +41,16 @@ const config: IConfig = {
     },
     {
       type: cellViewType.buttonWithInput,
+      label: label.rename_title,
+      key: "renameTitle",
+      help: help.rename_title
+    },
+    {
+      type: cellViewType.buttonWithInput,
       label: label.merge_text,
       key: "mergeText",
       help: help.merge_text,
       option: option.merge_text
-    },
-    {
-      type: cellViewType.buttonWithInput,
-      label: label.rename_title,
-      key: "renameTitle",
-      help: help.rename_title
     }
   ]
 }
@@ -118,25 +118,22 @@ const util = {
 
 const action: IActionMethod = {
   renameTitle({ content, nodes }) {
-    // 如果是矩形拖拽选中，则为从左到右，从上至下的顺序
-    // 如果单个选中，则为选中的顺序
     content = /^\(.*\)$/.test(content)
       ? content
       : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
     const { newSubStr, regexp } = string2ReplaceParam(content)[0]
-    let newReplace: string[] = []
     // 如果含有序列信息，就把获取新的 replace 参数
     if (/%\[(.*)\]/.test(newSubStr)) {
-      newReplace = util.getSerialInfo(newSubStr, nodes.length)
+      const newTitles = util.getSerialInfo(newSubStr, nodes.length)
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
-        if (newReplace[index])
-          note.noteTitle = title.replace(regexp, newReplace[index])
+        if (newTitles[index])
+          note.noteTitle = title.replace(regexp, newTitles[index])
       })
     }
     // 或者直接替换
     else {
-      nodes.forEach((note, index) => {
+      nodes.forEach(note => {
         const title = note.noteTitle ?? ""
         note.noteTitle = title.replace(regexp, newSubStr)
       })
@@ -146,7 +143,8 @@ const action: IActionMethod = {
     for (const node of nodes) {
       const allText = getAllText(
         node,
-        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`)
+        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`),
+        true
       )
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []
@@ -159,7 +157,7 @@ const action: IActionMethod = {
           linkComments.push(comment)
         node.removeCommentByIndex(0)
       }
-      switch (<MergeText>option) {
+      switch (option) {
         case MergeText.ToExpertText:
           node.excerptText = allText
           break
@@ -177,7 +175,7 @@ const action: IActionMethod = {
     const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
-      const content = `${title}\n${getAllText(node, "\n", false)}`
+      const content = `${title}\n${getAllText(node, "\n")}`
       return regGroup.some(regs =>
         regs.every(reg =>
           reg.test(option == FilterCards.AllText ? content : title)

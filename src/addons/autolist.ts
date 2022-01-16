@@ -52,11 +52,10 @@ const util = {
         case AutoListPreset.Custom:
           const { customList: params } = self.profileTemp.replaceParam
           if (!params) continue
-          let _text = text
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr).trim()
-          })
-          if (text != _text) text = _text
+          text = params.reduce(
+            (acc, param) => acc.replace(param.regexp, param.newSubStr),
+            text
+          )
           break
         case AutoListPreset.ChoiceQuestion:
         case AutoListPreset.ChineseNumber: {
@@ -84,27 +83,30 @@ const util = {
 }
 
 const enum ListSelected {
-  AsAutoList
+  UseAutoList
 }
 
 const action: IActionMethod = {
   listSelected({ nodes, content, option }) {
-    if (option !== ListSelected.AsAutoList && !content) return
-    const params =
-      option === ListSelected.AsAutoList ? [] : string2ReplaceParam(content)
-    for (const node of nodes) {
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        const text = note.excerptText
-        if (!text) continue
-        let _text = text
-        if (option === ListSelected.AsAutoList) _text = util.listText(text)
-        else
-          params.forEach(param => {
-            _text = _text.replace(param.regexp, param.newSubStr)
-          })
-        if (text !== _text) note.excerptText = _text
-      }
+    if (option == ListSelected.UseAutoList) {
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text) note.excerptText = util.listText(text)
+        })
+      })
+    } else if (content) {
+      const params = string2ReplaceParam(content)
+      nodes.forEach(node => {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text)
+            note.excerptText = params.reduce(
+              (acc, params) => acc.replace(params.regexp, params.newSubStr),
+              text
+            )
+        })
+      })
     }
   }
 }

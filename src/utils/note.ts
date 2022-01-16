@@ -94,7 +94,7 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
  * @returns
  */
 
-const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
+const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
   const textArr = []
   if (note.excerptText)
     textArr.push(

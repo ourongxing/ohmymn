@@ -69,7 +69,6 @@ let lastSelectInfo: {
   key: string
   selections: number[]
 } | null
-let popoverController: UIPopoverController
 const selectAction = (param: {
   indexPath: NSIndexPath
   selection: number
@@ -91,7 +90,8 @@ const selectAction = (param: {
       key: row.key,
       selections: [selection]
     })
-    if (popoverController) popoverController.dismissPopoverAnimated(true)
+    if (self.popoverController)
+      self.popoverController.dismissPopoverAnimated(true)
   } else {
     const selections = row.selections
     const nowSelect = row.selections.includes(selection)
@@ -146,15 +146,14 @@ const clickSelectButton = (sender: UIButton) => {
     height: menuController.rowHeight * menuController.commandTable.length
   }
   const studyControllerView = MN.studyController().view
-  popoverController = new UIPopoverController(menuController)
-  popoverController.presentPopoverFromRect(
+  self.popoverController = new UIPopoverController(menuController)
+  self.popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),
     studyControllerView,
     1 << 3,
     true
   )
-  //@ts-ignore
-  popoverController.delegate = self
+  self.popoverController.delegate = self
 }
 
 // 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选

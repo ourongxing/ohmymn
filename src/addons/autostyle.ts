@@ -168,12 +168,12 @@ const util = {
 }
 
 const enum ChangeStyle {
-  AsAutoStyle
+  UseAutoStyle
 }
 
 const action: IActionMethod = {
   changeColor({ content, nodes, option }) {
-    if (option === ChangeStyle.AsAutoStyle) {
+    if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
         excerptNotes(node).forEach(note => {
           const { color } = util.getColorStyle(note)
@@ -190,7 +190,7 @@ const action: IActionMethod = {
     }
   },
   changeStyle({ option, nodes }) {
-    if (option === ChangeStyle.AsAutoStyle) {
+    if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
         excerptNotes(node).forEach(note => {
           const { style } = util.getColorStyle(note)

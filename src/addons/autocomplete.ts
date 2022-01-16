@@ -1,9 +1,10 @@
 import lang from "lang"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { MbBookNote } from "types/MarginNote"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
-import { RefreshAfterDBChange, undoGrouping } from "utils/note"
+import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/pangu"
 import { isHalfWidth, countWord } from "utils/text"
 
@@ -30,10 +31,6 @@ const config: IConfig = {
   ]
 }
 
-const enum CompleteSelected {
-  OnlyComplete,
-  AlsoFillWordInfo
-}
 type Dict = {
   word: string
   sw: string
@@ -75,7 +72,7 @@ const util = {
   },
 
   getTag(str: string) {
-    const re = [
+    const params = [
       ["zk", "中考"],
       ["gk", "高考"],
       ["cet4", "四级"],
@@ -85,8 +82,9 @@ const util = {
       ["toefl", "托福"],
       ["ielts", "雅思"]
     ]
-    for (const [a, b] of re) str = str.replace(a, b)
-    return str.replace(/ /g, "/")
+    return params
+      .reduce((acc, param) => acc.replace(param[0], param[1]), str)
+      .replace(/\x20/g, "/")
   },
   getCollinsStar(num: number) {
     return "⭐".repeat(num)
@@ -156,21 +154,34 @@ const util = {
   }
 }
 
+const enum CompleteSelected {
+  OnlyComplete,
+  AlsoFillWordInfo
+}
+
 const action: IActionMethod = {
-  // 如果有标题，摘录为空，或者摘录与标题相同时，才会起作用
   async completeSelected({ nodes, option }) {
-    for (const note of nodes) {
-      const title = note?.noteTitle
-      if (!title) continue
-      const result = await util.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
-      if (!result) continue
-      undoGrouping(() => {
-        note.noteTitle = result.title
-        if (option == CompleteSelected.AlsoFillWordInfo)
-          note.excerptText = result.text
-      })
+    if (nodes.length > 5) {
+      showHUD(lang.addon.autocomplete.error.forbid, 2)
+      return
     }
-    RefreshAfterDBChange()
+    const getCompletedWord = (node: MbBookNote) => {
+      const title = node?.noteTitle
+      return title
+        ? util.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
+        : undefined
+    }
+    const allInfo = await Promise.all(nodes.map(node => getCompletedWord(node)))
+    undoGroupingWithRefresh(() => {
+      nodes.forEach((node, index) => {
+        const info = allInfo?.[index]
+        if (info) {
+          node.noteTitle = info.title
+          if (option == CompleteSelected.AlsoFillWordInfo)
+            node.excerptText = info.text
+        }
+      })
+    })
   }
 }
 

@@ -108,19 +108,21 @@ const enum StandardizeSelected {
 
 const action: IActionMethod = {
   standardizeSelected({ nodes, option }) {
-    for (const node of nodes) {
+    nodes.forEach(node => {
       const title = node.noteTitle
-      if (title && option != StandardizeSelected.OnlyExcerptText) {
-        const newTitle = util.standardizeText(title)
-        node.noteTitle = util.toTitleCase(newTitle)
-        if (option == StandardizeSelected.OnlyTitle) continue
+      if (option != StandardizeSelected.OnlyExcerptText && title) {
+        let newTitle = util.standardizeText(title)
+        if (self.profile.autostandardize.standardizeTitle)
+          newTitle = util.toTitleCase(newTitle)
+        node.noteTitle = newTitle
       }
-      const notes = excerptNotes(node)
-      for (const note of notes) {
-        const text = note.excerptText
-        if (text) note.excerptText = util.standardizeText(text)
+      if (option != StandardizeSelected.OnlyTitle) {
+        excerptNotes(node).forEach(note => {
+          const text = note.excerptText
+          if (text) note.excerptText = util.standardizeText(text)
+        })
       }
-    }
+    })
   }
 }
 
