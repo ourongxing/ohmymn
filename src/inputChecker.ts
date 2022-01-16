@@ -77,6 +77,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         string2ReplaceParam(res).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)
         })
+        break
       }
       case "tagSelected":
         str = /^\(.*\)$/.test(str) ? str : `(/./, "${escapeDoubleQuote(str)}")`
