@@ -30,12 +30,11 @@ const dict = {
         panle_control: "面板开启关闭",
         screen_always_on: "保持屏幕常亮",
         lock_excerpt: "锁定摘录文字",
-        auto_correct: "是否开启自动在线矫正"
+        auto_correct: "开启自动在线矫正了吗"
       },
       help: {
         profile: "【当前文档生效】可用于不同情景",
         has_title_then: "如果可以转为标题，则",
-        complete_close: "在 MagicAction 执行后自动关闭控制面板",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
       },
       detect_update: {
@@ -81,7 +80,7 @@ const dict = {
         "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
       link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
       option: {
-        filter_cards: ["仅判断标题", "判断整个卡片内容"],
+        filter_cards: ["仅筛选标题", "筛选整个卡片内容"],
         merge_text: ["合并为摘录", "合并为评论"],
         merge_cards: ["同时合并标题", "不合并标题"],
         manage_profile: ["读取配置信息", "写入配置信息"]
@@ -183,14 +182,15 @@ const dict = {
         switch_title: ["切换为不存在的", "交换标题和摘录"]
       },
       label: {
-        change_title_no_limit: "拓宽标题摘录不受限制",
+        change_title_no_limit: "标题摘录始终为标题",
         preset: "选择需要的预设",
         custom_be_title: "自定义，点击查看具体格式",
         switch_title: "切换摘录标题",
         word_count: "[中文字数, 英文单词个数]，没超过就自动设置为标题"
       },
       help: {
-        switch_title: "当两者都存在时请使用「交换标题和摘录」"
+        switch_title: "当两者都存在时请使用「交换标题和摘录」",
+        change_title_no_limit: "拓宽标题摘录选区，始终转为标题"
       }
     },
     autotag: {
@@ -231,7 +231,7 @@ const dict = {
         preset: [
           "样式由字数或面积决定",
           "颜色跟随卡片",
-          "颜色跟随兄弟节点",
+          "颜色跟随第一个兄弟节点",
           "颜色跟随父节点"
         ],
         style: ["无", "线框+填充", "填充", "线框"],
@@ -291,8 +291,6 @@ const dict = {
   },
   implement_datasource_method: {
     none: "无",
-    clicked: "选中",
-    bind_key: "bind key 输入错误",
     open_panel: "打开控制面板"
   },
   addon_life_cycle: {
