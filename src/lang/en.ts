@@ -3,7 +3,7 @@ import { Dict } from "lang"
 const dict = {
   addon: {
     ohmymn: {
-      link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
+      link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       option: {
         profile: "Profile",
  		has_title_then: ["As Comments", "As Title Link", "Override"],
@@ -48,7 +48,7 @@ const dict = {
     },
     gesture: {
       intro: "Custom Gestures to Trigger Actions",
-	  link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
+	  link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       singleBar: "Single Selection Toolbar",
       muiltBar: "Multi Selection Toolbar"
     },
@@ -108,7 +108,7 @@ const dict = {
     },
     autostandardize: {
       intro: "Optimize the typography and formatting of excerpts & titles\nPowerd by Pangu.js",
- 	  link: "https://busiyi.notion.site/AutoStandrize-b5e0d381d4814139a1b73d305ebc12d1",
+ 	  link: "https://www.notion.so/huangkewei/AutoStandrize-ec4986eff67744d4b2a045a283267b99",
       option: {
         preset: [
 		  "Customized",
@@ -197,7 +197,7 @@ const dict = {
     },
 	autotag: {
       intro: "Auto Add Tags",
-      link: "https://busiyi.notion.site/AutoTag-3a7fc5e0b84e47d18366d4cb60c4943d",
+      link: "https://www.notion.so/huangkewei/AutoTag-9e0bb2106d984ded8c29e781b53a1c23",
       option: {
         preset: ["Customized"],
         tag_selected: ["Use configuration for AutoTag", "Confirm"]
@@ -209,7 +209,7 @@ const dict = {
       }
 	},
 	autostyle: {
-      link: "https://busiyi.notion.site/AutoStyle-008cc0fae7844e7fb171ca948da91cb5",
+      link: "https://www.notion.so/huangkewei/AutoStyle-16971d7c0fb048bd828d97373a035bc2",
       intro: "Automatically modify excerpt colors and styles",
       area: "Aera",
       label: {
