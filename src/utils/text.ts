@@ -15,9 +15,7 @@ const isCJK = (text: string) =>
   text.match(new RegExp(`^[${CJK}]*$`)) ? true : false
 
 const countWord = (text: string): number => {
-  const en = text
-    .split(new RegExp(`[^a-zA-Z-']`, "g"))
-    .filter(item => (item ? true : false))
+  const en = text.split(/[^a-zA-Z]/).filter(k => k)
   const zh = text.match(new RegExp(`[${CJK}]`, "g")) ?? []
   return en.length + zh.length
 }

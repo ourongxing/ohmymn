@@ -33,7 +33,8 @@ const config: IConfig = {
     {
       key: "changeTitleNoLimit",
       type: cellViewType.switch,
-      label: label.change_title_no_limit
+      label: label.change_title_no_limit,
+      help: help.change_title_no_limit
     }
   ],
   actions: [

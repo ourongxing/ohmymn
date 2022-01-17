@@ -43,6 +43,7 @@ const string2RegArray = (str: string): RegExp[][] => {
    * 输出 [[/sd/]]
    */
 
+  if (/^\(.*\)$/.test(str)) throw ""
   if (!/^\[.*\]$/.test(str))
     return [
       [

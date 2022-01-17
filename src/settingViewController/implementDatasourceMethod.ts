@@ -17,7 +17,7 @@ const getSelections = (rows: IRow[], key: string) => {
       _row.key == key
   )
   if (index == -1) {
-    console.error(lang.implement_datasource_method.bind_key)
+    console.error("bind key 输入错误")
     return null
   }
   return (rows[index] as IRowSelect).selections
@@ -68,9 +68,9 @@ const tableViewHeightForRowAtIndexPath = (
   const row = rows[indexPath.row]
   if (row.bind && isHidden(row.bind, rows)) return 0
   if (row.type === cellViewType.plainText) {
-    // 每行大约可以容纳 44 个半角字符
+    // 每行大约可以容纳 45 个半角字符
     const byte = byteLength(row.label)
-    const lines = (byte - (byte % 44)) / 44 - (byte % 44 ? 0 : 1)
+    const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
     const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
     return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
   }
@@ -188,7 +188,7 @@ const tableViewCellForRowAtIndexPath = (
         row.type == cellViewType.select
           ? row.option[row?.selections?.[0] ?? 0]
           : row?.selections?.length
-          ? `${row.selections.length} ${lang.implement_datasource_method.clicked}`
+          ? `${row.selections.length} ✓`
           : lang.implement_datasource_method.none
       )
       const newFrame = view.frame
@@ -220,7 +220,13 @@ const initCellView = {
       ""
     )
     view.setTitleForState(
-      isHalfWidth(text) ? text.slice(0, 10) : text.slice(0, 4),
+      isHalfWidth(text)
+        ? text
+            .split(/[^\w\d]/)
+            .filter(k => k)
+            .slice(0, 2)
+            .join(" ")
+        : text.slice(0, 4),
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)

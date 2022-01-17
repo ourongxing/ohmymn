@@ -10,6 +10,7 @@ import { dataSourcePreset } from "synthesizer"
 import { deepCopy } from "utils"
 import { UIWindow } from "types/UIKit"
 import { util as ohmymn } from "addons/ohmymn"
+import { MN } from "const"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
