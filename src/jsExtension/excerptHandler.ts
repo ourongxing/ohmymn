@@ -88,7 +88,7 @@ const excerptHandler = async () => {
   let { title, text } = await newTitleText(excerptText, nodeNote)
   const tags = newTag(excerptText)
 
-  if (isComment && title) {
+  if (isComment && title && nodeNote.noteTitle) {
     console.log("当前摘录作为评论", "excerpt")
     switch (self.profile.ohmymn.hasTitleThen[0]) {
       case HasTitleThen.TitleLink:
