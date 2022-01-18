@@ -17,8 +17,6 @@
 
 # ohmymn
 
-> The English version and English documentation for ohmymn v3 will be coming soon, so look forward to it!
-
 ohmymn 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。ohmymn 专注于**摘录，评论，标题，标签，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后手动触发，避免了一切误触的可能。更多信息请直接查看[使用文档](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)。
 
 ## Development
