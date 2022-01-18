@@ -9,7 +9,6 @@ import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import lang from "lang"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
-import { dataSourceIndex, actionKey } from "synthesizer"
 const { input_clear, input_saved, lock_excerpt, auto_correct } =
   lang.handle_received_event
 

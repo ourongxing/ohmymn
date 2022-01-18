@@ -287,7 +287,13 @@ const dict = {
   },
   handle_user_action: {
     sure: "确定",
-    input_error: "输入错误，请重新输入"
+    input_error: "输入错误，请重新输入",
+    gesture: {
+      alert:
+        "该功能打开后，OhMyMN 会监测在脑图卡片单选和多选工具栏上的滑动，并触发您设定的动作。\n该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
+      option: ["不清楚，查看文档", "我已知晓"],
+      doc: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8"
+    }
   },
   implement_datasource_method: {
     none: "无",

@@ -27,12 +27,23 @@ export const getMNLinkValue = (val: string) => {
 export const updateProfileTemp = (key: string, val: string) => {
   val = getMNLinkValue(val)
   if (key in self.profileTemp.regArray) {
-    self.profileTemp.regArray[key] = val ? string2RegArray(val) : undefined
+    let tmp: any
+    // 避免修改后错误没有修改，下次读取配置出现问题
+    try {
+      tmp = val ? string2RegArray(val) : undefined
+    } catch {
+      tmp = undefined
+    }
+    self.profileTemp.regArray[key] = tmp
   }
   if (key in self.profileTemp.replaceParam) {
-    self.profileTemp.replaceParam[key] = val
-      ? string2ReplaceParam(val)
-      : undefined
+    let tmp: any
+    try {
+      tmp = val ? string2ReplaceParam(val) : undefined
+    } catch {
+      tmp = undefined
+    }
+    self.profileTemp.replaceParam[key] = tmp
   }
 }
 

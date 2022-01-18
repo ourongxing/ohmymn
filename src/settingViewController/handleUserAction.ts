@@ -1,10 +1,11 @@
-import { openUrl, postNotification, showHUD } from "utils/common"
+import { openUrl, popup, postNotification, showHUD } from "utils/common"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
 import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { UITableView } from "types/UIKit"
+import { UIAlertViewStyle, UITableView } from "types/UIKit"
 import { byteLength } from "utils/text"
 import lang from "lang"
+import { QuickSwitch } from "synthesizer"
 
 const tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -69,7 +70,7 @@ let lastSelectInfo: {
   key: string
   selections: number[]
 } | null
-const selectAction = (param: {
+const selectAction = async (param: {
   indexPath: NSIndexPath
   selection: number
   menuController: MenuController
@@ -94,6 +95,28 @@ const selectAction = (param: {
       self.popoverController.dismissPopoverAnimated(true)
   } else {
     const selections = row.selections
+
+    if (
+      row.key == "quickSwitch" &&
+      !selections.includes(QuickSwitch.gesture) &&
+      selection == QuickSwitch.gesture
+    ) {
+      const { gesture } = lang.handle_user_action
+      const { option } = await popup(
+        "OhMyMN",
+        gesture.alert,
+        UIAlertViewStyle.Default,
+        gesture.option,
+        (alert: UIAlertView, buttonIndex: number) => ({
+          option: buttonIndex
+        })
+      )
+      if (option === 0) {
+        openUrl(gesture.doc)
+        return
+      }
+    }
+
     const nowSelect = row.selections.includes(selection)
       ? selections.filter(item => item != selection)
       : [selection, ...selections]
