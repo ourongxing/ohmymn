@@ -1,13 +1,13 @@
 import { QuickSwitch } from "synthesizer"
 import { MbBookNote } from "types/MarginNote"
-import { util as autotag } from "addons/autotag"
-import { util as autolist } from "addons/autolist"
-import { util as autostyle } from "addons/autostyle"
-import { util as autoreplace } from "addons/autoreplace"
-import { util as autocomplete } from "addons/autocomplete"
-import { util as anotherautodef } from "addons/anotherautodef"
-import { util as autostandardize } from "addons/autostandardize"
-import { util as anotherautotitle } from "addons/anotherautotitle"
+import { util as autotag } from "modules/autotag"
+import { util as autolist } from "modules/autolist"
+import { util as autostyle } from "modules/autostyle"
+import { util as autoreplace } from "modules/autoreplace"
+import { util as autocomplete } from "modules/autocomplete"
+import { util as anotherautodef } from "modules/anotherautodef"
+import { util as autostandardize } from "modules/autostandardize"
+import { util as anotherautotitle } from "modules/anotherautotitle"
 
 export const newTitleText = async (text: string, note: MbBookNote) => {
   const { quickSwitch } = self.profile.ohmymn

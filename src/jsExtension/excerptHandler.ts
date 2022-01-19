@@ -8,7 +8,7 @@ import {
 import { delayBreak } from "utils/common"
 import { newColorStyle, newTag, newTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
-import { HasTitleThen } from "addons/ohmymn"
+import { HasTitleThen } from "modules/ohmymn"
 
 let note: MbBookNote
 let nodeNote: MbBookNote

@@ -4,7 +4,7 @@ import {
   string2RegArray,
   string2ReplaceParam
 } from "utils/input"
-import { util as magicaction } from "addons/magicaction"
+import { util as magicaction } from "modules/magicaction"
 import { getMNLinkValue } from "utils/profile/updateDataSource"
 
 const checkInputCorrect = (str: string, key: string): boolean => {

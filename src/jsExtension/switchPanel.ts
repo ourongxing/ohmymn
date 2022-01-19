@@ -3,7 +3,7 @@ import { delay, showHUD } from "utils/common"
 import { MN } from "const"
 import { UIViewController } from "types/UIKit"
 import lang from "lang"
-import { PanelControl } from "addons/ohmymn"
+import { PanelControl } from "modules/ohmymn"
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = (

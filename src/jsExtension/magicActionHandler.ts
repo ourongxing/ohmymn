@@ -1,4 +1,4 @@
-import { PanelControl } from "addons/ohmymn"
+import { PanelControl } from "modules/ohmymn"
 import checkInputCorrect from "inputChecker"
 import lang from "lang"
 import { actions } from "synthesizer"

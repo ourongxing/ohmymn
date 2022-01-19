@@ -2,11 +2,11 @@ import type { GestureHandler, IRowButton } from "types/Addon"
 import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
 import { docMapSplitMode, studyMode, groupMode } from "types/MarginNote"
-import { util as gesture } from "addons/gesture"
+import { util as gesture } from "modules/gesture"
 import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
-import { PanelControl } from "addons/ohmymn"
+import { PanelControl } from "modules/ohmymn"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
