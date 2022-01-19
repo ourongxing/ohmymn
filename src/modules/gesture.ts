@@ -4,7 +4,7 @@ import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
 
 const option: string[] = []
 
-const { link, intro, singleBar, muiltBar } = lang.addon.gesture
+const { link, intro, singleBar, muiltBar } = lang.module.gesture
 const config: IConfig = {
   name: "Gesture",
   intro,

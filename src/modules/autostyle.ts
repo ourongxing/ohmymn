@@ -6,7 +6,7 @@ import { countWord, isHalfWidth, SerialNumber } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
 
-const { help, intro, option, label, link } = lang.addon.autostyle
+const { help, intro, option, label, link } = lang.module.autostyle
 
 const colors = option.color.map((color, index) =>
   index ? SerialNumber.hollow_circle_number[index - 1] + " " + color : color
@@ -133,7 +133,7 @@ const util = {
       if (note.excerptPic) {
         const actualArea = this.getExcerptArea(note)
         if (actualArea > area) res.style = 2
-        if (showArea) showHUD(lang.addon.autostyle.area + ": " + actualArea)
+        if (showArea) showHUD(lang.module.autostyle.area + ": " + actualArea)
         // 0 线框+填充 1 填充 2 线框
       } else if (
         note.excerptText &&

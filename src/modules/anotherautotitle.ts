@@ -4,7 +4,7 @@ import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { MbBookNote } from "types/MarginNote"
 
-const { option, intro, help, link, label } = lang.addon.anotherautotitle
+const { option, intro, help, link, label } = lang.module.anotherautotitle
 
 const config: IConfig = {
   name: "AnotherAutoTitle",

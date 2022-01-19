@@ -4,13 +4,13 @@ import {
   HasTitleThen,
   PanelControl,
   DetectUpdate
-} from "addons/ohmymn"
-import { AutoTitlePreset } from "addons/anotherautotitle"
-import { AutoListPreset } from "addons/autolist"
-import { AutoReplacePreset } from "addons/autoreplace"
-import { AutoStandardizePreset } from "addons/autostandardize"
-import { AutoStylePreset } from "addons/autostyle"
-import { AutoTagPreset } from "addons/autotag"
+} from "modules/ohmymn"
+import { AutoTitlePreset } from "modules/anotherautotitle"
+import { AutoListPreset } from "modules/autolist"
+import { AutoReplacePreset } from "modules/autoreplace"
+import { AutoStandardizePreset } from "modules/autostandardize"
+import { AutoStylePreset } from "modules/autostyle"
+import { AutoTagPreset } from "modules/autotag"
 import { QuickSwitch } from "synthesizer"
 import { ReplaceParam } from "utils/input"
 

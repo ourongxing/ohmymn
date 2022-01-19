@@ -11,7 +11,7 @@ import { textComment } from "types/MarginNote"
 import lang from "lang"
 import { unique } from "utils"
 
-const { help, option, intro, label, link, hud } = lang.addon.magicaction
+const { help, option, intro, label, link, hud } = lang.module.magicaction
 
 const config: IConfig = {
   name: "MagicAction",

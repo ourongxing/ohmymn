@@ -8,7 +8,7 @@ import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/pangu"
 import { isHalfWidth, countWord } from "utils/text"
 
-const { error, intro, link, option, label } = lang.addon.autocomplete
+const { error, intro, link, option, label } = lang.module.autocomplete
 const config: IConfig = {
   name: "AutoComplete",
   intro,
@@ -162,7 +162,7 @@ const enum CompleteSelected {
 const action: IActionMethod = {
   async completeSelected({ nodes, option }) {
     if (nodes.length > 5) {
-      showHUD(lang.addon.autocomplete.error.forbid, 2)
+      showHUD(lang.module.autocomplete.error.forbid, 2)
       return
     }
     const getCompletedWord = (node: MbBookNote) => {

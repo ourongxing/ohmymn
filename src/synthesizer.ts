@@ -14,7 +14,7 @@ import lang from "lang"
 import { SerialNumber } from "utils/text"
 
 // magicaction, ohmymn 默认前两个，不用包含在内
-const addons = [
+const modules = [
   gesture,
   anotherautotitle,
   anotherautodef,
@@ -44,17 +44,17 @@ const more: ISection = {
   rows: [
     {
       type: cellViewType.plainText,
-      label: lang.addon.more.donate,
+      label: lang.module.more.donate,
       link: "https://cdn.jsdelivr.net/gh/mnaddon/ohmymn/assets/donate.gif"
     },
     {
       type: cellViewType.plainText,
-      label: lang.addon.more.github,
+      label: lang.module.more.github,
       link: "https://github.com/mnaddon/ohmymn"
     },
     {
       type: cellViewType.plainText,
-      label: lang.addon.more.feishu,
+      label: lang.module.more.feishu,
       link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b48nfc45-22ff-4a3f-a1e3-f0f84c50db53"
     },
     {
@@ -116,7 +116,7 @@ export const actionKey: { key: string; option?: number }[] = [
   { key: "open_panel" }
 ]
 
-export const addonList: string[] = []
+export const moduleList: string[] = []
 
 export const genDataSource = (
   configs: IConfig[],
@@ -132,13 +132,13 @@ export const genDataSource = (
   }
   dataSource.unshift(genSection(magicaction))
   dataSource.forEach((sec, index) => {
-    if (index > 1) addonList.push(sec.header)
+    if (index > 1) moduleList.push(sec.header)
   })
 
-  // 更新 quickSwitch 为 addonList
+  // 更新 quickSwitch 为 moduleList
   for (const row of dataSource[1].rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
-      row.option = addonList.map(
+      row.option = moduleList.map(
         (value, index) => SerialNumber.hollow_circle_number[index] + " " + value
       )
   }
@@ -206,13 +206,13 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
 
 const mergeActions = () => {
   const actions = { ...magicaction.action }
-  addons.forEach(addon => Object.assign(actions, addon.action))
+  modules.forEach(module => Object.assign(actions, module.action))
   return actions
 }
 
 export const actions = mergeActions()
 export const dataSourcePreset = genDataSource(
-  [ohmymn, ...addons].map(addon => addon.config),
+  [ohmymn, ...modules].map(module => module.config),
   magicaction.config
 )
 export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

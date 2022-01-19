@@ -4,7 +4,7 @@ import { isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { help, intro, option, label, link } = lang.addon.autolist
+const { help, intro, option, label, link } = lang.module.autolist
 export const enum AutoListPreset {
   Custom,
   ChoiceQuestion,

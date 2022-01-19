@@ -1,5 +1,5 @@
 const dict = {
-  addon: {
+  module: {
     ohmymn: {
       link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
       option: {

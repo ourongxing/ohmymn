@@ -30,7 +30,7 @@ export const enum HasTitleThen {
   OverrideTitle
 }
 
-const { link, label, help, option, detect_update } = lang.addon.ohmymn
+const { link, label, help, option, detect_update } = lang.module.ohmymn
 const config: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,

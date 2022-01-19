@@ -5,7 +5,7 @@ import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { help, intro, option, label, link } = lang.addon.autostandardize
+const { help, intro, option, label, link } = lang.module.autostandardize
 
 const config: IConfig = {
   name: "AutoStandardize",

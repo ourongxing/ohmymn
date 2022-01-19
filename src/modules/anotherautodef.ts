@@ -5,7 +5,7 @@ import lang from "lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
-const { label, option, intro, link } = lang.addon.anotherautodef
+const { label, option, intro, link } = lang.module.anotherautodef
 const enum AutoDefPreset {
   CustomExtract,
   CustomSplit

@@ -1,4 +1,4 @@
-import { addonList } from "synthesizer"
+import { moduleList } from "synthesizer"
 import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
@@ -29,8 +29,8 @@ const isSelected = (header: string): boolean => {
     "quickSwitch"
   ) as number[]
   return (
-    !addonList.includes(header) ||
-    quickSwitch.includes(addonList.findIndex(key => key == header))
+    !moduleList.includes(header) ||
+    quickSwitch.includes(moduleList.findIndex(key => key == header))
   )
 }
 

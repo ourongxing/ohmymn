@@ -3,7 +3,7 @@ import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { intro, link, label, help, option } = lang.addon.autoreplace
+const { intro, link, label, help, option } = lang.module.autoreplace
 export const enum AutoReplacePreset {
   Custom
 }

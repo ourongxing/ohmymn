@@ -4,7 +4,7 @@ import { addTags, getAllText } from "utils/note"
 import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
 import { extractArray } from "utils/custom"
 
-const { intro, option, label, link } = lang.addon.autotag
+const { intro, option, label, link } = lang.module.autotag
 
 const config: IConfig = {
   name: "AutoTag",

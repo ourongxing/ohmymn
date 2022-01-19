@@ -1,7 +1,7 @@
 import { Dict } from "lang"
 
 const dict: Dict = {
-  addon: {
+  module: {
     ohmymn: {
       link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       option: {
