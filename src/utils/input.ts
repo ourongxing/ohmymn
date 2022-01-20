@@ -3,23 +3,22 @@
  */
 const reverseEscape = (str: string) => JSON.parse(`{"key": ${str}}`).key
 const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
-const isNumber = (text: string) => !isNaN(Number(text))
 
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
   for (let bracket of brackets) {
-    const [regString, newSubStr, fnKey] = bracket
-      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\)?/, `$1😎"$2`)
+    if (!/\(\/.??\/[gimsuy]*\x20*,\x20*".*?"\)?/.test(str)) throw ""
+    const [regString, newSubStr, fnKey = "0"] = bracket
+      .replace(/\((\/.??\/[gimsuy]*)\x20*,\x20*"(.*?")\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
-    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""
     params.push({
       regexp: string2Reg(regString),
       // newSubStr 始终有双引号，反转义也是字符串
       newSubStr: reverseEscape(newSubStr),
-      fnKey: fnKey ? Number(fnKey) : 0
+      fnKey: Number(fnKey)
     })
   }
   return params
@@ -43,8 +42,8 @@ const string2RegArray = (str: string): RegExp[][] => {
    * 输出 [[/sd/]]
    */
 
-  if (/^\(.*\)$/.test(str)) throw ""
-  if (!/^\[.*\]$/.test(str))
+  if (/^\(.*?\)$/.test(str)) throw ""
+  if (!/^\[.*?\]$/.test(str))
     return [
       [
         string2Reg(
