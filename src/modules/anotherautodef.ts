@@ -1,4 +1,4 @@
-import { addFlags, string2ReplaceParam } from "utils/input"
+import { regFlag, string2ReplaceParam } from "utils/input"
 import { getAllText } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
@@ -94,7 +94,7 @@ const util = {
               .map(param => {
                 // 有 1 则为1
                 if (fnKey == 0) fnKey = param.fnKey
-                param.regexp = addFlags(param.regexp, "g")
+                param.regexp = regFlag.add(param.regexp, "g")
                 return text
                   .match(param.regexp)!
                   .map(item => item.replace(param.regexp, param.newSubStr))
@@ -112,18 +112,27 @@ const util = {
           const { customDefLink } = self.profileTemp.regArray
           if (!customDefLink) continue
           const regs = customDefLink[0]
-          for (const reg of regs)
+          for (let reg of regs) {
+            let isReverse = false
+            // 使用 y 来表示定义项在后面的情况，则 y 失效，应该很少人会用到 y
+            if (reg.sticky) {
+              reg = regFlag.remove(reg, "y")
+              isReverse = true
+            }
             if (reg.test(text)) {
-              const [def, desc] = text
+              let [def, desc] = text
                 .split(reg)
-                .filter(item => item)
                 .map(item => item.trim())
+                .filter(k => k)
+              // 交换顺序
+              if (isReverse) [def, desc] = [desc, def]
               const titleLink = util.toTitleLink(def)
               return {
                 title: toTitleLink && titleLink ? titleLink : def,
                 text: onlyDesc ? desc : text
               }
             }
+          }
           break
         case 2:
         case 3:
@@ -140,8 +149,25 @@ const util = {
           if (reg.test(text)) {
             const [def, desc] = text
               .split(reg)
-              .filter(item => item)
               .map(item => item.trim())
+              .filter(item => item)
+            const titleLink = util.toTitleLink(def)
+            return {
+              title: toTitleLink && titleLink ? titleLink : def,
+              text: onlyDesc ? desc : text
+            }
+          }
+          break
+        }
+        // 以下为定义项在后面的情况
+        case 7:
+        case 8: {
+          const reg = [/[,，].*称之?为/, /(?:通常|一般)?被?称之?为/][set - 7]
+          if (reg.test(text)) {
+            const [desc, def] = text
+              .split(reg)
+              .map(item => item.trim())
+              .filter(item => item)
             const titleLink = util.toTitleLink(def)
             return {
               title: toTitleLink && titleLink ? titleLink : def,

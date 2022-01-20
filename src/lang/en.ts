@@ -76,9 +76,11 @@ const dict: Dict = {
           "Custom Connective of Definition",
           "xxx : yyy",
           "xxx —— yyy",
-          "xxx ，是(指) yyy", //Todo:由开发者定
-          "xxx 是(指)，yyy", //Todo:由开发者定
-          "xxx 是指 yyy" //Todo:由开发者定
+          "xxx ，是(指) yyy",
+          "xxx 是(指)，yyy",
+          "xxx 是指 yyy",
+          "yyy，___称(之)为 xxx",
+          "yyy(被)称(之)为 xxx"
         ],
         extract_title: ["Use AutoDef Configuration", "Confirm"]
       }
