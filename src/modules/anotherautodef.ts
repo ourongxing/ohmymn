@@ -6,11 +6,6 @@ import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
 const { label, option, intro, link } = lang.module.anotherautodef
-const enum AutoDefPreset {
-  CustomExtract,
-  CustomSplit
-}
-
 const config: IConfig = {
   name: "AnotherAutoDef",
   intro,
@@ -25,14 +20,14 @@ const config: IConfig = {
     {
       key: "customExtractTitle",
       type: cellViewType.input,
-      bind: ["preset", 0],
+      bind: [["preset", 0]],
       label: label.custom_extract_title,
       link
     },
     {
       key: "customDefLink",
       type: cellViewType.input,
-      bind: ["preset", 1],
+      bind: [["preset", 1]],
       label: label.custom_def_link,
       link
     },
@@ -47,9 +42,21 @@ const config: IConfig = {
       label: label.to_title_link
     },
     {
-      key: "customSplit",
+      type: cellViewType.muiltSelect,
+      key: "titleLinkSplit",
+      label: label.title_link_split,
+      option: option.title_link_split,
+      bind: [["toTitleLink", 1]]
+    },
+    {
+      key: "customTitleSplit",
       type: cellViewType.input,
-      label: label.custom_split,
+      label: label.custom_title_split,
+      // 绑定了两个，一个是 switch，用 0 表示 false，一个是 select
+      bind: [
+        ["toTitleLink", 1],
+        ["titleLinkSplit", 0]
+      ],
       link
     }
   ],
@@ -63,25 +70,47 @@ const config: IConfig = {
   ]
 }
 
+const enum AutoDefPreset {
+  CustomExtract,
+  CustomTitleSplit
+}
+
+export const enum TitleLinkSplit {
+  Custom,
+  Default,
+  Punctuation
+}
+
 const util = {
   toTitleLink(text: string) {
-    const reg = /[、,，\[\]()（）\/【】「」《》«»]+|或者?|[简又]?称(之?为)?/g
-    const { customSplit } = self.profileTemp.regArray
-    const regs = customSplit ? customSplit[0] : []
-    regs.push(reg)
-    regs.forEach(reg => {
-      text = text.replace(reg, "😎")
-    })
-    const defs = text
+    if (!self.profile.anotherautodef.toTitleLink) return text
+    const regs: RegExp[] = []
+    const { titleLinkSplit } = self.profile.anotherautodef
+    const { customTitleSplit } = self.profileTemp.regArray
+    if (titleLinkSplit.includes(TitleLinkSplit.Custom) && customTitleSplit)
+      regs.push(...customTitleSplit[0])
+    if (titleLinkSplit.includes(TitleLinkSplit.Default))
+      regs.push(/或者?|[简又]?称(?:之?为)?/g)
+    if (titleLinkSplit.includes(TitleLinkSplit.Punctuation)) {
+      regs.push(/[、。,，‘’“”"『』()（）【】「」《》«»\/\[\]]/g)
+    }
+
+    const defs = regs
+      .reduce((acc, reg) => acc.replace(regFlag.add(reg, "g"), "😎"), text)
       .split("😎")
-      .filter(item => item)
-      .map(item => item.trim())
-    if (defs.length > 1) return unique(defs).join("; ")
-    else return false
+      // .map(k => k.trim())
+      // .filter(k => k)
+      // 这样只遍历一次
+      .reduce((acc, k) => {
+        k = k.trim()
+        if (k) acc.push(k)
+        return acc
+      }, [] as string[])
+    return defs.length > 1 ? unique(defs).join("; ") : text
   },
 
   getDefTitle(text: string) {
-    const { preset, onlyDesc, toTitleLink } = self.profile.anotherautodef
+    const { preset, onlyDesc } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
         case AutoDefPreset.CustomExtract: {
@@ -108,7 +137,7 @@ const util = {
             }
           break
         }
-        case AutoDefPreset.CustomSplit:
+        case AutoDefPreset.CustomTitleSplit:
           const { customDefLink } = self.profileTemp.regArray
           if (!customDefLink) continue
           const regs = customDefLink[0]
@@ -120,15 +149,15 @@ const util = {
               isReverse = true
             }
             if (reg.test(text)) {
-              let [def, desc] = text
-                .split(reg)
-                .map(item => item.trim())
-                .filter(k => k)
+              let [def, desc] = text.split(reg).reduce((acc, k) => {
+                k = k.trim()
+                if (k) acc.push(k)
+                return acc
+              }, [] as string[])
               // 交换顺序
               if (isReverse) [def, desc] = [desc, def]
-              const titleLink = util.toTitleLink(def)
               return {
-                title: toTitleLink && titleLink ? titleLink : def,
+                title: util.toTitleLink(def),
                 text: onlyDesc ? desc : text
               }
             }
@@ -147,13 +176,13 @@ const util = {
             /(?:通常|一般)*是指/
           ][set - 2]
           if (reg.test(text)) {
-            const [def, desc] = text
-              .split(reg)
-              .map(item => item.trim())
-              .filter(item => item)
-            const titleLink = util.toTitleLink(def)
+            const [def, desc] = text.split(reg).reduce((acc, k) => {
+              k = k.trim()
+              if (k) acc.push(k)
+              return acc
+            }, [] as string[])
             return {
-              title: toTitleLink && titleLink ? titleLink : def,
+              title: util.toTitleLink(def),
               text: onlyDesc ? desc : text
             }
           }
@@ -164,13 +193,13 @@ const util = {
         case 8: {
           const reg = [/[,，].*称之?为/, /(?:通常|一般)?被?称之?为/][set - 7]
           if (reg.test(text)) {
-            const [desc, def] = text
-              .split(reg)
-              .map(item => item.trim())
-              .filter(item => item)
-            const titleLink = util.toTitleLink(def)
+            const [desc, def] = text.split(reg).reduce((acc, k) => {
+              k = k.trim()
+              if (k) acc.push(k)
+              return acc
+            }, [] as string[])
             return {
-              title: toTitleLink && titleLink ? titleLink : def,
+              title: util.toTitleLink(def),
               text: onlyDesc ? desc : text
             }
           }
