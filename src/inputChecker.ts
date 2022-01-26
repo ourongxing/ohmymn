@@ -31,7 +31,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         break
       }
       case "mergeText":
-      case "customComplete":
+      case "customFill":
         reverseEscape(`"${escapeDoubleQuote(str)}"`)
         break
       case "changeColor": {
@@ -49,7 +49,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
       }
       case "customDefLink":
       case "customBeTitle":
-      case "customSplit": {
+      case "customTitleSplit": {
         const res = getMNLinkValue(str)
         if (!res) throw ""
         string2RegArray(res)

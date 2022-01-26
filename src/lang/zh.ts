@@ -11,20 +11,12 @@ const dict = {
           "双击 Logo 打开面板",
           "双击面板关闭面板",
           "Action 执行完关闭面板"
-        ],
-        detect_update: [
-          "无",
-          "每天",
-          "每周一",
-          "每天仅签名版本",
-          "每周一仅签名版本"
         ]
       },
       label: {
         has_title_then: "标题存在，继续摘录",
         quick_switch: "插件快捷开关",
         profile: "选择配置文件",
-        detect_update: "自动检测更新",
         panel_position: "面板显示位置",
         panel_height: "面板显示高度",
         panle_control: "面板开启关闭",
@@ -36,11 +28,6 @@ const dict = {
         profile: "【当前文档生效】可用于不同情景",
         has_title_then: "如果可以转为标题，则",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
-      },
-      detect_update: {
-        tip: (time: string, version: string, signed: boolean) =>
-          `${time} 更新，版本：${version}\n是否签名：${signed ? "是" : "否"}`,
-        check_update: "查看更新"
       }
     },
     gesture: {
@@ -56,13 +43,15 @@ const dict = {
       label: {
         only_desc: "摘录仅保留定义项",
         to_title_link: "别名转为标题链接",
-        custom_split: "自定义别名分词，点击查看具体格式",
         preset: "选择需要的预设",
+        title_link_split: "选择别名分词",
+        custom_title_split: "自定义别名分词，点击查看具体格式",
         custom_def_link: "自定义定义联项，点击查看具体格式",
         custom_extract_title: "自定义提取内容，点击查看具体格式",
         extract_title: "从卡片中提取标题"
       },
       option: {
+        title_link_split: ["自定义", "默认", "标点符号"],
         preset: [
           "自定义提取内容",
           "自定义定义联项",
@@ -165,11 +154,13 @@ const dict = {
       intro: "补全单词词形，只支持动词和名词",
       link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca",
       label: {
-        custom_complete: "自定义摘录填充信息，点击查看支持变量",
+        fill_word_info: "填充单词信息",
+        custom_fill: "自定义单词填充信息，点击查看支持变量",
         complete_selected: "补全单词词形"
       },
       option: {
-        complete_selected: ["仅补全单词词形", "同时填充单词信息"]
+        complete_selected: ["仅补全单词词形", "同时填充单词信息"],
+        fill_word_info: ["不填充", "自定义", "中文含义"]
       },
       error: {
         not_find_word: "查询不到该单词",
@@ -180,7 +171,7 @@ const dict = {
       intro: "更强大的自动转换标题插件",
       link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
       option: {
-        preset: ["自定义", "字数限制", "不含有点号"],
+        preset: ["自定义", "根据字数", "不含有点号"],
         switch_title: ["切换为不存在的", "交换标题和摘录"]
       },
       label: {
@@ -260,10 +251,7 @@ const dict = {
     },
     more: {
       donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
-      github:
-        "ohmymn 完全开源，容易扩展，欢迎参与开发。点击直达 Github 查看源码。",
-      feishu:
-        "点击加入飞书讨论群，一起交流 ohmymn 使用技巧，我会不定期为大家解决疑问。"
+      mn5: "由于 MN5 会重新设计插件系统，在 MN5 发布前 ohmymn 将不再更新。"
     }
   },
   handle_received_event: {

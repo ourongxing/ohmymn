@@ -1,4 +1,4 @@
-import settingViewControllerInst from "settingViewController/main"
+import settingViewControllerInst from "settingViewController"
 import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
@@ -9,8 +9,6 @@ import lang from "lang"
 import { dataSourcePreset } from "synthesizer"
 import { deepCopy } from "utils"
 import { UIWindow } from "types/UIKit"
-import { util as ohmymn } from "modules/ohmymn"
-import { MN } from "const"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -77,7 +75,6 @@ const documentDidOpen = (docmd5: string) => {
     readProfile(Range.First, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
       self.profile.ohmymn.screenAlwaysOn
-    ohmymn.detectUpdate()
   }
   console.log("打开文档", "lifeCycle")
   self.docMD5 = docmd5

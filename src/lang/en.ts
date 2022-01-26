@@ -13,20 +13,12 @@ const dict: Dict = {
           "Double Click Logo Open Panel",
           "Double Click Panel to Close",
           "Close Panel after Action"
-        ],
-        detect_update: [
-          "Never",
-          "Everyday",
-          "Every Monday",
-          "Everyday for Signed Vers.",
-          "Every Monday for Signed Vers."
         ]
       },
       label: {
         has_title_then: "Excerpt While Title Exist",
         quick_switch: "Quick Switch",
         profile: "Choose Profile",
-        detect_update: "Auto Detect Update",
         panel_position: "Panel Position",
         panel_height: "Panel Height",
         panle_control: "Panel ON and OFF",
@@ -40,13 +32,6 @@ const dict: Dict = {
         has_title_then: "If can be turned into a title, then",
         auto_correct:
           "[Current Document Takes Effect]\nAfter opening, it will be processed after auto-correction"
-      },
-      detect_update: {
-        tip: (time: string, version: string, signed: boolean) =>
-          `${time} update，version: ${version}\n whether signed: ${
-            signed ? "Yes" : "No"
-          }`,
-        check_update: "Check for updates"
       }
     },
     gesture: {
@@ -62,7 +47,9 @@ const dict: Dict = {
       label: {
         only_desc: "Only Keep Definiens",
         to_title_link: "Convert Alias To Title Link",
-        custom_split: "Customize alias participle, click for  specific format",
+        custom_title_split:
+          "Customize alias participle, click for  specific format",
+        title_link_split: "Select Alias Participle",
         preset: "Select Presets",
         custom_def_link:
           "Customize connective of definition, click for  the specific format",
@@ -71,6 +58,7 @@ const dict: Dict = {
         extract_title: "Extract Title From Card"
       },
       option: {
+        title_link_split: ["Custom", "Default", "Punctuation"],
         preset: [
           "Custom Extraction",
           "Custom Connective of Definition",
@@ -122,7 +110,7 @@ const dict: Dict = {
       link: "https://www.notion.so/huangkewei/AutoStandrize-ec4986eff67744d4b2a045a283267b99",
       option: {
         preset: [
-          "Customization",
+          "Custom",
           "Delete All Spaces",
           "Half Width To Double Width",
           "Add Space Between Chinese&English", // Todo: 是否需要修改
@@ -148,7 +136,7 @@ const dict: Dict = {
       intro: "Automatically replace errors in excerpts",
       link: "https://www.notion.so/huangkewei/AutoReplace-1cf1399ed90e4fc7a3e16843d37f2a56", //Todo:修改英文版Notion
       option: {
-        preset: ["Customization"],
+        preset: ["Custom"],
         replace_selected: ["Use AutoReplace Configuration", "Confirm"]
       },
       help: {
@@ -167,7 +155,7 @@ const dict: Dict = {
       link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882", //Todo:修改英文版Notion
       option: {
         preset: [
-          "Customization",
+          "Custom",
           "Multiple Choice",
           "Number at the beginning of the sentence",
           "Semicolon at the end of the sentence",
@@ -189,11 +177,13 @@ const dict: Dict = {
       intro: "Complete word form. Only support verbs and nouns",
       link: "https://www.notion.so/huangkewei/AutoComplete-3b9b27baef8f414cb86c454a6128b608", //Todo:修改英文版Notion
       label: {
-        custom_complete:
+        fill_word_info: "Fill Word Info",
+        custom_fill:
           "Custom excerption filling template, click for  support variables",
         complete_selected: "Complete Word Form"
       },
       option: {
+        fill_word_info: ["None", "Custom", "Chinese"],
         complete_selected: [
           "Only complete word form",
           "Fill the word information as well"
@@ -209,7 +199,7 @@ const dict: Dict = {
       intro: "More powerful Autotitle",
       link: "https://www.notion.so/huangkewei/AnotherAutoTitle-bdd09b713c844a82aeea1c0d3bd4cb48", //Todo:修改英文版Notion
       option: {
-        preset: ["Customization", "Word Count Limit", "Do not Contain Dots"],
+        preset: ["Custom", "Word Count", "Do not Contain Dots"],
         switch_title: ["Switch to Another", "Swap Titles and Excerpts"]
       },
       label: {
@@ -230,7 +220,7 @@ const dict: Dict = {
       intro: "Auto Add Tags",
       link: "https://www.notion.so/huangkewei/AutoTag-9e0bb2106d984ded8c29e781b53a1c23",
       option: {
-        preset: ["Customization"],
+        preset: ["Custom"],
         tag_selected: ["Use AutoTag Configuration", "Confirm"]
       },
       label: {
@@ -297,10 +287,7 @@ const dict: Dict = {
     more: {
       donate:
         "If you want to help me out, please click and go directly to the QR code.",
-      github:
-        "ohmymn is completely open source, easy to extend, welcome to participate in development. Click to go directly to Github and view the source code.",
-      feishu:
-        "Click to join the Feishu Group to exchange ohmymn usage skills. I will solve your questions from time to time."
+      mn5: "Since MarginNote5 will redesign the addon system, ohmymn will not be updated until MN5 is released."
     }
   },
   handle_received_event: {

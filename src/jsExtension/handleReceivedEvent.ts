@@ -51,12 +51,6 @@ const onSwitchChange: eventHandler = sender => {
 const onSelectChange: eventHandler = async sender => {
   if (!isThisWindow(sender)) return
   const { name, key, selections } = sender.userInfo
-  // 调试 Gesture
-  // const [sec, row] = dataSourceIndex.magicaction[actionKey[selections[0]].key]
-  // await handleMagicAction(
-  //   <IRowButton>self.dataSource[sec].rows[row],
-  //   actionKey[selections[0]].option
-  // )
   if (key == "profile") {
     const lastProfileNum = self.docProfile.ohmymn.profile[0]
     self.docProfile.ohmymn.profile = selections

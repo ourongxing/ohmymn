@@ -49,17 +49,12 @@ const more: ISection = {
     },
     {
       type: cellViewType.plainText,
-      label: lang.module.more.github,
-      link: "https://github.com/mnaddon/ohmymn"
+      label: lang.module.more.mn5,
+      link: ""
     },
     {
       type: cellViewType.plainText,
-      label: lang.module.more.feishu,
-      link: "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b48nfc45-22ff-4a3f-a1e3-f0f84c50db53"
-    },
-    {
-      type: cellViewType.plainText,
-      label: "\n\n\n\n\n",
+      label: "\n\n\n\n\n\n\n\n",
       link: ""
     }
   ]

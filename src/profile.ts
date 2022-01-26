@@ -2,8 +2,7 @@ import {
   PanelHeight,
   PanelPosition,
   HasTitleThen,
-  PanelControl,
-  DetectUpdate
+  PanelControl
 } from "modules/ohmymn"
 import { AutoTitlePreset } from "modules/anotherautotitle"
 import { AutoListPreset } from "modules/autolist"
@@ -13,6 +12,8 @@ import { AutoStylePreset } from "modules/autostyle"
 import { AutoTagPreset } from "modules/autotag"
 import { QuickSwitch } from "synthesizer"
 import { ReplaceParam } from "utils/input"
+import { TitleLinkSplit } from "modules/anotherautodef"
+import { FillWordInfo } from "modules/autocomplete"
 
 const profilePreset = {
   ohmymn: {
@@ -22,11 +23,7 @@ const profilePreset = {
     hasTitleThen: [HasTitleThen.ExpertText],
     panelControl: [] as PanelControl[],
     panelPosition: [PanelPosition.Auto],
-    panelHeight: [PanelHeight.Standard],
-    detectUpdate: [DetectUpdate.None],
-    detectUpdateInfo: {
-      day: new Date().getDay()
-    }
+    panelHeight: [PanelHeight.Standard]
   },
   gesture: {
     // 单选不允许为空，一般设置一个选项为空
@@ -40,7 +37,8 @@ const profilePreset = {
     muiltBarSwipeLeft: [0]
   },
   autocomplete: {
-    customComplete: "{{zh}}"
+    fillWordInfo: [FillWordInfo.None],
+    customFill: "{{zh}}"
   },
   autostandardize: {
     preset: [] as AutoStandardizePreset[],
@@ -57,7 +55,8 @@ const profilePreset = {
     preset: [] as number[],
     onlyDesc: false,
     toTitleLink: false,
-    customSplit: "",
+    titleLinkSplit: [TitleLinkSplit.Default],
+    customTitleSplit: "",
     customDefLink: "",
     customExtractTitle: ""
   },
@@ -102,7 +101,7 @@ const profileTempPreset = {
     customStandardize: [{}] as ReplaceParam[] | undefined
   },
   regArray: {
-    customSplit: [[]] as RegExp[][] | undefined,
+    customTitleSplit: [[]] as RegExp[][] | undefined,
     customBeTitle: [[]] as RegExp[][] | undefined,
     customDefLink: [[]] as RegExp[][] | undefined
   }
