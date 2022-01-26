@@ -26,13 +26,13 @@ const config: IConfig = {
     {
       key: "showArea",
       type: cellViewType.switch,
-      bind: ["preset", 0],
+      bind: [["preset", 0]],
       label: label.show_area
     },
     {
       key: "wordCountArea",
       type: cellViewType.input,
-      bind: ["preset", 0],
+      bind: [["preset", 0]],
       label: label.word_count_area
     },
     {

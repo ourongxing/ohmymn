@@ -26,7 +26,7 @@ export const enum cellViewType {
 interface LabelType {
   type: cellViewType
   label: string
-  bind?: [string, number]
+  bind?: [string, number][]
 }
 
 interface KeyLabelType extends LabelType {
@@ -62,7 +62,6 @@ export interface ISettingSelect extends ISettingBasic {
 
 export interface ISettingSwitch extends ISettingBasic {
   type: cellViewType.switch
-  bind?: [string, number]
 }
 
 export type IAction = IRowButton

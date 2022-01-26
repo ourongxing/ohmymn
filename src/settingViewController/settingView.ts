@@ -39,22 +39,27 @@ const tableViewTitleForHeaderInSection = (
   return _isModuleOFF(header) ? new NSNull() : header
 }
 
-// bind 的对象并没有选中，则该选项隐藏
-const _isBindOFF = (bind: [string, number], header: string) => {
-  const [key, index] = bind
-  const [secIndex, rowIndex] = dataSourceIndex?.[header.toLowerCase()]?.[key]
-  const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-  // 输入的key找不到就显示
-  if (!row) return false
-  // row 有两种类型，switch 和 select
-  if (row.type === cellViewType.switch)
-    return row.status !== (index ? true : false)
-  else if (
-    row.type === cellViewType.select ||
-    row.type === cellViewType.muiltSelect
-  )
-    return !row.selections.includes(index)
-  return true
+// bind 的对象只要有一个不符合要求，就隐藏
+const _isBindOFF = (bindArr: [string, number][], header: string) => {
+  return !bindArr.every(bind => {
+    const [key, index] = bind
+    const [secIndex, rowIndex] = dataSourceIndex?.[header.toLowerCase()]?.[key]
+    const row = self.dataSource?.[secIndex].rows?.[rowIndex]
+    // 输入的key找不到就显示
+    if (!row) {
+      console.error(`bind key 输入错误：${key}`)
+      return true
+    }
+    // row 有两种类型，switch 和 select
+    if (row.type === cellViewType.switch)
+      return row.status === (index ? true : false)
+    else if (
+      row.type === cellViewType.select ||
+      row.type === cellViewType.muiltSelect
+    )
+      return row.selections.includes(index)
+    return false
+  })
 }
 
 const tableViewHeightForRowAtIndexPath = (

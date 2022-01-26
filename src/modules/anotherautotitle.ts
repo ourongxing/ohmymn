@@ -20,14 +20,14 @@ const config: IConfig = {
     {
       key: "wordCount",
       type: cellViewType.input,
-      bind: ["preset", 1],
+      bind: [["preset", 1]],
       label: label.word_count
     },
     {
       key: "customBeTitle",
       type: cellViewType.input,
       label: label.custom_be_title,
-      bind: ["preset", 0],
+      bind: [["preset", 0]],
       link
     },
     {

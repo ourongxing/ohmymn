@@ -21,7 +21,7 @@ const config: IConfig = {
       key: "customTag",
       type: cellViewType.input,
       label: label.custom_tag,
-      bind: ["preset", 0],
+      bind: [["preset", 0]],
       link
     }
   ],
