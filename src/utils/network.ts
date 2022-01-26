@@ -43,7 +43,7 @@ const initRequest = (
   )
   if (options.body)
     request.setHTTPBody(
-      NSJSONSerialization.dataWithJSONObject(
+      NSJSONSerialization.dataWithJSONObjectOptions(
         options.body,
         NSJSONWritingOptions.SortedKeys
       )

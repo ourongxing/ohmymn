@@ -17,7 +17,7 @@ declare global {
       obj: WrapperObj<any>,
       data: NSJSONReadingOptions
     ): WrapperObj<any>
-    static dataWithJSONObject(
+    static dataWithJSONObjectOptions(
       obj: WrapperObj<any>,
       options: NSJSONWritingOptions
     ): NSData
