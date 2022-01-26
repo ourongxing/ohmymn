@@ -15,9 +15,16 @@ const config: IConfig = {
   link,
   settings: [
     {
-      key: "customComplete",
+      key: "fillWordInfo",
+      type: cellViewType.select,
+      option: option.fill_word_info,
+      label: label.fill_word_info
+    },
+    {
+      key: "customFill",
       type: cellViewType.input,
-      label: label.custom_complete,
+      label: label.custom_fill,
+      bind: [["fillWordInfo", 1]],
       link
     }
   ],
@@ -29,6 +36,12 @@ const config: IConfig = {
       option: option.complete_selected
     }
   ]
+}
+
+export const enum FillWordInfo {
+  None,
+  Custom,
+  Chinese
 }
 
 type Dict = {
@@ -64,11 +77,17 @@ const util = {
 
   getWordEx(lemma: string, ex: string): string {
     // s:demands/p:demanded/i:demanding/d:demanded/3:demands
-    const arr = ex
-      .split(/\//)
-      .filter(item => !/[01]:/.test(item))
-      .map(item => item.slice(2))
-    return [...new Set([lemma, ...arr])].join("; ")
+    const arr = ex.split(/\//).reduce(
+      (acc, k) => {
+        if (!/[01]:/.test(k)) {
+          const word = k.slice(2)
+          if (!acc.includes(word)) acc.push(word)
+        }
+        return acc
+      },
+      [lemma]
+    )
+    return arr.join("; ")
   },
 
   getTag(str: string) {
@@ -89,62 +108,70 @@ const util = {
   getCollinsStar(num: number) {
     return "⭐".repeat(num)
   },
+  getFillInfo(info: Dict) {
+    const { customFill, fillWordInfo } = self.profile.autocomplete
+    if (
+      fillWordInfo[0] === FillWordInfo.None ||
+      (fillWordInfo[0] === FillWordInfo.Custom && !customFill)
+    )
+      return ""
+    const template =
+      fillWordInfo[0] === FillWordInfo.Custom
+        ? reverseEscape(`"${escapeDoubleQuote(customFill)}"`)
+        : "{{zh}}"
+
+    // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
+    const vars = {
+      word: info.word,
+      phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
+      tag: isOCNull(info.tag) ? "" : this.getTag(info.tag),
+      collins: isOCNull(info.collins)
+        ? ""
+        : this.getCollinsStar(Number(info.collins)),
+      en: isOCNull(info.definition) ? "" : info.definition,
+      zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
+    }
+    const varsReg = `(?:${Object.keys(vars).join("|")})`
+    const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
+    const bracketReg = new RegExp(
+      `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
+      "g"
+    )
+    const text = template
+      .replace(
+        bracketReg,
+        (match: string, bracket: string, brace: keyof typeof vars) =>
+          /**
+           * ((星级：{{collins}}))
+           * bracket (())  星级：{{collins}}
+           * brace {{}}   collins
+           */
+          vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
+      )
+      .replace(braceReg, (match: string, brace: keyof typeof vars) =>
+        vars[brace] ? vars[brace] : ""
+      )
+      .replace(/^\s*[\r\n]/gm, "")
+    // 优化一下格式
+    return pangu.spacing(pangu.toFullwidth(text))
+  },
   async getCompletedWord(text: string) {
     try {
       if (!isHalfWidth(text) || countWord(text) != 1) throw "不是单词"
-      text = text.toLowerCase()
-      let title = text
-      let info = await this.getWordInfo(text)
+      let title = text.toLowerCase()
+      let info = await this.getWordInfo(title)
       if (info.exchange) {
         const ex = info.exchange
-        const lemma = ex.replace(/^0:(\w*).*$/, "$1")
+        const lemma = ex.replace(/^0:(\w+).*$/, "$1")
         if (lemma != ex) {
-          text = lemma
+          title = lemma
           info = await this.getWordInfo(lemma)
         }
-        title = this.getWordEx(text, info.exchange!)
-      }
-
-      // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
-      const vars = {
-        word: text,
-        phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
-        tag: isOCNull(info.tag) ? "" : this.getTag(info.tag),
-        collins: isOCNull(info.collins)
-          ? ""
-          : this.getCollinsStar(Number(info.collins)),
-        en: isOCNull(info.definition) ? "" : info.definition,
-        zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
-      }
-      const { customComplete } = self.profile.autocomplete
-      if (customComplete) {
-        const varsReg = `(?:${Object.keys(vars).join("|")})`
-        const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
-        const bracketReg = new RegExp(
-          `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
-          "g"
-        )
-        const template = reverseEscape(`"${escapeDoubleQuote(customComplete)}"`)
-        text = template
-          .replace(
-            bracketReg,
-            (match: string, bracket: string, brace: keyof typeof vars) =>
-              /**
-               * ((星级：{{collins}}))
-               * bracket (())  星级：{{collins}}
-               * brace {{}}   collins
-               */
-              vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
-          )
-          .replace(braceReg, (match: string, brace: keyof typeof vars) =>
-            vars[brace] ? vars[brace] : ""
-          )
-          .replace(/^\s*[\r\n]/gm, "")
-        text = pangu.toFullwidth(pangu.spacing(text))
+        title = this.getWordEx(title, info.exchange!)
       }
       return {
         title,
-        text
+        text: this.getFillInfo(info)
       }
     } catch (error) {
       console.log(error, "autocomplete")
