@@ -1,9 +1,9 @@
-import implementDatasourceMethod from "./implementDatasourceMethod"
+import settingView from "./settingView"
 import handleUserAction from "./handleUserAction"
 import lifeCycle from "./lifeCycle"
 const inst = {
   ...lifeCycle,
-  ...implementDatasourceMethod,
+  ...settingView,
   ...handleUserAction
 }
 

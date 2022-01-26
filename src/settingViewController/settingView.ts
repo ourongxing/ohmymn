@@ -1,4 +1,4 @@
-import { moduleList } from "synthesizer"
+import { dataSourceIndex, moduleList } from "synthesizer"
 import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
@@ -6,50 +6,29 @@ import { UITableView } from "types/UIKit"
 import { byteLength, isHalfWidth, SerialNumber } from "utils/text"
 import lang from "lang"
 
-const indexPath2tag = (indexPath: NSIndexPath): number =>
+// _开头表示是普通函数，不会作为 OC 对象的实例方法。
+const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
-
-const getSelections = (rows: IRow[], key: string) => {
-  const index = rows.findIndex(
-    _row =>
-      (_row.type == cellViewType.muiltSelect ||
-        _row.type == cellViewType.select) &&
-      _row.key == key
-  )
-  if (index == -1) {
-    console.error("bind key 输入错误")
-    return null
-  }
-  return (rows[index] as IRowSelect).selections
-}
-
-const isSelected = (header: string): boolean => {
-  const quickSwitch = getSelections(
-    self.dataSource[1].rows,
-    "quickSwitch"
-  ) as number[]
-  return (
-    !moduleList.includes(header) ||
-    quickSwitch.includes(moduleList.findIndex(key => key == header))
-  )
-}
-
-const isHidden = (bind: [string, number], rows: IRow[]) => {
-  const [key, index] = bind
-  const selections = getSelections(rows, key)
-  if (!selections || !selections.includes(index)) return true
-  return false
-}
 
 const numberOfSectionsInTableView = (tableView: UITableView) =>
   self.dataSource.length
+
+// 模块未启用，则菜单隐藏
+const _isModuleOFF = (header: string): boolean => {
+  const [sec, row] = dataSourceIndex.ohmymn.quickSwitch
+  const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
+  return (
+    moduleList.includes(header) &&
+    !quickSwitch.includes(moduleList.findIndex(key => key === header))
+  )
+}
 
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
 ) => {
   const { header } = self.dataSource[section]
-  return isSelected(header) ? self.dataSource[section].rows.length : 0
+  return _isModuleOFF(header) ? 0 : self.dataSource[section].rows.length
 }
 
 const tableViewTitleForHeaderInSection = (
@@ -57,16 +36,34 @@ const tableViewTitleForHeaderInSection = (
   section: number
 ) => {
   const { header } = self.dataSource[section]
-  return isSelected(header) ? header : new NSNull()
+  return _isModuleOFF(header) ? new NSNull() : header
+}
+
+// bind 的对象并没有选中，则该选项隐藏
+const _isBindOFF = (bind: [string, number], header: string) => {
+  const [key, index] = bind
+  const [secIndex, rowIndex] = dataSourceIndex?.[header.toLowerCase()]?.[key]
+  const row = self.dataSource?.[secIndex].rows?.[rowIndex]
+  // 输入的key找不到就显示
+  if (!row) return false
+  // row 有两种类型，switch 和 select
+  if (row.type === cellViewType.switch)
+    return row.status !== (index ? true : false)
+  else if (
+    row.type === cellViewType.select ||
+    row.type === cellViewType.muiltSelect
+  )
+    return !row.selections.includes(index)
+  return true
 }
 
 const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows } = self.dataSource[indexPath.section]
+  const { rows, header } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
-  if (row.bind && isHidden(row.bind, rows)) return 0
+  if (row.bind && _isBindOFF(row.bind, header)) return 0
   if (row.type === cellViewType.plainText) {
     // 每行大约可以容纳 45 个半角字符
     const byte = byteLength(row.label)
@@ -81,7 +78,7 @@ const tableViewCellForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows } = self.dataSource[indexPath.section]
+  const { rows, header } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText: {
@@ -89,7 +86,8 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "PlainTextCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.opaque = false
       cell.textLabel.textAlignment = 0
@@ -106,7 +104,8 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "ButtonCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
@@ -123,7 +122,8 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "SwitchCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
@@ -133,7 +133,7 @@ const tableViewCellForRowAtIndexPath = (
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
-      view.tag = indexPath2tag(indexPath)
+      view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
     }
@@ -142,7 +142,8 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inlineInputCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
@@ -154,7 +155,7 @@ const tableViewCellForRowAtIndexPath = (
       view.autoresizingMask = 1 << 0
       // 传入位置，不要直接传入 indexPath，以及设置 indexPath 属性
       // 唯一值，建议加一个较大数
-      view.tag = indexPath2tag(indexPath)
+      view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
     }
@@ -163,13 +164,14 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inputCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.selectionStyle = 0
       const view = initCellView.input(row.content ?? "")
       view.autoresizingMask = 1 << 0
-      view.tag = indexPath2tag(indexPath)
+      view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
     }
@@ -179,7 +181,8 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "selectCellID"
       )
-      if (!MN.isMac && row.bind && isHidden(row.bind, rows)) cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+        cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
@@ -195,7 +198,7 @@ const tableViewCellForRowAtIndexPath = (
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
-      view.tag = indexPath2tag(indexPath)
+      view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
     }

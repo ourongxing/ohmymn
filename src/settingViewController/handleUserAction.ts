@@ -7,7 +7,7 @@ import { byteLength } from "utils/text"
 import lang from "lang"
 import { QuickSwitch } from "synthesizer"
 
-const tag2indexPath = (tag: number): NSIndexPath =>
+const _tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
     (tag - 999) % 100,
     (tag - 999 - ((tag - 999) % 100)) / 100
@@ -32,7 +32,7 @@ const tableViewDidSelectRowAtIndexPath = async (
 }
 
 const textFieldShouldReturn = (sender: UITextField) => {
-  const indexPath: NSIndexPath = tag2indexPath(sender.tag)
+  const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
   let text = sender.text.trim()
@@ -54,10 +54,11 @@ const textFieldShouldReturn = (sender: UITextField) => {
 }
 
 const switchChange = (sender: UISwitch) => {
-  const indexPath: NSIndexPath = tag2indexPath(sender.tag)
+  const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
   row.status = sender.on ? true : false
+  self.tableView.reloadData()
   postNotification(Addon.key + "SwitchChange", {
     name: section.header.toLowerCase(),
     key: row.key,
@@ -142,7 +143,7 @@ const selectAction = async (param: {
 }
 
 const clickSelectButton = (sender: UIButton) => {
-  const indexPath: NSIndexPath = tag2indexPath(sender.tag)
+  const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   const menuController = MenuController.new()

@@ -4,19 +4,12 @@ import { StudyController } from "./MarginNote"
 import { MbBookNote } from "./MarginNote/MbBookNote"
 import { UIWindow, UITableView, UITableViewController } from "./UIKit"
 
-interface LabelType {
-  type: cellViewType
-  label: string
-  bind?: [string, number]
-}
-
-interface KeyLabelType extends LabelType {
-  key: string
-}
-
-interface ISettingBasic extends KeyLabelType {
-  help?: string
+export interface IConfig {
+  name: string
+  intro: string
   link?: string
+  settings: ISetting[]
+  actions: IAction[]
 }
 
 export const enum cellViewType {
@@ -30,12 +23,19 @@ export const enum cellViewType {
   muiltSelect = 7
 }
 
-export interface IConfig {
-  name: string
-  intro: string
+interface LabelType {
+  type: cellViewType
+  label: string
+  bind?: [string, number]
+}
+
+interface KeyLabelType extends LabelType {
+  key: string
+}
+
+interface ISettingBasic extends KeyLabelType {
+  help?: string
   link?: string
-  settings: ISetting[]
-  actions: IAction[]
 }
 
 export type ISetting =
