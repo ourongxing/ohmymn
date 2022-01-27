@@ -79,7 +79,8 @@ const dict = {
       help: {
         filter_cards: "注意事项及具体输入格式见顶上帮助信息",
         merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-        rename_title: "注意事项及具体输入格式见顶上帮助信息",
+        rename_title:
+          "现在可以分层进行编号，注意事项及具体输入格式见顶上帮助信息",
         manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
       },
       label: {
@@ -91,7 +92,9 @@ const dict = {
       },
       hud: {
         is_clicked: "您需要的卡片已选中，请继续操作",
-        none_card: "未找到符合的卡片"
+        none_card: "未找到符合的卡片",
+        disable_smart_select:
+          "使用分层编号请确保选中的每张卡片都有子节点，请勿使用智能选择"
       }
     },
     autostandardize: {
@@ -265,6 +268,7 @@ const dict = {
     smart_select: {
       option: [
         "仅处理选中的卡片",
+        "仅处理第一层级子节点",
         "仅处理所有子节点",
         "处理选中的卡片及其子节点"
       ],

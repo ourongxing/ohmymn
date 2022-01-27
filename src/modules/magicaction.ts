@@ -1,4 +1,4 @@
-import { addTags, getAllText } from "utils/note"
+import { addTags, getAllText, getNodeTree } from "utils/note"
 import {
   escapeDoubleQuote,
   reverseEscape,
@@ -10,6 +10,7 @@ import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import { textComment } from "types/MarginNote"
 import lang from "lang"
 import { unique } from "utils"
+import { SerialCode } from "utils/text"
 
 const { help, option, intro, label, link, hud } = lang.module.magicaction
 
@@ -72,18 +73,24 @@ const enum MergeText {
 
 const util = {
   genCharArray(char: string, len: number, step: number = 1): string[] {
+    const serialCode = Object.values(SerialCode).filter(k =>
+      k.includes(char)
+    )[0]
+    if (!serialCode) throw ""
     const charArr = []
-    let start = char.charCodeAt(0)
-    const end = start + len * step - 1
-    for (let i = start; i <= end; i = i + step) {
-      charArr.push(String.fromCharCode(i))
+    const startIndex = serialCode.search(char)
+    for (
+      let i = startIndex, end = startIndex + len * step - 1;
+      i <= end;
+      i = i + step
+    ) {
+      charArr.push(serialCode[i % serialCode.length])
     }
     return charArr
   },
   genNumArr(num: number, len: number, step = 1, digit = 0) {
     const numArr = []
-    const end = num + len * step - 1
-    for (let i = num; i <= end; i = i + step) {
+    for (let i = num, end = num + len * step - 1; i <= end; i = i + step) {
       numArr.push(String(i).padStart(digit, "0"))
     }
     return numArr
@@ -97,22 +104,61 @@ const util = {
     ) as [string, string, ...string[]] | [string, number] | [string]
     const len = serialArr.length
     if (len == 0 || typeof serialArr[0] !== "string") throw ""
-    else if (len == 1 || (len == 2 && typeof serialArr[1] == "number")) {
+    if (len == 1 || (len == 2 && typeof serialArr[1] == "number")) {
       const step = len == 1 ? 1 : (serialArr[1] as number)
-      const first = serialArr[0]
-      // 字母有大写和小写
-      if (/^[A-Za-z]$/.test(first)) {
-        const serial = this.genCharArray(first, length, step)
-        return serial.map(k => newSubStr.replace(/%\[(.*)\]/, k))
-      } // 数字要补零
-      else if (!isNaN(Number(first))) {
-        const serial = this.genNumArr(Number(first), length, step, first.length)
-        return serial.map(k => newSubStr.replace(/%\[(.*)\]/, k))
-      } else throw ""
+      const startValue = serialArr[0]
+      // 如果是数字
+      if (/^[0-9]+$/.test(startValue))
+        return this.genNumArr(
+          Number(startValue),
+          length,
+          step,
+          startValue.length
+        )
+      // 如果是其他字符，一个字节
+      else if (startValue.length === 1)
+        return this.genCharArray(startValue, length, step)
+      else throw ""
     } // 自定义替换字符，数组元素长度大于 1，如果长度为 2，则第二个为字符串
     else if (len > 1 && serialArr.every(k => typeof k == "string"))
-      return (serialArr as string[]).map(k => newSubStr.replace(/%\[(.*)\]/, k))
+      return serialArr as string[]
     else throw ""
+  },
+  getSerialByIndex(startValue: string, index: number) {
+    if (/^[0-9]+$/.test(startValue)) return Number(startValue) + index
+    const serialCode = Object.values(SerialCode).filter(k =>
+      k.includes(startValue)
+    )[0]
+    if (!serialCode) throw ""
+    const len = serialCode.length
+    const startIndex = serialCode.search(startValue)
+    return serialCode[(startIndex + index) % len]
+  },
+  getLayerSerialInfo(newSubStr: string, treeIndex: number[][]) {
+    // 输入 ["1","2","3","."] 表示每一层的起始值，最后一个字符为连接符
+    const serialArr = reverseEscape(
+      newSubStr
+        .match(/#\[(.*)\]/g)![0]
+        .slice(1)
+        .replace(/'/g, '"')
+    ) as string[]
+    // 弹出最后一个字符，作为连接符号
+    const linkChar = serialArr.pop()
+    const len = serialArr.length
+    if (len == 0 || serialArr.some(serial => typeof serial !== "string"))
+      throw ""
+    // [[0],[1],[2],[2,0],[2,1],[2,1,1,1]]
+    return treeIndex.map(nodeIndex =>
+      nodeIndex
+        .map((index, _index) => {
+          return util.getSerialByIndex(
+            // 如果缺项就用最后一个启示项
+            serialArr[_index] ?? serialArr[len - 1],
+            index
+          )
+        })
+        .join(linkChar)
+    )
   }
 }
 
@@ -122,9 +168,32 @@ const action: IActionMethod = {
       ? content
       : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
     const { newSubStr, regexp } = string2ReplaceParam(content)[0]
+    // 分级序列命名
+    if (/#\[(.*)\]/.test(newSubStr)) {
+      // 确保每一个都有子节点
+      if (nodes.every(node => node?.childNotes?.length)) {
+        nodes.forEach(node => {
+          // 只处理子节点
+          const { treeIndex, onlyChildren } = getNodeTree(node)
+          const newTitles = util
+            .getLayerSerialInfo(newSubStr, treeIndex)
+            .map(k => newSubStr.replace(/#\[(.*)\]/, k))
+          onlyChildren.forEach((node, index) => {
+            const title = node.noteTitle ?? ""
+            if (newTitles[index])
+              node.noteTitle = title.replace(regexp, newTitles[index])
+          })
+        })
+      } else {
+        showHUD(hud.disable_smart_select, 2)
+        return
+      }
+    }
     // 如果含有序列信息，就把获取新的 replace 参数
-    if (/%\[(.*)\]/.test(newSubStr)) {
-      const newTitles = util.getSerialInfo(newSubStr, nodes.length)
+    else if (/%\[(.*)\]/.test(newSubStr)) {
+      const newTitles = util
+        .getSerialInfo(newSubStr, nodes.length)
+        .map(k => newSubStr.replace(/%\[(.*)\]/, k))
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
         if (newTitles[index])
@@ -150,11 +219,11 @@ const action: IActionMethod = {
       const linkComments: textComment[] = []
       while (node.comments.length) {
         const comment = node.comments[0]
-        if (
-          comment.type == "TextNote" &&
-          comment.text.includes("marginnote3app")
-        )
+
+        comment.type == "TextNote" &&
+          comment.text.includes("marginnote3app") &&
           linkComments.push(comment)
+
         node.removeCommentByIndex(0)
       }
       switch (option) {
@@ -196,13 +265,14 @@ const action: IActionMethod = {
     const titles = node.noteTitle ? [node.noteTitle] : []
     for (let i = 1; i < nodes.length; i++) {
       const title = nodes[i].noteTitle
-      if (title) titles.push(title)
+      title && titles.push(title)
       node.merge(nodes[i])
     }
     const len = node.comments.length
     // 从后往前删，索引不会乱
     node.comments.reverse().forEach((comment, index) => {
-      if (comment.type == "TextNote" && titles.includes(comment.text))
+      comment.type == "TextNote" &&
+        titles.includes(comment.text) &&
         node.removeCommentByIndex(len - index - 1)
     })
     if (option == MergeCards.MergeTitle)

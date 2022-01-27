@@ -89,7 +89,7 @@ const dict: Dict = {
         merge_text:
           "input delimiter. Please read the reference guide at the top for precautions and specific input formats.",
         rename_title:
-          "Reference guide for precuations and specific input formats is at the top.",
+          "Now it can be hierarchical numbered.Reference guide for precuations and specific input formats is at the top.",
         manage_profile:
           "It is forbidden to directly modify the configuration information, and the existing configuration will be overwritten after reading"
       },
@@ -102,7 +102,9 @@ const dict: Dict = {
       },
       hud: {
         is_clicked: "The card is selected, please continue",
-        none_card: "No matching cards found"
+        none_card: "No matching cards found",
+        disable_smart_select:
+          "Use hierarchical numbering to ensure that each selected card has a child node, do not use smart selection"
       }
     },
     autostandardize: {
@@ -303,8 +305,9 @@ const dict: Dict = {
     smart_select: {
       option: [
         "Process only selected cards",
+        "Process child nodes of first level",
         "Process all child nodes",
-        "Process child nodes and seected cards"
+        "Process child nodes and selected cards"
       ],
       card_with_children: "Detect only one selected card has child nodes",
       cards_with_children:

@@ -65,6 +65,8 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         const { regexp, newSubStr } = string2ReplaceParam(str)[0]
         "test".replace(regexp, newSubStr)
         if (/%\[.*\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
+        if (/#\[.*\]/.test(newSubStr))
+          magicaction.getLayerSerialInfo(newSubStr, [[1, 1, 1]])
         break
       }
       case "customTag":
