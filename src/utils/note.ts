@@ -1,7 +1,7 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
 import { postNotification } from "./common"
 import { MN } from "const"
-import { unique } from "utils"
+import { deepCopy, unique } from "utils"
 
 /**
  * 获取选中的卡片
@@ -9,24 +9,42 @@ import { unique } from "utils"
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] | undefined =
     MN.studyController().notebookController.mindmapView.selViewLst
-  if (MindMapNodes?.length) return MindMapNodes.map(item => item.note.note)
-  else return []
+  return MindMapNodes?.length ? MindMapNodes.map(item => item.note.note) : []
 }
 
 /**
- * 获取选中的卡片，包括子节点
+ * 获取整个卡片树，传入 node 必须含有子节点
  */
-const getSelectNodesAll = (onlyChildrenNode = false): MbBookNote[] => {
-  const nodes = getSelectNodes()
-  const allNodes: MbBookNote[] = []
-  const getChildren = (nodes: MbBookNote[], onlyChildrenNode = false) => {
-    nodes.forEach((node: MbBookNote) => {
-      if (!onlyChildrenNode) allNodes.push(node)
-      if (node.childNotes?.length) getChildren(node.childNotes)
+const getNodeTree = (node: MbBookNote) => {
+  const DFS = (
+    nodes: MbBookNote[],
+    level = 0,
+    lastIndex = [] as number[],
+    res = {
+      children: [] as MbBookNote[],
+      treeIndex: [] as number[][]
+    }
+  ) => {
+    level++
+    nodes.forEach((node, index) => {
+      res.children.push(node)
+      lastIndex = lastIndex.slice(0, level - 1)
+      lastIndex.push(index)
+      res.treeIndex.push(lastIndex)
+      node.childNotes?.length && DFS(node.childNotes, level, lastIndex, res)
     })
+    return res
   }
-  getChildren(nodes, onlyChildrenNode)
-  return allNodes
+  const { children, treeIndex } = DFS(node.childNotes!)
+  return {
+    // 只有子节点
+    onlyChildren: children,
+    // 只有第一层的子节点
+    onlyFirstLevel: node.childNotes!,
+    // 选中的卡片及其子节点
+    allNodes: [node, ...children],
+    treeIndex
+  }
 }
 
 /**
@@ -36,10 +54,9 @@ const excerptNotes = (node: MbBookNote): MbBookNote[] => {
   const notes: MbBookNote[] = [node]
   // 包括作为评论的摘录
   const comments = node.comments
-  for (const comment of comments) {
-    if (comment.type == "LinkNote")
-      notes.push(MN.db.getNoteById(comment.noteid)!)
-  }
+  comments.forEach(comment => {
+    comment.type == "LinkNote" && notes.push(MN.db.getNoteById(comment.noteid)!)
+  })
   return notes
 }
 
@@ -96,7 +113,7 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
 
 const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
   const textArr = []
-  if (note.excerptText)
+  note.excerptText &&
     textArr.push(
       highlight ? note.excerptText : note.excerptText.replace(/\*\*/g, "")
     )
@@ -105,10 +122,10 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
       case "TextNote":
       case "HtmlNote":
         const text = comment.text.trim()
-        if (text && !text.includes("marginnote3app")) textArr.push(text)
+        text && !text.includes("marginnote3app") && textArr.push(text)
         break
       case "LinkNote":
-        if (comment.q_htext) textArr.push(comment.q_htext.trim())
+        comment.q_htext && textArr.push(comment.q_htext.trim())
     }
   })
   return textArr.join(separator)
@@ -144,12 +161,12 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
     .map(tag => `#${tag}`)
     .join(" ")
 
-  if (tagLine) node.appendTextComment(tagLine)
+  tagLine && node.appendTextComment(tagLine)
 }
 
 export {
   getSelectNodes,
-  getSelectNodesAll,
+  getNodeTree,
   excerptNotes,
   getCommentIndex,
   getNotebookById,

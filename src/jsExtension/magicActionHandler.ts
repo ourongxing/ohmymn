@@ -8,7 +8,7 @@ import { UIAlertViewStyle } from "types/UIKit"
 import { popup, showHUD, HUDController } from "utils/common"
 import {
   getSelectNodes,
-  getSelectNodesAll,
+  getNodeTree,
   undoGroupingWithRefresh
 } from "utils/note"
 import { manageProfileAction } from "utils/profile"
@@ -72,7 +72,8 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
       return
     }
     const isHavingChildren = nodes.every(
-      node => nodes[0].parentNote == node.parentNote && node?.childNotes.length
+      node =>
+        nodes[0].parentNote === node.parentNote && node?.childNotes?.length
     )
     const { smart_select } = lang.magic_action_handler
     if (isHavingChildren) {
@@ -87,7 +88,19 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
           option: buttonIndex
         })
       )
-      nodes = [nodes, getSelectNodesAll(true), getSelectNodesAll()][option!]
+
+      if (option) {
+        const { onlyChildren, onlyFirstLevel, allNodes } = nodes
+          .slice(1)
+          .reduce((acc, node) => {
+            const { onlyChildren, onlyFirstLevel, allNodes } = getNodeTree(node)
+            acc.allNodes.push(...allNodes)
+            acc.onlyChildren.push(...onlyChildren)
+            acc.onlyFirstLevel.push(...onlyFirstLevel)
+            return acc
+          }, getNodeTree(nodes[0]))
+        nodes = [onlyFirstLevel, onlyChildren, allNodes][option - 1]
+      }
     }
   }
   if (content) content = content.trim()
