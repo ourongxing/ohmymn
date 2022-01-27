@@ -7,7 +7,7 @@ declare global {
       staticMembers?: object
     ): WrapperObj<any>
     static require(name: string): WrapperObj<any>
-    static log(format: string, arguments: Array<string>): void
+    static log(format: string, arguments: Array<string> | string): void
     static dump(object: WrapperObj<any>): void
     static newAddon(mainPath: string): any
   }

@@ -110,7 +110,7 @@ export class MbBookNote {
 
   readonly parentNote?: MbBookNote
   readonly linkedNotes: LinkedNote[]
-  readonly childNotes: MbBookNote[]
+  readonly childNotes?: MbBookNote[]
   /**
    * Array of summarized note-id
    */

@@ -3,7 +3,7 @@
  */
 const reverseEscape = (str: string) => JSON.parse(`{"key": ${str}}`).key
 const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
-const isNumber = (text: string) => !isNaN(Number(text))
+const isNumber = (text: string) => /^[0-9]+$/.test(text)
 
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1);(/sd/, "", 1)

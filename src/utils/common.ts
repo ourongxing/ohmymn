@@ -8,6 +8,10 @@ const console = {
   },
   error(obj: any, suffix = "error") {
     JSB.log(`${Addon.key}-${suffix} %@`, obj)
+  },
+  // 与真实意思无关，用于 stringify 对象
+  assert(obj: any, suffix = "normal") {
+    JSB.log(`${Addon.key}-${suffix} %@`, JSON.stringify(obj))
   }
 }
 

@@ -2,14 +2,14 @@ import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { excerptNotes, getNoteById } from "utils/note"
 import { MbBookNote } from "types/MarginNote"
-import { countWord, isHalfWidth, SerialNumber } from "utils/text"
+import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
 
 const { help, intro, option, label, link } = lang.module.autostyle
 
 const colors = option.color.map((color, index) =>
-  index ? SerialNumber.hollow_circle_number[index - 1] + " " + color : color
+  index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
 const config: IConfig = {
@@ -151,7 +151,7 @@ const util = {
           }
           break
         case AutoStylePreset.ColorFollowBrother:
-          const len = nodeNote.parentNote?.childNotes.length
+          const len = nodeNote.parentNote?.childNotes?.length
           if (len && len > 1) {
             res.color = nodeNote.parentNote.childNotes[0].colorIndex
             return res

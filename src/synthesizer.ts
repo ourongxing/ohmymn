@@ -11,7 +11,7 @@ import * as ohmymn from "modules/ohmymn"
 import * as gesture from "modules/gesture"
 import { cellViewType, IConfig, IRow, ISection } from "types/Addon"
 import lang from "lang"
-import { SerialNumber } from "utils/text"
+import { SerialCode } from "utils/text"
 
 // magicaction, ohmymn 默认前两个，不用包含在内
 const modules = [
@@ -134,7 +134,7 @@ export const genDataSource = (
   for (const row of dataSource[1].rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
       row.option = moduleList.map(
-        (value, index) => SerialNumber.hollow_circle_number[index] + " " + value
+        (value, index) => SerialCode.hollow_circle_number[index] + " " + value
       )
   }
 

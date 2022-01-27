@@ -3,7 +3,7 @@ import { cellViewType, IRow, IRowSelect } from "types/Addon"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { UITableView } from "types/UIKit"
-import { byteLength, isHalfWidth, SerialNumber } from "utils/text"
+import { byteLength, isHalfWidth, SerialCode } from "utils/text"
 import lang from "lang"
 
 // _开头表示是普通函数，不会作为 OC 对象的实例方法。
@@ -224,7 +224,7 @@ const initCellView = {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
     text = text.replace(
-      new RegExp(`^[\x20—${SerialNumber.hollow_circle_number}]+`),
+      new RegExp(`^[\x20—${SerialCode.hollow_circle_number}]+`),
       ""
     )
     view.setTitleForState(
