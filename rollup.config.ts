@@ -62,7 +62,8 @@ export default defineConfig({
         {
           "utils/common": ["console"]
         }
-      ]
+      ],
+      dts: false
     }),
     nodeResolve({ browser: true }),
     commonjs(),
