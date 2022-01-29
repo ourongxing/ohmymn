@@ -36,7 +36,8 @@ const config: IConfig = {
 }
 
 export const enum AutoListPreset {
-  Custom
+  Custom,
+  Letter
 }
 
 const util = {
@@ -57,9 +58,14 @@ const util = {
               : acc
           }, text)
           break
+        case AutoListPreset.Letter:
+          if (isHalfWidth(text)) continue
+          const param: [RegExp, string] = [/\s*([A-Za-z][.、，,])/g, "\n$1"]
+          const len = text.match(param[0])?.length
+          if (len && len > 1) text = text.replace(param[0], param[1])
+          break
         default: {
           const params: [RegExp, string][] = [
-            [/\s*([A-Za-z][.、，,])/g, "\n$1"],
             [
               new RegExp(
                 `\s*([其第]?[${SerialCode.chinese_number}]{1,2}[.、，,])|\s*([其第][${SerialCode.chinese_number}]{1,2}是?[.、，,]?)`,
@@ -72,7 +78,7 @@ const util = {
               "\n$1$2"
             ]
           ]
-          const param = params[set - 1]
+          const param = params[set - 2]
           const len = text.match(param[0])?.length
           if (len && len > 1) text = text.replace(param[0], param[1])
           break
