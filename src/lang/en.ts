@@ -153,26 +153,20 @@ const dict: Dict = {
     },
     autolist: {
       intro:
-        "For sequence text, automatic line wrapping, preset only for Chinese", //Todo: 需要修改
-      link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882", //Todo:修改英文版Notion
+        "For text with serial number, auto add line breaks. All presets need to meet a minimum of two serial numbers",
+      link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882",
       option: {
-        preset: [
-          "Custom",
-          "Multiple Choice",
-          "Number at the beginning of the sentence",
-          "Semicolon at the end of the sentence",
-          "Period at the end of the Sentence"
-        ], //Todo:需要修改
+        preset: ["Custom", "ABCD...", "一二三四...", "1234..."],
         list_selected: ["Use AutoList Configuration", "Confirm"]
       },
       help: {
         list_selected:
-          "For the specific input format, see the reference guide at the top"
+          "Add line breaks like list, For the specific input format, see the reference guide at the top"
       },
       label: {
         preset: "Select Presets",
         custom_list: "Customize. Click for specific formats",
-        list_selected: "Sequence Excerption Wrapping"
+        list_selected: "Add Line Breaks"
       }
     },
     autocomplete: {

@@ -17,7 +17,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
           input.length == 2 &&
           input.every(item => Number.isInteger(item))
         ) {
-        } else throw ""
+        } else throw "格式错误"
         break
       }
       case "wordCountArea": {
@@ -27,7 +27,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
           input.length == 3 &&
           input.every(item => Number.isInteger(item))
         ) {
-        } else throw ""
+        } else throw "格式错误"
         break
       }
       case "mergeText":
@@ -36,8 +36,8 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         break
       case "changeColor": {
         const index = Number(str)
-        if (!Number.isInteger(index)) throw ""
-        if (index > 16 || index < 1) throw ""
+        if (!Number.isInteger(index)) throw "不是数字"
+        if (index > 16 || index < 1) throw "不再范围内"
         break
       }
 
@@ -57,15 +57,14 @@ const checkInputCorrect = (str: string, key: string): boolean => {
           .forEach(reg => void reg.test("test"))
         break
       }
-
       case "renameTitle": {
-        str = /^\(.*\)$/.test(str)
+        str = /^\(.+\)$/.test(str)
           ? str
           : `(/^.*$/g, "${escapeDoubleQuote(str)}")`
         const { regexp, newSubStr } = string2ReplaceParam(str)[0]
         "test".replace(regexp, newSubStr)
-        if (/%\[.*\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
-        if (/#\[.*\]/.test(newSubStr))
+        if (/%\[.+\]/.test(newSubStr)) magicaction.getSerialInfo(newSubStr, 1)
+        if (/#\[.+\]/.test(newSubStr))
           magicaction.getLayerSerialInfo(newSubStr, [[1, 1, 1]])
         break
       }
@@ -75,7 +74,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
       case "customExtractTitle":
       case "customStandardize": {
         const res = getMNLinkValue(str)
-        if (!res) throw ""
+        if (!res) throw "卡片中不存在配置信息"
         string2ReplaceParam(res).forEach(param => {
           "test".replace(param.regexp, param.newSubStr)
         })
@@ -89,7 +88,8 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         })
         break
     }
-  } catch {
+  } catch (err) {
+    console.assert(err, "error")
     return false
   }
   return true

@@ -137,10 +137,11 @@ const dict = {
       }
     },
     autolist: {
-      intro: "针对序列文本，自动换行，仅适配中文",
+      intro:
+        "针对有序号的摘录，自动添加换行。所有预设均必须满足两个及以上，包括自定义",
       link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec",
       option: {
-        preset: ["自定义", "选择题", "句首中文编号", "句末分号", "句末句号"],
+        preset: ["自定义", "ABCD...", "一二三四...", "1234..."],
         list_selected: ["使用 AutoList 的配置", "确定"]
       },
       help: {
