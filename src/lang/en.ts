@@ -103,8 +103,8 @@ const dict: Dict = {
       hud: {
         is_clicked: "The card is selected, please continue",
         none_card: "No matching cards found",
-        disable_smart_select:
-          "Use hierarchical numbering to ensure that each selected card has a child node, do not use smart selection"
+        hierarchical_numbering:
+          "Ensure that each selected card is at the same level and has child node"
       }
     },
     autostandardize: {
@@ -303,11 +303,12 @@ const dict: Dict = {
   magic_action_handler: {
     not_selected: "None card is selected",
     smart_select: {
+      title: "OhMyMN Smart Selector",
       option: [
         "Process only selected cards",
-        "Process child nodes of first level",
-        "Process all child nodes",
-        "Process child nodes and selected cards"
+        "Process only child nodes",
+        "Process only all descendant nodes",
+        "Process selected and descendant nodes"
       ],
       card_with_children: "Detect only one selected card has child nodes",
       cards_with_children:

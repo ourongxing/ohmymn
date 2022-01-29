@@ -71,14 +71,17 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
       showHUD(lang.magic_action_handler.not_selected)
       return
     }
+    // 需要同层级是为了避免出现同时选中父节点和后代节点的情况，从而导致重复处理。
     const isHavingChildren = nodes.every(
       node =>
         nodes[0].parentNote === node.parentNote && node?.childNotes?.length
     )
+    const isHierarchicalNumbered =
+      key === "renameTitle" && /#\[(.+)\]/.test(content)
     const { smart_select } = lang.magic_action_handler
-    if (isHavingChildren) {
+    if (isHavingChildren && !isHierarchicalNumbered) {
       const { option } = await popup(
-        "OhMyMN",
+        smart_select.title,
         nodes.length > 1
           ? smart_select.cards_with_children
           : smart_select.card_with_children,

@@ -98,7 +98,7 @@ const util = {
   getSerialInfo(newSubStr: string, length: number) {
     const serialArr = reverseEscape(
       newSubStr
-        .match(/%\[(.*)\]/g)![0]
+        .match(/%\[(.+)\]/g)![0]
         .slice(1)
         .replace(/'/g, '"')
     ) as [string, string, ...string[]] | [string, number] | [string]
@@ -138,7 +138,7 @@ const util = {
     // 输入 ["1","2","3","."] 表示每一层的起始值，最后一个字符为连接符
     const serialArr = reverseEscape(
       newSubStr
-        .match(/#\[(.*)\]/g)![0]
+        .match(/#\[(.+)\]/g)![0]
         .slice(1)
         .replace(/'/g, '"')
     ) as string[]
@@ -169,15 +169,18 @@ const action: IActionMethod = {
       : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
     const { newSubStr, regexp } = string2ReplaceParam(content)[0]
     // 分级序列命名
-    if (/#\[(.*)\]/.test(newSubStr)) {
-      // 确保每一个都有子节点
-      if (nodes.every(node => node?.childNotes?.length)) {
+    if (/#\[(.+)\]/.test(newSubStr)) {
+      const isHavingChildren = nodes.every(
+        node =>
+          nodes[0].parentNote === node.parentNote && node?.childNotes?.length
+      )
+      if (isHavingChildren) {
         nodes.forEach(node => {
           // 只处理子节点
           const { treeIndex, onlyChildren } = getNodeTree(node)
           const newTitles = util
             .getLayerSerialInfo(newSubStr, treeIndex)
-            .map(k => newSubStr.replace(/#\[(.*)\]/, k))
+            .map(k => newSubStr.replace(/#\[(.+)\]/, k))
           onlyChildren.forEach((node, index) => {
             const title = node.noteTitle ?? ""
             if (newTitles[index])
@@ -185,15 +188,15 @@ const action: IActionMethod = {
           })
         })
       } else {
-        showHUD(hud.disable_smart_select, 2)
+        showHUD(hud.hierarchical_numbering, 2)
         return
       }
     }
     // 如果含有序列信息，就把获取新的 replace 参数
-    else if (/%\[(.*)\]/.test(newSubStr)) {
+    else if (/%\[(.+)\]/.test(newSubStr)) {
       const newTitles = util
         .getSerialInfo(newSubStr, nodes.length)
-        .map(k => newSubStr.replace(/%\[(.*)\]/, k))
+        .map(k => newSubStr.replace(/%\[(.+)\]/, k))
       nodes.forEach((note, index) => {
         const title = note.noteTitle ?? ""
         if (newTitles[index])
