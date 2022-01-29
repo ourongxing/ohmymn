@@ -96,14 +96,13 @@ const util = {
     return numArr
   },
   getSerialInfo(newSubStr: string, length: number) {
+    // string[] len>2 , [string, number], [string] 三种情况
     const serialArr = reverseEscape(
-      newSubStr
-        .match(/%\[(.+)\]/g)![0]
-        .slice(1)
-        .replace(/'/g, '"')
-    ) as [string, string, ...string[]] | [string, number] | [string]
+      newSubStr.replace(/^.*%(\[.+\]).*$/, "$1").replace(/'/g, '"')
+    ) as any[]
     const len = serialArr.length
-    if (len == 0 || typeof serialArr[0] !== "string") throw ""
+    if (len == 0 || typeof serialArr[0] !== "string")
+      throw "数组内必须有元素，并且第一个元素必须是字符"
     if (len == 1 || (len == 2 && typeof serialArr[1] == "number")) {
       const step = len == 1 ? 1 : (serialArr[1] as number)
       const startValue = serialArr[0]
@@ -118,11 +117,11 @@ const util = {
       // 如果是其他字符，一个字节
       else if (startValue.length === 1)
         return this.genCharArray(startValue, length, step)
-      else throw ""
+      else throw "必须输入数字和单个字符"
     } // 自定义替换字符，数组元素长度大于 1，如果长度为 2，则第二个为字符串
     else if (len > 1 && serialArr.every(k => typeof k == "string"))
       return serialArr as string[]
-    else throw ""
+    else throw "不符合输入格式要求"
   },
   getSerialByIndex(startValue: string, index: number) {
     if (/^[0-9]+$/.test(startValue)) return Number(startValue) + index
@@ -135,29 +134,38 @@ const util = {
     return serialCode[(startIndex + index) % len]
   },
   getLayerSerialInfo(newSubStr: string, treeIndex: number[][]) {
-    // 输入 ["1","2","3","."] 表示每一层的起始值，最后一个字符为连接符
+    // string[], [...string[],[string,number]] 均可省略
     const serialArr = reverseEscape(
-      newSubStr
-        .match(/#\[(.+)\]/g)![0]
-        .slice(1)
-        .replace(/'/g, '"')
-    ) as string[]
-    // 弹出最后一个字符，作为连接符号
-    const linkChar = serialArr.pop()
+      newSubStr.replace(/^.*#(\[.+\]).*$/, "$1").replace(/'/g, '"')
+    ) as any[]
+    const option = {
+      linkCode: ".",
+      MAXLevel: Infinity
+    }
+    if (Array.isArray(serialArr[serialArr.length - 1])) {
+      const opt = serialArr.pop() as any[]
+      if (opt.length > 2) throw "option 数组必须两个元素以内"
+      opt.forEach(k => {
+        if (typeof k === "number") option.MAXLevel = k
+        else if (typeof k === "string") option.linkCode = k
+        else throw "option 数组内只能是 number 或 string"
+      })
+    }
     const len = serialArr.length
     if (len == 0 || serialArr.some(serial => typeof serial !== "string"))
-      throw ""
+      throw "除开 option 必须还有元素，并且都必须是 string"
     // [[0],[1],[2],[2,0],[2,1],[2,1,1,1]]
     return treeIndex.map(nodeIndex =>
-      nodeIndex
-        .map((index, _index) => {
-          return util.getSerialByIndex(
-            // 如果缺项就用最后一个启示项
-            serialArr[_index] ?? serialArr[len - 1],
-            index
-          )
-        })
-        .join(linkChar)
+      nodeIndex.length <= option.MAXLevel
+        ? nodeIndex
+            .map((index, _index) => {
+              return util.getSerialByIndex(
+                serialArr[_index > len - 1 ? len - 1 : _index],
+                index
+              )
+            })
+            .join(option.linkCode)
+        : ""
     )
   }
 }
