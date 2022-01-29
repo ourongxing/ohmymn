@@ -36,7 +36,8 @@ const config: IConfig = {
 }
 
 export const enum AutoListPreset {
-  Custom
+  Custom,
+  Letter
 }
 
 const util = {
@@ -56,6 +57,12 @@ const util = {
               ? acc.replace(param.regexp, param.newSubStr)
               : acc
           }, text)
+          break
+        case AutoListPreset.Letter:
+          if (isHalfWidth(text)) continue
+          const param: [RegExp, string] = [/\s*([A-Za-z][.、，,])/g, "\n$1"]
+          const len = text.match(param[0])?.length
+          if (len && len > 1) text = text.replace(param[0], param[1])
           break
         default: {
           const params: [RegExp, string][] = [
