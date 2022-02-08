@@ -108,7 +108,7 @@ const popup = (
 /**
  * 用来判断是否是 OC 的 NSNull 对象
  */
-const isOCNull = (obj: any) => obj == NSNull.new()
+const isOCNull = (obj: any) => obj === NSNull.new()
 
 export {
   console,

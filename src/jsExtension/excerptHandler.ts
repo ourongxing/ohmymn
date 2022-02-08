@@ -9,6 +9,7 @@ import { delayBreak } from "utils/common"
 import { newColorStyle, newTag, newTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
 import { HasTitleThen } from "modules/ohmymn"
+import { unique } from "utils"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -93,12 +94,11 @@ const excerptHandler = async () => {
     switch (self.profile.ohmymn.hasTitleThen[0]) {
       case HasTitleThen.TitleLink:
         const nodeTitle = nodeNote.noteTitle
-        if (nodeTitle && !nodeTitle.includes(title))
-          title = nodeTitle + "; " + title
+        title = unique(`${nodeTitle}; ${title}`.split(/[;；]\x20*/)).join("; ")
         break
-      case HasTitleThen.ExpertText:
-        // 如果 titile 不存在，那本来就是摘录
-        text = title
+      case HasTitleThen.NoChange:
+        // 不变
+        text = excerptText
         title = undefined
         break
     }

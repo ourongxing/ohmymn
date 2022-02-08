@@ -20,7 +20,7 @@ const profilePreset = {
     quickSwitch: [] as QuickSwitch[],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    hasTitleThen: [HasTitleThen.ExpertText],
+    hasTitleThen: [HasTitleThen.NoChange],
     panelControl: [] as PanelControl[],
     panelPosition: [PanelPosition.Auto],
     panelHeight: [PanelHeight.Standard]

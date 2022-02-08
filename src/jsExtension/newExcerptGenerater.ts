@@ -11,20 +11,12 @@ import { util as anotherautotitle } from "modules/anotherautotitle"
 
 export const newTitleText = async (text: string, note: MbBookNote) => {
   const { quickSwitch } = self.profile.ohmymn
-  // 处理摘录
-  for (const addon of quickSwitch) {
-    switch (addon) {
-      case QuickSwitch.autostandardize:
-        text = autostandardize.standardizeText(text)
-        break
-      case QuickSwitch.autolist:
-        text = autolist.listText(text)
-        break
-      case QuickSwitch.autoreplace:
-        text = autoreplace.replaceText(text)
-        break
-    }
-  }
+  // 返回摘录
+  if (quickSwitch.includes(QuickSwitch.autostandardize))
+    text = autostandardize.standardizeText(text)
+  if (quickSwitch.includes(QuickSwitch.autolist)) text = autolist.listText(text)
+  if (quickSwitch.includes(QuickSwitch.autoreplace))
+    text = autoreplace.replaceText(text)
 
   // 返回标题
   if (quickSwitch.includes(QuickSwitch.autocomplete)) {

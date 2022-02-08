@@ -4,7 +4,7 @@ const dict = {
       link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
       option: {
         profile: "配置",
-        has_title_then: ["作为摘录", "标题链接", "覆盖标题"],
+        has_title_then: ["不做修改", "标题链接", "覆盖标题"],
         panel_position: ["自动", "靠左", "居中", "靠右"],
         panel_height: ["高点", "标准", "矮点"],
         panle_control: [
@@ -26,7 +26,7 @@ const dict = {
       },
       help: {
         profile: "【当前文档生效】可用于不同情景",
-        has_title_then: "如果可以转为标题，则",
+        has_title_then: "如果会产生新标题，则",
         auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
       }
     },
@@ -47,13 +47,13 @@ const dict = {
         title_link_split: "选择别名分词",
         custom_title_split: "自定义别名分词，点击查看具体格式",
         custom_def_link: "自定义定义联项，点击查看具体格式",
-        custom_extract_title: "自定义提取内容，点击查看具体格式",
+        custom_extract_title: "自定义提取标题，点击查看具体格式",
         extract_title: "从卡片中提取标题"
       },
       option: {
         title_link_split: ["自定义", "默认", "标点符号"],
         preset: [
-          "自定义提取内容",
+          "自定义提取标题",
           "自定义定义联项",
           "xxx : yyy",
           "xxx —— yyy",
@@ -186,7 +186,7 @@ const dict = {
       },
       help: {
         switch_title: "当两者都存在时请使用「交换标题和摘录」",
-        change_title_no_limit: "拓宽标题摘录选区，始终转为标题"
+        change_title_no_limit: "修改标题摘录选区，始终转为标题"
       }
     },
     autotag: {
@@ -302,6 +302,10 @@ const dict = {
     fail: "配置读取失败",
     not_find: "未找到配置信息",
     prohibit: "「OhMyMN」配置（禁止直接修改）"
+  },
+  network: {
+    null: "没有收到返回值，请检测网络",
+    notJSON: "返回值不是 JSON 格式"
   },
   other: {
     cancel: "取消"

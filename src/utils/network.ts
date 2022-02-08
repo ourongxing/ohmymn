@@ -1,3 +1,7 @@
+import lang from "lang"
+import { deflateRaw } from "zlib"
+import { isOCNull } from "./common"
+
 class Response {
   data: NSData
   constructor(data: NSData) {
@@ -9,8 +13,7 @@ class Response {
       NSJSONReadingOptions.MutableContainers
     )
     if (NSJSONSerialization.isValidJSONObject(res)) return res
-    // 无法使用 new Error
-    throw "返回值不是 JSON 格式"
+    throw lang.network.notJSON
   }
 }
 
@@ -29,7 +32,9 @@ const initRequest = (
   url: string,
   options: RequestOptions
 ): NSMutableURLRequest => {
-  const request = NSMutableURLRequest.requestWithURL(NSURL.URLWithString(url))
+  const request = NSMutableURLRequest.requestWithURL(
+    NSURL.URLWithString(encodeURI(url))
+  )
   request.setHTTPMethod(options.method ?? "GET")
   request.setTimeoutInterval(options.timeout ?? 3)
   const headers = {
@@ -53,18 +58,19 @@ const initRequest = (
 
 const fetch = (url: string, options: RequestOptions = {}): Promise<Response> =>
   new Promise((resolve, reject) => {
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    // 转圈圈
+    // UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     const queue = NSOperationQueue.mainQueue()
     const request = initRequest(url, options)
     NSURLConnection.sendAsynchronousRequestQueueCompletionHandler(
       request,
       queue,
       (res: NSHTTPURLResponse, data: NSData, err: NSError) => {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible =
-          false
+        // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         // 很奇怪，获取不到 res 的属性
         if (err.localizedDescription) reject(err.localizedDescription)
-        if (data) resolve(new Response(data))
+        if (data.length() == 0) reject(lang.network.null)
+        resolve(new Response(data as NSData))
       }
     )
   })

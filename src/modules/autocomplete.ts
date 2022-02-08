@@ -6,7 +6,6 @@ import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/pangu"
-import { isHalfWidth, countWord } from "utils/text"
 
 const { error, intro, link, option, label } = lang.module.autocomplete
 const config: IConfig = {
@@ -47,8 +46,8 @@ export const enum FillWordInfo {
 type Dict = {
   word: string
   sw: string
-  exchange?: string
   // 下面这些都有可能是 NSNull
+  exchange: string
   phonetic: string
   definition: string
   translation: string
@@ -77,6 +76,7 @@ const util = {
 
   getWordEx(lemma: string, ex: string): string {
     // s:demands/p:demanded/i:demanding/d:demanded/3:demands
+    if (!ex || isOCNull(ex)) return lemma
     const arr = ex.split(/\//).reduce(
       (acc, k) => {
         if (!/[01]:/.test(k)) {
@@ -157,25 +157,26 @@ const util = {
   },
   async getCompletedWord(text: string) {
     try {
-      if (!isHalfWidth(text) || countWord(text) != 1) throw "不是单词"
+      // 只有第一个字母可以大写，否则直接返回
+      if (!/^\w[a-z]+$/.test(text)) return undefined
       let title = text.toLowerCase()
       let info = await this.getWordInfo(title)
-      if (info.exchange) {
-        const ex = info.exchange
+      const ex = info.exchange
+      if (ex && !isOCNull(ex)) {
         const lemma = ex.replace(/^0:(\w+).*$/, "$1")
         if (lemma != ex) {
           title = lemma
           info = await this.getWordInfo(lemma)
         }
-        title = this.getWordEx(title, info.exchange!)
+        title = this.getWordEx(title, info.exchange)
       }
       return {
         title,
         text: this.getFillInfo(info)
       }
     } catch (error) {
-      console.log(error, "autocomplete")
-      if (error != "不是单词") showHUD(String(error))
+      console.error(error)
+      showHUD(String(error), 2)
       return undefined
     }
   }

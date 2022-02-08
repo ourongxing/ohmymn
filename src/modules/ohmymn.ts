@@ -22,7 +22,7 @@ export const enum PanelControl {
 }
 
 export const enum HasTitleThen {
-  ExpertText,
+  NoChange,
   TitleLink,
   OverrideTitle
 }

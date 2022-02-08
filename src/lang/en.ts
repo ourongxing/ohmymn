@@ -6,7 +6,7 @@ const dict: Dict = {
       link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       option: {
         profile: "Profile",
-        has_title_then: ["As Comments", "As Title Link", "Override"],
+        has_title_then: ["No Change", "As Title Link", "Override"],
         panel_position: ["Auto", "Left", "Center", "Right"],
         panel_height: ["Higher", "Standard", "Lower"],
         panle_control: [
@@ -29,7 +29,7 @@ const dict: Dict = {
       help: {
         profile:
           "[Current Document Takes Effect]\nCan be used in different scenarios",
-        has_title_then: "If can be turned into a title, then",
+        has_title_then: "If new title can be generated automatically, then",
         auto_correct:
           "[Current Document Takes Effect]\nAfter opening, it will be processed after auto-correction"
       }
@@ -54,13 +54,13 @@ const dict: Dict = {
         custom_def_link:
           "Customize connective of definition, click for  the specific format",
         custom_extract_title:
-          "Customize extract content, click for  specific format",
+          "Customize extract title, click for  specific format",
         extract_title: "Extract Title From Card"
       },
       option: {
         title_link_split: ["Custom", "Default", "Punctuation"],
         preset: [
-          "Custom Extraction",
+          "Custom Extract Title",
           "Custom Connective of Definition",
           "xxx : yyy",
           "xxx —— yyy",
@@ -209,7 +209,7 @@ const dict: Dict = {
       help: {
         switch_title: "Use [Swap Title and Excerpt] when both are present」",
         change_title_no_limit:
-          "Broaden the title excerpt selection, always turn to the title"
+          "Change the title excerpt selection, always turn to the title"
       }
     },
     autotag: {
@@ -334,6 +334,10 @@ const dict: Dict = {
     fail: "Configuration read fail",
     not_find: "Configuration information not found",
     prohibit: "[OhMyMN] configuration (no direct modification is allowed）"
+  },
+  network: {
+    null: "No return value received, please check the network",
+    notJSON: "The return value is not in JSON format"
   },
   other: {
     cancel: "Cancel"

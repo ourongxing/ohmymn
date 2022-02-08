@@ -98,9 +98,6 @@ const util = {
     const defs = regs
       .reduce((acc, reg) => acc.replace(regFlag.add(reg, "g"), "😎"), text)
       .split("😎")
-      // .map(k => k.trim())
-      // .filter(k => k)
-      // 这样只遍历一次
       .reduce((acc, k) => {
         k = k.trim()
         if (k) acc.push(k)
@@ -149,11 +146,7 @@ const util = {
               isReverse = true
             }
             if (reg.test(text)) {
-              let [def, desc] = text.split(reg).reduce((acc, k) => {
-                k = k.trim()
-                if (k) acc.push(k)
-                return acc
-              }, [] as string[])
+              let [def, desc] = text.split(reg)
               // 交换顺序
               if (isReverse) [def, desc] = [desc, def]
               return {
@@ -176,11 +169,7 @@ const util = {
             /(?:通常|一般)*是指/
           ][set - 2]
           if (reg.test(text)) {
-            const [def, desc] = text.split(reg).reduce((acc, k) => {
-              k = k.trim()
-              if (k) acc.push(k)
-              return acc
-            }, [] as string[])
+            const [def, desc] = text.split(reg)
             return {
               title: util.toTitleLink(def),
               text: onlyDesc ? desc : text
@@ -193,11 +182,7 @@ const util = {
         case 8: {
           const reg = [/[,，].*称之?为/, /(?:通常|一般)?被?称之?为/][set - 7]
           if (reg.test(text)) {
-            const [desc, def] = text.split(reg).reduce((acc, k) => {
-              k = k.trim()
-              if (k) acc.push(k)
-              return acc
-            }, [] as string[])
+            const [desc, def] = text.split(reg)
             return {
               title: util.toTitleLink(def),
               text: onlyDesc ? desc : text
