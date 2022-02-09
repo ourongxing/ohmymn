@@ -46,6 +46,9 @@ export const newTitleText = async (text: string, nodeNote: MbBookNote) => {
   })(newText)
 
   if (!result) return defaultRet
+  // 规范化英文标题
+  if (self.profile.autostandardize.standardizeTitle)
+    result.title = autostandardize.toTitleCase(result.title)
   if (nodeTitle && hasTitleThen[0] === HasTitleThen.TitleLink) {
     return {
       text: result.text,

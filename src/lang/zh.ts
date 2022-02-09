@@ -111,7 +111,7 @@ const dict = {
         standardize_selected: ["都优化", "仅优化标题", "仅优化摘录"]
       },
       help: {
-        standardize_title: "点击查看具体规范"
+        standardize_title: "涉及到首字母大写，点击查看具体规范"
       },
       label: {
         standardize_selected: "优化排版格式",
