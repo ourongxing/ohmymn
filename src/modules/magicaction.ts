@@ -108,7 +108,7 @@ const util = {
       const startValue = serialArr[0]
       // 如果是数字
       if (/^[0-9]+$/.test(startValue))
-        return this.genNumArr(
+        return util.genNumArr(
           Number(startValue),
           length,
           step,
@@ -116,7 +116,7 @@ const util = {
         )
       // 如果是其他字符，一个字节
       else if (startValue.length === 1)
-        return this.genCharArray(startValue, length, step)
+        return util.genCharArray(startValue, length, step)
       else throw "必须输入数字和单个字符"
     } // 自定义替换字符，数组元素长度大于 1，如果长度为 2，则第二个为字符串
     else if (len > 1 && serialArr.every(k => typeof k == "string"))
@@ -124,7 +124,8 @@ const util = {
     else throw "不符合输入格式要求"
   },
   getSerialByIndex(startValue: string, index: number) {
-    if (/^[0-9]+$/.test(startValue)) return Number(startValue) + index
+    if (/^[0-9]+$/.test(startValue))
+      return String(Number(startValue) + index).padStart(startValue.length, "0")
     const serialCode = Object.values(SerialCode).filter(k =>
       k.includes(startValue)
     )[0]
