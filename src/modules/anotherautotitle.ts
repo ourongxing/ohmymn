@@ -61,18 +61,14 @@ const util = {
       (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
     )
   },
-  getTitle(text: string, note: MbBookNote) {
+  getTitle(text: string, nodeTitle: string | undefined) {
     const { preset, wordCount, changeTitleNoLimit } =
       self.profile.anotherautotitle
-    if (
-      changeTitleNoLimit &&
-      note.noteTitle &&
-      this.isBroadened(note.noteTitle, text)
-    ) {
+    if (changeTitleNoLimit && nodeTitle && util.isBroadened(nodeTitle, text))
       return {
-        title: text
+        title: text,
+        text: ""
       }
-    }
 
     for (const set of preset) {
       switch (set) {
@@ -81,7 +77,8 @@ const util = {
           if (!regGroup) continue
           if (regGroup.some(regs => regs.every(reg => reg.test(text))))
             return {
-              title: text
+              title: text,
+              text: ""
             }
           break
         case AutoTitlePreset.WordLimit:
@@ -89,14 +86,16 @@ const util = {
           const [zh, en] = reverseEscape(wordCount) as number[]
           if (countWord(text) <= (isHalfWidth(text) ? en : zh))
             return {
-              title: text
+              title: text,
+              text: ""
             }
           break
         case AutoTitlePreset.NoPunctuation:
           const reg = /[。.、？?！!，,；;：:]/
           if (!reg.test(text))
             return {
-              title: text
+              title: text,
+              text: ""
             }
       }
     }

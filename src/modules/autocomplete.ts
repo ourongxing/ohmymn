@@ -124,12 +124,12 @@ const util = {
     const vars = {
       word: info.word,
       phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
-      tag: isOCNull(info.tag) ? "" : this.getTag(info.tag),
+      tag: isOCNull(info.tag) ? "" : util.getTag(info.tag),
       collins: isOCNull(info.collins)
         ? ""
-        : this.getCollinsStar(Number(info.collins)),
+        : util.getCollinsStar(Number(info.collins)),
       en: isOCNull(info.definition) ? "" : info.definition,
-      zh: isOCNull(info.translation) ? "" : this.getPureZH(info.translation!)
+      zh: isOCNull(info.translation) ? "" : util.getPureZH(info.translation!)
     }
     const varsReg = `(?:${Object.keys(vars).join("|")})`
     const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
@@ -160,22 +160,22 @@ const util = {
       // 只有第一个字母可以大写，否则直接返回
       if (!/^\w[a-z]+$/.test(text)) return undefined
       let title = text.toLowerCase()
-      let info = await this.getWordInfo(title)
+      let info = await util.getWordInfo(title)
       const ex = info.exchange
       if (ex && !isOCNull(ex)) {
         const lemma = ex.replace(/^0:(\w+).*$/, "$1")
         if (lemma != ex) {
           title = lemma
-          info = await this.getWordInfo(lemma)
+          info = await util.getWordInfo(lemma)
         }
-        title = this.getWordEx(title, info.exchange)
+        title = util.getWordEx(title, info.exchange)
       }
       return {
         title,
-        text: this.getFillInfo(info)
+        text: util.getFillInfo(info)
       }
     } catch (error) {
-      console.error(error)
+      console.error(String(error))
       showHUD(String(error), 2)
       return undefined
     }

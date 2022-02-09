@@ -131,7 +131,7 @@ const util = {
     ) {
       const [zh, en, area] = reverseEscape(wordCountArea) as number[]
       if (note.excerptPic) {
-        const actualArea = this.getExcerptArea(note)
+        const actualArea = util.getExcerptArea(note)
         if (actualArea > area) res.style = 2
         if (showArea) showHUD(lang.module.autostyle.area + ": " + actualArea)
         // 0 线框+填充 1 填充 2 线框
