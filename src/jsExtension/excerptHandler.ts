@@ -8,8 +8,6 @@ import {
 import { delayBreak } from "utils/common"
 import { newColorStyle, newTag, newTitleText } from "./newExcerptGenerater"
 import { MbBookNote } from "types/MarginNote"
-import { HasTitleThen } from "modules/ohmymn"
-import { unique } from "utils"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -22,7 +20,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   note = _note
   isOCR = false
   nodeNote = note.groupNoteId ? getNoteById(note.groupNoteId) : note
-  isComment = nodeNote != note
+  isComment = nodeNote !== note
   if (
     self.profile.ohmymn.lockExcerpt &&
     lastExcerptText !== undefined &&
@@ -80,32 +78,10 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
       note.excerptText = originText
     }
   }
-  excerptHandler()
-}
-
-const excerptHandler = async () => {
   const excerptText = note.excerptText?.trim()
   if (!excerptText) return
   let { title, text } = await newTitleText(excerptText, nodeNote)
   const tags = newTag(excerptText)
-
-  if (isComment && title && nodeNote.noteTitle) {
-    console.log("当前摘录作为评论", "excerpt")
-    switch (self.profile.ohmymn.hasTitleThen[0]) {
-      case HasTitleThen.TitleLink:
-        const nodeTitle = nodeNote.noteTitle
-        title = unique(`${nodeTitle}; ${title}`.split(/[;；]\x20*/)).join("; ")
-        break
-      case HasTitleThen.NoChange:
-        // 不变
-        text = excerptText
-        title = undefined
-        break
-    }
-  }
-
-  console.log(title ? `当前标题是：${title}` : "没有标题", "excerpt")
-  console.log(text ? `当前摘录内容是：${text}` : "摘录转为了标题", "excerpt")
   processExcerpt(text, title, tags)
 }
 
