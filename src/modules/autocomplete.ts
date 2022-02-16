@@ -5,7 +5,7 @@ import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
-import pangu from "utils/pangu"
+import pangu from "utils/third party/pangu"
 
 const { error, intro, link, option, label } = lang.module.autocomplete
 const config: IConfig = {
@@ -74,10 +74,9 @@ const util = {
     return info[0]
   },
 
-  getWordEx(lemma: string, ex: string): string {
+  getWordEx(lemma: string, ex: string) {
     // s:demands/p:demanded/i:demanding/d:demanded/3:demands
-    if (!ex || isOCNull(ex)) return lemma
-    const arr = ex.split(/\//).reduce(
+    return ex.split(/\//).reduce(
       (acc, k) => {
         if (!/[01]:/.test(k)) {
           const word = k.slice(2)
@@ -87,7 +86,6 @@ const util = {
       },
       [lemma]
     )
-    return arr.join("; ")
   },
 
   getTag(str: string) {
@@ -159,16 +157,18 @@ const util = {
     try {
       // 只有第一个字母可以大写，否则直接返回
       if (!/^\w[a-z]+$/.test(text)) return undefined
-      let title = text.toLowerCase()
-      let info = await util.getWordInfo(title)
+      let word = text.toLowerCase()
+      let info = await util.getWordInfo(word)
       const ex = info.exchange
+      let title = [word]
       if (ex && !isOCNull(ex)) {
         const lemma = ex.replace(/^0:(\w+).*$/, "$1")
         if (lemma != ex) {
-          title = lemma
+          word = lemma
           info = await util.getWordInfo(lemma)
         }
-        title = util.getWordEx(title, info.exchange)
+        // 原型必然有 exchange，不然哪来的它
+        title = util.getWordEx(word, info.exchange)
       }
       return {
         title,
@@ -204,7 +204,7 @@ const action: IActionMethod = {
       nodes.forEach((node, index) => {
         const info = allInfo?.[index]
         if (info) {
-          node.noteTitle = info.title
+          node.noteTitle = info.title.join("; ")
           if (option == CompleteSelected.AlsoFillWordInfo)
             node.excerptText = info.text
         }

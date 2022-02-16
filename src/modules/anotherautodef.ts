@@ -83,7 +83,7 @@ export const enum TitleLinkSplit {
 
 const util = {
   toTitleLink(text: string) {
-    if (!self.profile.anotherautodef.toTitleLink) return text
+    if (!self.profile.anotherautodef.toTitleLink) return [text]
     const regs: RegExp[] = []
     const { titleLinkSplit } = self.profile.anotherautodef
     const { customTitleSplit } = self.profileTemp.regArray
@@ -103,7 +103,7 @@ const util = {
         if (k) acc.push(k)
         return acc
       }, [] as string[])
-    return defs.length > 1 ? unique(defs).join("; ") : text
+    return defs.length > 1 ? unique<string>(defs) : [text]
   },
 
   getDefTitle(text: string) {
@@ -114,7 +114,7 @@ const util = {
           const { customExtractTitle: params } = self.profileTemp.replaceParam
           if (!params) continue
           let fnKey = 0
-          const allTitles = unique(
+          const allTitles = unique<string>(
             params
               .filter(param => param.regexp.test(text))
               .map(param => {
@@ -129,7 +129,7 @@ const util = {
           )
           if (allTitles.length)
             return {
-              title: allTitles.join("; "),
+              title: allTitles,
               text: fnKey ? "" : text
             }
           break
@@ -202,8 +202,8 @@ const action: IActionMethod = {
       nodes.forEach(node => {
         const text = getAllText(node)
         if (text) {
-          const result = util.getDefTitle(text)
-          if (result) node.noteTitle = result.title
+          const res = util.getDefTitle(text)
+          if (res) node.noteTitle = res.title.join("; ")
         }
       })
     } else if (content) {

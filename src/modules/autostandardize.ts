@@ -1,6 +1,6 @@
 import { excerptNotes } from "utils/note"
-import pangu from "utils/pangu"
-import { toTitleCase } from "utils/toTitleCase"
+import pangu from "utils/third party/pangu"
+import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"

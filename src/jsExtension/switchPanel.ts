@@ -45,14 +45,18 @@ export const closePanel = () => {
   MN.studyController().refreshAddonCommands()
 }
 
-let lastOpenPanel = 0
+const tmp = {
+  lastOpenPanel: 0,
+  lastClickButton: 0
+}
+
 export const openPanel = () => {
   if (self.panelStatus) return
   const studyController = MN.studyController()
   studyController.view.addSubview(self.settingViewController.view)
   self.panelStatus = true
   studyController.refreshAddonCommands()
-  lastOpenPanel = Date.now()
+  tmp.lastOpenPanel = Date.now()
   if (studyController.docMapSplitMode == docMapSplitMode.allDoc) {
     studyController.docMapSplitMode = docMapSplitMode.half
     showHUD(lang.switch_panel.better_with_mindmap, 1)
@@ -60,7 +64,6 @@ export const openPanel = () => {
   delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
-let lastClickButton = 0
 const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
@@ -68,8 +71,8 @@ const switchPanel = () => {
       self.profile.ohmymn.panelControl.includes(PanelControl.DoubleClickOpen)
     ) {
       const now = Date.now()
-      if (lastClickButton && now - lastClickButton < 300) openPanel()
-      else lastClickButton = now
+      if (tmp.lastClickButton && now - tmp.lastClickButton < 300) openPanel()
+      else tmp.lastClickButton = now
     } else openPanel()
   }
 }
@@ -78,7 +81,7 @@ const switchPanel = () => {
 const controllerWillLayoutSubviews = (controller: UIViewController) => {
   if (controller != MN.studyController()) return
   if (!self.panelStatus) return
-  if (Date.now() - lastOpenPanel < 200) layoutViewController()
+  if (Date.now() - tmp.lastOpenPanel < 200) layoutViewController()
 }
 
 const queryAddonCommandStatus = () => {
