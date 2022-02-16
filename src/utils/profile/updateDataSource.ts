@@ -1,4 +1,4 @@
-// @ts-nocheck 有点黑魔法了，不过效果不错
+// @ts-nocheck
 import { MN } from "const"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile } from "profile"
@@ -25,12 +25,12 @@ export const getMNLinkValue = (val: string) => {
 }
 
 export const updateProfileTemp = (key: string, val: string) => {
-  val = getMNLinkValue(val)
+  const newValue = getMNLinkValue(val)
   if (key in self.profileTemp.regArray) {
     let tmp: any
     // 避免修改后错误没有修改，下次读取配置出现问题
     try {
-      tmp = val ? string2RegArray(val) : undefined
+      tmp = newValue ? string2RegArray(newValue) : undefined
     } catch {
       tmp = undefined
     }
@@ -39,7 +39,7 @@ export const updateProfileTemp = (key: string, val: string) => {
   if (key in self.profileTemp.replaceParam) {
     let tmp: any
     try {
-      tmp = val ? string2ReplaceParam(val) : undefined
+      tmp = newValue ? string2ReplaceParam(newValue) : undefined
     } catch {
       tmp = undefined
     }
@@ -54,26 +54,32 @@ export const updateProfileDataSource = (
 ) => {
   // 更新 DateSouce 和 Profile
   for (const [name, _] of Object.entries(profile)) {
-    for (let [key, val] of Object.entries(_)) {
-      if (!dataSourceIndex?.[name]?.[key]) continue
-      const [section, row] = dataSourceIndex[name][key]
-      val = profileSaved?.[name]?.[key] ?? val
-      switch (typeof val) {
-        case "boolean":
-          self.dataSource[section].rows[row].status = val
-          _[key] = val
-          break
-        case "string":
-          self.dataSource[section].rows[row].content = val
-          _[key] = val
-          updateProfileTemp(key, val)
-          break
-        default:
-          if (Array.isArray(val)) {
-            // number[]
-            self.dataSource[section].rows[row].selections = [...val]
-            _[key] = [...val]
-          } else _[key] = deepCopy(val)
+    if (name === "additional") {
+      for (const [key, val] of Object.entries(_)) {
+        _[key] = deepCopy(profileSaved?.[name]?.[key] ?? val)
+      }
+    } else {
+      for (let [key, val] of Object.entries(_)) {
+        if (!dataSourceIndex?.[name]?.[key]) continue
+        const [section, row] = dataSourceIndex[name][key]
+        const newValue = profileSaved?.[name]?.[key] ?? val
+        switch (typeof newValue) {
+          case "boolean":
+            self.dataSource[section].rows[row].status = newValue
+            _[key] = newValue
+            break
+          case "string":
+            self.dataSource[section].rows[row].content = newValue
+            _[key] = newValue
+            updateProfileTemp(key, newValue)
+            break
+          default:
+            if (Array.isArray(newValue)) {
+              // number[]
+              self.dataSource[section].rows[row].selections = [...newValue]
+              _[key] = [...newValue]
+            }
+        }
       }
     }
   }

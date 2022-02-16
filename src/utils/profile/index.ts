@@ -3,7 +3,7 @@ import { showHUD } from "utils/common"
 import { Addon, MN } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
 import { MbBookNote } from "types/MarginNote"
-import Base64 from "utils/base64"
+import Base64 from "utils/third party/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
 import lang from "lang"
 import { deepCopy } from "utils"
@@ -30,10 +30,32 @@ export const enum Range {
   Global
 }
 
+const clearTitleCache = (_: typeof allDocProfile) => {
+  try {
+    Object.values(_).forEach(k => {
+      // 超过一个月没打开过，就清除该数据
+      let { additional } = k
+      if (
+        !additional ||
+        (additional.lastExcerpt &&
+          Date.now() - additional.lastExcerpt > 2629800000)
+      )
+        additional = {
+          lastExcerpt: 0,
+          cacheExcerptTitle: {}
+        }
+    })
+  } catch (err) {
+    console.error(String(err))
+  }
+}
+
 const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
+  let isFirst = false
   switch (range) {
     case Range.First:
       // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
+      isFirst = true
       const docProfileSaved: {
         [k: string]: IDocProfile
       } = getDataByKey(docProfileKey)
@@ -48,6 +70,7 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
         self.docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
+      isFirst && clearTitleCache(allDocProfile)
       console.log("读取当前文档配置", "profile")
     case Range.Global:
       // 切换配置时只读全局配置，读全局配置不需要 md5

@@ -87,6 +87,15 @@ const docProfilePreset = {
   ohmymn: {
     profile: [0],
     autoCorrect: false
+  },
+  // 不显示在 UI 上的配置信息
+  additional: {
+    // 这个文档上次打开的时间
+    lastExcerpt: 0,
+    // 保存每次自动生成的标题，如果一个月没打开过该文档，则删除该配置，防止配置文件过大。
+    cacheExcerptTitle: {} as {
+      [noteid: string]: string[] | undefined
+    }
   }
 }
 
