@@ -6,13 +6,13 @@ const dict: Dict = {
       link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       option: {
         profile: "Profile",
-        has_title_then: ["No Change", "As Title Link", "Override"],
+        has_title_then: ["Keep Intact", "As Title Link", "Override"],
         panel_position: ["Auto", "Left", "Center", "Right"],
         panel_height: ["Higher", "Standard", "Lower"],
         panle_control: [
           "Double Click Logo Open Panel",
           "Double Click Panel to Close",
-          "Close Panel after Action"
+          "Close Panel After Action"
         ]
       },
       label: {
@@ -204,7 +204,7 @@ const dict: Dict = {
         custom_be_title: "Customize. Click for specific formats",
         switch_title: "Switch Excerption or Title",
         word_count:
-          "[number of Chinese words, number of English words ], if not exceeded, then set the excerpt text as the title"
+          "[number of words in a Chinese sentence, in a English sentence], if not exceeded, then set the excerpt text as the title"
       },
       help: {
         switch_title: "Use [Swap Title and Excerpt] when both are present」",
@@ -239,7 +239,7 @@ const dict: Dict = {
         default_text_excerpt_style: "Default Text Excerpt Style",
         default_pic_excerpt_style: "Default Pic Excerpt Style",
         word_count_area:
-          "[number of Chinese words, number of English words, area], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n"
+          "[number of words in a Chinese sentence, in a English sentence, selected area size], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n"
       },
       help: {
         change_color: "Enter the color index, 1 to 16"
@@ -290,9 +290,9 @@ const dict: Dict = {
     input_saved: "Input Saved",
     input_clear: "Input Clear",
     auto_correct:
-      "Please select the switch according to the actual situation. It is not recommended to turn on automatic correction without brain.",
+      "Auto-correction and locked excerpt text do not work at the same time, please turn off either one. Otherwise, unexpected problems can occur!",
     lock_excerpt:
-      "Locking excerpts is not recommended and auto-correction is turned on at the same time"
+      "Locked excerpt text and auto-correction do not work at the same time, please turn off either one. Otherwise, unexpected problems can occur!"
   },
   magic_action_handler: {
     not_selected: "None card is selected",

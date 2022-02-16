@@ -4,18 +4,18 @@ const dict = {
       link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
       option: {
         profile: "配置",
-        has_title_then: ["不做修改", "标题链接", "覆盖标题"],
+        has_title_then: ["保持原样", "标题链接", "覆盖标题"],
         panel_position: ["自动", "靠左", "居中", "靠右"],
         panel_height: ["高点", "标准", "矮点"],
         panle_control: [
-          "双击 Logo 打开面板",
+          "双击图标打开面板",
           "双击面板关闭面板",
-          "Action 执行完关闭面板"
+          "动作执行完关闭面板"
         ]
       },
       label: {
         has_title_then: "标题存在，继续摘录",
-        quick_switch: "插件快捷开关",
+        quick_switch: "模块快捷开关",
         profile: "选择配置文件",
         panel_position: "面板显示位置",
         panel_height: "面板显示高度",
@@ -27,7 +27,7 @@ const dict = {
       help: {
         profile: "【当前文档生效】可用于不同情景",
         has_title_then: "如果会产生新标题，则",
-        auto_correct: "【当前文档生效】开启后会在矫正后执行处理"
+        auto_correct: "【当前文档生效】务必和 MN 保持相同状态"
       }
     },
     gesture: {
@@ -182,7 +182,8 @@ const dict = {
         preset: "选择需要的预设",
         custom_be_title: "自定义，点击查看具体格式",
         switch_title: "切换摘录标题",
-        word_count: "[中文字数, 英文单词个数]，没超过就自动设置为标题"
+        word_count:
+          "[中文句子中的字数, 英文句子中的字数]，没超过就自动设置为标题"
       },
       help: {
         switch_title: "当两者都存在时请使用「交换标题和摘录」",
@@ -216,7 +217,7 @@ const dict = {
         default_text_excerpt_style: "文本摘录默认样式",
         default_pic_excerpt_style: "图片摘录默认样式",
         word_count_area:
-          "[中文字数, 英文单词个数, 面积]，超过则将摘录样式设置为线框，否则默认"
+          "[中文句子中的字数, 英文句子中的字数, 选区面积]，超过则将摘录样式设置为线框，否则默认"
       },
       help: {
         change_color: "输入颜色索引，也就是顺序，1 到 16"
@@ -253,15 +254,17 @@ const dict = {
       }
     },
     more: {
-      donate: "如果 ohmymn 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
-      mn5: "由于 MN5 会重新设计插件系统，在 MN5 发布前 ohmymn 将不再更新。"
+      donate: "如果 OhMyMN 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
+      mn5: "由于 MN5 会重新设计插件系统，在 MN5 发布前 OhMyMN 将不再更新。"
     }
   },
   handle_received_event: {
     input_saved: "输入已保存",
     input_clear: "输入已清空",
-    auto_correct: "请按实际情况选择开关，不建议无脑打开自动矫正",
-    lock_excerpt: "锁定摘录不建议和自动矫正同时开启"
+    auto_correct:
+      "自动矫正和锁定摘录无法同时正常工作，请关闭任意一个，否则会出现意想不到的问题",
+    lock_excerpt:
+      "锁定摘录和自动矫正无法同时正常工作，请关闭任意一个，否则会出现意想不到的问题"
   },
   magic_action_handler: {
     not_selected: "未选中任何脑图卡片",

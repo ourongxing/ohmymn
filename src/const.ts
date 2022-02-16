@@ -12,7 +12,6 @@ class MNCore {
 }
 
 export const Addon = {
-  signed: false,
   title: mnaddon.title,
   author: mnaddon.author,
   version: mnaddon.version,

@@ -147,6 +147,7 @@ declare global {
     docMD5?: string
     notebookid: string
     tableView: UITableView
+    barStatus: boolean
     panelStatus: boolean
     docProfile: {
       [k: string]: { [k: string]: boolean | string | number[] }
