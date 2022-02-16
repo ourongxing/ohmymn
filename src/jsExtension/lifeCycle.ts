@@ -9,6 +9,7 @@ import lang from "lang"
 import { dataSourcePreset } from "synthesizer"
 import { deepCopy } from "utils"
 import { UIWindow } from "types/UIKit"
+import { removeLastCommentCacheTitle } from "./excerptHandler"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -83,6 +84,7 @@ const documentDidOpen = (docmd5: string) => {
 // 关闭文档
 const documentWillClose = (docmd5: string) => {
   console.log("关闭文档", "lifeCycle")
+  removeLastCommentCacheTitle()
   saveProfile(docmd5)
 }
 
@@ -100,6 +102,7 @@ const addonWillDisconnect = () => {
 
 const sceneWillResignActive = () => {
   console.log("应用进入后台", "lifeCycle")
+  removeLastCommentCacheTitle()
   if (self.docMD5) saveProfile(self.docMD5)
 }
 

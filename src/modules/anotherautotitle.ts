@@ -2,7 +2,6 @@ import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
-import { MbBookNote } from "types/MarginNote"
 
 const { option, intro, help, link, label } = lang.module.anotherautotitle
 
@@ -54,51 +53,33 @@ export const enum AutoTitlePreset {
 }
 
 const util = {
-  isBroadened(oldStr: string, newStr: string) {
-    return (
-      oldStr &&
-      oldStr.length >= 2 &&
-      (newStr.startsWith(oldStr) || newStr.endsWith(oldStr))
-    )
-  },
-  getTitle(text: string, nodeTitle: string | undefined) {
-    const { preset, wordCount, changeTitleNoLimit } =
-      self.profile.anotherautotitle
-    if (changeTitleNoLimit && nodeTitle && util.isBroadened(nodeTitle, text))
+  getTitle(text: string) {
+    const { preset, wordCount } = self.profile.anotherautotitle
+    const newTitle = (() => {
+      for (const set of preset) {
+        switch (set) {
+          case AutoTitlePreset.Custom:
+            const { customBeTitle: regGroup } = self.profileTemp.regArray
+            if (!regGroup) continue
+            if (regGroup.some(regs => regs.every(reg => reg.test(text))))
+              return text
+            break
+          case AutoTitlePreset.WordLimit:
+            if (!wordCount) continue
+            const [zh, en] = reverseEscape(wordCount) as number[]
+            if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return text
+            break
+          case AutoTitlePreset.NoPunctuation:
+            const reg = /[。.、？?！!，,；;：:]/
+            if (!reg.test(text)) return text
+        }
+      }
+    })()
+    if (newTitle)
       return {
-        title: text,
-        text: ""
+        text: "",
+        title: [newTitle]
       }
-
-    for (const set of preset) {
-      switch (set) {
-        case AutoTitlePreset.Custom:
-          const { customBeTitle: regGroup } = self.profileTemp.regArray
-          if (!regGroup) continue
-          if (regGroup.some(regs => regs.every(reg => reg.test(text))))
-            return {
-              title: text,
-              text: ""
-            }
-          break
-        case AutoTitlePreset.WordLimit:
-          if (!wordCount) continue
-          const [zh, en] = reverseEscape(wordCount) as number[]
-          if (countWord(text) <= (isHalfWidth(text) ? en : zh))
-            return {
-              title: text,
-              text: ""
-            }
-          break
-        case AutoTitlePreset.NoPunctuation:
-          const reg = /[。.、？?！!，,；;：:]/
-          if (!reg.test(text))
-            return {
-              title: text,
-              text: ""
-            }
-      }
-    }
   }
 }
 
