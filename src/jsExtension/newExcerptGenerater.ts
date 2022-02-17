@@ -1,4 +1,3 @@
-import { QuickSwitch } from "synthesizer"
 import { MbBookNote } from "types/MarginNote"
 import { util as autotag } from "modules/autotag"
 import { util as autolist } from "modules/autolist"
@@ -8,6 +7,7 @@ import { util as autocomplete } from "modules/autocomplete"
 import { util as anotherautodef } from "modules/anotherautodef"
 import { util as autostandardize } from "modules/autostandardize"
 import { util as anotherautotitle } from "modules/anotherautotitle"
+import { AutoModuleKey, QuickSwitch } from "synthesizer"
 import { HasTitleThen } from "modules/ohmymn"
 
 export const newTitleText = async (
@@ -18,18 +18,24 @@ export const newTitleText = async (
   isComment: boolean
 ) => {
   const { quickSwitch, hasTitleThen } = self.profile.ohmymn
+
+  const isON = (key: AutoModuleKey) =>
+    quickSwitch.includes(QuickSwitch[key]) && self.profile[key]!.on
+
   const { cacheExcerptTitle } = self.docProfile.additional
+
   // 处理摘录的方法，返回 text
   const utilText = [
-    [QuickSwitch.autostandardize, autostandardize.standardizeText],
-    [QuickSwitch.autolist, autolist.listText],
-    [QuickSwitch.autoreplace, autoreplace.replaceText]
-  ] as [QuickSwitch, (text: string) => string][]
+    ["autostandardize", autostandardize.standardizeText],
+    ["autolist", autolist.listText],
+    ["autoreplace", autoreplace.replaceText]
+  ] as [AutoModuleKey, (text: string) => string][]
 
   const newText = utilText.reduce(
-    (acc, cur) => (quickSwitch.includes(cur[0]) ? cur[1](acc) : acc),
+    (acc, cur) => (isON(cur[0]) ? cur[1](acc) : acc),
     text
   )
+
   const defaultRet = { text: newText, title: undefined }
   // 卡片标题
   if (
@@ -41,15 +47,15 @@ export const newTitleText = async (
 
   // 生成标题的方法，有返回值就结束，返回 {title,text} | undefine
   const res = await (async text => {
-    if (quickSwitch.includes(QuickSwitch.autocomplete)) {
+    if (isON("autocomplete")) {
       const res = await autocomplete.getCompletedWord(text)
       if (res) return res
     }
-    if (quickSwitch.includes(QuickSwitch.anotherautodef)) {
+    if (isON("anotherautodef")) {
       const res = anotherautodef.getDefTitle(text)
       if (res) return res
     }
-    if (quickSwitch.includes(QuickSwitch.anotherautotitle)) {
+    if (isON("anotherautotitle")) {
       const { changeTitleNoLimit } = self.profile.anotherautotitle
       if (isModify && changeTitleNoLimit)
         return {
@@ -64,7 +70,7 @@ export const newTitleText = async (
   if (!res) return defaultRet
 
   // 规范化英文标题
-  if (self.profile.autostandardize.standardizeTitle)
+  if (isON("autostandardize") && self.profile.autostandardize.standardizeTitle)
     res.title = res.title.map(k => autostandardize.toTitleCase(k))
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
@@ -88,12 +94,17 @@ export const newTitleText = async (
 }
 
 export const newTag = (text: string) => {
-  const { quickSwitch } = self.profile.ohmymn
-  if (quickSwitch.includes(QuickSwitch.autotag)) return autotag.getTag(text)
+  if (
+    self.profile.ohmymn.quickSwitch.includes(QuickSwitch.autotag) &&
+    self.profile.autotag.on
+  )
+    return autotag.getTag(text)
 }
 
 export const newColorStyle = (note: MbBookNote) => {
-  const { quickSwitch } = self.profile.ohmymn
-  if (quickSwitch.includes(QuickSwitch.autostyle))
+  if (
+    self.profile.ohmymn.quickSwitch.includes(QuickSwitch.autostyle) &&
+    self.profile.autostyle.on
+  )
     return autostyle.getColorStyle(note)
 }
