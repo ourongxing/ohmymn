@@ -1,6 +1,6 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { showHUD } from "utils/common"
-import { Addon, MN } from "const"
+import { Addon } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
 import { MbBookNote } from "types/MarginNote"
 import Base64 from "utils/third party/base64"
@@ -50,6 +50,27 @@ const clearTitleCache = (_: typeof allDocProfile) => {
   }
 }
 
+const initNewVerProfile = () => {
+  const checkNewVerProfile = (
+    profile: IProfile | IDocProfile,
+    profileSaved: any
+  ) => {
+    for (const [name, _] of Object.entries(profile)) {
+      for (const [key, val] of Object.entries(_)) {
+        if (profileSaved?.[name]?.[key] === undefined) return true
+      }
+    }
+  }
+  if (checkNewVerProfile(profilePreset, allProfile[0])) {
+    allProfile.forEach((_, index) => {
+      const profile = deepCopy(profilePreset)
+      updateProfileDataSource(profile, allProfile[index])
+      allProfile[index] = profile
+    })
+    setDataByKey(allProfile, profileKey)
+  }
+}
+
 const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
   let isFirst = false
   switch (range) {
@@ -64,7 +85,10 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       const profileSaved: IProfile[] = getDataByKey(profileKey)
       if (!profileSaved) console.log("初始化全局配置", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
-    case Range.Doc:
+      // 如果有新的配置信息，全部初始化
+      initNewVerProfile()
+
+    case Range.Doc: {
       // 打开文档时读文档配置，此时也必须读全局配置
       updateProfileDataSource(
         self.docProfile,
@@ -72,28 +96,29 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       )
       isFirst && clearTitleCache(allDocProfile)
       console.log("读取当前文档配置", "profile")
-    case Range.Global:
+    }
+    case Range.Global: {
       // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
         self.profile,
         allProfile[self.docProfile.ohmymn.profile[0]],
         true
       )
-      console.log("读取全局配置", "profile")
+    }
   }
+  console.log("读取全局配置", "profile")
 }
 
 // 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
 // 传入 undefine 会使用默认参数
 const saveProfile = (
-  docmd5 = self.docMD5,
+  docmd5?: string,
   num = self.docProfile.ohmymn.profile[0]
 ) => {
-  if (num != undefined) {
-    allProfile[num] = deepCopy(self.profile)
-    setDataByKey(allProfile, profileKey)
-    console.log("保存全局配置", "profile")
-  }
+  allProfile[num] = deepCopy(self.profile)
+  setDataByKey(allProfile, profileKey)
+  console.log("保存全局配置", "profile")
+
   if (docmd5 != undefined) {
     allDocProfile[docmd5] = deepCopy(self.docProfile)
     setDataByKey(allDocProfile, docProfileKey)
@@ -116,7 +141,7 @@ export const manageProfileAction = (params: {
   const { option, nodes } = params
   const node = nodes[0]
   if (option) {
-    saveProfile()
+    saveProfile(self.docMD5)
     node.excerptText = Base64.encode(
       JSON.stringify({
         allProfileTemp: allProfile,

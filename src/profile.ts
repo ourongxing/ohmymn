@@ -88,6 +88,9 @@ const profilePreset = {
     defaultPicExcerptColor: [0],
     defaultTextExcerptStyle: [0],
     defaultPicExcerptStyle: [0]
+  },
+  magicaction: {
+    smartSelection121: false
   }
 }
 
