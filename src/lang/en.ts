@@ -6,32 +6,33 @@ const dict: Dict = {
       link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       option: {
         profile: "Profile",
-        has_title_then: ["Keep Intact", "As Title Link", "Override"],
+        has_title_then: ["Keep Intact", "As Title Link Style", "Override"],
         panel_position: ["Auto", "Left", "Center", "Right"],
         panel_height: ["Higher", "Standard", "Lower"],
         panle_control: [
-          "Double Click Logo Open Panel",
+          "Double Click Logo to Open",
           "Double Click Panel to Close",
           "Close Panel After Action"
         ]
       },
       label: {
-        has_title_then: "Excerpt While Title Exist",
+        has_title_then: "If Title Exists",
         quick_switch: "Quick Switch",
         profile: "Choose Profile",
         panel_position: "Panel Position",
         panel_height: "Panel Height",
-        panle_control: "Panel ON and OFF",
+        panle_control: "Panel Open and Close",
         screen_always_on: "Keep Screen Always On",
         lock_excerpt: "Lock Excerpt Text",
         auto_correct: "Is Auto-Correct Enabled?"
       },
       help: {
         profile:
-          "[Current Document Takes Effect]\nCan be used in different scenarios",
-        has_title_then: "If new title can be generated automatically, then",
+          "[Current Document Takes Effect]\nDifferent scenes, different profile",
+        has_title_then:
+          "Drag and drop the selection to merge into the card, and if a new title will be created by ohmymn, then",
         auto_correct:
-          "[Current Document Takes Effect]\nAfter opening, it will be processed after auto-correction"
+          "[Current Document Takes Effect]\nBe sure to keep the same status as MN"
       }
     },
     gesture: {
@@ -75,25 +76,26 @@ const dict: Dict = {
     },
     magicaction: {
       intro:
-        "Please note that the following functions are used after selecting the card.\nClick for  specific usage and precautions",
+        "All actions need to select the card first \n Click for the specific use of all actions and notes",
       link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734", //Todo:修改英文版Notion
       option: {
+        switch_title: ["Switch to Another", "Swap Titles and Excerpts"],
         filter_cards: ["Filter Only Title", "Filter Entire Card"],
         merge_text: ["Merged as Excerpt", "Merged as Comment"],
         merge_cards: ["Merge Title Simultaneously", "Do not Merge Titles"],
         manage_profile: ["Read Configuration", "Write Configuration"]
       },
       help: {
-        filter_cards:
-          "Please see the help document for more precautions and specific input format",
-        merge_text:
-          "input delimiter. Please read the reference guide at the top for precautions and specific input formats.",
-        rename_title:
-          "Now it can be hierarchical numbered.Reference guide for precuations and specific input formats is at the top.",
+        from_which_module: module =>
+          `This action comes from ${module} and uses the same profile`,
+        switch_title: "Use [Swap Title and Excerpt] when both are present」",
+        merge_text: "Input delimiter",
+        rename_title: "Now it can be hierarchical numbered",
         manage_profile:
           "It is forbidden to directly modify the configuration information, and the existing configuration will be overwritten after reading"
       },
       label: {
+        switch_title: "Switch Excerption or Title",
         filter_cards: "Filter Cards",
         merge_cards: "Merge Multiple Cards",
         merge_text: "Merge Text in Cards",
@@ -141,10 +143,6 @@ const dict: Dict = {
         preset: ["Custom"],
         replace_selected: ["Use AutoReplace Configuration", "Confirm"]
       },
-      help: {
-        replace_selected:
-          "For the specific input format, see the reference guide at the top"
-      },
       label: {
         preset: "Select Presets",
         replace_selected: "Replace Excerptions",
@@ -158,10 +156,6 @@ const dict: Dict = {
       option: {
         preset: ["Custom", "ABCD...", "一二三四...", "1234..."],
         list_selected: ["Use AutoList Configuration", "Confirm"]
-      },
-      help: {
-        list_selected:
-          "Add line breaks like list, For the specific input format, see the reference guide at the top"
       },
       label: {
         preset: "Select Presets",
@@ -192,22 +186,20 @@ const dict: Dict = {
       }
     },
     anotherautotitle: {
-      intro: "More powerful Autotitle",
+      intro:
+        "What kind of excerpts should be automatically converted to titles?",
       link: "https://www.notion.so/huangkewei/AnotherAutoTitle-bdd09b713c844a82aeea1c0d3bd4cb48", //Todo:修改英文版Notion
       option: {
-        preset: ["Custom", "Word Count", "Do not Contain Dots"],
-        switch_title: ["Switch to Another", "Swap Titles and Excerpts"]
+        preset: ["Custom", "Word Count", "Do not Contain Dots"]
       },
       label: {
         change_title_no_limit: "Title Always Be Title",
         preset: "Select Presets",
         custom_be_title: "Customize. Click for specific formats",
-        switch_title: "Switch Excerption or Title",
         word_count:
           "[number of words in a Chinese sentence, in a English sentence], if not exceeded, then set the excerpt text as the title"
       },
       help: {
-        switch_title: "Use [Swap Title and Excerpt] when both are present」",
         change_title_no_limit:
           "Change the title excerpt selection, always turn to the title"
       }
@@ -283,7 +275,8 @@ const dict: Dict = {
     more: {
       donate:
         "If you want to help me out, please click and go directly to the QR code.",
-      mn5: "Since MarginNote5 will redesign the addon system, ohmymn will not be updated until MN5 is released."
+      mn5: "Since MarginNote5 will redesign the addon system, ohmymn will not be updated until MN5 is released.",
+      auto: "Auto Executed When Excerpt"
     }
   },
   handle_received_event: {
@@ -338,6 +331,9 @@ const dict: Dict = {
   network: {
     null: "No return value received, please check the network",
     notJSON: "The return value is not in JSON format"
+  },
+  handle_gesture_event: {
+    action_not_work: "is not enabled, the action cannot be executed"
   },
   other: {
     cancel: "Cancel"

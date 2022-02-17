@@ -4,7 +4,7 @@ import { isHalfWidth, SerialCode } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { help, intro, option, label, link } = lang.module.autolist
+const { intro, option, label, link } = lang.module.autolist
 const config: IConfig = {
   name: "AutoList",
   intro,
@@ -34,7 +34,6 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.list_selected,
       key: "listSelected",
-      help: help.list_selected,
       option: option.list_selected
     }
   ]

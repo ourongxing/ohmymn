@@ -41,15 +41,7 @@ const config: IConfig = {
       help: help.change_title_no_limit
     }
   ],
-  actions: [
-    {
-      key: "switchTitle",
-      type: cellViewType.button,
-      label: label.switch_title,
-      option: option.switch_title,
-      help: help.switch_title
-    }
-  ]
+  actions: []
 }
 export const enum AutoTitlePreset {
   Custom,

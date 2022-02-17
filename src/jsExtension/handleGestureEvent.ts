@@ -1,12 +1,19 @@
-import type { GestureHandler, IRowButton } from "types/Addon"
+import type { GestureHandler, IRowButton, IRowSelect } from "types/Addon"
 import { UISwipeGestureRecognizerDirection } from "types/UIKit"
 import { MN } from "const"
 import { docMapSplitMode, studyMode, groupMode } from "types/MarginNote"
 import { util as gesture } from "modules/gesture"
-import { actionKey, dataSourceIndex, QuickSwitch } from "synthesizer"
+import {
+  actionKey,
+  dataSourceIndex,
+  moduleList,
+  QuickSwitch
+} from "synthesizer"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
 import { PanelControl } from "modules/ohmymn"
+import { showHUD } from "utils/common"
+import lang from "lang"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -53,7 +60,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   }
 ])
 
-const enum swipePositon {
+const enum SwipePosition {
   None = 0,
   SingleBar,
   MuiltBar
@@ -88,7 +95,7 @@ const isWithinArea = (
   return xx && yy
 }
 
-const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
+const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const studyController = MN.studyController()
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
@@ -98,18 +105,18 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
     studyController.docMapSplitMode == docMapSplitMode.allDoc ||
     !selViewLst?.length
   )
-    return swipePositon.None
+    return SwipePosition.None
 
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
   // 屏蔽一些会误触的 UI
   if (swipeY < 60 || swipeX < 70 || swipeX > width - 70)
-    return swipePositon.None
+    return SwipePosition.None
   if (
     self.panelStatus &&
     isWithinArea({ swipeX, swipeY }, self.settingViewController.view.frame)
   )
-    return swipePositon.None
+    return SwipePosition.None
 
   if (selViewLst.length == 1 && self.barStatus) {
     const { width: readerViewWidth } =
@@ -121,7 +128,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
       ((studyController.rightMapMode && swipeX < readerViewWidth) ||
         (!studyController.rightMapMode && swipeX > width - readerViewWidth))
     )
-      return swipePositon.None
+      return SwipePosition.None
 
     const view = selViewLst![0].view
     const { y: cardY, height: cardHeight } =
@@ -150,7 +157,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
             }
           )))
     )
-      return swipePositon.SingleBar
+      return SwipePosition.SingleBar
 
     // 框架形式的单选工具栏在卡片中间和上方
     if (
@@ -163,7 +170,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
         }
       )
     )
-      return swipePositon.SingleBar
+      return SwipePosition.SingleBar
   }
 
   /**
@@ -187,9 +194,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): swipePositon => {
   }
 
   if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
-    return swipePositon.MuiltBar
-
-  return swipePositon.None
+    return SwipePosition.MuiltBar
+  return SwipePosition.None
 }
 
 const actionTrigger = async (
@@ -198,35 +204,30 @@ const actionTrigger = async (
   sender: UIGestureRecognizer
 ) => {
   if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.gesture)) return
-  switch (checkSwipePosition(sender)) {
-    case swipePositon.None:
-      return
-    case swipePositon.SingleBar: {
-      if (!sigleOption) return
-      if (actionKey[sigleOption].key == "open_panel") openPanel()
-      else {
-        const [sec, row] =
-          dataSourceIndex.magicaction[actionKey[sigleOption].key]
-        await handleMagicAction(
-          <IRowButton>self.dataSource[sec].rows[row],
-          actionKey[sigleOption].option
-        )
-      }
-      break
-    }
-    case swipePositon.MuiltBar: {
-      if (!muiltOption) return
-      if (actionKey[muiltOption].key == "open_panel") openPanel()
-      else {
-        const [sec, row] =
-          dataSourceIndex.magicaction[actionKey[muiltOption].key]
-        await handleMagicAction(
-          <IRowButton>self.dataSource[sec].rows[row],
-          actionKey[muiltOption].option
-        )
-      }
-      break
-    }
+  // 模块未启用，则菜单隐藏
+  const isModuleOFF = (header: string): boolean => {
+    const { quickSwitch } = self.profile.ohmymn
+    return (
+      moduleList.includes(header) &&
+      !quickSwitch.includes(moduleList.findIndex(key => key === header))
+    )
+  }
+  const swipePosition = checkSwipePosition(sender)
+  if (swipePosition === SwipePosition.None) return
+  let actionInfo: typeof actionKey[number]
+  if (swipePosition === SwipePosition.SingleBar && sigleOption) {
+    actionInfo = actionKey[sigleOption]
+  } else if (swipePosition === SwipePosition.MuiltBar && muiltOption) {
+    actionInfo = actionKey[muiltOption]
+  } else return
+
+  const { key, module, option } = actionInfo
+  if (key == "open_panel") openPanel()
+  else if (module && isModuleOFF(module))
+    showHUD(`${module} ${lang.handle_gesture_event.action_not_work}`, 2)
+  else {
+    const [sec, row] = dataSourceIndex.magicaction[key]
+    await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row], option)
   }
 }
 

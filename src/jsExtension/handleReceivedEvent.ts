@@ -5,7 +5,7 @@ import handleExcerpt, {
 import { layoutViewController } from "jsExtension/switchPanel"
 import { alert, delayBreak, isThisWindow, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
-import { getNoteById, getSelectNodes } from "utils/note"
+import { getNoteById } from "utils/note"
 import handleMagicAction from "./magicActionHandler"
 import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
@@ -85,12 +85,12 @@ const onInputOver: eventHandler = sender => {
 const onPopupMenuOnSelection: eventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("选择菜单开启", "event")
-  console.log(sender.userInfo)
+  const { documentController, winRect } = sender.userInfo
+  console.log(documentController.selectionText)
 }
 const onClosePopupMenuOnSelection: eventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("选择关闭开启", "event")
-  console.log(sender.userInfo)
 }
 
 /**

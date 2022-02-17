@@ -14,7 +14,7 @@ const dict = {
         ]
       },
       label: {
-        has_title_then: "标题存在，继续摘录",
+        has_title_then: "如果标题存在",
         quick_switch: "模块快捷开关",
         profile: "选择配置文件",
         panel_position: "面板显示位置",
@@ -25,8 +25,8 @@ const dict = {
         auto_correct: "开启自动在线矫正了吗"
       },
       help: {
-        profile: "【当前文档生效】可用于不同情景",
-        has_title_then: "如果会产生新标题，则",
+        profile: "【当前文档生效】不同情景，不同配置",
+        has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则",
         auto_correct: "【当前文档生效】务必和 MN 保持相同状态"
       }
     },
@@ -68,22 +68,25 @@ const dict = {
     },
     magicaction: {
       intro:
-        "请注意，以下功能均为选中卡片后使用\n点击查看具体使用方法和注意事项",
+        "所有动作均需要先选中卡片\n点击查看所有动作具体的使用方法和注意事项",
       link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
       option: {
         filter_cards: ["仅筛选标题", "筛选整个卡片内容"],
+        switch_title: ["切换为不存在的", "交换标题和摘录"],
         merge_text: ["合并为摘录", "合并为评论"],
         merge_cards: ["同时合并标题", "不合并标题"],
         manage_profile: ["读取配置信息", "写入配置信息"]
       },
       help: {
-        filter_cards: "注意事项及具体输入格式见顶上帮助信息",
-        merge_text: "输入分隔符，注意事项及具体输入格式见顶上帮助信息",
-        rename_title:
-          "现在可以分层进行编号，注意事项及具体输入格式见顶上帮助信息",
-        manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
+        merge_text: "输入分隔符",
+        switch_title: "当两者都存在时请使用「交换标题和摘录」",
+        rename_title: "现在可以分层进行编号",
+        manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置",
+        from_which_module: (module: string) =>
+          `该动作来自于 ${module}，与其使用相同的配置`
       },
       label: {
+        switch_title: "切换摘录标题",
         filter_cards: "筛选卡片",
         merge_cards: "合并卡片",
         merge_text: "合并卡片文字",
@@ -127,9 +130,6 @@ const dict = {
         preset: ["自定义"],
         replace_selected: ["使用 AutoReplace 的配置", "确定"]
       },
-      help: {
-        replace_selected: "具体输入格式见顶上帮助信息"
-      },
       label: {
         preset: "选择需要的预设",
         replace_selected: "替换摘录文字",
@@ -143,9 +143,6 @@ const dict = {
       option: {
         preset: ["自定义", "ABCD...", "一二三四...", "1234..."],
         list_selected: ["使用 AutoList 的配置", "确定"]
-      },
-      help: {
-        list_selected: "具体输入格式见顶上帮助信息"
       },
       label: {
         preset: "选择需要的预设",
@@ -171,22 +168,19 @@ const dict = {
       }
     },
     anotherautotitle: {
-      intro: "更强大的自动转换标题插件",
+      intro: "什么样的摘录该自动转为标题？",
       link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
       option: {
-        preset: ["自定义", "根据字数", "不含有点号"],
-        switch_title: ["切换为不存在的", "交换标题和摘录"]
+        preset: ["自定义", "根据字数", "不含有点号"]
       },
       label: {
         change_title_no_limit: "标题摘录始终为标题",
         preset: "选择需要的预设",
         custom_be_title: "自定义，点击查看具体格式",
-        switch_title: "切换摘录标题",
         word_count:
           "[中文句子中的字数, 英文句子中的字数]，没超过就自动设置为标题"
       },
       help: {
-        switch_title: "当两者都存在时请使用「交换标题和摘录」",
         change_title_no_limit: "修改标题摘录选区，始终转为标题"
       }
     },
@@ -255,7 +249,8 @@ const dict = {
     },
     more: {
       donate: "如果 OhMyMN 对你有所帮助，欢迎赞赏，点击即可直达二维码。",
-      mn5: "由于 MN5 会重新设计插件系统，在 MN5 发布前 OhMyMN 将不再更新。"
+      mn5: "由于 MN5 会重新设计插件系统，在 MN5 发布前 OhMyMN 将不再更新。",
+      auto: "摘录时自动执行"
     }
   },
   handle_received_event: {
@@ -309,6 +304,9 @@ const dict = {
   network: {
     null: "没有收到返回值，请检测网络",
     notJSON: "返回值不是 JSON 格式"
+  },
+  handle_gesture_event: {
+    action_not_work: "未启用，该动作无法执行"
   },
   other: {
     cancel: "取消"

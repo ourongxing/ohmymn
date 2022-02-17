@@ -30,7 +30,6 @@ const config: IConfig = {
     {
       type: cellViewType.buttonWithInput,
       label: label.filter_cards,
-      help: help.filter_cards,
       option: option.filter_cards,
       key: "filterCards"
     },
@@ -52,6 +51,13 @@ const config: IConfig = {
       key: "mergeText",
       help: help.merge_text,
       option: option.merge_text
+    },
+    {
+      key: "switchTitle",
+      type: cellViewType.button,
+      label: label.switch_title,
+      option: option.switch_title,
+      help: help.switch_title
     }
   ]
 }

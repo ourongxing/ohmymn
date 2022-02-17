@@ -3,7 +3,7 @@ import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 
-const { intro, link, label, help, option } = lang.module.autoreplace
+const { intro, link, label, option } = lang.module.autoreplace
 export const enum AutoReplacePreset {
   Custom
 }
@@ -37,7 +37,6 @@ const config: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.replace_selected,
       key: "replaceSelected",
-      help: help.replace_selected,
       option: option.replace_selected
     }
   ]
