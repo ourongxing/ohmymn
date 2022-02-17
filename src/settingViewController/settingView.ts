@@ -69,6 +69,13 @@ const tableViewHeightForRowAtIndexPath = (
   const { rows, header } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   if (row.bind && _isBindOFF(row.bind, header)) return 0
+  if (
+    (row.type === cellViewType.button ||
+      row.type === cellViewType.buttonWithInput) &&
+    row.module &&
+    _isModuleOFF(row.module)
+  )
+    return 0
   if (row.type === cellViewType.plainText) {
     // 每行大约可以容纳 45 个半角字符
     const byte = byteLength(row.label)
@@ -109,12 +116,12 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "ButtonCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
+      if (!MN.isMac && row.bind && row.module && _isModuleOFF(row.module))
         cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
-      const iconColor = MN.app.currentTheme == "Gray" ? "light" : "dark"
+      const iconColor = MN.app.currentTheme == "Gray" ? "white" : "black"
       const image = NSData.dataWithContentsOfFile(
         MN.mainPath + `/icon/${iconColor}/${row.key}.png`
       )

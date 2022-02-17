@@ -1,6 +1,6 @@
 import { IDocProfile, IProfile, IProfileTemp } from "profile"
 import { ReplaceParam } from "utils/input"
-import { StudyController } from "./MarginNote"
+import { DocumentController, StudyController } from "./MarginNote"
 import { MbBookNote } from "./MarginNote/MbBookNote"
 import { UIWindow, UITableView, UITableViewController } from "./UIKit"
 
@@ -53,6 +53,7 @@ export interface ISettingButton extends ISettingBasic {
   /** button 的 link 不起作用 */
   link?: undefined
   option?: string[]
+  module?: string
 }
 
 export interface ISettingSelect extends ISettingBasic {
@@ -94,11 +95,7 @@ export interface IRowInput extends KeyLabelType {
   content: string
 }
 
-export interface IRowButton extends KeyLabelType {
-  type: cellViewType.button | cellViewType.buttonWithInput
-  help?: string
-  option?: string[]
-}
+export type IRowButton = ISettingButton
 
 export interface IRowSelect extends KeyLabelType {
   type: cellViewType.select | cellViewType.muiltSelect
@@ -118,6 +115,11 @@ export interface IActionMethod {
   }) => any
 }
 
+declare const enum DirectionOfSelection {
+  toRight = 1,
+  toLeft = 2
+}
+
 export interface eventHandler {
   (sender: {
     // 不是都有哈，具体要看发送了什么
@@ -131,6 +133,9 @@ export interface eventHandler {
       note: MbBookNote
       selections: number[]
       noteid: string
+      arrow: DirectionOfSelection
+      documentController: DocumentController
+      winRect: CGRect
     }
   }): void
 }

@@ -9,7 +9,8 @@ import * as autotag from "modules/autotag"
 import * as autostyle from "modules/autostyle"
 import * as ohmymn from "modules/ohmymn"
 import * as gesture from "modules/gesture"
-import { cellViewType, IConfig, IRow, ISection } from "types/Addon"
+import * as copysearch from "modules/copysearch"
+import { cellViewType, IConfig, IRow, IRowButton, ISection } from "types/Addon"
 import lang from "lang"
 import { SerialCode } from "utils/text"
 
@@ -23,7 +24,8 @@ const modules = [
   autoreplace,
   autolist,
   autotag,
-  autostyle
+  autostyle,
+  copysearch
 ]
 
 // 插件总开关，与上面顺序一致，新插件只能加在最后，因为配置文件只记录索引
@@ -80,8 +82,8 @@ const genSection = (config: IConfig): ISection => {
     if (
       setting.help &&
       [
-        cellViewType.select,
         cellViewType.muiltSelect,
+        cellViewType.select,
         cellViewType.switch
       ].includes(setting.type)
     )
@@ -90,7 +92,7 @@ const genSection = (config: IConfig): ISection => {
         label: "↑ " + setting.help,
         link: setting.link ?? ""
       })
-    else if (setting.label && setting.type == cellViewType.input)
+    if (setting.label && setting.type == cellViewType.input)
       rows.push({
         type: cellViewType.plainText,
         label: "↑ " + setting.label,
@@ -112,32 +114,39 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-export const actionKey: { key: string; option?: number }[] = [
+export const actionKey: { key: string; option?: number; module?: string }[] = [
   { key: "none" },
   { key: "open_panel" }
 ]
 
 export const moduleList: string[] = []
-
 export const genDataSource = (
   configs: IConfig[],
   magicaction: IConfig
 ): ISection[] => {
   const dataSource: ISection[] = []
-  for (let config of configs) {
+  configs.forEach(config => {
     dataSource.push(genSection(config))
-    if (config.actions.length) {
-      for (let action of config.actions) magicaction.actions.push(action)
-    }
-    magicaction.settings = magicaction.actions
-  }
-  dataSource.unshift(genSection(magicaction))
+    config.actions.length &&
+      magicaction.actions.push(
+        ...config.actions.map(k => {
+          k.module = config.name
+          if (k.help) k.help += "\n"
+          else k.help = ""
+          k.help += lang.module.magicaction.help.from_which_module(config.name)
+          return k
+        })
+      )
+  })
+  magicaction.settings = magicaction.actions
+  dataSource.splice(1, 0, genSection(magicaction))
+
   dataSource.forEach((sec, index) => {
-    if (index > 1) moduleList.push(sec.header)
+    index > 1 && moduleList.push(sec.header)
   })
 
   // 更新 quickSwitch 为 moduleList
-  for (const row of dataSource[1].rows) {
+  for (const row of dataSource[0].rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
       row.option = moduleList.map(
         (value, index) => SerialCode.hollow_circle_number[index] + " " + value
@@ -146,38 +155,34 @@ export const genDataSource = (
 
   // 同步 gesture 的 option 为 magicaction 列表
   const gestureOption = [lang.implement_datasource_method.open_panel]
-  for (const row of dataSource[0].rows) {
-    if (row.type == cellViewType.plainText) continue
+  for (const _row of dataSource[1].rows) {
+    if (_row.type == cellViewType.plainText) continue
+    const row = _row as IRowButton
     gestureOption.push(row.label)
     actionKey.push({
-      key: row.key
+      key: row.key,
+      module: row.module
     })
-    if (
-      (row.type == cellViewType.button && row.option?.length) ||
-      (row.type == cellViewType.buttonWithInput &&
-        row.option?.length &&
-        row.key == "mergeText")
-    ) {
-      row.option.forEach((option, index) => {
-        gestureOption.push("——" + option)
+    if (row.option?.length) {
+      if (row.type == cellViewType.button || row.key == "mergeText") {
+        row.option.forEach((option, index) => {
+          gestureOption.push("——" + option)
+          actionKey.push({
+            key: row.key,
+            option: index,
+            module: row.module
+          })
+        })
+      } else if (row.option[0].includes("Auto")) {
+        gestureOption.push("——" + row.option[0])
         actionKey.push({
           key: row.key,
-          option: index
+          option: 0,
+          module: row.module
         })
-      })
-    } else if (
-      row.type == cellViewType.buttonWithInput &&
-      row.option?.length &&
-      row.option[0].includes("Auto")
-    ) {
-      gestureOption.push("——" + row.option[0])
-      actionKey.push({
-        key: row.key,
-        option: 0
-      })
+      }
     }
   }
-
   dataSource[2].rows = dataSource[2].rows.map(row => {
     if (row.type == cellViewType.select)
       row.option = [lang.implement_datasource_method.none, ...gestureOption]

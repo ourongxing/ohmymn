@@ -134,7 +134,7 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
 
 /**
- * 添加标签
+ * 添加标签，并且会去除划重点
  * @param force 强制整理合并标签，就算没有添加标签
  */
 const addTags = (node: MbBookNote, tags: string[], force = false) => {
