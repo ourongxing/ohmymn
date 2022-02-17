@@ -18,7 +18,13 @@ const config: IConfig = {
   name: "MagicAction",
   intro,
   link,
-  settings: [],
+  settings: [
+    {
+      key: "smartSelection",
+      type: cellViewType.switch,
+      label: label.smart_selection
+    }
+  ],
   actions: [
     {
       key: "manageProfile",

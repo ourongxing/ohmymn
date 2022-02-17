@@ -138,7 +138,7 @@ export const genDataSource = (
         })
       )
   })
-  magicaction.settings = magicaction.actions
+  magicaction.settings.push(...magicaction.actions)
   dataSource.splice(1, 0, genSection(magicaction))
 
   dataSource.forEach((sec, index) => {

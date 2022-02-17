@@ -90,7 +90,7 @@ const profilePreset = {
     defaultPicExcerptStyle: [0]
   },
   magicaction: {
-    smartSelection121: false
+    smartSelection: false
   }
 }
 
