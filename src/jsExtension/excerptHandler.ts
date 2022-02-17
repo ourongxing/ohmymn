@@ -3,6 +3,7 @@ import {
   getCommentIndex,
   getNotebookById,
   getNoteById,
+  removeHighlight,
   undoGroupingWithRefresh
 } from "utils/note"
 import { delayBreak } from "utils/common"

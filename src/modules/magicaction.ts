@@ -1,4 +1,4 @@
-import { addTags, getAllText, getNodeTree } from "utils/note"
+import { addTags, getAllText, getNodeTree, removeHighlight } from "utils/note"
 import {
   escapeDoubleQuote,
   reverseEscape,
@@ -229,8 +229,7 @@ const action: IActionMethod = {
     for (const node of nodes) {
       const allText = getAllText(
         node,
-        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`),
-        true
+        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`)
       )
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []
@@ -249,7 +248,7 @@ const action: IActionMethod = {
           break
         case MergeText.ToComment:
           node.excerptText = ""
-          node.appendTextComment(allText.replace(/\*\*/g, ""))
+          node.appendTextComment(removeHighlight(allText))
       }
       linkComments.forEach(linkComment => {
         node.appendTextComment(linkComment.text)
@@ -261,7 +260,7 @@ const action: IActionMethod = {
     const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
-      const content = `${title}\n${getAllText(node, "\n")}`
+      const content = `${title}\n${getAllText(node)}`
       return regGroup.some(regs =>
         regs.every(reg =>
           reg.test(option == FilterCards.AllText ? content : title)
@@ -300,7 +299,7 @@ const action: IActionMethod = {
   switchTitle({ nodes, option }) {
     for (const note of nodes) {
       const title = note.noteTitle ?? ""
-      const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
+      const text = note.excerptText ? removeHighlight(note.excerptText) : ""
       switch (option) {
         case SwitchTitle.ToNonexistent:
           // 只允许存在一个

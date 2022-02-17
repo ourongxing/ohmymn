@@ -9,6 +9,7 @@ import { util as autostandardize } from "modules/autostandardize"
 import { util as anotherautotitle } from "modules/anotherautotitle"
 import { AutoModuleKey, QuickSwitch } from "synthesizer"
 import { HasTitleThen } from "modules/ohmymn"
+import { removeHighlight } from "utils/note"
 
 export const newTitleText = async (
   text: string,
@@ -48,21 +49,27 @@ export const newTitleText = async (
   // 生成标题的方法，有返回值就结束，返回 {title,text} | undefine
   const res = await (async text => {
     if (isON("autocomplete")) {
-      const res = await autocomplete.getCompletedWord(text)
+      // 排除划重点的影响
+      const newText = isModify ? removeHighlight(text) : text
+      const res = await autocomplete.getCompletedWord(newText)
       if (res) return res
     }
     if (isON("anotherautodef")) {
       const res = anotherautodef.getDefTitle(text)
-      if (res) return res
+      if (res) {
+        if (isModify) res.title = res.title.map(k => removeHighlight(k))
+        return res
+      }
     }
     if (isON("anotherautotitle")) {
       const { changeTitleNoLimit } = self.profile.anotherautotitle
+      const newText = isModify ? removeHighlight(text) : text
       if (isModify && changeTitleNoLimit)
         return {
-          title: [text],
+          title: [newText],
           text: ""
         }
-      const res = anotherautotitle.getTitle(text)
+      const res = anotherautotitle.getTitle(newText)
       if (res) return res
     }
   })(newText)

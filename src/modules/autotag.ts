@@ -50,6 +50,7 @@ const util = {
     const { preset } = self.profile.autotag
     if (preset.includes(AutoTagPreset.Custom) && params)
       return extractArray(text, params)
+    else return []
   }
 }
 
@@ -64,7 +65,7 @@ const action: IActionMethod = {
         const text = getAllText(node)
         if (text) {
           const tags = util.getTag(text)
-          if (tags?.length) addTags(node, tags)
+          if (tags.length) addTags(node, tags)
         }
       })
     } else if (content) {

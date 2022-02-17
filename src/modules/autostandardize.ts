@@ -69,9 +69,11 @@ const util = {
   standardizeText(text: string): string {
     if (isHalfWidth(text)) return text
     const { preset } = self.profile.autostandardize
-    text = text
-      .replace(/\*\*([\b-']*?)\*\*/g, "placeholder$1placeholder")
-      .replace(/\*\*/g, "占位符")
+    text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
+      isHalfWidth(match)
+        ? `placeholder${match}placeholder`
+        : `占位符${match}占位符`
+    )
     for (const set of preset) {
       switch (set) {
         case AutoStandardizePreset.Custom:

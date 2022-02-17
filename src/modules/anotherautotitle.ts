@@ -58,6 +58,9 @@ export const enum AutoTitlePreset {
 }
 
 const util = {
+  /**
+   * @param text 先去除划重点
+   */
   getTitle(text: string) {
     const { preset, wordCount } = self.profile.anotherautotitle
     const newTitle = (() => {

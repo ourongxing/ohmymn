@@ -1,6 +1,6 @@
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
-import { excerptNotes, getNoteById } from "utils/note"
+import { excerptNotes, getNoteById, removeHighlight } from "utils/note"
 import { MbBookNote } from "types/MarginNote"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
@@ -140,11 +140,11 @@ const util = {
         if (actualArea > area) res.style = 2
         if (showArea) showHUD(lang.module.autostyle.area + ": " + actualArea)
         // 0 线框+填充 1 填充 2 线框
-      } else if (
-        note.excerptText &&
-        countWord(note.excerptText) > (isHalfWidth(note.excerptText) ? en : zh)
-      )
-        res.style = 2
+      } else if (note.excerptText) {
+        // 排除划重点的影响
+        const text = removeHighlight(note.excerptText)
+        if (countWord(text) > (isHalfWidth(text) ? en : zh)) res.style = 2
+      }
     }
 
     for (const set of preset)

@@ -1,7 +1,7 @@
 import { MbBookNote, MbTopic } from "types/MarginNote"
 import { postNotification } from "./common"
 import { MN } from "const"
-import { deepCopy, unique } from "utils"
+import { unique } from "utils"
 
 /**
  * 获取选中的卡片
@@ -111,11 +111,11 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
  * @returns
  */
 
-const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
+const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
   const textArr = []
   note.excerptText &&
     textArr.push(
-      highlight ? note.excerptText : note.excerptText.replace(/\*\*/g, "")
+      highlight ? note.excerptText : removeHighlight(note.excerptText)
     )
   note.comments.forEach(comment => {
     switch (comment.type) {
@@ -130,6 +130,8 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = false) => {
   })
   return textArr.join(separator)
 }
+
+const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
 
 /**
  * 添加标签
@@ -161,7 +163,7 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
     .map(tag => `#${tag}`)
     .join(" ")
 
-  tagLine && node.appendTextComment(tagLine)
+  tagLine && node.appendTextComment(removeHighlight(tagLine))
 }
 
 export {
@@ -175,5 +177,6 @@ export {
   undoGrouping,
   undoGroupingWithRefresh,
   RefreshAfterDBChange,
-  addTags
+  addTags,
+  removeHighlight
 }

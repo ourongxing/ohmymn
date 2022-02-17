@@ -158,6 +158,9 @@ const util = {
     // 优化一下格式
     return pangu.spacing(pangu.toFullwidth(text))
   },
+  /**
+   * @param text 先去除划重点
+   */
   async getCompletedWord(text: string) {
     try {
       // 只有第一个字母可以大写，否则直接返回

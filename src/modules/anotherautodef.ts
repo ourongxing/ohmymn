@@ -1,5 +1,5 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
-import { getAllText } from "utils/note"
+import { getAllText, removeHighlight } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { unique } from "utils"
@@ -111,6 +111,9 @@ const util = {
     return defs.length > 1 ? unique<string>(defs) : [text]
   },
 
+  /**
+   * 返回的标题需要去除划重点
+   */
   getDefTitle(text: string) {
     const { preset, onlyDesc } = self.profile.anotherautodef
     for (const set of preset)
@@ -208,7 +211,8 @@ const action: IActionMethod = {
         const text = getAllText(node)
         if (text) {
           const res = util.getDefTitle(text)
-          if (res) node.noteTitle = res.title.join("; ")
+          if (res && res.title.length)
+            node.noteTitle = removeHighlight(res.title.join("; "))
         }
       })
     } else if (content) {
@@ -216,7 +220,8 @@ const action: IActionMethod = {
       nodes.forEach(node => {
         const text = getAllText(node)
         const allTitles = extractArray(text, params)
-        if (allTitles.length) node.noteTitle = allTitles.join("; ")
+        if (allTitles.length)
+          node.noteTitle = removeHighlight(allTitles.join("; "))
       })
     }
   }
