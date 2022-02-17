@@ -13,6 +13,11 @@ const config: IConfig = {
   link,
   settings: [
     {
+      key: "on",
+      type: cellViewType.switch,
+      label: lang.module.more.auto
+    },
+    {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: option.preset,

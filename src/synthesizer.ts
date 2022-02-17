@@ -27,7 +27,7 @@ const modules = [
 ]
 
 // 插件总开关，与上面顺序一致，新插件只能加在最后，因为配置文件只记录索引
-export const enum QuickSwitch {
+export enum QuickSwitch {
   gesture,
   anotherautotitle,
   anotherautodef,
@@ -38,6 +38,12 @@ export const enum QuickSwitch {
   autotag,
   autostyle
 }
+
+type Extract<T, U> = T extends U ? never : T
+export type AutoModuleKey = Extract<
+  keyof typeof QuickSwitch,
+  "gesture" | "copysearch"
+>
 
 const more: ISection = {
   header: "More",

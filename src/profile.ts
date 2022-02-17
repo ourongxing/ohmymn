@@ -37,21 +37,25 @@ const profilePreset = {
     muiltBarSwipeLeft: [0]
   },
   autocomplete: {
+    on: false,
     fillWordInfo: [FillWordInfo.None],
     customFill: "{{zh}}"
   },
   autostandardize: {
+    on: false,
     preset: [] as AutoStandardizePreset[],
     customStandardize: "",
     standardizeTitle: false
   },
   anotherautotitle: {
+    on: false,
     preset: [] as AutoTitlePreset[],
     changeTitleNoLimit: false,
     wordCount: "[10, 5]",
     customBeTitle: ""
   },
   anotherautodef: {
+    on: false,
     preset: [] as number[],
     onlyDesc: false,
     toTitleLink: false,
@@ -61,18 +65,22 @@ const profilePreset = {
     customExtractTitle: ""
   },
   autolist: {
+    on: false,
     preset: [] as AutoListPreset[],
     customList: ""
   },
   autoreplace: {
+    on: false,
     preset: [] as AutoReplacePreset[],
     customReplace: ""
   },
   autotag: {
+    on: false,
     preset: [] as AutoTagPreset[],
     customTag: ""
   },
   autostyle: {
+    on: false,
     preset: [] as AutoStylePreset[],
     wordCountArea: "[10, 5, 10]",
     showArea: false,

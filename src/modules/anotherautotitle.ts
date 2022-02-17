@@ -11,6 +11,11 @@ const config: IConfig = {
   link,
   settings: [
     {
+      key: "on",
+      type: cellViewType.switch,
+      label: lang.module.more.auto
+    },
+    {
       key: "preset",
       type: cellViewType.muiltSelect,
       option: option.preset,
@@ -82,32 +87,5 @@ const util = {
       }
   }
 }
-
-export const enum SwitchTitle {
-  ToNonexistent,
-  Exchange
-}
-
-const action: IActionMethod = {
-  switchTitle({ nodes, option }) {
-    for (const note of nodes) {
-      const title = note.noteTitle ?? ""
-      const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
-      switch (option) {
-        case SwitchTitle.ToNonexistent:
-          // 只允许存在一个
-          if ((title || text) && !(title && text)) {
-            note.noteTitle = text
-            note.excerptText = title
-          } else if (title == text) note.noteTitle = ""
-          break
-        case SwitchTitle.Exchange:
-          note.noteTitle = text
-          note.excerptText = title
-          break
-      }
-    }
-  }
-}
-
+const action = {}
 export { config, util, action }

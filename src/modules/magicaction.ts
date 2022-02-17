@@ -56,21 +56,6 @@ const config: IConfig = {
   ]
 }
 
-const enum FilterCards {
-  OnlyTitle,
-  AllText
-}
-
-const enum MergeCards {
-  MergeTitle,
-  NotMergeTitile
-}
-
-const enum MergeText {
-  ToExpertText,
-  ToComment
-}
-
 const util = {
   genCharArray(char: string, len: number, step: number = 1): string[] {
     const serialCode = Object.values(SerialCode).filter(k =>
@@ -169,6 +154,26 @@ const util = {
         : ""
     )
   }
+}
+
+const enum FilterCards {
+  OnlyTitle,
+  AllText
+}
+
+const enum MergeCards {
+  MergeTitle,
+  NotMergeTitile
+}
+
+const enum MergeText {
+  ToExpertText,
+  ToComment
+}
+
+const enum SwitchTitle {
+  ToNonexistent,
+  Exchange
 }
 
 const action: IActionMethod = {
@@ -291,6 +296,25 @@ const action: IActionMethod = {
       node.noteTitle = unique(titles).join("; ")
     // 合并标签
     addTags(node, [], true)
+  },
+  switchTitle({ nodes, option }) {
+    for (const note of nodes) {
+      const title = note.noteTitle ?? ""
+      const text = note.excerptText ? note.excerptText.replace(/\*\*/g, "") : ""
+      switch (option) {
+        case SwitchTitle.ToNonexistent:
+          // 只允许存在一个
+          if ((title || text) && !(title && text)) {
+            note.noteTitle = text
+            note.excerptText = title
+          } else if (title == text) note.noteTitle = ""
+          break
+        case SwitchTitle.Exchange:
+          note.noteTitle = text
+          note.excerptText = title
+          break
+      }
+    }
   }
 }
 

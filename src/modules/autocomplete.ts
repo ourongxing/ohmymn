@@ -14,6 +14,11 @@ const config: IConfig = {
   link,
   settings: [
     {
+      key: "on",
+      type: cellViewType.switch,
+      label: lang.module.more.auto
+    },
+    {
       key: "fillWordInfo",
       type: cellViewType.select,
       option: option.fill_word_info,
