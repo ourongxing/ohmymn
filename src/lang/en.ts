@@ -247,7 +247,7 @@ const dict: Dict = {
         change_color: ["Use AutoStyle Configuration", "Confirm"],
         preset: [
           "Style is determined by word count or area",
-          "color follow card",
+          "Color follow card",
           "Color follows frist child node",
           "Color follows parent node"
         ],
@@ -281,19 +281,19 @@ const dict: Dict = {
         multiple_excerpts: "If Multiple Excerpts",
         custom_copy:
           "Customize what you search or copy, click to see which variables are supported",
-        which_search_engine: "Choose Search Engine",
+        which_search_engine: "Select Search Engine",
         search_card_info: "Search Card Content",
         separator_symbols_multiple_card: "Separator Symbols",
         copy_card_info: "Copy Card Content",
         show_search_engine: "Show Search URL"
       },
       option: {
-        multiple_titles: ["All", "First", "Instant Choose"],
-        multiple_excerpts: ["All", "First", "Instant Choose"],
+        multiple_titles: ["All", "First", "Instant Select"],
+        multiple_excerpts: ["All", "First", "Instant Select"],
         search_card_info: ["Title", "Excerpt Text", "Custom Content"],
         copy_card_info: ["Title", "Excerpt Text", "Custom Content"],
         which_search_engine: [
-          "Instant Choose",
+          "Instant Select",
           "Chinese",
           "English",
           "Dict",
@@ -325,7 +325,7 @@ const dict: Dict = {
       donate:
         "If you want to help me out, please click and go directly to the QR code.",
       mn5: "Since MarginNote5 will redesign the addon system, ohmymn will not be updated until MN5 is released.",
-      auto: "Auto Executed When Excerpt"
+      auto: "Auto Executed"
     }
   },
   handle_received_event: {
