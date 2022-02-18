@@ -1,4 +1,4 @@
-import { excerptNotes } from "utils/note"
+import { getExcerptNotes } from "utils/note"
 import { regFlag, ReplaceParam, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
@@ -100,7 +100,7 @@ const action: IActionMethod = {
   listSelected({ nodes, content, option }) {
     if (option == ListSelected.UseAutoList) {
       nodes.forEach(node => {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
           if (text) note.excerptText = util.listText(text)
         })
@@ -108,7 +108,7 @@ const action: IActionMethod = {
     } else if (content) {
       const params = string2ReplaceParam(content)
       nodes.forEach(node => {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
           if (text)
             note.excerptText = params.reduce(

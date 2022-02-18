@@ -1,6 +1,6 @@
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
-import { excerptNotes, getNoteById, removeHighlight } from "utils/note"
+import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
 import { MbBookNote } from "types/MarginNote"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
@@ -180,7 +180,7 @@ const action: IActionMethod = {
   changeColor({ content, nodes, option }) {
     if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const { color } = util.getColorStyle(note)
           if (color !== undefined) note.colorIndex = color !== -1 ? color : 12
         })
@@ -188,7 +188,7 @@ const action: IActionMethod = {
     } else if (content) {
       const color = Number(content) - 1
       for (const node of nodes) {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           note.colorIndex = color
         })
       }
@@ -197,7 +197,7 @@ const action: IActionMethod = {
   changeStyle({ option, nodes }) {
     if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const { style } = util.getColorStyle(note)
           if (style !== undefined) note.fillIndex = style
         })
@@ -205,7 +205,7 @@ const action: IActionMethod = {
     } else {
       const style = option - 1
       for (const node of nodes) {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           note.fillIndex = style
         })
       }

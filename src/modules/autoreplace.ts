@@ -1,4 +1,4 @@
-import { excerptNotes } from "utils/note"
+import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
@@ -68,7 +68,7 @@ const action: IActionMethod = {
   replaceSelected({ content, nodes, option }) {
     if (option == ReplaceSelected.UseAutoReplace) {
       nodes.forEach(node => {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
           if (text) note.excerptText = util.replaceText(text)
         })
@@ -76,7 +76,7 @@ const action: IActionMethod = {
     } else if (content) {
       const params = string2ReplaceParam(content)
       nodes.forEach(node => {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
           if (text)
             note.excerptText = params.reduce(

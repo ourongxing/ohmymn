@@ -1,4 +1,4 @@
-import { excerptNotes } from "utils/note"
+import { getExcerptNotes } from "utils/note"
 import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
@@ -124,7 +124,7 @@ const action: IActionMethod = {
         node.noteTitle = newTitle
       }
       if (option != StandardizeSelected.OnlyTitle) {
-        excerptNotes(node).forEach(note => {
+        getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
           if (text) note.excerptText = util.standardizeText(text)
         })

@@ -48,16 +48,33 @@ const getNodeTree = (node: MbBookNote) => {
 }
 
 /**
- * 获取卡片中的所有摘录
+ * 获取卡片中的所有摘录节点
  */
-const excerptNotes = (node: MbBookNote): MbBookNote[] => {
-  const notes: MbBookNote[] = [node]
-  // 包括作为评论的摘录
-  const comments = node.comments
-  comments.forEach(comment => {
-    comment.type == "LinkNote" && notes.push(MN.db.getNoteById(comment.noteid)!)
-  })
-  return notes
+const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
+  return node.comments.reduce(
+    (acc, cur) => {
+      cur.type == "LinkNote" && acc.push(MN.db.getNoteById(cur.noteid)!)
+      return acc
+    },
+    [node]
+  )
+}
+
+/**
+ * 获取卡片中的所有摘录文字
+ * @param node 卡片节点
+ * @param highlight 默认有重点
+ */
+const getExcerptText = (node: MbBookNote, highlight = true): string[] => {
+  return node.comments.reduce(
+    (acc, cur) => {
+      cur.type == "LinkNote" &&
+        cur.q_htext &&
+        acc.push(highlight ? cur.q_htext : removeHighlight(cur.q_htext))
+      return acc
+    },
+    node.excerptText ? [node.excerptText] : []
+  )
 }
 
 const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
@@ -125,7 +142,7 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
         text && !text.includes("marginnote3app") && textArr.push(text)
         break
       case "LinkNote":
-        comment.q_htext && textArr.push(comment.q_htext.trim())
+        comment.q_htext && textArr.push(comment.q_htext)
     }
   })
   return textArr.join(separator)
@@ -169,7 +186,8 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
 export {
   getSelectNodes,
   getNodeTree,
-  excerptNotes,
+  getExcerptNotes,
+  getExcerptText,
   getCommentIndex,
   getNotebookById,
   getNoteById,
