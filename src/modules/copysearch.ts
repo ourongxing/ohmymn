@@ -5,7 +5,13 @@ import { UIAlertViewStyle } from "types/UIKit"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
-import { getAllText, removeHighlight, getExcerptText } from "utils/note"
+import {
+  getAllText,
+  removeHighlight,
+  getExcerptText,
+  getAllTags,
+  getAllCommnets
+} from "utils/note"
 import { isHalfWidth } from "utils/text"
 
 export const enum MultipleTitlesExcerpt {
@@ -125,7 +131,7 @@ const util = {
     )
     return option!
   },
-  async getTextForOneCard(node: MbBookNote, option: number) {
+  async getContentForOneCard(node: MbBookNote, option: number) {
     const { multipleExcerpts, multipleTitles } = self.profile.copysearch
     if (option == CopySearchCardInfo.Title) {
       if (!node.noteTitle) {
@@ -162,6 +168,28 @@ const util = {
           ]
       }
     } else return util.getCustomContent(node)
+  },
+  getContentForMuiltCards(nodes: MbBookNote[], option: number) {
+    switch (option) {
+      case CopySearchCardInfo.Title:
+        return nodes.reduce((acc, cur) => {
+          const t = cur.noteTitle
+          t && acc.push(t)
+          return acc
+        }, [] as string[])
+      case CopySearchCardInfo.Excerpt:
+        return nodes.reduce((acc, cur) => {
+          const t = getExcerptText(cur, false).join("\n")
+          t && acc.push(t)
+          return acc
+        }, [] as string[])
+      case CopySearchCardInfo.Custom:
+        return nodes.reduce((acc, cur) => {
+          const t = util.getCustomContent(cur)
+          t && acc.push(t)
+          return acc
+        }, [] as string[])
+    }
   },
   async search(text: string) {
     const chooseYouWantEngine = async (engines: string[]) => {
@@ -211,31 +239,54 @@ const util = {
     const { customContent } = self.profile.copysearch
     if (!customContent) return ""
     const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
+
     const allExcerptText = getExcerptText(node)
     const excerptText_h = allExcerptText.join("\n")
     const excerptText = removeHighlight(excerptText_h)
     const excerptText_h1 = allExcerptText.length ? allExcerptText[0] : ""
     const excerptText_1 = removeHighlight(excerptText_h1)
+
     const allText_h = getAllText(node)
     const allText = removeHighlight(allText_h)
+
+    const tags = getAllTags(node)
+    const tagGroup = {
+      tag_h: tags.join(" "),
+      tag_h1: tags.length ? tags[0] : "",
+      tag: tags.map(k => k.slice(1)).join(" "),
+      tag_1: tags.length ? tags[0].slice(1) : ""
+    }
+
+    const comments = getAllCommnets(node)
+    const comment = comments.join("\n")
+    const comment_1 = comments.length ? comments[0] : ""
+
+    const dateGroup = {
+      createTime: node.createDate ? dateFormat(node.createDate) : "",
+      modifiedTime: node.modifiedDate ? dateFormat(node.modifiedDate) : "",
+      now: dateFormat(new Date())
+    }
+
     const vars = {
+      ...tagGroup,
+      ...dateGroup,
       excerptText,
       excerptText_h,
       excerptText_1,
       excerptText_h1,
       allText,
       allText_h,
+      comment,
+      comment_1,
       title: node.noteTitle ?? "",
       title_1: node.noteTitle?.split(/\s*[;；]\s*/)[0] ?? "",
-      createTime: node.createDate ? dateFormat(node.createDate) : "",
-      modifiedTime: node.modifiedDate ? dateFormat(node.modifiedDate) : "",
       link: "marginnote3app://note/" + node.noteId
     }
     const varsReg = `(?:${Object.keys(vars).join("|")})`
     const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
     const bracketReg = new RegExp(
       `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
-      "g"
+      "gs"
     )
     return template
       .replace(
@@ -251,7 +302,7 @@ const util = {
       .replace(braceReg, (match: string, brace: keyof typeof vars) =>
         vars[brace] ? vars[brace] : ""
       )
-      .replace(/^\s*[\r\n]/gm, "")
+      .trim()
   },
   copy(text: string) {
     const pasteBoard = UIPasteboard.generalPasteboard()
@@ -268,37 +319,21 @@ const enum CopySearchCardInfo {
 
 const action: IActionMethod = {
   async searchCardInfo({ nodes, option }) {
-    if (nodes.length > 1) showHUD(hud.one_card_search, 2)
-    const text = await util.getTextForOneCard(nodes[0], option)
-    text && util.search(text)
+    if (nodes.length == 1) {
+      const text = await util.getContentForOneCard(nodes[0], option)
+      text && util.search(text)
+    } else {
+      const contents = util.getContentForMuiltCards(nodes, option)
+      contents?.length && util.search(contents.join("\n\n"))
+    }
   },
   async copyCardInfo({ nodes, option }) {
     if (nodes.length == 1) {
-      const text = await util.getTextForOneCard(nodes[0], option)
+      const text = await util.getContentForOneCard(nodes[0], option)
       text && util.copy(text)
     } else {
-      if (option === CopySearchCardInfo.Title) {
-        const title = nodes.reduce((acc, cur) => {
-          const t = cur.noteTitle
-          t && acc.push(t)
-          return acc
-        }, [] as string[])
-        title.length && util.copy(title.join("\n\n"))
-      } else if (option === CopySearchCardInfo.Excerpt) {
-        const excerptText = nodes.reduce((acc, cur) => {
-          const t = getExcerptText(cur, false).join("\n\n")
-          t && acc.push(t)
-          return acc
-        }, [] as string[])
-        excerptText.length && util.copy(excerptText.join("\n\n"))
-      } else {
-        const text = nodes.reduce((acc, cur) => {
-          const t = util.getCustomContent(cur)
-          t && acc.push(t)
-          return acc
-        }, [] as string[])
-        text.length && util.copy(text.join("\n\n"))
-      }
+      const contents = util.getContentForMuiltCards(nodes, option)
+      contents?.length && util.copy(contents.join("\n\n"))
     }
   }
 }

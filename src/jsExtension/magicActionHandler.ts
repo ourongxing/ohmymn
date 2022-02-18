@@ -78,8 +78,7 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
     )
 
     const noNeedSmartSelection =
-      (key === "renameTitle" && /#\[(.+)\]/.test(content)) ||
-      key === "searchCardInfo"
+      key === "renameTitle" && /#\[(.+)\]/.test(content)
 
     const { smart_select } = lang.magic_action_handler
     if (

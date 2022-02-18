@@ -2,6 +2,7 @@ import { MbBookNote, MbTopic } from "types/MarginNote"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
+import { extractArray } from "./custom"
 
 /**
  * 获取选中的卡片
@@ -150,6 +151,30 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
 
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
 
+const getAllTags = (node: MbBookNote, hash = true) => {
+  const tags = extractArray(getAllText(node), [
+    {
+      regexp: /(#.+\s)/,
+      newSubStr: "$1",
+      fnKey: 0
+    }
+  ])
+  return hash ? tags : tags.map(k => k.slice(1))
+}
+
+const getAllCommnets = (node: MbBookNote) => {
+  return node.comments.reduce((acc, cur) => {
+    if (cur.type == "TextNote" || cur.type == "HtmlNote") {
+      const text = cur.text.trim()
+      text &&
+        !text.includes("marginnote3app") &&
+        !text.startsWith("#") &&
+        acc.push(text)
+    }
+    return acc
+  }, [] as string[])
+}
+
 /**
  * 添加标签，并且会去除划重点
  * @param force 强制整理合并标签，就算没有添加标签
@@ -196,5 +221,7 @@ export {
   undoGroupingWithRefresh,
   RefreshAfterDBChange,
   addTags,
+  getAllTags,
+  getAllCommnets,
   removeHighlight
 }
