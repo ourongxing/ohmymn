@@ -39,6 +39,12 @@ const config: IConfig = {
       option: option.multiple_excerpts
     },
     {
+      label: lable.separator_symbols_multiple_card,
+      help: help.separator_symbols_multiple_card,
+      key: "separatorSymbols",
+      type: cellViewType.inlineInput
+    },
+    {
       label: lable.custom_copy,
       key: "customContent",
       type: cellViewType.input
@@ -323,8 +329,14 @@ const action: IActionMethod = {
       const text = await util.getContentForOneCard(nodes[0], option)
       text && util.search(text)
     } else {
+      const { separatorSymbols } = self.profile.copysearch
       const contents = util.getContentForMuiltCards(nodes, option)
-      contents?.length && util.search(contents.join("\n\n"))
+      contents?.length &&
+        util.search(
+          contents.join(
+            reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
+          )
+        )
     }
   },
   async copyCardInfo({ nodes, option }) {
@@ -332,8 +344,14 @@ const action: IActionMethod = {
       const text = await util.getContentForOneCard(nodes[0], option)
       text && util.copy(text)
     } else {
+      const { separatorSymbols } = self.profile.copysearch
       const contents = util.getContentForMuiltCards(nodes, option)
-      contents?.length && util.copy(contents.join("\n\n"))
+      contents?.length &&
+        util.copy(
+          contents.join(
+            reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
+          )
+        )
     }
   }
 }

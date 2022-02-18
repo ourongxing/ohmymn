@@ -38,9 +38,9 @@ const checkInputCorrect = (str: string, key: string): boolean => {
       case "searchQuestion":
       case "searchOtherText": {
         if (!str.includes("{{keyword}}")) throw "没有输入 {{keyword}}"
-        break
       }
       case "mergeText":
+      case "separatorSymbols":
       case "customContent":
       case "customFill":
         reverseEscape(`"${escapeDoubleQuote(str)}"`)

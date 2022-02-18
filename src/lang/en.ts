@@ -283,6 +283,7 @@ const dict: Dict = {
           "Customize what you search or copy, click to see which variables are supported",
         which_search_engine: "Choose Search Engine",
         search_card_info: "Search Card Content",
+        separator_symbols_multiple_card: "Separator Symbols",
         copy_card_info: "Copy Card Content",
         show_search_engine: "Show Search URL"
       },
@@ -303,7 +304,9 @@ const dict: Dict = {
         ]
       },
       help: {
-        show_search_engine: "Click to see how to customize the URL"
+        show_search_engine: "Click to see how to customize the URL",
+        separator_symbols_multiple_card:
+          "When multiple cards are selected, it is used to separate the contents of each card"
       },
       hud: {
         choose_you_want: (x: boolean) =>

@@ -98,6 +98,7 @@ const profilePreset = {
     multipleExcerpts: [MultipleTitlesExcerpt.All],
     customContent: "[{{title}}]({{link}})",
     showSearchEngine: false,
+    separatorSymbols: "\\n\\n",
     whichSearchEngine: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",

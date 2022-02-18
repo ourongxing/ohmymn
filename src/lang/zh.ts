@@ -258,6 +258,7 @@ const dict = {
         which_search_engine: "搜索引擎选择",
         search_card_info: "搜索卡片内容",
         copy_card_info: "复制卡片内容",
+        separator_symbols_multiple_card: "分隔符",
         show_search_engine: "显示搜索链接"
       },
       option: {
@@ -277,7 +278,9 @@ const dict = {
         ]
       },
       help: {
-        show_search_engine: "点击查看如何自定义 URL"
+        show_search_engine: "点击查看如何自定义 URL",
+        separator_symbols_multiple_card:
+          "选中多张卡片时，用来隔开每张卡片的内容"
       },
       hud: {
         choose_you_want: (x: boolean) =>
