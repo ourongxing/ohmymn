@@ -214,7 +214,7 @@ const util = {
     const allExcerptText = getExcerptText(node)
     const excerptText_h = allExcerptText.join("\n")
     const excerptText = removeHighlight(excerptText_h)
-    const excerptText_h1 = allExcerptText[0]
+    const excerptText_h1 = allExcerptText.length ? allExcerptText[0] : ""
     const excerptText_1 = removeHighlight(excerptText_h1)
     const allText_h = getAllText(node)
     const allText = removeHighlight(allText_h)
@@ -268,8 +268,7 @@ const enum CopySearchCardInfo {
 
 const action: IActionMethod = {
   async searchCardInfo({ nodes, option }) {
-    if (nodes.length > 1)
-      showHUD(hud.one_card_search, 2)
+    if (nodes.length > 1) showHUD(hud.one_card_search, 2)
     const text = await util.getTextForOneCard(nodes[0], option)
     text && util.search(text)
   },
