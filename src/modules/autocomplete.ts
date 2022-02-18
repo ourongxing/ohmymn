@@ -138,7 +138,7 @@ const util = {
     const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
     const bracketReg = new RegExp(
       `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
-      "g"
+      "gs"
     )
     const text = template
       .replace(
@@ -154,7 +154,7 @@ const util = {
       .replace(braceReg, (match: string, brace: keyof typeof vars) =>
         vars[brace] ? vars[brace] : ""
       )
-      .replace(/^\s*[\r\n]/gm, "")
+      .trim()
     // 优化一下格式
     return pangu.spacing(pangu.toFullwidth(text))
   },
