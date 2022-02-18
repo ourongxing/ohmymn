@@ -95,6 +95,7 @@ const dict: Dict = {
           "It is forbidden to directly modify the configuration information, and the existing configuration will be overwritten after reading"
       },
       label: {
+        smart_selection: "Smart Selection",
         switch_title: "Switch Excerption or Title",
         filter_cards: "Filter Cards",
         merge_cards: "Merge Multiple Cards",
@@ -270,6 +271,51 @@ const dict: Dict = {
           "Dark Grey",
           "Purple"
         ]
+      }
+    },
+    copysearch: {
+      intro: "Copy and search for what you want",
+      link: "https://busiyi.notion.site/CopySearch-5977326e5d1640248e61ee855c4ef74b",
+      lable: {
+        multiple_titles: "If Multiple Titles",
+        multiple_excerpts: "If Multiple Excerpts",
+        custom_copy:
+          "Customize what you search or copy, click to see which variables are supported",
+        which_search_engine: "Choose Search Engine",
+        search_card_info: "Search Card Content",
+        copy_card_info: "Copy Card Content",
+        show_search_engine: "Show Search URL"
+      },
+      option: {
+        multiple_titles: ["All", "First", "Instant Choose"],
+        multiple_excerpts: ["All", "First", "Instant Choose"],
+        search_card_info: ["Title", "Excerpt Text", "Custom Content"],
+        copy_card_info: ["Title", "Excerpt Text", "Custom Content"],
+        which_search_engine: [
+          "Instant Choose",
+          "Chinese",
+          "English",
+          "Dict",
+          "Translation",
+          "Academic",
+          "Question",
+          "Other"
+        ]
+      },
+      help: {
+        show_search_engine: "Click to see how to customize the URL"
+      },
+      hud: {
+        choose_you_want: (x: boolean) =>
+          `Discover the card you selected has more than one${
+            x ? "title" : "excerpt text"
+          }. Choose one you want`,
+        not_get_title: "No title found",
+        not_get_excerpt: "No excerpt text found. What you see may be comments",
+        choose_search_engine: "Which search engine to use this time",
+        copy_seccess: "Copy successfully, go ahead and paste",
+        one_card_search:
+          "Default search the content of the first card, please do not select more than one card"
       }
     },
     more: {

@@ -91,7 +91,8 @@ const dict = {
         merge_cards: "合并卡片",
         merge_text: "合并卡片文字",
         rename_title: "重命名标题",
-        manage_profile: "配置管理"
+        manage_profile: "配置管理",
+        smart_selection: "智能选择"
       },
       hud: {
         is_clicked: "您需要的卡片已选中，请继续操作",
@@ -245,6 +246,47 @@ const dict = {
           "深灰",
           "紫"
         ]
+      }
+    },
+    copysearch: {
+      intro: "搜索和复制你想要的",
+      link: "https://busiyi.notion.site/CopySearch-5977326e5d1640248e61ee855c4ef74b",
+      lable: {
+        multiple_titles: "如果有多个标题",
+        multiple_excerpts: "如果有多个摘录",
+        custom_copy: "自定义搜索或复制的内容，点击查看支持哪些变量",
+        which_search_engine: "搜索引擎选择",
+        search_card_info: "搜索卡片内容",
+        copy_card_info: "复制卡片内容",
+        show_search_engine: "显示搜索链接"
+      },
+      option: {
+        multiple_titles: ["所有标题", "第一个", "即时选择"],
+        multiple_excerpts: ["所有摘录", "第一个", "即时选择"],
+        search_card_info: ["搜索标题", "搜索摘录", "自定义内容"],
+        copy_card_info: ["复制标题", "复制摘录", "自定义内容"],
+        which_search_engine: [
+          "即时选择",
+          "中文",
+          "英文",
+          "词典",
+          "翻译",
+          "学术",
+          "问题",
+          "其他"
+        ]
+      },
+      help: {
+        show_search_engine: "点击查看如何自定义 URL"
+      },
+      hud: {
+        choose_you_want: (x: boolean) =>
+          `发现您选中的卡片有多个${x ? "标题" : "摘录"}，请选择一个你想要的`,
+        not_get_title: "没有获取到标题",
+        not_get_excerpt: "没有获取到摘录，你看到的可能是评论",
+        choose_search_engine: "本次使用哪一个搜索引擎",
+        copy_seccess: "复制成功，快去粘贴吧",
+        one_card_search: "默认搜索第一张卡片的内容，请不要选择多张卡片"
       }
     },
     more: {

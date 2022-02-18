@@ -14,6 +14,7 @@ import { QuickSwitch } from "synthesizer"
 import { ReplaceParam } from "utils/input"
 import { TitleLinkSplit } from "modules/anotherautodef"
 import { FillWordInfo } from "modules/autocomplete"
+import { MultipleTitlesExcerpt } from "modules/copysearch"
 
 const profilePreset = {
   ohmymn: {
@@ -91,6 +92,20 @@ const profilePreset = {
   },
   magicaction: {
     smartSelection: false
+  },
+  copysearch: {
+    multipleTitles: [MultipleTitlesExcerpt.All],
+    multipleExcerpts: [MultipleTitlesExcerpt.All],
+    customContent: "[{{title}}]({{link}})",
+    showSearchEngine: false,
+    whichSearchEngine: [0],
+    searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
+    searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",
+    searchWord: "eudic://dict/{{keyword}}",
+    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}",
+    searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
+    searchQuestion: "https://www.zhihu.com/search?q={{keyword}}",
+    searchOtherText: ""
   }
 }
 

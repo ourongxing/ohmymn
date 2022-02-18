@@ -30,7 +30,18 @@ const checkInputCorrect = (str: string, key: string): boolean => {
         } else throw "格式错误"
         break
       }
+      case "searchChineseText":
+      case "searchEnglishText":
+      case "searchWord":
+      case "searchTranslation":
+      case "searchAcademic":
+      case "searchQuestion":
+      case "searchOtherText": {
+        if (!str.includes("{{keyword}}")) throw "没有输入 {{keyword}}"
+        break
+      }
       case "mergeText":
+      case "customContent":
       case "customFill":
         reverseEscape(`"${escapeDoubleQuote(str)}"`)
         break

@@ -76,10 +76,17 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
       node =>
         nodes[0].parentNote === node.parentNote && node?.childNotes?.length
     )
-    const isHierarchicalNumbered =
-      key === "renameTitle" && /#\[(.+)\]/.test(content)
+
+    const noNeedSmartSelection =
+      (key === "renameTitle" && /#\[(.+)\]/.test(content)) ||
+      key === "searchCardInfo"
+
     const { smart_select } = lang.magic_action_handler
-    if (isHavingChildren && !isHierarchicalNumbered) {
+    if (
+      self.profile.magicaction.smartSelection &&
+      isHavingChildren &&
+      !noNeedSmartSelection
+    ) {
       const { option } = await popup(
         smart_select.title,
         nodes.length > 1
