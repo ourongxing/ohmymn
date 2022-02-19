@@ -1,4 +1,4 @@
-import { MbBookNote, MbTopic } from "types/MarginNote"
+import { MbBook, MbBookNote, MbTopic } from "types/MarginNote"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
@@ -84,6 +84,9 @@ const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
 const getNotebookById = (notebookid: string): MbTopic =>
   MN.db.getNotebookById(notebookid)!
 
+const getDocumentById = (docMd5: string): MbBook =>
+  MN.db.getDocumentById(docMd5)!
+
 /**
  * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
  */
@@ -152,13 +155,12 @@ const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
 
 const getAllTags = (node: MbBookNote, hash = true) => {
-  const tags = extractArray(getAllText(node), [
-    {
-      regexp: /(#.+\s)/,
-      newSubStr: "$1",
-      fnKey: 0
+  const tags = node.comments.reduce((acc, cur) => {
+    if (cur.type == "TextNote" || cur.type == "HtmlNote") {
+      acc.push(...cur.text.split(/\s/).filter(k => k.startsWith("#")))
     }
-  ])
+    return acc
+  }, [] as string[])
   return hash ? tags : tags.map(k => k.slice(1))
 }
 
@@ -223,5 +225,6 @@ export {
   addTags,
   getAllTags,
   getAllCommnets,
-  removeHighlight
+  removeHighlight,
+  getDocumentById
 }

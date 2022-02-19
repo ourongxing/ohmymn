@@ -10,7 +10,9 @@ import {
   removeHighlight,
   getExcerptText,
   getAllTags,
-  getAllCommnets
+  getAllCommnets,
+  getNotebookById,
+  getDocumentById
 } from "utils/note"
 import { isHalfWidth } from "utils/text"
 
@@ -258,14 +260,14 @@ const util = {
     const tags = getAllTags(node)
     const tagGroup = {
       tag_h: tags.join(" "),
-      tag_h1: tags.length ? tags[0] : "",
+      tag_h1: tags[0] ?? "",
       tag: tags.map(k => k.slice(1)).join(" "),
-      tag_1: tags.length ? tags[0].slice(1) : ""
+      tag_1: tags[0]?.slice(1) ?? ""
     }
 
     const comments = getAllCommnets(node)
     const comment = comments.join("\n")
-    const comment_1 = comments.length ? comments[0] : ""
+    const comment_1 = comments[0] ?? ""
 
     const dateGroup = {
       createTime: node.createDate ? dateFormat(node.createDate) : "",
@@ -273,9 +275,22 @@ const util = {
       now: dateFormat(new Date())
     }
 
+    const notebookGroup = {
+      documentTitle: node.docMd5
+        ? getDocumentById(node.docMd5).docTitle ?? ""
+        : "",
+      notebookTitle: node.notebookId
+        ? getNotebookById(node.notebookId).title ?? ""
+        : "",
+      notebookLink: node.notebookId
+        ? "marginnote3app://notebook/" + node.notebookId
+        : ""
+    }
+
     const vars = {
       ...tagGroup,
       ...dateGroup,
+      ...notebookGroup,
       excerptText,
       excerptText_h,
       excerptText_1,
@@ -286,7 +301,7 @@ const util = {
       comment_1,
       title: node.noteTitle ?? "",
       title_1: node.noteTitle?.split(/\s*[;；]\s*/)[0] ?? "",
-      link: "marginnote3app://note/" + node.noteId
+      link: node.noteId ? "marginnote3app://note/" + node.noteId : ""
     }
     const varsReg = `(?:${Object.keys(vars).join("|")})`
     const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
