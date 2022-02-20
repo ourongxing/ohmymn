@@ -49,6 +49,7 @@ const config: IConfig = {
     {
       label: lable.custom_copy,
       key: "customContent",
+      link,
       type: cellViewType.input
     },
     {
@@ -61,6 +62,7 @@ const config: IConfig = {
       label: lable.show_search_engine,
       key: "showSearchEngine",
       type: cellViewType.switch,
+      link,
       help: help.show_search_engine
     },
     {

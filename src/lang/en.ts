@@ -3,7 +3,7 @@ import { Dict } from "lang"
 const dict: Dict = {
   module: {
     ohmymn: {
-      link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
+      link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
       option: {
         profile: "Profile",
         has_title_then: ["Keep Intact", "As Title Link Style", "Override"],
@@ -275,7 +275,7 @@ const dict: Dict = {
     },
     copysearch: {
       intro: "Copy and search for what you want",
-      link: "https://busiyi.notion.site/CopySearch-5977326e5d1640248e61ee855c4ef74b",
+      link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
       lable: {
         multiple_titles: "If Multiple Titles",
         multiple_excerpts: "If Multiple Excerpts",
