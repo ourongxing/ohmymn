@@ -56,7 +56,7 @@ const dict: Dict = {
           "Customize connective of definition, click for  the specific format",
         custom_extract_title:
           "Customize extract title, click for  specific format",
-        extract_title: "Extract Title From Card"
+        extract_title: "Extract Title From Excerpt"
       },
       option: {
         title_link_split: ["Custom", "Default", "Punctuation"],
@@ -275,7 +275,7 @@ const dict: Dict = {
     },
     copysearch: {
       intro: "Copy and search for what you want",
-      link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
+      link: "https://www.notion.so/huangkewei/CopySearch-c824347a82c543569acc3d01053cd227",
       lable: {
         multiple_titles: "If Multiple Titles",
         multiple_excerpts: "If Multiple Excerpts",

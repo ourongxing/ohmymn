@@ -48,7 +48,7 @@ const dict = {
         custom_title_split: "自定义别名分词，点击查看具体格式",
         custom_def_link: "自定义定义联项，点击查看具体格式",
         custom_extract_title: "自定义提取标题，点击查看具体格式",
-        extract_title: "从卡片中提取标题"
+        extract_title: "从摘录提取标题"
       },
       option: {
         title_link_split: ["自定义", "默认", "标点符号"],

@@ -41,8 +41,7 @@ export enum QuickSwitch {
   autostyle
 }
 
-type Extract<T, U> = T extends U ? never : T
-export type AutoModuleKey = Extract<
+export type AutoModuleKey = Exclude<
   keyof typeof QuickSwitch,
   "gesture" | "copysearch"
 >
