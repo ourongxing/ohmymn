@@ -134,9 +134,9 @@ const decorateExecrpt = () => {
 
 export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
   if (!lastRemovedComment) return
-  const { nodeNote, index } = lastRemovedComment
+  const { nodeNote, index, note } = lastRemovedComment
   undoGroupingWithRefresh(() => {
-    nodeNote.removeCommentByIndex(index)
+    if (note?.excerptText) nodeNote.removeCommentByIndex(index)
   })
   lastRemovedComment = undefined
   if (onlyLastComment) return
