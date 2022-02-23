@@ -1,5 +1,10 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
-import { getAllText, removeHighlight } from "utils/note"
+import {
+  getAllText,
+  getExcerptNotes,
+  getExcerptText,
+  removeHighlight
+} from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { unique } from "utils"
@@ -154,7 +159,7 @@ const util = {
               isReverse = true
             }
             if (reg.test(text)) {
-              let [def, desc] = text.split(reg)
+              let [def, desc] = text.split(reg).filter(k => k)
               // 交换顺序
               if (isReverse) [def, desc] = [desc, def]
               return {
@@ -208,17 +213,24 @@ const action: IActionMethod = {
   extractTitle({ nodes, content, option }) {
     if (option == ExtractTitle.UseAutoDef) {
       nodes.forEach(node => {
-        const text = getAllText(node)
-        if (text) {
-          const res = util.getDefTitle(text)
-          if (res && res.title.length)
-            node.noteTitle = removeHighlight(res.title.join("; "))
-        }
+        const allTitles = getExcerptNotes(node).reduce((acc, cur) => {
+          if (cur.excerptText) {
+            const res = util.getDefTitle(cur.excerptText)
+            if (res) {
+              const { title, text } = res
+              cur.excerptText = text
+              if (title.length) acc.push(...title)
+            }
+          }
+          return acc
+        }, [] as string[])
+        if (allTitles.length)
+          node.noteTitle = removeHighlight(unique(allTitles).join("; "))
       })
     } else if (content) {
       const params = string2ReplaceParam(content)
       nodes.forEach(node => {
-        const text = getAllText(node)
+        const text = getExcerptText(node).join("\n")
         const allTitles = extractArray(text, params)
         if (allTitles.length)
           node.noteTitle = removeHighlight(allTitles.join("; "))
