@@ -64,7 +64,7 @@ export const newTitleText = async (
     if (isON("anotherautotitle")) {
       const { changeTitleNoLimit } = self.profile.anotherautotitle
       const newText = isModify ? removeHighlight(text) : text
-      if (isModify && changeTitleNoLimit)
+      if (changeTitleNoLimit && isModify && cacheExcerptTitle[noteid])
         return {
           title: [newText],
           text: ""
