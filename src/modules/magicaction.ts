@@ -268,7 +268,10 @@ const action: IActionMethod = {
     }
   },
   filterCards({ nodes, content, option }) {
-    if (!content) return
+    if (!content) {
+      showHUD(hud.none_card)
+      return []
+    }
     const regGroup = string2RegArray(content)
     const customSelectedNodes = nodes.filter(node => {
       const title = node.noteTitle ?? ""
