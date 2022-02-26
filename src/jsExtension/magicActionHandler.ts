@@ -53,17 +53,15 @@ export default async (row: IRowButton, option?: number) => {
     }
 }
 
-let customSelectedNodes: MbBookNote[] = []
 const handleMagicAction = async (key: string, option: number, content = "") => {
-  if (
-    key != "filterCards" &&
-    self.profile.ohmymn.panelControl.includes(PanelControl.CompleteClose)
-  )
-    closePanel()
   let nodes: MbBookNote[] = []
-  if (customSelectedNodes.length) {
-    nodes = customSelectedNodes
-    customSelectedNodes = []
+  key != "filterCards" &&
+    self.profile.ohmymn.panelControl.includes(PanelControl.CompleteClose) &&
+    closePanel()
+
+  if (self.customSelectedNodes.length) {
+    nodes = self.customSelectedNodes
+    self.customSelectedNodes = []
     HUDController.hidden()
   } else {
     nodes = getSelectNodes()
@@ -112,10 +110,9 @@ const handleMagicAction = async (key: string, option: number, content = "") => {
       }
     }
   }
-  if (content) content = content.trim()
   switch (key) {
     case "filterCards":
-      customSelectedNodes = actions[key]({
+      self.customSelectedNodes = actions[key]({
         content,
         nodes,
         option

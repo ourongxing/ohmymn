@@ -1,10 +1,5 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
-import {
-  getAllText,
-  getExcerptNotes,
-  getExcerptText,
-  removeHighlight
-} from "utils/note"
+import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
 import { cellViewType, IActionMethod, IConfig } from "types/Addon"
 import lang from "lang"
 import { unique } from "utils"

@@ -3,13 +3,13 @@ import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
 import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
+import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
-import lang from "lang"
 import { dataSourcePreset } from "synthesizer"
-import { deepCopy } from "utils"
 import { UIWindow } from "types/UIKit"
-import { removeLastCommentCacheTitle } from "./excerptHandler"
+import { deepCopy } from "utils"
+import lang from "lang"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -39,6 +39,7 @@ const sceneWillConnect = () => {
   self.docProfile = deepCopy(docProfilePreset)
   self.profileTemp = deepCopy(profileTempPreset)
   self.dataSource = deepCopy(dataSourcePreset)
+  self.customSelectedNodes = []
   self.settingViewController = new SettingViewController()
   self.settingViewController.dataSource = self.dataSource
   self.settingViewController.window = self.window

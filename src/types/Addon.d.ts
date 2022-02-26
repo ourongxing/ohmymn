@@ -153,6 +153,7 @@ declare global {
     notebookid: string
     tableView: UITableView
     barStatus: boolean
+    customSelectedNodes: MbBookNote[]
     panelStatus: boolean
     docProfile: {
       [k: string]: { [k: string]: boolean | string | number[] }

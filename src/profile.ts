@@ -130,16 +130,16 @@ const docProfilePreset = {
 // 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
 const profileTempPreset = {
   replaceParam: {
-    customTag: undefined as ReplaceParam[] | undefined,
-    customList: undefined as ReplaceParam[] | undefined,
-    customReplace: undefined as ReplaceParam[] | undefined,
-    customExtractTitle: undefined as ReplaceParam[] | undefined,
-    customStandardize: undefined as ReplaceParam[] | undefined
+    customTag: [] as ReplaceParam[] | undefined,
+    customList: [] as ReplaceParam[] | undefined,
+    customReplace: [] as ReplaceParam[] | undefined,
+    customExtractTitle: [] as ReplaceParam[] | undefined,
+    customStandardize: [] as ReplaceParam[] | undefined
   },
   regArray: {
-    customTitleSplit: undefined as RegExp[][] | undefined,
-    customBeTitle: undefined as RegExp[][] | undefined,
-    customDefLink: undefined as RegExp[][] | undefined
+    customTitleSplit: [] as RegExp[][] | undefined,
+    customBeTitle: [] as RegExp[][] | undefined,
+    customDefLink: [] as RegExp[][] | undefined
   }
 }
 
