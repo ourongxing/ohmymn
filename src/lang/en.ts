@@ -186,7 +186,7 @@ const dict = {
       option: [
         "Process only selected cards",
         "Process all child nodes",
-        "Process child nodes and seected cards"
+        "Process child nodes and selected cards"
       ],
       card_with_children: "Detect only one selected card has child nodes",
       cards_with_children: "Detect all selected cards of the same level have child nodes"
