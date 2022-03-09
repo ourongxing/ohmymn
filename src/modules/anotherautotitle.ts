@@ -1,6 +1,6 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IConfig } from "types/Addon"
 import lang from "lang"
 
 const { option, intro, help, link, label } = lang.module.anotherautotitle
@@ -82,5 +82,4 @@ const util = {
       }
   }
 }
-const action = {}
-export { config, util, action }
+export { config, util }

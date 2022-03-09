@@ -103,16 +103,18 @@ export interface IRowSelect extends KeyLabelType {
   option: string[]
 }
 
-export interface IActionMethod {
-  [k: string]: ({
-    content,
-    nodes,
-    option
-  }: {
-    content: string
-    nodes: MbBookNote[]
-    option: number
-  }) => any
+export type IActionMethod = ({
+  content,
+  nodes,
+  option
+}: {
+  content: string
+  nodes: MbBookNote[]
+  option: number
+}) => any
+
+export interface IActionMethods {
+  [k: string]: IActionMethod
 }
 
 declare const enum DirectionOfSelection {

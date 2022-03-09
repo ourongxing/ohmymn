@@ -1,6 +1,6 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import lang from "lang"
 
 const { intro, link, label, option } = lang.module.autoreplace
@@ -64,7 +64,7 @@ const enum ReplaceSelected {
   UseAutoReplace
 }
 
-const action: IActionMethod = {
+const action: IActionMethods = {
   replaceSelected({ content, nodes, option }) {
     if (option == ReplaceSelected.UseAutoReplace) {
       nodes.forEach(node => {

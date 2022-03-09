@@ -1,5 +1,5 @@
 import lang from "lang"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import { MbBookNote } from "types/MarginNote"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
@@ -195,7 +195,7 @@ const enum CompleteSelected {
   AlsoFillWordInfo
 }
 
-const action: IActionMethod = {
+const action: IActionMethods = {
   async completeSelected({ nodes, option }) {
     if (nodes.length > 5) {
       showHUD(lang.module.autocomplete.error.forbid, 2)

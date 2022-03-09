@@ -1,4 +1,4 @@
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import lang from "lang"
 import { addTags, getAllText } from "utils/note"
 import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
@@ -58,7 +58,7 @@ const enum TagSelected {
   UseAutoTag
 }
 
-const action: IActionMethod = {
+const action: IActionMethods = {
   tagSelected({ nodes, option, content }) {
     if (option == TagSelected.UseAutoTag) {
       nodes.forEach(node => {

@@ -1,6 +1,6 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import lang from "lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
@@ -204,7 +204,7 @@ const util = {
 const enum ExtractTitle {
   UseAutoDef
 }
-const action: IActionMethod = {
+const action: IActionMethods = {
   extractTitle({ nodes, content, option }) {
     if (option == ExtractTitle.UseAutoDef) {
       nodes.forEach(node => {

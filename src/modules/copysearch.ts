@@ -1,5 +1,5 @@
 import lang from "lang"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import { MbBookNote } from "types/MarginNote"
 import { UIAlertViewStyle } from "types/UIKit"
 import { dateFormat } from "utils"
@@ -340,7 +340,7 @@ const enum CopySearchCardInfo {
   Custom
 }
 
-const action: IActionMethod = {
+const action: IActionMethods = {
   async searchCardInfo({ nodes, option }) {
     if (nodes.length == 1) {
       const text = await util.getContentForOneCard(nodes[0], option)

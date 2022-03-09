@@ -93,6 +93,4 @@ const config: IConfig = {
   actions: []
 }
 
-const util = {}
-const action = {}
-export { config, util, action }
+export { config }

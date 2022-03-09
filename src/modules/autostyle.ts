@@ -1,4 +1,4 @@
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import lang from "lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
 import { MbBookNote } from "types/MarginNote"
@@ -176,7 +176,7 @@ const enum ChangeStyle {
   UseAutoStyle
 }
 
-const action: IActionMethod = {
+const action: IActionMethods = {
   changeColor({ content, nodes, option }) {
     if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {

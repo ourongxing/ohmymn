@@ -103,5 +103,5 @@ const util = {
     return { add, remove }
   }
 }
-const action = {}
-export { config, util, action }
+
+export { config, util }

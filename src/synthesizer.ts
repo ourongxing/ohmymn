@@ -211,7 +211,9 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
 
 const mergeActions = () => {
   const actions = { ...magicaction.action }
-  modules.forEach(module => Object.assign(actions, module.action))
+  modules.forEach(module => {
+    if ("action" in module) Object.assign(actions, module.action)
+  })
   return actions
 }
 

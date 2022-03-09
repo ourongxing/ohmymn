@@ -1,4 +1,4 @@
-import { osType, studyMode } from "types/MarginNote"
+import { osType } from "types/MarginNote"
 import mnaddon from "../mnaddon.json"
 
 class MNCore {

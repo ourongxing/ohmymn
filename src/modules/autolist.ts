@@ -1,7 +1,7 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, ReplaceParam, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import { cellViewType, IActionMethod, IConfig } from "types/Addon"
+import { cellViewType, IActionMethods, IConfig } from "types/Addon"
 import lang from "lang"
 
 const { intro, option, label, link } = lang.module.autolist
@@ -96,7 +96,7 @@ const util = {
 const enum ListSelected {
   UseAutoList
 }
-const action: IActionMethod = {
+const action: IActionMethods = {
   listSelected({ nodes, content, option }) {
     if (option == ListSelected.UseAutoList) {
       nodes.forEach(node => {
