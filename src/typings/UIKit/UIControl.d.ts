@@ -1,5 +1,5 @@
 import { UIView } from "."
-export const enum UIControlEvents {}
+import { UIControlEvents } from "./enum"
 export class UIControl extends UIView {
   enabled: boolean
   highlighted: boolean

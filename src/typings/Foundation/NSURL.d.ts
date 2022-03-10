@@ -1,26 +1,9 @@
-import { NSStringEncoding } from "./NSData"
-
-export const enum NSURLBookmarkResolutionOptions {
-  WithoutMounting = 512,
-  WithoutUI = 256,
-  WithSecurityScope = 1024
-}
-
-export const enum NSURLBookmarkFileCreationOptions {
-  MinimalBookmark = 512,
-  PreferFileIDResolution = 256,
-  SecurityScopeAllowOnlyReadAccess = 4096,
-  SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048
-}
-
-export const enum NSURLBookmarkCreationOptions {
-  MinimalBookmark = 512,
-  PreferFileIDResolution = 256,
-  SecurityScopeAllowOnlyReadAccess = 4096,
-  SuitableForBookmarkFile = 1024,
-  WithSecurityScope = 2048
-}
+import {
+  NSURLBookmarkResolutionOptions,
+  NSURLBookmarkFileCreationOptions,
+  NSURLBookmarkCreationOptions,
+  NSStringEncoding
+} from "./enum"
 
 declare global {
   class NSURL {

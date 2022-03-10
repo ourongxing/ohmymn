@@ -1,13 +1,5 @@
-export const enum UIAlertViewStyle {
-  // A standard alert.
-  Default,
-  // Allows the user to enter text, but the text field is obscured.
-  SecureTextInput,
-  // Allows the user to enter text.
-  PlainTextInput,
-  // Allows the user to enter a login id and a password.
-  LoginAndPasswordInput
-}
+import { UIAlertViewStyle } from "./enum"
+
 declare global {
   class UIAlertView {
     static showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(

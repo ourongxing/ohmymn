@@ -1,12 +1,8 @@
 import { UIEvent, UITouch, UIView } from "."
-export const enum UIGestureRecognizerState {}
-export const enum UISwipeGestureRecognizerDirection {
-  Right = 1 << 0,
-  Left = 1 << 1,
-  Up = 1 << 2,
-  Down = 1 << 3
-}
-
+import {
+  UIGestureRecognizerState,
+  UISwipeGestureRecognizerDirection
+} from "./enum"
 declare global {
   class UIGestureRecognizer {
     constructor(target: WrapperObj<any>, action: string)

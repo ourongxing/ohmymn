@@ -1,12 +1,6 @@
-export {}
+import { NSLocaleLanguageDirection } from "./enum"
+
 declare global {
-  const enum NSLocaleLanguageDirection {
-    BottomToTop = 4,
-    LeftToRight = 1,
-    RightToLeft = 2,
-    TopToBottom = 3,
-    Unknown = 0
-  }
   class NSLocale {
     static autoupdatingCurrentLocale(): WrapperObj<NSLocale>
     static currentLocale(): WrapperObj<NSLocale>

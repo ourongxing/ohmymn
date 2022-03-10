@@ -1,9 +1,11 @@
 import { UIView } from "."
+import {
+  UITableViewStyle,
+  UITableViewCellSeparatorStyle,
+  UITableViewRowAnimation,
+  UITableViewScrollPosition
+} from "./enum"
 
-export const enum UITableViewStyle {}
-export const enum UITableViewCellSeparatorStyle {}
-export const enum UITableViewScrollPosition {}
-export const enum UITableViewRowAnimation {}
 export class UITableView extends UIView {
   readonly style: UITableViewStyle
   dataSource: WrapperObj<any>

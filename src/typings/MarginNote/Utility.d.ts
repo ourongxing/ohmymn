@@ -1,6 +1,5 @@
 import { UIWindow, UIViewController, UITableView } from "typings/UIKit"
 
-export {}
 declare global {
   class SpeechManager {
     /**

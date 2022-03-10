@@ -1,16 +1,7 @@
-import { UIControl, UILabel } from "."
+import { UIControl, UIEdgeInsets, UILabel } from "."
+import { NSLineBreakMode, UIButtonType } from "./enum"
 
-export const enum UIButtonType {
-  system = 0
-}
-export const enum NSLineBreakMode {}
-export type UIEdgeInsets = {
-  top: number
-  left: number
-  bottom: number
-  right: number
-}
-export const enum UIControlState {}
+export enum UIControlState {}
 declare global {
   class UIButton extends UIControl {
     static buttonWithType(buttonType: UIButtonType): UIButton

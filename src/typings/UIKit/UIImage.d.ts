@@ -1,30 +1,5 @@
 import { UIEdgeInsets } from "."
-
-export enum UIImageOrientation {
-  /** Rotated 180 degrees.  */
-  Down = 1,
-
-  /** Flipped about its vertical axis and then rotated 180 degrees.  */
-  DownMirrored = 5,
-
-  /** Rotated 90 degrees counterclockwise.  */
-  Left = 2,
-
-  /** Flipped about its horizontal axis and then rotated 90 degrees counterclockwise.  */
-  LeftMirrored = 6,
-
-  /** Rotated 90 degrees clockwise.  */
-  Right = 3,
-
-  /** Flipped about its horizontal axis and then rotated 90 degrees clockwise.  */
-  RightMirrored = 7,
-
-  /** Default orientation.  */
-  Up = 0,
-
-  /** Flipped about its vertical axis.  */
-  UpMirrored = 4
-}
+import { UIImageOrientation } from "./enum"
 
 declare global {
   class UIImage {

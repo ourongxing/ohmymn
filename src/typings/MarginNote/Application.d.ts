@@ -1,12 +1,7 @@
 import { UIView, UIViewController, UIWindow } from "typings/UIKit"
+import { docMapSplitMode, osType, studyMode } from "./enum"
 import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
-
-export const enum osType {
-  iPadOS = 0,
-  iPhoneOS = 1,
-  macOS = 2
-}
 
 export class DocumentController {
   readonly document?: MbBook
@@ -54,20 +49,6 @@ export class ReaderController {
   readonly currentDocumentController: WrapperObj<DocumentController>
   readonly documentControllers?: NSMutableArray
   view: UIView
-}
-
-export const enum studyMode {
-  doc0 = 0,
-  doc1 = 1,
-  study = 2,
-  review = 3
-}
-
-export const enum docMapSplitMode {
-  allMap = 0,
-  /** halfMap or halfDoc */
-  half = 1,
-  allDoc = 2
 }
 
 export class StudyController extends UIViewController {

@@ -1,5 +1,6 @@
 import { MbBookNote } from "../MarginNote/MbBookNote"
 import { IRowButton } from "./Datasource"
+import { cellViewType } from "./enum"
 
 export interface IConfig {
   name: string
@@ -9,17 +10,6 @@ export interface IConfig {
   settings: ISetting[]
   actions4card?: IAction[]
   actions4text?: IAction[]
-}
-
-export const enum cellViewType {
-  plainText = 0,
-  switch = 1,
-  button = 2,
-  buttonWithInput = 3,
-  input = 4,
-  inlineInput = 5,
-  select = 6,
-  muiltSelect = 7
 }
 
 interface LabelType {

@@ -1,16 +1,11 @@
 import { UIImageView, UILabel, UIView } from "."
-
-export {}
+import {
+  UITableViewCellAccessoryTypeStyle,
+  UITableViewCellSelectionStyle,
+  UITableViewCellStyle
+} from "./enum"
 
 declare global {
-  const enum UITableViewCellSelectionStyle {}
-  const enum UITableViewCellAccessoryTypeStyle {}
-  const enum UITableViewCellStyle {
-    Default = 0,
-    Value1 = 1,
-    Value2 = 2,
-    Subtitle = 3
-  }
   class UITableViewCell {
     readonly contentView: UIView
     readonly textLabel: UILabel

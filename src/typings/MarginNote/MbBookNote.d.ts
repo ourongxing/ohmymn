@@ -1,3 +1,4 @@
+import { groupMode } from "./enum"
 import { MbBook, MbTopic } from "./NoteDatabase"
 
 interface pic {
@@ -20,11 +21,6 @@ interface excerptPic extends pic {
       pageNo: number
     }
   }
-}
-
-export const enum groupMode {
-  Tree,
-  Frame
 }
 
 export type noteComment = textComment | htmlComment | linkComment | paintComment

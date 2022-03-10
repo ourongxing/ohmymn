@@ -1,4 +1,5 @@
-import { cellViewType, ISettingButton, KeyLabelType, LabelType } from "./Module"
+import { cellViewType } from "./enum"
+import { ISettingButton, KeyLabelType, LabelType } from "./Module"
 
 // 生成的 DataSource
 export interface ISection {

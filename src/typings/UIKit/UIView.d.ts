@@ -1,6 +1,6 @@
 import { UIResponder } from "."
 
-export const enum UIViewAutoresizing {}
+export enum UIViewAutoresizing {}
 export class UIView extends UIResponder {
   constructor(frame?: CGRect)
   bounds: CGRect
