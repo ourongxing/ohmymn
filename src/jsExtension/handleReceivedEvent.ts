@@ -1,16 +1,17 @@
-import { eventHandler } from "types/Addon"
+import { Addon } from "const"
 import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "jsExtension/excerptHandler"
 import { layoutViewController } from "jsExtension/switchPanel"
+import lang from "lang"
+import { EventHandler } from "typings"
 import { alert, delayBreak, isThisWindow, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import { getNoteById } from "utils/note"
-import handleMagicAction from "./magicActionHandler"
-import { Addon } from "const"
 import { Range, readProfile, saveProfile } from "utils/profile"
-import lang from "lang"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
+import handleMagicAction from "./magicActionHandler"
+
 const { input_clear, input_saved, lock_excerpt, auto_correct } =
   lang.handle_received_event
 
@@ -22,19 +23,19 @@ export const eventHandlers = eventHandlerController([
   "PopupMenuOnNote",
   "ProcessNewExcerpt",
   "ChangeExcerptRange",
-  "ClosePopupMenuOnNote"
-  // "PopupMenuOnSelection",
-  // "ClosePopupMenuOnSelection"
+  "ClosePopupMenuOnNote",
+  "PopupMenuOnSelection",
+  "ClosePopupMenuOnSelection"
 ])
 
-const onButtonClick: eventHandler = async sender => {
+const onButtonClick: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("点击了按钮", "event")
   const { row } = sender.userInfo
   handleMagicAction(row)
 }
 
-const onSwitchChange: eventHandler = sender => {
+const onSwitchChange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("切换了开关", "event")
   const { name, key, status } = sender.userInfo
@@ -53,7 +54,7 @@ const onSwitchChange: eventHandler = sender => {
   }
 }
 
-const onSelectChange: eventHandler = async sender => {
+const onSelectChange: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("修改了选项", "event")
   const { name, key, selections } = sender.userInfo
@@ -73,7 +74,7 @@ const onSelectChange: eventHandler = async sender => {
   }
 }
 
-const onInputOver: eventHandler = sender => {
+const onInputOver: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("输入了内容", "event")
   const { name, key, content } = sender.userInfo
@@ -82,14 +83,20 @@ const onInputOver: eventHandler = sender => {
   content ? showHUD(input_saved) : showHUD(input_clear)
 }
 
-const onPopupMenuOnSelection: eventHandler = sender => {
+const onPopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("选择菜单开启", "event")
   const { documentController, winRect } = sender.userInfo
+  self.selectionBar = {
+    winRect,
+    selectionText: documentController.selectionText
+  }
   console.log(documentController.selectionText)
 }
-const onClosePopupMenuOnSelection: eventHandler = sender => {
+
+const onClosePopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
+  self.selectionBar = {}
   console.log("选择关闭开启", "event")
 }
 
@@ -106,9 +113,9 @@ const tmp = {
   lastExcerptText: "😎"
 }
 
-const onPopupMenuOnNote: eventHandler = async sender => {
+const onPopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  self.barStatus = true
+  self.singleBarStatus = true
   tmp.isChangeExcerptRange = false
   tmp.isProcessNewExcerpt = false
   const success = await delayBreak(
@@ -123,13 +130,13 @@ const onPopupMenuOnNote: eventHandler = async sender => {
   tmp.lastExcerptText = note.excerptText!
 }
 
-const onClosePopupMenuOnNote: eventHandler = async sender => {
+const onClosePopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  self.barStatus = false
+  self.singleBarStatus = false
   console.log("摘录菜单关闭", "event")
 }
 
-const onChangeExcerptRange: eventHandler = sender => {
+const onChangeExcerptRange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("修改摘录", "event")
   const note = getNoteById(sender.userInfo.noteid)
@@ -137,7 +144,7 @@ const onChangeExcerptRange: eventHandler = sender => {
   handleExcerpt(note, tmp.lastExcerptText)
 }
 
-const onProcessNewExcerpt: eventHandler = sender => {
+const onProcessNewExcerpt: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("创建摘录", "event")
   const note = getNoteById(sender.userInfo.noteid)
@@ -156,7 +163,7 @@ export default {
   onPopupMenuOnNote,
   onProcessNewExcerpt,
   onChangeExcerptRange,
-  onClosePopupMenuOnNote
-  // onPopupMenuOnSelection,
-  // onClosePopupMenuOnSelection
+  onClosePopupMenuOnNote,
+  onPopupMenuOnSelection,
+  onClosePopupMenuOnSelection
 }

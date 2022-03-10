@@ -3,16 +3,18 @@ import * as autocomplete from "modules/autocomplete"
 import * as autolist from "modules/autolist"
 import * as autoreplace from "modules/autoreplace"
 import * as autostandardize from "modules/autostandardize"
-import * as magicaction from "modules/magicaction"
+import * as magicaction4card from "modules/magicaction4card"
+// import * as magicaction4text from "modules/magicaction4text"
 import * as anotherautodef from "modules/anotherautodef"
 import * as autotag from "modules/autotag"
 import * as autostyle from "modules/autostyle"
 import * as ohmymn from "modules/ohmymn"
 import * as gesture from "modules/gesture"
 import * as copysearch from "modules/copysearch"
-import { cellViewType, IConfig, IRow, IRowButton, ISection } from "types/Addon"
-import lang from "lang"
+import type { IConfig, IRow, IRowButton, ISection } from "typings"
 import { SerialCode } from "utils/text"
+import { cellViewType } from "typings/enum"
+import lang from "lang"
 
 // magicaction, ohmymn 默认前两个，不用包含在内
 const modules = [
@@ -48,6 +50,7 @@ export type AutoModuleKey = Exclude<
 
 const more: ISection = {
   header: "More",
+  key: "more",
   rows: [
     {
       type: cellViewType.plainText,
@@ -109,6 +112,7 @@ const genSection = (config: IConfig): ISection => {
   }
   return {
     header: config.name,
+    key: config.key ?? config.name.replace(/\x20/g, "").toLowerCase(),
     rows
   }
 }
@@ -126,9 +130,9 @@ export const genDataSource = (
   const dataSource: ISection[] = []
   configs.forEach(config => {
     dataSource.push(genSection(config))
-    config.actions.length &&
-      magicaction.actions.push(
-        ...config.actions.map(k => {
+    config.actions4card?.length &&
+      magicaction.actions4card!.push(
+        ...config.actions4card.map(k => {
           k.module = config.name
           if (k.help) k.help += "\n"
           else k.help = ""
@@ -137,7 +141,7 @@ export const genDataSource = (
         })
       )
   })
-  magicaction.settings.push(...magicaction.actions)
+  magicaction.settings.push(...magicaction.actions4card!)
   dataSource.splice(1, 0, genSection(magicaction))
 
   dataSource.forEach((sec, index) => {
@@ -199,7 +203,7 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
     }
   } = {}
   dataSource.forEach((section, secIndex) => {
-    const name = section.header.toLowerCase()
+    const name = section.key
     dataSourceIndex[name] = {}
     section.rows.forEach((row, rowIndex) => {
       if (row.type != cellViewType.plainText)
@@ -210,7 +214,7 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
 }
 
 const mergeActions = () => {
-  const actions = { ...magicaction.action }
+  const actions = { ...magicaction4card.action }
   modules.forEach(module => {
     if ("action" in module) Object.assign(actions, module.action)
   })
@@ -220,6 +224,6 @@ const mergeActions = () => {
 export const actions = mergeActions()
 export const dataSourcePreset = genDataSource(
   [ohmymn, ...modules].map(module => module.config),
-  magicaction.config
+  magicaction4card.config
 )
 export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

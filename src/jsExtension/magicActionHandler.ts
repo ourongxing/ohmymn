@@ -1,18 +1,17 @@
-import { PanelControl } from "modules/ohmymn"
-import checkInputCorrect from "inputChecker"
 import lang from "lang"
 import { actions } from "synthesizer"
-import { cellViewType, IRowButton } from "types/Addon"
-import { MbBookNote } from "types/MarginNote"
-import { UIAlertViewStyle } from "types/UIKit"
+import { PanelControl } from "modules/ohmymn"
+import checkInputCorrect from "inputChecker"
+import type { IRowButton, MbBookNote } from "typings"
+import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { popup, showHUD, HUDController } from "utils/common"
+import { manageProfileAction } from "utils/profile"
+import { closePanel } from "./switchPanel"
 import {
   getSelectNodes,
   getNodeTree,
   undoGroupingWithRefresh
 } from "utils/note"
-import { manageProfileAction } from "utils/profile"
-import { closePanel } from "./switchPanel"
 
 export default async (row: IRowButton, option?: number) => {
   if (option !== undefined) await handleMagicAction(row.key, option)

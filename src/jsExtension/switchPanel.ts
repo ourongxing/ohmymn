@@ -1,9 +1,9 @@
-import { docMapSplitMode, studyMode } from "types/MarginNote"
-import { delay, showHUD } from "utils/common"
-import { MN } from "const"
-import { UIViewController } from "types/UIKit"
 import lang from "lang"
+import { MN } from "const"
+import { delay, showHUD } from "utils/common"
 import { PanelControl } from "modules/ohmymn"
+import type { UIViewController } from "typings"
+import { docMapSplitMode, studyMode } from "typings/enum"
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = (

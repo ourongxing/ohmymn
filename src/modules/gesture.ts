@@ -1,10 +1,10 @@
+import { cellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
+import type { UIView, IConfig } from "typings"
 import lang from "lang"
-import { cellViewType, IConfig } from "types/Addon"
-import { UIView, UISwipeGestureRecognizerDirection } from "types/UIKit"
 
 const option: string[] = []
 
-const { link, intro, singleBar, muiltBar } = lang.module.gesture
+const { link, intro, singleBar, muiltBar, selectionBar } = lang.module.gesture
 const config: IConfig = {
   name: "Gesture",
   intro,
@@ -57,9 +57,32 @@ const config: IConfig = {
       key: "muiltBarSwipeRight",
       type: cellViewType.select,
       option
+    },
+    {
+      label: selectionBar + " ↑",
+      key: "selectionBarSwipeUp",
+      type: cellViewType.select,
+      option
+    },
+    {
+      label: selectionBar + " ↓",
+      key: "selectionBarSwipeDown",
+      type: cellViewType.select,
+      option
+    },
+    {
+      label: selectionBar + " ←",
+      key: "selectionBarSwipeLeft",
+      type: cellViewType.select,
+      option
+    },
+    {
+      label: selectionBar + " →",
+      key: "selectionBarSwipeRight",
+      type: cellViewType.select,
+      option
     }
-  ],
-  actions: []
+  ]
 }
 
 const util = {

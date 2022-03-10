@@ -1,13 +1,14 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import type { IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
 const { label, option, intro, link } = lang.module.anotherautodef
 const config: IConfig = {
-  name: "AnotherAutoDef",
+  name: "Another AutoDef",
   intro,
   link,
   settings: [
@@ -65,7 +66,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.buttonWithInput,
       label: label.extract_title,
@@ -75,7 +76,7 @@ const config: IConfig = {
   ]
 }
 
-const enum AutoDefPreset {
+enum AutoDefPreset {
   CustomExtract,
   CustomTitleSplit
 }
@@ -201,9 +202,10 @@ const util = {
       }
   }
 }
-const enum ExtractTitle {
+enum ExtractTitle {
   UseAutoDef
 }
+
 const action: IActionMethods = {
   extractTitle({ nodes, content, option }) {
     if (option == ExtractTitle.UseAutoDef) {

@@ -1,8 +1,8 @@
 import { dataSourceIndex, moduleList } from "synthesizer"
-import { cellViewType, IRow, IRowSelect } from "types/Addon"
+import type { UITableView, IRowSelect } from "typings"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
-import { UITableView } from "types/UIKit"
+import { cellViewType } from "typings/enum"
 import { byteLength, isHalfWidth, SerialCode } from "utils/text"
 import lang from "lang"
 
@@ -40,10 +40,10 @@ const tableViewTitleForHeaderInSection = (
 }
 
 // bind 的对象只要有一个不符合要求，就隐藏
-const _isBindOFF = (bindArr: [string, number][], header: string) => {
+const _isBindOFF = (bindArr: [string, number][], sectionKey: string) => {
   return !bindArr.every(bind => {
     const [key, index] = bind
-    const [secIndex, rowIndex] = dataSourceIndex?.[header.toLowerCase()]?.[key]
+    const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
     const row = self.dataSource?.[secIndex].rows?.[rowIndex]
     // 输入的key找不到就显示
     if (!row) {
@@ -66,9 +66,9 @@ const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows, header } = self.dataSource[indexPath.section]
+  const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
-  if (row.bind && _isBindOFF(row.bind, header)) return 0
+  if (row.bind && _isBindOFF(row.bind, key)) return 0
   if (
     (row.type === cellViewType.button ||
       row.type === cellViewType.buttonWithInput) &&

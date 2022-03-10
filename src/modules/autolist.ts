@@ -1,7 +1,8 @@
 import { getExcerptNotes } from "utils/note"
-import { regFlag, ReplaceParam, string2ReplaceParam } from "utils/input"
+import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import type { IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 
 const { intro, option, label, link } = lang.module.autolist
@@ -29,7 +30,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.buttonWithInput,
       label: label.list_selected,
@@ -93,7 +94,7 @@ const util = {
   }
 }
 
-const enum ListSelected {
+enum ListSelected {
   UseAutoList
 }
 const action: IActionMethods = {

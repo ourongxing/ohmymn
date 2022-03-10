@@ -1,6 +1,6 @@
 import lang from "lang"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
-import { MbBookNote } from "types/MarginNote"
+import type { MbBookNote, IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
@@ -32,7 +32,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       key: "completeSelected",
       type: cellViewType.button,
@@ -190,7 +190,7 @@ const util = {
   }
 }
 
-const enum CompleteSelected {
+enum CompleteSelected {
   OnlyComplete,
   AlsoFillWordInfo
 }

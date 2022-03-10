@@ -1,6 +1,7 @@
 import { Addon } from "const"
 import lang from "lang"
-import { cellViewType, IConfig } from "types/Addon"
+import type { IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 
 export const enum PanelPosition {
   Auto,
@@ -89,8 +90,7 @@ const config: IConfig = {
       type: cellViewType.switch,
       label: label.auto_correct
     }
-  ],
-  actions: []
+  ]
 }
 
 export { config }

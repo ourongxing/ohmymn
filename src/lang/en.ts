@@ -39,7 +39,8 @@ const dict: Dict = {
       intro: "Custom Gestures to Trigger Actions",
       link: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73",
       singleBar: "Single-select Toolbar",
-      muiltBar: "Multi-select Toolbar"
+      muiltBar: "Multi-select Toolbar",
+      selectionBar: "Text-select Toolbar"
     },
     anotherautodef: {
       intro:

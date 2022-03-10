@@ -1,7 +1,8 @@
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import type { IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
-import { MbBookNote } from "types/MarginNote"
+import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
@@ -65,7 +66,7 @@ const config: IConfig = {
       option: option.style
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.buttonWithInput,
       label: label.change_color,
@@ -172,7 +173,7 @@ const util = {
   }
 }
 
-const enum ChangeStyle {
+enum ChangeStyle {
   UseAutoStyle
 }
 

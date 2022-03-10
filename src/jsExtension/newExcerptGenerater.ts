@@ -1,4 +1,4 @@
-import { MbBookNote } from "types/MarginNote"
+import { MbBookNote } from "typings"
 import { util as autotag } from "modules/autotag"
 import { util as autolist } from "modules/autolist"
 import { util as autostyle } from "modules/autostyle"

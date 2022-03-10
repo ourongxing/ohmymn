@@ -7,7 +7,7 @@ import {
 } from "utils/note"
 import { delayBreak } from "utils/common"
 import { newColorStyle, newTag, newTitleText } from "./newExcerptGenerater"
-import { MbBookNote } from "types/MarginNote"
+import { MbBookNote } from "typings"
 
 let note: MbBookNote
 let nodeNote: MbBookNote

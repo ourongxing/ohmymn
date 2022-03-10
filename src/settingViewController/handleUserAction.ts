@@ -1,8 +1,8 @@
 import { openUrl, popup, postNotification, showHUD } from "utils/common"
 import checkInputCorrect from "inputChecker"
 import { Addon, MN } from "const"
-import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { UIAlertViewStyle, UITableView } from "types/UIKit"
+import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
+import { UIAlertViewStyle, cellViewType } from "typings/enum"
 import { byteLength } from "utils/text"
 import lang from "lang"
 import { QuickSwitch } from "synthesizer"
@@ -43,7 +43,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
     sender.resignFirstResponder()
     row.content = text
     postNotification(Addon.key + "InputOver", {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       content: text
     })
@@ -60,7 +60,7 @@ const switchChange = (sender: UISwitch) => {
   row.status = sender.on ? true : false
   self.tableView.reloadData()
   postNotification(Addon.key + "SwitchChange", {
-    name: section.header.toLowerCase(),
+    name: section.key,
     key: row.key,
     status: sender.on ? true : false
   })
@@ -88,7 +88,7 @@ const selectAction = async (param: {
       self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
     postNotification(Addon.key + "SelectChange", {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       selections: [selection]
     })
@@ -127,7 +127,7 @@ const selectAction = async (param: {
     )).selections = nowSelect
 
     lastSelectInfo = {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       selections: nowSelect.sort()
     }

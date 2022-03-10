@@ -1,6 +1,7 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import type { IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 
 const { intro, link, label, option } = lang.module.autoreplace
@@ -32,7 +33,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.buttonWithInput,
       label: label.replace_selected,
@@ -60,7 +61,7 @@ const util = {
   }
 }
 
-const enum ReplaceSelected {
+enum ReplaceSelected {
   UseAutoReplace
 }
 

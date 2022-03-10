@@ -1,7 +1,11 @@
-import type { GestureHandler, IRowButton, IRowSelect } from "types/Addon"
-import { UISwipeGestureRecognizerDirection } from "types/UIKit"
+import type { GestureHandler, IRowButton, IRowSelect } from "typings"
+import {
+  groupMode,
+  UISwipeGestureRecognizerDirection,
+  docMapSplitMode,
+  studyMode
+} from "typings/enum"
 import { MN } from "const"
-import { docMapSplitMode, studyMode, groupMode } from "types/MarginNote"
 import { util as gesture } from "modules/gesture"
 import {
   actionKey,
@@ -60,10 +64,11 @@ export const gestureHandlers = gesture.gestureHandlerController([
   }
 ])
 
-const enum SwipePosition {
+enum SwipePosition {
   None = 0,
   SingleBar,
-  MuiltBar
+  MuiltBar,
+  SelectionBar
 }
 
 const isWithinArea = (
@@ -110,7 +115,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
   // 屏蔽一些会误触的 UI
-  if (swipeY < 60 || swipeX < 70 || swipeX > width - 70)
+  if (swipeY < 70 || swipeX < 70 || swipeX > width - 70)
     return SwipePosition.None
   if (
     self.panelStatus &&
@@ -118,7 +123,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   )
     return SwipePosition.None
 
-  if (selViewLst.length == 1 && self.barStatus) {
+  if (selViewLst.length == 1 && self.singleBarStatus) {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 
@@ -171,36 +176,40 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       )
     )
       return SwipePosition.SingleBar
-  }
+  } else if (selViewLst.length > 1) {
+    /**
+     * 多选工具栏
+     * iPad Pro 12.9
+     * 高度 y(900-850 = 50) 窗口宽度 980
+     * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
+     * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
+     *
+     * 宽度 x(930 - 430 = 500) 窗口宽度 1366
+     * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
+     * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
+     * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
+     */
+    const barWidth = width > 510 ? 500 : width - 50
+    const muiltBarArea = {
+      x: (width - barWidth) / 2,
+      y: height - 130,
+      height: 50,
+      width: barWidth
+    }
 
-  /**
-   * 多选工具栏
-   * iPad Pro 12.9
-   * 高度 y(900-850 = 50) 窗口宽度 980
-   * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
-   * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
-   *
-   * 宽度 x(930 - 430 = 500) 窗口宽度 1366
-   * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
-   * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
-   * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
-   */
-  const barWidth = width > 510 ? 500 : width - 50
-  const muiltBarArea = {
-    x: (width - barWidth) / 2,
-    y: height - 130,
-    height: 50,
-    width: barWidth
+    if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
+      return SwipePosition.MuiltBar
+  } else {
+    const { selectionText, winRect } = self.selectionBar
+    if (selectionText && winRect && isWithinArea({ swipeX, swipeY }, winRect))
+      return SwipePosition.SelectionBar
   }
-
-  if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
-    return SwipePosition.MuiltBar
   return SwipePosition.None
 }
 
 const actionTrigger = async (
-  sigleOption: number,
-  muiltOption: number,
+  sigleBarOption: number,
+  muiltBarOption: number,
   sender: UIGestureRecognizer
 ) => {
   if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.gesture)) return
@@ -215,10 +224,14 @@ const actionTrigger = async (
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
   let actionInfo: typeof actionKey[number]
-  if (swipePosition === SwipePosition.SingleBar && sigleOption) {
-    actionInfo = actionKey[sigleOption]
-  } else if (swipePosition === SwipePosition.MuiltBar && muiltOption) {
-    actionInfo = actionKey[muiltOption]
+  if (swipePosition === SwipePosition.SingleBar && sigleBarOption) {
+    actionInfo = actionKey[sigleBarOption]
+  } else if (swipePosition === SwipePosition.MuiltBar && muiltBarOption) {
+    actionInfo = actionKey[muiltBarOption]
+  } else if (swipePosition === SwipePosition.SelectionBar) {
+    const { selectionText } = self.selectionBar
+    showHUD(selectionText!)
+    return
   } else return
 
   const { key, module, option } = actionInfo

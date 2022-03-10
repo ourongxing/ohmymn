@@ -7,7 +7,7 @@ import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { dataSourcePreset } from "synthesizer"
-import { UIWindow } from "types/UIKit"
+import { UIWindow } from "typings"
 import { deepCopy } from "utils"
 import lang from "lang"
 

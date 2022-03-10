@@ -1,5 +1,6 @@
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import type { IActionMethods, IConfig } from "typings"
 import lang from "lang"
+import { cellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
 import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
 import { extractArray } from "utils/custom"
@@ -30,7 +31,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.buttonWithInput,
       label: label.tag_selected,
@@ -54,7 +55,7 @@ const util = {
   }
 }
 
-const enum TagSelected {
+enum TagSelected {
   UseAutoTag
 }
 

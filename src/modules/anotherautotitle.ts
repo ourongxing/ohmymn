@@ -1,12 +1,13 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
-import { cellViewType, IConfig } from "types/Addon"
+import type { IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 
 const { option, intro, help, link, label } = lang.module.anotherautotitle
 
 const config: IConfig = {
-  name: "AnotherAutoTitle",
+  name: "Another AutoTitle",
   intro,
   link,
   settings: [
@@ -40,8 +41,7 @@ const config: IConfig = {
       label: label.change_title_no_limit,
       help: help.change_title_no_limit
     }
-  ],
-  actions: []
+  ]
 }
 export const enum AutoTitlePreset {
   Custom,

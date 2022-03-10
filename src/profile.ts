@@ -35,7 +35,11 @@ const profilePreset = {
     muiltBarSwipeUp: [0],
     muiltBarSwipeDown: [0],
     muiltBarSwipeRight: [0],
-    muiltBarSwipeLeft: [0]
+    muiltBarSwipeLeft: [0],
+    selectionBarSwipeUp: [0],
+    selectionBarSwipeDown: [0],
+    selectionBarSwipeRight: [0],
+    selectionBarSwipeLeft: [0]
   },
   autocomplete: {
     on: false,

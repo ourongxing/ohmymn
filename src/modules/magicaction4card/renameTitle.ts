@@ -1,5 +1,5 @@
 import lang from "lang"
-import { IActionMethod } from "types/Addon"
+import { IActionMethod4Card } from "typings"
 import { showHUD } from "utils/common"
 import {
   escapeDoubleQuote,
@@ -112,7 +112,7 @@ export const getLayerSerialInfo = (
   )
 }
 
-export const renameTitle: IActionMethod = ({ content, nodes }) => {
+export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
   content = /^\(.*\)$/.test(content)
     ? content
     : `(/^.*$/g, "${escapeDoubleQuote(content)}")`

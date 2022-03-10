@@ -2,7 +2,8 @@ import { getExcerptNotes } from "utils/note"
 import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
+import { cellViewType } from "typings/enum"
+import type { IActionMethods, IConfig } from "typings"
 import lang from "lang"
 
 const { help, intro, option, label, link } = lang.module.autostandardize
@@ -38,7 +39,7 @@ const config: IConfig = {
       link
     }
   ],
-  actions: [
+  actions4card: [
     {
       key: "standardizeSelected",
       type: cellViewType.button,
@@ -107,7 +108,7 @@ const util = {
   }
 }
 
-const enum StandardizeSelected {
+enum StandardizeSelected {
   All,
   OnlyTitle,
   OnlyExcerptText

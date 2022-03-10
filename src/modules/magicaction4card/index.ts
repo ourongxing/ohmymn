@@ -1,8 +1,8 @@
 import { addTags, getAllText, removeHighlight } from "utils/note"
 import { escapeDoubleQuote, reverseEscape, string2RegArray } from "utils/input"
 import { HUDController, showHUD } from "utils/common"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
-import { textComment } from "types/MarginNote"
+import type { textComment, IActionMethods, IConfig } from "typings"
+import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { unique } from "utils"
 import { renameTitle } from "./renameTitle"
@@ -10,7 +10,8 @@ import { renameTitle } from "./renameTitle"
 const { help, option, intro, label, link, hud } = lang.module.magicaction
 
 const config: IConfig = {
-  name: "MagicAction",
+  name: "MagicAction for Selecting Card",
+  key: "magicAction4card",
   intro,
   link,
   settings: [
@@ -20,7 +21,7 @@ const config: IConfig = {
       label: label.smart_selection
     }
   ],
-  actions: [
+  actions4card: [
     {
       key: "manageProfile",
       type: cellViewType.button,
@@ -63,22 +64,22 @@ const config: IConfig = {
   ]
 }
 
-const enum FilterCards {
+enum FilterCards {
   OnlyTitle,
   AllText
 }
 
-const enum MergeCards {
+enum MergeCards {
   MergeTitle,
   NotMergeTitile
 }
 
-const enum MergeText {
+enum MergeText {
   ToExpertText,
   ToComment
 }
 
-const enum SwitchTitle {
+enum SwitchTitle {
   ToNonexistent,
   Exchange
 }

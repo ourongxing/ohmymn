@@ -1,5 +1,5 @@
 import lang from "lang"
-import { UIAlertViewStyle } from "types/UIKit"
+import { UIAlertViewStyle } from "typings/enum"
 import { Addon, MN } from "../const"
 
 const console = {

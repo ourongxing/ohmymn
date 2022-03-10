@@ -7,7 +7,7 @@ import {
 import {
   getLayerSerialInfo,
   getSerialInfo
-} from "modules/magicaction/renameTitle"
+} from "modules/magicaction4card/renameTitle"
 import { getMNLinkValue } from "utils/profile/updateDataSource"
 
 const checkInputCorrect = (str: string, key: string): boolean => {

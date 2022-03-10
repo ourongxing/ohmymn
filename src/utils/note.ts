@@ -1,8 +1,7 @@
-import { MbBook, MbBookNote, MbTopic } from "types/MarginNote"
+import { MbBook, MbBookNote, MbTopic } from "typings"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
-import { extractArray } from "./custom"
 
 /**
  * 获取选中的卡片

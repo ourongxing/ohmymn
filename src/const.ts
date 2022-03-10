@@ -1,4 +1,4 @@
-import { osType } from "types/MarginNote"
+import { osType } from "typings/enum"
 import mnaddon from "../mnaddon.json"
 
 class MNCore {

@@ -1,7 +1,7 @@
 import lang from "lang"
-import { cellViewType, IActionMethods, IConfig } from "types/Addon"
-import { MbBookNote } from "types/MarginNote"
-import { UIAlertViewStyle } from "types/UIKit"
+import { MbBookNote } from "typings"
+import type { IActionMethods, IConfig } from "typings"
+import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
@@ -108,7 +108,7 @@ const config: IConfig = {
       bind: [["showSearchEngine", 1]]
     }
   ],
-  actions: [
+  actions4card: [
     {
       type: cellViewType.button,
       key: "searchCardInfo",
@@ -334,7 +334,7 @@ const util = {
   }
 }
 
-const enum CopySearchCardInfo {
+enum CopySearchCardInfo {
   Title,
   Excerpt,
   Custom
