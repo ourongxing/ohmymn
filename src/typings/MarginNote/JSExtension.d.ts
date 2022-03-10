@@ -1,4 +1,4 @@
-import { UILocalNotification, UIViewController, UIWindow } from "types/UIKit"
+import { UILocalNotification, UIViewController, UIWindow } from "typings/UIKit"
 
 declare class JSExtension {
   [k: string]: any

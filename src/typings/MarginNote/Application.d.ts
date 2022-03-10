@@ -1,4 +1,4 @@
-import { UIView, UIViewController, UIWindow } from "types/UIKit"
+import { UIView, UIViewController, UIWindow } from "typings/UIKit"
 import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
 

@@ -1,4 +1,4 @@
-import { UIWindow, UIViewController, UITableView } from "types/UIKit"
+import { UIWindow, UIViewController, UITableView } from "typings/UIKit"
 
 export {}
 declare global {
