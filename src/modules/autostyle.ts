@@ -1,4 +1,4 @@
-import type { IActionMethods, IConfig } from "typings"
+import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
@@ -13,7 +13,7 @@ const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoStyle",
   intro,
   link,
@@ -90,7 +90,7 @@ export const enum AutoStylePreset {
   ColorFollowParents
 }
 
-const util = {
+const utils = {
   getExcerptArea(note: MbBookNote) {
     const [x1, y1, x2, y2] = (
       reverseEscape(`[${note.startPos},${note.endPos}]`) as number[]
@@ -137,7 +137,7 @@ const util = {
     ) {
       const [zh, en, area] = reverseEscape(wordCountArea) as number[]
       if (note.excerptPic) {
-        const actualArea = util.getExcerptArea(note)
+        const actualArea = utils.getExcerptArea(note)
         if (actualArea > area) res.style = 2
         if (showArea) showHUD(lang.module.autostyle.area + ": " + actualArea)
         // 0 线框+填充 1 填充 2 线框
@@ -177,12 +177,12 @@ enum ChangeStyle {
   UseAutoStyle
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   changeColor({ content, nodes, option }) {
     if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
         getExcerptNotes(node).forEach(note => {
-          const { color } = util.getColorStyle(note)
+          const { color } = utils.getColorStyle(note)
           if (color !== undefined) note.colorIndex = color !== -1 ? color : 12
         })
       }
@@ -199,7 +199,7 @@ const action: IActionMethods = {
     if (option === ChangeStyle.UseAutoStyle) {
       for (const node of nodes) {
         getExcerptNotes(node).forEach(note => {
-          const { style } = util.getColorStyle(note)
+          const { style } = utils.getColorStyle(note)
           if (style !== undefined) note.fillIndex = style
         })
       }
@@ -214,4 +214,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

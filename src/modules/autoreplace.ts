@@ -1,6 +1,6 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
-import type { IActionMethods, IConfig } from "typings"
+import type { Methods, IConfig, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 
@@ -9,7 +9,7 @@ export const enum AutoReplacePreset {
   Custom
 }
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoReplace",
   intro,
   link,
@@ -43,7 +43,7 @@ const config: IConfig = {
   ]
 }
 
-const util = {
+const utils = {
   replaceText(text: string) {
     const { preset } = self.profile.autoreplace
     for (const set of preset) {
@@ -65,7 +65,7 @@ enum ReplaceSelected {
   UseAutoReplace
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   replaceSelected({ content, nodes, option }) {
     if (option == ReplaceSelected.UseAutoReplace) {
       nodes.forEach(node => {
@@ -90,4 +90,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

@@ -1,4 +1,4 @@
-import type { IActionMethods, IConfig } from "typings"
+import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import lang from "lang"
 import { cellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
@@ -7,7 +7,7 @@ import { extractArray } from "utils/custom"
 
 const { intro, option, label, link } = lang.module.autotag
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoTag",
   intro,
   link,
@@ -45,7 +45,7 @@ export const enum AutoTagPreset {
   Custom
 }
 
-const util = {
+const utils = {
   getTag(text: string) {
     const { customTag: params } = self.profileTemp.replaceParam
     const { preset } = self.profile.autotag
@@ -59,13 +59,13 @@ enum TagSelected {
   UseAutoTag
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   tagSelected({ nodes, option, content }) {
     if (option == TagSelected.UseAutoTag) {
       nodes.forEach(node => {
         const text = getAllText(node)
         if (text) {
-          const tags = util.getTag(text)
+          const tags = utils.getTag(text)
           if (tags.length) addTags(node, tags)
         }
       })
@@ -85,4 +85,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

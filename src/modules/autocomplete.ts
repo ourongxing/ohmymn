@@ -1,5 +1,5 @@
 import lang from "lang"
-import type { MbBookNote, IActionMethods, IConfig } from "typings"
+import type { MbBookNote, IConfig, Methods, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
@@ -8,7 +8,7 @@ import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
 
 const { error, intro, link, option, label } = lang.module.autocomplete
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoComplete",
   intro,
   link,
@@ -60,7 +60,7 @@ type Dict = {
   collins: string
 }
 
-const util = {
+const utils = {
   getPureZH(text: string) {
     const arr = text.split("\n")
     text =
@@ -195,7 +195,7 @@ enum CompleteSelected {
   AlsoFillWordInfo
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   async completeSelected({ nodes, option }) {
     if (nodes.length > 5) {
       showHUD(lang.module.autocomplete.error.forbid, 2)
@@ -221,4 +221,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

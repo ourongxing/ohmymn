@@ -1,12 +1,12 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import type { IActionMethods, IConfig } from "typings"
+import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 
 const { intro, option, label, link } = lang.module.autolist
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoList",
   intro,
   link,
@@ -45,7 +45,7 @@ export const enum AutoListPreset {
   Letter
 }
 
-const util = {
+const utils = {
   // 匹配到就在前面或后面添加换行
   listText(text: string): string {
     const { preset } = self.profile.autolist
@@ -97,13 +97,13 @@ const util = {
 enum ListSelected {
   UseAutoList
 }
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   listSelected({ nodes, content, option }) {
     if (option == ListSelected.UseAutoList) {
       nodes.forEach(node => {
         getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
-          if (text) note.excerptText = util.listText(text)
+          if (text) note.excerptText = utils.listText(text)
         })
       })
     } else if (content) {
@@ -122,4 +122,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

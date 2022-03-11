@@ -6,7 +6,7 @@ import lang from "lang"
 
 const { option, intro, help, link, label } = lang.module.anotherautotitle
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "Another AutoTitle",
   intro,
   link,
@@ -49,7 +49,7 @@ export const enum AutoTitlePreset {
   NoPunctuation
 }
 
-const util = {
+const utils = {
   /**
    * @param text 先去除划重点
    */
@@ -82,4 +82,4 @@ const util = {
       }
   }
 }
-export { config, util }
+export { configs, utils }

@@ -29,7 +29,7 @@ export const enum HasTitleThen {
 }
 
 const { link, label, help, option } = lang.module.ohmymn
-const config: IConfig = {
+const configs: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,
   link,
@@ -93,4 +93,4 @@ const config: IConfig = {
   ]
 }
 
-export { config }
+export { configs }

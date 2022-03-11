@@ -3,12 +3,12 @@ import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType } from "typings/enum"
-import type { IActionMethods, IConfig } from "typings"
+import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import lang from "lang"
 
 const { help, intro, option, label, link } = lang.module.autostandardize
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "AutoStandardize",
   intro,
   link,
@@ -58,7 +58,7 @@ export const enum AutoStandardizePreset {
   RemoveRepeatSpace
 }
 
-const util = {
+const utils = {
   toTitleCase(text: string) {
     const { standardizeTitle } = self.profile.autostandardize
     if (!standardizeTitle) return text
@@ -114,24 +114,24 @@ enum StandardizeSelected {
   OnlyExcerptText
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   standardizeSelected({ nodes, option }) {
     nodes.forEach(node => {
       const title = node.noteTitle
       if (option != StandardizeSelected.OnlyExcerptText && title) {
-        let newTitle = util.standardizeText(title)
+        let newTitle = utils.standardizeText(title)
         if (self.profile.autostandardize.standardizeTitle)
-          newTitle = util.toTitleCase(newTitle)
+          newTitle = utils.toTitleCase(newTitle)
         node.noteTitle = newTitle
       }
       if (option != StandardizeSelected.OnlyTitle) {
         getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
-          if (text) note.excerptText = util.standardizeText(text)
+          if (text) note.excerptText = utils.standardizeText(text)
         })
       }
     })
   }
 }
 
-export { config, util, action }
+export { configs, utils, actions4card }

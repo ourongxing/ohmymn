@@ -1,13 +1,13 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import type { IActionMethods, IConfig } from "typings"
+import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
 const { label, option, intro, link } = lang.module.anotherautodef
-const config: IConfig = {
+const configs: IConfig = {
   name: "Another AutoDef",
   intro,
   link,
@@ -87,7 +87,7 @@ export const enum TitleLinkSplit {
   Punctuation
 }
 
-const util = {
+const utils = {
   toTitleLink(text: string) {
     if (!self.profile.anotherautodef.toTitleLink) return [text]
     const regs: RegExp[] = []
@@ -159,7 +159,7 @@ const util = {
               // 交换顺序
               if (isReverse) [def, desc] = [desc, def]
               return {
-                title: util.toTitleLink(def),
+                title: utils.toTitleLink(def),
                 text: onlyDesc ? desc : text
               }
             }
@@ -180,7 +180,7 @@ const util = {
           if (reg.test(text)) {
             const [def, desc] = text.split(reg)
             return {
-              title: util.toTitleLink(def),
+              title: utils.toTitleLink(def),
               text: onlyDesc ? desc : text
             }
           }
@@ -193,7 +193,7 @@ const util = {
           if (reg.test(text)) {
             const [desc, def] = text.split(reg)
             return {
-              title: util.toTitleLink(def),
+              title: utils.toTitleLink(def),
               text: onlyDesc ? desc : text
             }
           }
@@ -206,13 +206,13 @@ enum ExtractTitle {
   UseAutoDef
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   extractTitle({ nodes, content, option }) {
     if (option == ExtractTitle.UseAutoDef) {
       nodes.forEach(node => {
         const allTitles = getExcerptNotes(node).reduce((acc, cur) => {
           if (cur.excerptText) {
-            const res = util.getDefTitle(cur.excerptText)
+            const res = utils.getDefTitle(cur.excerptText)
             if (res) {
               const { title, text } = res
               cur.excerptText = text
@@ -235,4 +235,4 @@ const action: IActionMethods = {
     }
   }
 }
-export { config, util, action }
+export { configs, utils, actions4card }

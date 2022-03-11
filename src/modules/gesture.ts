@@ -5,7 +5,7 @@ import lang from "lang"
 const option: string[] = []
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang.module.gesture
-const config: IConfig = {
+const configs: IConfig = {
   name: "Gesture",
   intro,
   link,
@@ -85,7 +85,7 @@ const config: IConfig = {
   ]
 }
 
-const util = {
+const utils = {
   initGesture: {
     swipe(
       touchNumber: number,
@@ -127,4 +127,4 @@ const util = {
   }
 }
 
-export { config, util }
+export { configs, utils }

@@ -1,7 +1,7 @@
 import { addTags, getAllText, removeHighlight } from "utils/note"
 import { escapeDoubleQuote, reverseEscape, string2RegArray } from "utils/input"
 import { HUDController, showHUD } from "utils/common"
-import type { textComment, IActionMethods, IConfig } from "typings"
+import type { textComment, IConfig, Methods, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 import { unique } from "utils"
@@ -9,7 +9,7 @@ import { renameTitle } from "./renameTitle"
 
 const { help, option, intro, label, link, hud } = lang.module.magicaction
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "MagicAction for Selecting Card",
   key: "magicAction4card",
   intro,
@@ -84,7 +84,7 @@ enum SwitchTitle {
   Exchange
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   renameTitle,
   mergeText({ option, nodes, content }) {
     for (const node of nodes) {
@@ -181,4 +181,4 @@ const action: IActionMethods = {
   }
 }
 
-export { config, action }
+export { configs, actions4card }
