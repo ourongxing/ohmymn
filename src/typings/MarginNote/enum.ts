@@ -25,3 +25,8 @@ export const enum docMapSplitMode {
   half = 1,
   allDoc = 2
 }
+
+export const enum DirectionOfSelection {
+  toRight = 1,
+  toLeft = 2
+}

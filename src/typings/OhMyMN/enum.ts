@@ -1,8 +1,3 @@
-export const enum DirectionOfSelection {
-  toRight = 1,
-  toLeft = 2
-}
-
 export const enum cellViewType {
   plainText = 0,
   switch = 1,

@@ -3,6 +3,7 @@ import { ReplaceParam } from "utils/input"
 import { ISection } from "./OhMyMN"
 import { StudyController, MbBookNote } from "./MarginNote"
 import { UITableView, UITableViewController, UIWindow } from "./UIKit"
+import { DirectionOfSelection } from "./enum"
 
 export * from "./Foundation"
 export * from "./MarginNote"
@@ -18,9 +19,9 @@ declare global {
     notebookid: string
     tableView: UITableView
     singleBarStatus: boolean
-    selectionBar: {
-      winRect?: CGRect
-      selectionText?: string
+    selectionBar?: {
+      arrow: DirectionOfSelection
+      winRect: string
     }
     customSelectedNodes: MbBookNote[]
     panelStatus: boolean

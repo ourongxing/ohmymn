@@ -4,7 +4,6 @@ import { cellViewType } from "./enum"
 
 export interface IConfig {
   name: string
-  key?: string
   intro: string
   link?: string
   settings: ISetting[]

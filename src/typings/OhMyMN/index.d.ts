@@ -1,6 +1,6 @@
+import { DirectionOfSelection } from "typings/enum"
 import { MbBookNote, DocumentController } from "typings/MarginNote"
 import { IRowButton } from "./Datasource"
-import { DirectionOfSelection } from "./enum"
 export * from "./Module"
 export * from "./Datasource"
 
@@ -20,7 +20,7 @@ export interface EventHandler {
       noteid: string
       arrow: DirectionOfSelection
       documentController: DocumentController
-      winRect: CGRect
+      winRect: string
     }
   }): void
 }
