@@ -239,7 +239,11 @@ const getActionKeyGetureOption = (section: ISection) => {
   const gestureOption = [lang.implement_datasource_method.open_panel]
   const actionKeys = []
   for (const _row of section.rows) {
-    if (_row.type == cellViewType.plainText) continue
+    if (
+      _row.type !== cellViewType.button &&
+      _row.type !== cellViewType.buttonWithInput
+    )
+      continue
     const row = _row as IRowButton
     gestureOption.push(row.label)
     actionKeys.push({
