@@ -4,19 +4,26 @@ import * as autolist from "modules/autolist"
 import * as autoreplace from "modules/autoreplace"
 import * as autostandardize from "modules/autostandardize"
 import * as magicaction4card from "modules/magicaction4card"
-// import * as magicaction4text from "modules/magicaction4text"
+import * as magicaction4text from "modules/magicaction4text"
 import * as anotherautodef from "modules/anotherautodef"
 import * as autotag from "modules/autotag"
 import * as autostyle from "modules/autostyle"
 import * as ohmymn from "modules/ohmymn"
 import * as gesture from "modules/gesture"
 import * as copysearch from "modules/copysearch"
-import type { IConfig, IRow, IRowButton, ISection } from "typings"
+import type {
+  IActionMethod4Text,
+  IConfig,
+  IRow,
+  IRowButton,
+  ISection,
+  Methods
+} from "typings"
 import { SerialCode } from "utils/text"
 import { cellViewType } from "typings/enum"
 import lang from "lang"
 
-// magicaction, ohmymn 默认前两个，不用包含在内
+// ohmymn, magicaction 默认前两个，不用包含在内
 const modules = [
   gesture,
   anotherautotitle,
@@ -117,21 +124,30 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-export const actionKey: { key: string; option?: number; module?: string }[] = [
+export const actionKey4Card: {
+  key: string
+  option?: number
+  module?: string
+}[] = [{ key: "none" }, { key: "open_panel" }]
+export const actionKey4Text: typeof actionKey4Card = [
   { key: "none" },
   { key: "open_panel" }
 ]
-
 export const moduleList: string[] = []
+
 export const genDataSource = (
   configs: IConfig[],
-  magicaction: IConfig
+  magicaction4card: IConfig,
+  magicaction4text: IConfig
 ): ISection[] => {
   const dataSource: ISection[] = []
+
+  const actions4card = magicaction4card.actions4card ?? []
+  const actions4text = magicaction4text.actions4text ?? []
   configs.forEach(config => {
     dataSource.push(genSection(config))
-    config.actions4card?.length &&
-      magicaction.actions4card!.push(
+    if (config.actions4card?.length)
+      actions4card.push(
         ...config.actions4card.map(k => {
           k.module = config.name
           if (k.help) k.help += "\n"
@@ -140,16 +156,34 @@ export const genDataSource = (
           return k
         })
       )
+    if (config.actions4text?.length) {
+      actions4text.push(
+        ...config.actions4text.map(k => {
+          k.module = config.name
+          if (k.help) k.help += "\n"
+          else k.help = ""
+          k.help += lang.module.magicaction.help.from_which_module(config.name)
+          return k
+        })
+      )
+    }
   })
-  magicaction.settings.push(...magicaction.actions4card!)
-  dataSource.splice(1, 0, genSection(magicaction))
-
+  magicaction4card.settings.push(...actions4card)
+  magicaction4text.settings.push(...actions4text)
   dataSource.forEach((sec, index) => {
-    index > 1 && moduleList.push(sec.header)
+    index && moduleList.push(sec.header)
   })
+  dataSource.splice(1, 0, genSection(magicaction4card))
+  dataSource.splice(2, 0, genSection(magicaction4text))
 
   // 更新 quickSwitch 为 moduleList
-  for (const row of dataSource[0].rows) {
+  const [
+    section_OhMyMN,
+    section_Action4Card,
+    section_Action4Text,
+    section_Gesture
+  ] = dataSource
+  for (const row of section_OhMyMN.rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
       row.option = moduleList.map(
         (value, index) => SerialCode.hollow_circle_number[index] + " " + value
@@ -157,38 +191,26 @@ export const genDataSource = (
   }
 
   // 同步 gesture 的 option 为 magicaction 列表
-  const gestureOption = [lang.implement_datasource_method.open_panel]
-  for (const _row of dataSource[1].rows) {
-    if (_row.type == cellViewType.plainText) continue
-    const row = _row as IRowButton
-    gestureOption.push(row.label)
-    actionKey.push({
-      key: row.key,
-      module: row.module
-    })
-    if (row.option?.length) {
-      if (row.type == cellViewType.button || row.key == "mergeText") {
-        row.option.forEach((option, index) => {
-          gestureOption.push("——" + option)
-          actionKey.push({
-            key: row.key,
-            option: index,
-            module: row.module
-          })
-        })
-      } else if (row.option[0].includes("Auto")) {
-        gestureOption.push("——" + row.option[0])
-        actionKey.push({
-          key: row.key,
-          option: 0,
-          module: row.module
-        })
-      }
+  const { gestureOption: gestureOption4Card, actionKeys: _actionKey4Card } =
+    getActionKeyGetureOption(section_Action4Card)
+  const { gestureOption: gestureOption4Text, actionKeys: _actionKey4Text } =
+    getActionKeyGetureOption(section_Action4Text)
+
+  actionKey4Card.push(..._actionKey4Card)
+  actionKey4Text.push(..._actionKey4Text)
+  section_Gesture.rows = section_Gesture.rows.map(row => {
+    if (row.type == cellViewType.select) {
+      if (row.key.includes("selectionBar"))
+        row.option = [
+          lang.implement_datasource_method.none,
+          ...gestureOption4Text
+        ]
+      else
+        row.option = [
+          lang.implement_datasource_method.none,
+          ...gestureOption4Card
+        ]
     }
-  }
-  dataSource[2].rows = dataSource[2].rows.map(row => {
-    if (row.type == cellViewType.select)
-      row.option = [lang.implement_datasource_method.none, ...gestureOption]
     return row
   })
 
@@ -213,17 +235,61 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
   return dataSourceIndex
 }
 
-const mergeActions = () => {
-  const actions = { ...magicaction4card.action }
+const getActionKeyGetureOption = (section: ISection) => {
+  const gestureOption = [lang.implement_datasource_method.open_panel]
+  const actionKeys = []
+  for (const _row of section.rows) {
+    if (_row.type == cellViewType.plainText) continue
+    const row = _row as IRowButton
+    gestureOption.push(row.label)
+    actionKeys.push({
+      key: row.key,
+      module: row.module
+    })
+    if (row.option?.length) {
+      if (row.type == cellViewType.button || row.key == "mergeText") {
+        row.option.forEach((option, index) => {
+          gestureOption.push("——" + option)
+          actionKeys.push({
+            key: row.key,
+            option: index,
+            module: row.module
+          })
+        })
+      } else if (row.option[0].includes("Auto")) {
+        gestureOption.push("——" + row.option[0])
+        actionKeys.push({
+          key: row.key,
+          option: 0,
+          module: row.module
+        })
+      }
+    }
+  }
+  return { actionKeys, gestureOption }
+}
+
+const mergeActions4Card = () => {
+  const actions = { ...magicaction4card.actions4card }
   modules.forEach(module => {
-    if ("action" in module) Object.assign(actions, module.action)
+    if ("actions4card" in module) Object.assign(actions, module.actions4card)
   })
   return actions
 }
 
-export const actions = mergeActions()
+const mergeActions4Text = () => {
+  const actions = {} as Methods<IActionMethod4Text>
+  modules.forEach(module => {
+    if ("actions4text" in module) Object.assign(actions, module.actions4text)
+  })
+  return actions
+}
+
+export const actions4card = mergeActions4Card()
+export const actions4text = mergeActions4Text()
 export const dataSourcePreset = genDataSource(
-  [ohmymn, ...modules].map(module => module.config),
-  magicaction4card.config
+  [ohmymn, ...modules].map(module => module.configs),
+  magicaction4card.configs,
+  magicaction4text.configs
 )
 export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

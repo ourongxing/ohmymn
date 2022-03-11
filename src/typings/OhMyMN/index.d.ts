@@ -13,6 +13,7 @@ export interface EventHandler {
       row: IRowButton
       content: string
       name: string
+      type: "text" | "card"
       status: boolean
       note: MbBookNote
       selections: number[]

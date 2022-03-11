@@ -1,6 +1,11 @@
 import lang from "lang"
-import { MbBookNote } from "typings"
-import type { IActionMethods, IConfig } from "typings"
+import type {
+  IConfig,
+  IActionMethod4Card,
+  MbBookNote,
+  Methods,
+  IActionMethod4Text
+} from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
@@ -23,7 +28,7 @@ export const enum MultipleTitlesExcerpt {
 }
 
 const { link, intro, lable, option, help, hud } = lang.module.copysearch
-const config: IConfig = {
+const configs: IConfig = {
   name: "CopySearch",
   intro,
   link,
@@ -121,10 +126,17 @@ const config: IConfig = {
       label: lable.copy_card_info,
       option: option.copy_card_info
     }
+  ],
+  actions4text: [
+    {
+      type: cellViewType.button,
+      key: "searchText",
+      label: "使用 CopySearch 搜索"
+    }
   ]
 }
 
-const util = {
+const utils = {
   async chooseYouWantText(arr: string[], type: "title" | "excerpt") {
     const { option } = await popup(
       "OhMyMN",
@@ -156,7 +168,7 @@ const util = {
           return title[0]
         case MultipleTitlesExcerpt.Choose:
           return title[
-            title.length > 1 ? await util.chooseYouWantText(title, "title") : 0
+            title.length > 1 ? await utils.chooseYouWantText(title, "title") : 0
           ]
       }
     } else if (option === CopySearchCardInfo.Excerpt) {
@@ -173,11 +185,11 @@ const util = {
         case MultipleTitlesExcerpt.Choose:
           return excerptText[
             excerptText.length > 1
-              ? await util.chooseYouWantText(excerptText, "excerpt")
+              ? await utils.chooseYouWantText(excerptText, "excerpt")
               : 0
           ]
       }
-    } else return util.getCustomContent(node)
+    } else return utils.getCustomContent(node)
   },
   getContentForMuiltCards(nodes: MbBookNote[], option: number) {
     switch (option) {
@@ -195,7 +207,7 @@ const util = {
         }, [] as string[])
       case CopySearchCardInfo.Custom:
         return nodes.reduce((acc, cur) => {
-          const t = util.getCustomContent(cur)
+          const t = utils.getCustomContent(cur)
           t && acc.push(t)
           return acc
         }, [] as string[])
@@ -340,16 +352,16 @@ enum CopySearchCardInfo {
   Custom
 }
 
-const action: IActionMethods = {
+const actions4card: Methods<IActionMethod4Card> = {
   async searchCardInfo({ nodes, option }) {
     if (nodes.length == 1) {
-      const text = await util.getContentForOneCard(nodes[0], option)
-      text && util.search(text)
+      const text = await utils.getContentForOneCard(nodes[0], option)
+      text && utils.search(text)
     } else {
       const { separatorSymbols } = self.profile.copysearch
-      const contents = util.getContentForMuiltCards(nodes, option)
+      const contents = utils.getContentForMuiltCards(nodes, option)
       contents?.length &&
-        util.search(
+        utils.search(
           contents.join(
             reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
           )
@@ -358,13 +370,13 @@ const action: IActionMethods = {
   },
   async copyCardInfo({ nodes, option }) {
     if (nodes.length == 1) {
-      const text = await util.getContentForOneCard(nodes[0], option)
-      text && util.copy(text)
+      const text = await utils.getContentForOneCard(nodes[0], option)
+      text && utils.copy(text)
     } else {
       const { separatorSymbols } = self.profile.copysearch
-      const contents = util.getContentForMuiltCards(nodes, option)
+      const contents = utils.getContentForMuiltCards(nodes, option)
       contents?.length &&
-        util.copy(
+        utils.copy(
           contents.join(
             reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
           )
@@ -372,4 +384,10 @@ const action: IActionMethods = {
     }
   }
 }
-export { config, util, action }
+
+const actions4text: Methods<IActionMethod4Text> = {
+  searchText({ text }) {
+    showHUD(text,2)
+  }
+}
+export { configs, utils, actions4card, actions4text }

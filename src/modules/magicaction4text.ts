@@ -1,19 +1,10 @@
 import type { IConfig } from "typings"
 
-const config: IConfig = {
+const configs: IConfig = {
   name: "MagicAction for Selecting Text",
   key: "magicaction4text",
-  intro: "1231",
-  settings: [],
-  actions4card: [
-    // {
-    //   key: "switchTitle",
-    //   type: cellViewType.button,
-    //   label: label.switch_title,
-    //   option: option.switch_title,
-    //   help: help.switch_title
-    // }
-  ]
+  intro: "所有动作均需要在文档中选中文字或框选选区",
+  settings: []
 }
 
-export { config }
+export { configs }

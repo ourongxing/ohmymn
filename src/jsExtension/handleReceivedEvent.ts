@@ -31,8 +31,8 @@ export const eventHandlers = eventHandlerController([
 const onButtonClick: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("点击了按钮", "event")
-  const { row } = sender.userInfo
-  handleMagicAction(row)
+  const { row, type } = sender.userInfo
+  handleMagicAction(type, row)
 }
 
 const onSwitchChange: EventHandler = sender => {
@@ -80,23 +80,18 @@ const onInputOver: EventHandler = sender => {
   const { name, key, content } = sender.userInfo
   self.profile[name][key] = content
   updateProfileTemp(key, content)
-  content ? showHUD(input_saved) : showHUD(input_clear)
+  showHUD(content ? input_saved : input_clear)
 }
 
 const onPopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
+  self.selectionBar = sender.userInfo.winRect
   console.log("选择菜单开启", "event")
-  const { documentController, winRect } = sender.userInfo
-  self.selectionBar = {
-    winRect,
-    selectionText: documentController.selectionText
-  }
-  console.log(documentController.selectionText)
 }
 
 const onClosePopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
-  self.selectionBar = {}
+  self.selectionBar = undefined
   console.log("选择关闭开启", "event")
 }
 

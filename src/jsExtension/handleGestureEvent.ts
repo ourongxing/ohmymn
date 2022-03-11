@@ -6,9 +6,9 @@ import {
   studyMode
 } from "typings/enum"
 import { MN } from "const"
-import { util as gesture } from "modules/gesture"
+import { utils as gesture } from "modules/gesture"
 import {
-  actionKey,
+  actionKey4Card,
   dataSourceIndex,
   moduleList,
   QuickSwitch
@@ -200,8 +200,10 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
       return SwipePosition.MuiltBar
   } else {
-    const { selectionText, winRect } = self.selectionBar
-    if (selectionText && winRect && isWithinArea({ swipeX, swipeY }, winRect))
+    if (
+      self.selectionBar &&
+      isWithinArea({ swipeX, swipeY }, self.selectionBar)
+    )
       return SwipePosition.SelectionBar
   }
   return SwipePosition.None
@@ -210,6 +212,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
 const actionTrigger = async (
   sigleBarOption: number,
   muiltBarOption: number,
+  selectionBarOption: number,
   sender: UIGestureRecognizer
 ) => {
   if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.gesture)) return
@@ -223,15 +226,17 @@ const actionTrigger = async (
   }
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
-  let actionInfo: typeof actionKey[number]
+
+  let actionInfo: typeof actionKey4Card[number]
+  let type: "card" | "text" = "card"
+
   if (swipePosition === SwipePosition.SingleBar && sigleBarOption) {
-    actionInfo = actionKey[sigleBarOption]
+    actionInfo = actionKey4Card[sigleBarOption]
   } else if (swipePosition === SwipePosition.MuiltBar && muiltBarOption) {
-    actionInfo = actionKey[muiltBarOption]
+    actionInfo = actionKey4Card[muiltBarOption]
   } else if (swipePosition === SwipePosition.SelectionBar) {
-    const { selectionText } = self.selectionBar
-    showHUD(selectionText!)
-    return
+    type = "text"
+    actionInfo = actionKey4Card[selectionBarOption]
   } else return
 
   const { key, module, option } = actionInfo
@@ -240,25 +245,53 @@ const actionTrigger = async (
     showHUD(`${module} ${lang.handle_gesture_event.action_not_work}`, 2)
   else {
     const [sec, row] = dataSourceIndex.magicaction[key]
-    await handleMagicAction(<IRowButton>self.dataSource[sec].rows[row], option)
+    await handleMagicAction(
+      type,
+      <IRowButton>self.dataSource[sec].rows[row],
+      option
+    )
   }
 }
 
 const onSwipeUpOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeUp, muiltBarSwipeUp } = self.profile.gesture
-  actionTrigger(singleBarSwipeUp[0], muiltBarSwipeUp[0], sender)
+  const { singleBarSwipeUp, muiltBarSwipeUp, selectionBarSwipeUp } =
+    self.profile.gesture
+  actionTrigger(
+    singleBarSwipeUp[0],
+    muiltBarSwipeUp[0],
+    selectionBarSwipeUp[0],
+    sender
+  )
 }
 const onSwipeDownOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeDown, muiltBarSwipeDown } = self.profile.gesture
-  actionTrigger(singleBarSwipeDown[0], muiltBarSwipeDown[0], sender)
+  const { singleBarSwipeDown, muiltBarSwipeDown, selectionBarSwipeDown } =
+    self.profile.gesture
+  actionTrigger(
+    singleBarSwipeDown[0],
+    muiltBarSwipeDown[0],
+    selectionBarSwipeDown[0],
+    sender
+  )
 }
 const onSwipeLeftOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeLeft, muiltBarSwipeLeft } = self.profile.gesture
-  actionTrigger(singleBarSwipeLeft[0], muiltBarSwipeLeft[0], sender)
+  const { singleBarSwipeLeft, muiltBarSwipeLeft, selectionBarSwipeLeft } =
+    self.profile.gesture
+  actionTrigger(
+    singleBarSwipeLeft[0],
+    muiltBarSwipeLeft[0],
+    selectionBarSwipeLeft[0],
+    sender
+  )
 }
 const onSwipeRightOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeRight, muiltBarSwipeRight } = self.profile.gesture
-  actionTrigger(singleBarSwipeRight[0], muiltBarSwipeRight[0], sender)
+  const { singleBarSwipeRight, muiltBarSwipeRight, selectionBarSwipeRight } =
+    self.profile.gesture
+  actionTrigger(
+    singleBarSwipeRight[0],
+    muiltBarSwipeRight[0],
+    selectionBarSwipeRight[0],
+    sender
+  )
 }
 
 const onDoubleClickOnTableView: GestureHandler = sender => {

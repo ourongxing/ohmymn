@@ -66,8 +66,16 @@ export type IActionMethod4Card = ({
   option: number
 }) => any
 
-export type IActionMethod4Text = (text: string) => void
+export type IActionMethod4Text = ({
+  text,
+  imgBase64,
+  option
+}: {
+  text: string
+  imgBase64: string
+  option: number
+}) => void
 
-export interface IActionMethods {
-  [k: string]: IActionMethod4Card
+export interface Methods<T> {
+  [k: string]: T
 }

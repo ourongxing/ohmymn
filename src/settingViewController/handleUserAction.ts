@@ -18,16 +18,24 @@ const tableViewDidSelectRowAtIndexPath = async (
   indexPath: NSIndexPath
 ) => {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
-  const row = self.dataSource[indexPath.section].rows[indexPath.row]
+  const sec = self.dataSource[indexPath.section]
+  const row = sec.rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText:
       if (row.link) openUrl(row.link)
       break
     case cellViewType.buttonWithInput:
     case cellViewType.button:
-      postNotification(Addon.key + "ButtonClick", {
-        row
-      })
+      if (sec.key === "magicaction4card")
+        postNotification(Addon.key + "ButtonClick", {
+          row,
+          type: "card"
+        })
+      else if (sec.key === "magicaction4text")
+        postNotification(Addon.key + "ButtonClick", {
+          row,
+          type: "text"
+        })
   }
 }
 

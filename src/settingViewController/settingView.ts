@@ -44,12 +44,11 @@ const _isBindOFF = (bindArr: [string, number][], sectionKey: string) => {
   return !bindArr.every(bind => {
     const [key, index] = bind
     const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
-    const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-    // 输入的key找不到就显示
-    if (!row) {
+    if (secIndex === undefined) {
       console.error(`bind key 输入错误：${key}`)
       return true
     }
+    const row = self.dataSource?.[secIndex].rows?.[rowIndex]
     // row 有两种类型，switch 和 select
     if (row.type === cellViewType.switch)
       return row.status === (index ? true : false)
@@ -90,7 +89,7 @@ const tableViewCellForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows, header } = self.dataSource[indexPath.section]
+  const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
     case cellViewType.plainText: {
@@ -98,8 +97,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "PlainTextCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.opaque = false
       cell.textLabel.textAlignment = 0
@@ -134,8 +132,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "SwitchCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
@@ -154,8 +151,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inlineInputCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
@@ -176,8 +172,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "inputCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.selectionStyle = 0
@@ -193,8 +188,7 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "selectCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
