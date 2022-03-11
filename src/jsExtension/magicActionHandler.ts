@@ -67,12 +67,15 @@ const handleMagicAction = async (
   if (type === "text") {
     const documentController =
       MN.studyController().readerController.currentDocumentController
-    if (documentController.selectionText)
-      actions4text[key]({
-        text: documentController.selectionText,
-        imgBase64: documentController.imageFromSelection().base64Encoding(),
-        option
-      })
+    if (!documentController.selectionText) {
+      showHUD("没有选择任何文字")
+      return
+    }
+    actions4text[key]({
+      text: documentController.selectionText,
+      imgBase64: documentController.imageFromSelection().base64Encoding(),
+      option
+    })
   } else if (type === "card") {
     let nodes: MbBookNote[] = []
     key != "filterCards" &&

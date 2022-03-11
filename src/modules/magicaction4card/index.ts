@@ -11,7 +11,6 @@ const { help, option, intro, label, link, hud } = lang.module.magicaction
 
 const configs: IConfig = {
   name: "MagicAction for Selecting Card",
-  key: "magicAction4card",
   intro,
   link,
   settings: [

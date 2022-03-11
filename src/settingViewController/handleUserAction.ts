@@ -26,12 +26,12 @@ const tableViewDidSelectRowAtIndexPath = async (
       break
     case cellViewType.buttonWithInput:
     case cellViewType.button:
-      if (sec.key === "magicaction4card")
+      if (sec.key === "magicactionforselectingcard")
         postNotification(Addon.key + "ButtonClick", {
           row,
           type: "card"
         })
-      else if (sec.key === "magicaction4text")
+      else if (sec.key === "magicactionforselectingtext")
         postNotification(Addon.key + "ButtonClick", {
           row,
           type: "text"

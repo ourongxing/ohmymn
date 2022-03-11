@@ -85,7 +85,11 @@ const onInputOver: EventHandler = sender => {
 
 const onPopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
-  self.selectionBar = sender.userInfo.winRect
+  // {{639.64404296874989, 576.234130859375}, {10, 10}}
+  self.selectionBar = {
+    winRect: sender.userInfo.winRect,
+    arrow: sender.userInfo.arrow
+  }
   console.log("选择菜单开启", "event")
 }
 

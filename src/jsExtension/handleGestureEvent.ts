@@ -3,12 +3,14 @@ import {
   groupMode,
   UISwipeGestureRecognizerDirection,
   docMapSplitMode,
-  studyMode
+  studyMode,
+  DirectionOfSelection
 } from "typings/enum"
 import { MN } from "const"
 import { utils as gesture } from "modules/gesture"
 import {
   actionKey4Card,
+  actionKey4Text,
   dataSourceIndex,
   moduleList,
   QuickSwitch
@@ -18,6 +20,7 @@ import { closePanel, openPanel } from "./switchPanel"
 import { PanelControl } from "modules/ohmymn"
 import { showHUD } from "utils/common"
 import lang from "lang"
+import { reverseEscape } from "utils/input"
 
 // Mac 上无法使用触摸
 export const gestureHandlers = gesture.gestureHandlerController([
@@ -102,27 +105,49 @@ const isWithinArea = (
 
 const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const studyController = MN.studyController()
-  const { mindmapView } = studyController.notebookController
-  const { selViewLst } = mindmapView
-  // 必须打开脑图，并且选中卡片
-  if (
-    studyController.studyMode != studyMode.study ||
-    studyController.docMapSplitMode == docMapSplitMode.allDoc ||
-    !selViewLst?.length
-  )
-    return SwipePosition.None
-
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
   // 屏蔽一些会误触的 UI
   if (swipeY < 70 || swipeX < 70 || swipeX > width - 70)
     return SwipePosition.None
+  if (studyController.studyMode != studyMode.study) return SwipePosition.None
   if (
     self.panelStatus &&
     isWithinArea({ swipeX, swipeY }, self.settingViewController.view.frame)
   )
     return SwipePosition.None
 
+  // 如果是文本选择的工具栏
+  if (self.selectionBar) {
+    const { winRect, arrow } = self.selectionBar
+    const [x, y] = reverseEscape(
+      `[${winRect.replace(/[{}]/g, "")}]`
+    ) as number[]
+    /**
+     * 如果是从右往左框选，菜单在上面，(y-140, y-110)
+     * 从左往右框选，菜单在下面， (y-75, y-45)
+     */
+    if (
+      isWithinArea(
+        { swipeY },
+        {
+          y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
+          height: 30
+        }
+      )
+    )
+      return SwipePosition.SelectionBar
+  }
+
+  // 必须打开脑图，并且选中卡片
+  const { mindmapView } = studyController.notebookController
+  const { selViewLst } = mindmapView
+  if (
+    studyController.studyMode != studyMode.study ||
+    studyController.docMapSplitMode == docMapSplitMode.allDoc ||
+    !selViewLst?.length
+  )
+    return SwipePosition.None
   if (selViewLst.length == 1 && self.singleBarStatus) {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
@@ -149,18 +174,13 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
      */
     if (
       mode === groupMode.Tree &&
-      // y > 60，单选工具栏在卡片上方
-      ((cardY > 60 &&
-        isWithinArea({ swipeY }, { y: cardY - 20 - 30, height: 30 })) ||
-        // y < 60 单选工具栏在卡片下方
-        (cardY < 60 &&
-          isWithinArea(
-            { swipeY },
-            {
-              y: cardY + cardHeight + 20,
-              height: 30
-            }
-          )))
+      isWithinArea(
+        { swipeY },
+        {
+          y: cardY > 60 ? cardY - 20 - 30 : cardY + cardHeight + 20,
+          height: 30
+        }
+      )
     )
       return SwipePosition.SingleBar
 
@@ -199,12 +219,6 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
 
     if (isWithinArea({ swipeX, swipeY }, muiltBarArea))
       return SwipePosition.MuiltBar
-  } else {
-    if (
-      self.selectionBar &&
-      isWithinArea({ swipeX, swipeY }, self.selectionBar)
-    )
-      return SwipePosition.SelectionBar
   }
   return SwipePosition.None
 }
@@ -234,9 +248,12 @@ const actionTrigger = async (
     actionInfo = actionKey4Card[sigleBarOption]
   } else if (swipePosition === SwipePosition.MuiltBar && muiltBarOption) {
     actionInfo = actionKey4Card[muiltBarOption]
-  } else if (swipePosition === SwipePosition.SelectionBar) {
+  } else if (
+    swipePosition === SwipePosition.SelectionBar &&
+    selectionBarOption
+  ) {
     type = "text"
-    actionInfo = actionKey4Card[selectionBarOption]
+    actionInfo = actionKey4Text[selectionBarOption]
   } else return
 
   const { key, module, option } = actionInfo
@@ -244,7 +261,12 @@ const actionTrigger = async (
   else if (module && isModuleOFF(module))
     showHUD(`${module} ${lang.handle_gesture_event.action_not_work}`, 2)
   else {
-    const [sec, row] = dataSourceIndex.magicaction[key]
+    const [sec, row] =
+      dataSourceIndex[
+        type === "card"
+          ? "magicactionforselectingcard"
+          : "magicactionforselectingtext"
+      ][key]
     await handleMagicAction(
       type,
       <IRowButton>self.dataSource[sec].rows[row],

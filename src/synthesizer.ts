@@ -119,7 +119,7 @@ const genSection = (config: IConfig): ISection => {
   }
   return {
     header: config.name,
-    key: config.key ?? config.name.replace(/\x20/g, "").toLowerCase(),
+    key: config.name.replace(/\x20/g, "").toLowerCase(),
     rows
   }
 }
