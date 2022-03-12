@@ -89,7 +89,7 @@ const actions4card: Methods<IActionMethod4Card> = {
     for (const node of nodes) {
       const allText = getAllText(
         node,
-        reverseEscape(`"${escapeDoubleQuote(content ?? "")}"`)
+        reverseEscape(`${escapeDoubleQuote(content ?? "")}`, true)
       )
       // MN 这个里的 API 名称设计的有毛病
       const linkComments: textComment[] = []

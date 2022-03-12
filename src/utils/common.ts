@@ -97,7 +97,7 @@ const popup = (
       title,
       message,
       type,
-      lang.other.cancel,
+      lang.cancel,
       buttons,
       (alert: UIAlertView, buttonIndex: number) => {
         if (buttonIndex != 0) resolve(f(alert, buttonIndex - 1))

@@ -7,6 +7,7 @@ import Base64 from "utils/third party/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
 import lang from "lang"
 import { deepCopy } from "utils"
+export * from "./updateDataSource"
 
 let allProfile: IProfile[]
 let allDocProfile: { [k: string]: IDocProfile }

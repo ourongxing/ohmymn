@@ -1,7 +1,8 @@
 /**
  * 反转义字符串，用于处理用户输入
  */
-const reverseEscape = (str: string) => JSON.parse(`{"key": ${str}}`).key
+const reverseEscape = (str: string, quote = false) =>
+  JSON.parse(quote ? `{"key": "${str}"}` : `{"key": ${str}}`).key
 const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
 const isNumber = (text: string) => /^[0-9]+$/.test(text)
 

@@ -1,3 +1,4 @@
+import { ReplaceParam } from "utils/input"
 import { MbBookNote } from "../MarginNote/MbBookNote"
 import { IRowButton } from "./Datasource"
 import { cellViewType } from "./enum"
@@ -77,4 +78,21 @@ export type IActionMethod4Text = ({
 
 export interface Methods<T> {
   [k: string]: T
+}
+
+export interface ModuleProfile {
+  profile?: {
+    [k: string]: number[] | boolean | string
+  }
+  docProfile?: {
+    [k: string]: number[] | boolean | string
+  }
+  profileTemp?: {
+    replaceParam?: {
+      [k: string]: ReplaceParam[] | undefined
+    }
+    regArray?: {
+      [k: string]: RegExp[][] | undefined
+    }
+  }
 }

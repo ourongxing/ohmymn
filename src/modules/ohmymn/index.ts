@@ -68,6 +68,13 @@ const configs: IConfig = {
       label: label.panle_control
     },
     {
+      key: "hasTitleThen",
+      type: cellViewType.select,
+      label: label.has_title_then,
+      help: help.has_title_then,
+      option: option.has_title_then
+    },
+    {
       key: "screenAlwaysOn",
       type: cellViewType.switch,
       label: label.screen_always_on
@@ -76,19 +83,6 @@ const configs: IConfig = {
       key: "lockExcerpt",
       type: cellViewType.switch,
       label: label.lock_excerpt
-    },
-    {
-      key: "hasTitleThen",
-      type: cellViewType.select,
-      label: label.has_title_then,
-      help: help.has_title_then,
-      option: option.has_title_then
-    },
-    {
-      help: help.auto_correct,
-      key: "autoCorrect",
-      type: cellViewType.switch,
-      label: label.auto_correct
     }
   ]
 }

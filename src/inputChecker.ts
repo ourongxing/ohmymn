@@ -46,7 +46,7 @@ const checkInputCorrect = (str: string, key: string): boolean => {
       case "separatorSymbols":
       case "customContent":
       case "customFill":
-        reverseEscape(`"${escapeDoubleQuote(str)}"`)
+        reverseEscape(`${escapeDoubleQuote(str)}`, true)
         break
       case "changeColor": {
         const index = Number(str)

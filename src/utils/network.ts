@@ -1,7 +1,5 @@
 import lang from "lang"
 import { NSJSONReadingOptions, NSJSONWritingOptions } from "typings/enum"
-import { deflateRaw } from "zlib"
-import { isOCNull } from "./common"
 
 class Response {
   data: NSData
