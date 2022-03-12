@@ -9,11 +9,7 @@ import {
 import { getNodeTree } from "utils/note"
 import { SerialCode } from "utils/text"
 
-const genCharArray = (
-  char: string,
-  len: number,
-  step: number = 1
-): string[] => {
+const genCharArray = (char: string, len: number, step = 1): string[] => {
   const serialCode = Object.values(SerialCode).filter(k => k.includes(char))[0]
   if (!serialCode) throw ""
   const charArr = []

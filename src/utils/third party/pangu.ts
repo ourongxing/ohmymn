@@ -26,7 +26,6 @@ const CJK =
 // S includes `~!@#$%^&*()-_=+[]{}\|;:'",<.>/?
 //
 // some S below does not include all symbols
-const ANY_CJK = new RegExp(`[${CJK}]`)
 // the symbol part only includes ~ ! ; : , . ? but . only matches one character
 const CONVERT_TO_FULLWIDTH_CJK_SYMBOLS_CJK = new RegExp(
   `([${CJK}])[ ]*([\\:]+|\\.)[ ]*([${CJK}])`,
@@ -106,7 +105,8 @@ class Pangu {
   }
   toFullwidth(text: string) {
     let newText = text
-    let that = this
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const that = this
     newText = newText.replace(
       CONVERT_TO_FULLWIDTH_CJK_SYMBOLS_CJK,
       (match, leftCjk, symbols, rightCjk) => {
@@ -124,7 +124,6 @@ class Pangu {
     return newText
   }
   spacing(text: string): string {
-    const that = this
     let newText = text
     // https://stackoverflow.com/questions/4285472/multiple-regex-replace
     newText = newText.replace(DOTS_CJK, "$1 $2")

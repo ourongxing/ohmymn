@@ -10,7 +10,7 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
   // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
-  for (let bracket of brackets) {
+  for (const bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
       .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')

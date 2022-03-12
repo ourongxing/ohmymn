@@ -5,7 +5,7 @@ import handleExcerpt, {
 import { layoutViewController } from "jsExtension/switchPanel"
 import lang from "lang"
 import { EventHandler } from "typings"
-import { alert, delayBreak, isThisWindow, showHUD } from "utils/common"
+import { delayBreak, isThisWindow, showHUD } from "utils/common"
 import { eventHandlerController } from "utils/event"
 import { getNoteById } from "utils/note"
 import { Range, readProfile, saveProfile } from "utils/profile"

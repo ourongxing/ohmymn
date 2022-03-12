@@ -16,7 +16,7 @@ const console = {
 }
 
 // 注意要把 window 赋给所有 OC 对象才行
-const showHUD = (message: string, duration: number = 1, window = self.window) =>
+const showHUD = (message: string, duration = 1, window = self.window) =>
   void MN.app.showHUD(message, window, duration)
 
 const HUDController = {
@@ -35,7 +35,7 @@ const getObjCClassDeclar = (
   type: string,
   delegate: Array<string> = []
 ) => {
-  let str: string = `${name} : ${type}`
+  let str = `${name} : ${type}`
   // 可以不用写 delegate 协议名
   if (delegate.length) {
     delegate.forEach(value => {

@@ -1,4 +1,4 @@
-import type { GestureHandler, IRowButton, IRowSelect } from "typings"
+import type { GestureHandler, IRowButton } from "typings"
 import {
   groupMode,
   UISwipeGestureRecognizerDirection,
@@ -120,9 +120,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   // 如果是文本选择的工具栏
   if (self.selectionBar) {
     const { winRect, arrow } = self.selectionBar
-    const [x, y] = reverseEscape(
-      `[${winRect.replace(/[{}]/g, "")}]`
-    ) as number[]
+    const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
     /**
      * 如果是从右往左框选，菜单在上面，(y-140, y-110)
      * 从左往右框选，菜单在下面， (y-75, y-45)
@@ -316,7 +314,7 @@ const onSwipeRightOnMindMapView: GestureHandler = sender => {
   )
 }
 
-const onDoubleClickOnTableView: GestureHandler = sender => {
+const onDoubleClickOnTableView: GestureHandler = () => {
   const { panelControl } = self.profile.ohmymn
   if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
 }

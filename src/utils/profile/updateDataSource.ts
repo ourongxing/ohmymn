@@ -59,7 +59,7 @@ export const updateProfileDataSource = (
         _[key] = deepCopy(profileSaved?.[name]?.[key] ?? val)
       }
     } else {
-      for (let [key, val] of Object.entries(_)) {
+      for (const [key, val] of Object.entries(_)) {
         if (!dataSourceIndex?.[name]?.[key]) continue
         const [section, row] = dataSourceIndex[name][key]
         const newValue = profileSaved?.[name]?.[key] ?? val

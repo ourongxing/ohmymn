@@ -43,7 +43,7 @@ const textFieldShouldReturn = (sender: UITextField) => {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
-  let text = sender.text.trim()
+  const text = sender.text.trim()
   // 可以为空
   if (/^marginnote3app:/.test(text)) openUrl(text)
   if (!text || checkInputCorrect(text, row.key)) {
@@ -189,9 +189,7 @@ const clickSelectButton = (sender: UIButton) => {
 }
 
 // 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选
-const popoverControllerDidDismissPopover = (
-  UIPopoverController: UIPopoverController
-) => {
+const popoverControllerDidDismissPopover = () => {
   if (lastSelectInfo) {
     postNotification(Addon.key + "SelectChange", lastSelectInfo)
     lastSelectInfo = null

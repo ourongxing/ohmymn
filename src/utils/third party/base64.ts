@@ -1,6 +1,6 @@
 // https://github.com/zxpsuper/blog/blob/master/js/base64.js
 
-let _keyStr =
+const _keyStr =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
 function encode(input: string) {
@@ -83,8 +83,8 @@ function decode(input: string) {
 
 function encodeTransform(input: string) {
   let output = ""
-  for (var n = 0; n < input.length; n++) {
-    var c = input.charCodeAt(n) // 返回指定位置的字符的 Unicode 编码。这个返回值是 0 - 65535 之间的整数。
+  for (let n = 0; n < input.length; n++) {
+    const c = input.charCodeAt(n) // 返回指定位置的字符的 Unicode 编码。这个返回值是 0 - 65535 之间的整数。
     if (c < 128) {
       // 0-7位
       // 如果小于128 即是 ASCII 码，直接返回该 ASCII 码

@@ -10,8 +10,7 @@ import lang from "lang"
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
 
-const numberOfSectionsInTableView = (tableView: UITableView) =>
-  self.dataSource.length
+const numberOfSectionsInTableView = () => self.dataSource.length
 
 // 模块未启用，则菜单隐藏
 const _isModuleOFF = (header: string): boolean => {
@@ -138,7 +137,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       const view = initCellView.switch(row.status ?? false)
-      let newFrame = view.frame
+      const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
@@ -157,7 +156,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
       const view = initCellView.inlineInput(row.content ?? "")
-      let newFrame = view.frame
+      const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
