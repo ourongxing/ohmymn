@@ -58,9 +58,9 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     } else return console.log("没有开启自动 OCR 选项，不处理图片", "excerpt")
   }
 
-  // 修改摘录的时候貌似矫正会慢一会启动，所有这里需要等一下。
+  // 修改摘录的时候貌似矫正会慢一会启动，所有这里需要等一下，差不多 0.2s 左右
   isModify &&
-    (await delayBreak(10, 0.05, () => self.OCROnlineStatus === "begin"))
+    (await delayBreak(4, 0.05, () => self.OCROnlineStatus === "begin"))
   if (self.OCROnlineStatus && self.OCROnlineStatus === "begin") {
     console.log("开始矫正", "excerpt")
     const success = await delayBreak(
