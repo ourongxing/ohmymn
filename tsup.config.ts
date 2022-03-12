@@ -24,7 +24,7 @@ export default defineConfig({
   entry: ["src/main.ts"],
   splitting: false,
   sourcemap: false,
-  clean:isProd,
+  clean: isProd,
   outDir,
   minify: isProd,
   watch: !isProd,
