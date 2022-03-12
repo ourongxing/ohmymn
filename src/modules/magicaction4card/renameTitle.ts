@@ -1,4 +1,4 @@
-import lang from "lang"
+import { lang } from "./lang"
 import { IActionMethod4Card } from "typings"
 import { showHUD } from "utils/common"
 import {
@@ -9,7 +9,6 @@ import {
 import { getNodeTree } from "utils/note"
 import { SerialCode } from "utils/text"
 
-const { hud } = lang.module.magicaction
 const genCharArray = (
   char: string,
   len: number,
@@ -137,7 +136,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
         })
       })
     } else {
-      showHUD(hud.hierarchical_numbering, 2)
+      showHUD(lang.hud.hierarchical_numbering, 2)
       return
     }
   }

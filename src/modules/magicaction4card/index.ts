@@ -3,11 +3,11 @@ import { escapeDoubleQuote, reverseEscape, string2RegArray } from "utils/input"
 import { HUDController, showHUD } from "utils/common"
 import type { textComment, IConfig, Methods, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
 import { unique } from "utils"
 import { renameTitle } from "./renameTitle"
 
-const { help, option, intro, label, link, hud } = lang.module.magicaction
+const { help, option, intro, label, link, hud } = lang
 
 const configs: IConfig = {
   name: "MagicAction for Selecting Card",

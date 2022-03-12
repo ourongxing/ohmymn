@@ -4,9 +4,9 @@ import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType } from "typings/enum"
 import type { IActionMethod4Card, IConfig, Methods } from "typings"
-import lang from "lang"
+import { lang } from "./lang"
 
-const { help, intro, option, label, link } = lang.module.autostandardize
+const { help, intro, option, label, link } = lang
 
 const configs: IConfig = {
   name: "AutoStandardize",
@@ -16,7 +16,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",

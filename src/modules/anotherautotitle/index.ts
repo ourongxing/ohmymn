@@ -2,9 +2,9 @@ import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
 
-const { option, intro, help, link, label } = lang.module.anotherautotitle
+const { option, intro, help, link, label } = lang
 
 const configs: IConfig = {
   name: "Another AutoTitle",
@@ -14,7 +14,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",

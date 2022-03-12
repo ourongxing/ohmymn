@@ -2,9 +2,9 @@ import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import type { Methods, IConfig, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
+const { intro, link, label, option } = lang
 
-const { intro, link, label, option } = lang.module.autoreplace
 export const enum AutoReplacePreset {
   Custom
 }
@@ -17,7 +17,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",
@@ -71,7 +71,7 @@ const actions4card: Methods<IActionMethod4Card> = {
       nodes.forEach(node => {
         getExcerptNotes(node).forEach(note => {
           const text = note.excerptText
-          if (text) note.excerptText = util.replaceText(text)
+          if (text) note.excerptText = utils.replaceText(text)
         })
       })
     } else if (content) {

@@ -1,11 +1,11 @@
 import type { IActionMethod4Card, IConfig, Methods } from "typings"
-import lang from "lang"
+import { lang } from "./lang"
 import { cellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
 import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
 import { extractArray } from "utils/custom"
 
-const { intro, option, label, link } = lang.module.autotag
+const { intro, option, label, link } = lang
 
 const configs: IConfig = {
   name: "AutoTag",
@@ -15,7 +15,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",

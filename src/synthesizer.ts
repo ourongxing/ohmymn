@@ -61,12 +61,12 @@ const more: ISection = {
   rows: [
     {
       type: cellViewType.plainText,
-      label: lang.module.more.donate,
+      label: lang.more.donate,
       link: "https://cdn.jsdelivr.net/gh/mnaddon/ohmymn/assets/donate.gif"
     },
     {
       type: cellViewType.plainText,
-      label: lang.module.more.mn5,
+      label: lang.more.mn5,
       link: ""
     },
     {
@@ -152,7 +152,7 @@ export const genDataSource = (
           k.module = config.name
           if (k.help) k.help += "\n"
           else k.help = ""
-          k.help += lang.module.magicaction.help.from_which_module(config.name)
+          k.help += lang.magicaction_from_which_module(config.name)
           return k
         })
       )
@@ -162,7 +162,7 @@ export const genDataSource = (
           k.module = config.name
           if (k.help) k.help += "\n"
           else k.help = ""
-          k.help += lang.module.magicaction.help.from_which_module(config.name)
+          k.help += lang.magicaction_from_which_module(config.name)
           return k
         })
       )

@@ -1,13 +1,13 @@
 import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
 import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
 
-const { help, intro, option, label, link } = lang.module.autostyle
+const { help, intro, option, label, link } = lang
 
 const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
@@ -21,7 +21,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",
@@ -139,7 +139,7 @@ const utils = {
       if (note.excerptPic) {
         const actualArea = utils.getExcerptArea(note)
         if (actualArea > area) res.style = 2
-        if (showArea) showHUD(lang.module.autostyle.area + ": " + actualArea)
+        if (showArea) showHUD(lang.area + ": " + actualArea)
         // 0 线框+填充 1 填充 2 线框
       } else if (note.excerptText) {
         // 排除划重点的影响

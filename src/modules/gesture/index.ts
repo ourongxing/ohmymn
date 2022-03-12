@@ -1,10 +1,10 @@
 import { cellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
 import type { UIView, IConfig } from "typings"
-import lang from "lang"
+import { lang } from "./lang"
 
 const option: string[] = []
 
-const { link, intro, singleBar, muiltBar, selectionBar } = lang.module.gesture
+const { link, intro, singleBar, muiltBar, selectionBar } = lang
 const configs: IConfig = {
   name: "Gesture",
   intro,

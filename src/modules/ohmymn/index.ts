@@ -1,5 +1,5 @@
 import { Addon } from "const"
-import lang from "lang"
+import { lang } from "./lang"
 import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 
@@ -28,7 +28,7 @@ export const enum HasTitleThen {
   OverrideTitle
 }
 
-const { link, label, help, option } = lang.module.ohmymn
+const { link, label, help, option } = lang
 const configs: IConfig = {
   name: Addon.title,
   intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,

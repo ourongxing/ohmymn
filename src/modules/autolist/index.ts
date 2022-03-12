@@ -3,9 +3,9 @@ import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
 import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
 
-const { intro, option, label, link } = lang.module.autolist
+const { intro, option, label, link } = lang
 const configs: IConfig = {
   name: "AutoList",
   intro,
@@ -14,7 +14,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",

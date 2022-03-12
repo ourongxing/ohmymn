@@ -1,4 +1,4 @@
-import lang from "lang"
+import { lang } from "./lang"
 import type {
   IConfig,
   IActionMethod4Card,
@@ -27,7 +27,7 @@ export const enum MultipleTitlesExcerpt {
   Choose
 }
 
-const { link, intro, lable, option, help, hud } = lang.module.copysearch
+const { link, intro, lable, option, help, hud } = lang
 const configs: IConfig = {
   name: "CopySearch",
   intro,
@@ -387,7 +387,7 @@ const actions4card: Methods<IActionMethod4Card> = {
 
 const actions4text: Methods<IActionMethod4Text> = {
   searchText({ text }) {
-    showHUD(text,2)
+    showHUD(text, 2)
   }
 }
 export { configs, utils, actions4card, actions4text }

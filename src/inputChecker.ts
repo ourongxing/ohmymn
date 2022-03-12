@@ -8,7 +8,7 @@ import {
   getLayerSerialInfo,
   getSerialInfo
 } from "modules/magicaction4card/renameTitle"
-import { getMNLinkValue } from "utils/profile/updateDataSource"
+import { getMNLinkValue } from "utils/profile"
 
 const checkInputCorrect = (str: string, key: string): boolean => {
   try {

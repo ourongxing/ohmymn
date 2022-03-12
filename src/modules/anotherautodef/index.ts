@@ -2,11 +2,11 @@ import { regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
 import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
-import lang from "lang"
+import { lang } from "./lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
-const { label, option, intro, link } = lang.module.anotherautodef
+const { label, option, intro, link } = lang
 const configs: IConfig = {
   name: "Another AutoDef",
   intro,
@@ -15,7 +15,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "preset",

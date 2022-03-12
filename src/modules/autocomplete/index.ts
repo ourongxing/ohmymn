@@ -1,4 +1,4 @@
-import lang from "lang"
+import { lang } from "./lang"
 import type { MbBookNote, IConfig, Methods, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
@@ -7,7 +7,7 @@ import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
 
-const { error, intro, link, option, label } = lang.module.autocomplete
+const { error, intro, link, option, label } = lang
 const configs: IConfig = {
   name: "AutoComplete",
   intro,
@@ -16,7 +16,7 @@ const configs: IConfig = {
     {
       key: "on",
       type: cellViewType.switch,
-      label: lang.module.more.auto
+      label: label.on
     },
     {
       key: "fillWordInfo",
@@ -127,12 +127,12 @@ const utils = {
     const vars = {
       word: info.word,
       phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
-      tag: isOCNull(info.tag) ? "" : util.getTag(info.tag),
+      tag: isOCNull(info.tag) ? "" : utils.getTag(info.tag),
       collins: isOCNull(info.collins)
         ? ""
-        : util.getCollinsStar(Number(info.collins)),
+        : utils.getCollinsStar(Number(info.collins)),
       en: isOCNull(info.definition) ? "" : info.definition,
-      zh: isOCNull(info.translation) ? "" : util.getPureZH(info.translation!)
+      zh: isOCNull(info.translation) ? "" : utils.getPureZH(info.translation!)
     }
     const varsReg = `(?:${Object.keys(vars).join("|")})`
     const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
@@ -166,21 +166,21 @@ const utils = {
       // 只有第一个字母可以大写，否则直接返回
       if (!/^\w[a-z]+$/.test(text)) return undefined
       let word = text.toLowerCase()
-      let info = await util.getWordInfo(word)
+      let info = await utils.getWordInfo(word)
       const ex = info.exchange
       let title = [word]
       if (ex && !isOCNull(ex)) {
         const lemma = ex.replace(/^0:(\w+).*$/, "$1")
         if (lemma != ex) {
           word = lemma
-          info = await util.getWordInfo(lemma)
+          info = await utils.getWordInfo(lemma)
         }
         // 原型必然有 exchange，不然哪来的它
-        title = util.getWordEx(word, info.exchange)
+        title = utils.getWordEx(word, info.exchange)
       }
       return {
         title,
-        text: util.getFillInfo(info)
+        text: utils.getFillInfo(info)
       }
     } catch (error) {
       console.error(String(error))
@@ -198,13 +198,13 @@ enum CompleteSelected {
 const actions4card: Methods<IActionMethod4Card> = {
   async completeSelected({ nodes, option }) {
     if (nodes.length > 5) {
-      showHUD(lang.module.autocomplete.error.forbid, 2)
+      showHUD(lang.error.forbid, 2)
       return
     }
     const getCompletedWord = (node: MbBookNote) => {
       const title = node?.noteTitle
       return title
-        ? util.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
+        ? utils.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
         : undefined
     }
     const allInfo = await Promise.all(nodes.map(node => getCompletedWord(node)))

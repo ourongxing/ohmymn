@@ -9,6 +9,9 @@ class MNCore {
   isMac = Application.sharedInstance().osType == osType.macOS
   app = Application.sharedInstance()
   db = Database.sharedInstance()
+  isZH =
+    NSLocale.preferredLanguages().length &&
+    NSLocale.preferredLanguages()[0].startsWith("zh")
 }
 
 export const Addon = {
