@@ -2,11 +2,7 @@ import { Dict } from "lang"
 const dict: Dict = {
   handle_received_event: {
     input_saved: "Input Saved",
-    input_clear: "Input Clear",
-    auto_correct:
-      "Auto-correction and locked excerpt text do not work at the same time, please turn off either one. Otherwise, unexpected problems can occur!",
-    lock_excerpt:
-      "Locked excerpt text and auto-correction do not work at the same time, please turn off either one. Otherwise, unexpected problems can occur!"
+    input_clear: "Input Clear"
   },
   magic_action_handler: {
     not_selected: "None card is selected",

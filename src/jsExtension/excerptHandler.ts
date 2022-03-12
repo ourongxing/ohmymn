@@ -58,22 +58,19 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     } else return console.log("没有开启自动 OCR 选项，不处理图片", "excerpt")
   }
 
-  if (self.docProfile.ohmymn.autoCorrect) {
+  // 修改摘录的时候貌似矫正会慢一会启动，所有这里需要等一下。
+  isModify &&
+    (await delayBreak(10, 0.05, () => self.OCROnlineStatus === "begin"))
+  if (self.OCROnlineStatus && self.OCROnlineStatus === "begin") {
     console.log("开始矫正", "excerpt")
-    const originText = note.excerptText!
-    // 强制进行自动矫正
-    note.excerptText = originText + "??????????"
-    // 等待在线矫正返回结果
     const success = await delayBreak(
-      20,
+      30,
       0.1,
-      () => note.excerptText != originText + "??????????"
+      () => self.OCROnlineStatus === "end"
     )
     if (success) console.log("矫正成功", "excerpt")
-    else {
-      console.log("矫正失败", "excerpt")
-      note.excerptText = originText
-    }
+    else console.log("矫正失败", "excerpt")
+    self.OCROnlineStatus = undefined
   }
 
   const excerptText = note.excerptText?.trim()

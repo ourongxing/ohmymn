@@ -21,8 +21,7 @@ const zh = {
     panel_height: "面板显示高度",
     panle_control: "面板开启关闭",
     screen_always_on: "保持屏幕常亮",
-    lock_excerpt: "锁定摘录文字",
-    auto_correct: "开启自动在线矫正了吗"
+    lock_excerpt: "锁定摘录文字"
   },
   help: {
     profile: "【当前文档生效】不同情景，不同配置",
@@ -52,8 +51,7 @@ const en: typeof zh = {
     panel_height: "Panel Height",
     panle_control: "Panel Open and Close",
     screen_always_on: "Keep Screen Always On",
-    lock_excerpt: "Lock Excerpt Text",
-    auto_correct: "Is Auto-Correct Enabled?"
+    lock_excerpt: "Lock Excerpt Text"
   },
   help: {
     profile:

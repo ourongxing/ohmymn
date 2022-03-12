@@ -1,11 +1,7 @@
 const dict = {
   handle_received_event: {
     input_saved: "输入已保存",
-    input_clear: "输入已清空",
-    auto_correct:
-      "自动矫正和锁定摘录无法同时正常工作，请关闭任意一个，否则会出现意想不到的问题",
-    lock_excerpt:
-      "锁定摘录和自动矫正无法同时正常工作，请关闭任意一个，否则会出现意想不到的问题"
+    input_clear: "输入已清空"
   },
   magic_action_handler: {
     not_selected: "未选中任何脑图卡片",

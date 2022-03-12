@@ -12,21 +12,39 @@ import { Range, readProfile, saveProfile } from "utils/profile"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
 import handleMagicAction from "./magicActionHandler"
 
-const { input_clear, input_saved, lock_excerpt, auto_correct } =
-  lang.handle_received_event
+const { input_clear, input_saved } = lang.handle_received_event
 
 export const eventHandlers = eventHandlerController([
   Addon.key + "InputOver",
   Addon.key + "ButtonClick",
   Addon.key + "SelectChange",
   Addon.key + "SwitchChange",
+  "OCRImageEnd",
+  "OCRImageBegin",
   "PopupMenuOnNote",
+  "OCRForNote",
+  "EndOCRForNote",
   "ProcessNewExcerpt",
   "ChangeExcerptRange",
-  "ClosePopupMenuOnNote",
   "PopupMenuOnSelection",
+  "ClosePopupMenuOnNote",
   "ClosePopupMenuOnSelection"
 ])
+
+// 除了摘录时 OCR，选中文本时手动 OCR 也会触发。
+const onOCRForNote: EventHandler = sender => {
+  if (!isThisWindow(sender)) return
+  self.OCROnlineStatus = "begin"
+  console.log("开始 OCR", "event")
+  console.log(self.OCROnlineStatus)
+}
+
+const onEndOCRForNote: EventHandler = sender => {
+  if (!isThisWindow(sender)) return
+  self.OCROnlineStatus = "end"
+  console.log("结束 OCR", "event")
+  console.log(self.OCROnlineStatus)
+}
 
 const onButtonClick: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
@@ -39,14 +57,8 @@ const onSwitchChange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("切换了开关", "event")
   const { name, key, status } = sender.userInfo
-  if (key == "autoCorrect") {
-    self.docProfile.ohmymn.autoCorrect = status
-    if (status && self.profile.ohmymn.lockExcerpt) alert(auto_correct)
-  } else self.profile[name][key] = status
+  self.profile[name][key] = status
   switch (key) {
-    case "lockExcerpt":
-      if (status && self.docProfile.ohmymn.autoCorrect) alert(lock_excerpt)
-      break
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
         self.profile.ohmymn.screenAlwaysOn
@@ -156,7 +168,9 @@ const onProcessNewExcerpt: EventHandler = sender => {
 
 export default {
   onInputOver,
+  onOCRForNote,
   onButtonClick,
+  onEndOCRForNote,
   onSelectChange,
   onSwitchChange,
   onPopupMenuOnNote,

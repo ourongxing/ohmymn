@@ -18,6 +18,7 @@ declare global {
     docMD5?: string
     notebookid: string
     tableView: UITableView
+    OCROnlineStatus?: "begin" | "end"
     singleBarStatus: boolean
     selectionBar?: {
       arrow: DirectionOfSelection

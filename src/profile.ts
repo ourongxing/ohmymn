@@ -116,8 +116,7 @@ const profilePreset = {
 
 const docProfilePreset = {
   ohmymn: {
-    profile: [0],
-    autoCorrect: false
+    profile: [0]
   },
   // 不显示在 UI 上的配置信息
   additional: {
