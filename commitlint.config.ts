@@ -14,7 +14,8 @@ module.exports = {
         "test", // 增加测试
         "perf", // 提高性能
         "chore", // 构建过程或辅助工具的变动
-        "release" // 发布新版本
+        "release", // 发布新版本
+        "preview" // 预览版本，测试版本
       ]
     ]
   }

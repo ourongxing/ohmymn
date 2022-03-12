@@ -1,14 +1,22 @@
 {
   "name": "ohmymn",
   "author": "ourongxing",
-  "version": "3.2.1",
+  "version": "4.0.0 beta",
   "license": "MIT",
   "description": "Maybe the most powerful addon of Marginnote3",
   "main": "",
   "scripts": {
     "build": "rm -rf ./dist && NODE_ENV=production tsup && cd ./dist && zip -qrm \"${npm_package_name}_v$npm_package_version.mnaddon\" *",
     "dev": "tsup",
-    "prettify": "prettier --write \"./**/*.{ts, json}\""
+    "eslint:fix": "eslint . --fix --ext.ts",
+    "eslint": "eslint . --ext .ts",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "eslint --cache --fix",
+      "git add"
+    ]
   },
   "keywords": [
     "marginote",
@@ -16,10 +24,18 @@
     "typescript"
   ],
   "devDependencies": {
-    "@types/bluebird": "^3.5.36",
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
     "@types/node": "^17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
     "esbuild": "^0.14.8",
     "esbuild-plugin-copy": "^1.1.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.5",
     "prettier": "^2.4.1",
     "tsup": "^5.12.0",
     "typescript": "^4.5.4",
