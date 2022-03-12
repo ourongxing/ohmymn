@@ -261,9 +261,7 @@ const actionTrigger = async (
   else {
     const [sec, row] =
       dataSourceIndex[
-        type === "card"
-          ? "magicactionforselectingcard"
-          : "magicactionforselectingtext"
+        type === "card" ? "magicactionforcard" : "magicactionfortext"
       ][key]
     await handleMagicAction(
       type,

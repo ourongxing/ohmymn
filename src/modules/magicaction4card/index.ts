@@ -10,7 +10,7 @@ import { renameTitle } from "./renameTitle"
 const { help, option, intro, label, link, hud } = lang
 
 const configs: IConfig = {
-  name: "MagicAction for Selecting Card",
+  name: "MagicAction for Card",
   intro,
   link,
   settings: [

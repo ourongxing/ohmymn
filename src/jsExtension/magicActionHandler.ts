@@ -103,7 +103,7 @@ const handleMagicAction = async (
 
       const { smart_select } = lang.magic_action_handler
       if (
-        self.profile.magicaction.smartSelection &&
+        self.profile.magicactionforcard.smartSelection &&
         isHavingChildren &&
         !noNeedSmartSelection
       ) {

@@ -94,7 +94,7 @@ const profilePreset = {
     defaultTextExcerptStyle: [0],
     defaultPicExcerptStyle: [0]
   },
-  magicaction: {
+  magicactionforcard: {
     smartSelection: false
   },
   copysearch: {
