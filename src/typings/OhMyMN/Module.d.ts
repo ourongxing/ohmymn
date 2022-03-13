@@ -1,60 +1,74 @@
+import { MbBookNote } from "typings/MarginNote"
 import { ReplaceParam } from "utils/input"
-import { MbBookNote } from "../MarginNote/MbBookNote"
-import { IRowButton } from "./Datasource"
 import { cellViewType } from "./enum"
 
-export interface IConfig {
+export type IConfig = Expand<{
   name: string
   intro: string
   link?: string
   settings: ISetting[]
   actions4card?: IAction[]
   actions4text?: IAction[]
-}
+}>
 
-interface LabelType {
-  type: cellViewType
-  label: string
-  bind?: [string, number][]
-}
+/** Help must be set before using link */
+type HelpLink = XOR<{ help: string; link?: string }, {}>
 
-interface KeyLabelType extends LabelType {
+interface KeyLabel {
   key: string
+  label: string
 }
 
-interface ISettingBasic extends KeyLabelType {
-  help?: string
-  link?: string
-}
+type KeyLabelHelpLinkBind = HelpLink &
+  KeyLabel & {
+    bind?: [string, number][]
+  }
+
+export type ISettingInlineInput = Expand<
+  {
+    type: cellViewType.inlineInput
+  } & KeyLabelHelpLinkBind
+>
+
+export type ISettingInput = Expand<
+  {
+    type: cellViewType.input
+  } & HelpLink &
+    Omit<KeyLabel, "label"> & {
+      bind?: [string, number][]
+    }
+>
+
+export type ISettingSwitch = Expand<
+  {
+    type: cellViewType.switch
+  } & KeyLabelHelpLinkBind
+>
+
+export type ISettingSelect = Expand<
+  {
+    type: cellViewType.select | cellViewType.muiltSelect
+    option: string[]
+  } & KeyLabelHelpLinkBind
+>
+
+export type ISettingButton = Expand<
+  {
+    type: cellViewType.button | cellViewType.buttonWithInput
+    /** auto generate. value is module's name*/
+    module?: string
+    option?: string[]
+    help?: string
+  } & KeyLabel
+>
 
 export type ISetting =
-  | ISettingButton
   | ISettingInput
-  | ISettingSwitch
   | ISettingSelect
+  | ISettingSwitch
+  | ISettingInlineInput
 
-export interface ISettingInput extends ISettingBasic {
-  type: cellViewType.input | cellViewType.inlineInput
-}
-
-export interface ISettingButton extends ISettingBasic {
-  type: cellViewType.button | cellViewType.buttonWithInput
-  /** button 的 link 不起作用 */
-  link?: undefined
-  option?: string[]
-  module?: string
-}
-
-export interface ISettingSelect extends ISettingBasic {
-  type: cellViewType.select | cellViewType.muiltSelect
-  option: string[]
-}
-
-export interface ISettingSwitch extends ISettingBasic {
-  type: cellViewType.switch
-}
-
-export type IAction = IRowButton
+export type IAction = ISettingButton
 
 export type IActionMethod4Card = ({
   content,

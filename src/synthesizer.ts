@@ -47,13 +47,39 @@ export enum QuickSwitch {
   autoreplace,
   autolist,
   autotag,
-  autostyle
+  autostyle,
+  copysearch
 }
 
 export type AutoModuleKey = Exclude<
   keyof typeof QuickSwitch,
   "gesture" | "copysearch"
 >
+export const actionKey4Card: {
+  key: string
+  option?: number
+  module?: string
+}[] = [{ key: "none" }, { key: "open_panel" }]
+export const actionKey4Text: typeof actionKey4Card = [
+  { key: "none" },
+  { key: "open_panel" }
+]
+export const moduleList: string[] = []
+
+export const actions4card = (() => {
+  const actions = { ...magicaction4card.actions4card }
+  modules.forEach(module => {
+    if ("actions4card" in module) Object.assign(actions, module.actions4card)
+  })
+  return actions
+})()
+export const actions4text = (() => {
+  const actions = {} as Methods<IActionMethod4Text>
+  modules.forEach(module => {
+    if ("actions4text" in module) Object.assign(actions, module.actions4text)
+  })
+  return actions
+})()
 
 const more: ISection = {
   header: "More",
@@ -86,35 +112,28 @@ const genSection = (config: IConfig): ISection => {
     }
   ]
   for (const setting of config.settings) {
-    //@ts-ignore
+    //@ts-ignore magic hack
     rows.push(setting)
-    if (
-      setting.help &&
-      [
-        cellViewType.muiltSelect,
-        cellViewType.select,
-        cellViewType.switch
-      ].includes(setting.type)
-    )
-      rows.push({
-        type: cellViewType.plainText,
-        label: "↑ " + setting.help,
-        link: setting.link ?? ""
-      })
-    if (setting.label && setting.type == cellViewType.input)
-      rows.push({
-        type: cellViewType.plainText,
-        label: "↑ " + setting.label,
-        link: setting.link ?? "",
-        bind: setting.bind
-      })
-    else if (setting.help && setting.type == cellViewType.inlineInput) {
-      rows.push({
-        type: cellViewType.plainText,
-        label: "↑ " + setting.help,
-        link: setting.link ?? "",
-        bind: setting.bind
-      })
+    if (setting.help) {
+      switch (setting.type) {
+        case cellViewType.muiltSelect:
+        case cellViewType.select:
+        case cellViewType.switch:
+          rows.push({
+            type: cellViewType.plainText,
+            label: "↑ " + setting.help,
+            link: setting.link
+          })
+          break
+        case cellViewType.inlineInput:
+        case cellViewType.input:
+          rows.push({
+            type: cellViewType.plainText,
+            label: "↑ " + setting.help,
+            link: setting.link,
+            bind: setting.bind
+          })
+      }
     }
   }
   return {
@@ -124,57 +143,57 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-export const actionKey4Card: {
-  key: string
-  option?: number
-  module?: string
-}[] = [{ key: "none" }, { key: "open_panel" }]
-export const actionKey4Text: typeof actionKey4Card = [
-  { key: "none" },
-  { key: "open_panel" }
-]
-export const moduleList: string[] = []
-
-export const genDataSource = (
+const genDataSource = (
   configs: IConfig[],
   magicaction4card: IConfig,
   magicaction4text: IConfig
 ): ISection[] => {
   const dataSource: ISection[] = []
 
-  const actions4card = magicaction4card.actions4card ?? []
-  const actions4text = magicaction4text.actions4text ?? []
+  const actions4card =
+    magicaction4card.actions4card?.map(k => ({
+      ...k,
+      module: "MagicAction For Card"
+    })) ?? []
+  const actions4text =
+    magicaction4text.actions4text?.map(k => ({
+      ...k,
+      module: "MagicAction For Text"
+    })) ?? []
   configs.forEach(config => {
     dataSource.push(genSection(config))
     if (config.actions4card?.length)
       actions4card.push(
-        ...config.actions4card.map(k => {
-          k.module = config.name
-          if (k.help) k.help += "\n"
-          else k.help = ""
-          k.help += lang.magicaction_from_which_module(config.name)
-          return k
-        })
+        ...config.actions4card.map(k => ({
+          ...k,
+          module: config.name,
+          help:
+            (k.help ? k.help + "\n" : "") +
+            lang.magicaction_from_which_module(config.name)
+        }))
       )
     if (config.actions4text?.length) {
       actions4text.push(
-        ...config.actions4text.map(k => {
-          k.module = config.name
-          if (k.help) k.help += "\n"
-          else k.help = ""
-          k.help += lang.magicaction_from_which_module(config.name)
-          return k
-        })
+        ...config.actions4text.map(k => ({
+          ...k,
+          module: config.name,
+          help:
+            (k.help ? k.help + "\n" : "") +
+            lang.magicaction_from_which_module(config.name)
+        }))
       )
     }
   })
-  magicaction4card.settings.push(...actions4card)
-  magicaction4text.settings.push(...actions4text)
   dataSource.forEach((sec, index) => {
     index && moduleList.push(sec.header)
   })
-  dataSource.splice(1, 0, genSection(magicaction4card))
-  dataSource.splice(2, 0, genSection(magicaction4text))
+
+  const section_Card = genSection(magicaction4card)
+  section_Card.rows.push(...actions4card)
+  const section_Text = genSection(magicaction4text)
+  section_Text.rows.push(...actions4text)
+  dataSource.splice(1, 0, section_Card)
+  dataSource.splice(2, 0, section_Text)
 
   // 更新 quickSwitch 为 moduleList
   const [
@@ -273,24 +292,6 @@ const getActionKeyGetureOption = (section: ISection) => {
   return { actionKeys, gestureOption }
 }
 
-const mergeActions4Card = () => {
-  const actions = { ...magicaction4card.actions4card }
-  modules.forEach(module => {
-    if ("actions4card" in module) Object.assign(actions, module.actions4card)
-  })
-  return actions
-}
-
-const mergeActions4Text = () => {
-  const actions = {} as Methods<IActionMethod4Text>
-  modules.forEach(module => {
-    if ("actions4text" in module) Object.assign(actions, module.actions4text)
-  })
-  return actions
-}
-
-export const actions4card = mergeActions4Card()
-export const actions4text = mergeActions4Text()
 export const dataSourcePreset = genDataSource(
   [ohmymn, ...modules].map(module => module.configs),
   magicaction4card.configs,

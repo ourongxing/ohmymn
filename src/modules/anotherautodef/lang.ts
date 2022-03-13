@@ -10,10 +10,12 @@ const zh = {
     to_title_link: "别名转为标题链接",
     preset: "选择需要的预设",
     title_link_split: "选择别名分词",
+    extract_title: "从摘录提取标题"
+  },
+  help: {
     custom_title_split: "自定义别名分词，点击查看具体格式",
     custom_def_link: "自定义定义联项，点击查看具体格式",
-    custom_extract_title: "自定义提取标题，点击查看具体格式",
-    extract_title: "从摘录提取标题"
+    custom_extract_title: "自定义提取标题，点击查看具体格式"
   },
   option: {
     title_link_split: ["自定义", "默认", "标点符号"],
@@ -40,14 +42,16 @@ const en: typeof zh = {
     on: "Auto Executed",
     only_desc: "Only Keep Definiens",
     to_title_link: "Convert Alias To Title Link",
-    custom_title_split:
-      "Customize alias participle, click for  specific format",
     title_link_split: "Select Alias Participle",
     preset: "Select Presets",
+    extract_title: "Extract Title From Excerpt"
+  },
+  help: {
+    custom_title_split:
+      "Customize alias participle, click for  specific format",
     custom_def_link:
       "Customize connective of definition, click for  the specific format",
-    custom_extract_title: "Customize extract title, click for  specific format",
-    extract_title: "Extract Title From Excerpt"
+    custom_extract_title: "Customize extract title, click for  specific format"
   },
   option: {
     title_link_split: ["Custom", "Default", "Punctuation"],

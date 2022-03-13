@@ -7,10 +7,12 @@ const zh = {
     preset: ["自定义"],
     tag_selected: ["使用 AutoTag 的配置", "确定"]
   },
+  help: {
+    custom_tag: "自定义，点击查看具体格式"
+  },
   label: {
     on: "摘录时自动执行",
     preset: "选择需要的预设",
-    custom_tag: "自定义，点击查看具体格式",
     tag_selected: "给卡片加标签"
   }
 }
@@ -22,10 +24,12 @@ const en: typeof zh = {
     preset: ["Custom"],
     tag_selected: ["Use AutoTag Configuration", "Confirm"]
   },
+  help: {
+    custom_tag: "Customize. Click for specific formats"
+  },
   label: {
     on: "Auto Executed",
     preset: "Select Presets",
-    custom_tag: "Customize. Click for specific formats",
     tag_selected: "Tag Cards"
   }
 }

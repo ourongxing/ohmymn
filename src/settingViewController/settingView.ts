@@ -66,20 +66,21 @@ const tableViewHeightForRowAtIndexPath = (
 ) => {
   const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
-  if (row.bind && _isBindOFF(row.bind, key)) return 0
-  if (
-    (row.type === cellViewType.button ||
-      row.type === cellViewType.buttonWithInput) &&
-    row.module &&
-    _isModuleOFF(row.module)
-  )
-    return 0
-  if (row.type === cellViewType.plainText) {
-    // 每行大约可以容纳 45 个半角字符
-    const byte = byteLength(row.label)
-    const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
-    const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
-    return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
+  switch (row.type) {
+    case cellViewType.button:
+    case cellViewType.buttonWithInput:
+      if (row.module && _isModuleOFF(row.module)) return 0
+      break
+    case cellViewType.plainText: {
+      if (row.bind && _isBindOFF(row.bind, key)) return 0
+      // 每行大约可以容纳 45 个半角字符
+      const byte = byteLength(row.label)
+      const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
+      const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
+      return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
+    }
+    default:
+      if (row.bind && _isBindOFF(row.bind, key)) return 0
   }
   return 40
 }
@@ -113,8 +114,6 @@ const tableViewCellForRowAtIndexPath = (
         0,
         "ButtonCellID"
       )
-      if (!MN.isMac && row.bind && row.module && _isModuleOFF(row.module))
-        cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label

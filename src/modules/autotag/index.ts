@@ -5,7 +5,7 @@ import { addTags, getAllText } from "utils/note"
 import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
 import { extractArray } from "utils/custom"
 
-const { intro, option, label, link } = lang
+const { intro, option, label, link, help } = lang
 
 const configs: IConfig = {
   name: "AutoTag",
@@ -26,7 +26,7 @@ const configs: IConfig = {
     {
       key: "customTag",
       type: cellViewType.input,
-      label: label.custom_tag,
+      help: help.custom_tag,
       bind: [["preset", 0]],
       link
     }

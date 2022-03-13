@@ -4,7 +4,8 @@ import type {
   IActionMethod4Card,
   MbBookNote,
   Methods,
-  IActionMethod4Text
+  IActionMethod4Text,
+  ISettingInput
 } from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
@@ -52,7 +53,7 @@ const configs: IConfig = {
       type: cellViewType.inlineInput
     },
     {
-      label: lable.custom_copy,
+      help: lable.custom_copy,
       key: "customContent",
       link,
       type: cellViewType.input
@@ -70,48 +71,20 @@ const configs: IConfig = {
       link,
       help: help.show_search_engine
     },
-    {
-      label: option.which_search_engine[1],
-      key: "searchChineseText",
+    ...([
+      "searchChineseText",
+      "searchEnglishText",
+      "searchWord",
+      "searchTranslation",
+      "searchAcademic",
+      "searchQuestion",
+      "searchOtherText"
+    ].map((k, i) => ({
       type: cellViewType.input,
+      help: option.which_search_engine[i + 1],
+      key: k,
       bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[2],
-      key: "searchEnglishText",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[3],
-      key: "searchWord",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[4],
-      key: "searchTranslation",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[5],
-      key: "searchAcademic",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[6],
-      key: "searchQuestion",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    },
-    {
-      label: option.which_search_engine[7],
-      key: "searchOtherText",
-      type: cellViewType.input,
-      bind: [["showSearchEngine", 1]]
-    }
+    })) as ISettingInput[])
   ],
   actions4card: [
     {
@@ -131,7 +104,8 @@ const configs: IConfig = {
     {
       type: cellViewType.button,
       key: "searchText",
-      label: "使用 CopySearch 搜索"
+      label: "使用 CopySearch 搜索",
+      option: ["搜索文字", "搜索图片(base64)"]
     }
   ]
 }
@@ -386,8 +360,11 @@ const actions4card: Methods<IActionMethod4Card> = {
 }
 
 const actions4text: Methods<IActionMethod4Text> = {
-  searchText({ text }) {
-    showHUD(text, 2)
+  searchText({ text, imgBase64, option }) {
+    if (option) {
+      console.log(imgBase64)
+    } else console.log(text)
   }
 }
+
 export { configs, utils, actions4card, actions4text }

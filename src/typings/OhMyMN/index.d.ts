@@ -1,8 +1,8 @@
 import { DirectionOfSelection } from "typings/enum"
 import { MbBookNote, DocumentController } from "typings/MarginNote"
-import { IRowButton } from "./Datasource"
+import { IRowButton } from "./DataSource"
 export * from "./Module"
-export * from "./Datasource"
+export * from "./DataSource"
 
 export interface EventHandler {
   (sender: {

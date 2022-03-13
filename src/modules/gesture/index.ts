@@ -1,5 +1,5 @@
 import { cellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
-import type { UIView, IConfig } from "typings"
+import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
 const option: string[] = []
@@ -10,79 +10,24 @@ const configs: IConfig = {
   intro,
   link,
   settings: [
-    {
-      label: singleBar + " ↑",
-      key: "singleBarSwipeUp",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: singleBar + " ↓",
-      key: "singleBarSwipeDown",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: singleBar + " ←",
-      key: "singleBarSwipeLeft",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: singleBar + " →",
-      key: "singleBarSwipeRight",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: muiltBar + " ↑",
-      key: "muiltBarSwipeUp",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: muiltBar + " ↓",
-      key: "muiltBarSwipeDown",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: muiltBar + " ←",
-      key: "muiltBarSwipeLeft",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: muiltBar + " →",
-      key: "muiltBarSwipeRight",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: selectionBar + " ↑",
-      key: "selectionBarSwipeUp",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: selectionBar + " ↓",
-      key: "selectionBarSwipeDown",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: selectionBar + " ←",
-      key: "selectionBarSwipeLeft",
-      type: cellViewType.select,
-      option
-    },
-    {
-      label: selectionBar + " →",
-      key: "selectionBarSwipeRight",
-      type: cellViewType.select,
-      option
-    }
+    [singleBar, "single"],
+    [muiltBar, "muilt"],
+    [selectionBar, "selection"]
   ]
+    .map(q => {
+      return [
+        ["↑", "Up"],
+        ["↓", "Down"],
+        ["←", "Left"],
+        ["→", "Right"]
+      ].map(k => ({
+        label: `${q[0]} ${k[0]}`,
+        key: `${q[1]}BarSwipe${k[1]}`,
+        type: cellViewType.select,
+        option
+      }))
+    })
+    .flat() as ISettingSelect[]
 }
 
 const utils = {

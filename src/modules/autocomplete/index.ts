@@ -7,7 +7,7 @@ import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
 
-const { error, intro, link, option, label } = lang
+const { error, intro, link, option, label, help } = lang
 const configs: IConfig = {
   name: "AutoComplete",
   intro,
@@ -27,7 +27,7 @@ const configs: IConfig = {
     {
       key: "customFill",
       type: cellViewType.input,
-      label: label.custom_fill,
+      help: help.custom_fill,
       bind: [["fillWordInfo", 1]],
       link
     }

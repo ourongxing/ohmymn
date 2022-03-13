@@ -5,7 +5,7 @@ import type { IActionMethod4Card, IConfig, Methods } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 
-const { intro, option, label, link } = lang
+const { intro, option, label, link, help } = lang
 const configs: IConfig = {
   name: "AutoList",
   intro,
@@ -25,7 +25,7 @@ const configs: IConfig = {
     {
       key: "customList",
       type: cellViewType.input,
-      label: label.custom_list,
+      help: help.custom_list,
       bind: [["preset", 0]],
       link
     }

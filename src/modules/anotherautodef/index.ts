@@ -6,7 +6,7 @@ import { lang } from "./lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
 
-const { label, option, intro, link } = lang
+const { label, option, intro, link, help } = lang
 const configs: IConfig = {
   name: "Another AutoDef",
   intro,
@@ -27,14 +27,14 @@ const configs: IConfig = {
       key: "customExtractTitle",
       type: cellViewType.input,
       bind: [["preset", 0]],
-      label: label.custom_extract_title,
+      help: help.custom_extract_title,
       link
     },
     {
       key: "customDefLink",
       type: cellViewType.input,
       bind: [["preset", 1]],
-      label: label.custom_def_link,
+      help: help.custom_def_link,
       link
     },
     {
@@ -57,7 +57,7 @@ const configs: IConfig = {
     {
       key: "customTitleSplit",
       type: cellViewType.input,
-      label: label.custom_title_split,
+      help: help.custom_title_split,
       // 绑定了两个，一个是 switch，用 0 表示 false，一个是 select
       bind: [
         ["toTitleLink", 1],

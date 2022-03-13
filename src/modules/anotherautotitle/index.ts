@@ -31,7 +31,7 @@ const configs: IConfig = {
     {
       key: "customBeTitle",
       type: cellViewType.input,
-      label: label.custom_be_title,
+      help: help.custom_be_title,
       bind: [["preset", 0]],
       link
     },

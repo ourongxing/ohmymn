@@ -15,13 +15,13 @@ const zh = {
     standardize_selected: ["都优化", "仅优化标题", "仅优化摘录"]
   },
   help: {
+    custom_standardize: "自定义，点击查看具体格式",
     standardize_title: "涉及到首字母大写，点击查看具体规范"
   },
   label: {
     on: "摘录时自动执行",
     standardize_selected: "优化排版格式",
     standardize_title: "英文标题规范化",
-    custom_standardize: "自定义，点击查看具体格式",
     preset: "选择需要的预设"
   }
 }
@@ -44,13 +44,13 @@ const en: typeof zh = {
     ]
   },
   help: {
+    custom_standardize: "Customize. Click for specific formats",
     standardize_title: "Click for  specific specifications"
   },
   label: {
     on: "Auto Executed",
     standardize_selected: "Optimize Typography",
     standardize_title: " Normalize English Title",
-    custom_standardize: "Customize. Click for specific formats",
     preset: "Select Presets"
   }
 }

@@ -27,7 +27,7 @@ const configs: IConfig = {
     {
       key: "customStandardize",
       type: cellViewType.input,
-      label: label.custom_standardize,
+      help: help.custom_standardize,
       bind: [["preset", 0]],
       link
     },

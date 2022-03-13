@@ -7,11 +7,13 @@ const zh = {
     preset: ["自定义"],
     replace_selected: ["使用 AutoReplace 的配置", "确定"]
   },
+  help: {
+    custom_replace: "自定义，点击查看具体格式"
+  },
   label: {
     on: "摘录时自动执行",
     preset: "选择需要的预设",
-    replace_selected: "替换摘录文字",
-    custom_replace: "自定义，点击查看具体格式"
+    replace_selected: "替换摘录文字"
   }
 }
 
@@ -22,11 +24,13 @@ const en: typeof zh = {
     preset: ["Custom"],
     replace_selected: ["Use AutoReplace Configuration", "Confirm"]
   },
+  help: {
+    custom_replace: "Customize. Click for specific formats"
+  },
   label: {
     on: "Auto Executed",
     preset: "Select Presets",
-    replace_selected: "Replace Excerptions",
-    custom_replace: "Customize. Click for specific formats"
+    replace_selected: "Replace Excerptions"
   }
 }
 export const lang = MN.isZH ? zh : en

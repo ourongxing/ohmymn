@@ -6,8 +6,10 @@ const zh = {
   label: {
     on: "摘录时自动执行",
     fill_word_info: "填充单词信息",
-    custom_fill: "自定义单词填充信息，点击查看支持变量",
     complete_selected: "补全单词词形"
+  },
+  help: {
+    custom_fill: "自定义单词填充信息，点击查看支持变量"
   },
   option: {
     complete_selected: ["仅补全单词词形", "同时填充单词信息"],
@@ -25,9 +27,11 @@ const en: typeof zh = {
   label: {
     on: "Auto Executed",
     fill_word_info: "Fill Word Info",
-    custom_fill:
-      "Custom excerption filling template, click for  support variables",
     complete_selected: "Complete Word Form"
+  },
+  help: {
+    custom_fill:
+      "Custom excerption filling template, click for  support variables"
   },
   option: {
     fill_word_info: ["None", "Custom", "Chinese"],

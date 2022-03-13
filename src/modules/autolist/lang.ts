@@ -8,10 +8,12 @@ const zh = {
     preset: ["自定义", "ABCD...", "一二三四...", "1234..."],
     list_selected: ["使用 AutoList 的配置", "确定"]
   },
+  help: {
+    custom_list: "自定义，点击查看具体格式"
+  },
   label: {
     on: "摘录时自动执行",
     preset: "选择需要的预设",
-    custom_list: "自定义，点击查看具体格式",
     list_selected: "序列摘录换行"
   }
 }
@@ -24,10 +26,12 @@ const en: typeof zh = {
     preset: ["Custom", "ABCD...", "一二三四...", "1234..."],
     list_selected: ["Use AutoList Configuration", "Confirm"]
   },
+  help: {
+    custom_list: "Customize. Click for specific formats"
+  },
   label: {
     on: "Auto Executed",
     preset: "Select Presets",
-    custom_list: "Customize. Click for specific formats",
     list_selected: "Add Line Breaks"
   }
 }

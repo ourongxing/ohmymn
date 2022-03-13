@@ -10,10 +10,10 @@ const zh = {
     change_title_no_limit: "标题摘录始终为标题",
     on: "摘录时自动执行",
     preset: "选择需要的预设",
-    custom_be_title: "自定义，点击查看具体格式",
     word_count: "[中文句子中的字数, 英文句子中的字数]，没超过就自动设置为标题"
   },
   help: {
+    custom_be_title: "自定义，点击查看具体格式",
     change_title_no_limit: "修改标题摘录选区，始终转为标题"
   }
 }
@@ -28,11 +28,11 @@ const en: typeof zh = {
     on: "Auto Executed",
     change_title_no_limit: "Title Always Be Title",
     preset: "Select Presets",
-    custom_be_title: "Customize. Click for specific formats",
     word_count:
       "[number of words in a Chinese sentence, in a English sentence], if not exceeded, then set the excerpt text as the title"
   },
   help: {
+    custom_be_title: "Customize. Click for specific formats",
     change_title_no_limit:
       "Change the title excerpt selection, always turn to the title"
   }

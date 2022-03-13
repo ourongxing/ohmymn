@@ -3,7 +3,7 @@ import { string2ReplaceParam } from "utils/input"
 import type { Methods, IConfig, IActionMethod4Card } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
-const { intro, link, label, option } = lang
+const { intro, link, label, option, help } = lang
 
 export const enum AutoReplacePreset {
   Custom
@@ -28,7 +28,7 @@ const configs: IConfig = {
     {
       key: "customReplace",
       type: cellViewType.input,
-      label: label.custom_replace,
+      help: help.custom_replace,
       bind: [["preset", 0]],
       link
     }
