@@ -5,7 +5,7 @@ import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
 import { UIAlertViewStyle, cellViewType } from "typings/enum"
 import { byteLength } from "utils/text"
 import lang from "lang"
-import { QuickSwitch } from "synthesizer"
+import { moduleKeyArray } from "synthesizer"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -26,12 +26,12 @@ const tableViewDidSelectRowAtIndexPath = async (
       break
     case cellViewType.buttonWithInput:
     case cellViewType.button:
-      if (sec.key === "magicactionforcard")
+      if (sec.key === "magicaction4card")
         postNotification(Addon.key + "ButtonClick", {
           row,
           type: "card"
         })
-      else if (sec.key === "magicactionfortext")
+      else if (sec.key === "magicaction4text")
         postNotification(Addon.key + "ButtonClick", {
           row,
           type: "text"
@@ -107,12 +107,12 @@ const selectAction = async (param: {
 
     if (
       row.key == "quickSwitch" &&
-      !selections.includes(QuickSwitch.gesture) &&
-      selection == QuickSwitch.gesture
+      !selections.includes(moduleKeyArray.indexOf("gesture")) &&
+      selection == moduleKeyArray.indexOf("gesture")
     ) {
       const { gesture } = lang.handle_user_action
       const { option } = await popup(
-        "OhMyMN",
+        Addon.title,
         gesture.alert,
         UIAlertViewStyle.Default,
         gesture.option,

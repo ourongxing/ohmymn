@@ -1,10 +1,11 @@
-import { dataSourceIndex, moduleList } from "synthesizer"
+import { dataSourceIndex } from "dataSource"
 import type { UITableView, IRowSelect } from "typings"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { cellViewType } from "typings/enum"
 import { byteLength, isHalfWidth, SerialCode } from "utils/text"
 import lang from "lang"
+import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
 // _开头表示是普通函数，不会作为 OC 对象的实例方法。
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
@@ -13,29 +14,27 @@ const _indexPath2tag = (indexPath: NSIndexPath): number =>
 const numberOfSectionsInTableView = () => self.dataSource.length
 
 // 模块未启用，则菜单隐藏
-const _isModuleOFF = (header: string): boolean => {
-  const [sec, row] = dataSourceIndex.ohmymn.quickSwitch
+const _isModuleOFF = (key: ModuleKeyType): boolean => {
+  const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
-  return (
-    moduleList.includes(header) &&
-    !quickSwitch.includes(moduleList.findIndex(key => key === header))
-  )
+  const index = moduleKeyArray.indexOf(key)
+  return index !== -1 && !quickSwitch.includes(index)
 }
 
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = self.dataSource[section]
-  return _isModuleOFF(header) ? 0 : self.dataSource[section].rows.length
+  const { key } = self.dataSource[section]
+  return _isModuleOFF(key) ? 0 : self.dataSource[section].rows.length
 }
 
 const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = self.dataSource[section]
-  return _isModuleOFF(header) ? new NSNull() : header
+  const { key, header } = self.dataSource[section]
+  return _isModuleOFF(key) ? new NSNull() : header
 }
 
 // bind 的对象只要有一个不符合要求，就隐藏

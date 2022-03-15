@@ -102,7 +102,7 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
         self.profile,
-        allProfile[self.docProfile.ohmymn.profile[0]],
+        allProfile[self.docProfile.addon.profile[0]],
         true
       )
     }
@@ -114,7 +114,7 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
 // 传入 undefine 会使用默认参数
 const saveProfile = (
   docmd5?: string,
-  num = self.docProfile.ohmymn.profile[0]
+  num = self.docProfile.addon.profile[0]
 ) => {
   allProfile[num] = deepCopy(self.profile)
   setDataByKey(allProfile, profileKey)

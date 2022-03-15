@@ -1,4 +1,4 @@
-import type { GestureHandler, IRowButton } from "typings"
+import type { GestureHandler, IRowButton, IRowSelect } from "typings"
 import {
   groupMode,
   UISwipeGestureRecognizerDirection,
@@ -7,28 +7,23 @@ import {
   DirectionOfSelection
 } from "typings/enum"
 import { MN } from "const"
-import { utils as gesture } from "modules/gesture"
-import {
-  actionKey4Card,
-  actionKey4Text,
-  dataSourceIndex,
-  moduleList,
-  QuickSwitch
-} from "synthesizer"
+import gesture from "modules/gesture"
+import { actionKey4Card, actionKey4Text, dataSourceIndex } from "dataSource"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
-import { PanelControl } from "modules/ohmymn"
+import { PanelControl } from "modules/addon/enum"
 import { showHUD } from "utils/common"
 import lang from "lang"
 import { reverseEscape } from "utils/input"
+import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
 // Mac 上无法使用触摸
-export const gestureHandlers = gesture.gestureHandlerController([
+export const gestureHandlers = gesture.utils.gestureHandlerController([
   {
     // 如果直接传递 view 和 gesture，此时无法获取到 self
     view: () => MN.studyController().view,
     gesture: () =>
-      gesture.initGesture.swipe(
+      gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
         "SwipeUpOnMindMapView"
@@ -37,7 +32,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   {
     view: () => MN.studyController().view,
     gesture: () =>
-      gesture.initGesture.swipe(
+      gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
         "SwipeDownOnMindMapView"
@@ -46,7 +41,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   {
     view: () => MN.studyController().view,
     gesture: () =>
-      gesture.initGesture.swipe(
+      gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
         "SwipeLeftOnMindMapView"
@@ -55,7 +50,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   {
     view: () => MN.studyController().view,
     gesture: () =>
-      gesture.initGesture.swipe(
+      gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,
         "SwipeRightOnMindMapView"
@@ -63,7 +58,7 @@ export const gestureHandlers = gesture.gestureHandlerController([
   },
   {
     view: () => self.settingViewController.tableView!,
-    gesture: () => gesture.initGesture.tap(1, 2, "DoubleClickOnTableView")
+    gesture: () => gesture.utils.initGesture.tap(1, 2, "DoubleClickOnTableView")
   }
 ])
 
@@ -227,14 +222,16 @@ const actionTrigger = async (
   selectionBarOption: number,
   sender: UIGestureRecognizer
 ) => {
-  if (!self.profile.ohmymn.quickSwitch.includes(QuickSwitch.gesture)) return
-  // 模块未启用，则菜单隐藏
-  const isModuleOFF = (header: string): boolean => {
-    const { quickSwitch } = self.profile.ohmymn
-    return (
-      moduleList.includes(header) &&
-      !quickSwitch.includes(moduleList.findIndex(key => key === header))
-    )
+  if (
+    !self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf("gesture"))
+  )
+    return
+  const isModuleOFF = (key: ModuleKeyType): boolean => {
+    const [sec, row] = dataSourceIndex.addon.quickSwitch
+    const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect)
+      .selections
+    const index = moduleKeyArray.indexOf(key)
+    return index !== -1 && !quickSwitch.includes(index)
   }
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
@@ -254,14 +251,17 @@ const actionTrigger = async (
     actionInfo = actionKey4Text[selectionBarOption]
   } else return
 
-  const { key, module, option } = actionInfo
+  const { key, module, option, moduleName } = actionInfo
   if (key == "open_panel") openPanel()
   else if (module && isModuleOFF(module))
-    showHUD(`${module} ${lang.handle_gesture_event.action_not_work}`, 2)
+    showHUD(
+      `${moduleName ?? module} ${lang.handle_gesture_event.action_not_work}`,
+      2
+    )
   else {
     const [sec, row] =
       dataSourceIndex[
-        type === "card" ? "magicactionforcard" : "magicactionfortext"
+        type === "card" ? "magicaction4card" : "magicaction4text"
       ][key]
     await handleMagicAction(
       type,
@@ -313,7 +313,7 @@ const onSwipeRightOnMindMapView: GestureHandler = sender => {
 }
 
 const onDoubleClickOnTableView: GestureHandler = () => {
-  const { panelControl } = self.profile.ohmymn
+  const { panelControl } = self.profile.addon
   if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
 }
 

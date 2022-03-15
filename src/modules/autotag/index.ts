@@ -1,13 +1,23 @@
-import type { IActionMethod4Card, IConfig, Methods } from "typings"
+import type { IConfig } from "typings"
 import { lang } from "./lang"
 import { cellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
-import { escapeDoubleQuote, string2ReplaceParam } from "utils/input"
+import {
+  escapeDoubleQuote,
+  ReplaceParam,
+  string2ReplaceParam
+} from "utils/input"
 import { extractArray } from "utils/custom"
+import { ActionKey, AutoTagPreset, TagSelected } from "./enum"
+import { profilePreset } from "profile"
 
 const { intro, option, label, link, help } = lang
 
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.autotag
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoTag",
   intro,
   link,
@@ -36,17 +46,36 @@ const configs: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.tag_selected,
       key: "tagSelected",
-      option: option.tag_selected
+      option: option.tag_selected,
+      method: ({ nodes, option, content }) => {
+        if (option == TagSelected.UseAutoTag) {
+          nodes.forEach(node => {
+            const text = getAllText(node)
+            if (text) {
+              const tags = utils.main(text)
+              if (tags.length) addTags(node, tags)
+            }
+          })
+        } else if (content) {
+          content = /^\(.*\)$/.test(content)
+            ? content
+            : `(/./, "${escapeDoubleQuote(content)}")`
+          const params = string2ReplaceParam(content)
+          nodes.forEach(node => {
+            const text = getAllText(node)
+            if (text) {
+              const allTags = extractArray(text, params)
+              if (allTags.length) addTags(node, allTags)
+            }
+          })
+        }
+      }
     }
   ]
 }
 
-export const enum AutoTagPreset {
-  Custom
-}
-
 const utils = {
-  getTag(text: string) {
+  main(text: string) {
     const { customTag: params } = self.profileTemp.replaceParam
     const { preset } = self.profile.autotag
     if (preset.includes(AutoTagPreset.Custom) && params)
@@ -55,34 +84,8 @@ const utils = {
   }
 }
 
-enum TagSelected {
-  UseAutoTag
+const autotag = {
+  configs,
+  utils
 }
-
-const actions4card: Methods<IActionMethod4Card> = {
-  tagSelected({ nodes, option, content }) {
-    if (option == TagSelected.UseAutoTag) {
-      nodes.forEach(node => {
-        const text = getAllText(node)
-        if (text) {
-          const tags = utils.getTag(text)
-          if (tags.length) addTags(node, tags)
-        }
-      })
-    } else if (content) {
-      content = /^\(.*\)$/.test(content)
-        ? content
-        : `(/./, "${escapeDoubleQuote(content)}")`
-      const params = string2ReplaceParam(content)
-      nodes.forEach(node => {
-        const text = getAllText(node)
-        if (text) {
-          const allTags = extractArray(text, params)
-          if (allTags.length) addTags(node, allTags)
-        }
-      })
-    }
-  }
-}
-
-export { configs, utils, actions4card }
+export default autotag

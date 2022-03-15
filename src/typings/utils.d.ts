@@ -11,3 +11,9 @@ type ExpandRecursively<T> = T extends object
     ? { [K in keyof O]: ExpandRecursively<O[K]> }
     : never
   : T
+
+type AnyProperty<T> = Record<string, T>
+type Include<T, U extends string> = T extends `${infer L}${U}${infer R}`
+  ? T
+  : never
+type MaybePromise<T> = T | Promise<T>

@@ -1,9 +1,11 @@
 import type { IConfig } from "typings"
 
-const configs: IConfig = {
+const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
   name: "MagicAction for Text",
+  key: "magciaction4text",
   intro: "所有动作均需要在文档中选中文字或框选选区",
   settings: []
 }
 
-export { configs }
+const magicaction4text = { configs }
+export default magicaction4text

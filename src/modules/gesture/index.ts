@@ -3,9 +3,8 @@ import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
 const option: string[] = []
-
 const { link, intro, singleBar, muiltBar, selectionBar } = lang
-const configs: IConfig = {
+const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
   name: "Gesture",
   intro,
   link,
@@ -27,7 +26,7 @@ const configs: IConfig = {
         option
       }))
     })
-    .flat() as ISettingSelect[]
+    .flat() as ISettingSelect<string>[]
 }
 
 const utils = {
@@ -72,4 +71,5 @@ const utils = {
   }
 }
 
-export { configs, utils }
+const gesture = { configs, utils }
+export default gesture

@@ -6,7 +6,7 @@ import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
-import { dataSourcePreset } from "synthesizer"
+import { dataSourcePreset } from "dataSource"
 import { UIWindow } from "typings"
 import { deepCopy } from "utils"
 import lang from "lang"
@@ -76,7 +76,7 @@ const documentDidOpen = (docmd5: string) => {
   else {
     readProfile(Range.First, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
-      self.profile.ohmymn.screenAlwaysOn
+      self.profile.addon.screenAlwaysOn
   }
   console.log("打开文档", "lifeCycle")
   self.docMD5 = docmd5

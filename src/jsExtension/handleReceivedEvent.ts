@@ -61,7 +61,7 @@ const onSwitchChange: EventHandler = sender => {
   switch (key) {
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
-        self.profile.ohmymn.screenAlwaysOn
+        self.profile.addon.screenAlwaysOn
       break
   }
 }
@@ -71,8 +71,8 @@ const onSelectChange: EventHandler = async sender => {
   console.log("修改了选项", "event")
   const { name, key, selections } = sender.userInfo
   if (key == "profile") {
-    const lastProfileNum = self.docProfile.ohmymn.profile[0]
-    self.docProfile.ohmymn.profile = selections
+    const lastProfileNum = self.docProfile.addon.profile[0]
+    self.docProfile.addon.profile = selections
     saveProfile(undefined, lastProfileNum)
     readProfile(Range.Global)
   } else {
@@ -150,7 +150,8 @@ const onClosePopupMenuOnNote: EventHandler = async sender => {
 const onChangeExcerptRange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("修改摘录", "event")
-  const note = getNoteById(sender.userInfo.noteid)
+  self.noteid = sender.userInfo.noteid
+  const note = getNoteById(self.noteid)
   tmp.isChangeExcerptRange = true
   handleExcerpt(note, tmp.lastExcerptText)
 }
@@ -158,10 +159,11 @@ const onChangeExcerptRange: EventHandler = sender => {
 const onProcessNewExcerpt: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("创建摘录", "event")
-  const note = getNoteById(sender.userInfo.noteid)
+  self.noteid = sender.userInfo.noteid
+  const note = getNoteById(self.noteid)
   tmp.isProcessNewExcerpt = true
   // 摘录前初始化，使得创建摘录时可以自由修改
-  if (self.profile.ohmymn.lockExcerpt) tmp.lastExcerptText = "😎"
+  if (self.profile.addon.lockExcerpt) tmp.lastExcerptText = "😎"
   removeLastCommentCacheTitle(true)
   handleExcerpt(note)
 }

@@ -1,13 +1,13 @@
 import { IDocProfile, IProfile, IProfileTemp } from "profile"
 import { ReplaceParam } from "utils/input"
-import { ISection } from "./OhMyMN"
+import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
 import { UITableView, UITableViewController, UIWindow } from "./UIKit"
 import { DirectionOfSelection } from "./enum"
 
 export * from "./Foundation"
 export * from "./MarginNote"
-export * from "./OhMyMN"
+export * from "./Addon"
 export * from "./UIKit"
 
 declare global {
@@ -16,6 +16,7 @@ declare global {
     studyController: StudyController
     window: UIWindow
     docMD5?: string
+    noteid: string
     notebookid: string
     tableView: UITableView
     OCROnlineStatus?: "begin" | "end"
@@ -24,6 +25,7 @@ declare global {
       arrow: DirectionOfSelection
       winRect: string
     }
+    isModify: boolean
     customSelectedNodes: MbBookNote[]
     panelStatus: boolean
     docProfile: {

@@ -2,35 +2,17 @@ import { Addon } from "const"
 import { lang } from "./lang"
 import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
+import { docProfilePreset, profilePreset } from "profile"
 
-export const enum PanelPosition {
-  Auto,
-  Left,
-  Center,
-  Right
-}
-
-export const enum PanelHeight {
-  Higher,
-  Standard,
-  Lower
-}
-
-export const enum PanelControl {
-  DoubleClickOpen,
-  DoubleClickClose,
-  CompleteClose
-}
-
-export const enum HasTitleThen {
-  NoChange,
-  TitleLink,
-  OverrideTitle
+const profileTemp = {
+  ...profilePreset.addon,
+  ...docProfilePreset.addon
 }
 
 const { link, label, help, option } = lang
-const configs: IConfig = {
+const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
   name: Addon.title,
+  key: "addon",
   intro: `version: ${Addon.version}\nmade by ${Addon.author} with ❤️`,
   link,
   settings: [
@@ -87,4 +69,8 @@ const configs: IConfig = {
   ]
 }
 
-export { configs }
+const addon = {
+  configs
+}
+
+export default addon

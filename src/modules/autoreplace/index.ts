@@ -1,15 +1,17 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
-import type { Methods, IConfig, IActionMethod4Card } from "typings"
+import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
+import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
+import { profilePreset } from "profile"
 const { intro, link, label, option, help } = lang
 
-export const enum AutoReplacePreset {
-  Custom
+const profileTemp = {
+  ...profilePreset.autoreplace
 }
 
-const configs: IConfig = {
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoReplace",
   intro,
   link,
@@ -38,13 +40,35 @@ const configs: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.replace_selected,
       key: "replaceSelected",
-      option: option.replace_selected
+      option: option.replace_selected,
+      method: ({ content, nodes, option }) => {
+        if (option == ReplaceSelected.UseAutoReplace) {
+          nodes.forEach(node => {
+            getExcerptNotes(node).forEach(note => {
+              const text = note.excerptText
+              if (text) note.excerptText = utils.main(text)
+            })
+          })
+        } else if (content) {
+          const params = string2ReplaceParam(content)
+          nodes.forEach(node => {
+            getExcerptNotes(node).forEach(note => {
+              const text = note.excerptText
+              if (text)
+                note.excerptText = params.reduce(
+                  (acc, params) => acc.replace(params.regexp, params.newSubStr),
+                  text
+                )
+            })
+          })
+        }
+      }
     }
   ]
 }
 
 const utils = {
-  replaceText(text: string) {
+  main(text: string) {
     const { preset } = self.profile.autoreplace
     for (const set of preset) {
       switch (set) {
@@ -61,33 +85,5 @@ const utils = {
   }
 }
 
-enum ReplaceSelected {
-  UseAutoReplace
-}
-
-const actions4card: Methods<IActionMethod4Card> = {
-  replaceSelected({ content, nodes, option }) {
-    if (option == ReplaceSelected.UseAutoReplace) {
-      nodes.forEach(node => {
-        getExcerptNotes(node).forEach(note => {
-          const text = note.excerptText
-          if (text) note.excerptText = utils.replaceText(text)
-        })
-      })
-    } else if (content) {
-      const params = string2ReplaceParam(content)
-      nodes.forEach(node => {
-        getExcerptNotes(node).forEach(note => {
-          const text = note.excerptText
-          if (text)
-            note.excerptText = params.reduce(
-              (acc, params) => acc.replace(params.regexp, params.newSubStr),
-              text
-            )
-        })
-      })
-    }
-  }
-}
-
-export { configs, utils, actions4card }
+const autoreplace = { configs, utils }
+export default autoreplace

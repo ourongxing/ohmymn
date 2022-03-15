@@ -13,7 +13,6 @@ let note: MbBookNote
 let nodeNote: MbBookNote
 let isOCR = false
 let isComment = false
-let isModify = false
 let lastRemovedComment:
   | {
       nodeNote: MbBookNote
@@ -28,8 +27,12 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   note = _note
   nodeNote = note.groupNoteId ? getNoteById(note.groupNoteId) : note
   isComment = nodeNote !== note
-  isModify = lastExcerptText !== undefined
-  if (self.profile.ohmymn.lockExcerpt && isModify && lastExcerptText !== "😎") {
+  self.isModify = lastExcerptText !== undefined
+  if (
+    self.profile.addon.lockExcerpt &&
+    self.isModify &&
+    lastExcerptText !== "😎"
+  ) {
     processExcerpt(lastExcerptText!)
     return console.log("检测到开启锁定摘录选项，还原摘录", "excerpt")
   }
@@ -40,9 +43,6 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
    * OCR 要等，再处理
    * 自动矫正也要等，再处理
    */
-
-  decorateExecrpt()
-
   if (note.excerptPic) {
     const autoOCR =
       getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
@@ -59,7 +59,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   }
 
   // 修改摘录的时候貌似矫正会慢一会启动，所有这里需要等一下，差不多 0.2s 左右
-  isModify &&
+  self.isModify &&
     (await delayBreak(4, 0.05, () => self.OCROnlineStatus === "begin"))
   if (self.OCROnlineStatus && self.OCROnlineStatus === "begin") {
     console.log("开始矫正", "excerpt")
@@ -73,16 +73,15 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     self.OCROnlineStatus = undefined
   }
 
+  decorateExecrpt()
   const excerptText = note.excerptText?.trim()
   if (!excerptText) return
   const { title, text } = await newTitleText(
     excerptText,
-    note.noteId!,
     nodeNote.noteTitle?.split(/\s*[;；]\s*/),
-    isModify,
     isComment
   )
-  const tags = newTag(excerptText)
+  const tags = await newTag(excerptText)
   processExcerpt(text, title?.join("; "), tags)
 }
 
@@ -117,8 +116,8 @@ const processExcerpt = (text: string, title?: string, tags?: string[]) => {
   })
 }
 
-const decorateExecrpt = () => {
-  const res = newColorStyle(note)
+const decorateExecrpt = async () => {
+  const res = await newColorStyle(note)
   if (!res) return
   const { color, style } = res
   if (color === undefined && style == undefined) return

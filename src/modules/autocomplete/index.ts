@@ -1,14 +1,20 @@
 import { lang } from "./lang"
-import type { MbBookNote, IConfig, Methods, IActionMethod4Card } from "typings"
+import type { MbBookNote, IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
+import { ActionKey, CompleteSelected, FillWordInfo } from "./enum"
+import { profilePreset } from "profile"
 
 const { error, intro, link, option, label, help } = lang
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.autocomplete
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoComplete",
   intro,
   link,
@@ -37,15 +43,32 @@ const configs: IConfig = {
       key: "completeSelected",
       type: cellViewType.button,
       label: label.complete_selected,
-      option: option.complete_selected
+      option: option.complete_selected,
+      method: async ({ nodes, option }) => {
+        if (nodes.length > 5) {
+          showHUD(lang.error.forbid, 2)
+          return
+        }
+        const getCompletedWord = (node: MbBookNote) => {
+          const title = node?.noteTitle
+          return title ? utils.main(title.split(/\s*[;；]\s*/)[0]) : undefined
+        }
+        const allInfo = await Promise.all(
+          nodes.map(node => getCompletedWord(node))
+        )
+        undoGroupingWithRefresh(() => {
+          nodes.forEach((node, index) => {
+            const info = allInfo?.[index]
+            if (info) {
+              node.noteTitle = info.title.join("; ")
+              if (option == CompleteSelected.AlsoFillWordInfo)
+                node.excerptText = info.text
+            }
+          })
+        })
+      }
     }
   ]
-}
-
-export const enum FillWordInfo {
-  None,
-  Custom,
-  Chinese
 }
 
 type Dict = {
@@ -161,7 +184,7 @@ const utils = {
   /**
    * @param text 先去除划重点
    */
-  async getCompletedWord(text: string) {
+  async main(text: string) {
     try {
       // 只有第一个字母可以大写，否则直接返回
       if (!/^\w[a-z]+$/.test(text)) return undefined
@@ -190,35 +213,5 @@ const utils = {
   }
 }
 
-enum CompleteSelected {
-  OnlyComplete,
-  AlsoFillWordInfo
-}
-
-const actions4card: Methods<IActionMethod4Card> = {
-  async completeSelected({ nodes, option }) {
-    if (nodes.length > 5) {
-      showHUD(lang.error.forbid, 2)
-      return
-    }
-    const getCompletedWord = (node: MbBookNote) => {
-      const title = node?.noteTitle
-      return title
-        ? utils.getCompletedWord(title.split(/\s*[;；]\s*/)[0])
-        : undefined
-    }
-    const allInfo = await Promise.all(nodes.map(node => getCompletedWord(node)))
-    undoGroupingWithRefresh(() => {
-      nodes.forEach((node, index) => {
-        const info = allInfo?.[index]
-        if (info) {
-          node.noteTitle = info.title.join("; ")
-          if (option == CompleteSelected.AlsoFillWordInfo)
-            node.excerptText = info.text
-        }
-      })
-    })
-  }
-}
-
-export { configs, utils, actions4card }
+const autocomplete = { configs, utils }
+export default autocomplete

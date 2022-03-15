@@ -1,30 +1,14 @@
-import {
-  PanelHeight,
-  PanelPosition,
-  HasTitleThen,
-  PanelControl
-} from "modules/ohmymn"
-import { AutoTitlePreset } from "modules/anotherautotitle"
-import { AutoListPreset } from "modules/autolist"
-import { AutoReplacePreset } from "modules/autoreplace"
-import { AutoStandardizePreset } from "modules/autostandardize"
-import { AutoStylePreset } from "modules/autostyle"
-import { AutoTagPreset } from "modules/autotag"
-import { QuickSwitch } from "synthesizer"
 import { ReplaceParam } from "utils/input"
-import { TitleLinkSplit } from "modules/anotherautodef"
-import { FillWordInfo } from "modules/autocomplete"
-import { MultipleTitlesExcerpt } from "modules/copysearch"
 
 const profilePreset = {
-  ohmymn: {
-    quickSwitch: [] as QuickSwitch[],
+  addon: {
+    quickSwitch: [] as number[],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    hasTitleThen: [HasTitleThen.NoChange],
-    panelControl: [] as PanelControl[],
-    panelPosition: [PanelPosition.Auto],
-    panelHeight: [PanelHeight.Standard]
+    hasTitleThen: [0],
+    panelControl: [] as number[],
+    panelPosition: [0],
+    panelHeight: [1]
   },
   gesture: {
     // 单选不允许为空，一般设置一个选项为空
@@ -43,18 +27,18 @@ const profilePreset = {
   },
   autocomplete: {
     on: false,
-    fillWordInfo: [FillWordInfo.None],
+    fillWordInfo: [0],
     customFill: "{{zh}}"
   },
   autostandardize: {
     on: false,
-    preset: [] as AutoStandardizePreset[],
+    preset: [] as number[],
     customStandardize: "",
     standardizeTitle: false
   },
   anotherautotitle: {
     on: false,
-    preset: [] as AutoTitlePreset[],
+    preset: [] as number[],
     changeTitleNoLimit: false,
     wordCount: "[10, 5]",
     customBeTitle: ""
@@ -64,29 +48,29 @@ const profilePreset = {
     preset: [] as number[],
     onlyDesc: false,
     toTitleLink: false,
-    titleLinkSplit: [TitleLinkSplit.Default],
+    titleLinkSplit: [0],
     customTitleSplit: "",
     customDefLink: "",
     customExtractTitle: ""
   },
   autolist: {
     on: false,
-    preset: [] as AutoListPreset[],
+    preset: [] as number[],
     customList: ""
   },
   autoreplace: {
     on: false,
-    preset: [] as AutoReplacePreset[],
+    preset: [] as number[],
     customReplace: ""
   },
   autotag: {
     on: false,
-    preset: [] as AutoTagPreset[],
+    preset: [] as number[],
     customTag: ""
   },
   autostyle: {
     on: false,
-    preset: [] as AutoStylePreset[],
+    preset: [] as number[],
     wordCountArea: "[10, 5, 10]",
     showArea: false,
     defaultTextExcerptColor: [0],
@@ -94,12 +78,12 @@ const profilePreset = {
     defaultTextExcerptStyle: [0],
     defaultPicExcerptStyle: [0]
   },
-  magicactionforcard: {
+  magicaction4card: {
     smartSelection: false
   },
   copysearch: {
-    multipleTitles: [MultipleTitlesExcerpt.All],
-    multipleExcerpts: [MultipleTitlesExcerpt.All],
+    multipleTitles: [0],
+    multipleExcerpts: [0],
     customContent: "[{{title}}]({{link}})",
     showSearchEngine: false,
     separatorSymbols: "\\n\\n",
@@ -115,7 +99,7 @@ const profilePreset = {
 }
 
 const docProfilePreset = {
-  ohmymn: {
+  addon: {
     profile: [0]
   },
   // 不显示在 UI 上的配置信息

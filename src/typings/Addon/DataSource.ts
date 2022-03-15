@@ -1,7 +1,8 @@
+import { ModuleKeyType } from "synthesizer"
 import { cellViewType } from "./enum"
 
 export type ISection = {
-  key: string
+  key: ModuleKeyType
   header: string
   rows: IRow[]
 }
@@ -51,7 +52,8 @@ export type IRowInlineInput = Expand<
 export type IRowButton = Expand<
   {
     type: cellViewType.button | cellViewType.buttonWithInput
-    module: string
+    module: ModuleKeyType
+    moduleName: string
     option?: string[]
     help?: string
   } & Omit<KeyLabelBind, "bind">

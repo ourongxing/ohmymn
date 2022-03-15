@@ -1,13 +1,20 @@
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import type { IActionMethod4Card, IConfig, Methods } from "typings"
+import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { extractArray } from "utils/custom"
+import { ActionKey, AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
+import { profilePreset } from "profile"
 
 const { label, option, intro, link, help } = lang
-const configs: IConfig = {
+
+const profileTemp = {
+  ...profilePreset.anotherautodef
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "Another AutoDef",
   intro,
   link,
@@ -71,20 +78,36 @@ const configs: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.extract_title,
       option: option.extract_title,
-      key: "extractTitle"
+      key: "extractTitle",
+      method: ({ nodes, content, option }) => {
+        if (option == ExtractTitle.UseAutoDef) {
+          nodes.forEach(node => {
+            const allTitles = getExcerptNotes(node).reduce((acc, cur) => {
+              if (cur.excerptText) {
+                const res = utils.main(cur.excerptText)
+                if (res) {
+                  const { title, text } = res
+                  cur.excerptText = text
+                  if (title.length) acc.push(...title)
+                }
+              }
+              return acc
+            }, [] as string[])
+            if (allTitles.length)
+              node.noteTitle = removeHighlight(unique(allTitles).join("; "))
+          })
+        } else if (content) {
+          const params = string2ReplaceParam(content)
+          nodes.forEach(node => {
+            const text = getExcerptText(node).join("\n")
+            const allTitles = extractArray(text, params)
+            if (allTitles.length)
+              node.noteTitle = removeHighlight(allTitles.join("; "))
+          })
+        }
+      }
     }
   ]
-}
-
-enum AutoDefPreset {
-  CustomExtract,
-  CustomTitleSplit
-}
-
-export const enum TitleLinkSplit {
-  Custom,
-  Default,
-  Punctuation
 }
 
 const utils = {
@@ -112,10 +135,7 @@ const utils = {
     return defs.length > 1 ? unique<string>(defs) : [text]
   },
 
-  /**
-   * 返回的标题需要去除划重点
-   */
-  getDefTitle(text: string) {
+  main(text: string) {
     const { preset, onlyDesc } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
@@ -202,37 +222,7 @@ const utils = {
       }
   }
 }
-enum ExtractTitle {
-  UseAutoDef
-}
 
-const actions4card: Methods<IActionMethod4Card> = {
-  extractTitle({ nodes, content, option }) {
-    if (option == ExtractTitle.UseAutoDef) {
-      nodes.forEach(node => {
-        const allTitles = getExcerptNotes(node).reduce((acc, cur) => {
-          if (cur.excerptText) {
-            const res = utils.getDefTitle(cur.excerptText)
-            if (res) {
-              const { title, text } = res
-              cur.excerptText = text
-              if (title.length) acc.push(...title)
-            }
-          }
-          return acc
-        }, [] as string[])
-        if (allTitles.length)
-          node.noteTitle = removeHighlight(unique(allTitles).join("; "))
-      })
-    } else if (content) {
-      const params = string2ReplaceParam(content)
-      nodes.forEach(node => {
-        const text = getExcerptText(node).join("\n")
-        const allTitles = extractArray(text, params)
-        if (allTitles.length)
-          node.noteTitle = removeHighlight(allTitles.join("; "))
-      })
-    }
-  }
-}
-export { configs, utils, actions4card }
+const anotherautodef = { configs, utils }
+
+export default anotherautodef

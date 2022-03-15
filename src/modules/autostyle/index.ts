@@ -1,4 +1,4 @@
-import type { IActionMethod4Card, IConfig, Methods } from "typings"
+import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
@@ -6,6 +6,8 @@ import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
+import { ActionKey, AutoStylePreset, ChangeStyle } from "./enum"
+import { profilePreset } from "profile"
 
 const { help, intro, option, label, link } = lang
 
@@ -13,7 +15,11 @@ const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.autostyle
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoStyle",
   intro,
   link,
@@ -72,22 +78,50 @@ const configs: IConfig = {
       label: label.change_color,
       key: "changeColor",
       option: option.change_color,
-      help: help.change_color
+      help: help.change_color,
+      method: ({ content, nodes, option }) => {
+        if (option === ChangeStyle.UseAutoStyle) {
+          for (const node of nodes) {
+            getExcerptNotes(node).forEach(note => {
+              const { color } = utils.main(note)
+              if (color !== undefined)
+                note.colorIndex = color !== -1 ? color : 12
+            })
+          }
+        } else if (content) {
+          const color = Number(content) - 1
+          for (const node of nodes) {
+            getExcerptNotes(node).forEach(note => {
+              note.colorIndex = color
+            })
+          }
+        }
+      }
     },
     {
       type: cellViewType.button,
       label: label.change_style,
       key: "changeStyle",
-      option: option.change_style
+      option: option.change_style,
+      method: ({ option, nodes }) => {
+        if (option === ChangeStyle.UseAutoStyle) {
+          for (const node of nodes) {
+            getExcerptNotes(node).forEach(note => {
+              const { style } = utils.main(note)
+              if (style !== undefined) note.fillIndex = style
+            })
+          }
+        } else {
+          const style = option - 1
+          for (const node of nodes) {
+            getExcerptNotes(node).forEach(note => {
+              note.fillIndex = style
+            })
+          }
+        }
+      }
     }
   ]
-}
-
-export const enum AutoStylePreset {
-  StyleByWordCountAndArea,
-  ColorFollowCard,
-  ColorFollowBrother,
-  ColorFollowParents
 }
 
 const utils = {
@@ -97,7 +131,7 @@ const utils = {
     ).map(item => Number(item))
     return Math.floor(Math.abs((x1 - x2) * (y2 - y1)) / 100)
   },
-  getColorStyle(note: MbBookNote) {
+  main(note: MbBookNote) {
     // 就跟随卡片 => 跟随兄弟节点 => 跟随父节点 => 默认 => 不动
     const {
       preset,
@@ -173,45 +207,9 @@ const utils = {
   }
 }
 
-enum ChangeStyle {
-  UseAutoStyle
+const autostyle = {
+  configs,
+  utils
 }
 
-const actions4card: Methods<IActionMethod4Card> = {
-  changeColor({ content, nodes, option }) {
-    if (option === ChangeStyle.UseAutoStyle) {
-      for (const node of nodes) {
-        getExcerptNotes(node).forEach(note => {
-          const { color } = utils.getColorStyle(note)
-          if (color !== undefined) note.colorIndex = color !== -1 ? color : 12
-        })
-      }
-    } else if (content) {
-      const color = Number(content) - 1
-      for (const node of nodes) {
-        getExcerptNotes(node).forEach(note => {
-          note.colorIndex = color
-        })
-      }
-    }
-  },
-  changeStyle({ option, nodes }) {
-    if (option === ChangeStyle.UseAutoStyle) {
-      for (const node of nodes) {
-        getExcerptNotes(node).forEach(note => {
-          const { style } = utils.getColorStyle(note)
-          if (style !== undefined) note.fillIndex = style
-        })
-      }
-    } else {
-      const style = option - 1
-      for (const node of nodes) {
-        getExcerptNotes(node).forEach(note => {
-          note.fillIndex = style
-        })
-      }
-    }
-  }
-}
-
-export { configs, utils, actions4card }
+export default autostyle

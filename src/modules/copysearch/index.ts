@@ -1,12 +1,5 @@
 import { lang } from "./lang"
-import type {
-  IConfig,
-  IActionMethod4Card,
-  MbBookNote,
-  Methods,
-  IActionMethod4Text,
-  ISettingInput
-} from "typings"
+import type { IConfig, MbBookNote, ISettingInput } from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
@@ -21,15 +14,15 @@ import {
   getDocumentById
 } from "utils/note"
 import { isHalfWidth } from "utils/text"
+import { ActionKey, CopySearchCardInfo, MultipleTitlesExcerpt } from "./enum"
+import { profilePreset } from "profile"
+const { link, intro, lable, option, help, hud } = lang
 
-export const enum MultipleTitlesExcerpt {
-  All,
-  First,
-  Choose
+const profileTemp = {
+  ...profilePreset.copysearch
 }
 
-const { link, intro, lable, option, help, hud } = lang
-const configs: IConfig = {
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "CopySearch",
   intro,
   link,
@@ -84,20 +77,50 @@ const configs: IConfig = {
       help: option.which_search_engine[i + 1],
       key: k,
       bind: [["showSearchEngine", 1]]
-    })) as ISettingInput[])
+    })) as ISettingInput<keyof typeof profileTemp>[])
   ],
   actions4card: [
     {
       type: cellViewType.button,
       key: "searchCardInfo",
       label: lable.search_card_info,
-      option: option.search_card_info
+      option: option.search_card_info,
+      method: async ({ nodes, option }) => {
+        if (nodes.length == 1) {
+          const text = await utils.getContentForOneCard(nodes[0], option)
+          text && utils.search(text)
+        } else {
+          const { separatorSymbols } = self.profile.copysearch
+          const contents = utils.getContentForMuiltCards(nodes, option)
+          contents?.length &&
+            utils.search(
+              contents.join(
+                reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
+              )
+            )
+        }
+      }
     },
     {
       type: cellViewType.button,
       key: "copyCardInfo",
       label: lable.copy_card_info,
-      option: option.copy_card_info
+      option: option.copy_card_info,
+      method: async ({ nodes, option }) => {
+        if (nodes.length == 1) {
+          const text = await utils.getContentForOneCard(nodes[0], option)
+          text && utils.copy(text)
+        } else {
+          const { separatorSymbols } = self.profile.copysearch
+          const contents = utils.getContentForMuiltCards(nodes, option)
+          contents?.length &&
+            utils.copy(
+              contents.join(
+                reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
+              )
+            )
+        }
+      }
     }
   ],
   actions4text: [
@@ -105,7 +128,12 @@ const configs: IConfig = {
       type: cellViewType.button,
       key: "searchText",
       label: "使用 CopySearch 搜索",
-      option: ["搜索文字", "搜索图片(base64)"]
+      option: ["搜索文字", "搜索图片(base64)"],
+      method: ({ text, imgBase64, option }) => {
+        if (option) {
+          console.log(imgBase64)
+        } else console.log(text)
+      }
     }
   ]
 }
@@ -320,51 +348,5 @@ const utils = {
   }
 }
 
-enum CopySearchCardInfo {
-  Title,
-  Excerpt,
-  Custom
-}
-
-const actions4card: Methods<IActionMethod4Card> = {
-  async searchCardInfo({ nodes, option }) {
-    if (nodes.length == 1) {
-      const text = await utils.getContentForOneCard(nodes[0], option)
-      text && utils.search(text)
-    } else {
-      const { separatorSymbols } = self.profile.copysearch
-      const contents = utils.getContentForMuiltCards(nodes, option)
-      contents?.length &&
-        utils.search(
-          contents.join(
-            reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
-          )
-        )
-    }
-  },
-  async copyCardInfo({ nodes, option }) {
-    if (nodes.length == 1) {
-      const text = await utils.getContentForOneCard(nodes[0], option)
-      text && utils.copy(text)
-    } else {
-      const { separatorSymbols } = self.profile.copysearch
-      const contents = utils.getContentForMuiltCards(nodes, option)
-      contents?.length &&
-        utils.copy(
-          contents.join(
-            reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
-          )
-        )
-    }
-  }
-}
-
-const actions4text: Methods<IActionMethod4Text> = {
-  searchText({ text, imgBase64, option }) {
-    if (option) {
-      console.log(imgBase64)
-    } else console.log(text)
-  }
-}
-
-export { configs, utils, actions4card, actions4text }
+const copysearch = { configs, utils }
+export default copysearch

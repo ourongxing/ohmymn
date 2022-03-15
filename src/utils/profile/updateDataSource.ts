@@ -1,7 +1,7 @@
 import { MN } from "const"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile } from "profile"
-import { dataSourceIndex } from "synthesizer"
+import { dataSourceIndex } from "dataSource"
 import { IRowInlineInput, IRowInput, IRowSelect, IRowSwitch } from "typings"
 import { ReplaceParam, string2RegArray, string2ReplaceParam } from "utils/input"
 import { deepCopy } from "utils"

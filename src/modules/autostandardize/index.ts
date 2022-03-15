@@ -3,12 +3,18 @@ import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType } from "typings/enum"
-import type { IActionMethod4Card, IConfig, Methods } from "typings"
+import type { IConfig } from "typings"
 import { lang } from "./lang"
+import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
+import { profilePreset } from "profile"
 
 const { help, intro, option, label, link } = lang
 
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.autostandardize
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoStandardize",
   intro,
   link,
@@ -44,18 +50,26 @@ const configs: IConfig = {
       key: "standardizeSelected",
       type: cellViewType.button,
       label: label.standardize_selected,
-      option: option.standardize_selected
+      option: option.standardize_selected,
+      method: ({ nodes, option }) => {
+        nodes.forEach(node => {
+          const title = node.noteTitle
+          if (option != StandardizeSelected.OnlyExcerptText && title) {
+            let newTitle = utils.main(title)
+            if (self.profile.autostandardize.standardizeTitle)
+              newTitle = utils.toTitleCase(newTitle)
+            node.noteTitle = newTitle
+          }
+          if (option != StandardizeSelected.OnlyTitle) {
+            getExcerptNotes(node).forEach(note => {
+              const text = note.excerptText
+              if (text) note.excerptText = utils.main(text)
+            })
+          }
+        })
+      }
     }
   ]
-}
-
-export const enum AutoStandardizePreset {
-  Custom,
-  RemoveAllSpace,
-  HalfToFull,
-  AddSpace,
-  RemoveCHSpace,
-  RemoveRepeatSpace
 }
 
 const utils = {
@@ -67,7 +81,7 @@ const utils = {
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
       .join("; ")
   },
-  standardizeText(text: string): string {
+  main(text: string): string {
     if (isHalfWidth(text)) return text
     const { preset } = self.profile.autostandardize
     text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
@@ -108,30 +122,5 @@ const utils = {
   }
 }
 
-enum StandardizeSelected {
-  All,
-  OnlyTitle,
-  OnlyExcerptText
-}
-
-const actions4card: Methods<IActionMethod4Card> = {
-  standardizeSelected({ nodes, option }) {
-    nodes.forEach(node => {
-      const title = node.noteTitle
-      if (option != StandardizeSelected.OnlyExcerptText && title) {
-        let newTitle = utils.standardizeText(title)
-        if (self.profile.autostandardize.standardizeTitle)
-          newTitle = utils.toTitleCase(newTitle)
-        node.noteTitle = newTitle
-      }
-      if (option != StandardizeSelected.OnlyTitle) {
-        getExcerptNotes(node).forEach(note => {
-          const text = note.excerptText
-          if (text) note.excerptText = utils.standardizeText(text)
-        })
-      }
-    })
-  }
-}
-
-export { configs, utils, actions4card }
+const autostandardize = { configs, utils }
+export default autostandardize

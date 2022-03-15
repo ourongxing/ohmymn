@@ -1,14 +1,14 @@
 import lang from "lang"
 import { MN } from "const"
 import { delay, showHUD } from "utils/common"
-import { PanelControl } from "modules/ohmymn"
+import { PanelControl } from "modules/addon/enum"
 import type { UIViewController } from "typings"
 import { docMapSplitMode, studyMode } from "typings/enum"
 
 // 设置窗口面板的位置和大小
 export const layoutViewController = (
-  heightNum = self.profile.ohmymn.panelHeight[0],
-  positionNum = self.profile.ohmymn.panelPosition[0]
+  heightNum = self.profile.addon.panelHeight[0],
+  positionNum = self.profile.addon.panelPosition[0]
 ) => {
   const studyController = MN.studyController()
   const frame = studyController.view.bounds
@@ -68,7 +68,7 @@ const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
     if (
-      self.profile.ohmymn.panelControl.includes(PanelControl.DoubleClickOpen)
+      self.profile.addon.panelControl.includes(PanelControl.DoubleClickOpen)
     ) {
       const now = Date.now()
       if (tmp.lastClickButton && now - tmp.lastClickButton < 300) openPanel()

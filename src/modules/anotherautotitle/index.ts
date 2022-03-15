@@ -3,10 +3,16 @@ import { isHalfWidth, countWord } from "utils/text"
 import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
+import { AutoTitlePreset } from "./enum"
+import { profilePreset } from "profile"
 
 const { option, intro, help, link, label } = lang
 
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.anotherautotitle
+}
+
+const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
   name: "Another AutoTitle",
   intro,
   link,
@@ -43,18 +49,17 @@ const configs: IConfig = {
     }
   ]
 }
-export const enum AutoTitlePreset {
-  Custom,
-  WordLimit,
-  NoPunctuation
-}
 
 const utils = {
-  /**
-   * @param text 先去除划重点
-   */
-  getTitle(text: string) {
-    const { preset, wordCount } = self.profile.anotherautotitle
+  main(text: string) {
+    const { preset, wordCount, changeTitleNoLimit } =
+      self.profile.anotherautotitle
+    const { cacheExcerptTitle } = self.docProfile.additional
+    if (changeTitleNoLimit && self.isModify && cacheExcerptTitle[self.noteid])
+      return {
+        title: [text],
+        text: ""
+      }
     const newTitle = (() => {
       for (const set of preset) {
         switch (set) {
@@ -77,9 +82,11 @@ const utils = {
     })()
     if (newTitle)
       return {
-        text: "",
-        title: [newTitle]
+        title: [newTitle],
+        text: ""
       }
   }
 }
-export { configs, utils }
+
+const anotherautotitle = { configs, utils }
+export default anotherautotitle

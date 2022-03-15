@@ -1,12 +1,18 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import type { IActionMethod4Card, IConfig, Methods } from "typings"
+import type { IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
+import { ActionKey, AutoListPreset, ListSelected } from "./enum"
+import { profilePreset } from "profile"
 
 const { intro, option, label, link, help } = lang
-const configs: IConfig = {
+const profileTemp = {
+  ...profilePreset.autolist
+}
+
+const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoList",
   intro,
   link,
@@ -35,19 +41,36 @@ const configs: IConfig = {
       type: cellViewType.buttonWithInput,
       label: label.list_selected,
       key: "listSelected",
-      option: option.list_selected
+      option: option.list_selected,
+      method: ({ nodes, content, option }) => {
+        if (option == ListSelected.UseAutoList) {
+          nodes.forEach(node => {
+            getExcerptNotes(node).forEach(note => {
+              const text = note.excerptText
+              if (text) note.excerptText = utils.main(text)
+            })
+          })
+        } else if (content) {
+          const params = string2ReplaceParam(content)
+          nodes.forEach(node => {
+            getExcerptNotes(node).forEach(note => {
+              const text = note.excerptText
+              if (text)
+                note.excerptText = params.reduce(
+                  (acc, params) => acc.replace(params.regexp, params.newSubStr),
+                  text
+                )
+            })
+          })
+        }
+      }
     }
   ]
 }
 
-export const enum AutoListPreset {
-  Custom,
-  Letter
-}
-
 const utils = {
   // 匹配到就在前面或后面添加换行
-  listText(text: string): string {
+  main(text: string): string {
     const { preset } = self.profile.autolist
     for (const set of preset) {
       switch (set) {
@@ -94,32 +117,5 @@ const utils = {
   }
 }
 
-enum ListSelected {
-  UseAutoList
-}
-const actions4card: Methods<IActionMethod4Card> = {
-  listSelected({ nodes, content, option }) {
-    if (option == ListSelected.UseAutoList) {
-      nodes.forEach(node => {
-        getExcerptNotes(node).forEach(note => {
-          const text = note.excerptText
-          if (text) note.excerptText = utils.listText(text)
-        })
-      })
-    } else if (content) {
-      const params = string2ReplaceParam(content)
-      nodes.forEach(node => {
-        getExcerptNotes(node).forEach(note => {
-          const text = note.excerptText
-          if (text)
-            note.excerptText = params.reduce(
-              (acc, params) => acc.replace(params.regexp, params.newSubStr),
-              text
-            )
-        })
-      })
-    }
-  }
-}
-
-export { configs, utils, actions4card }
+const autolist = { configs, utils }
+export default autolist

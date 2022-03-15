@@ -1,6 +1,6 @@
 import lang from "lang"
 import { actions4card, actions4text } from "synthesizer"
-import { PanelControl } from "modules/ohmymn"
+import { PanelControl } from "modules/addon/enum"
 import checkInputCorrect from "inputChecker"
 import type { IRowButton, MbBookNote } from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
@@ -79,7 +79,7 @@ const handleMagicAction = async (
   } else if (type === "card") {
     let nodes: MbBookNote[] = []
     key != "filterCards" &&
-      self.profile.ohmymn.panelControl.includes(PanelControl.CompleteClose) &&
+      self.profile.addon.panelControl.includes(PanelControl.CompleteClose) &&
       closePanel()
 
     if (self.customSelectedNodes.length) {
@@ -103,7 +103,7 @@ const handleMagicAction = async (
 
       const { smart_select } = lang.magic_action_handler
       if (
-        self.profile.magicactionforcard.smartSelection &&
+        self.profile.magicaction4card.smartSelection &&
         isHavingChildren &&
         !noNeedSmartSelection
       ) {
@@ -136,7 +136,7 @@ const handleMagicAction = async (
     }
     switch (key) {
       case "filterCards":
-        self.customSelectedNodes = actions4card[key]({
+        self.customSelectedNodes = actions4card.filterCards!({
           content,
           nodes,
           option
