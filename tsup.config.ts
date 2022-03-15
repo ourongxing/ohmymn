@@ -27,7 +27,6 @@ export default defineConfig({
   clean: isProd,
   outDir,
   minify: isProd,
-  watch: !isProd,
   banner: {
     js: bannerText
   },
