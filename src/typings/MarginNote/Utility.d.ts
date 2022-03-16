@@ -106,7 +106,15 @@ declare global {
   class MenuController extends UIViewController {
     static new(): MenuController
     menuTableView?: UITableView
-    commandTable?: Array<any>
+    commandTable?: {
+      title: string
+      /** OC Object */
+      object: any
+      selector: string
+      height?: number
+      param: AnyProperty<any>
+      checked: boolean
+    }[]
     sections?: Array<any>
     /**
      *  int

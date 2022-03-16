@@ -26,7 +26,7 @@ const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
         option
       }))
     })
-    .flat() as ISettingSelect<string>[]
+    .flat() as ISettingSelect<AnyProperty<string>>[]
 }
 
 const utils = {

@@ -17,3 +17,22 @@ type Include<T, U extends string> = T extends `${infer L}${U}${infer R}`
   ? T
   : never
 type MaybePromise<T> = T | Promise<T>
+
+type PickByValue<T, ValueType> = Pick<
+  T,
+  { [Key in keyof T]-?: T[Key] extends ValueType ? Key : never }[keyof T]
+>
+
+type PickKeyByValue<T, ValueType> = keyof PickByValue<T, ValueType>
+
+type PickByValueExact<T, ValueType> = Pick<
+  T,
+  {
+    [Key in keyof T]-?: [ValueType] extends [T[Key]]
+      ? [T[Key]] extends [ValueType]
+        ? Key
+        : never
+      : never
+  }[keyof T]
+>
+type NeverOrAny<T> = T extends never ? any : T

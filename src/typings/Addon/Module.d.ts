@@ -1,5 +1,4 @@
 import { MbBookNote } from "typings/MarginNote"
-import { ReplaceParam } from "utils/input"
 import { cellViewType } from "./enum"
 
 export type IConfig<T, K> = Expand<{
@@ -7,7 +6,7 @@ export type IConfig<T, K> = Expand<{
   key?: string
   intro: string
   link?: string
-  settings: ISetting<keyof T>[]
+  settings: ISetting<T>[]
   actions4card?: IAction<keyof K, IActionMethod4Card>[]
   actions4text?: IAction<keyof K, IActionMethod4Text>[]
 }>
@@ -15,54 +14,51 @@ export type IConfig<T, K> = Expand<{
 /** Help must be set before using link */
 type HelpLink = XOR<{ help: string; link?: string }, {}>
 
-interface KeyLabel<K> {
-  key: K
+type Bind<T> = {
+  bind?: [PickKeyByValue<T, number[] | boolean>, number][]
+}
+
+type HelpLinkLabel = HelpLink & {
   label: string
 }
 
-type KeyLabelHelpLinkBind<K> = HelpLink &
-  KeyLabel<K> & {
-    bind?: [K, number][]
-  }
+export type ISettingInlineInput<T> = {
+  key: PickKeyByValue<T, string>
+  type: cellViewType.inlineInput
+} & HelpLinkLabel &
+  Bind<T>
 
-export type ISettingInlineInput<K> = Expand<
-  {
-    type: cellViewType.inlineInput
-  } & KeyLabelHelpLinkBind<K>
->
+export type ISettingInput<T> = {
+  key: PickKeyByValue<T, string>
+  type: cellViewType.input
+} & HelpLink &
+  Bind<T>
 
-export type ISettingInput<K> = Expand<
-  {
-    type: cellViewType.input
-  } & HelpLink &
-    Omit<KeyLabel<K>, "label"> & {
-      bind?: [K, number][]
-    }
->
+export type ISettingSwitch<T> = {
+  key: PickKeyByValue<T, boolean>
+  type: cellViewType.switch
+} & HelpLinkLabel &
+  Bind<T>
 
-export type ISettingSwitch<K> = Expand<
-  {
-    type: cellViewType.switch
-  } & KeyLabelHelpLinkBind<K>
->
+export type ISettingSelect<T> = {
+  key: PickKeyByValue<T, number[]>
+  type: cellViewType.select | cellViewType.muiltSelect
+  option: string[]
+} & HelpLinkLabel &
+  Bind<T>
 
-export type ISettingSelect<K> = Expand<
-  {
-    type: cellViewType.select | cellViewType.muiltSelect
-    option: string[]
-  } & KeyLabelHelpLinkBind<K>
->
-
-export type ISetting<K> =
-  | ISettingInput<K>
-  | ISettingSelect<K>
-  | ISettingSwitch<K>
-  | ISettingInlineInput<K>
+export type ISetting<T> =
+  | ISettingInput<T>
+  | ISettingSelect<T>
+  | ISettingSwitch<T>
+  | ISettingInlineInput<T>
 
 export type IAction<
   K,
   T extends IActionMethod4Card | IActionMethod4Text
 > = Expand<{
+  key: K
+  label: string
   type: cellViewType.button | cellViewType.buttonWithInput
   /** auto generate. value is module's key*/
   module?: string
@@ -71,8 +67,7 @@ export type IAction<
   option?: string[]
   help?: string
   method: T
-}> &
-  KeyLabel<K>
+}>
 
 export type IActionMethod4Card = ({
   content,
@@ -93,3 +88,5 @@ export type IActionMethod4Text = ({
   imgBase64: string
   option: number
 }) => void
+
+export type ICheckMethod<T> = (input: string, key: keyof T) => undefined
