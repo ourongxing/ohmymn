@@ -14,7 +14,6 @@ https://github.com/mnaddon/ohmymn
 version: ${mnaddon.version} by ${mnaddon.author}
 */
 `
-
 const outDir = isProd
   ? "./dist"
   : os.homedir() +
