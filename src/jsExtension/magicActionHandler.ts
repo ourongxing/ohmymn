@@ -3,7 +3,7 @@ import { actions4card, actions4text } from "synthesizer"
 import { PanelControl } from "modules/addon/enum"
 import { checkInputCorrect } from "synthesizer"
 import type { IRowButton, MbBookNote } from "typings"
-import { cellViewType, UIAlertViewStyle } from "typings/enum"
+import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { popup, showHUD, HUDController } from "utils/common"
 import { manageProfileAction } from "utils/profile"
 import { closePanel } from "./switchPanel"
@@ -24,7 +24,7 @@ export default async (
     await handleMagicAction(type, row.key, option, undefined)
   else
     switch (row.type) {
-      case cellViewType.buttonWithInput:
+      case CellViewType.ButtonWithInput:
         for (;;) {
           const { option, content } = await popup(
             row.label,
@@ -46,7 +46,7 @@ export default async (
             return
           }
         }
-      case cellViewType.button:
+      case CellViewType.Button:
         const { option } = await popup(
           row.label,
           row.help ?? "",

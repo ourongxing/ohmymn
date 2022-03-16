@@ -1,7 +1,7 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
 import type { ICheckMethod, IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
 import { profilePreset } from "profile"
@@ -20,31 +20,31 @@ const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "wordCount",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       bind: [["preset", 1]],
       label: label.word_count
     },
     {
       key: "customBeTitle",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_be_title,
       bind: [["preset", 0]],
       link
     },
     {
       key: "changeTitleNoLimit",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.change_title_no_limit,
       help: help.change_title_no_limit
     }

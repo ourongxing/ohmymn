@@ -1,7 +1,7 @@
 import { extractArray, regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
 import type { ICheckMethod, IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { ActionKey, AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
@@ -25,41 +25,41 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "customExtractTitle",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       bind: [["preset", 0]],
       help: help.custom_extract_title,
       link
     },
     {
       key: "customDefLink",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       bind: [["preset", 1]],
       help: help.custom_def_link,
       link
     },
     {
       key: "onlyDesc",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.only_desc
     },
     {
       key: "toTitleLink",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.to_title_link
     },
     {
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       key: "titleLinkSplit",
       label: label.title_link_split,
       option: option.title_link_split,
@@ -67,7 +67,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     },
     {
       key: "customTitleSplit",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_title_split,
       // 绑定了两个，一个是 switch，用 0 表示 false，一个是 select
       bind: [
@@ -79,7 +79,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4card: [
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.extract_title,
       option: option.extract_title,
       key: "extractTitle",

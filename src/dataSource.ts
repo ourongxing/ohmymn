@@ -1,6 +1,6 @@
 import lang from "lang"
 import { ISection, IConfig, IRow, IRowButton } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { SerialCode } from "utils/text"
 import { constModules, ModuleKeyType, modules } from "synthesizer"
 
@@ -22,17 +22,17 @@ const more: ISection = {
   key: "more",
   rows: [
     {
-      type: cellViewType.plainText,
+      type: CellViewType.PlainText,
       label: lang.more.donate,
       link: "https://cdn.jsdelivr.net/gh/mnaddon/ohmymn/assets/donate.gif"
     },
     {
-      type: cellViewType.plainText,
+      type: CellViewType.PlainText,
       label: lang.more.mn5,
       link: ""
     },
     {
-      type: cellViewType.plainText,
+      type: CellViewType.PlainText,
       label: "\n\n\n\n\n\n\n\n",
       link: ""
     }
@@ -44,7 +44,7 @@ const genSection = (
 ): ISection => {
   const rows: IRow[] = [
     {
-      type: cellViewType.plainText,
+      type: CellViewType.PlainText,
       label: config.intro,
       link: config.link
     }
@@ -54,19 +54,19 @@ const genSection = (
     rows.push(setting)
     if (setting.help) {
       switch (setting.type) {
-        case cellViewType.muiltSelect:
-        case cellViewType.select:
-        case cellViewType.switch:
+        case CellViewType.MuiltSelect:
+        case CellViewType.Select:
+        case CellViewType.Switch:
           rows.push({
-            type: cellViewType.plainText,
+            type: CellViewType.PlainText,
             label: "↑ " + setting.help,
             link: setting.link
           })
           break
-        case cellViewType.inlineInput:
-        case cellViewType.input:
+        case CellViewType.InlineInput:
+        case CellViewType.Input:
           rows.push({
-            type: cellViewType.plainText,
+            type: CellViewType.PlainText,
             label: "↑ " + setting.help,
             link: setting.link,
             bind: setting.bind
@@ -141,7 +141,7 @@ const genDataSource = (
   // 更新 quickSwitch 为 moduleList
   const [section_Addon, section_Gesture] = dataSource
   for (const row of section_Addon.rows) {
-    if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
+    if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.map(
         (value, index) => SerialCode.hollow_circle_number[index] + " " + value
       )
@@ -156,7 +156,7 @@ const genDataSource = (
   actionKey4Card.push(..._actionKey4Card)
   actionKey4Text.push(..._actionKey4Text)
   section_Gesture.rows = section_Gesture.rows.map(row => {
-    if (row.type == cellViewType.select) {
+    if (row.type == CellViewType.Select) {
       if (row.key.includes("selectionBar"))
         row.option = [
           lang.implement_datasource_method.none,
@@ -183,7 +183,7 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
     const name = section.key
     dataSourceIndex[name] = {}
     section.rows.forEach((row, rowIndex) => {
-      if (row.type != cellViewType.plainText)
+      if (row.type != CellViewType.PlainText)
         dataSourceIndex[name][row.key] = [secIndex, rowIndex]
     })
   })
@@ -195,8 +195,8 @@ const getActionKeyGetureOption = (section: ISection) => {
   const actionKeys = []
   for (const _row of section.rows) {
     if (
-      _row.type !== cellViewType.button &&
-      _row.type !== cellViewType.buttonWithInput
+      _row.type !== CellViewType.Button &&
+      _row.type !== CellViewType.ButtonWithInput
     )
       continue
     const row = _row as IRowButton
@@ -207,7 +207,7 @@ const getActionKeyGetureOption = (section: ISection) => {
       moduleName: row.moduleName
     })
     if (row.option?.length) {
-      if (row.type == cellViewType.button || row.key == "mergeText") {
+      if (row.type == CellViewType.Button || row.key == "mergeText") {
         row.option.forEach((option, index) => {
           gestureOption.push("——" + option)
           actionKeys.push({

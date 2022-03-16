@@ -1,7 +1,7 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
 import type { IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
 import { profilePreset } from "profile"
@@ -18,18 +18,18 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "customReplace",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_replace,
       bind: [["preset", 0]],
       link
@@ -37,7 +37,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4card: [
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.replace_selected,
       key: "replaceSelected",
       option: option.replace_selected,

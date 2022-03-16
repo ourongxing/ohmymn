@@ -1,6 +1,6 @@
 import { lang } from "./lang"
 import type { IConfig, MbBookNote, ISettingInput, ICheckMethod } from "typings"
-import { cellViewType, UIAlertViewStyle } from "typings/enum"
+import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
@@ -32,37 +32,37 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     {
       label: lable.multiple_titles,
       key: "multipleTitles",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.multiple_titles
     },
     {
       label: lable.multiple_excerpts,
       key: "multipleExcerpts",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.multiple_excerpts
     },
     {
       label: lable.separator_symbols_multiple_card,
       help: help.separator_symbols_multiple_card,
       key: "separatorSymbols",
-      type: cellViewType.inlineInput
+      type: CellViewType.InlineInput
     },
     {
       help: lable.custom_copy,
       key: "customContent",
       link,
-      type: cellViewType.input
+      type: CellViewType.Input
     },
     {
       label: lable.which_search_engine,
       key: "whichSearchEngine",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.which_search_engine
     },
     {
       label: lable.show_search_engine,
       key: "showSearchEngine",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       link,
       help: help.show_search_engine
     },
@@ -75,7 +75,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       "searchQuestion",
       "searchOtherText"
     ].map((k, i) => ({
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: option.which_search_engine[i + 1],
       key: k,
       bind: [["showSearchEngine", 1]]
@@ -83,7 +83,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4card: [
     {
-      type: cellViewType.button,
+      type: CellViewType.Button,
       key: "searchCardInfo",
       label: lable.search_card_info,
       option: option.search_card_info,
@@ -104,7 +104,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       }
     },
     {
-      type: cellViewType.button,
+      type: CellViewType.Button,
       key: "copyCardInfo",
       label: lable.copy_card_info,
       option: option.copy_card_info,
@@ -127,7 +127,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4text: [
     {
-      type: cellViewType.button,
+      type: CellViewType.Button,
       key: "searchText",
       label: "使用 CopySearch 搜索",
       option: ["搜索文字", "搜索图片(base64)"],

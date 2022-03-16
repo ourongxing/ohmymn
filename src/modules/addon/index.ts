@@ -1,7 +1,7 @@
 import { Addon } from "const"
 import { lang } from "./lang"
 import type { IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { docProfilePreset, profilePreset } from "profile"
 
 const profileTemp = {
@@ -19,7 +19,7 @@ const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
     {
       help: help.profile,
       key: "profile",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: Array(5)
         .fill(option.profile)
         .map((_, index) => _ + " " + (index + 1)),
@@ -28,42 +28,42 @@ const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
     {
       label: label.quick_switch,
       key: "quickSwitch",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: []
     },
     {
       key: "panelPosition",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.panel_position,
       label: label.panel_position
     },
     {
       key: "panelHeight",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.panel_height,
       label: label.panel_height
     },
     {
       key: "panelControl",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.panle_control,
       label: label.panle_control
     },
     {
       key: "hasTitleThen",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       label: label.has_title_then,
       help: help.has_title_then,
       option: option.has_title_then
     },
     {
       key: "screenAlwaysOn",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.screen_always_on
     },
     {
       key: "lockExcerpt",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.lock_excerpt
     }
   ]

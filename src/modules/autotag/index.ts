@@ -1,6 +1,6 @@
 import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
 import {
   escapeDoubleQuote,
@@ -27,18 +27,18 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "customTag",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_tag,
       bind: [["preset", 0]],
       link
@@ -46,7 +46,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4card: [
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.tag_selected,
       key: "tagSelected",
       option: option.tag_selected,

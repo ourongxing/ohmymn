@@ -1,5 +1,5 @@
 import { ModuleKeyType } from "synthesizer"
-import { cellViewType } from "./enum"
+import { CellViewType } from "./enum"
 
 export type ISection = {
   key: ModuleKeyType
@@ -14,7 +14,7 @@ interface KeyLabelBind {
 }
 
 export type IRowPlainText = {
-  type: cellViewType.plainText
+  type: CellViewType.PlainText
   label: string
   link?: string
   bind?: [string, number][]
@@ -22,14 +22,14 @@ export type IRowPlainText = {
 
 export type IRowSwitch = Expand<
   {
-    type: cellViewType.switch
+    type: CellViewType.Switch
     status: boolean
   } & KeyLabelBind
 >
 
 export type IRowSelect = Expand<
   {
-    type: cellViewType.select | cellViewType.muiltSelect
+    type: CellViewType.Select | CellViewType.MuiltSelect
     selections: number[]
     option: string[]
   } & KeyLabelBind
@@ -37,21 +37,21 @@ export type IRowSelect = Expand<
 
 export type IRowInput = Expand<
   {
-    type: cellViewType.input
+    type: CellViewType.Input
     content: string
   } & Omit<KeyLabelBind, "label">
 >
 
 export type IRowInlineInput = Expand<
   {
-    type: cellViewType.inlineInput
+    type: CellViewType.InlineInput
     content: string
   } & KeyLabelBind
 >
 
 export type IRowButton = Expand<
   {
-    type: cellViewType.button | cellViewType.buttonWithInput
+    type: CellViewType.Button | CellViewType.ButtonWithInput
     module: ModuleKeyType
     moduleName: string
     option?: string[]

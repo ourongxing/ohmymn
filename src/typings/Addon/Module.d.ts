@@ -1,5 +1,5 @@
 import { MbBookNote } from "typings/MarginNote"
-import { cellViewType } from "./enum"
+import { CellViewType } from "./enum"
 
 export type IConfig<T, K> = Expand<{
   name: string
@@ -24,25 +24,25 @@ type HelpLinkLabel = HelpLink & {
 
 export type ISettingInlineInput<T> = {
   key: PickKeyByValue<T, string>
-  type: cellViewType.inlineInput
+  type: CellViewType.InlineInput
 } & HelpLinkLabel &
   Bind<T>
 
 export type ISettingInput<T> = {
   key: PickKeyByValue<T, string>
-  type: cellViewType.input
+  type: CellViewType.Input
 } & HelpLink &
   Bind<T>
 
 export type ISettingSwitch<T> = {
   key: PickKeyByValue<T, boolean>
-  type: cellViewType.switch
+  type: CellViewType.Switch
 } & HelpLinkLabel &
   Bind<T>
 
 export type ISettingSelect<T> = {
   key: PickKeyByValue<T, number[]>
-  type: cellViewType.select | cellViewType.muiltSelect
+  type: CellViewType.Select | CellViewType.MuiltSelect
   option: string[]
 } & HelpLinkLabel &
   Bind<T>
@@ -59,7 +59,7 @@ export type IAction<
 > = Expand<{
   key: K
   label: string
-  type: cellViewType.button | cellViewType.buttonWithInput
+  type: CellViewType.Button | CellViewType.ButtonWithInput
   /** auto generate. value is module's key*/
   module?: string
   /** auto generate. value is module's name*/

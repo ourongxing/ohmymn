@@ -1,10 +1,10 @@
-export const enum cellViewType {
-  plainText = 0,
-  switch = 1,
-  button = 2,
-  buttonWithInput = 3,
-  input = 4,
-  inlineInput = 5,
-  select = 6,
-  muiltSelect = 7
+export const enum CellViewType {
+  PlainText = 0,
+  Switch = 1,
+  Button = 2,
+  ButtonWithInput = 3,
+  Input = 4,
+  InlineInput = 5,
+  Select = 6,
+  MuiltSelect = 7
 }

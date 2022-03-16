@@ -1,4 +1,4 @@
-import { cellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
+import { CellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
 import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
@@ -22,7 +22,7 @@ const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
       ].map(k => ({
         label: `${q[0]} ${k[0]}`,
         key: `${q[1]}BarSwipe${k[1]}`,
-        type: cellViewType.select,
+        type: CellViewType.Select,
         option
       }))
     })

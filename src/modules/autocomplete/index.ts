@@ -1,6 +1,6 @@
 import { lang } from "./lang"
 import type { MbBookNote, IConfig, ICheckMethod } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
@@ -22,18 +22,18 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "fillWordInfo",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       option: option.fill_word_info,
       label: label.fill_word_info
     },
     {
       key: "customFill",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_fill,
       bind: [["fillWordInfo", 1]],
       link
@@ -42,7 +42,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   actions4card: [
     {
       key: "completeSelected",
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.complete_selected,
       option: option.complete_selected,
       method: async ({ nodes, option }) => {

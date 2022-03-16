@@ -1,5 +1,5 @@
 import type { ICheckMethod, IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
 import { MbBookNote } from "typings"
@@ -26,55 +26,55 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "showArea",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       bind: [["preset", 0]],
       label: label.show_area
     },
     {
       key: "wordCountArea",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       bind: [["preset", 0]],
       label: label.word_count_area
     },
     {
       key: "defaultTextExcerptColor",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       label: label.default_text_excerpt_color,
       option: colors
     },
     {
       key: "defaultTextExcerptStyle",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       label: label.default_text_excerpt_style,
       option: option.style
     },
     {
       key: "defaultPicExcerptColor",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       label: label.default_pic_excerpt_color,
       option: colors
     },
     {
       key: "defaultPicExcerptStyle",
-      type: cellViewType.select,
+      type: CellViewType.Select,
       label: label.default_pic_excerpt_style,
       option: option.style
     }
   ],
   actions4card: [
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.change_color,
       key: "changeColor",
       option: option.change_color,
@@ -99,7 +99,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       }
     },
     {
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.change_style,
       key: "changeStyle",
       option: option.change_style,

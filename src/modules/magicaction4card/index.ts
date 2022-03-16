@@ -7,7 +7,7 @@ import {
 } from "utils/input"
 import { HUDController, showHUD } from "utils/common"
 import type { textComment, IConfig, ICheckMethod } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { getLayerSerialInfo, getSerialInfo, renameTitle } from "./renameTitle"
@@ -35,14 +35,14 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "smartSelection",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.smart_selection
     }
   ],
   actions4card: [
     {
       key: "manageProfile",
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.manage_profile,
       option: option.manage_profile,
       help: help.manage_profile,
@@ -51,7 +51,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       }
     },
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.filter_cards,
       option: option.filter_cards,
       key: "filterCards",
@@ -80,7 +80,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       }
     },
     {
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.merge_cards,
       key: "mergeCards",
       option: option.merge_cards,
@@ -107,14 +107,14 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       }
     },
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.rename_title,
       key: "renameTitle",
       help: help.rename_title,
       method: renameTitle
     },
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.merge_text,
       key: "mergeText",
       help: help.merge_text,
@@ -152,7 +152,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     },
     {
       key: "switchTitle",
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.switch_title,
       option: option.switch_title,
       help: help.switch_title,

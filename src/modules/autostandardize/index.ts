@@ -2,7 +2,7 @@ import { getExcerptNotes } from "utils/note"
 import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
@@ -23,25 +23,25 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "customStandardize",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_standardize,
       bind: [["preset", 0]],
       link
     },
     {
       key: "standardizeTitle",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.standardize_title,
       help: help.standardize_title,
       link
@@ -50,7 +50,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   actions4card: [
     {
       key: "standardizeSelected",
-      type: cellViewType.button,
+      type: CellViewType.Button,
       label: label.standardize_selected,
       option: option.standardize_selected,
       method: ({ nodes, option }) => {

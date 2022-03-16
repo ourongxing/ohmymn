@@ -2,7 +2,7 @@ import { openUrl, popup, postNotification, showHUD } from "utils/common"
 import { checkInputCorrect } from "synthesizer"
 import { Addon, MN } from "const"
 import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
-import { UIAlertViewStyle, cellViewType } from "typings/enum"
+import { UIAlertViewStyle, CellViewType } from "typings/enum"
 import { byteLength } from "utils/text"
 import lang from "lang"
 import { moduleKeyArray } from "synthesizer"
@@ -21,11 +21,11 @@ const tableViewDidSelectRowAtIndexPath = async (
   const sec = self.dataSource[indexPath.section]
   const row = sec.rows[indexPath.row]
   switch (row.type) {
-    case cellViewType.plainText:
+    case CellViewType.PlainText:
       if (row.link) openUrl(row.link)
       break
-    case cellViewType.buttonWithInput:
-    case cellViewType.button:
+    case CellViewType.ButtonWithInput:
+    case CellViewType.Button:
       if (sec.key === "magicaction4card")
         postNotification(Addon.key + "ButtonClick", {
           row,
@@ -90,7 +90,7 @@ const selectAction = async (param: {
   // 区分单选和多选
   if (
     (<IRowSelect>self.dataSource[indexPath.section].rows[indexPath.row]).type ==
-    cellViewType.select
+    CellViewType.Select
   ) {
     ;(<IRowSelect>(
       self.dataSource[indexPath.section].rows[indexPath.row]

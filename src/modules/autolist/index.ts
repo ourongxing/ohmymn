@@ -2,7 +2,7 @@ import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
 import type { ICheckMethod, IConfig } from "typings"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoListPreset, ListSelected } from "./enum"
 import { profilePreset } from "profile"
@@ -23,18 +23,18 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   settings: [
     {
       key: "on",
-      type: cellViewType.switch,
+      type: CellViewType.Switch,
       label: label.on
     },
     {
       key: "preset",
-      type: cellViewType.muiltSelect,
+      type: CellViewType.MuiltSelect,
       option: option.preset,
       label: label.preset
     },
     {
       key: "customList",
-      type: cellViewType.input,
+      type: CellViewType.Input,
       help: help.custom_list,
       bind: [["preset", 0]],
       link
@@ -42,7 +42,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ],
   actions4card: [
     {
-      type: cellViewType.buttonWithInput,
+      type: CellViewType.ButtonWithInput,
       label: label.list_selected,
       key: "listSelected",
       option: option.list_selected,

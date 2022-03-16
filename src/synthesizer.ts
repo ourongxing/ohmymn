@@ -19,7 +19,6 @@ import {
 } from "typings"
 import { showHUD } from "utils/common"
 
-export const constModules = { addon, magicaction4card, magicaction4text }
 export const modules = {
   gesture,
   anotherautotitle,
@@ -32,20 +31,6 @@ export const modules = {
   autostyle,
   copysearch
 }
-
-export type ModuleKeyType =
-  | keyof typeof modules
-  | "magicaction4card"
-  | "magicaction4text"
-  | "addon"
-  | "more"
-
-export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
-type AutoModuleKeyType = Include<keyof typeof modules, "auto">
-
-const isON = (key: AutoModuleKeyType) =>
-  self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
-  self.profile[key].on
 
 export const utils: {
   text?: ((text: string) => MaybePromise<string | false>)[]
@@ -71,6 +56,23 @@ export const utils: {
   ],
   tag: [text => isON("autotag") && autotag.utils.main(text)],
   style: [note => isON("autostyle") && autostyle.utils.main(note)]
+}
+
+export const constModules = { addon, magicaction4card, magicaction4text }
+export type ModuleKeyType =
+  | keyof typeof modules
+  | "magicaction4card"
+  | "magicaction4text"
+  | "addon"
+  | "more"
+export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
+type AutoModuleKeyType = Include<keyof typeof modules, "auto">
+
+const isON = (key: AutoModuleKeyType) => {
+  return (
+    self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
+    self.profile[key].on
+  )
 }
 
 const checkers = Object.values({ ...constModules, ...modules }).reduce(

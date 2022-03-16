@@ -2,7 +2,7 @@ import { dataSourceIndex } from "dataSource"
 import type { UITableView, IRowSelect } from "typings"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
-import { cellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { byteLength, isHalfWidth, SerialCode } from "utils/text"
 import lang from "lang"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
@@ -48,11 +48,11 @@ const _isBindOFF = (bindArr: [string, number][], sectionKey: string) => {
     }
     const row = self.dataSource?.[secIndex].rows?.[rowIndex]
     // row 有两种类型，switch 和 select
-    if (row.type === cellViewType.switch)
+    if (row.type === CellViewType.Switch)
       return row.status === (index ? true : false)
     else if (
-      row.type === cellViewType.select ||
-      row.type === cellViewType.muiltSelect
+      row.type === CellViewType.Select ||
+      row.type === CellViewType.MuiltSelect
     )
       return row.selections.includes(index)
     return false
@@ -66,11 +66,11 @@ const tableViewHeightForRowAtIndexPath = (
   const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
-    case cellViewType.button:
-    case cellViewType.buttonWithInput:
+    case CellViewType.Button:
+    case CellViewType.ButtonWithInput:
       if (row.module && _isModuleOFF(row.module)) return 0
       break
-    case cellViewType.plainText: {
+    case CellViewType.PlainText: {
       if (row.bind && _isBindOFF(row.bind, key)) return 0
       // 每行大约可以容纳 45 个半角字符
       const byte = byteLength(row.label)
@@ -91,7 +91,7 @@ const tableViewCellForRowAtIndexPath = (
   const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
-    case cellViewType.plainText: {
+    case CellViewType.PlainText: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "PlainTextCellID"
@@ -107,8 +107,8 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       return cell
     }
-    case cellViewType.button:
-    case cellViewType.buttonWithInput: {
+    case CellViewType.Button:
+    case CellViewType.ButtonWithInput: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "ButtonCellID"
@@ -124,7 +124,7 @@ const tableViewCellForRowAtIndexPath = (
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)
       return cell
     }
-    case cellViewType.switch: {
+    case CellViewType.Switch: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "SwitchCellID"
@@ -143,7 +143,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.inlineInput: {
+    case CellViewType.InlineInput: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "inlineInputCellID"
@@ -164,7 +164,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.input: {
+    case CellViewType.Input: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "inputCellID"
@@ -179,8 +179,8 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.muiltSelect:
-    case cellViewType.select: {
+    case CellViewType.MuiltSelect:
+    case CellViewType.Select: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "selectCellID"
@@ -191,7 +191,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
       const view = initCellView.select(
-        row.type == cellViewType.select
+        row.type == CellViewType.Select
           ? row.option[row?.selections?.[0] ?? 0]
           : row?.selections?.length
           ? `${row.selections.length} ✓`
