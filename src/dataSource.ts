@@ -3,7 +3,6 @@ import { ISection, IConfig, IRow, IRowButton } from "typings"
 import { cellViewType } from "typings/enum"
 import { SerialCode } from "utils/text"
 import { constModules, ModuleKeyType, modules } from "synthesizer"
-import { Addon } from "const"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -140,8 +139,8 @@ const genDataSource = (
   section_Action4Text.rows.push(...actions4text)
 
   // 更新 quickSwitch 为 moduleList
-  const [section_OhMyMN, section_Gesture] = dataSource
-  for (const row of section_OhMyMN.rows) {
+  const [section_Addon, section_Gesture] = dataSource
+  for (const row of section_Addon.rows) {
     if (row.type == cellViewType.muiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.map(
         (value, index) => SerialCode.hollow_circle_number[index] + " " + value
@@ -233,6 +232,7 @@ const getActionKeyGetureOption = (section: ISection) => {
 }
 
 export const dataSourcePreset = genDataSource(
+  //@ts-ignore
   [addon, ...Object.values(modules)].map(module => module.configs),
   magicaction4card.configs,
   magicaction4text.configs

@@ -1,11 +1,16 @@
 import { addTags, getAllText, removeHighlight } from "utils/note"
-import { escapeDoubleQuote, reverseEscape, string2RegArray } from "utils/input"
+import {
+  escapeDoubleQuote,
+  reverseEscape,
+  string2RegArray,
+  string2ReplaceParam
+} from "utils/input"
 import { HUDController, showHUD } from "utils/common"
-import type { textComment, IConfig } from "typings"
+import type { textComment, IConfig, ICheckMethod } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
-import { renameTitle } from "./renameTitle"
+import { getLayerSerialInfo, getSerialInfo, renameTitle } from "./renameTitle"
 import {
   ActionKey,
   FilterCards,
@@ -14,6 +19,7 @@ import {
   SwitchTitle
 } from "./enum"
 import { profilePreset } from "profile"
+import { checkPlainText, checkRegArray } from "utils/checkInput"
 
 const { help, option, intro, label, link, hud } = lang
 
@@ -173,8 +179,31 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   ]
 }
 
+const checker: ICheckMethod<typeof ActionKey> = (input, key) => {
+  switch (key) {
+    case "mergeText":
+      checkPlainText(input)
+      break
+    case "renameTitle":
+      input = /^\(.+\)$/.test(input)
+        ? input
+        : `(/^.*$/g, "${escapeDoubleQuote(input)}")`
+      const { regexp, newSubStr } = string2ReplaceParam(input)[0]
+      "test".replace(regexp, newSubStr)
+      if (/%\[.+\]/.test(newSubStr)) getSerialInfo(newSubStr, 1)
+      if (/#\[.+\]/.test(newSubStr)) getLayerSerialInfo(newSubStr, [[1, 1, 1]])
+      break
+    case "filterCards":
+      checkRegArray(input)
+      break
+    default:
+      return undefined
+  }
+}
+
 const magicaction4card = {
-  configs
+  configs,
+  checker
 }
 
 export default magicaction4card

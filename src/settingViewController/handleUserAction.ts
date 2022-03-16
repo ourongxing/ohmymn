@@ -1,5 +1,5 @@
 import { openUrl, popup, postNotification, showHUD } from "utils/common"
-import checkInputCorrect from "inputChecker"
+import { checkInputCorrect } from "synthesizer"
 import { Addon, MN } from "const"
 import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
 import { UIAlertViewStyle, cellViewType } from "typings/enum"
@@ -55,8 +55,6 @@ const textFieldShouldReturn = (sender: UITextField) => {
       key: row.key,
       content: text
     })
-  } else {
-    showHUD(lang.handle_user_action.input_error)
   }
   return true
 }
@@ -74,11 +72,13 @@ const switchChange = (sender: UISwitch) => {
   })
 }
 
-let lastSelectInfo: {
-  name: string
-  key: string
-  selections: number[]
-} | null
+let lastSelectInfo:
+  | {
+      name: string
+      key: string
+      selections: number[]
+    }
+  | undefined
 const selectAction = async (param: {
   indexPath: NSIndexPath
   selection: number
@@ -155,10 +155,12 @@ const clickSelectButton = (sender: UIButton) => {
   const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
   const menuController = MenuController.new()
+  const height = 44
   menuController.commandTable = row.option.map((item, index) => ({
     title: item,
     object: self,
     selector: "selectAction:",
+    height,
     param: {
       indexPath,
       menuController,
@@ -166,17 +168,14 @@ const clickSelectButton = (sender: UIButton) => {
     },
     checked: row.selections.includes(index)
   }))
-  menuController.rowHeight = 44
-  const width =
-    byteLength(
-      row.option.reduce((a, b) => (byteLength(a) > byteLength(b) ? a : b))
-    ) *
-      10 +
-    80
+  menuController.rowHeight = height
+  const width = Math.max(...row.option.map(k => byteLength(k))) * 10 + 80
   menuController.preferredContentSize = {
     width: width > 300 ? 300 : width,
-    height: menuController.rowHeight * menuController.commandTable.length
+    height:
+      height * menuController.commandTable.filter(k => k.height !== 0).length
   }
+
   const studyControllerView = MN.studyController().view
   self.popoverController = new UIPopoverController(menuController)
   self.popoverController.presentPopoverFromRect(
@@ -192,7 +191,7 @@ const clickSelectButton = (sender: UIButton) => {
 const popoverControllerDidDismissPopover = () => {
   if (lastSelectInfo) {
     postNotification(Addon.key + "SelectChange", lastSelectInfo)
-    lastSelectInfo = null
+    lastSelectInfo = undefined
   }
 }
 

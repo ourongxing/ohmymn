@@ -1,7 +1,7 @@
 import lang from "lang"
 import { actions4card, actions4text } from "synthesizer"
 import { PanelControl } from "modules/addon/enum"
-import checkInputCorrect from "inputChecker"
+import { checkInputCorrect } from "synthesizer"
 import type { IRowButton, MbBookNote } from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { popup, showHUD, HUDController } from "utils/common"
@@ -13,6 +13,7 @@ import {
   undoGroupingWithRefresh
 } from "utils/note"
 import { MN } from "const"
+import { getMNLinkValue } from "utils/input"
 
 export default async (
   type: "card" | "text",
@@ -38,11 +39,12 @@ export default async (
               }
             }
           )
+          const text = content ? getMNLinkValue(content) : ""
           // 允许为空
-          if (!content || checkInputCorrect(content, row.key)) {
-            await handleMagicAction(type, row.key, option!, content)
+          if (text === "" || (text && checkInputCorrect(text, row.key))) {
+            await handleMagicAction(type, row.key, option!, text)
             return
-          } else showHUD(lang.handle_user_action.input_error)
+          }
         }
       case cellViewType.button:
         const { option } = await popup(

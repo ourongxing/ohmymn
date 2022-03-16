@@ -3,10 +3,12 @@ import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { cellViewType } from "typings/enum"
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
 import { profilePreset } from "profile"
+import { reverseEscape } from "utils/input"
+import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang
 
@@ -119,6 +121,18 @@ const utils = {
       }
     }
     return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
+  }
+}
+
+const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
+  input,
+  key
+) => {
+  switch (key) {
+    case "customStandardize":
+      checkReplaceParamFromMNLink(input)
+    default:
+      return undefined
   }
 }
 

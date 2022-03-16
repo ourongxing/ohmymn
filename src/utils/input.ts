@@ -1,3 +1,6 @@
+import { MN } from "const"
+import { unique } from "utils"
+
 /**
  * 反转义字符串，用于处理用户输入
  */
@@ -83,6 +86,38 @@ export interface ReplaceParam {
   fnKey: number
 }
 
+const extractArray = (text: string, params: ReplaceParam[]) =>
+  unique(
+    params
+      .filter(param => param.regexp.test(text))
+      .map(param => {
+        param.regexp = regFlag.add(param.regexp, "g")
+        return text
+          .match(param.regexp)!
+          .map(item => item.replace(param.regexp, param.newSubStr))
+      })
+      .flat()
+  )
+
+const getMNLinkValue = (link: string) => {
+  const noteid = link.replace("marginnote3app://note/", "")
+  if (noteid === link) return link
+  const node = MN.db.getNoteById(noteid)
+  if (node && node.childNotes?.length) {
+    const x = node.childNotes.reduce((acc, cur) => {
+      const firstComment = cur.comments[0]
+      if (
+        cur.colorIndex !== 13 &&
+        firstComment.type === "TextNote" &&
+        firstComment.text
+      )
+        return [...acc, firstComment.text]
+      return acc
+    }, [] as string[])
+    if (x.length) return x.join(";")
+  } else return undefined
+}
+
 export {
   string2ReplaceParam,
   reverseEscape,
@@ -90,5 +125,7 @@ export {
   string2RegArray,
   escapeDoubleQuote,
   escapeStringRegexp,
-  regFlag
+  regFlag,
+  extractArray,
+  getMNLinkValue
 }

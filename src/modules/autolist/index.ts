@@ -1,11 +1,15 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoListPreset, ListSelected } from "./enum"
 import { profilePreset } from "profile"
+import {
+  checkReplaceParam,
+  checkReplaceParamFromMNLink
+} from "utils/checkInput"
 
 const { intro, option, label, link, help } = lang
 const profileTemp = {
@@ -117,5 +121,20 @@ const utils = {
   }
 }
 
-const autolist = { configs, utils }
+const checker: ICheckMethod<
+  PickByValue<typeof profileTemp, string> & typeof ActionKey
+> = (input, key) => {
+  switch (key) {
+    case "customList":
+      checkReplaceParamFromMNLink(input)
+      break
+    case "listSelected":
+      checkReplaceParam(input)
+      break
+    default:
+      return undefined
+  }
+}
+
+const autolist = { configs, utils, checker }
 export default autolist

@@ -5,8 +5,12 @@ import handleExcerpt, {
 import { layoutViewController } from "jsExtension/switchPanel"
 import lang from "lang"
 import { EventHandler } from "typings"
-import { delayBreak, isThisWindow, showHUD } from "utils/common"
-import { eventHandlerController } from "utils/event"
+import {
+  delayBreak,
+  eventHandlerController,
+  isThisWindow,
+  showHUD
+} from "utils/common"
 import { getNoteById } from "utils/note"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import { updateProfileTemp } from "utils/profile/updateDataSource"

@@ -1,5 +1,5 @@
 import { lang } from "./lang"
-import type { MbBookNote, IConfig } from "typings"
+import type { MbBookNote, IConfig, ICheckMethod } from "typings"
 import { cellViewType } from "typings/enum"
 import { isOCNull, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
@@ -8,6 +8,7 @@ import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
 import { ActionKey, CompleteSelected, FillWordInfo } from "./enum"
 import { profilePreset } from "profile"
+import { checkPlainText } from "utils/checkInput"
 
 const { error, intro, link, option, label, help } = lang
 const profileTemp = {
@@ -213,5 +214,18 @@ const utils = {
   }
 }
 
-const autocomplete = { configs, utils }
+const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
+  input,
+  key
+) => {
+  switch (key) {
+    case "customFill":
+      checkPlainText(input)
+      break
+    default:
+      return undefined
+  }
+}
+
+const autocomplete = { configs, utils, checker }
 export default autocomplete

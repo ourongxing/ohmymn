@@ -11,7 +11,13 @@ import gesture from "modules/gesture"
 import copysearch from "modules/copysearch"
 import addon from "modules/addon"
 import magicaction4text from "modules/magicaction4text"
-import { IActionMethod4Card, IActionMethod4Text, MbBookNote } from "typings"
+import {
+  IActionMethod4Card,
+  IActionMethod4Text,
+  ICheckMethod,
+  MbBookNote
+} from "typings"
+import { showHUD } from "utils/common"
 
 export const constModules = { addon, magicaction4card, magicaction4text }
 export const modules = {
@@ -65,6 +71,27 @@ export const utils: {
   ],
   tag: [text => isON("autotag") && autotag.utils.main(text)],
   style: [note => isON("autostyle") && autostyle.utils.main(note)]
+}
+
+const checkers = Object.values({ ...constModules, ...modules }).reduce(
+  (acc, cur) => {
+    if ("checker" in cur) acc.push(cur.checker)
+    return acc
+  },
+  [] as ICheckMethod<AnyProperty<any>>[]
+)
+
+export const checkInputCorrect = (input: string, key: string): boolean => {
+  try {
+    for (const checker of checkers) {
+      const res = checker(input, key)
+      if (res !== undefined) return true
+    }
+  } catch (err) {
+    showHUD(String(err) ? String(err) : "格式错误，请查看相关文档", 2)
+    return false
+  }
+  return true
 }
 
 export const actions4text = (() => {

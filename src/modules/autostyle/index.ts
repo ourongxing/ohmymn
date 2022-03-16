@@ -1,4 +1,4 @@
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
@@ -207,9 +207,34 @@ const utils = {
   }
 }
 
+const checker: ICheckMethod<
+  PickByValue<typeof profileTemp, string> & typeof ActionKey
+> = (input, key) => {
+  switch (key) {
+    case "changeColor":
+      const index = Number(input)
+      if (!Number.isInteger(index)) throw "不是数字"
+      if (index > 16 || index < 1) throw "不再范围内"
+      break
+    case "wordCountArea": {
+      input = reverseEscape(input)
+      if (
+        Array.isArray(input) &&
+        input.length == 3 &&
+        input.every(item => Number.isInteger(item))
+      ) {
+      } else throw "格式错误"
+      break
+    }
+    default:
+      return undefined
+  }
+}
+
 const autostyle = {
   configs,
-  utils
+  utils,
+  checker
 }
 
 export default autostyle

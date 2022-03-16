@@ -1,10 +1,11 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
 import { profilePreset } from "profile"
+import { checkRegArrayFromMNLink } from "utils/checkInput"
 
 const { option, intro, help, link, label } = lang
 
@@ -88,5 +89,27 @@ const utils = {
   }
 }
 
-const anotherautotitle = { configs, utils }
+const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
+  input,
+  key
+) => {
+  switch (key) {
+    case "wordCount": {
+      input = reverseEscape(input)
+      if (
+        Array.isArray(input) &&
+        input.length == 2 &&
+        input.every(item => Number.isInteger(item))
+      ) {
+      } else throw "格式错误"
+      break
+    }
+    case "customBeTitle":
+      checkRegArrayFromMNLink(input)
+    default:
+      return undefined
+  }
+}
+
+const anotherautotitle = { configs, utils, checker }
 export default anotherautotitle

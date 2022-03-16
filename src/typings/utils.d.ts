@@ -35,4 +35,3 @@ type PickByValueExact<T, ValueType> = Pick<
       : never
   }[keyof T]
 >
-type NeverOrAny<T> = T extends never ? any : T

@@ -1,5 +1,5 @@
 import { lang } from "./lang"
-import type { IConfig, MbBookNote, ISettingInput } from "typings"
+import type { IConfig, MbBookNote, ISettingInput, ICheckMethod } from "typings"
 import { cellViewType, UIAlertViewStyle } from "typings/enum"
 import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
@@ -16,6 +16,8 @@ import {
 import { isHalfWidth } from "utils/text"
 import { ActionKey, CopySearchCardInfo, MultipleTitlesExcerpt } from "./enum"
 import { profilePreset } from "profile"
+import { Addon } from "const"
+import { checkPlainText } from "utils/checkInput"
 const { link, intro, lable, option, help, hud } = lang
 
 const profileTemp = {
@@ -77,7 +79,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       help: option.which_search_engine[i + 1],
       key: k,
       bind: [["showSearchEngine", 1]]
-    })) as ISettingInput<keyof typeof profileTemp>[])
+    })) as ISettingInput<typeof profileTemp>[])
   ],
   actions4card: [
     {
@@ -141,7 +143,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
 const utils = {
   async chooseYouWantText(arr: string[], type: "title" | "excerpt") {
     const { option } = await popup(
-      "OhMyMN",
+      Addon.title,
       hud.choose_you_want(type === "title"),
       UIAlertViewStyle.Default,
       arr.map(k => {
@@ -218,7 +220,7 @@ const utils = {
   async search(text: string) {
     const chooseYouWantEngine = async (engines: string[]) => {
       const { option } = await popup(
-        "OhMyMN",
+        Addon.title,
         hud.choose_search_engine,
         UIAlertViewStyle.Default,
         engines,
@@ -348,5 +350,25 @@ const utils = {
   }
 }
 
-const copysearch = { configs, utils }
+const checker: ICheckMethod<typeof profileTemp> = (input, key) => {
+  switch (key) {
+    case "searchChineseText":
+    case "searchEnglishText":
+    case "searchWord":
+    case "searchTranslation":
+    case "searchAcademic":
+    case "searchQuestion":
+    case "searchOtherText":
+      if (!input.includes("{{keyword}}")) throw "没有输入 {{keyword}}"
+      break
+    case "customContent":
+    case "separatorSymbols":
+      checkPlainText(input)
+      break
+    default:
+      return undefined
+  }
+}
+
+const copysearch = { configs, utils, checker }
 export default copysearch

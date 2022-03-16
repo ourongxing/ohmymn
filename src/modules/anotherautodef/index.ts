@@ -1,12 +1,16 @@
-import { regFlag, string2ReplaceParam } from "utils/input"
+import { extractArray, regFlag, string2ReplaceParam } from "utils/input"
 import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { cellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
-import { extractArray } from "utils/custom"
 import { ActionKey, AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
 import { profilePreset } from "profile"
+import {
+  checkRegArrayFromMNLink,
+  checkReplaceParam,
+  checkReplaceParamFromMNLink
+} from "utils/checkInput"
 
 const { label, option, intro, link, help } = lang
 
@@ -223,6 +227,25 @@ const utils = {
   }
 }
 
-const anotherautodef = { configs, utils }
+const checker: ICheckMethod<
+  PickByValue<typeof profileTemp, string> & typeof ActionKey
+> = (input, key) => {
+  switch (key) {
+    case "customDefLink":
+    case "customTitleSplit":
+      checkRegArrayFromMNLink(input)
+      break
+    case "customExtractTitle":
+      checkReplaceParamFromMNLink(input)
+      break
+    case "extractTitle":
+      checkReplaceParam(input)
+      break
+    default:
+      return undefined
+  }
+}
+
+const anotherautodef = { configs, utils, checker }
 
 export default anotherautodef

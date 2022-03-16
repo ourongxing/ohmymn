@@ -1,15 +1,18 @@
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { cellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
 import {
   escapeDoubleQuote,
-  ReplaceParam,
+  extractArray,
   string2ReplaceParam
 } from "utils/input"
-import { extractArray } from "utils/custom"
 import { ActionKey, AutoTagPreset, TagSelected } from "./enum"
 import { profilePreset } from "profile"
+import {
+  checkReplaceParam,
+  checkReplaceParamFromMNLink
+} from "utils/checkInput"
 
 const { intro, option, label, link, help } = lang
 
@@ -84,8 +87,27 @@ const utils = {
   }
 }
 
+const checker: ICheckMethod<
+  PickByValue<typeof profileTemp, string> & typeof ActionKey
+> = (input, key) => {
+  switch (key) {
+    case "tagSelected":
+      input = /^\(.*\)$/.test(input)
+        ? input
+        : `(/./, "${escapeDoubleQuote(input)}")`
+      checkReplaceParam(input)
+      break
+    case "customTag":
+      checkReplaceParamFromMNLink(input)
+    default:
+      return undefined
+  }
+}
+
 const autotag = {
   configs,
-  utils
+  utils,
+  checker
 }
+
 export default autotag

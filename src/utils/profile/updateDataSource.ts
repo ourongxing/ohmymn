@@ -1,31 +1,14 @@
-import { MN } from "const"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile } from "profile"
 import { dataSourceIndex } from "dataSource"
 import { IRowInlineInput, IRowInput, IRowSelect, IRowSwitch } from "typings"
-import { ReplaceParam, string2RegArray, string2ReplaceParam } from "utils/input"
+import {
+  getMNLinkValue,
+  ReplaceParam,
+  string2RegArray,
+  string2ReplaceParam
+} from "utils/input"
 import { deepCopy } from "utils"
-
-export const getMNLinkValue = (val: string) => {
-  const noteid = val.replace("marginnote3app://note/", "")
-  if (noteid != val) {
-    const node = MN.db.getNoteById(noteid)
-    if (node && node.childNotes?.length) {
-      const x = node.childNotes.reduce((acc, cur) => {
-        const firstComment = cur.comments[0]
-        if (
-          cur.colorIndex !== 13 &&
-          firstComment.type === "TextNote" &&
-          firstComment.text
-        )
-          return [...acc, firstComment.text]
-        return acc
-      }, [] as string[])
-      if (x.length) return x.join(";")
-    } else return undefined
-  }
-  return val
-}
 
 export const updateProfileTemp = (key: string, val: string) => {
   const newValue = getMNLinkValue(val)
