@@ -5,6 +5,8 @@ import { defineConfig } from "rollup"
 import mnaddon from "./mnaddon.json"
 import AutoImport from "unplugin-auto-import/rollup"
 import copy from "rollup-plugin-copy"
+import commonjs from "@rollup/plugin-commonjs"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
 
 const dir =
   os.homedir() +
@@ -18,8 +20,13 @@ export default defineConfig({
     exports: "none",
     sourcemap: false
   },
+  watch: {
+    exclude: "../node_modules/**"
+  },
   plugins: [
     typescript(),
+    nodeResolve({ browser: true }),
+    commonjs(),
     json(),
     AutoImport({
       imports: [

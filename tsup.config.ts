@@ -1,6 +1,7 @@
 import { defineConfig } from "tsup"
 import AutoImport from "unplugin-auto-import/esbuild"
 import { copy } from "esbuild-plugin-copy"
+import commonjsPlugin from "@chialab/esbuild-plugin-commonjs"
 import mnaddon from "./mnaddon.json"
 import os from "os"
 import path from "path"
@@ -39,6 +40,7 @@ export default defineConfig({
     "main.js"
   )}"`,
   esbuildPlugins: [
+    commonjsPlugin(),
     AutoImport({
       imports: [
         {
