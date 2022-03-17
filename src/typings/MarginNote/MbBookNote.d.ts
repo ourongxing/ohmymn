@@ -1,12 +1,13 @@
 import { groupMode } from "./enum"
 import { MbBook, MbTopic } from "./NoteDatabase"
 
-interface pic {
+export interface MNPic {
+  /** hash */
   paint: string
   size: unknown
 }
 
-interface excerptPic extends pic {
+interface excerptPic extends MNPic {
   selLst: {
     [key: number]: {
       rotation: number
@@ -61,10 +62,10 @@ export interface linkComment_pic {
   type: "LinkNote"
   noteid: string
   q_htext?: textComment["text"]
-  q_hpic: pic
+  q_hpic: MNPic
 }
 
-export interface paintComment extends pic {
+export interface paintComment extends MNPic {
   type: "PaintNote"
 }
 

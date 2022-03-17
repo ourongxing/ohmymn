@@ -1,23 +1,17 @@
 import { lang } from "./lang"
 import type { IConfig, MbBookNote, ISettingInput, ICheckMethod } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { dateFormat } from "utils"
 import { openUrl, popup, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
-import {
-  getAllText,
-  removeHighlight,
-  getExcerptText,
-  getAllTags,
-  getAllCommnets,
-  getNotebookById,
-  getDocumentById
-} from "utils/note"
+import { getExcerptText } from "utils/note"
 import { isHalfWidth } from "utils/text"
 import { ActionKey, CopySearchCardInfo, MultipleTitlesExcerpt } from "./enum"
 import { profilePreset } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
+import MagicNode from "jsExtension/nodeProperties"
+import Mustache from "mustache"
+import getNodeProperties from "jsExtension/nodeProperties"
 const { link, intro, lable, option, help, hud } = lang
 
 const profileTemp = {
@@ -264,84 +258,12 @@ const utils = {
   getCustomContent(node: MbBookNote) {
     const { customContent } = self.profile.copysearch
     if (!customContent) return ""
+    console.log("执行了吗")
     const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
-
-    const allExcerptText = getExcerptText(node)
-    const excerptText_h = allExcerptText.join("\n")
-    const excerptText = removeHighlight(excerptText_h)
-    const excerptText_h1 = allExcerptText.length ? allExcerptText[0] : ""
-    const excerptText_1 = removeHighlight(excerptText_h1)
-
-    const allText_h = getAllText(node)
-    const allText = removeHighlight(allText_h)
-
-    const tags = getAllTags(node)
-    const tagGroup = {
-      tag_h: tags.join(" "),
-      tag_h1: tags[0] ?? "",
-      tag: tags.map(k => k.slice(1)).join(" "),
-      tag_1: tags[0]?.slice(1) ?? ""
-    }
-
-    const comments = getAllCommnets(node)
-    const comment = comments.join("\n")
-    const comment_1 = comments[0] ?? ""
-
-    const dateGroup = {
-      createTime: node.createDate ? dateFormat(node.createDate) : "",
-      modifiedTime: node.modifiedDate ? dateFormat(node.modifiedDate) : "",
-      now: dateFormat(new Date())
-    }
-
-    const notebookGroup = {
-      documentTitle: node.docMd5
-        ? getDocumentById(node.docMd5).docTitle ?? ""
-        : "",
-      notebookTitle: node.notebookId
-        ? getNotebookById(node.notebookId).title ?? ""
-        : "",
-      notebookLink: node.notebookId
-        ? "marginnote3app://notebook/" + node.notebookId
-        : ""
-    }
-
-    const vars = {
-      ...tagGroup,
-      ...dateGroup,
-      ...notebookGroup,
-      excerptText,
-      excerptText_h,
-      excerptText_1,
-      excerptText_h1,
-      allText,
-      allText_h,
-      comment,
-      comment_1,
-      title: node.noteTitle ?? "",
-      title_1: node.noteTitle?.split(/\s*[;；]\s*/)[0] ?? "",
-      link: node.noteId ? "marginnote3app://note/" + node.noteId : ""
-    }
-    const varsReg = `(?:${Object.keys(vars).join("|")})`
-    const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
-    const bracketReg = new RegExp(
-      `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
-      "gs"
-    )
-    return template
-      .replace(
-        bracketReg,
-        (match: string, bracket: string, brace: keyof typeof vars) =>
-          /**
-           * ((星级：{{collins}}))
-           * bracket (())  星级：{{collins}}
-           * brace {{}}   collins
-           */
-          vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
-      )
-      .replace(braceReg, (match: string, brace: keyof typeof vars) =>
-        vars[brace] ? vars[brace] : ""
-      )
-      .trim()
+    console.log(template)
+    const res = Mustache.render(template, getNodeProperties(node))
+    console.log(res)
+    return res
   },
   copy(text: string) {
     const pasteBoard = UIPasteboard.generalPasteboard()

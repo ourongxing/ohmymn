@@ -1,4 +1,4 @@
-import { MbBook, MbBookNote, MbTopic } from "typings"
+import { MbBook, MbBookNote, MbTopic, MNPic } from "typings"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
@@ -60,21 +60,44 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
   )
 }
 
+const exportPic = (pic: MNPic) => {
+  const base64 = MN.db.getMediaByHash(pic.paint)!.base64Encoding()
+  return {
+    base64,
+    html: `<img src="data:image/jpeg;base64,${base64}"/>`,
+    md: `![](data:image/jpeg;base64,${base64})`
+  }
+}
+
 /**
  * 获取卡片中的所有摘录文字
  * @param node 卡片节点
  * @param highlight 默认有重点
+ * @param pic 默认为 OCR 后的文字
  */
-const getExcerptText = (node: MbBookNote, highlight = true): string[] => {
-  return node.comments.reduce(
+const getExcerptText = (
+  node: MbBookNote,
+  highlight = true,
+  picType: "ocr" | "base64" | "html" | "md" = "ocr"
+): string[] => {
+  let mainExcerpt = node.excerptText ?? ""
+  if (node.excerptPic && picType !== "ocr") {
+    mainExcerpt = exportPic(node.excerptPic)[picType]
+  }
+  const excerpts = node.comments.reduce(
     (acc, cur) => {
-      cur.type == "LinkNote" &&
-        cur.q_htext &&
-        acc.push(highlight ? cur.q_htext : removeHighlight(cur.q_htext))
+      if (cur.type == "LinkNote") {
+        let text = cur.q_htext ?? ""
+        if ("q_hpic" in cur && picType != "ocr") {
+          text = exportPic(cur.q_hpic)[picType]
+        }
+        text && acc.push(text)
+      }
       return acc
     },
-    node.excerptText ? [node.excerptText] : []
+    mainExcerpt ? [mainExcerpt] : []
   )
+  return highlight ? excerpts : excerpts.map(k => removeHighlight(k))
 }
 
 const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
@@ -131,24 +154,12 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
  * @returns
  */
 
-const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
-  const textArr = []
-  note.excerptText &&
-    textArr.push(
-      highlight ? note.excerptText : removeHighlight(note.excerptText)
-    )
-  note.comments.forEach(comment => {
-    switch (comment.type) {
-      case "TextNote":
-      case "HtmlNote":
-        const text = comment.text.trim()
-        text && !text.includes("marginnote3app") && textArr.push(text)
-        break
-      case "LinkNote":
-        comment.q_htext && textArr.push(comment.q_htext)
-    }
-  })
-  return textArr.join(separator)
+const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
+  return [
+    ...getExcerptText(node, highlight, "ocr"),
+    ...getAllCommnets(node, "none"),
+    getAllTags(node).join(" ")
+  ].join(separator)
 }
 
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
@@ -163,9 +174,14 @@ const getAllTags = (node: MbBookNote, hash = true) => {
   return hash ? tags : tags.map(k => k.slice(1))
 }
 
-const getAllCommnets = (node: MbBookNote) => {
+const getAllCommnets = (
+  node: MbBookNote,
+  picType: "none" | "base64" | "html" | "md" = "none"
+) => {
   return node.comments.reduce((acc, cur) => {
-    if (cur.type == "TextNote" || cur.type == "HtmlNote") {
+    if (cur.type === "PaintNote" && picType !== "none") {
+      acc.push(exportPic(cur)[picType])
+    } else if (cur.type == "TextNote" || cur.type == "HtmlNote") {
       const text = cur.text.trim()
       text &&
         !text.includes("marginnote3app") &&
