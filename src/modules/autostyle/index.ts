@@ -45,7 +45,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       key: "wordCountArea",
       type: CellViewType.Input,
       bind: [["preset", 0]],
-      label: label.word_count_area
+      help: label.word_count_area
     },
     {
       key: "defaultTextExcerptColor",

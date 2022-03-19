@@ -31,8 +31,9 @@ export type ISettingInlineInput<T> = {
 export type ISettingInput<T> = {
   key: PickKeyByValue<T, string>
   type: CellViewType.Input
-} & HelpLink &
-  Bind<T>
+  help: string
+  link?: string
+} & Bind<T>
 
 export type ISettingSwitch<T> = {
   key: PickKeyByValue<T, boolean>

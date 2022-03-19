@@ -33,7 +33,7 @@ const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
       key: "wordCount",
       type: CellViewType.Input,
       bind: [["preset", 1]],
-      label: label.word_count
+      help: label.word_count
     },
     {
       key: "customBeTitle",
