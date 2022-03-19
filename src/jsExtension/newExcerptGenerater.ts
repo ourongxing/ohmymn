@@ -2,6 +2,14 @@ import { MbBookNote } from "typings"
 import { utils } from "synthesizer"
 import { HasTitleThen } from "modules/addon/enum"
 
+export const customOCR = async () => {
+  if (utils.customOCR)
+    for (const util of utils.customOCR) {
+      const res = await util()
+      if (res) return res
+    }
+}
+
 export const newTitleText = async (
   text: string,
   nodeTitle: string[] | undefined,
@@ -11,8 +19,8 @@ export const newTitleText = async (
   const { cacheExcerptTitle } = self.docProfile.additional
 
   const newText = await (async text => {
-    if (utils.text)
-      for (const util of utils.text) {
+    if (utils.modifyExcerptText)
+      for (const util of utils.modifyExcerptText) {
         const res = await util(text)
         if (res) text = res
       }
@@ -28,8 +36,8 @@ export const newTitleText = async (
     return defaultRet
 
   const res = await (async text => {
-    if (utils.title)
-      for (const util of utils.title) {
+    if (utils.generateTitles)
+      for (const util of utils.generateTitles) {
         const res = await util(text)
         if (res) return res
       }
@@ -37,9 +45,14 @@ export const newTitleText = async (
 
   if (!res) return defaultRet
 
-  // 规范化英文标题
-  // if (isON("autostandardize") && self.profile.autostandardize.standardizeTitle)
-  //   res.title = res.title.map(k => autostandardize.toTitleCase(k))
+  res.title = await (async title => {
+    if (utils.modifyTitles)
+      for (const util of utils.modifyTitles) {
+        const res = await util(title)
+        if (res) title = res
+      }
+    return title
+  })(res.title)
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
     const [oldTitle, stillUsingTitle] = (() => {
@@ -70,16 +83,16 @@ export const newTitleText = async (
 }
 
 export const newTag = async (text: string) => {
-  if (utils.tag)
-    for (const util of utils.tag) {
+  if (utils.generateTags)
+    for (const util of utils.generateTags) {
       const res = await util(text)
       if (res) return res
     }
 }
 
 export const newColorStyle = async (note: MbBookNote) => {
-  if (utils.style)
-    for (const util of utils.style) {
+  if (utils.modifyStyle)
+    for (const util of utils.modifyStyle) {
       const res = await util(note)
       if (res) return res
     }

@@ -39,6 +39,7 @@ const sceneWillConnect = () => {
   self.docProfile = deepCopy(docProfilePreset)
   self.profileTemp = deepCopy(profileTempPreset)
   self.dataSource = deepCopy(dataSourcePreset)
+  self.OCROnline = { times: 0, status: "free" }
   self.customSelectedNodes = []
   self.settingViewController = new SettingViewController()
   self.settingViewController.dataSource = self.dataSource

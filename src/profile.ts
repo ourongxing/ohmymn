@@ -95,6 +95,18 @@ const profilePreset = {
     searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
     searchQuestion: "https://www.zhihu.com/search?q={{keyword}}",
     searchOtherText: ""
+  },
+  autoocr: {
+    apiKey: "ImL4X1uCXDlt5piVeFIT6peo",
+    secretKey: "xEHxQpBpXLrEVSN9hFScZszS5X0cN639",
+    showKey: true
+  },
+  // 不显示在 UI 上的配置信息
+  additional: {
+    autoocr: {
+      lastGetToken: 0,
+      baiduToken: ""
+    }
   }
 }
 
@@ -102,11 +114,13 @@ const docProfilePreset = {
   addon: {
     profile: [0]
   },
+  autoocr: {
+    on: false,
+    lang: [0]
+  },
   // 不显示在 UI 上的配置信息
   additional: {
-    // 这个文档上次打开的时间
     lastExcerpt: 0,
-    // 保存每次自动生成的标题，如果一个月没打开过该文档，则删除该配置，防止配置文件过大。
     cacheExcerptTitle: {} as {
       [noteid: string]: string[] | undefined
     }

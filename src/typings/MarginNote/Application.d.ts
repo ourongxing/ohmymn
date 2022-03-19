@@ -11,6 +11,7 @@ export class DocumentController {
   readonly visibleFocusNote?: MbBookNote
   readonly selectionText?: string
   imageFromSelection(): NSData
+  imageFromFocusNote(): NSData
 }
 
 export class MindMapNode {

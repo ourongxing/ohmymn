@@ -6,7 +6,12 @@ import {
   undoGroupingWithRefresh
 } from "utils/note"
 import { delayBreak } from "utils/common"
-import { newColorStyle, newTag, newTitleText } from "./newExcerptGenerater"
+import {
+  customOCR,
+  newColorStyle,
+  newTag,
+  newTitleText
+} from "./newExcerptGenerater"
 import { MbBookNote } from "typings"
 
 let note: MbBookNote
@@ -37,41 +42,55 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     return console.log("检测到开启锁定摘录选项，还原摘录", "excerpt")
   }
 
-  /*
-   * 图片 -> OCR -> 自动矫正
-   * 文字 -> 自动矫正
-   * OCR 要等，再处理
-   * 自动矫正也要等，再处理
+  /**
+   * OCR 的逻辑
+   * 对于扫描版的 PDF，不管有没有文字层，就算啥都没打开，都会进行 OCR，以便在搜索时能搜索图片上的文字。
+   * 另外，矩形摘录自动转文本本质上也是在线 OCR，然后就不会在线矫正了。需要判断是否经历了一次 begin -> end，不管怎么样，都只会进行一次在线 OCR。
    */
   if (note.excerptPic) {
     const autoOCR =
       getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
-    console.log("摘录是图片", "excerpt")
+    console.log("摘录是图片", "ocr")
     if (autoOCR) {
-      const success = await delayBreak(20, 0.1, () =>
+      const success = await delayBreak(30, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
-        console.log("OCR 成功", "excerpt")
+        console.log("转文字成功", "ocr")
+        // 如果本身就是纯文字的 PDF， 是不需要 OCR 的。但是其他情况就会调用在线 OCR 来转文字,
+        // 这倒没啥影响，因为 OCR 完才会显示文字。
+        console.log(self.OCROnline.times === 1 ? "是 OCR" : "不是 OCR", "ocr")
         isOCR = true
-      } else return console.log("OCR 失败，没有文字", "excerpt")
-    } else return console.log("没有开启自动 OCR 选项，不处理图片", "excerpt")
+      } else return console.log("转文字失败，没有文字", "ocr")
+    } else return console.log("没有开启自动转文字选项，不处理图片", "ocr")
   }
 
-  // 修改摘录的时候貌似矫正会慢一会启动，所有这里需要等一下，差不多 0.2s 左右
-  self.isModify &&
-    (await delayBreak(4, 0.05, () => self.OCROnlineStatus === "begin"))
-  if (self.OCROnlineStatus && self.OCROnlineStatus === "begin") {
-    console.log("开始矫正", "excerpt")
-    const success = await delayBreak(
-      30,
-      0.1,
-      () => self.OCROnlineStatus === "end"
-    )
-    if (success) console.log("矫正成功", "excerpt")
-    else console.log("矫正失败", "excerpt")
-    self.OCROnlineStatus = undefined
+  // 在线矫正，也就是在线 OCR，执行完之后才会执行自定义的 OCR，最好是关闭在线矫正
+  // 表示前面矩形摘录转文字没有使用在线 OCR
+  if (self.OCROnline.times === 0) {
+    self.isModify &&
+      (await delayBreak(30, 0.01, () => self.OCROnline.status === "begin"))
+    if (self.OCROnline.status === "begin") {
+      console.log("开始在线矫正", "ocr")
+      const success = await delayBreak(
+        30,
+        0.1,
+        () => self.OCROnline.status === "end"
+      )
+      if (success) console.log("矫正成功", "ocr")
+      else console.log("矫正失败", "ocr")
+    }
   }
+  // 重置状态
+  self.OCROnline = {
+    times: 0,
+    status: "free"
+  }
+
+  // 自定义 OCR
+  const OCRContent = await customOCR()
+  console.log("OCR 执行完毕", "ocr")
+  if (OCRContent) note.excerptText = OCRContent
 
   decorateExecrpt()
   const excerptText = note.excerptText?.trim()

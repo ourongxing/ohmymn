@@ -23,32 +23,17 @@ export const eventHandlers = eventHandlerController([
   Addon.key + "ButtonClick",
   Addon.key + "SelectChange",
   Addon.key + "SwitchChange",
+  "OCRForNote",
   "OCRImageEnd",
   "OCRImageBegin",
-  "PopupMenuOnNote",
-  "OCRForNote",
   "EndOCRForNote",
+  "PopupMenuOnNote",
   "ProcessNewExcerpt",
   "ChangeExcerptRange",
   "PopupMenuOnSelection",
   "ClosePopupMenuOnNote",
   "ClosePopupMenuOnSelection"
 ])
-
-// 除了摘录时 OCR，选中文本时手动 OCR 也会触发。
-const onOCRForNote: EventHandler = sender => {
-  if (!isThisWindow(sender)) return
-  self.OCROnlineStatus = "begin"
-  console.log("开始 OCR", "event")
-  console.log(self.OCROnlineStatus)
-}
-
-const onEndOCRForNote: EventHandler = sender => {
-  if (!isThisWindow(sender)) return
-  self.OCROnlineStatus = "end"
-  console.log("结束 OCR", "event")
-  console.log(self.OCROnlineStatus)
-}
 
 const onButtonClick: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
@@ -61,7 +46,9 @@ const onSwitchChange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("切换了开关", "event")
   const { name, key, status } = sender.userInfo
-  self.profile[name][key] = status
+  if (self.profile?.[name]?.[key] !== undefined)
+    self.profile[name][key] = status
+  else self.docProfile[name][key] = status
   switch (key) {
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled =
@@ -80,7 +67,9 @@ const onSelectChange: EventHandler = async sender => {
     saveProfile(undefined, lastProfileNum)
     readProfile(Range.Global)
   } else {
-    self.profile[name][key] = selections
+    if (self.profile?.[name]?.[key] !== undefined)
+      self.profile[name][key] = selections
+    else self.docProfile[name][key] = selections
     switch (key) {
       case "panelPosition":
       case "panelHeight":
@@ -94,9 +83,25 @@ const onInputOver: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("输入了内容", "event")
   const { name, key, content } = sender.userInfo
-  self.profile[name][key] = content
+  if (self.profile?.[name]?.[key] !== undefined)
+    self.profile[name][key] = content
+  else self.docProfile[name][key] = content
   updateProfileTemp(key, content)
   showHUD(content ? input_saved : input_clear)
+}
+
+// 除了摘录时 OCR，选中文本时手动 OCR 也会触发。
+const onOCRImageBegin: EventHandler = sender => {
+  if (!isThisWindow(sender)) return
+  self.OCROnline.status = "begin"
+  console.log("开始 OCR", "ocr")
+}
+
+const onOCRImageEnd: EventHandler = async sender => {
+  if (!isThisWindow(sender)) return
+  self.OCROnline.status = "end"
+  self.OCROnline.times = 1
+  console.log("结束 OCR", "ocr")
 }
 
 const onPopupMenuOnSelection: EventHandler = sender => {
@@ -174,9 +179,11 @@ const onProcessNewExcerpt: EventHandler = sender => {
 
 export default {
   onInputOver,
-  onOCRForNote,
+  // onOCRForNote,
+  onOCRImageBegin,
+  onOCRImageEnd,
   onButtonClick,
-  onEndOCRForNote,
+  // onEndOCRForNote,
   onSelectChange,
   onSwitchChange,
   onPopupMenuOnNote,

@@ -11,7 +11,8 @@ import gesture from "modules/gesture"
 import copysearch from "modules/copysearch"
 import addon from "modules/addon"
 import magicaction4text from "modules/magicaction4text"
-import {
+import autoocr from "modules/autoocr"
+import type {
   IActionMethod4Card,
   IActionMethod4Text,
   ICheckMethod,
@@ -29,41 +30,50 @@ export const modules = {
   autolist,
   autotag,
   autostyle,
-  copysearch
+  copysearch,
+  autoocr
 }
 
-export const utils: {
-  text?: ((text: string) => MaybePromise<string | false>)[]
-  title?: ((
-    text: string
-  ) => MaybePromise<{ title: string[]; text: string } | undefined | false>)[]
-  tag?: ((text: string) => MaybePromise<string[] | false>)[]
-  style?: ((
-    note: MbBookNote
-  ) => MaybePromise<
-    { color: number | undefined; style: number | undefined } | false
-  >)[]
-} = {
-  text: [
+export const utils: Utils = {
+  customOCR: [() => isON("autoocr") && autoocr.utils.main()],
+  modifyExcerptText: [
     text => isON("autostandardize") && autostandardize.utils.main(text),
     text => isON("autolist") && autolist.utils.main(text),
     text => isON("autoreplace") && autoreplace.utils.main(text)
   ],
-  title: [
+  generateTitles: [
     text => isON("autocomplete") && autocomplete.utils.main(text),
     text => isON("anotherautodef") && anotherautodef.utils.main(text),
     text => isON("anotherautotitle") && anotherautotitle.utils.main(text)
   ],
-  tag: [text => isON("autotag") && autotag.utils.main(text)],
-  style: [note => isON("autostyle") && autostyle.utils.main(note)]
+  modifyTitles: [
+    titles =>
+      isON("autostandardize") &&
+      self.profile.autostandardize.standardizeTitle &&
+      titles.map(k => autostandardize.utils.toTitleCase(k))
+  ],
+  generateTags: [text => isON("autotag") && autotag.utils.main(text)],
+  modifyStyle: [note => isON("autostyle") && autostyle.utils.main(note)]
+}
+
+type Utils = {
+  customOCR?: (() => MaybePromise<string | undefined | false>)[]
+  modifyExcerptText?: ((text: string) => MaybePromise<string | false>)[]
+  generateTitles?: ((
+    text: string
+  ) => MaybePromise<{ title: string[]; text: string } | undefined | false>)[]
+  generateTags?: ((text: string) => MaybePromise<string[] | false>)[]
+  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
+  modifyStyle?: ((
+    note: MbBookNote
+  ) => MaybePromise<
+    { color: number | undefined; style: number | undefined } | false
+  >)[]
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }
 export type ModuleKeyType =
-  | keyof typeof modules
-  | "magicaction4card"
-  | "magicaction4text"
-  | "addon"
+  | keyof (typeof modules & typeof constModules)
   | "more"
 export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
 type AutoModuleKeyType = Include<keyof typeof modules, "auto">
@@ -71,7 +81,8 @@ type AutoModuleKeyType = Include<keyof typeof modules, "auto">
 const isON = (key: AutoModuleKeyType) => {
   return (
     self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
-    self.profile[key].on
+    //@ts-ignore
+    (self.profile[key]?.on || self.docProfile[key]?.on)
   )
 }
 

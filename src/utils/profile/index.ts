@@ -34,17 +34,17 @@ export const enum Range {
 const clearTitleCache = (_: typeof allDocProfile) => {
   try {
     Object.values(_).forEach(k => {
-      // 超过一个月没打开过，就清除该数据
+      // 超过一个月没修改过，就清除该数据
       let { additional } = k
-      if (
-        !additional ||
-        (additional.lastExcerpt &&
-          Date.now() - additional.lastExcerpt > 2629800000)
-      )
-        additional = {
-          lastExcerpt: 0,
-          cacheExcerptTitle: {}
-        }
+      if(!additional)
+        additional = deepCopy(docProfilePreset.additional)
+     else if (
+        additional.lastExcerpt &&
+          Date.now() - additional.lastExcerpt > 2592000000
+      ) {
+        additional.lastExcerpt = Date.now()
+        additional.cacheExcerptTitle = {}
+      }
     })
   } catch (err) {
     console.error(String(err))
