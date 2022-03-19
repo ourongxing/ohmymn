@@ -69,13 +69,14 @@ const handleMagicAction = async (
   if (type === "text") {
     const documentController =
       MN.studyController().readerController.currentDocumentController
-    if (!documentController.selectionText) {
-      showHUD("没有选择任何文字")
+    const imageFromSelection = documentController.imageFromSelection()
+    if (!imageFromSelection) {
+      showHUD("没有框选任何文字")
       return
     }
     actions4text[key]({
-      text: documentController.selectionText,
-      imgBase64: documentController.imageFromSelection().base64Encoding(),
+      text: documentController.selectionText ?? "",
+      imgBase64: imageFromSelection.base64Encoding(),
       option
     })
   } else if (type === "card") {
@@ -144,28 +145,28 @@ const handleMagicAction = async (
           option
         })
         break
-      // 异步函数，不要包裹在 undoGrouping 里面
-      case "completeSelected":
-        actions4card[key]({
-          content,
-          nodes,
-          option
-        })
-        break
       case "manageProfile":
         undoGroupingWithRefresh(
           () => void manageProfileAction({ nodes, option })
         )
         break
       default:
-        undoGroupingWithRefresh(
-          () =>
-            void actions4card[key]({
-              content,
-              nodes,
-              option
-            })
-        )
+        // 异步函数，不要包裹在 undoGrouping 里面
+        if (actions4card[key] instanceof Promise)
+          actions4card[key]({
+            content,
+            nodes,
+            option
+          })
+        else
+          undoGroupingWithRefresh(
+            () =>
+              void actions4card[key]({
+                content,
+                nodes,
+                option
+              })
+          )
     }
   }
 }

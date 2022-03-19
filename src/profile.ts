@@ -97,8 +97,10 @@ const profilePreset = {
     searchOtherText: ""
   },
   autoocr: {
-    apiKey: "ImL4X1uCXDlt5piVeFIT6peo",
-    secretKey: "xEHxQpBpXLrEVSN9hFScZszS5X0cN639",
+    baiduSecretKey: "",
+    baiduApiKey: "",
+    formulaOCRProviders: [0],
+    mathpixAppKey: "",
     showKey: true
   },
   // 不显示在 UI 上的配置信息

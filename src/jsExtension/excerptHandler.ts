@@ -86,6 +86,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     times: 0,
     status: "free"
   }
+  console.log("重置 OCR 状态", "ocr")
 
   // 自定义 OCR
   const OCRContent = await customOCR()
