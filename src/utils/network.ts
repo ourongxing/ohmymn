@@ -17,15 +17,10 @@ class Response {
 }
 
 type RequestOptions = {
-  method?: string
+  method?: "GET" | "POST" | "PATCH"
   timeout?: number
-  headers?: {
-    [k: string]: string
-  }
-  body?: {
-    [k: string]: any
-  }
-}
+  headers?: AnyProperty<any>
+} & XOR<{ json?: AnyProperty<any> }, { form?: AnyProperty<any> }>
 
 const initRequest = (
   url: string,
@@ -45,10 +40,22 @@ const initRequest = (
   request.setAllHTTPHeaderFields(
     options.headers ? Object.assign(headers, options.headers) : headers
   )
-  if (options.body)
+  if (options.form) {
+    request.setHTTPBody(
+      NSData.dataWithStringEncoding(
+        Object.entries(options.form).reduce((acc, cur) => {
+          const [key, value] = cur
+          return `${acc ? acc + "&" : ""}${encodeURIComponent(
+            key
+          )}=${encodeURIComponent(value)}`
+        }, ""),
+        4
+      )
+    )
+  } else if (options.json)
     request.setHTTPBody(
       NSJSONSerialization.dataWithJSONObjectOptions(
-        options.body,
+        options.json,
         NSJSONWritingOptions.SortedKeys
       )
     )
