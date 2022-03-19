@@ -1,4 +1,4 @@
-import { Addon } from "const"
+import { Addon, MN } from "const"
 import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "jsExtension/excerptHandler"
@@ -106,8 +106,7 @@ const onOCRImageEnd: EventHandler = async sender => {
 
 const onPopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
-  // {{639.64404296874989, 576.234130859375}, {10, 10}}
-  self.selectionBar = {
+  self.textSelectBar = {
     winRect: sender.userInfo.winRect,
     arrow: sender.userInfo.arrow
   }
@@ -116,7 +115,12 @@ const onPopupMenuOnSelection: EventHandler = sender => {
 
 const onClosePopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
-  self.selectionBar = undefined
+  self.textSelectBar = undefined
+  self.OCROnline = {
+    times: 0,
+    status: "free"
+  }
+  console.log("重置 OCR 状态", "ocr")
   console.log("选择关闭开启", "event")
 }
 
@@ -135,7 +139,6 @@ const tmp = {
 
 const onPopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  self.singleBarStatus = true
   tmp.isChangeExcerptRange = false
   tmp.isProcessNewExcerpt = false
   const success = await delayBreak(
@@ -144,16 +147,31 @@ const onPopupMenuOnNote: EventHandler = async sender => {
     () => tmp.isChangeExcerptRange || tmp.isProcessNewExcerpt
   )
   if (success) return
-  console.log("摘录菜单开启", "event")
-  // 保存修改摘录前的内容，这里有可能转为了标题，所以摘录为空
   const note = sender.userInfo.note
+  const { selViewLst } = MN.studyController().notebookController.mindmapView
+  const { focusNote } =
+    MN.studyController().readerController.currentDocumentController
+  self.noteSelectBar = {
+    status: true,
+    type: selViewLst?.length ? (focusNote ? "both" : "card") : "doc"
+  }
+  console.log(`${self.noteSelectBar.type} 笔记菜单开启`, "event")
+  // 保存修改摘录前的内容，这里有可能转为了标题，所以摘录为空
   tmp.lastExcerptText = note.excerptText!
 }
 
 const onClosePopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  self.singleBarStatus = false
-  console.log("摘录菜单关闭", "event")
+  const note = sender.userInfo.note
+  self.noteSelectBar = {
+    status: false
+  }
+  self.OCROnline = {
+    times: 0,
+    status: "free"
+  }
+  console.log("重置 OCR 状态", "ocr")
+  console.log("笔记菜单关闭", "event")
 }
 
 const onChangeExcerptRange: EventHandler = sender => {
@@ -179,11 +197,9 @@ const onProcessNewExcerpt: EventHandler = sender => {
 
 export default {
   onInputOver,
-  // onOCRForNote,
   onOCRImageBegin,
   onOCRImageEnd,
   onButtonClick,
-  // onEndOCRForNote,
   onSelectChange,
   onSwitchChange,
   onPopupMenuOnNote,

@@ -19,9 +19,19 @@ declare global {
     noteid: string
     notebookid: string
     tableView: UITableView
-    OCROnlineStatus?: "begin" | "end"
-    singleBarStatus: boolean
-    selectionBar?: {
+    OCROnline: {
+      status: "begin" | "end" | "free"
+      times: number
+    }
+    noteSelectBar?:
+      | {
+          status: true
+          type: "card" | "doc" | "both"
+        }
+      | {
+          status: false
+        }
+    textSelectBar?: {
       arrow: DirectionOfSelection
       winRect: string
     }

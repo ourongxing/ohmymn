@@ -113,8 +113,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     return SwipePosition.None
 
   // 如果是文本选择的工具栏
-  if (self.selectionBar) {
-    const { winRect, arrow } = self.selectionBar
+  if (self.textSelectBar) {
+    const { winRect, arrow } = self.textSelectBar
     const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
     /**
      * 如果是从右往左框选，菜单在上面，(y-140, y-110)
@@ -141,7 +141,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     !selViewLst?.length
   )
     return SwipePosition.None
-  if (selViewLst.length == 1 && self.singleBarStatus) {
+  if (selViewLst.length == 1 && self.noteSelectBar?.status) {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 

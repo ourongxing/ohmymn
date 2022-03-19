@@ -266,8 +266,7 @@ const utils = {
     return res
   },
   copy(text: string) {
-    const pasteBoard = UIPasteboard.generalPasteboard()
-    pasteBoard.string = text.trim()
+    UIPasteboard.generalPasteboard().string = text.trim()
     showHUD(hud.copy_seccess)
   }
 }

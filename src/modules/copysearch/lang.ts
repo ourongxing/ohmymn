@@ -11,7 +11,7 @@ const zh = {
     search_card_info: "搜索卡片内容",
     copy_card_info: "复制卡片内容",
     separator_symbols_multiple_card: "分隔符",
-    show_search_engine: "显示搜索链接"
+    show_search_engine: "显示/隐藏搜索 URL"
   },
   option: {
     multiple_titles: ["所有标题", "第一个", "即时选择"],
@@ -55,7 +55,7 @@ const en: typeof zh = {
     search_card_info: "Search Card Content",
     separator_symbols_multiple_card: "Separator Symbols",
     copy_card_info: "Copy Card Content",
-    show_search_engine: "Show Search URL"
+    show_search_engine: "Show/Hide Search URL"
   },
   option: {
     multiple_titles: ["All", "First", "Instant Select"],
