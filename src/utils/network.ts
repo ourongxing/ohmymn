@@ -20,7 +20,13 @@ type RequestOptions = {
   method?: "GET" | "POST" | "PATCH"
   timeout?: number
   headers?: AnyProperty<any>
-} & XOR<{ json?: AnyProperty<any> }, { form?: AnyProperty<any> }>
+} & XOR<
+  XOR<
+    { json?: AnyProperty<any> },
+    { form?: AnyProperty<string | number | boolean> }
+  >,
+  { search?: AnyProperty<string | number | boolean> }
+>
 
 const initRequest = (
   url: string,
@@ -40,7 +46,18 @@ const initRequest = (
   request.setAllHTTPHeaderFields(
     options.headers ? Object.assign(headers, options.headers) : headers
   )
-  if (options.form) {
+  if (options.search) {
+    request.setURL(
+      NSURL.URLWithString(
+        encodeURI(
+          `${url}?${Object.entries(options.search).reduce((acc, cur) => {
+            const [key, value] = cur
+            return `${acc ? acc + "&" : ""}${key}=${value}`
+          }, "")}`
+        )
+      )
+    )
+  } else if (options.form) {
     request.setHTTPBody(
       NSData.dataWithStringEncoding(
         Object.entries(options.form).reduce((acc, cur) => {
