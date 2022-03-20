@@ -3,7 +3,7 @@
 const _keyStr =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
-function encode(input: string) {
+function encode(input) {
   let output = "",
     i = 0,
     chr1,
@@ -45,7 +45,7 @@ function encode(input: string) {
   return output
 }
 
-function decode(input: string) {
+function decode(input) {
   let output = "",
     i = 0,
     chr1,
@@ -81,7 +81,7 @@ function decode(input: string) {
   return output
 }
 
-function encodeTransform(input: string) {
+function encodeTransform(input) {
   let output = ""
   for (let n = 0; n < input.length; n++) {
     const c = input.charCodeAt(n) // 返回指定位置的字符的 Unicode 编码。这个返回值是 0 - 65535 之间的整数。
@@ -108,7 +108,7 @@ function encodeTransform(input: string) {
   return output
 }
 
-function decodeTransform(input: string) {
+function decodeTransform(input) {
   let output = "",
     i = 0,
     c = 0,

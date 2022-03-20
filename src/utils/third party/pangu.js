@@ -92,8 +92,8 @@ const MIDDLE_DOT = /([ ]*)([\u00b7\u2022\u2027])([ ]*)/g
 const BACKSAPCE_CJK = new RegExp(`([${CJK}]) ([${CJK}])`, "g")
 
 class Pangu {
-  version!: string
-  convertToFullwidth(symbols: any) {
+  version
+  convertToFullwidth(symbols) {
     return symbols
       .replace(/~/g, "～")
       .replace(/!/g, "！")
@@ -103,7 +103,7 @@ class Pangu {
       .replace(/\./g, "。")
       .replace(/\?/g, "？")
   }
-  toFullwidth(text: string) {
+  toFullwidth(text) {
     let newText = text
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this
@@ -123,7 +123,7 @@ class Pangu {
     )
     return newText
   }
-  spacing(text: string): string {
+  spacing(text) {
     let newText = text
     // https://stackoverflow.com/questions/4285472/multiple-regex-replace
     newText = newText.replace(DOTS_CJK, "$1 $2")
