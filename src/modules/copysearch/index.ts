@@ -6,16 +6,16 @@ import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import { getExcerptText } from "utils/note"
 import { isHalfWidth } from "utils/text"
 import { ActionKey, CopySearchCardInfo, MultipleTitlesExcerpt } from "./enum"
-import { profilePreset } from "profile"
+import { docProfilePreset, profilePreset } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
-import MagicNode from "jsExtension/nodeProperties"
 import Mustache from "mustache"
 import getNodeProperties from "jsExtension/nodeProperties"
 const { link, intro, lable, option, help, hud } = lang
 
 const profileTemp = {
-  ...profilePreset.copysearch
+  ...profilePreset.copysearch,
+  ...docProfilePreset.copysearch
 }
 
 const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
@@ -68,12 +68,16 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       "searchAcademic",
       "searchQuestion",
       "searchOtherText"
-    ].map((k, i) => ({
-      type: CellViewType.Input,
-      help: option.which_search_engine[i + 1],
-      key: k,
-      bind: [["showSearchEngine", 1]]
-    })) as ISettingInput<typeof profileTemp>[])
+    ].map((k, i) => {
+      return {
+        type: CellViewType.Input,
+        help: `${i === 2 || i === 3 ? "【当前文档有效】" : ""}${
+          option.which_search_engine[i + 1]
+        }`,
+        key: k,
+        bind: [["showSearchEngine", 1]]
+      }
+    }) as ISettingInput<typeof profileTemp>[])
   ],
   actions4card: [
     {
@@ -230,10 +234,9 @@ const utils = {
       searchEnglishText,
       searchOtherText,
       searchQuestion,
-      searchTranslation,
-      searchWord,
       whichSearchEngine
     } = self.profile.copysearch
+    const { searchTranslation, searchWord } = self.docProfile.copysearch
     // option: ["选择", "中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
     const searchEngines = [
       searchChineseText,

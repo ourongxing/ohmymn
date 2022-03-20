@@ -16,7 +16,6 @@ const profileTemp = {
 
 const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   name: "AutoOCR",
-  key: "autoocr",
   intro:
     "使用百度 OCR API，不需要激活 OCR Pro 即可使用，并支持多个小语种。可以手动进行公式识别，手写识别。",
   link,
@@ -25,7 +24,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       key: "on",
       type: CellViewType.Switch,
       label: label.on,
-      help: "当前文档有效"
+      help: "【当前文档有效】"
     },
     {
       key: "lang",
@@ -54,7 +53,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
         "希腊语",
         "匈牙利语"
       ],
-      help: "当前文档有效"
+      help: "【当前文档有效】"
     },
     {
       key: "formulaOCRProviders",
@@ -83,7 +82,10 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       key: "mathpixAppKey",
       type: CellViewType.Input,
       help: "Mathpix App Key，点击查看如何获取。",
-      bind: [["showKey", 1]]
+      bind: [
+        ["showKey", 1],
+        ["formulaOCRProviders", 1]
+      ]
     }
   ],
   actions4text: [
@@ -96,8 +98,8 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
         try {
           const res =
             self.profile.autoocr.formulaOCRProviders[0] === 0
-              ? await utils.mathpixOCR(imgBase64)
-              : await utils.baiduFormulaOCR(imgBase64)
+              ? await utils.baiduFormulaOCR(imgBase64)
+              : await utils.mathpixOCR(imgBase64)
           UIPasteboard.generalPasteboard().string = [
             res,
             `$${res}$`,
@@ -111,9 +113,21 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     },
     {
       type: CellViewType.Button,
+      key: "textOCR",
+      label: "文字识别",
+      method: async ({ imgBase64 }) => {
+        const res = await utils.main(imgBase64)
+        if (res) {
+          UIPasteboard.generalPasteboard().string = res
+          showHUD("结果已复制到剪贴板上，快去粘贴吧！", 2)
+        }
+      }
+    },
+    {
+      type: CellViewType.Button,
       key: "handWrittingOCR",
       label: "手写识别",
-      method: async ({ imgBase64, option }) => {
+      method: async ({ imgBase64 }) => {
         try {
           const res = await utils.baiduHandWrittingOCR(imgBase64)
           UIPasteboard.generalPasteboard().string = res
@@ -127,7 +141,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       type: CellViewType.Button,
       key: "QRCodeOCR",
       label: "二维码识别",
-      method: async ({ imgBase64, option }) => {
+      method: async ({ imgBase64 }) => {
         try {
           const res = await utils.QRCodeOCR(imgBase64)
           const url = res.match(
@@ -226,11 +240,11 @@ const utils = {
         }
       }
     ).then(res => res.json())) as {
-      codes_result: { text: string }[]
+      words_result: { words: string }[]
     } & BaiduOCRError
     if (res.error_code && res.error_msg)
       throw `${res.error_code}: ${res.error_msg}`
-    return res.codes_result.map(k => k.text).join("")
+    return res.words_result.map(k => k.words).join("")
   },
   async baiduHandWrittingOCR(imgBase64: string) {
     const token = await utils.getBaiduToken()
@@ -252,11 +266,8 @@ const utils = {
       throw `${res.error_code}: ${res.error_msg}`
     return res.words_result.map(k => k.words).join("")
   },
-  async main() {
+  async main(imgBase64: string) {
     try {
-      const base64 = MN.studyController()
-        .readerController.currentDocumentController.imageFromFocusNote()
-        .base64Encoding()
       const langKey = [
         "auto_detect",
         "CHN_ENG",
@@ -289,7 +300,7 @@ const utils = {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           form: {
-            image: base64,
+            image: imgBase64,
             language_type: langKey[self.docProfile.autoocr.lang[0]]
           }
         }

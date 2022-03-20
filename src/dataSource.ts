@@ -60,7 +60,8 @@ const genSection = (
           rows.push({
             type: CellViewType.PlainText,
             label: "↑ " + setting.help,
-            link: setting.link
+            link: setting.link,
+            bind: setting.bind
           })
           break
         case CellViewType.InlineInput:

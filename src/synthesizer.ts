@@ -12,6 +12,8 @@ import copysearch from "modules/copysearch"
 import addon from "modules/addon"
 import magicaction4text from "modules/magicaction4text"
 import autoocr from "modules/autoocr"
+import autotranslate from "modules/autotranslate"
+
 import type {
   IActionMethod4Card,
   IActionMethod4Text,
@@ -31,11 +33,12 @@ export const modules = {
   autotag,
   autostyle,
   copysearch,
-  autoocr
+  autoocr,
+  autotranslate
 }
 
 export const utils: Utils = {
-  customOCR: [() => isON("autoocr") && autoocr.utils.main()],
+  customOCR: [imgBase64 => isON("autoocr") && autoocr.utils.main(imgBase64)],
   modifyExcerptText: [
     text => isON("autostandardize") && autostandardize.utils.main(text),
     text => isON("autolist") && autolist.utils.main(text),
@@ -43,6 +46,7 @@ export const utils: Utils = {
   ],
   generateTitles: [
     text => isON("autocomplete") && autocomplete.utils.main(text),
+    text => isON("autotranslate") && autotranslate.utils.main(text),
     text => isON("anotherautodef") && anotherautodef.utils.main(text),
     text => isON("anotherautotitle") && anotherautotitle.utils.main(text)
   ],
@@ -57,7 +61,9 @@ export const utils: Utils = {
 }
 
 type Utils = {
-  customOCR?: (() => MaybePromise<string | undefined | false>)[]
+  customOCR?: ((
+    imgBase64: string
+  ) => MaybePromise<string | undefined | false>)[]
   modifyExcerptText?: ((text: string) => MaybePromise<string | false>)[]
   generateTitles?: ((
     text: string

@@ -81,6 +81,9 @@ const profilePreset = {
   magicaction4card: {
     smartSelection: false
   },
+  magicaction4text: {
+    preOCR: false
+  },
   copysearch: {
     multipleTitles: [0],
     multipleExcerpts: [0],
@@ -90,8 +93,6 @@ const profilePreset = {
     whichSearchEngine: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",
-    searchWord: "eudic://dict/{{keyword}}",
-    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}",
     searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
     searchQuestion: "https://www.zhihu.com/search?q={{keyword}}",
     searchOtherText: ""
@@ -102,6 +103,18 @@ const profilePreset = {
     formulaOCRProviders: [0],
     mathpixAppKey: "",
     showKey: true
+  },
+  autotranslate: {
+    on: false,
+    baiduSecretKey: "",
+    baiduAppID: "",
+    baiduThesaurus: false,
+    baiduAdvance: false,
+    translateProviders: [0],
+    caiyunToken: "",
+    showKey: true,
+    outFormat: [1],
+    hudTime: "3"
   },
   // 不显示在 UI 上的配置信息
   additional: {
@@ -119,6 +132,16 @@ const docProfilePreset = {
   autoocr: {
     on: false,
     lang: [0]
+  },
+  autotranslate: {
+    baiduFromLang: [0],
+    caiyunFromLang: [0],
+    baiduToLang: [0],
+    caiyunToLang: [0]
+  },
+  copysearch: {
+    searchWord: "eudic://dict/{{keyword}}",
+    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}"
   },
   // 不显示在 UI 上的配置信息
   additional: {

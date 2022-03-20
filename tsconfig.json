@@ -3,7 +3,7 @@
     "noEmit": true,
     "module": "ESNext",
     "target": "ES2020",
-    "allowJs": false,
+    "allowJs":true,
     "sourceMap": false,
     "noImplicitAny": true,
     "downlevelIteration": true,
@@ -19,6 +19,6 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
+    "src/**/*.ts", "src/utils/third party/*.js",
   ]
 }

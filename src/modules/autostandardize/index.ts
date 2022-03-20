@@ -7,7 +7,6 @@ import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
 import { profilePreset } from "profile"
-import { reverseEscape } from "utils/input"
 import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang

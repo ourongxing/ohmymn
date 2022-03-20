@@ -19,14 +19,13 @@ const zh = {
     profile: "选择配置文件",
     panel_position: "面板显示位置",
     panel_height: "面板显示高度",
-    panle_control: "面板开启关闭",
+    panle_control: "面板开关控制",
     screen_always_on: "保持屏幕常亮",
     lock_excerpt: "锁定摘录文字"
   },
   help: {
-    profile: "【当前文档生效】不同情景，不同配置",
-    has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则",
-    auto_correct: "【当前文档生效】务必和 MN 保持相同状态"
+    profile: "【当前文档有效】不同情景，不同配置",
+    has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
   }
 }
 
@@ -57,9 +56,7 @@ const en: typeof zh = {
     profile:
       "[Current Document Takes Effect]\nDifferent scenes, different profile",
     has_title_then:
-      "Drag and drop the selection to merge into the card, and if a new title will be created by ohmymn, then",
-    auto_correct:
-      "[Current Document Takes Effect]\nBe sure to keep the same status as MN"
+      "Drag and drop the selection to merge into the card, and if a new title will be created by ohmymn, then"
   }
 }
 

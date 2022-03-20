@@ -1,11 +1,15 @@
 import { MbBookNote } from "typings"
 import { utils } from "synthesizer"
 import { HasTitleThen } from "modules/addon/enum"
+import { MN } from "const"
 
 export const customOCR = async () => {
+  const imgBase64 = MN.studyController()
+    .readerController.currentDocumentController.imageFromFocusNote()
+    .base64Encoding()
   if (utils.customOCR)
     for (const util of utils.customOCR) {
-      const res = await util()
+      const res = await util(imgBase64)
       if (res) return res
     }
 }

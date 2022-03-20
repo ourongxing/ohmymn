@@ -33,3 +33,9 @@ export const checkReplaceParamFromMNLink = (input: string) => {
   if (!res) throw "卡片中不存在配置信息"
   checkReplaceParam(res)
 }
+
+export const checkPositiveinteger = (input: number) => {
+  if (isNaN(input)) throw "请输入数字"
+  if (!Number.isInteger(input)) throw "请输入整数"
+  if (input < 0) throw "请输入正整数"
+}
