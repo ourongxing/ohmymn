@@ -51,8 +51,11 @@ const onSwitchChange: EventHandler = sender => {
   else self.docProfile[name][key] = status
   switch (key) {
     case "screenAlwaysOn":
-      UIApplication.sharedApplication().idleTimerDisabled =
-        self.profile.addon.screenAlwaysOn
+      UIApplication.sharedApplication().idleTimerDisabled = status
+      break
+    case "preOCR":
+      status &&
+        showHUD("请确保 AutoOCR 已启用，并且输入了 Key，否则没有效果！", 2)
       break
   }
 }

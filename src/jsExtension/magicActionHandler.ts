@@ -1,5 +1,5 @@
 import lang from "lang"
-import { actions4card, actions4text } from "synthesizer"
+import { actions4card, actions4text, moduleKeyArray } from "synthesizer"
 import { PanelControl } from "modules/addon/enum"
 import { checkInputCorrect } from "synthesizer"
 import type { IRowButton, MbBookNote } from "typings"
@@ -14,6 +14,8 @@ import {
 } from "utils/note"
 import { MN } from "const"
 import { getMNLinkValue } from "utils/input"
+import autoocr from "modules/autoocr"
+import { text } from "stream/consumers"
 
 export default async (
   type: "card" | "text",
@@ -74,8 +76,16 @@ const handleMagicAction = async (
       showHUD("没有框选任何文字")
       return
     }
+    const text =
+      self.profile.magicaction4text.preOCR &&
+      self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf("autoocr"))
+        ? (await autoocr.utils.main(imageFromSelection.base64Encoding())) ??
+          documentController.selectionText ??
+          ""
+        : documentController.selectionText ?? ""
+
     actions4text[key]({
-      text: documentController.selectionText ?? "",
+      text,
       imgBase64: imageFromSelection.base64Encoding(),
       option
     })
