@@ -9,6 +9,7 @@ import pangu from "utils/third party/pangu"
 import { ActionKey, CompleteSelected, FillWordInfo } from "./enum"
 import { profilePreset } from "profile"
 import { checkPlainText } from "utils/checkInput"
+import Mustache from "mustache"
 
 const { error, intro, link, option, label, help } = lang
 const profileTemp = {
@@ -91,7 +92,7 @@ const utils = {
       arr.length > 1
         ? arr.filter(item => !/\[.*\]/.test(item)).join("\n")
         : arr[0].replace(/\[.*\]/, "")
-    return text.replace(/\ba\. /g, "adj. ")
+    return pangu.spacing(pangu.toFullwidth(text.replace(/\ba\. /g, "adj. ")))
   },
 
   async getWordInfo(word: string): Promise<Dict> {
@@ -130,7 +131,8 @@ const utils = {
     ]
     return params
       .reduce((acc, param) => acc.replace(param[0], param[1]), str)
-      .replace(/\x20/g, "/")
+      .split(/\x20+/)
+      .filter(k => k)
   },
   getCollinsStar(num: number) {
     return "⭐".repeat(num)
@@ -146,45 +148,26 @@ const utils = {
       fillWordInfo[0] === FillWordInfo.Custom
         ? reverseEscape(`"${escapeDoubleQuote(customFill)}"`)
         : "{{zh}}"
-
-    // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
-    const vars = {
-      word: info.word,
-      phonetic: isOCNull(info.phonetic) ? "" : info.phonetic,
-      tag: isOCNull(info.tag) ? "" : utils.getTag(info.tag),
-      collins: isOCNull(info.collins)
-        ? ""
-        : utils.getCollinsStar(Number(info.collins)),
-      en: isOCNull(info.definition) ? "" : info.definition,
-      zh: isOCNull(info.translation) ? "" : utils.getPureZH(info.translation!)
+    const null2false = (
+      v: NSNull | string,
+      f: (t: string) => string | string[] = t => t
+    ) => {
+      // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
+      if (isOCNull(v)) return false
+      const res = f(v as string)
+      return res ? res : false
     }
-    const varsReg = `(?:${Object.keys(vars).join("|")})`
-    const braceReg = new RegExp(`{{(${varsReg})}}`, "g")
-    const bracketReg = new RegExp(
-      `\\\(\\\((.*?{{(${varsReg})}}.*?)\\\)\\\)`,
-      "gs"
-    )
-    const text = template
-      .replace(
-        bracketReg,
-        (match: string, bracket: string, brace: keyof typeof vars) =>
-          /**
-           * ((星级：{{collins}}))
-           * bracket (())  星级：{{collins}}
-           * brace {{}}   collins
-           */
-          vars[brace] ? bracket.replace(`{{${brace}}}`, vars[brace]) : ""
-      )
-      .replace(braceReg, (match: string, brace: keyof typeof vars) =>
-        vars[brace] ? vars[brace] : ""
-      )
-      .trim()
+    const vars = {
+      word: null2false(info.word),
+      phonetic: null2false(info.phonetic),
+      tags: null2false(info.tag, t => utils.getTag(t).join("/")),
+      collins: null2false(info.collins, t => utils.getCollinsStar(Number(t))),
+      en: null2false(info.definition),
+      zh: null2false(info.translation, t => utils.getPureZH(t))
+    }
     // 优化一下格式
-    return pangu.spacing(pangu.toFullwidth(text))
+    return Mustache.render(template, vars)
   },
-  /**
-   * @param text 先去除划重点
-   */
   async main(text: string) {
     try {
       // 只有第一个字母可以大写，否则直接返回
