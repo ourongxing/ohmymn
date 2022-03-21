@@ -4,8 +4,8 @@ import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { openUrl, popup, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import { getExcerptText } from "utils/note"
-import { isHalfWidth } from "utils/text"
-import { ActionKey, CopySearchCardInfo, MultipleTitlesExcerpt } from "./enum"
+import { byteSlice } from "utils/text"
+import { ActionKey, MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
 import { docProfilePreset, profilePreset } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
@@ -23,6 +23,13 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
   intro,
   link,
   settings: [
+    {
+      label: "默认搜索卡片内容",
+      key: "whichPartofCard",
+      type: CellViewType.Select,
+      option: ["即时选择", "优先标题", "优先摘录", "优先自定义"],
+      help: "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"
+    },
     {
       label: lable.multiple_titles,
       key: "multipleTitles",
@@ -48,12 +55,6 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       type: CellViewType.Input
     },
     {
-      label: lable.which_search_engine,
-      key: "whichSearchEngine",
-      type: CellViewType.Select,
-      option: option.which_search_engine
-    },
-    {
       label: lable.show_search_engine,
       key: "showSearchEngine",
       type: CellViewType.Switch,
@@ -72,7 +73,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       return {
         type: CellViewType.Input,
         help: `${i === 2 || i === 3 ? "【当前文档有效】" : ""}${
-          option.which_search_engine[i + 1]
+          option.which_search_engine[i]
         }`,
         key: k,
         bind: [["showSearchEngine", 1]]
@@ -84,19 +85,28 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       type: CellViewType.Button,
       key: "searchCardInfo",
       label: lable.search_card_info,
-      option: option.search_card_info,
+      option: option.which_search_engine,
       method: async ({ nodes, option }) => {
         if (nodes.length == 1) {
-          const text = await utils.getContentForOneCard(nodes[0], option)
-          text && utils.search(text)
+          const text = (await utils.getContentofOneCard(nodes[0])) as string
+          text && utils.search(text, option)
         } else {
-          const { separatorSymbols } = self.profile.copysearch
-          const contents = utils.getContentForMuiltCards(nodes, option)
-          contents?.length &&
+          const { separatorSymbols, whichPartofCard } = self.profile.copysearch
+          let opt = whichPartofCard[0]
+          if (whichPartofCard[0] === WhichPartofCard.Choose) {
+            opt = (await utils.choosePartofCard(
+              ["标题", "摘录", "自定义"],
+              "",
+              true
+            )) as number
+          } else opt -= 1
+          const contentList = utils.getContentofMuiltCards(nodes, opt)
+          contentList?.length &&
             utils.search(
-              contents.join(
-                reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
-              )
+              contentList.join(
+                reverseEscape(`${escapeDoubleQuote(separatorSymbols)}`, true)
+              ),
+              option
             )
         }
       }
@@ -108,15 +118,15 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       option: option.copy_card_info,
       method: async ({ nodes, option }) => {
         if (nodes.length == 1) {
-          const text = await utils.getContentForOneCard(nodes[0], option)
+          const text = (await utils.getContentofOneCard(nodes[0])) as string
           text && utils.copy(text)
         } else {
           const { separatorSymbols } = self.profile.copysearch
-          const contents = utils.getContentForMuiltCards(nodes, option)
-          contents?.length &&
+          const contentList = utils.getContentofMuiltCards(nodes, option)
+          contentList?.length &&
             utils.copy(
-              contents.join(
-                reverseEscape(`"${escapeDoubleQuote(separatorSymbols)}"`)
+              contentList.join(
+                reverseEscape(`${escapeDoubleQuote(separatorSymbols)}`, true)
               )
             )
         }
@@ -127,87 +137,123 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     {
       type: CellViewType.Button,
       key: "searchText",
-      label: "使用 CopySearch 搜索",
-      option: ["搜索文字", "搜索图片(base64)"],
-      method: ({ text, imgBase64, option }) => {
-        if (option) {
-          console.log(imgBase64)
-        } else console.log(text)
+      label: "搜索选中文字",
+      option: option.which_search_engine,
+      method: ({ text, option }) => {
+        text && utils.search(text, option)
       }
     }
   ]
 }
 
 const utils = {
-  async chooseYouWantText(arr: string[], type: "title" | "excerpt") {
+  async getTitleExcerpt(
+    k: string[],
+    type: "title" | "excerpt",
+    origin = false
+  ) {
+    const { multipleTitles, multipleExcerpts } = self.profile.copysearch
+    if (k.length === 0) return undefined
+    switch (type === "title" ? multipleTitles[0] : multipleExcerpts[0]) {
+      case MultipleTitlesExcerpt.All: {
+        const r = k.join(type === "title" ? "; " : "\n")
+        if (origin) return [r]
+        return k.join(r)
+      }
+      case MultipleTitlesExcerpt.First:
+        if (origin) return [k[0]]
+        return k[0]
+      default:
+        if (origin) return k
+        return k.length === 1
+          ? k[0]
+          : ((await utils.choosePartofCard(k)) as string)
+    }
+  },
+  getCustomContent(node: MbBookNote) {
+    const { customContent } = self.profile.copysearch
+    if (!customContent) return undefined
+    const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
+    const res = Mustache.render(template, getNodeProperties(node))
+    return res
+  },
+  async choosePartofCard(parts: string[], tip = "", index = false) {
     const { option } = await popup(
       Addon.title,
-      hud.choose_you_want(type === "title"),
+      tip,
       UIAlertViewStyle.Default,
-      arr.map(k => {
-        k = k.replace(/\n/g, "")
-        const limit = isHalfWidth(k) ? 30 : 15
-        return k.length > limit ? k.slice(0, limit) + " ..." : k
-      }),
+      parts.map(k => byteSlice(k.replace("\n", ""), 0, 40)),
       (alert: UIAlertView, buttonIndex: number) => ({
         option: buttonIndex
       })
     )
-    return option!
+    return index ? option! : parts[option!]
   },
-  async getContentForOneCard(node: MbBookNote, option: number) {
-    const { multipleExcerpts, multipleTitles } = self.profile.copysearch
-    if (option == CopySearchCardInfo.Title) {
-      if (!node.noteTitle) {
-        showHUD(hud.not_get_title)
-        return ""
+  async getContentofOneCard(node: MbBookNote) {
+    const { whichPartofCard } = self.profile.copysearch
+    const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
+    const excerptText = getExcerptText(node, false)
+    const customContent = utils.getCustomContent(node)
+    switch (whichPartofCard[0]) {
+      case WhichPartofCard.Title: {
+        const res =
+          ((await utils.getTitleExcerpt(titles, "title")) as string) ??
+          ((await utils.getTitleExcerpt(excerptText, "excerpt")) as string) ??
+          customContent
+        if (res) return res
+        break
       }
-      const title = node.noteTitle.split(/\s*[;；]\s*/)
-      switch (multipleTitles[0]) {
-        case MultipleTitlesExcerpt.All:
-          return node.noteTitle
-        case MultipleTitlesExcerpt.First:
-          return title[0]
-        case MultipleTitlesExcerpt.Choose:
-          return title[
-            title.length > 1 ? await utils.chooseYouWantText(title, "title") : 0
-          ]
+      case WhichPartofCard.Excerpt: {
+        const res =
+          ((await utils.getTitleExcerpt(excerptText, "excerpt")) as string) ??
+          ((await utils.getTitleExcerpt(titles, "title")) as string) ??
+          customContent
+        if (res) return res
+        break
       }
-    } else if (option === CopySearchCardInfo.Excerpt) {
-      const excerptText = getExcerptText(node, false)
-      if (!excerptText.length) {
-        showHUD(hud.not_get_excerpt)
-        return ""
+      case WhichPartofCard.Custom: {
+        const res =
+          customContent ??
+          ((await utils.getTitleExcerpt(titles, "title")) as string) ??
+          ((await utils.getTitleExcerpt(excerptText, "excerpt")) as string)
+        if (res) return res
+        break
       }
-      switch (multipleExcerpts[0]) {
-        case MultipleTitlesExcerpt.All:
-          return excerptText.join("\n")
-        case MultipleTitlesExcerpt.First:
-          return excerptText[0]
-        case MultipleTitlesExcerpt.Choose:
-          return excerptText[
-            excerptText.length > 1
-              ? await utils.chooseYouWantText(excerptText, "excerpt")
-              : 0
-          ]
+      default: {
+        const list = [
+          ...((await utils.getTitleExcerpt(titles, "title", true)) ?? []),
+          ...((await utils.getTitleExcerpt(excerptText, "excerpt", true)) ?? [])
+        ]
+        if (customContent) list.push(customContent)
+        console.log(list)
+        return await utils.choosePartofCard(list)
       }
-    } else return utils.getCustomContent(node)
+    }
   },
-  getContentForMuiltCards(nodes: MbBookNote[], option: number) {
+  getContentofMuiltCards(nodes: MbBookNote[], option: number) {
     switch (option) {
-      case CopySearchCardInfo.Title:
+      case 0: {
+        const { multipleTitles } = self.profile.copysearch
         return nodes.reduce((acc, cur) => {
           const t = cur.noteTitle
-          t && acc.push(t)
+          if (!t) return acc
+          if (multipleTitles[0] === MultipleTitlesExcerpt.First)
+            acc.push(t.split(/\s*[;；]\s*/)[0])
+          else acc.push(t)
           return acc
         }, [] as string[])
-      case CopySearchCardInfo.Excerpt:
+      }
+      case 1: {
+        const { multipleTitles } = self.profile.copysearch
         return nodes.reduce((acc, cur) => {
-          const t = getExcerptText(cur, false).join("\n")
-          t && acc.push(t)
+          const l = getExcerptText(cur, false)
+          if (!l.length) return acc
+          if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(l[0])
+          else acc.push(l.join("\n"))
           return acc
         }, [] as string[])
-      case CopySearchCardInfo.Custom:
+      }
+      default:
         return nodes.reduce((acc, cur) => {
           const t = utils.getCustomContent(cur)
           t && acc.push(t)
@@ -215,30 +261,16 @@ const utils = {
         }, [] as string[])
     }
   },
-  async search(text: string) {
-    const chooseYouWantEngine = async (engines: string[]) => {
-      const { option } = await popup(
-        Addon.title,
-        hud.choose_search_engine,
-        UIAlertViewStyle.Default,
-        engines,
-        (alert: UIAlertView, buttonIndex: number) => ({
-          option: buttonIndex
-        })
-      )
-      return option!
-    }
+  async search(text: string, option: number) {
     const {
       searchAcademic,
       searchChineseText,
       searchEnglishText,
       searchOtherText,
-      searchQuestion,
-      whichSearchEngine
+      searchQuestion
     } = self.profile.copysearch
     const { searchTranslation, searchWord } = self.docProfile.copysearch
-    // option: ["选择", "中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
-    const searchEngines = [
+    const searchEngine = [
       searchChineseText,
       searchEnglishText,
       searchWord,
@@ -246,27 +278,9 @@ const utils = {
       searchAcademic,
       searchQuestion,
       searchOtherText
-    ]
-    const searchEngine = [
-      whichSearchEngine[0] === 0
-        ? searchEngines[
-            await chooseYouWantEngine(option.which_search_engine.slice(1))
-          ]
-        : "",
-      ...searchEngines
-    ][whichSearchEngine[0]]
-
-    searchEngine && openUrl(searchEngine.replace("{{keyword}}", text))
-  },
-  getCustomContent(node: MbBookNote) {
-    const { customContent } = self.profile.copysearch
-    if (!customContent) return ""
-    console.log("执行了吗")
-    const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
-    console.log(template)
-    const res = Mustache.render(template, getNodeProperties(node))
-    console.log(res)
-    return res
+    ][option]
+    if (searchEngine) openUrl(searchEngine.replace("{{keyword}}", text))
+    else showHUD("没有填写此搜索引擎的 URL", 2)
   },
   copy(text: string) {
     UIPasteboard.generalPasteboard().string = text.trim()

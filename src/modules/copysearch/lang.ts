@@ -19,7 +19,6 @@ const zh = {
     search_card_info: ["搜索标题", "搜索摘录", "自定义内容"],
     copy_card_info: ["复制标题", "复制摘录", "自定义内容"],
     which_search_engine: [
-      "即时选择",
       "中文",
       "英文",
       "词典",
@@ -63,7 +62,6 @@ const en: typeof zh = {
     search_card_info: ["Title", "Excerpt Text", "Custom Content"],
     copy_card_info: ["Title", "Excerpt Text", "Custom Content"],
     which_search_engine: [
-      "Instant Select",
       "Chinese",
       "English",
       "Dict",
