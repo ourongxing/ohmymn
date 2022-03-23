@@ -9,13 +9,12 @@ const console = {
   error(obj: any, suffix = "error") {
     JSB.log(`${Addon.key}-${suffix} %@`, obj)
   },
-  // 与真实意思无关，用于 stringify 对象
+  /** Unrelated to the real meaning, used for stringify objects */
   assert(obj: any, suffix = "normal") {
     JSB.log(`${Addon.key}-${suffix} %@`, JSON.stringify(obj))
   }
 }
 
-// 注意要把 window 赋给所有 OC 对象才行
 const showHUD = (message: string, duration = 1, window = self.window) =>
   void MN.app.showHUD(message, window, duration)
 
@@ -36,7 +35,6 @@ const getObjCClassDeclar = (
   delegate: Array<string> = []
 ) => {
   let str = `${name} : ${type}`
-  // 可以不用写 delegate 协议名
   if (delegate.length) {
     delegate.forEach(value => {
       str = `${str} ${value}Delegate`
@@ -105,9 +103,6 @@ const popup = (
     )
   )
 
-/**
- * 用来判断是否是 OC 的 NSNull 对象
- */
 const isOCNull = (obj: any) => obj === NSNull.new()
 
 const eventHandlerController = (

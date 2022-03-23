@@ -8,7 +8,7 @@ import {
   string2ReplaceParam
 } from "utils/input"
 import { ActionKey, AutoTagPreset, TagSelected } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile, profilePreset } from "profile"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
@@ -16,11 +16,7 @@ import {
 
 const { intro, option, label, link, help } = lang
 
-const profileTemp = {
-  ...profilePreset.autotag
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
   name: "AutoTag",
   intro,
   link,
@@ -88,7 +84,7 @@ const utils = {
 }
 
 const checker: ICheckMethod<
-  PickByValue<typeof profileTemp, string> & typeof ActionKey
+  PickByValue<IProfile["autotag"], string> & typeof ActionKey
 > = (input, key) => {
   switch (key) {
     case "tagSelected":

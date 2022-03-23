@@ -8,6 +8,12 @@ export const enum ChangeStyle {
   UseAutoStyle
 }
 
+export const enum Style {
+  "Wireframe+Fill",
+  Fill,
+  Wireframe
+}
+
 export enum ActionKey {
   changeColor,
   changeStyle

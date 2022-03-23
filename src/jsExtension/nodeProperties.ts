@@ -11,8 +11,11 @@ import {
 
 const getNodeProperties = (node: MbBookNote) => {
   /** false can be auto hidden when using Mustache */
-  const undefine2false = (v: any, f: (t: any) => any) =>
-    v ? f(v) ?? false : false
+  const undefine2false = (v: any, f: (t: any) => any) => {
+    if (!v) return false
+    const res = f(v)
+    return res ? res : false
+  }
   const getNodeProperties = (node: MbBookNote) => ({
     /** string array */
     tags: () => getAllTags(node, false),

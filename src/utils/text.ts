@@ -26,12 +26,39 @@ const countWord = (text: string): number => {
   return en.length + zh.length
 }
 
-const byteLength = (text: string) => {
-  let length = 0
-  Array.from(text).forEach(char => {
-    length += char.charCodeAt(0) > 255 ? 2 : 1
+const byteLength = (text: string) =>
+  Array.from(text).reduce((acc, cur) => {
+    acc += cur.charCodeAt(0) > 255 ? 2 : 1
+    return acc
+  }, 0)
+
+const byteSlice = (text: string, begin: number, ...rest: number[]) => {
+  const res = [begin, ...rest].map(k => {
+    if (k < 0) k = byteLength(text) + k
+    if (k === 0 || k === 1) return k
+    return (
+      Array.from(text).reduce(
+        (acc, cur, index) => {
+          const byte = acc.byte + (cur.charCodeAt(0) > 255 ? 2 : 1)
+          if (!acc.enough && byte <= k) {
+            acc = { index, byte, enough: false }
+          } else {
+            acc = {
+              ...acc,
+              enough: true
+            }
+          }
+          return acc
+        },
+        {
+          index: 0,
+          byte: 0,
+          enough: false
+        }
+      ).index + 1
+    )
   })
-  return length
+  return text.slice(...res)
 }
 
-export { isHalfWidth, isCJK, countWord, CJK, byteLength, SerialCode }
+export { isHalfWidth, isCJK, countWord, CJK, byteLength, SerialCode, byteSlice }

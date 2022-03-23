@@ -2,20 +2,17 @@ import type { ICheckMethod, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, OutFormat, TranslateProviders } from "./enum"
-import { docProfilePreset, profilePreset } from "profile"
+import { IDocProfile, IProfile } from "profile"
 import fetch from "utils/network"
 import MD5 from "utils/third party/md5"
-import { alert, showHUD } from "utils/common"
+import { showHUD } from "utils/common"
 import { checkPositiveinteger } from "utils/checkInput"
-import { byteLength } from "utils/text"
 const { intro, link, label, option, help } = lang
 
-const profileTemp = {
-  ...profilePreset.autotranslate,
-  ...docProfilePreset.autotranslate
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<
+  (IProfile & IDocProfile)["autotranslate"],
+  typeof ActionKey
+> = {
   name: "AutoTranslate",
   intro: "摘录时自动附加上翻译结果",
   link,
@@ -47,7 +44,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       label: "输入语言",
       type: CellViewType.Select,
       option: ["自动检测", "中文", "英文", "日文"],
-      help: "【当前文档有效】",
+      help: "【当前文档生效】",
       bind: [["translateProviders", 1]]
     },
     {
@@ -55,7 +52,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       label: "输出语言",
       type: CellViewType.Select,
       option: ["中文", "英文", "日文"],
-      help: "【当前文档有效】",
+      help: "【当前文档生效】",
       bind: [["translateProviders", 1]]
     },
     {
@@ -93,13 +90,13 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
         "繁体中文",
         "越南语"
       ],
-      help: "【当前文档有效】",
+      help: "【当前文档生效】",
       bind: [["translateProviders", 0]]
     },
     {
       key: "baiduToLang",
       label: "输出语言",
-      help: "【当前文档有效】",
+      help: "【当前文档生效】",
       type: CellViewType.Select,
       option: [
         "中文",
@@ -338,7 +335,8 @@ const utils = {
 }
 
 const checker: ICheckMethod<
-  PickByValue<typeof profileTemp, string> & typeof ActionKey
+  PickByValue<(IProfile & IDocProfile)["autotranslate"], string> &
+    typeof ActionKey
 > = (input, key) => {
   switch (key) {
     case "hudTime": {

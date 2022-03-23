@@ -6,16 +6,11 @@ import { CellViewType } from "typings/enum"
 import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile, profilePreset } from "profile"
 import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang
-
-const profileTemp = {
-  ...profilePreset.autostandardize
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autostandardize"], typeof ActionKey> = {
   name: "AutoStandardize",
   intro,
   link,
@@ -123,10 +118,9 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
-  input,
-  key
-) => {
+const checker: ICheckMethod<
+  PickByValue<IProfile["autostandardize"], string>
+> = (input, key) => {
   switch (key) {
     case "customStandardize":
       checkReplaceParamFromMNLink(input)

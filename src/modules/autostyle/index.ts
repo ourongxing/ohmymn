@@ -6,20 +6,16 @@ import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
-import { ActionKey, AutoStylePreset, ChangeStyle } from "./enum"
-import { profilePreset } from "profile"
+import { ActionKey, AutoStylePreset, ChangeStyle, Style } from "./enum"
+import { IProfile } from "profile"
 
-const { help, intro, option, label, link } = lang
+const { help, intro, option, label, link, check } = lang
 
 const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
-const profileTemp = {
-  ...profilePreset.autostyle
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
   name: "AutoStyle",
   intro,
   link,
@@ -172,13 +168,12 @@ const utils = {
       const [zh, en, area] = reverseEscape(wordCountArea) as number[]
       if (note.excerptPic) {
         const actualArea = utils.getExcerptArea(note)
-        if (actualArea > area) res.style = 2
+        if (actualArea > area) res.style = Style.Wireframe
         if (showArea) showHUD(lang.area + ": " + actualArea)
-        // 0 线框+填充 1 填充 2 线框
       } else if (note.excerptText) {
-        // 排除划重点的影响
         const text = removeHighlight(note.excerptText)
-        if (countWord(text) > (isHalfWidth(text) ? en : zh)) res.style = 2
+        if (countWord(text) > (isHalfWidth(text) ? en : zh))
+          res.style = Style.Wireframe
       }
     }
 
@@ -208,22 +203,20 @@ const utils = {
 }
 
 const checker: ICheckMethod<
-  PickByValue<typeof profileTemp, string> & typeof ActionKey
+  PickByValue<IProfile["autostyle"], string> & typeof ActionKey
 > = (input, key) => {
   switch (key) {
     case "changeColor":
       const index = Number(input)
-      if (!Number.isInteger(index)) throw "不是数字"
-      if (index > 16 || index < 1) throw "不再范围内"
+      if (!Number.isInteger(index)) throw check.enter_positive
+      if (index > 16 || index < 1) throw check.out_of_range
       break
     case "wordCountArea": {
       input = reverseEscape(input)
-      if (
-        Array.isArray(input) &&
-        input.length == 3 &&
-        input.every(item => Number.isInteger(item))
-      ) {
-      } else throw "格式错误"
+      if (!Array.isArray(input)) throw check.input_array
+      if (input.length !== 3) throw check.input_three_number
+      if (input.some(item => !Number.isInteger(item)))
+        throw lang.check.enter_positive
       break
     }
     default:

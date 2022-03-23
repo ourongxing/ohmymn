@@ -1,3 +1,4 @@
+import lang from "lang"
 import {
   escapeDoubleQuote,
   getMNLinkValue,
@@ -18,7 +19,7 @@ export const checkRegArray = (input: string) => {
 
 export const checkRegArrayFromMNLink = (input: string) => {
   const res = getMNLinkValue(input)
-  if (!res) throw "卡片中不存在配置信息"
+  if (!res) throw lang.no_profile_in_card
   checkRegArray(res)
 }
 
@@ -30,12 +31,12 @@ export const checkReplaceParam = (input: string) => {
 
 export const checkReplaceParamFromMNLink = (input: string) => {
   const res = getMNLinkValue(input)
-  if (!res) throw "卡片中不存在配置信息"
+  if (!res) throw lang.no_profile_in_card
   checkReplaceParam(res)
 }
 
 export const checkPositiveinteger = (input: number) => {
-  if (isNaN(input)) throw "请输入数字"
-  if (!Number.isInteger(input)) throw "请输入整数"
-  if (input < 0) throw "请输入正整数"
+  if (isNaN(input)) throw lang.input_number
+  if (!Number.isInteger(input)) throw lang.input_integer
+  if (input < 0) throw lang.input_positive
 }

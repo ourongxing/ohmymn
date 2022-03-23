@@ -1,7 +1,7 @@
 import { MN } from "const"
 
 const zh = {
-  intro: "所有动作均需要先选中卡片\n点击查看所有动作具体的使用方法和注意事项",
+  intro: "所有动作均需要先选中卡片。点击查看所有动作具体的使用方法和注意事项。",
   link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
   option: {
     filter_cards: ["仅筛选标题", "筛选整个卡片内容"],
@@ -14,9 +14,7 @@ const zh = {
     merge_text: "输入分隔符",
     switch_title: "当两者都存在时请使用「交换标题和摘录」",
     rename_title: "现在可以分层进行编号",
-    manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置",
-    from_which_module: (module: string) =>
-      `该动作来自于 ${module}，与其使用相同的配置`
+    manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
   },
   label: {
     switch_title: "切换摘录标题",
@@ -36,7 +34,7 @@ const zh = {
 
 const en: typeof zh = {
   intro:
-    "All actions need to select the card first \n Click for the specific use of all actions and notes",
+    "All actions need to select the card first.Click for the specific use of all actions and notes",
   link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734", //Todo:修改英文版Notion
   option: {
     switch_title: ["Switch to Another", "Swap Titles and Excerpts"],
@@ -46,8 +44,6 @@ const en: typeof zh = {
     manage_profile: ["Read Configuration", "Write Configuration"]
   },
   help: {
-    from_which_module: (module: string) =>
-      `This action comes from ${module} and uses the same profile`,
     switch_title: "Use [Swap Title and Excerpt] when both are present」",
     merge_text: "Input delimiter",
     rename_title: "Now it can be hierarchical numbered",
@@ -55,7 +51,7 @@ const en: typeof zh = {
       "It is forbidden to directly modify the configuration information, and the existing configuration will be overwritten after reading"
   },
   label: {
-    smart_selection: "Smart Selection",
+    smart_selection: "Smart Selector",
     switch_title: "Switch Excerption or Title",
     filter_cards: "Filter Cards",
     merge_cards: "Merge Multiple Cards",

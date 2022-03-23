@@ -80,14 +80,14 @@ const getExcerptText = (
   highlight = true,
   picType: "ocr" | "base64" | "html" | "md" = "ocr"
 ): string[] => {
-  let mainExcerpt = node.excerptText ?? ""
+  let mainExcerpt = node.excerptText?.trim() ?? ""
   if (node.excerptPic && picType !== "ocr") {
     mainExcerpt = exportPic(node.excerptPic)[picType]
   }
   const excerpts = node.comments.reduce(
     (acc, cur) => {
       if (cur.type == "LinkNote") {
-        let text = cur.q_htext ?? ""
+        let text = cur.q_htext?.trim() ?? ""
         if ("q_hpic" in cur && picType != "ocr") {
           text = exportPic(cur.q_hpic)[picType]
         }

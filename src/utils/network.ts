@@ -1,4 +1,4 @@
-import lang from "lang"
+import { MN } from "const"
 import { NSJSONReadingOptions, NSJSONWritingOptions } from "typings/enum"
 
 class Response {
@@ -12,7 +12,7 @@ class Response {
       NSJSONReadingOptions.MutableContainers
     )
     if (NSJSONSerialization.isValidJSONObject(res)) return res
-    throw lang.network.notJSON
+    throw "The return value is not in JSON format"
   }
 }
 
@@ -81,7 +81,6 @@ const initRequest = (
 
 const fetch = (url: string, options: RequestOptions = {}): Promise<Response> =>
   new Promise((resolve, reject) => {
-    // 转圈圈
     // UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     const queue = NSOperationQueue.mainQueue()
     const request = initRequest(url, options)
@@ -90,9 +89,10 @@ const fetch = (url: string, options: RequestOptions = {}): Promise<Response> =>
       queue,
       (res: NSHTTPURLResponse, data: NSData, err: NSError) => {
         // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        // 很奇怪，获取不到 res 的属性
+        // It's strange, I can't get the res property
         if (err.localizedDescription) reject(err.localizedDescription)
-        if (data.length() == 0) reject(lang.network.null)
+        if (data.length() == 0)
+          reject("No return value received, please check the network")
         resolve(new Response(data as NSData))
       }
     )

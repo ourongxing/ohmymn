@@ -4,14 +4,10 @@ import type { IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 const { intro, link, label, option, help } = lang
 
-const profileTemp = {
-  ...profilePreset.autoreplace
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
   name: "AutoReplace",
   intro,
   link,

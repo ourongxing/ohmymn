@@ -49,6 +49,12 @@ const zh = {
       "深灰",
       "紫"
     ]
+  },
+  check: {
+    enter_positive: "请输入正整数",
+    out_of_range: "不再范围内（1,16）",
+    input_array: "请输入数组，比如 [10,5,100]",
+    input_three_number: "数组内必须有三个数字，比如 [10,5,100]"
   }
 }
 
@@ -106,6 +112,13 @@ const en: typeof zh = {
       "Dark Grey",
       "Purple"
     ]
+  },
+  check: {
+    enter_positive: "Please enter a positive integer",
+    out_of_range: "Out of range（1,16）",
+    input_array: "Please enter an array, for example [10,5,100]",
+    input_three_number:
+      "There must be three numbers in the array，for example [10,5,100]"
   }
 }
 

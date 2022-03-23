@@ -21,6 +21,7 @@ import type {
   MbBookNote
 } from "typings"
 import { showHUD } from "utils/common"
+import lang from "lang"
 
 export const modules = {
   gesture,
@@ -107,7 +108,7 @@ export const checkInputCorrect = (input: string, key: string): boolean => {
       if (res !== undefined) return true
     }
   } catch (err) {
-    showHUD(String(err) ? String(err) : "格式错误，请查看相关文档", 2)
+    showHUD(String(err) ? String(err) : lang.input_error, 2)
     return false
   }
   return true

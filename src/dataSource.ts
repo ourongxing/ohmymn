@@ -3,6 +3,7 @@ import { ISection, IConfig, IRow, IRowButton } from "typings"
 import { CellViewType } from "typings/enum"
 import { SerialCode } from "utils/text"
 import { constModules, ModuleKeyType, modules } from "synthesizer"
+import { MN } from "const"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -23,17 +24,7 @@ const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
-      label: lang.more.donate,
-      link: "https://cdn.jsdelivr.net/gh/mnaddon/ohmymn/assets/donate.gif"
-    },
-    {
-      type: CellViewType.PlainText,
-      label: lang.more.mn5,
-      link: ""
-    },
-    {
-      type: CellViewType.PlainText,
-      label: "\n\n\n\n\n\n\n\n",
+      label: "\n\n\n\n\n\n\n\n\n\n",
       link: ""
     }
   ]
@@ -112,8 +103,8 @@ const genDataSource = (
           module: (config.key ??
             config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
           help:
-            (k.help ? k.help + "\n" : "") +
-            lang.magicaction_from_which_module(config.name)
+            lang.magicaction_from_which_module(config.name) +
+            (k.help ? "\n" + k.help : "")
         }))
       )
     if (config.actions4text?.length) {
@@ -124,8 +115,8 @@ const genDataSource = (
           module: (config.key ??
             config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
           help:
-            (k.help ? k.help + "\n" : "") +
-            lang.magicaction_from_which_module(config.name)
+            lang.magicaction_from_which_module(config.name) +
+            (k.help ? "\n" + k.help : "")
         }))
       )
     }
@@ -159,15 +150,8 @@ const genDataSource = (
   section_Gesture.rows = section_Gesture.rows.map(row => {
     if (row.type == CellViewType.Select) {
       if (row.key.includes("selectionBar"))
-        row.option = [
-          lang.implement_datasource_method.none,
-          ...gestureOption4Text
-        ]
-      else
-        row.option = [
-          lang.implement_datasource_method.none,
-          ...gestureOption4Card
-        ]
+        row.option = [lang.none, ...gestureOption4Text]
+      else row.option = [lang.none, ...gestureOption4Card]
     }
     return row
   })
@@ -192,7 +176,7 @@ const genDataSourceIndex = (dataSource: ISection[]) => {
 }
 
 const getActionKeyGetureOption = (section: ISection) => {
-  const gestureOption = [lang.implement_datasource_method.open_panel]
+  const gestureOption = [lang.open_panel]
   const actionKeys = []
   for (const _row of section.rows) {
     if (

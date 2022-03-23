@@ -15,7 +15,6 @@ import {
 import { MN } from "const"
 import { getMNLinkValue } from "utils/input"
 import autoocr from "modules/autoocr"
-import { text } from "stream/consumers"
 
 export default async (
   type: "card" | "text",
@@ -32,9 +31,9 @@ export default async (
             row.label,
             row.help ?? "",
             UIAlertViewStyle.PlainTextInput,
-            row.option ? row.option : [lang.handle_user_action.sure],
+            row.option ? row.option : [lang.sure],
             (alert: UIAlertView, buttonIndex: number) => {
-              // 最好只有两个选项，因为这样会在输入后自动选中最后一个选项
+              // It is better to have only two options, because then the last option will be automatically selected after the input
               return {
                 content: alert.textFieldAtIndex(0).text,
                 option: buttonIndex
@@ -42,7 +41,7 @@ export default async (
             }
           )
           const text = content ? getMNLinkValue(content) : ""
-          // 允许为空
+          // Allowed to be empty
           if (text === "" || (text && checkInputCorrect(text, row.key))) {
             await handleMagicAction(type, row.key, option!, text)
             return
@@ -53,7 +52,7 @@ export default async (
           row.label,
           row.help ?? "",
           UIAlertViewStyle.Default,
-          row.option ?? [lang.handle_user_action.sure],
+          row.option ?? [lang.sure],
           (_, buttonIndex: number) => ({
             option: buttonIndex
           })
@@ -73,7 +72,7 @@ const handleMagicAction = async (
       MN.studyController().readerController.currentDocumentController
     const imageFromSelection = documentController.imageFromSelection()
     if (!imageFromSelection) {
-      showHUD("没有框选任何文字")
+      showHUD(lang.not_select_text)
       return
     }
     const text =
@@ -102,10 +101,11 @@ const handleMagicAction = async (
     } else {
       nodes = getSelectNodes()
       if (!nodes.length) {
-        showHUD(lang.magic_action_handler.not_selected)
+        showHUD(lang.not_select_card)
         return
       }
-      // 需要同层级是为了避免出现同时选中父节点和后代节点的情况，从而导致重复处理。
+      // The need for the same level is to avoid the situation where both parent and descendant nodes are selected,
+      // which leads to duplicate processing.
       const isHavingChildren = nodes.every(
         node =>
           nodes[0].parentNote === node.parentNote && node?.childNotes?.length
@@ -114,7 +114,7 @@ const handleMagicAction = async (
       const noNeedSmartSelection =
         key === "renameTitle" && /#\[(.+)\]/.test(content)
 
-      const { smart_select } = lang.magic_action_handler
+      const { smart_select } = lang
       if (
         self.profile.magicaction4card.smartSelection &&
         isHavingChildren &&
@@ -161,7 +161,7 @@ const handleMagicAction = async (
         )
         break
       default:
-        // 异步函数，不要包裹在 undoGrouping 里面
+        // Promise can not be placed in undoGroupingWithRefresh()
         if (actions4card[key] instanceof Promise)
           actions4card[key]({
             content,

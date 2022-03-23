@@ -3,12 +3,12 @@ const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
 const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
   let ret
   const opt = {
-    "Y+": date.getFullYear().toString(), // 年
-    "m+": (date.getMonth() + 1).toString(), // 月
-    "d+": date.getDate().toString(), // 日
-    "H+": date.getHours().toString(), // 时
-    "M+": date.getMinutes().toString(), // 分
-    "S+": date.getSeconds().toString() // 秒
+    "Y+": date.getFullYear().toString(), // year
+    "m+": (date.getMonth() + 1).toString(), // month
+    "d+": date.getDate().toString(), // day
+    "H+": date.getHours().toString(), // hour
+    "M+": date.getMinutes().toString(), // minute
+    "S+": date.getSeconds().toString() // second
   }
   Object.entries(opt).forEach(([k, v]) => {
     ret = new RegExp("(" + k + ")").exec(fmt)
