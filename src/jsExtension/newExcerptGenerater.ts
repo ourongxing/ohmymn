@@ -2,6 +2,7 @@ import { MbBookNote } from "typings"
 import { utils } from "synthesizer"
 import { HasTitleThen } from "modules/addon/enum"
 import { MN } from "const"
+import { removeHighlight } from "utils/note"
 
 export const customOCR = async () => {
   const imgBase64 = MN.studyController()
@@ -50,6 +51,7 @@ export const newTitleText = async (
   if (!res) return defaultRet
 
   res.title = await (async title => {
+    if (self.isModify) title = title.map(k => removeHighlight(k))
     if (utils.modifyTitles)
       for (const util of utils.modifyTitles) {
         const res = await util(title)
@@ -59,11 +61,11 @@ export const newTitleText = async (
   })(res.title)
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
-    const [oldTitle, stillUsingTitle] = (() => {
+    const [oldTitles, unchanged] = (() => {
       if (self.isModify && cacheExcerptTitle[self.noteid]) {
         // If you are modifying, compare the original title first, divide the original title into changed and unchanged ones,
         // delete the changed ones and keep the unchanged ones
-        const [stillUsing, deprecated] = cacheExcerptTitle[self.noteid]!.reduce(
+        const [unchanged, changed] = cacheExcerptTitle[self.noteid]!.reduce(
           (acc, cur) => {
             if (res.title.includes(cur)) acc[0].push(cur)
             else acc[1].push(cur)
@@ -71,16 +73,16 @@ export const newTitleText = async (
           },
           [[], []] as string[][]
         )
-        return [nodeTitle.filter(k => !deprecated.includes(k)), stillUsing]
+        return [nodeTitle.filter(k => !changed.includes(k)), unchanged]
       } else return [nodeTitle, []]
     })()
     // Filter new titles without duplicating previous ones
-    const newTitle = res.title.filter(k => !oldTitle.includes(k))
+    const newTitles = res.title.filter(k => !oldTitles.includes(k))
     // Cache new title
-    cacheExcerptTitle[self.noteid] = [...stillUsingTitle, ...newTitle]
+    cacheExcerptTitle[self.noteid] = [...unchanged, ...newTitles]
     return {
       text: res.text,
-      title: [...oldTitle, ...newTitle]
+      title: [...oldTitles, ...newTitles]
     }
   }
   cacheExcerptTitle[self.noteid] = res.title

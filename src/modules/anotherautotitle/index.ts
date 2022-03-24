@@ -6,6 +6,7 @@ import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
 import { IProfile } from "profile"
 import { checkRegArrayFromMNLink } from "utils/checkInput"
+import { removeHighlight } from "utils/note"
 
 const { option, intro, help, link, label, check } = lang
 
@@ -52,6 +53,7 @@ const utils = {
     const { preset, wordCount, changeTitleNoLimit } =
       self.profile.anotherautotitle
     const { cacheExcerptTitle } = self.docProfile.additional
+    if (self.isModify) text = removeHighlight(text)
     if (changeTitleNoLimit && self.isModify && cacheExcerptTitle[self.noteid])
       return {
         title: [text],
