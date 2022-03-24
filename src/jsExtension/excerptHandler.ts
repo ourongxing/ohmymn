@@ -1,10 +1,4 @@
-import {
-  addTags,
-  getCommentIndex,
-  getNotebookById,
-  getNoteById,
-  undoGroupingWithRefresh
-} from "utils/note"
+import { addTags, getCommentIndex, undoGroupingWithRefresh } from "utils/note"
 import { delayBreak } from "utils/common"
 import {
   customOCR,
@@ -13,6 +7,7 @@ import {
   newTitleText
 } from "./newExcerptGenerater"
 import { MbBookNote } from "typings"
+import { MN } from "const"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -30,7 +25,8 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   console.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = _note
-  nodeNote = note.groupNoteId ? getNoteById(note.groupNoteId) : note
+  nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
+  self.node = nodeNote
   isComment = nodeNote !== note
   self.isModify = lastExcerptText !== undefined
   if (
@@ -53,7 +49,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
    */
   if (note.excerptPic) {
     const autoOCR =
-      getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
+      MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
     console.log("The excerpt is image", "ocr")
     if (autoOCR) {
       const success = await delayBreak(30, 0.1, () =>
@@ -156,6 +152,6 @@ export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
   const { cacheExcerptTitle } = self.docProfile.additional
   self.docProfile.additional.lastExcerpt = Date.now()
   Object.keys(cacheExcerptTitle).forEach(k => {
-    if (!getNoteById(k)) cacheExcerptTitle[k] = undefined
+    if (!MN.db.getNoteById(k)) cacheExcerptTitle[k] = undefined
   })
 }

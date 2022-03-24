@@ -1,13 +1,14 @@
 import type { ICheckMethod, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { getExcerptNotes, getNoteById, removeHighlight } from "utils/note"
+import { getExcerptNotes, removeHighlight } from "utils/note"
 import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
 import { ActionKey, AutoStylePreset, ChangeStyle, Style } from "./enum"
 import { IProfile } from "profile"
+import { MN } from "const"
 
 const { help, intro, option, label, link, check } = lang
 
@@ -160,7 +161,9 @@ const utils = {
       style
     }
 
-    const nodeNote = note.groupNoteId ? getNoteById(note.groupNoteId) : note
+    const nodeNote = note.groupNoteId
+      ? MN.db.getNoteById(note.groupNoteId)!
+      : note
     if (
       preset.includes(AutoStylePreset.StyleByWordCountAndArea) &&
       wordCountArea

@@ -9,8 +9,7 @@ import { ActionKey, MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
 import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
-import { render } from "utils/third party/mustache"
-import getNodeProperties from "jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 const { link, intro, lable, option, help, hud } = lang
 
 const configs: IConfig<
@@ -179,7 +178,7 @@ const utils = {
     const { customContent } = self.profile.copysearch
     if (!customContent) return undefined
     const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
-    return render(template, getNodeProperties(node))
+    return renderTemplateOfNodeProperties(node, template)
   },
   async choosePartofCard(parts: string[], tip = "", index = false) {
     const { option } = await popup(
@@ -195,7 +194,7 @@ const utils = {
   },
   async getContentofOneCard(node: MbBookNote, option: number) {
     const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
-    const excerptText = getExcerptText(node, false)
+    const excerptText = getExcerptText(node, false).ocr
     const customContent = utils.getCustomContent(node)
     switch (option) {
       case WhichPartofCard.Title: {
@@ -249,7 +248,7 @@ const utils = {
       case 1: {
         const { multipleTitles } = self.profile.copysearch
         return nodes.reduce((acc, cur) => {
-          const l = getExcerptText(cur, false)
+          const l = getExcerptText(cur, false).ocr
           if (!l.length) return acc
           if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(l[0])
           else acc.push(l.join("\n"))

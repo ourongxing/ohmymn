@@ -6,7 +6,7 @@ import { CellViewType } from "typings/enum"
 import type { ICheckMethod, IConfig } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
-import { IProfile, profilePreset } from "profile"
+import { IProfile } from "profile"
 import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang

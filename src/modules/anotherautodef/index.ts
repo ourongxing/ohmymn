@@ -98,7 +98,7 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
         } else if (content) {
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
-            const text = getExcerptText(node).join("\n")
+            const text = getExcerptText(node).ocr.join("\n")
             const allTitles = extractArray(text, params)
             if (allTitles.length)
               node.noteTitle = removeHighlight(allTitles.join("; "))

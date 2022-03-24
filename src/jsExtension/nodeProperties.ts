@@ -1,6 +1,7 @@
+import { render } from "utils/third party/mustache"
 import { MbBookNote } from "typings"
 import { dateFormat } from "utils"
-import { render } from "utils/third party/mustache"
+import { MN } from "const"
 import {
   getExcerptText,
   getAllText,
@@ -8,7 +9,6 @@ import {
   getAllCommnets,
   removeHighlight
 } from "utils/note"
-import { MN } from "const"
 
 /** undefine can be auto hidden when using Mustache */
 const undefine2undefine = (v: any, f: (t: any) => any) => {
@@ -24,31 +24,46 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
   return {
-    tags: isRequire("tags") && getAllTags(node, false),
     nohl: () => (text: any, render: (arg0: any) => string) =>
       removeHighlight(render(text)),
+    id: isRequire("id") && node.noteId,
+    title:
+      isRequire("title") &&
+      undefine2undefine(node.noteTitle, t => t.split(/\s*[;；]\s*/)),
+    url:
+      isRequire("url") &&
+      undefine2undefine(node.noteId, t => "marginnote3app://note/" + t),
+    page: isRequire("page.") && {
+      end: node.endPage,
+      start: node.startPage
+    },
+    tags: isRequire("tags") && getAllTags(node, false),
     allText: isRequire("allText") && getAllText(node),
-    excerpts: isRequire("excerpts") && getExcerptText(node),
-    comments: isRequire("comments") && getAllCommnets(node),
-    time: isRequire("allText") && {
+    excerpts: isRequire("excerpts.") && getExcerptText(node),
+    comments: isRequire("comments.") && getAllCommnets(node),
+    time: isRequire("time.") && {
       creat: undefine2undefine(node.createDate, dateFormat),
       modify: undefine2undefine(node.modifiedDate, dateFormat),
       now: dateFormat(new Date())
     },
-    title: isRequire("title") && {
-      note: undefine2undefine(node.noteTitle, t => t.split(/\s*[;；]\s*/)),
-      doc: undefine2undefine(
+    doc: isRequire("doc.") && {
+      md5: node.docMd5,
+      title: undefine2undefine(
         node.docMd5,
         t => MN.db.getDocumentById(t)?.docTitle
       ),
-      notebook: undefine2undefine(
-        node.notebookId,
-        t => MN.db.getNotebookById(t)?.title
+      path: undefine2undefine(
+        node.docMd5,
+        t => MN.db.getDocumentById(t)?.pathFile
       )
     },
-    link: isRequire("link") && {
-      note: undefine2undefine(node.noteId, t => "marginnote3app://note/" + t),
-      notebook: undefine2undefine(
+    notebook: isRequire("notebook.") && {
+      title: undefine2undefine(
+        node.notebookId,
+        t => MN.db.getNotebookById(t)?.title
+      ),
+      id: node.notebookId,
+      url: undefine2undefine(
         node.notebookId,
         t => "marginnote3app://notebook/" + t
       )
@@ -60,6 +75,7 @@ export const renderTemplateOfNodeProperties = (
   node: MbBookNote,
   template: string
 ) => {
+  if (!/{{.*}}/.test(template)) return template
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {
@@ -75,6 +91,30 @@ export const renderTemplateOfNodeProperties = (
     })
   } catch (err) {
     console.log(String(err))
-    return ""
+    return template
+  }
+}
+
+export const renderTemplateOfNodePropertiesWhenExcerpt = (template: string) => {
+  if (!/{{.*}}/.test(template)) return template
+  if (!self.node) return template
+  const isRequire = (key: string) => template.includes(key)
+  try {
+    return render(template, {
+      ...getNodeProperties(self.node, template),
+      parent:
+        isRequire("parent") &&
+        undefine2undefine(self.node.parentNote, t =>
+          getNodeProperties(t, template)
+        ),
+      children:
+        isRequire("children") &&
+        undefine2undefine(self.node.childNotes, k =>
+          k.map((k: MbBookNote) => getNodeProperties(k, template))
+        )
+    })
+  } catch (err) {
+    console.log(String(err))
+    return template
   }
 }

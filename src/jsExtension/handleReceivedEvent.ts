@@ -11,7 +11,6 @@ import {
   isThisWindow,
   showHUD
 } from "utils/common"
-import { getNoteById } from "utils/note"
 import { Range, readProfile, saveProfile } from "utils/profile"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
 import handleMagicAction from "./magicActionHandler"
@@ -172,7 +171,7 @@ const onChangeExcerptRange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("Change excerpt range", "event")
   self.noteid = sender.userInfo.noteid
-  const note = getNoteById(self.noteid)
+  const note = MN.db.getNoteById(self.noteid)!
   tmp.isChangeExcerptRange = true
   handleExcerpt(note, tmp.lastExcerptText)
 }
@@ -181,7 +180,7 @@ const onProcessNewExcerpt: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("Process new excerpt", "event")
   self.noteid = sender.userInfo.noteid
-  const note = getNoteById(self.noteid)
+  const note = MN.db.getNoteById(self.noteid)!
   tmp.isProcessNewExcerpt = true
   if (self.profile.addon.lockExcerpt) tmp.lastExcerptText = "😎"
   removeLastCommentCacheTitle(true)
