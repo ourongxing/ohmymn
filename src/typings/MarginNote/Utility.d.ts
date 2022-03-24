@@ -25,60 +25,60 @@ declare global {
      * start speech notes
      * @param notes NSArray*
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     startSpeechNotes(notes: Array<any>): void
     /**
      * stop speech
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     stopSpeech(): void
     /**
      * pause speech
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     pauseSpeech(): void
     /**
      * continue speech
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     continueSpeech(): void
     /**
      * previous speech
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     prevSpeech(): void
     /**
      * next speech
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     nextSpeech(): void
     /**
      * @memberof SpeechManager
-     * @returns {boolean}
+     * @returns boolean
      */
     canPrev(): boolean
     /**
      * @memberof SpeechManager
-     * @returns {boolean}
+     * @returns boolean
      */
     canNext(): boolean
     /**
      * @param text NSString*
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     playText(text: string): void
     /**
      * @param text NSString*
      * @param languageTxt NSString*
      * @memberof SpeechManager
-     * @returns {void}
+     * @returns void
      */
     playTextLanguageTxt(text: string, languageTxt: string): void
     /**
@@ -111,7 +111,7 @@ declare global {
     languageCode?: string
     /**
      * create a new instance
-     * @returns {SpeechManager*}
+     * @returns SpeechManager*
      */
     static sharedInstance(): SpeechManager
   }
@@ -129,7 +129,7 @@ declare global {
   class UndoManager {
     /**
      * create a new instance
-     * @returns {UndoManager}
+     * @returns UndoManager
      * @memberof UndoManager
      */
     static sharedInstance(): UndoManager
@@ -138,37 +138,37 @@ declare global {
      * @param topicid NSString*
      * @param block JSValue*
      * @memberof UndoManager
-     * @returns {void}
+     * @returns void
      */
     undoGrouping(actionName: string, topicid: string, block: JSValue): void
     /**
      * undo an action
      * @memberof UndoManager
-     * @returns {void}
+     * @returns void
      */
     undo(): void
     /**
      * redo an action
      * @memberof UndoManager
-     * @returns {void}
+     * @returns void
      */
     redo(): void
     /**
      * if can undo
      * @memberof UndoManager
-     * @returns {boolean}
+     * @returns boolean
      */
     canUndo(): boolean
     /**
      * if can redo
      * @memberof UndoManager
-     * @returns {boolean}
+     * @returns boolean
     */
     canRedo(): boolean
     /**
      * clear all actions
      * @memberof UndoManager
-     * @returns {void}
+     * @returns void
      */
     clearAll(): void
   }
@@ -190,7 +190,7 @@ declare global {
      * @param path NSString*
      * @param destination NSString*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     static unzipFileAtPathToDestination(
       path: string,
@@ -201,7 +201,7 @@ declare global {
      * @param destination NSString*
      * @param password NSString*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     static unzipFileAtPathToDestinationOverwritePassword(
       path: string,
@@ -213,7 +213,7 @@ declare global {
      * @param path NSString*
      * @param filenames NSArray*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     static createZipFileAtPathWithFilesAtPaths(
       path: string,
@@ -223,7 +223,7 @@ declare global {
      * @param path NSString*
      * @param directoryPath NSString*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     static createZipFileAtPathWithContentsOfDirectory(
       path: string,
@@ -232,26 +232,26 @@ declare global {
     /**
      * @param path NSString*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     initWithPath(path: string): WrapperObj<any>
     open(): boolean
     /**
      * @param path NSString*
      * @memberof ZipArchive 
-     * @returns {void}
+     * @returns void
      */
     writeFile(path: string): boolean
     /**
      * @param data NSData*
      * @param filename NSString*
      * @memberof ZipArchive
-     * @returns {void}
+     * @returns void
      */
     writeDataFilename(data: NSData, filename: string): boolean
     /**
      * @memberof ZipArchive
-     * @returns {boolean}
+     * @returns boolean
      */
     close(): boolean
   }
@@ -268,7 +268,7 @@ declare global {
   class MenuController extends UIViewController {
     /**
      * new instance
-     * @returns {MenuController}
+     * @returns MenuController
      * @memberof MenuController
      */
     static new(): MenuController

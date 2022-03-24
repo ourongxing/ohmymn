@@ -14,7 +14,7 @@ declare class JSExtension {
   /** 
    * Do something when MarginNote open a window
    * @memberof JSExtension
-   * @returns {void}
+   * @returns void
    */
   sceneWillConnect(): void
   /**
@@ -50,12 +50,12 @@ declare class JSExtension {
   /**
    * Do something when document close
    * @param docmd5 NSString*
-   * @returns {void}
+   * @returns void
    */
   documentWillClose(docmd5: string): void
   /**
    * Query Addon Status, usally used for checking if activate the addon
-   * @returns {NSDictionary*}
+   * @returns NSDictionary*
    * @memberof JSExtension
    * @example
    * ```
@@ -101,30 +101,30 @@ declare class JSExtension {
   } | null
   
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param topicid NSString*
    * @memberof JSExtension
    */
   additionalTitleLinksOfNotebook(topicid: string): Array<any>
   /**
-   * @returns {UIViewController*}
+   * @returns UIViewController*
    * @param titleLink NSString*
    * @memberof JSExtension
    */
   viewControllerForTitleLink(titleLink: string): UIViewController
   /**
-   * @returns {void}
+   * @returns void
    * @param controller UIViewController*
    * @memberof JSExtension
    */
   controllerWillLayoutSubviews(controller: UIViewController): void
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @memberof JSExtension
    */
   additionalShortcutKeys(): Array<any>
   /**
-   * @returns {NSDictionary*}
+   * @returns NSDictionary*
    * @param command NSString*
    * @param keyFlags NSInteger
    * @memberof JSExtension
@@ -133,37 +133,37 @@ declare class JSExtension {
   /**
    * @param command NSString*
    * @param keyFlags NSInteger
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   processShortcutKeyWithKeyFlags(command: string, keyFlags: number): void
   /**
    * Do something when addon finish loading
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   static addonDidConnect(): void
   /**
    * Do something when addon shuts down
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   static addonWillDisconnect(): void
   /**
    * Do something when application enter background
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   static applicationDidEnterBackground(): void
   /**
    * Do something when application enter foreground
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   static applicationWillEnterForeground(): void
   /**
    * @param notify UILocalNotification*
-   * @returns {void}
+   * @returns void
    * @memberof JSExtension
    */
   static applicationDidReceiveLocalNotification(

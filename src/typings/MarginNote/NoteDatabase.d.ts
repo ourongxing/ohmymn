@@ -175,13 +175,13 @@ export class MbTopic {
 export class MbModelTool {
   /**
    * not accessible as a static function in global scope, use {@link Database} instead
-   * @returns {MbModelTool*}
+   * @returns MbModelTool*
    */
   // static sharedInstance(): MbModelTool;
   /**
    * get Notebook by ID
    * @param topicid NSString*
-   * @returns {MbTopic*}
+   * @returns MbTopic*
    * @memberof MbModelTool
    * @example
    * ```
@@ -190,7 +190,7 @@ export class MbModelTool {
    */
   getNotebookById(topicid: string): WrapperObj<MbTopic> | undefined
   /**
-   * @returns {NSData*}
+   * @returns NSData*
    * @param hash NSString*
    * @memberof MbModelTool
    * 
@@ -198,20 +198,20 @@ export class MbModelTool {
   getMediaByHash(hash: string): NSData | undefined
   /**
    * @param noteid NSString*
-   * @returns {MbBookNote*}
+   * @returns MbBookNote*
    * @memberof MbModelTool
    */
   getNoteById(noteid: string): WrapperObj<MbBookNote> | undefined
   /**
    * @param md5 NSString*
-   * @returns {MbBookNote*}
+   * @returns MbBookNote*
    * @memberof MbModelTool
    */
   getDocumentById(md5: string): WrapperObj<MbBook> | undefined
   /**
    * @param noteid NSString*
    * @param topicid NSString*
-   * @returns {MbBookNote*}
+   * @returns MbBookNote*
    * @memberof MbModelTool
    */
   getFlashcardByNoteId(
@@ -219,7 +219,7 @@ export class MbModelTool {
     topicid: string
   ): WrapperObj<MbBookNote> | undefined
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param noteid NSString*
    * @memberof MbModelTool
    * 
@@ -227,40 +227,40 @@ export class MbModelTool {
   getFlashcardsByNoteId(noteid: string): Array<MbBookNote> | undefined
   /**
    * @param noteid NSString*
-   * @returns {boolean}
+   * @returns boolean
    * @memberof MbModelTool
    */
   hasFlashcardByNoteId(noteid: string): boolean
   /**
    * @memberof MbModelTool
-   * @returns {void}
+   * @returns void
    */
   savedb(): void
   /**
    * @memberof MbModelTool
-   * @returns {NSArray*}
+   * @returns NSArray*
    */
   allNotebooks(): Array<MbTopic>
   /**
    * @memberof MbModelTool
-   * @returns {NSArray*}
+   * @returns NSArray*
    */
   allDocuments(): Array<MbBook>
   /**
    * @param topicid NSString*
-   * @returns {void}
+   * @returns void
    * @memberof MbModelTool
    */
   setNotebookSyncDirty(topicid: string): void
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param topicid NSString*
    * @param key NSString*
    * @memberof MbModelTool
    */
   saveHistoryArchiveKey(topicid: string, key: string): Array<any>
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param topicid NSString*
    * @param key NSString*
    * @memberof MbModelTool
@@ -268,18 +268,18 @@ export class MbModelTool {
   loadHistoryArchiveKey(topicid: string, key: string): Array<any>
   /**
    * @param noteid NSString*
-   * @returns {void}
+   * @returns void
    * @memberof MbModelTool
    */
   deleteBookNote(noteid: string): void
   /**
    * @param noteid NSString*
-   * @returns {void}
+   * @returns void
    * @memberof MbModelTool
    */
   deleteBookNoteTree(noteid: string): void
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param notes NSArray*
    * @param topicid NSString*
    * @memberof MbModelTool
@@ -289,7 +289,7 @@ export class MbModelTool {
     topicid: string
   ): Array<MbBookNote>
   /**
-   * @returns {NSArray*}
+   * @returns NSArray*
    * @param notes NSArray*
    * @param topicid NSString*
    * @memberof MbModelTool
@@ -301,13 +301,13 @@ export class MbModelTool {
   /**
    * @param topicid NSString*
    * @param storePath NSString*
-   * @returns {boolean}
+   * @returns boolean
    * @memberof MbModelTool
    */
   exportNotebookStorePath(topicid: string, storePath: string): boolean
   /**
    * @param storePath NSString*
-   * @returns {WrapperObj<any>}
+   * @returns WrapperObj<any>
    * @memberof MbModelTool
    */
   importNotebookFromStorePathMerge(
@@ -320,7 +320,7 @@ declare global {
   class Database {
     /**
      * accessor to MbModelTool in global scope
-     * @returns {MbModelTool*}
+     * @returns MbModelTool*
      */
     static sharedInstance(): MbModelTool
   }
