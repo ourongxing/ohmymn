@@ -8,6 +8,7 @@ import {
 } from "utils/input"
 import { getNodeTree } from "utils/note"
 import { SerialCode } from "utils/text"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 const genCharArray = (char: string, len: number, step = 1): string[] => {
   const serialCode = Object.values(SerialCode).filter(k => k.includes(char))[0]
@@ -128,7 +129,10 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
         onlyChildren.forEach((node, index) => {
           const title = node.noteTitle ?? ""
           if (newTitles[index])
-            node.noteTitle = title.replace(regexp, newTitles[index])
+            node.noteTitle = title.replace(
+              regexp,
+              renderTemplateOfNodeProperties(node, newTitles[index])
+            )
         })
       })
     } else {
@@ -141,17 +145,23 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
     const newTitles = getSerialInfo(newSubStr, nodes.length).map(k =>
       newSubStr.replace(/%\[(.+)\]/, k)
     )
-    nodes.forEach((note, index) => {
-      const title = note.noteTitle ?? ""
+    nodes.forEach((node, index) => {
+      const title = node.noteTitle ?? ""
       if (newTitles[index])
-        note.noteTitle = title.replace(regexp, newTitles[index])
+        node.noteTitle = title.replace(
+          regexp,
+          renderTemplateOfNodeProperties(node, newTitles[index])
+        )
     })
   }
   // 或者直接替换
   else {
-    nodes.forEach(note => {
-      const title = note.noteTitle ?? ""
-      note.noteTitle = title.replace(regexp, newSubStr)
+    nodes.forEach(node => {
+      const title = node.noteTitle ?? ""
+      node.noteTitle = title.replace(
+        regexp,
+        renderTemplateOfNodeProperties(node, newSubStr)
+      )
     })
   }
 }

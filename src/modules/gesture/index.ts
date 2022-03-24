@@ -2,7 +2,6 @@ import { CellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
 import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
-const option: string[] = []
 const { link, intro, singleBar, muiltBar, selectionBar } = lang
 const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
   name: "Gesture",
@@ -23,7 +22,7 @@ const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
         label: `${q[0]} ${k[0]}`,
         key: `${q[1]}BarSwipe${k[1]}`,
         type: CellViewType.Select,
-        option
+        option: [] as string[]
       }))
     })
     .flat() as ISettingSelect<AnyProperty<string>>[]

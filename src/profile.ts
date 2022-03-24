@@ -5,13 +5,13 @@ const profilePreset = {
     quickSwitch: [] as number[],
     lockExcerpt: false,
     screenAlwaysOn: false,
+    // Single select is not allowed to be empty, generally set an option to none
     hasTitleThen: [0],
     panelControl: [] as number[],
     panelPosition: [0],
     panelHeight: [1]
   },
   gesture: {
-    // 单选不允许为空，一般设置一个选项为空
     singleBarSwipeUp: [0],
     singleBarSwipeDown: [0],
     singleBarSwipeRight: [0],
@@ -81,16 +81,13 @@ const profilePreset = {
   magicaction4card: {
     smartSelection: false
   },
-  magicaction4text: {
-    preOCR: false
-  },
   copysearch: {
     multipleTitles: [0],
     multipleExcerpts: [0],
     customContent: "[{{title}}]({{link}})",
     showSearchEngine: false,
     separatorSymbols: "\\n\\n",
-    whichSearchEngine: [0],
+    whichPartofCard: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",
     searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
@@ -116,7 +113,6 @@ const profilePreset = {
     outFormat: [1],
     hudTime: "3"
   },
-  // 不显示在 UI 上的配置信息
   additional: {
     autoocr: {
       lastGetToken: 0,
@@ -125,6 +121,7 @@ const profilePreset = {
   }
 }
 
+// Each document has a separate profile
 const docProfilePreset = {
   addon: {
     profile: [0]
@@ -132,6 +129,9 @@ const docProfilePreset = {
   autoocr: {
     on: false,
     lang: [0]
+  },
+  magicaction4text: {
+    preOCR: false
   },
   autotranslate: {
     baiduFromLang: [0],
@@ -143,7 +143,7 @@ const docProfilePreset = {
     searchWord: "eudic://dict/{{keyword}}",
     searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}"
   },
-  // 不显示在 UI 上的配置信息
+  // Information not displayed on the UI
   additional: {
     lastExcerpt: 0,
     cacheExcerptTitle: {} as {
@@ -152,8 +152,7 @@ const docProfilePreset = {
   }
 }
 
-// 感觉转换这么复杂，每次使用的时候都需要转换，有点浪费，应该在读配置的时候预先缓存
-// 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
+// Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
 const profileTempPreset = {
   replaceParam: {
     customTag: [] as ReplaceParam[] | undefined,

@@ -44,10 +44,10 @@ const textFieldShouldReturn = (sender: UITextField) => {
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
   const text = sender.text.trim()
-  // 可以为空
+  // Allowed be empty
   if (/^marginnote3app:/.test(text)) openUrl(text)
   if (!text || checkInputCorrect(text, row.key)) {
-    // 输入正确则取消光标
+    // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
     row.content = text
     postNotification(Addon.key + "InputOver", {
@@ -87,7 +87,7 @@ const selectAction = async (param: {
   const { indexPath, selection, menuController } = param
   const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
-  // 区分单选和多选
+  //  Distinguish between single and multiple selection
   if (
     (<IRowSelect>self.dataSource[indexPath.section].rows[indexPath.row]).type ==
     CellViewType.Select
@@ -187,7 +187,7 @@ const clickSelectButton = (sender: UIButton) => {
   self.popoverController.delegate = self
 }
 
-// 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选
+/** Send data when the popup disappears */
 const popoverControllerDidDismissPopover = () => {
   if (lastSelectInfo) {
     postNotification(Addon.key + "SelectChange", lastSelectInfo)

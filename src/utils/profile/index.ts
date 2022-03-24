@@ -1,11 +1,10 @@
 import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
 import { showHUD } from "utils/common"
-import { Addon } from "const"
+import { Addon, MN } from "const"
 import { updateProfileDataSource } from "./updateDataSource"
 import { MbBookNote } from "typings"
 import Base64 from "utils/third party/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
-import lang from "lang"
 import { deepCopy } from "utils"
 export * from "./updateDataSource"
 
@@ -36,11 +35,10 @@ const clearTitleCache = (_: typeof allDocProfile) => {
     Object.values(_).forEach(k => {
       // 超过一个月没修改过，就清除该数据
       let { additional } = k
-      if(!additional)
-        additional = deepCopy(docProfilePreset.additional)
-     else if (
+      if (!additional) additional = deepCopy(docProfilePreset.additional)
+      else if (
         additional.lastExcerpt &&
-          Date.now() - additional.lastExcerpt > 2592000000
+        Date.now() - additional.lastExcerpt > 2592000000
       ) {
         additional.lastExcerpt = Date.now()
         additional.cacheExcerptTitle = {}
@@ -141,6 +139,19 @@ export const manageProfileAction = (params: {
 }) => {
   const { option, nodes } = params
   const node = nodes[0]
+  const lang = MN.isZH
+    ? {
+        success: "配置读取成功",
+        fail: "配置读取失败",
+        not_find: "未找到配置信息",
+        prohibit: `「${Addon.title}」配置（禁止直接修改）`
+      }
+    : {
+        success: "Configuration read successfully",
+        fail: "Configuration read fail",
+        not_find: "Configuration information not found",
+        prohibit: `「${Addon.title}」 configuration (no direct modification is allowed）`
+      }
   if (option) {
     saveProfile(self.docMD5)
     node.excerptText = Base64.encode(
@@ -149,7 +160,7 @@ export const manageProfileAction = (params: {
         allDocProfileTemp: allDocProfile
       })
     )
-    node.noteTitle = lang.profile_manage.prohibit + new Date().toLocaleString()
+    node.noteTitle = lang.prohibit + new Date().toLocaleString()
     node.colorIndex = 11
   } else {
     const str = node.excerptText
@@ -166,12 +177,12 @@ export const manageProfileAction = (params: {
         setDataByKey(allDocProfileTemp, Addon.docProfileKey)
         readProfile(Range.First)
         layoutViewController()
-        showHUD(lang.profile_manage.success)
+        showHUD(lang.success)
       } catch {
-        showHUD(lang.profile_manage.fail)
+        showHUD(lang.fail)
       }
     } else {
-      showHUD(lang.profile_manage.not_find)
+      showHUD(lang.not_find)
     }
   }
 }

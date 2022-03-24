@@ -61,7 +61,8 @@ export const newTitleText = async (
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
     const [oldTitle, stillUsingTitle] = (() => {
       if (self.isModify && cacheExcerptTitle[self.noteid]) {
-        // 如果是在修改，要先对比原标题，将原来的标题分为改变了的和不变的，改变了的就删除，不变的就保留
+        // If you are modifying, compare the original title first, divide the original title into changed and unchanged ones,
+        // delete the changed ones and keep the unchanged ones
         const [stillUsing, deprecated] = cacheExcerptTitle[self.noteid]!.reduce(
           (acc, cur) => {
             if (res.title.includes(cur)) acc[0].push(cur)
@@ -73,9 +74,9 @@ export const newTitleText = async (
         return [nodeTitle.filter(k => !deprecated.includes(k)), stillUsing]
       } else return [nodeTitle, []]
     })()
-    // 筛选出新的标题，不与以前的标题重复
+    // Filter new titles without duplicating previous ones
     const newTitle = res.title.filter(k => !oldTitle.includes(k))
-    // 保存每次新的标题
+    // Cache new title
     cacheExcerptTitle[self.noteid] = [...stillUsingTitle, ...newTitle]
     return {
       text: res.text,

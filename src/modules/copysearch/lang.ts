@@ -7,30 +7,23 @@ const zh = {
     multiple_titles: "如果有多个标题",
     multiple_excerpts: "如果有多个摘录",
     custom_copy: "自定义搜索或复制的内容，点击查看支持哪些变量",
-    which_search_engine: "搜索引擎选择",
     search_card_info: "搜索卡片内容",
+    which_partof_card: "默认搜索卡片内容",
     copy_card_info: "复制卡片内容",
     separator_symbols_multiple_card: "分隔符",
     show_search_engine: "显示/隐藏搜索 URL"
   },
   option: {
+    which_partof_card: ["即时选择", "优先标题", "优先摘录", "优先自定义"],
     multiple_titles: ["所有标题", "第一个", "即时选择"],
     multiple_excerpts: ["所有摘录", "第一个", "即时选择"],
-    search_card_info: ["搜索标题", "搜索摘录", "自定义内容"],
-    copy_card_info: ["复制标题", "复制摘录", "自定义内容"],
-    which_search_engine: [
-      "中文",
-      "英文",
-      "词典",
-      "翻译",
-      "学术",
-      "问题",
-      "其他"
-    ]
+    search_engine: ["中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
   },
   help: {
     show_search_engine: "点击查看如何自定义 URL",
-    separator_symbols_multiple_card: "选中多张卡片时，用来隔开每张卡片的内容"
+    separator_symbols_multiple_card: "选中多张卡片时，用来隔开每张卡片的内容",
+    which_partof_card:
+      "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"
   },
   hud: {
     choose_you_want: (x: boolean) =>
@@ -46,22 +39,26 @@ const en: typeof zh = {
   intro: "Copy and search for what you want",
   link: "https://www.notion.so/huangkewei/CopySearch-c824347a82c543569acc3d01053cd227",
   lable: {
+    which_partof_card: "Default Part of Card",
     multiple_titles: "If Multiple Titles",
     multiple_excerpts: "If Multiple Excerpts",
     custom_copy:
       "Customize what you search or copy, click to see which variables are supported",
-    which_search_engine: "Select Search Engine",
     search_card_info: "Search Card Content",
     separator_symbols_multiple_card: "Separator Symbols",
     copy_card_info: "Copy Card Content",
     show_search_engine: "Show/Hide Search URL"
   },
   option: {
+    which_partof_card: [
+      "Instant Select",
+      "Title First",
+      "Excerpt First",
+      "Custom First"
+    ],
     multiple_titles: ["All", "First", "Instant Select"],
     multiple_excerpts: ["All", "First", "Instant Select"],
-    search_card_info: ["Title", "Excerpt Text", "Custom Content"],
-    copy_card_info: ["Title", "Excerpt Text", "Custom Content"],
-    which_search_engine: [
+    search_engine: [
       "Chinese",
       "English",
       "Dict",
@@ -72,6 +69,8 @@ const en: typeof zh = {
     ]
   },
   help: {
+    which_partof_card:
+      "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。",
     show_search_engine: "Click to see how to customize the URL",
     separator_symbols_multiple_card:
       "When multiple cards are selected, it is used to separate the contents of each card"

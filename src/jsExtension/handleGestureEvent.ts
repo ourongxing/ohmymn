@@ -17,10 +17,10 @@ import lang from "lang"
 import { reverseEscape } from "utils/input"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
-// Mac 上无法使用触摸
+// Not support Mac
 export const gestureHandlers = gesture.utils.gestureHandlerController([
   {
-    // 如果直接传递 view 和 gesture，此时无法获取到 self
+    // Cannot access self unless use function
     view: () => MN.studyController().view,
     gesture: () =>
       gesture.utils.initGesture.swipe(
@@ -62,7 +62,7 @@ export const gestureHandlers = gesture.utils.gestureHandlerController([
   }
 ])
 
-enum SwipePosition {
+const enum SwipePosition {
   None = 0,
   SingleBar,
   MuiltBar,
@@ -102,7 +102,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const studyController = MN.studyController()
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
-  // 屏蔽一些会误触的 UI
+  // Block some UI that can be touched by mistake
   if (swipeY < 70 || swipeX < 70 || swipeX > width - 70)
     return SwipePosition.None
   if (studyController.studyMode != studyMode.study) return SwipePosition.None
@@ -112,7 +112,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   )
     return SwipePosition.None
 
-  // 如果是文本选择的工具栏
+  // Popup menu on selection
   if (self.textSelectBar) {
     const { winRect, arrow } = self.textSelectBar
     const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
@@ -132,7 +132,6 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       return SwipePosition.SelectionBar
   }
 
-  // 必须打开脑图，并且选中卡片
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
   if (
@@ -145,7 +144,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 
-    // 不响应文档区域的滑动
+    // Block document area
     if (
       studyController.docMapSplitMode == docMapSplitMode.half &&
       ((studyController.rightMapMode && swipeX < readerViewWidth) ||
@@ -161,9 +160,9 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       )
     const mode = selViewLst[0].note.note.groupMode
     /**
-     * 单选工具栏
-     * 高度 30
-     * 与卡片相距 20
+     * Popup menu on mindmap note
+     * height 30
+     * distance from the card 20
      */
     if (
       mode === groupMode.Tree &&
@@ -177,7 +176,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     )
       return SwipePosition.SingleBar
 
-    // 框架形式的单选工具栏在卡片中间和上方
+    // Menu will be in the middle and above the card when frame style
     if (
       mode === groupMode.Frame &&
       isWithinArea(
@@ -191,16 +190,11 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       return SwipePosition.SingleBar
   } else if (selViewLst.length > 1) {
     /**
-     * 多选工具栏
-     * iPad Pro 12.9
-     * 高度 y(900-850 = 50) 窗口宽度 980
-     * 工具栏底部距离窗口底部 980 - 900 = 80 这个值固定
-     * 工具栏顶部距离窗口底部 980 - 850 = 130 这个值也固定
-     *
-     * 宽度 x(930 - 430 = 500) 窗口宽度 1366
-     * 窗口小于 width < 510 时，工具栏会自动收缩到 width - 50，两边各空出来 25
-     * 1/2 窗口时 宽度 x(590 - 90 = 500) 窗口宽度 678
-     * 1/4 窗口时 宽度 x(350 - 25 = 325) 窗口宽度 375
+     * Muilt select toolbar
+     * height: 50
+     * buttom to buttom: 80
+     * width: 500
+     * if window width < 510, width = window width - 50
      */
     const barWidth = width > 510 ? 500 : width - 50
     const muiltBarArea = {
@@ -254,10 +248,7 @@ const actionTrigger = async (
   const { key, module, option, moduleName } = actionInfo
   if (key == "open_panel") openPanel()
   else if (module && isModuleOFF(module))
-    showHUD(
-      `${moduleName ?? module} ${lang.handle_gesture_event.action_not_work}`,
-      2
-    )
+    showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {
     const [sec, row] =
       dataSourceIndex[

@@ -18,16 +18,12 @@ import {
   MergeText,
   SwitchTitle
 } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 import { checkPlainText, checkRegArray } from "utils/checkInput"
 
 const { help, option, intro, label, link, hud } = lang
 
-const profileTemp = {
-  ...profilePreset.magicaction4card
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
   name: "MagicAction for Card",
   key: "magicaction4card",
   intro,

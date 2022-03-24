@@ -5,20 +5,20 @@ import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { ActionKey, AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 import {
   checkRegArrayFromMNLink,
   checkReplaceParam,
   checkReplaceParamFromMNLink
 } from "utils/checkInput"
+import {
+  renderTemplateOfNodeProperties,
+  renderTemplateOfNodePropertiesWhenExcerpt
+} from "jsExtension/nodeProperties"
 
 const { label, option, intro, link, help } = lang
 
-const profileTemp = {
-  ...profilePreset.anotherautodef
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
   name: "Another AutoDef",
   intro,
   link,
@@ -69,7 +69,6 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       key: "customTitleSplit",
       type: CellViewType.Input,
       help: help.custom_title_split,
-      // 绑定了两个，一个是 switch，用 0 表示 false，一个是 select
       bind: [
         ["toTitleLink", 1],
         ["titleLinkSplit", 0]
@@ -103,8 +102,14 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
         } else if (content) {
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
-            const text = getExcerptText(node).join("\n")
-            const allTitles = extractArray(text, params)
+            const text = getExcerptText(node).ocr.join("\n")
+            const allTitles = extractArray(
+              text,
+              params.map(k => ({
+                ...k,
+                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+              }))
+            )
             if (allTitles.length)
               node.noteTitle = removeHighlight(allTitles.join("; "))
           })
@@ -156,7 +161,12 @@ const utils = {
                 param.regexp = regFlag.add(param.regexp, "g")
                 return text
                   .match(param.regexp)!
-                  .map(item => item.replace(param.regexp, param.newSubStr))
+                  .map(item =>
+                    item.replace(
+                      param.regexp,
+                      renderTemplateOfNodePropertiesWhenExcerpt(param.newSubStr)
+                    )
+                  )
               })
               .flat()
           )
@@ -228,7 +238,7 @@ const utils = {
 }
 
 const checker: ICheckMethod<
-  PickByValue<typeof profileTemp, string> & typeof ActionKey
+  PickByValue<IProfile["anotherautodef"], string> & typeof ActionKey
 > = (input, key) => {
   switch (key) {
     case "customDefLink":

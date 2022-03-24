@@ -24,7 +24,7 @@ const zh = {
     lock_excerpt: "锁定摘录文字"
   },
   help: {
-    profile: "【当前文档有效】不同情景，不同配置",
+    profile: "【当前文档生效】不同场景，不同配置",
     has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
   }
 }
@@ -53,8 +53,7 @@ const en: typeof zh = {
     lock_excerpt: "Lock Excerpt Text"
   },
   help: {
-    profile:
-      "[Current Document Takes Effect]\nDifferent scenes, different profile",
+    profile: "[Current Doc Takes Effect] Different scenes, different profile",
     has_title_then:
       "Drag and drop the selection to merge into the card, and if a new title will be created by ohmymn, then"
   }

@@ -15,6 +15,11 @@ const zh = {
   help: {
     custom_be_title: "自定义，点击查看具体格式",
     change_title_no_limit: "修改标题摘录选区，始终转为标题"
+  },
+  check: {
+    enter_positive: "请输入正整数",
+    input_array: "请输入数组，比如 [10,5]",
+    input_three_number: "数组内必须有两个数字，比如 [10,5]"
   }
 }
 
@@ -35,6 +40,12 @@ const en: typeof zh = {
     custom_be_title: "Customize. Click for specific formats",
     change_title_no_limit:
       "Change the title excerpt selection, always turn to the title"
+  },
+  check: {
+    enter_positive: "Please enter a positive integer",
+    input_array: "Please enter an array, for example [10,5]",
+    input_three_number:
+      "There must be two numbers in the array，for example [10,5]"
   }
 }
 

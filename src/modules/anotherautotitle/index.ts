@@ -4,16 +4,12 @@ import type { ICheckMethod, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 import { checkRegArrayFromMNLink } from "utils/checkInput"
 
-const { option, intro, help, link, label } = lang
+const { option, intro, help, link, label, check } = lang
 
-const profileTemp = {
-  ...profilePreset.anotherautotitle
-}
-
-const configs: IConfig<typeof profileTemp, AnyProperty<string>> = {
+const configs: IConfig<IProfile["anotherautotitle"], AnyProperty<string>> = {
   name: "Another AutoTitle",
   intro,
   link,
@@ -89,19 +85,16 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
-  input,
-  key
-) => {
+const checker: ICheckMethod<
+  PickByValue<IProfile["anotherautotitle"], string>
+> = (input, key) => {
   switch (key) {
     case "wordCount": {
       input = reverseEscape(input)
-      if (
-        Array.isArray(input) &&
-        input.length == 2 &&
-        input.every(item => Number.isInteger(item))
-      ) {
-      } else throw "格式错误"
+      if (!Array.isArray(input)) throw check.input_array
+      if (input.length !== 2) throw check.input_three_number
+      if (input.some(item => !Number.isInteger(item)))
+        throw check.enter_positive
       break
     }
     case "customBeTitle":

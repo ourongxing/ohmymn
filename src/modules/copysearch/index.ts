@@ -6,29 +6,26 @@ import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import { getExcerptText } from "utils/note"
 import { byteSlice } from "utils/text"
 import { ActionKey, MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
-import { docProfilePreset, profilePreset } from "profile"
+import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
-import Mustache from "mustache"
-import getNodeProperties from "jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 const { link, intro, lable, option, help, hud } = lang
 
-const profileTemp = {
-  ...profilePreset.copysearch,
-  ...docProfilePreset.copysearch
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<
+  (IProfile & IDocProfile)["copysearch"],
+  typeof ActionKey
+> = {
   name: "CopySearch",
   intro,
   link,
   settings: [
     {
-      label: "默认搜索卡片内容",
+      label: lable.which_partof_card,
       key: "whichPartofCard",
       type: CellViewType.Select,
-      option: ["即时选择", "优先标题", "优先摘录", "优先自定义"],
-      help: "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"
+      option: option.which_partof_card,
+      help: help.which_partof_card
     },
     {
       label: lable.multiple_titles,
@@ -72,23 +69,27 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
     ].map((k, i) => {
       return {
         type: CellViewType.Input,
-        help: `${i === 2 || i === 3 ? "【当前文档有效】" : ""}${
-          option.which_search_engine[i]
+        help: `${i === 2 || i === 3 ? "【当前文档生效】" : ""}${
+          option.search_engine[i]
         }`,
         key: k,
         bind: [["showSearchEngine", 1]]
       }
-    }) as ISettingInput<typeof profileTemp>[])
+    }) as ISettingInput<(IProfile & IDocProfile)["copysearch"]>[])
   ],
   actions4card: [
     {
       type: CellViewType.Button,
       key: "searchCardInfo",
       label: lable.search_card_info,
-      option: option.which_search_engine,
+      option: option.search_engine,
       method: async ({ nodes, option }) => {
         if (nodes.length == 1) {
-          const text = (await utils.getContentofOneCard(nodes[0])) as string
+          const { whichPartofCard } = self.profile.copysearch
+          const text = (await utils.getContentofOneCard(
+            nodes[0],
+            whichPartofCard[0]
+          )) as string
           text && utils.search(text, option)
         } else {
           const { separatorSymbols, whichPartofCard } = self.profile.copysearch
@@ -115,10 +116,13 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       type: CellViewType.Button,
       key: "copyCardInfo",
       label: lable.copy_card_info,
-      option: option.copy_card_info,
+      option: option.which_partof_card,
       method: async ({ nodes, option }) => {
         if (nodes.length == 1) {
-          const text = (await utils.getContentofOneCard(nodes[0])) as string
+          const text = (await utils.getContentofOneCard(
+            nodes[0],
+            option
+          )) as string
           text && utils.copy(text)
         } else {
           const { separatorSymbols } = self.profile.copysearch
@@ -138,7 +142,7 @@ const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
       type: CellViewType.Button,
       key: "searchText",
       label: "搜索选中文字",
-      option: option.which_search_engine,
+      option: option.search_engine,
       method: ({ text, option }) => {
         text && utils.search(text, option)
       }
@@ -174,8 +178,7 @@ const utils = {
     const { customContent } = self.profile.copysearch
     if (!customContent) return undefined
     const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
-    const res = Mustache.render(template, getNodeProperties(node))
-    return res
+    return renderTemplateOfNodeProperties(node, template)
   },
   async choosePartofCard(parts: string[], tip = "", index = false) {
     const { option } = await popup(
@@ -189,12 +192,11 @@ const utils = {
     )
     return index ? option! : parts[option!]
   },
-  async getContentofOneCard(node: MbBookNote) {
-    const { whichPartofCard } = self.profile.copysearch
+  async getContentofOneCard(node: MbBookNote, option: number) {
     const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
-    const excerptText = getExcerptText(node, false)
+    const excerptText = getExcerptText(node, false).ocr
     const customContent = utils.getCustomContent(node)
-    switch (whichPartofCard[0]) {
+    switch (option) {
       case WhichPartofCard.Title: {
         const res =
           ((await utils.getTitleExcerpt(titles, "title")) as string) ??
@@ -225,8 +227,8 @@ const utils = {
           ...((await utils.getTitleExcerpt(excerptText, "excerpt", true)) ?? [])
         ]
         if (customContent) list.push(customContent)
-        console.log(list)
-        return await utils.choosePartofCard(list)
+        if (list.length === 1) return list[0]
+        else return await utils.choosePartofCard(list)
       }
     }
   },
@@ -246,7 +248,7 @@ const utils = {
       case 1: {
         const { multipleTitles } = self.profile.copysearch
         return nodes.reduce((acc, cur) => {
-          const l = getExcerptText(cur, false)
+          const l = getExcerptText(cur, false).ocr
           if (!l.length) return acc
           if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(l[0])
           else acc.push(l.join("\n"))
@@ -288,7 +290,9 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<typeof profileTemp> = (input, key) => {
+const checker: ICheckMethod<
+  PickByValue<(IProfile & IDocProfile)["copysearch"], string>
+> = (input, key) => {
   switch (key) {
     case "searchChineseText":
     case "searchEnglishText":

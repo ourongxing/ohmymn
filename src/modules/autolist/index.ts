@@ -5,18 +5,15 @@ import type { ICheckMethod, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoListPreset, ListSelected } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
 } from "utils/checkInput"
 
 const { intro, option, label, link, help } = lang
-const profileTemp = {
-  ...profilePreset.autolist
-}
 
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
   name: "AutoList",
   intro,
   link,
@@ -122,7 +119,7 @@ const utils = {
 }
 
 const checker: ICheckMethod<
-  PickByValue<typeof profileTemp, string> & typeof ActionKey
+  PickByValue<IProfile["autolist"], string> & typeof ActionKey
 > = (input, key) => {
   switch (key) {
     case "customList":

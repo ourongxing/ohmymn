@@ -7,16 +7,12 @@ import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
 import { ActionKey, CompleteSelected, FillWordInfo } from "./enum"
-import { profilePreset } from "profile"
+import { IProfile } from "profile"
 import { checkPlainText } from "utils/checkInput"
-import Mustache from "mustache"
+import { render } from "utils/third party/mustache"
 
 const { error, intro, link, option, label, help } = lang
-const profileTemp = {
-  ...profilePreset.autocomplete
-}
-
-const configs: IConfig<typeof profileTemp, typeof ActionKey> = {
+const configs: IConfig<IProfile["autocomplete"], typeof ActionKey> = {
   name: "AutoComplete",
   intro,
   link,
@@ -152,7 +148,6 @@ const utils = {
       v: NSNull | string,
       f: (t: string) => string | string[] = t => t
     ) => {
-      // 这里有点坑爹，OC 的 JSON 转换会把 null 转成 NSNull，NSNull 在 JS 中是一个对象
       if (isOCNull(v)) return false
       const res = f(v as string)
       return res ? res : false
@@ -166,11 +161,10 @@ const utils = {
       zh: null2false(info.translation, t => utils.getPureZH(t))
     }
     // 优化一下格式
-    return Mustache.render(template, vars)
+    return render(template, vars)
   },
   async main(text: string) {
     try {
-      // 只有第一个字母可以大写，否则直接返回
       if (!/^\w[a-z]+$/.test(text)) return undefined
       let word = text.toLowerCase()
       let info = await utils.getWordInfo(word)
@@ -182,7 +176,6 @@ const utils = {
           word = lemma
           info = await utils.getWordInfo(lemma)
         }
-        // 原型必然有 exchange，不然哪来的它
         title = utils.getWordEx(word, info.exchange)
       }
       return {
@@ -197,7 +190,7 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<typeof profileTemp, string>> = (
+const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = (
   input,
   key
 ) => {

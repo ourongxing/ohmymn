@@ -1,7 +1,29 @@
-import { MbBook, MbBookNote, MbTopic, MNPic } from "typings"
+import { MbBookNote, MNPic } from "typings"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
+
+/**
+ * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
+ */
+const undoGrouping = (f: () => void) => {
+  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
+}
+
+const undoGroupingWithRefresh = (f: () => void) => {
+  undoGrouping(f)
+  RefreshAfterDBChange()
+}
+
+/**
+ * 保存数据，刷新界面
+ */
+const RefreshAfterDBChange = () => {
+  MN.db.setNotebookSyncDirty(self.notebookid)
+  postNotification("RefreshAfterDBChange", {
+    topicid: self.notebookid
+  })
+}
 
 /**
  * 获取选中的卡片
@@ -61,12 +83,15 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
 }
 
 const exportPic = (pic: MNPic) => {
-  const base64 = MN.db.getMediaByHash(pic.paint)!.base64Encoding()
-  return {
-    base64,
-    html: `<img src="data:image/jpeg;base64,${base64}"/>`,
-    md: `![](data:image/jpeg;base64,${base64})`
-  }
+  const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
+  return base64
+    ? {
+        base64,
+        img: `data:image/jpeg;base64,${base64}`,
+        html: `<img src="data:image/jpeg;base64,${base64}"/>`,
+        md: `![](data:image/jpeg;base64,${base64})`
+      }
+    : undefined
 }
 
 /**
@@ -75,60 +100,30 @@ const exportPic = (pic: MNPic) => {
  * @param highlight 默认有重点
  * @param pic 默认为 OCR 后的文字
  */
-const getExcerptText = (
-  node: MbBookNote,
-  highlight = true,
-  picType: "ocr" | "base64" | "html" | "md" = "ocr"
-): string[] => {
-  let mainExcerpt = node.excerptText ?? ""
-  if (node.excerptPic && picType !== "ocr") {
-    mainExcerpt = exportPic(node.excerptPic)[picType]
+const getExcerptText = (node: MbBookNote, highlight = true) => {
+  const res = {
+    ocr: [] as string[],
+    base64: [] as string[],
+    img: [] as string[],
+    html: [] as string[],
+    md: [] as string[]
   }
-  const excerpts = node.comments.reduce(
-    (acc, cur) => {
-      if (cur.type == "LinkNote") {
-        let text = cur.q_htext ?? ""
-        if ("q_hpic" in cur && picType != "ocr") {
-          text = exportPic(cur.q_hpic)[picType]
-        }
-        text && acc.push(text)
-      }
-      return acc
-    },
-    mainExcerpt ? [mainExcerpt] : []
-  )
-  return highlight ? excerpts : excerpts.map(k => removeHighlight(k))
-}
-
-const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
-
-// topic 就是 notebook
-const getNotebookById = (notebookid: string): MbTopic =>
-  MN.db.getNotebookById(notebookid)!
-
-const getDocumentById = (docMd5: string): MbBook =>
-  MN.db.getDocumentById(docMd5)!
-
-/**
- * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
- */
-const undoGrouping = (f: () => void) => {
-  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
-}
-
-const undoGroupingWithRefresh = (f: () => void) => {
-  undoGrouping(f)
-  RefreshAfterDBChange()
-}
-
-/**
- * 保存数据，刷新界面
- */
-const RefreshAfterDBChange = () => {
-  MN.db.setNotebookSyncDirty(self.notebookid)
-  postNotification("RefreshAfterDBChange", {
-    topicid: self.notebookid
-  })
+  return getExcerptNotes(node).reduce((acc, cur) => {
+    const text = cur.excerptText?.trim() ?? ""
+    if (cur.excerptPic) {
+      const imgs = exportPic(cur.excerptPic)
+      if (imgs)
+        Object.entries(imgs).forEach(([k, v]) => {
+          if (k in acc) acc[k].push(v)
+        })
+      text && acc.ocr.push()
+    } else if (text) {
+      Object.values(acc).forEach(k =>
+        k.push(highlight ? text : removeHighlight(text))
+      )
+    }
+    return acc
+  }, res)
 }
 
 /**
@@ -156,8 +151,8 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
 
 const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
   return [
-    ...getExcerptText(node, highlight, "ocr"),
-    ...getAllCommnets(node, "none"),
+    ...getExcerptText(node, highlight).ocr,
+    ...getAllCommnets(node).nopic,
     getAllTags(node).join(" ")
   ].join(separator)
 }
@@ -174,22 +169,28 @@ const getAllTags = (node: MbBookNote, hash = true) => {
   return hash ? tags : tags.map(k => k.slice(1))
 }
 
-const getAllCommnets = (
-  node: MbBookNote,
-  picType: "none" | "base64" | "html" | "md" = "none"
-) => {
+const getAllCommnets = (node: MbBookNote) => {
+  const res = {
+    nopic: [] as string[],
+    base64: [] as string[],
+    img: [] as string[],
+    html: [] as string[],
+    md: [] as string[]
+  }
   return node.comments.reduce((acc, cur) => {
-    if (cur.type === "PaintNote" && picType !== "none") {
-      acc.push(exportPic(cur)[picType])
+    if (cur.type === "PaintNote") {
+      const imgs = exportPic(cur)
+      if (imgs)
+        Object.entries(imgs).forEach(([k, v]) => {
+          if (k in acc) acc[k].push(v)
+        })
     } else if (cur.type == "TextNote" || cur.type == "HtmlNote") {
       const text = cur.text.trim()
-      text &&
-        !text.includes("marginnote3app") &&
-        !text.startsWith("#") &&
-        acc.push(text)
+      if (text && !text.includes("marginnote3app") && !text.startsWith("#"))
+        Object.values(acc).map(k => k.push(text))
     }
     return acc
-  }, [] as string[])
+  }, res)
 }
 
 /**
@@ -231,8 +232,6 @@ export {
   getExcerptNotes,
   getExcerptText,
   getCommentIndex,
-  getNotebookById,
-  getNoteById,
   getAllText,
   undoGrouping,
   undoGroupingWithRefresh,
@@ -240,6 +239,5 @@ export {
   addTags,
   getAllTags,
   getAllCommnets,
-  removeHighlight,
-  getDocumentById
+  removeHighlight
 }

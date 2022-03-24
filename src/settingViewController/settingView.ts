@@ -7,13 +7,10 @@ import { byteLength, isHalfWidth, SerialCode } from "utils/text"
 import lang from "lang"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
-// _开头表示是普通函数，不会作为 OC 对象的实例方法。
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
 
-const numberOfSectionsInTableView = () => self.dataSource.length
-
-// 模块未启用，则菜单隐藏
+// If the module is not enabled, the menu will be hidden
 const _isModuleOFF = (key: ModuleKeyType): boolean => {
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
@@ -21,6 +18,7 @@ const _isModuleOFF = (key: ModuleKeyType): boolean => {
   return index !== -1 && !quickSwitch.includes(index)
 }
 
+const numberOfSectionsInTableView = () => self.dataSource.length
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
@@ -37,17 +35,16 @@ const tableViewTitleForHeaderInSection = (
   return _isModuleOFF(key) ? new NSNull() : header
 }
 
-// bind 的对象只要有一个不符合要求，就隐藏
+// If one of the bind objects does not meet the requirements, it will be hidden
 const _isBindOFF = (bindArr: [string, number][], sectionKey: string) => {
   return !bindArr.every(bind => {
     const [key, index] = bind
     const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
     if (secIndex === undefined) {
-      console.error(`bind key 输入错误：${key}`)
+      console.error(`bind key does not exist：${key}`)
       return true
     }
     const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-    // row 有两种类型，switch 和 select
     if (row.type === CellViewType.Switch)
       return row.status === (index ? true : false)
     else if (
@@ -72,7 +69,6 @@ const tableViewHeightForRowAtIndexPath = (
       break
     case CellViewType.PlainText: {
       if (row.bind && _isBindOFF(row.bind, key)) return 0
-      // 每行大约可以容纳 45 个半角字符
       const byte = byteLength(row.label)
       const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
       const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
@@ -158,8 +154,8 @@ const tableViewCellForRowAtIndexPath = (
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
-      // 传入位置，不要直接传入 indexPath，以及设置 indexPath 属性
-      // 唯一值，建议加一个较大数
+      // Do not pass indexPath directly, and set the indexPath property
+      // Tag is unqiue, larger will be better
       view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
@@ -195,7 +191,7 @@ const tableViewCellForRowAtIndexPath = (
           ? row.option[row?.selections?.[0] ?? 0]
           : row?.selections?.length
           ? `${row.selections.length} ✓`
-          : lang.implement_datasource_method.none
+          : lang.none
       )
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
@@ -208,7 +204,7 @@ const tableViewCellForRowAtIndexPath = (
   }
 }
 
-// 仅用于 SettingViewController
+// Only can be used in SettingViewController
 const initCellView = {
   switch(status: boolean) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
@@ -250,7 +246,6 @@ const initCellView = {
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(18)
     view.textColor = MN.textColor
-    // 把协议和控制器连接
     view.delegate = self
     view.text = text
     view.placeholder = "enter"
