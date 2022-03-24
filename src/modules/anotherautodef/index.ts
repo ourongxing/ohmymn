@@ -11,6 +11,10 @@ import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
 } from "utils/checkInput"
+import {
+  renderTemplateOfNodeProperties,
+  renderTemplateOfNodePropertiesWhenExcerpt
+} from "jsExtension/nodeProperties"
 
 const { label, option, intro, link, help } = lang
 
@@ -99,7 +103,13 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
             const text = getExcerptText(node).ocr.join("\n")
-            const allTitles = extractArray(text, params)
+            const allTitles = extractArray(
+              text,
+              params.map(k => ({
+                ...k,
+                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+              }))
+            )
             if (allTitles.length)
               node.noteTitle = removeHighlight(allTitles.join("; "))
           })
@@ -151,7 +161,12 @@ const utils = {
                 param.regexp = regFlag.add(param.regexp, "g")
                 return text
                   .match(param.regexp)!
-                  .map(item => item.replace(param.regexp, param.newSubStr))
+                  .map(item =>
+                    item.replace(
+                      param.regexp,
+                      renderTemplateOfNodePropertiesWhenExcerpt(param.newSubStr)
+                    )
+                  )
               })
               .flat()
           )

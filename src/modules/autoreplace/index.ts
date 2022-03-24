@@ -5,6 +5,10 @@ import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
 import { IProfile } from "profile"
+import {
+  renderTemplateOfNodeProperties,
+  renderTemplateOfNodePropertiesWhenExcerpt
+} from "jsExtension/nodeProperties"
 const { intro, link, label, option, help } = lang
 
 const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
@@ -52,7 +56,11 @@ const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
               const text = note.excerptText
               if (text)
                 note.excerptText = params.reduce(
-                  (acc, params) => acc.replace(params.regexp, params.newSubStr),
+                  (acc, params) =>
+                    acc.replace(
+                      params.regexp,
+                      renderTemplateOfNodeProperties(node, params.newSubStr)
+                    ),
                   text
                 )
             })
@@ -72,7 +80,11 @@ const utils = {
           const { customReplace: params } = self.profileTemp.replaceParam
           if (!params) continue
           text = params.reduce(
-            (acc, param) => acc.replace(param.regexp, param.newSubStr),
+            (acc, param) =>
+              acc.replace(
+                param.regexp,
+                renderTemplateOfNodePropertiesWhenExcerpt(param.newSubStr)
+              ),
             text
           )
       }
