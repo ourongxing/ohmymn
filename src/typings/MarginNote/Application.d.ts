@@ -2,11 +2,34 @@ import { UIView, UIViewController, UIWindow } from "typings/UIKit"
 import { docMapSplitMode, osType, studyMode } from "./enum"
 import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
+import { EventHandler } from "typings/Addon/index"
 
  /**
-   * Document Controller
+   * Document Controller. Get a document controller to get document information, such as docMd5, notebookID etc.
    * 
-   * sender.userInfo will contain a DocumentController object
+   * sender.userInfo will contain a DocumentController object, reference to {@link EventHandler} sender
+   * 
+   * @example
+   * ```
+   * sender: {
+   * // depends on the specific situation
+   * userInfo: {
+   *   key: string
+   *   option: number
+   *   row: IRowButton
+   *   content: string
+   *   name: string
+   *   type: "text" | "card"
+   *   status: boolean
+   *   note: MbBookNote
+   *   selections: number[]
+   *   noteid: string
+   *   arrow: DirectionOfSelection
+   *   documentController: DocumentController
+   *   winRect: string
+   *  }
+   * }
+   * ```
    * @property {MbBook} document
    * @property {string} docMd5
    * @property {string} notebookId
@@ -14,24 +37,43 @@ import { MbBook } from "./NoteDatabase"
    * @property {MbBookNote} visibleFocusNote
    * @property {string} selectionText
    * @function imageFromSelection
+   * @example
+   * ```
+   * const documentController = sender.userInfo.documentController
+   * ```
    */
 export class DocumentController {
   /**
-   * Document
+   * Get the document {@link MbBook} object.
    * @type {MbBook}
    * @memberof DocumentController
+   * @example
+   * ```
+   * const documentController = sender.userInfo.documentController
+   * const document = documentController.document
+   * ```
    */
   readonly document?: MbBook
   /**
-   * DocMd5
+    * MD5 of the document.
     * @type {string}
     * @memberof DocumentController
+    * @example
+    * ```
+    * const documentController = sender.userInfo.documentController
+    * const docMd5 = documentController.docMd5
+    * ```
   */
   readonly docMd5?: string
   /**
-   * NotebookId
+   * ID of Notebook
    * @type {string}
    * @memberof DocumentController
+   * @example
+   * ```
+   * const documentController = sender.userInfo.documentController
+   * const notebookId = documentController.notebookId
+   * ```
   */
   readonly notebookId?: string
   /**
@@ -113,7 +155,8 @@ export class MindMapNode {
 /**
  * View of MindMap, inherit from UIView
  * 
- * {@link UIView}
+ * inherit from {@link UIView}
+ * 
  * @extends {UIView}
  * @property {Array<MindMapNode>} mindMapNodes
  * @property {Array} selViewLst
@@ -153,7 +196,7 @@ export class MindMapView extends UIView {
 export class NotebookController {
   /**
    * view of notebook Controller
-   * {@link UIView}
+   * inherit from {@link UIView}
    * @type {UIView}
    * @memberof NotebookController
    */
@@ -201,7 +244,7 @@ export class NotebookController {
  */
 export class OutlineView {
   /**
-   * @returns {MbBookNote*}
+   * @returns MbBookNote*
    * @param indexPath NSIndexPath*
    */
   noteFromIndexPath(indexPath: NSIndexPath): MbBookNote
@@ -218,7 +261,8 @@ export class ReaderController {
   /**
    * Current document controller
    *  
-   * {@link DocumentController}
+   * inherit from {@link DocumentController}
+   * 
    * @type {WrapperObj<DocumentController>}
    * @memberof ReaderController
    */
@@ -243,7 +287,8 @@ export class ReaderController {
 /**
  * Study Controller, inherit from UIViewController
  * 
- * {@link UIViewController}
+ * inherit from {@link UIViewController}
+ * 
  * @property {UIView} view
  * @property {studyMode} studyMode
  * @property {boolean} narrowMode
@@ -265,7 +310,7 @@ export class StudyController extends UIViewController {
    * @example 
    * ```
    * // add sub UIview to study controller
-   * var studyController = Application.sharedInstance().studyController(self.window)
+   * let studyController = Application.sharedInstance().studyController(self.window)
    * studyController.view.addSubview(UIView())
    */
   view: UIView
@@ -278,8 +323,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // studymode
-   * var studyController = Application.sharedInstance().studyController(self.window)
-   * var studyMode = studyController.studyMode
+   * let studyController = Application.sharedInstance().studyController(self.window)
+   * let studyMode = studyController.studyMode
    * ```
    */
   readonly studyMode: studyMode
@@ -290,8 +335,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // narrow mode
-   * var studyController = Application.sharedInstance().studyController(self.window)
-   * var narrowMode = studyController.narrowMode
+   * let studyController = Application.sharedInstance().studyController(self.window)
+   * let narrowMode = studyController.narrowMode
    * ```
    */
   readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
@@ -304,8 +349,8 @@ export class StudyController extends UIViewController {
   * @example
   * ```
   * // docmap split mode
-  * var studyController = Application.sharedInstance().studyController(self.window)
-  * var docMapSplitMode = studyController.docMapSplitMode
+  * let studyController = Application.sharedInstance().studyController(self.window)
+  * let docMapSplitMode = studyController.docMapSplitMode
   * ```
   */
   docMapSplitMode: docMapSplitMode
@@ -317,8 +362,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // right map mode
-   * var studyController = Application.sharedInstance().studyController(self.window)
-   * var rightMapMode = studyController.rightMapMode
+   * let studyController = Application.sharedInstance().studyController(self.window)
+   * let rightMapMode = studyController.rightMapMode
    * ```
    */
   rightMapMode: boolean
@@ -331,8 +376,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // notebook controller
-   * var studyController = Application.sharedInstance().studyController(self.window)
-   * var notebookController = studyController.notebookController
+   * let studyController = Application.sharedInstance().studyController(self.window)
+   * let notebookController = studyController.notebookController
    * ```
    */
   readonly notebookController: WrapperObj<NotebookController>
@@ -345,8 +390,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // reader controller
-   * var studyController = Application.sharedInstance().studyController(self.window)
-   * var readerController = studyController.readerController
+   * let studyController = Application.sharedInstance().studyController(self.window)
+   * let readerController = studyController.readerController
    * ```
    */
   readonly readerController: WrapperObj<ReaderController>
@@ -364,7 +409,7 @@ export class StudyController extends UIViewController {
 declare global {
   /**
    * Application Object
-   * @returns {Application}
+   * @returns Application
    * @property {Application} sharedApplication
    * @property {UIColor} defaultTintColorForDarkBackground
    * @property {UIColor} defaultTintColorForSelected
@@ -402,7 +447,7 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
+     * let app = Application.sharedInstance()
      * ```
      */
     static sharedInstance(): Application
@@ -412,8 +457,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var cuurentTheme = app.currentTheme!
+     * let app = Application.sharedInstance()
+     * let cuurentTheme = app.currentTheme!
      * ```
      */
     readonly currentTheme?: string
@@ -424,8 +469,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultTintColorForDarkBackground = app.defaultTintColorForDarkBackground!
+     * let app = Application.sharedInstance()
+     * let defaultTintColorForDarkBackground = app.defaultTintColorForDarkBackground!
      * ```
      */
     readonly defaultTintColorForDarkBackground?: UIColor
@@ -436,8 +481,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultTintColorForSelected = app.defaultTintColorForSelected!
+     * let app = Application.sharedInstance()
+     * let defaultTintColorForSelected = app.defaultTintColorForSelected!
      * ```
      */
     readonly defaultTintColorForSelected?: UIColor
@@ -448,8 +493,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultTintColor = app.defaultTintColor!
+     * let app = Application.sharedInstance()
+     * let defaultTintColor = app.defaultTintColor!
      * ```
      */
     readonly defaultTintColor?: UIColor
@@ -460,8 +505,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultBookPageColor = app.defaultBookPageColor!
+     * let app = Application.sharedInstance()
+     * let defaultBookPageColor = app.defaultBookPageColor!
      * ```
      */
     readonly defaultBookPageColor?: UIColor
@@ -472,8 +517,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultTextColor = app.defaultTextColor!
+     * let app = Application.sharedInstance()
+     * let defaultTextColor = app.defaultTextColor!
      * ```
      */
     readonly defaultNotebookColor?: UIColor
@@ -484,8 +529,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultTextColor = app.defaultTextColor!
+     * let app = Application.sharedInstance()
+     * let defaultTextColor = app.defaultTextColor!
      * ```
      */
     readonly defaultTextColor?: UIColor
@@ -496,8 +541,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultDisableColor = app.defaultDisableColor!
+     * let app = Application.sharedInstance()
+     * let defaultDisableColor = app.defaultDisableColor!
      * ```
      */
     readonly defaultDisableColor?: UIColor
@@ -508,8 +553,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var defaultHighlightBlendColor = app.defaultHighlightBlendColor!
+     * let app = Application.sharedInstance()
+     * let defaultHighlightBlendColor = app.defaultHighlightBlendColor!
      * ```
      */
     readonly defaultHighlightBlendColor?: UIColor
@@ -527,8 +572,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var dbPath = app.dbPath!
+     * let app = Application.sharedInstance()
+     * let dbPath = app.dbPath!
      * ```
      */
     readonly dbPath?: string
@@ -539,8 +584,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var documentPath = app.documentPath!
+     * let app = Application.sharedInstance()
+     * let documentPath = app.documentPath!
      * ```
      */
     readonly documentPath?: string
@@ -551,8 +596,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * var app = Application.sharedInstance()
-     * var cachePath = app.cachePath!
+     * let app = Application.sharedInstance()
+     * let cachePath = app.cachePath!
      * ```
      */
     readonly cachePath?: string
@@ -575,7 +620,7 @@ declare global {
      */
     refreshAfterDBChanged(topicid: string): void
     /**
-     * @returns {NSDictionary*}
+     * @returns NSDictionary*
      * @param command NSString*
      * @param keyFlags NSInteger
      * @param window UIWindow*
@@ -586,7 +631,7 @@ declare global {
       window: UIWindow
     ): DictObj
     /**
-     * @returns {void}
+     * @returns void
      * @param command NSString*
      * @param keyFlags NSInteger
      * @param window UIWindow*
@@ -597,7 +642,7 @@ declare global {
       window: UIWindow
     ): void
     /**
-     * @returns {void}
+     * @returns void
      * @param url NSURL*
      * @example 
      * ```
@@ -608,7 +653,7 @@ declare global {
     openURL(url: NSURL): void
     /**
      * show Alert
-     * @returns {void}
+     * @returns void
      * @param message NSString*
      * @example
      * ```
@@ -619,7 +664,7 @@ declare global {
     alert(message: string): void
     /**
      * show HUD, used to notify the user
-     * @returns {void}
+     * @returns void
      * @param message NSString*
      * @param view UIView*
      * @param duration double
@@ -630,34 +675,34 @@ declare global {
      */
     showHUD(message: string, view: UIView, duration: number): void
     /**
-     * @returns {void}
+     * @returns void
      * @param message NSString*
      * @param view UIView*
      */
     waitHUDOnView(message: string, view: UIView): void
     /**
-     * @returns {void}
+     * @returns void
      * @param view UIView*
      */
     stopWaitHUDOnView(view: UIView): void
     /**
-     * @returns {void}
+     * @returns void
      * @param mfile NSString*
      * @param uti NSString*
      */
     saveFileWithUti(mfile: string, uti: string): void
     /**
-     * @returns {id<JSBStudyController>}
+     * @returns id<JSBStudyController>
      * @param window UIWindow*
      */
     studyController(window: UIWindow): WrapperObj<StudyController>
     /**
-     * @returns {void}
+     * @returns void
      * @param window UIWindow*
      */
     checkNotifySenderInWindow(obj: WrapperObj<any>, window: UIWindow): boolean
     /**
-     * @returns {void}
+     * @returns void
      * @param types NSArray<NSString*>*
      * @param controller UIViewController*
      * @param block JSValue*
@@ -671,7 +716,7 @@ declare global {
      * register a html comment editor(For note card editor), click link below to see an example
      
      * @link https://github.com/MarginNote/CKEditor
-     * @returns {void}
+     * @returns void
      * @param commentEditor NSDictionary*
      * @param htmlEditor JSValue*
      * @param htmlRender JSValue*
@@ -685,7 +730,7 @@ declare global {
     ): void
     /**
      * unregister a html comment editor
-     * @returns {void}
+     * @returns void
      * @param commentTag NSString*
      */
     unregsiterHtmlCommentEditor(commentTag: string): void

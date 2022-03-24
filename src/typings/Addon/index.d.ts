@@ -19,6 +19,9 @@ export interface EventHandler {
       selections: number[]
       noteid: string
       arrow: DirectionOfSelection
+      /**
+       * returns a {@link DocumentController} instance
+       */
       documentController: DocumentController
       winRect: string
     }
