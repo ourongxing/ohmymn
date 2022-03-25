@@ -1,7 +1,7 @@
 import { MN } from "const"
 
 const zh = {
-  intro: "所有动作均需要先选中卡片。点击查看所有动作具体的使用方法和注意事项。",
+  intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
   link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
   option: {
     filter_cards: ["仅筛选标题", "筛选整个卡片内容"],
@@ -34,8 +34,8 @@ const zh = {
 
 const en: typeof zh = {
   intro:
-    "All actions need to select the card first.Click for the specific use of all actions and notes",
-  link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734", //Todo:修改英文版Notion
+    "All actions need to select the card first. Click for the specific useage",
+  link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734",
   option: {
     switch_title: ["Switch to Another", "Swap Titles and Excerpts"],
     filter_cards: ["Filter Only Title", "Filter Entire Card"],
