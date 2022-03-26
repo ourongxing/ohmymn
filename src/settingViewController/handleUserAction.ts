@@ -39,14 +39,14 @@ const tableViewDidSelectRowAtIndexPath = async (
   }
 }
 
-const textFieldShouldReturn = (sender: UITextField) => {
+const textFieldShouldReturn = async (sender: UITextField) => {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
   const text = sender.text.trim()
   // Allowed be empty
   if (/^marginnote3app:/.test(text)) openUrl(text)
-  if (!text || checkInputCorrect(text, row.key)) {
+  if (!text || (await checkInputCorrect(text, row.key))) {
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
     row.content = text

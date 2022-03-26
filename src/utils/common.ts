@@ -15,7 +15,7 @@ const console = {
   }
 }
 
-const showHUD = (message: string, duration = 1, window = self.window) =>
+const showHUD = (message: string, duration = 2, window = self.window) =>
   void MN.app.showHUD(message, window, duration)
 
 const HUDController = {
@@ -103,7 +103,11 @@ const popup = (
     )
   )
 
-const isOCNull = (obj: any) => obj === NSNull.new()
+const isOCNull = (obj: any): obj is OCNull => obj === NSNull.new()
+
+const OCNull2null = <T>(k: T) => {
+  return isOCNull(k) ? null : (k as Exclude<T, OCNull>)
+}
 
 const eventHandlerController = (
   handlerList: ({ event: string; handler?: string } | string)[]
@@ -148,6 +152,7 @@ export {
   postNotification,
   isThisWindow,
   isOCNull,
+  OCNull2null,
   popup,
   eventHandlerController
 }
