@@ -124,8 +124,9 @@ const checker: ICheckMethod<
   switch (key) {
     case "customStandardize":
       checkReplaceParamFromMNLink(input)
+      break
     default:
-      return undefined
+      return false
   }
 }
 

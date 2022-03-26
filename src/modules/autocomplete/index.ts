@@ -199,7 +199,7 @@ const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = (
       checkPlainText(input)
       break
     default:
-      return undefined
+      return false
   }
 }
 

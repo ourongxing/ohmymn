@@ -14,6 +14,7 @@ import magicaction4text from "modules/magicaction4text"
 import autoocr from "modules/autoocr"
 import autotranslate from "modules/autotranslate"
 import export2flomo from "modules/export2flomo"
+import export2anki from "modules/export2anki"
 
 import type {
   IActionMethod4Card,
@@ -37,7 +38,8 @@ export const modules = {
   copysearch,
   autoocr,
   autotranslate,
-  export2flomo
+  export2flomo,
+  export2anki
 }
 
 export const utils: Utils = {
@@ -107,7 +109,7 @@ export const checkInputCorrect = (input: string, key: string): boolean => {
   try {
     for (const checker of checkers) {
       const res = checker(input, key)
-      if (res !== undefined) return true
+      if (res === undefined) return true
     }
   } catch (err) {
     showHUD(String(err) ? String(err) : lang.input_error, 2)

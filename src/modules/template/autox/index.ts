@@ -50,10 +50,8 @@ const checker: ICheckMethod<
   PickByValue<(IProfile & IDocProfile)[""], string>
 > = (input, key) => {
   switch (key) {
-    case "":
-      break
     default:
-      return undefined
+      return false
   }
 }
 

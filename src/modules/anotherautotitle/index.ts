@@ -102,7 +102,7 @@ const checker: ICheckMethod<
     case "customBeTitle":
       checkRegArrayFromMNLink(input)
     default:
-      return undefined
+      return false
   }
 }
 

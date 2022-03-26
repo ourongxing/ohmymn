@@ -343,7 +343,7 @@ const checker: ICheckMethod<
       checkPositiveinteger(Number(input))
     }
     default:
-      return undefined
+      return false
   }
 }
 
