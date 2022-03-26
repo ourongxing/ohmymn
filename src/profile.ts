@@ -113,6 +113,18 @@ const profilePreset = {
     outFormat: [1],
     hudTime: "3"
   },
+  export2flomo: {
+    exportMethod: [1],
+    flomoAPI: "",
+    exportContent: "",
+    templateFlomo: [0],
+    showTemplate: true,
+    addTags: [0],
+    tagTemplate: "{{#tags}}#{{.}} {{/tags}}#{{notebook.title}} #MarginNote",
+    flomoTemplate1: "{{excerpts.ocr.0}}",
+    flomoTemplate2: "",
+    flomoTemplate3: ""
+  },
   additional: {
     autoocr: {
       lastGetToken: 0,
@@ -121,7 +133,7 @@ const profilePreset = {
   }
 }
 
-// Each document has a separate profile
+// Each document has a independent profile
 const docProfilePreset = {
   addon: {
     profile: [0]

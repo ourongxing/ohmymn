@@ -13,6 +13,7 @@ import addon from "modules/addon"
 import magicaction4text from "modules/magicaction4text"
 import autoocr from "modules/autoocr"
 import autotranslate from "modules/autotranslate"
+import export2flomo from "modules/export2flomo"
 
 import type {
   IActionMethod4Card,
@@ -35,7 +36,8 @@ export const modules = {
   autostyle,
   copysearch,
   autoocr,
-  autotranslate
+  autotranslate,
+  export2flomo
 }
 
 export const utils: Utils = {
