@@ -102,24 +102,27 @@ const checkers = Object.values({ ...constModules, ...modules }).reduce(
     if ("checker" in cur) acc.push(cur.checker)
     return acc
   },
-  [] as ICheckMethod<AnyProperty<any>>[]
+  [] as ICheckMethod<Record<string, any>>[]
 )
 
-export const checkInputCorrect = (input: string, key: string): boolean => {
+export const checkInputCorrect = async (
+  input: string,
+  key: string
+): Promise<boolean> => {
   try {
     for (const checker of checkers) {
-      const res = checker(input, key)
+      const res = await checker(input, key)
       if (res === undefined) return true
     }
   } catch (err) {
-    showHUD(String(err) ? String(err) : lang.input_error, 2)
+    showHUD(err ? String(err) : lang.input_error, 3)
     return false
   }
   return true
 }
 
 export const actions4text = (() => {
-  const actions = {} as AnyProperty<IActionMethod4Text>
+  const actions = {} as Record<string, IActionMethod4Text>
   Object.values({ ...constModules, ...modules }).forEach(module => {
     const act = module.configs.actions4text
     if (act?.length)
@@ -131,7 +134,7 @@ export const actions4text = (() => {
 })()
 
 export const actions4card = (() => {
-  const actions = {} as AnyProperty<IActionMethod4Card>
+  const actions = {} as Record<string, IActionMethod4Card>
   Object.values({ ...constModules, ...modules }).forEach(module => {
     const act = module.configs.actions4card
     if (act?.length)

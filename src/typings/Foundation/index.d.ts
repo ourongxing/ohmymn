@@ -16,6 +16,8 @@ declare global {
   class NSNull {
     static new(): NSNull
   }
+  type OCNull = typeof NSNull
+
   class NSIndexPath {
     static indexPathForRowInSection(row: number, section: number): NSIndexPath
     row: number

@@ -89,5 +89,7 @@ export type IActionMethod4Text = ({
   imgBase64: string
   option: number
 }) => void
-
-export type ICheckMethod<T> = (input: string, key: keyof T) => undefined
+export type ICheckMethod<T> = (
+  input: string,
+  key: keyof T
+) => MaybePromise<undefined | boolean>

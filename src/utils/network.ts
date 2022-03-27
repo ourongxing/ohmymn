@@ -19,13 +19,13 @@ class Response {
 type RequestOptions = {
   method?: "GET" | "POST" | "PATCH"
   timeout?: number
-  headers?: AnyProperty<any>
+  headers?: Record<string, any>
 } & XOR<
   XOR<
-    { json?: AnyProperty<any> },
-    { form?: AnyProperty<string | number | boolean> }
+    { json?: Record<string, any> },
+    { form?: Record<string, string | number | boolean> }
   >,
-  { search?: AnyProperty<string | number | boolean> }
+  { search?: Record<string, string | number | boolean> }
 >
 
 const initRequest = (

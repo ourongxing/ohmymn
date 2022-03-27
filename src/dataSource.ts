@@ -31,7 +31,7 @@ const more: ISection = {
 }
 
 const genSection = (
-  config: IConfig<AnyProperty<string>, AnyProperty<string>>
+  config: IConfig<Record<string, string>, Record<string, string>>
 ): ISection => {
   const rows: IRow[] = [
     {
@@ -75,9 +75,9 @@ const genSection = (
 }
 
 const genDataSource = (
-  configs: IConfig<AnyProperty<string>, AnyProperty<string>>[],
-  magicaction4card: IConfig<AnyProperty<string>, AnyProperty<string>>,
-  magicaction4text: IConfig<AnyProperty<string>, AnyProperty<string>>
+  configs: IConfig<Record<string, string>, Record<string, string>>[],
+  magicaction4card: IConfig<Record<string, string>, Record<string, string>>,
+  magicaction4text: IConfig<Record<string, string>, Record<string, string>>
 ): ISection[] => {
   const dataSource: ISection[] = []
   const moduleNameList: string[] = []
@@ -163,7 +163,7 @@ const genDataSource = (
 }
 
 const genDataSourceIndex = (dataSource: ISection[]) => {
-  const dataSourceIndex: AnyProperty<{ [k: string]: [number, number] }> = {}
+  const dataSourceIndex: Record<string, { [k: string]: [number, number] }> = {}
   dataSource.forEach((section, secIndex) => {
     const name = section.key
     dataSourceIndex[name] = {}
@@ -186,12 +186,20 @@ const getActionKeyGetureOption = (section: ISection) => {
       continue
     const row = _row as IRowButton
     gestureOption.push(row.label)
-    actionKeys.push({
-      key: row.key,
-      module: row.module,
-      moduleName: row.moduleName
-    })
-    if (row.option?.length) {
+    if (!row.option?.length)
+      actionKeys.push({
+        key: row.key,
+        module: row.module,
+        moduleName: row.moduleName,
+        option: 0
+      })
+    else {
+      actionKeys.push({
+        key: row.key,
+        module: row.module,
+        moduleName: row.moduleName,
+        option: 0
+      })
       if (row.type == CellViewType.Button || row.key == "mergeText") {
         row.option.forEach((option, index) => {
           gestureOption.push("——" + option)
