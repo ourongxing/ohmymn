@@ -12,7 +12,6 @@ type ExpandRecursively<T> = T extends object
     : never
   : T
 
-type AnyProperty<T> = Record<string, T>
 type Include<T, U extends string> = T extends `${infer L}${U}${infer R}`
   ? T
   : never

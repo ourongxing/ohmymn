@@ -72,13 +72,12 @@ const configs: IConfig<IProfile["autocomplete"], typeof ActionKey> = {
 type Dict = {
   word: string
   sw: string
-  // 下面这些都有可能是 NSNull
-  exchange: string
-  phonetic: string
-  definition: string
-  translation: string
-  tag: string
-  collins: string
+  exchange: string | OCNull
+  phonetic: string | OCNull
+  definition: string | OCNull
+  translation: string | OCNull
+  tag: string | OCNull
+  collins: string | OCNull
 }
 
 const utils = {
@@ -145,7 +144,7 @@ const utils = {
         ? reverseEscape(`"${escapeDoubleQuote(customFill)}"`)
         : "{{zh}}"
     const null2false = (
-      v: NSNull | string,
+      v: OCNull | string,
       f: (t: string) => string | string[] = t => t
     ) => {
       if (isOCNull(v)) return false
@@ -176,7 +175,7 @@ const utils = {
           word = lemma
           info = await utils.getWordInfo(lemma)
         }
-        title = utils.getWordEx(word, info.exchange)
+        title = utils.getWordEx(word, info.exchange as string)
       }
       return {
         title,
@@ -199,7 +198,7 @@ const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = (
       checkPlainText(input)
       break
     default:
-      return undefined
+      return false
   }
 }
 

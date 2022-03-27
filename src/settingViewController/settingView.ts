@@ -2,8 +2,14 @@ import { dataSourceIndex } from "dataSource"
 import type { UITableView, IRowSelect } from "typings"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
-import { CellViewType } from "typings/enum"
-import { byteLength, isHalfWidth, SerialCode } from "utils/text"
+import { CellViewType, NSTextAlignment } from "typings/enum"
+import {
+  byteLength,
+  byteSlice,
+  byteSplitByLen,
+  isHalfWidth,
+  SerialCode
+} from "utils/text"
 import lang from "lang"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
@@ -69,8 +75,7 @@ const tableViewHeightForRowAtIndexPath = (
       break
     case CellViewType.PlainText: {
       if (row.bind && _isBindOFF(row.bind, key)) return 0
-      const byte = byteLength(row.label)
-      const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
+      const lines = byteSplitByLen(row.label, 45).length - 1
       const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
       return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
     }
@@ -222,13 +227,7 @@ const initCellView = {
       ""
     )
     view.setTitleForState(
-      isHalfWidth(text)
-        ? text
-            .split(/[^\w\d]/)
-            .filter(k => k)
-            .slice(0, 2)
-            .join(" ")
-        : text.slice(0, 4),
+      byteLength(text) <= 8 ? text : byteSlice(text, 0, 6).trimEnd() + "...",
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)
@@ -242,9 +241,13 @@ const initCellView = {
   },
   inlineInput(text: string) {
     const frame = { x: 0, y: 9, width: 70, height: 30 }
-    if (!MN.isMac) frame.y = 5
+    if (!MN.isMac) {
+      frame.y = 5
+      frame.width = 100
+    }
     const view = new UITextField(frame)
-    view.font = UIFont.systemFontOfSize(18)
+    view.font = UIFont.systemFontOfSize(15)
+    view.textAlignment = NSTextAlignment.Right
     view.textColor = MN.textColor
     view.delegate = self
     view.text = text

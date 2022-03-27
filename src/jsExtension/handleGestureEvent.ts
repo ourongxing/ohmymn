@@ -12,7 +12,7 @@ import { actionKey4Card, actionKey4Text, dataSourceIndex } from "dataSource"
 import handleMagicAction from "./magicActionHandler"
 import { closePanel, openPanel } from "./switchPanel"
 import { PanelControl } from "modules/addon/enum"
-import { showHUD } from "utils/common"
+import { alert, showHUD } from "utils/common"
 import lang from "lang"
 import { reverseEscape } from "utils/input"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
@@ -120,12 +120,15 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
      * 如果是从右往左框选，菜单在上面，(y-140, y-110)
      * 从左往右框选，菜单在下面， (y-75, y-45)
      */
+    // alert(`y - ${parseInt(String(y - swipeY))} = swipeY`)
     if (
       isWithinArea(
         { swipeY },
         {
-          y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
-          height: 30
+          // mme 中修改了
+          // y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
+          y: y - (arrow === DirectionOfSelection.toRight ? 150 : 220),
+          height: 35
         }
       )
     )

@@ -72,8 +72,6 @@ var entityMap = {
 }
 
 function escapeHtml(string) {
-  /** no need to excape */
-  return string
   return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
     return entityMap[s]
   })
@@ -606,9 +604,8 @@ Writer.prototype.renderTokens = function renderTokens(
       )
     else if (symbol === ">")
       value = this.renderPartial(token, context, partials, config)
-    else if (symbol === "&") value = this.unescapedValue(token, context)
-    else if (symbol === "name")
-      value = this.escapedValue(token, context, config)
+    else if (symbol === "&") value = this.escapedValue(token, context, config)
+    else if (symbol === "name") value = this.unescapedValue(token, context)
     else if (symbol === "text") value = this.rawValue(token)
 
     if (value !== undefined) buffer += value

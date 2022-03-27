@@ -116,7 +116,7 @@ const getExcerptText = (node: MbBookNote, highlight = true) => {
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
         })
-      text && acc.ocr.push()
+      text && acc.ocr.push(text)
     } else if (text) {
       Object.values(acc).forEach(k =>
         k.push(highlight ? text : removeHighlight(text))

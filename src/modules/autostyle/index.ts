@@ -223,7 +223,7 @@ const checker: ICheckMethod<
       break
     }
     default:
-      return undefined
+      return false
   }
 }
 

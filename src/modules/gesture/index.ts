@@ -3,7 +3,7 @@ import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang
-const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
+const configs: IConfig<Record<string, string>, Record<string, string>> = {
   name: "Gesture",
   intro,
   link,
@@ -25,7 +25,7 @@ const configs: IConfig<AnyProperty<string>, AnyProperty<string>> = {
         option: [] as string[]
       }))
     })
-    .flat() as ISettingSelect<AnyProperty<string>>[]
+    .flat() as ISettingSelect<Record<string, string>>[]
 }
 
 const utils = {

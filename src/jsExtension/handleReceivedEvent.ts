@@ -51,9 +51,6 @@ const onSwitchChange: EventHandler = sender => {
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled = status
       break
-    case "preOCR":
-      status && showHUD(lang.make_sure_autoocr, 2)
-      break
   }
 }
 

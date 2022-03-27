@@ -6,10 +6,11 @@ import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
 import { IProfile } from "profile"
 import { checkRegArrayFromMNLink } from "utils/checkInput"
+import { removeHighlight } from "utils/note"
 
 const { option, intro, help, link, label, check } = lang
 
-const configs: IConfig<IProfile["anotherautotitle"], AnyProperty<string>> = {
+const configs: IConfig<IProfile["anotherautotitle"], Record<string, string>> = {
   name: "Another AutoTitle",
   intro,
   link,
@@ -52,6 +53,7 @@ const utils = {
     const { preset, wordCount, changeTitleNoLimit } =
       self.profile.anotherautotitle
     const { cacheExcerptTitle } = self.docProfile.additional
+    if (self.isModify) text = removeHighlight(text)
     if (changeTitleNoLimit && self.isModify && cacheExcerptTitle[self.noteid])
       return {
         title: [text],
@@ -100,7 +102,7 @@ const checker: ICheckMethod<
     case "customBeTitle":
       checkRegArrayFromMNLink(input)
     default:
-      return undefined
+      return false
   }
 }
 

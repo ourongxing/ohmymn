@@ -61,4 +61,45 @@ const byteSlice = (text: string, begin: number, ...rest: number[]) => {
   return text.slice(...res)
 }
 
-export { isHalfWidth, isCJK, countWord, CJK, byteLength, SerialCode, byteSlice }
+const byteSplitByLen = (text: string, len: number) => {
+  const { str, segments } = Array.from(text).reduce(
+    (acc, cur) => {
+      const byte = acc.byte + (cur.charCodeAt(0) > 255 ? 2 : 1)
+      if (byte > len)
+        return {
+          str: cur,
+          segments: [...acc.segments, acc.str],
+          byte: cur.charCodeAt(0) > 255 ? 2 : 1
+        }
+      const str = acc.str + cur
+      if (byte === len)
+        return {
+          str: "",
+          segments: [...acc.segments, str],
+          byte: 0
+        }
+      return {
+        str,
+        segments: acc.segments,
+        byte
+      }
+    },
+    {
+      str: "",
+      segments: [] as string[],
+      byte: 0
+    }
+  )
+  return str === "" ? segments : [...segments, str]
+}
+
+export {
+  isHalfWidth,
+  isCJK,
+  countWord,
+  CJK,
+  byteLength,
+  SerialCode,
+  byteSlice,
+  byteSplitByLen
+}

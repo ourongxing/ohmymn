@@ -193,7 +193,7 @@ const checker: ICheckMethod<typeof ActionKey> = (input, key) => {
       checkRegArray(input)
       break
     default:
-      return undefined
+      return false
   }
 }
 

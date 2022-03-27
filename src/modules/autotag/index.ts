@@ -112,7 +112,7 @@ const checker: ICheckMethod<
     case "customTag":
       checkReplaceParamFromMNLink(input)
     default:
-      return undefined
+      return false
   }
 }
 

@@ -69,7 +69,7 @@ const configs: IConfig<
     ].map((k, i) => {
       return {
         type: CellViewType.Input,
-        help: `${i === 2 || i === 3 ? "【当前文档生效】" : ""}${
+        help: `${i === 2 || i === 3 ? help.cur_doc_effect : ""}${
           option.search_engine[i]
         }`,
         key: k,
@@ -96,7 +96,7 @@ const configs: IConfig<
           let opt = whichPartofCard[0]
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
             opt = (await utils.choosePartofCard(
-              ["标题", "摘录", "自定义"],
+              lang.option.muiltple_cards,
               "",
               true
             )) as number
@@ -141,7 +141,7 @@ const configs: IConfig<
     {
       type: CellViewType.Button,
       key: "searchText",
-      label: "搜索选中文字",
+      label: lable.search_text,
       option: option.search_engine,
       method: ({ text, option }) => {
         text && utils.search(text, option)
@@ -180,7 +180,11 @@ const utils = {
     const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
     return renderTemplateOfNodeProperties(node, template)
   },
-  async choosePartofCard(parts: string[], tip = "", index = false) {
+  async choosePartofCard(
+    parts: string[],
+    tip = lang.choose_you_want,
+    index = false
+  ) {
     const { option } = await popup(
       Addon.title,
       tip,
@@ -282,7 +286,7 @@ const utils = {
       searchOtherText
     ][option]
     if (searchEngine) openUrl(searchEngine.replace("{{keyword}}", text))
-    else showHUD("没有填写此搜索引擎的 URL", 2)
+    else showHUD(hud.no_search_engine_url, 2)
   },
   copy(text: string) {
     UIPasteboard.generalPasteboard().string = text.trim()
@@ -301,7 +305,7 @@ const checker: ICheckMethod<
     case "searchAcademic":
     case "searchQuestion":
     case "searchOtherText":
-      if (!input.includes("{{keyword}}")) throw "没有输入 {{keyword}}"
+      if (!input.includes("{{keyword}}")) throw hud.no_keyword
       break
     case "customContent":
     case "separatorSymbols":

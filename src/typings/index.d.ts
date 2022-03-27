@@ -17,6 +17,7 @@ declare global {
     window: UIWindow
     docMD5?: string
     noteid: string
+    node?: MbBookNote
     notebookid: string
     tableView: UITableView
     OCROnline: {

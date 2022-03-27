@@ -129,7 +129,7 @@ const checker: ICheckMethod<
       checkReplaceParam(input)
       break
     default:
-      return undefined
+      return false
   }
 }
 

@@ -24,15 +24,37 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
   return {
-    nohl: () => (text: any, render: (arg0: any) => string) =>
+    nohl: () => (text: string, render: (p: string) => string) =>
       removeHighlight(render(text)),
-    id: isRequire("id") && node.noteId,
-    title:
-      isRequire("title") &&
+    blod: () => (text: string, render: (p: string) => string) =>
+      render(text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"),
+    clozeSync: () => (text: string, render: (p: string) => string) =>
+      render(text).replace(/\*\*(.+?)\*\*/g, "{{c1::$1}}"),
+    cloze: () => (text: string, render: (p: string) => string) => {
+      let index = 1
+      return render(text).replace(/\*\*(.+?)\*\*/g, (_, m) => {
+        return `{{c${index++}::${m}}}}`
+      })
+    },
+
+    titles:
+      isRequire("titles") &&
       undefine2undefine(node.noteTitle, t => t.split(/\s*[;；]\s*/)),
-    url:
-      isRequire("url") &&
-      undefine2undefine(node.noteId, t => "marginnote3app://note/" + t),
+    id: isRequire("id") && node.noteId,
+    url: isRequire("url") && {
+      pure: undefine2undefine(node.noteId, t => "marginnote3app://note/" + t),
+      md: undefine2undefine(
+        node.noteId,
+        t => `[${node.noteTitle ?? "MarginNote"}](marginnote3app://note/${t}`
+      ),
+      html: undefine2undefine(
+        node.noteId,
+        t =>
+          `<a href="marginnote3app://note/${t}">${
+            node.noteTitle ?? "MarginNote"
+          }</a>`
+      )
+    },
     page: isRequire("page.") && {
       end: node.endPage,
       start: node.startPage
@@ -63,10 +85,32 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
         t => MN.db.getNotebookById(t)?.title
       ),
       id: node.notebookId,
-      url: undefine2undefine(
-        node.notebookId,
-        t => "marginnote3app://notebook/" + t
-      )
+      url: isRequire("url.") && {
+        pure: undefine2undefine(
+          node.notebookId,
+          t => "marginnote3app://notebook/" + t
+        ),
+        md: undefine2undefine(
+          node.notebookId,
+          t =>
+            `[${
+              undefine2undefine(
+                node.notebookId,
+                t => MN.db.getNotebookById(t)?.title
+              ) ?? "MarginNote"
+            }](marginnote3app://notebook/${t}`
+        ),
+        html: undefine2undefine(
+          node.notebookId,
+          t =>
+            `<a href="marginnote3app://notebook/${t}">${
+              undefine2undefine(
+                node.notebookId,
+                t => MN.db.getNotebookById(t)?.title
+              ) ?? "MarginNote"
+            }</a>`
+        )
+      }
     }
   }
 }
@@ -81,14 +125,14 @@ export const renderTemplateOfNodeProperties = (
     return render(template, {
       ...getNodeProperties(node, template),
       parent:
-        isRequire("parent") &&
+        isRequire("parent.") &&
         undefine2undefine(node.parentNote, t => getNodeProperties(t, template)),
       children:
-        isRequire("children") &&
+        isRequire("children.") &&
         undefine2undefine(node.childNotes, k =>
           k.map((k: MbBookNote) => getNodeProperties(k, template))
         )
-    })
+    }).trim()
   } catch (err) {
     console.log(String(err))
     return template
@@ -103,16 +147,16 @@ export const renderTemplateOfNodePropertiesWhenExcerpt = (template: string) => {
     return render(template, {
       ...getNodeProperties(self.node, template),
       parent:
-        isRequire("parent") &&
+        isRequire("parent.") &&
         undefine2undefine(self.node.parentNote, t =>
           getNodeProperties(t, template)
         ),
       children:
-        isRequire("children") &&
+        isRequire("children.") &&
         undefine2undefine(self.node.childNotes, k =>
           k.map((k: MbBookNote) => getNodeProperties(k, template))
         )
-    })
+    }).trim()
   } catch (err) {
     console.log(String(err))
     return template

@@ -42,7 +42,10 @@ export default async (
           )
           const text = content ? getMNLinkValue(content) : ""
           // Allowed to be empty
-          if (text === "" || (text && checkInputCorrect(text, row.key))) {
+          if (
+            text === "" ||
+            (text && (await checkInputCorrect(text, row.key)))
+          ) {
             await handleMagicAction(type, row.key, option!, text)
             return
           }
@@ -67,116 +70,129 @@ const handleMagicAction = async (
   option: number,
   content = ""
 ) => {
-  if (type === "text") {
-    const documentController =
-      MN.studyController().readerController.currentDocumentController
-    const imageFromSelection = documentController.imageFromSelection()
-    if (!imageFromSelection) {
-      showHUD(lang.not_select_text)
-      return
-    }
-    const text =
-      self.profile.magicaction4text.preOCR &&
-      self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf("autoocr"))
-        ? (await autoocr.utils.main(imageFromSelection.base64Encoding())) ??
-          documentController.selectionText ??
-          ""
-        : documentController.selectionText ?? ""
-
-    actions4text[key]({
-      text,
-      imgBase64: imageFromSelection.base64Encoding(),
-      option
-    })
-  } else if (type === "card") {
-    let nodes: MbBookNote[] = []
-    key != "filterCards" &&
-      self.profile.addon.panelControl.includes(PanelControl.CompleteClose) &&
-      closePanel()
-
-    if (self.customSelectedNodes.length) {
-      nodes = self.customSelectedNodes
-      self.customSelectedNodes = []
-      HUDController.hidden()
-    } else {
-      nodes = getSelectNodes()
-      if (!nodes.length) {
-        showHUD(lang.not_select_card)
+  try {
+    if (type === "text") {
+      const documentController =
+        MN.studyController().readerController.currentDocumentController
+      const imageFromSelection = documentController
+        .imageFromSelection()
+        ?.base64Encoding()
+      if (!imageFromSelection) {
+        showHUD(lang.not_select_text, 2)
         return
       }
-      // The need for the same level is to avoid the situation where both parent and descendant nodes are selected,
-      // which leads to duplicate processing.
-      const isHavingChildren = nodes.every(
-        node =>
-          nodes[0].parentNote === node.parentNote && node?.childNotes?.length
-      )
+      const text =
+        self.docProfile.magicaction4text.preOCR &&
+        self.profile.addon.quickSwitch.includes(
+          moduleKeyArray.indexOf("autoocr")
+        )
+          ? (await autoocr.utils.main(imageFromSelection)) ??
+            documentController.selectionText ??
+            ""
+          : documentController.selectionText ?? ""
 
-      const noNeedSmartSelection =
-        key === "renameTitle" && /#\[(.+)\]/.test(content)
+      if (!text) {
+        showHUD(lang.no_text_selection, 2)
+        return
+      }
 
-      const { smart_select } = lang
-      if (
-        self.profile.magicaction4card.smartSelection &&
-        isHavingChildren &&
-        !noNeedSmartSelection
-      ) {
-        const { option } = await popup(
-          smart_select.title,
-          nodes.length > 1
-            ? smart_select.cards_with_children
-            : smart_select.card_with_children,
-          UIAlertViewStyle.Default,
-          smart_select.option,
-          (alert: UIAlertView, buttonIndex: number) => ({
-            option: buttonIndex
-          })
+      actions4text[key]({
+        text,
+        imgBase64: imageFromSelection,
+        option
+      })
+    } else if (type === "card") {
+      let nodes: MbBookNote[] = []
+      key != "filterCards" &&
+        self.profile.addon.panelControl.includes(PanelControl.CompleteClose) &&
+        closePanel()
+
+      if (self.customSelectedNodes.length) {
+        nodes = self.customSelectedNodes
+        self.customSelectedNodes = []
+        HUDController.hidden()
+      } else {
+        nodes = getSelectNodes()
+        if (!nodes.length) {
+          showHUD(lang.not_select_card)
+          return
+        }
+        // The need for the same level is to avoid the situation where both parent and descendant nodes are selected,
+        // which leads to duplicate processing.
+        const isHavingChildren = nodes.every(
+          node =>
+            nodes[0].parentNote === node.parentNote && node?.childNotes?.length
         )
 
-        if (option) {
-          const { onlyChildren, onlyFirstLevel, allNodes } = nodes
-            .slice(1)
-            .reduce((acc, node) => {
-              const { onlyChildren, onlyFirstLevel, allNodes } =
-                getNodeTree(node)
-              acc.allNodes.push(...allNodes)
-              acc.onlyChildren.push(...onlyChildren)
-              acc.onlyFirstLevel.push(...onlyFirstLevel)
-              return acc
-            }, getNodeTree(nodes[0]))
-          nodes = [onlyFirstLevel, onlyChildren, allNodes][option - 1]
+        const noNeedSmartSelection =
+          key === "renameTitle" && /#\[(.+)\]/.test(content)
+
+        const { smart_select } = lang
+        if (
+          self.profile.magicaction4card.smartSelection &&
+          isHavingChildren &&
+          !noNeedSmartSelection
+        ) {
+          const { option } = await popup(
+            smart_select.title,
+            nodes.length > 1
+              ? smart_select.cards_with_children
+              : smart_select.card_with_children,
+            UIAlertViewStyle.Default,
+            smart_select.option,
+            (alert: UIAlertView, buttonIndex: number) => ({
+              option: buttonIndex
+            })
+          )
+
+          if (option) {
+            const { onlyChildren, onlyFirstLevel, allNodes } = nodes
+              .slice(1)
+              .reduce((acc, node) => {
+                const { onlyChildren, onlyFirstLevel, allNodes } =
+                  getNodeTree(node)
+                acc.allNodes.push(...allNodes)
+                acc.onlyChildren.push(...onlyChildren)
+                acc.onlyFirstLevel.push(...onlyFirstLevel)
+                return acc
+              }, getNodeTree(nodes[0]))
+            nodes = [onlyFirstLevel, onlyChildren, allNodes][option - 1]
+          }
         }
       }
-    }
-    switch (key) {
-      case "filterCards":
-        self.customSelectedNodes = actions4card.filterCards!({
-          content,
-          nodes,
-          option
-        })
-        break
-      case "manageProfile":
-        undoGroupingWithRefresh(
-          () => void manageProfileAction({ nodes, option })
-        )
-        break
-      default:
-        // Promise can not be placed in undoGroupingWithRefresh()
-        if (actions4card[key] instanceof Promise)
-          actions4card[key]({
+      switch (key) {
+        case "filterCards":
+          self.customSelectedNodes = actions4card.filterCards!({
             content,
             nodes,
             option
           })
-        else
+          break
+        case "manageProfile":
           undoGroupingWithRefresh(
-            () =>
-              void actions4card[key]({
-                content,
-                nodes,
-                option
-              })
+            () => void manageProfileAction({ nodes, option })
           )
+          break
+        default:
+          // Promise can not be placed in undoGroupingWithRefresh()
+          if (actions4card[key] instanceof Promise)
+            actions4card[key]({
+              content,
+              nodes,
+              option
+            })
+          else
+            undoGroupingWithRefresh(
+              () =>
+                void actions4card[key]({
+                  content,
+                  nodes,
+                  option
+                })
+            )
+      }
     }
+  } catch (err) {
+    console.error(String(err))
   }
 }
