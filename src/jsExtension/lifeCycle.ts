@@ -50,6 +50,8 @@ const sceneWillConnect = () => {
   self.settingViewController = new SettingViewController()
   self.settingViewController.dataSource = self.dataSource
   self.settingViewController.window = self.window
+  self.settingViewController.profile = self.profile
+  self.settingViewController.docProfile = self.docProfile
 }
 
 const notebookWillOpen = (notebookid: string) => {

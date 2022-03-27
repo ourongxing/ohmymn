@@ -10,7 +10,7 @@ import { removeHighlight } from "utils/note"
 
 const { option, intro, help, link, label, check } = lang
 
-const configs: IConfig<IProfile["anotherautotitle"], AnyProperty<string>> = {
+const configs: IConfig<IProfile["anotherautotitle"], Record<string, string>> = {
   name: "Another AutoTitle",
   intro,
   link,

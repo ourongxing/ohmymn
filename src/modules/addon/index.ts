@@ -7,7 +7,7 @@ import { IDocProfile, IProfile } from "profile"
 const { link, label, help, option } = lang
 const configs: IConfig<
   (IProfile & IDocProfile)["addon"],
-  AnyProperty<string>
+  Record<string, string>
 > = {
   name: Addon.title,
   key: "addon",

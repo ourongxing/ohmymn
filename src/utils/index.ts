@@ -1,6 +1,6 @@
-const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
-const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
-const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
+export const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
+export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
+export const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
   let ret
   const opt = {
     "Y+": date.getFullYear().toString(), // year
@@ -21,4 +21,20 @@ const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
   })
   return fmt
 }
-export { deepCopy, unique, dateFormat }
+
+export const escapeURLParam = (param: string) => {
+  const replaceParams = [
+    [/%/g, "%25"],
+    [/#/g, "%23"],
+    [/&/g, "%26"],
+    [/;/g, "%3B"],
+    [/\+/g, "%2B"],
+    [/\//g, "%2F"],
+    [/\\/g, "%5C"],
+    [/=/g, "%3D"],
+    [/\?/g, "%3F"],
+    [/\./g, "%2E"],
+    [/\:/g, "%3A"]
+  ] as [RegExp, string][]
+  return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
+}

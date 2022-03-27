@@ -1,4 +1,3 @@
-import { MN } from "const"
 import { NSJSONReadingOptions, NSJSONWritingOptions } from "typings/enum"
 
 class Response {
