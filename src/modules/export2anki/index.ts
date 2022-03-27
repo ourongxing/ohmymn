@@ -2,8 +2,8 @@ import { lang } from "./lang"
 import type { IConfig, ICheckMethod, ISettingInput, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
-import { ActionKey, AddTags, AnkiNote, AutoSync, ExportMethod } from "./typings"
-import { showHUD } from "utils/common"
+import { ActionKey, AddTags, AnkiNote, ExportMethod } from "./typings"
+import { openUrl, showHUD } from "utils/common"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 import { reverseEscape } from "utils/input"
 import { AnkiConnect } from "./ankiconnect"
@@ -38,6 +38,18 @@ const configs: IConfig<
       option: ["无", "仅iPad导出时", "都同步"],
       help: "桌面端自动上传到 Anki Web，iPad 可手动同步过来。",
       bind: [["exportMethod", 1]]
+    },
+    {
+      type: CellViewType.Switch,
+      key: "jumpBack",
+      label: "导出后跳转回 MN ",
+      bind: [["exportMethod", 0]]
+    },
+    {
+      type: CellViewType.Switch,
+      key: "allowRepeat",
+      label: "允许重复",
+      bind: [["exportMethod", 0]]
     },
     {
       type: CellViewType.Select,
@@ -87,7 +99,11 @@ const configs: IConfig<
             : {
                 type: CellViewType.Input,
                 key: `field${i + 1}${j}`,
-                help: `字段 ${j}${j === 1 ? "，点击查看输入格式" : ""}`,
+                help: `字段 ${j}${
+                  j === 1
+                    ? "。第一个字段会用来判断卡片是否存在，点击查看输入格式"
+                    : ""
+                }`,
                 bind: [["showTemplate", i + 1]]
               }
         })
@@ -107,9 +123,14 @@ const configs: IConfig<
           const { defaultTemplate } = self.docProfile.export2anki
           option = option === 0 ? defaultTemplate[0] : option - 1
           if (exportMethod[0] === ExportMethod.URL) {
-            if (nodes.length > 1) {
+            nodes.length > 1 &&
               showHUD("请注意，URL Scheme 单次只能导出一张卡片的内容！")
-            }
+            const url = utils.genUrlScheme(
+              utils.genAnkiNote(nodes[0], option),
+              nodes[0].noteId!
+            )
+            console.log(url)
+            openUrl(url)
           } else {
             if (!ankiConnectAPI) throw "请输入 Anki Connect API"
             const anki = new AnkiConnect(ankiConnectAPI)
@@ -181,6 +202,20 @@ const utils = {
       fields,
       modelName
     }
+  },
+  genUrlScheme(note: AnkiNote, id: string) {
+    const { profileName, allowRepeat, jumpBack } = self.profile.export2anki
+    const { modelName, deckName, fields, tags } = note
+    const ankiUrl = "anki://x-callback-url/addnote?"
+    const fieldsText = Object.entries(fields).reduce((acc, cur) => {
+      const [key, value] = cur
+      return `${acc}${acc ? "&" : ""}fld${key}=${value}`
+    }, "")
+    return `${ankiUrl}profile=${profileName}&type=${modelName}&deck=${deckName}&${fieldsText}${
+      tags.length ? "&tags=" + tags.join("%20") : ""
+    }${allowRepeat ? "&dupes=1" : ""}${
+      jumpBack ? "&x-success=marginnote3app://note/" + id : ""
+    }`
   }
 }
 
