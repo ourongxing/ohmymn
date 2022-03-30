@@ -36,6 +36,10 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
         return `{{c${index++}::${m}}}}`
       })
     },
+    lower: () => (text: string, render: (p: string) => string) =>
+      render(text).toLowerCase(),
+    upper: () => (text: string, render: (p: string) => string) =>
+      render(text).toUpperCase(),
 
     titles:
       isRequire("titles") &&
@@ -128,7 +132,7 @@ export const renderTemplateOfNodeProperties = (
         isRequire("parent.") &&
         undefine2undefine(node.parentNote, t => getNodeProperties(t, template)),
       children:
-        isRequire("children.") &&
+        isRequire("children") &&
         undefine2undefine(node.childNotes, k =>
           k.map((k: MbBookNote) => getNodeProperties(k, template))
         )
@@ -152,7 +156,7 @@ export const renderTemplateOfNodePropertiesWhenExcerpt = (template: string) => {
           getNodeProperties(t, template)
         ),
       children:
-        isRequire("children.") &&
+        isRequire("children") &&
         undefine2undefine(self.node.childNotes, k =>
           k.map((k: MbBookNote) => getNodeProperties(k, template))
         )
