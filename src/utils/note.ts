@@ -35,7 +35,7 @@ const getSelectNodes = (): MbBookNote[] => {
 }
 
 /**
- * 获取整个卡片树，传入 node 必须含有子节点
+ * 获取整个卡片树
  */
 const getNodeTree = (node: MbBookNote) => {
   const DFS = (
@@ -57,6 +57,13 @@ const getNodeTree = (node: MbBookNote) => {
     })
     return res
   }
+  if (!node.childNotes?.length)
+    return {
+      onlyChildren: [],
+      onlyFirstLevel: [],
+      allNodes: [node],
+      treeIndex: [[]] as number[][]
+    }
   const { children, treeIndex } = DFS(node.childNotes!)
   return {
     // 只有子节点
@@ -67,6 +74,16 @@ const getNodeTree = (node: MbBookNote) => {
     allNodes: [node, ...children],
     treeIndex
   }
+}
+
+const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
+  const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {
+    if (node.parentNote) {
+      ancestorNodes = up(node.parentNote, [...ancestorNodes, node.parentNote])
+    }
+    return ancestorNodes
+  }
+  return up(node, [])
 }
 
 /**
@@ -229,6 +246,7 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
 export {
   getSelectNodes,
   getNodeTree,
+  getAncestorNodes,
   getExcerptNotes,
   getExcerptText,
   getCommentIndex,

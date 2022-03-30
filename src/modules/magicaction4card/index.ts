@@ -1,4 +1,10 @@
-import { addTags, getAllText, removeHighlight } from "utils/note"
+import {
+  addTags,
+  getAllText,
+  getAncestorNodes,
+  getNodeTree,
+  removeHighlight
+} from "utils/note"
 import {
   escapeDoubleQuote,
   reverseEscape,
@@ -82,12 +88,27 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       option: option.merge_cards,
       method: ({ option, nodes }) => {
         if (nodes.length == 1) return
-        const node = nodes[0]
+        const { node } = nodes.slice(1).reduce(
+          (acc, cur) => {
+            const level = getAncestorNodes(cur).length
+            if (level < acc.level)
+              return {
+                level,
+                node: cur
+              }
+            else return acc
+          },
+          {
+            level: getAncestorNodes(nodes[0]).length,
+            node: nodes[0]
+          }
+        )
         const titles = node.noteTitle ? [node.noteTitle] : []
-        for (let i = 1; i < nodes.length; i++) {
-          const title = nodes[i].noteTitle
+        for (const n of nodes) {
+          if (n === node) continue
+          const title = n.noteTitle
           title && titles.push(title)
-          node.merge(nodes[i])
+          node.merge(n)
         }
         const len = node.comments.length
         // 从后往前删，索引不会乱
