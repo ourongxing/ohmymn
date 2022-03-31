@@ -1,7 +1,7 @@
 import { lang } from "./lang"
 import type { IConfig, ICheckMethod, MbBookNote } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { IProfile } from "profile"
+import { IDocProfile, IProfile } from "profile"
 import { ActionKey, AddTags, ExportMethod } from "./enum"
 import { Addon } from "const"
 import { openUrl, popup, showHUD } from "utils/common"
@@ -13,7 +13,10 @@ import { removeHighlight } from "utils/note"
 import { escapeURLParam } from "utils"
 const { link, intro, lable, option, help } = lang
 
-const configs: IConfig<IProfile["export2flomo"], typeof ActionKey> = {
+const configs: IConfig<
+  (IProfile & IDocProfile)["export2flomo"],
+  typeof ActionKey
+> = {
   name: "Export to Flomo",
   key: "export2flomo",
   intro,
@@ -45,6 +48,13 @@ const configs: IConfig<IProfile["export2flomo"], typeof ActionKey> = {
       bind: [["addTags", 2]]
     },
     {
+      type: CellViewType.Select,
+      key: "defaultTemplate",
+      label: "默认导出模版",
+      option: ["模版 1", "模版 2", "模版 3"],
+      help: "【仅当前文档有效】"
+    },
+    {
       type: CellViewType.Switch,
       key: "showTemplate",
       label: "显示/隐藏所有模板"
@@ -73,20 +83,22 @@ const configs: IConfig<IProfile["export2flomo"], typeof ActionKey> = {
       type: CellViewType.Button,
       key: "exportCard2Flomo",
       label: "导出到 Flomo",
-      option: ["模板 1", "模版 2", "模版 3"],
+      option: ["默认", "模板 1", "模版 2", "模版 3"],
       method: async ({ nodes, option }) => {
         const { exportMethod } = self.profile.export2flomo
+        const { defaultTemplate } = self.docProfile.export2flomo
+        option = option === 0 ? defaultTemplate[0] : option - 1
         if (exportMethod[0] === ExportMethod.URL) {
           if (nodes.length > 1) {
             showHUD("请注意，URL Scheme 单次只能导出一张卡片的内容！")
           }
-          const c = await utils.getContent(nodes[0], option)
+          const c = utils.getContent(nodes[0], option)
           if (c) openUrl("flomo://create?content=" + escapeURLParam(c))
           else showHUD("模版对应的内容为空")
         } else
           try {
             for (const node of nodes) {
-              const c = await utils.getContent(node, option)
+              const c = utils.getContent(node, option)
               if (c) await utils.exportByAPI(c)
               else showHUD("模版对应的内容为空")
             }
@@ -134,7 +146,7 @@ const utils = {
     )
     return parts[option!]
   },
-  async getContent(node: MbBookNote, option: number) {
+  getContent(node: MbBookNote, option: number) {
     const {
       flomoTemplate1,
       flomoTemplate2,
@@ -192,7 +204,7 @@ const checker: ICheckMethod<PickByValue<IProfile["export2flomo"], string>> = (
 ) => {
   switch (key) {
     default:
-      return undefined
+      return false
   }
 }
 

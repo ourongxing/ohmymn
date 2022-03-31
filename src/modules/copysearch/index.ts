@@ -95,11 +95,7 @@ const configs: IConfig<
           const { separatorSymbols, whichPartofCard } = self.profile.copysearch
           let opt = whichPartofCard[0]
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
-            opt = (await utils.choosePartofCard(
-              lang.option.muiltple_cards,
-              "",
-              true
-            )) as number
+            opt = await utils.selectPartIndexOfCard(lang.option.muiltple_cards)
           } else opt -= 1
           const contentList = utils.getContentofMuiltCards(nodes, opt)
           contentList?.length &&
@@ -169,22 +165,16 @@ const utils = {
         return k[0]
       default:
         if (origin) return k
-        return k.length === 1
-          ? k[0]
-          : ((await utils.choosePartofCard(k)) as string)
+        return k.length === 1 ? k[0] : await utils.selectPartOfCard(k)
     }
   },
   getCustomContent(node: MbBookNote) {
     const { customContent } = self.profile.copysearch
     if (!customContent) return undefined
-    const template = reverseEscape(`"${escapeDoubleQuote(customContent)}"`)
+    const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
     return renderTemplateOfNodeProperties(node, template)
   },
-  async choosePartofCard(
-    parts: string[],
-    tip = lang.choose_you_want,
-    index = false
-  ) {
+  async selectPartOfCard(parts: string[], tip = lang.choose_you_want) {
     const { option } = await popup(
       Addon.title,
       tip,
@@ -194,7 +184,19 @@ const utils = {
         option: buttonIndex
       })
     )
-    return index ? option! : parts[option!]
+    return parts[option!]
+  },
+  async selectPartIndexOfCard(parts: string[], tip = lang.choose_you_want) {
+    const { option } = await popup(
+      Addon.title,
+      tip,
+      UIAlertViewStyle.Default,
+      parts.map(k => byteSlice(k.replace("\n", ""), 0, 40)),
+      (alert: UIAlertView, buttonIndex: number) => ({
+        option: buttonIndex
+      })
+    )
+    return option!
   },
   async getContentofOneCard(node: MbBookNote, option: number) {
     const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
@@ -232,7 +234,7 @@ const utils = {
         ]
         if (customContent) list.push(customContent)
         if (list.length === 1) return list[0]
-        else return await utils.choosePartofCard(list)
+        else return await utils.selectPartOfCard(list)
       }
     }
   },
@@ -312,7 +314,7 @@ const checker: ICheckMethod<
       checkPlainText(input)
       break
     default:
-      return undefined
+      return false
   }
 }
 

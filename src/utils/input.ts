@@ -30,6 +30,8 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
 }
 
 const string2Reg = (str: string) => {
+  str = str.trim()
+  if (!str.startsWith("/")) return new RegExp(escapeStringRegexp(str))
   const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
   if (!regParts) throw ""
   return new RegExp(regParts[1], regParts[2])
@@ -48,23 +50,13 @@ const string2RegArray = (str: string): RegExp[][] => {
    */
 
   if (/^\(.*\)$/.test(str)) throw ""
-  if (!/^\[.*\]$/.test(str))
-    return [
-      [
-        string2Reg(
-          /^\/(.*?)\/([gimsuy]*)$/.test(str)
-            ? str
-            : `/${escapeStringRegexp(str)}/g`
-        )
-      ]
-    ]
-  const brackets = str.split(/\s*;\s*(?=\[)/)
-  return brackets.map(bracket =>
-    bracket
-      .slice(1, -1)
-      .split(/\s*,\s*(?=\/)/)
+  const brackets = str.split(/\s*;\s*(?=(?:\[\s*\/|\/\s*[^\]gimsuy,]))/)
+  return brackets.map(bracket => {
+    return bracket
+      .replace(/^\s*\[(.*?)\]\s*$/, "$1")
+      .split(/\s*,\s*(?=\/[^\s,gimsuy]+)/)
       .map(str => string2Reg(str))
-  )
+  })
 }
 
 const regFlag = {
