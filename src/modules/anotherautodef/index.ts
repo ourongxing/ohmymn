@@ -177,10 +177,10 @@ const utils = {
             }
           break
         }
-        case AutoDefPreset.CustomTitleSplit:
+        case AutoDefPreset.CustomTitleSplit: {
           const { customDefLink } = self.profileTemp.regArray
           if (!customDefLink) continue
-          const regs = customDefLink[0]
+          const regs = customDefLink.flat()
           for (let reg of regs) {
             let isReverse = false
             // 使用 y 来表示定义项在后面的情况，则 y 失效，应该很少人会用到 y
@@ -199,6 +199,7 @@ const utils = {
             }
           }
           break
+        }
         case 2:
         case 3:
         case 4:
