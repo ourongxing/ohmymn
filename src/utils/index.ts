@@ -38,3 +38,20 @@ export const escapeURLParam = (param: string) => {
   ] as [RegExp, string][]
   return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
 }
+
+export const unescapeURLParam = (param: string) => {
+  const replaceParams = [
+    [/%25/g, "%"],
+    [/%23/g, "#"],
+    [/%26/g, "&"],
+    [/%3B/g, ";"],
+    [/%2B/g, "+"],
+    [/%2F/g, "/"],
+    [/%5C/g, "\\"],
+    [/%3D/g, "="],
+    [/%3F/g, "?"],
+    [/%2E/g, "."],
+    [/%3A/g, ":"]
+  ] as [RegExp, string][]
+  return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
+}

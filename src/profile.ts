@@ -167,6 +167,23 @@ const profilePreset = {
     field38: "",
     field39: ""
   },
+  export2devonthink:{
+    exportMethod:[0],
+    showTemplate: true,
+    title: "{{notebook.title}}",
+    comment: "",
+    addTags: [0],
+    tags: "{{#tags}}{{.}},{{/tags}},{{notebook.title}},MarginNote",
+    destination:"",
+    htmlsource:"",
+    pdfsource:"",
+    mdtext:"{{allText}}",
+    txtext:"{{allText}}",
+    hide:"",
+    referrer:"",
+    width:"",
+    paginated:"",
+  },
   additional: {
     autoocr: {
       lastGetToken: 0,
@@ -203,6 +220,23 @@ const docProfilePreset = {
   },
   export2flomo: {
     defaultTemplate: [0]
+  },
+  export2devonthink:{
+    exportMethod:[0],
+    showTemplate: true,
+    title: "{{notebook.title}}",
+    comment: "",
+    addTags: [0],
+    tags: "{{#tags}}{{.}},{{/tags}},{{notebook.title}},MarginNote",
+    destination:"",
+    htmlsource:"",
+    pdfsource:"",
+    mdtext:"{{allText}}",
+    txtext:"{{allText}}",
+    hide:"",
+    referrer:"",
+    width:"",
+    paginated:"",
   },
   // Information not displayed on the UI
   additional: {
