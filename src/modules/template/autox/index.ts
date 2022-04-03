@@ -3,9 +3,9 @@ import type { IConfig, ICheckMethod } from "typings"
 import { CellViewType } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
 import { ActionKey } from "./enum"
-const { link, intro, lable, option, help } = lang
+const { link, intro, label, option, help } = lang
 
-const configs: IConfig<(IProfile & IDocProfile)[""], typeof ActionKey> = {
+const configs: IConfig<Record<string, any>, Record<string, string>> = {
   name: "AutoX",
   intro,
   link,
@@ -46,9 +46,7 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<(IProfile & IDocProfile)[""], string>
-> = (input, key) => {
+const checker: ICheckMethod<Record<string, any>> = (input, key) => {
   switch (key) {
     default:
       return false

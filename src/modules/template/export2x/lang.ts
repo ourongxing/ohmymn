@@ -3,14 +3,15 @@ import { MN } from "const"
 const zh = {
   intro: "",
   link: "",
-  lable: {},
+  label: {},
   option: {},
   help: {}
 }
+
 const en: typeof zh = {
   intro: "",
   link: "",
-  lable: {},
+  label: {},
   option: {},
   help: {}
 }
