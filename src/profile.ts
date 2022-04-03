@@ -10,7 +10,8 @@ const profilePreset = {
     hasTitleThen: [0],
     panelControl: [] as number[],
     panelPosition: [0],
-    panelHeight: [1]
+    panelHeight: [1],
+    autoBackup: false
   },
   gesture: {
     singleBarSwipeUp: [0],
@@ -167,24 +168,25 @@ const profilePreset = {
     field38: "",
     field39: ""
   },
-  export2devonthink:{
-    exportMethod:[0],
+  export2devonthink: {
+    exportMethod: [0],
     showTemplate: true,
     title: "{{notebook.title}}",
     comment: "",
     addTags: [0],
     tags: "{{#tags}}{{.}},{{/tags}},{{notebook.title}},MarginNote",
-    destination:"",
-    htmlsource:"",
-    pdfsource:"",
-    mdtext:"{{allText}}",
-    txtext:"{{allText}}",
-    hide:"",
-    referrer:"",
-    width:"",
-    paginated:"",
+    destination: "",
+    htmlsource: "",
+    pdfsource: "",
+    mdtext: "{{allText}}",
+    txtext: "{{allText}}",
+    hide: "",
+    referrer: "",
+    width: "",
+    paginated: ""
   },
   additional: {
+    backupID: "",
     autoocr: {
       lastGetToken: 0,
       baiduToken: ""
@@ -220,23 +222,6 @@ const docProfilePreset = {
   },
   export2flomo: {
     defaultTemplate: [0]
-  },
-  export2devonthink:{
-    exportMethod:[0],
-    showTemplate: true,
-    title: "{{notebook.title}}",
-    comment: "",
-    addTags: [0],
-    tags: "{{#tags}}{{.}},{{/tags}},{{notebook.title}},MarginNote",
-    destination:"",
-    htmlsource:"",
-    pdfsource:"",
-    mdtext:"{{allText}}",
-    txtext:"{{allText}}",
-    hide:"",
-    referrer:"",
-    width:"",
-    paginated:"",
   },
   // Information not displayed on the UI
   additional: {

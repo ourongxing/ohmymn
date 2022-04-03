@@ -14,7 +14,7 @@ export const updateProfileTemp = (key: string, val: string) => {
   const newValue = getMNLinkValue(val)
   if (key in self.profileTemp.regArray) {
     let tmp: RegExp[][] | undefined
-    // 避免修改后错误没有修改，下次读取配置出现问题
+    // Avoid the error after modification is not corrected
     try {
       tmp = newValue ? string2RegArray(newValue) : undefined
     } catch {
@@ -37,7 +37,7 @@ export const updateProfileDataSource = (
   profileSaved: any,
   refresh = false
 ) => {
-  // 更新 DateSouce 和 Profile
+  // Update DateSouce and profile
   for (const [name, _] of Object.entries(profile)) {
     if (name === "additional") {
       for (const [key, val] of Object.entries(_)) {
@@ -73,7 +73,6 @@ export const updateProfileDataSource = (
       }
     }
   }
-  // 刷新控制面板
   if (refresh) {
     self.settingViewController.tableView?.reloadData()
     layoutViewController()

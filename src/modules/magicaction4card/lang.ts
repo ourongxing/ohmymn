@@ -41,7 +41,7 @@ const en: typeof zh = {
     filter_cards: ["Filter Only Title", "Filter Entire Card"],
     merge_text: ["Merged as Excerpt", "Merged as Comment"],
     merge_cards: ["Merge Title Simultaneously", "Do not Merge Titles"],
-    manage_profile: ["Read Configuration", "Write Configuration"]
+    manage_profile: ["Read Profile", "Write Profile"]
   },
   help: {
     switch_title: "Use [Swap Title and Excerpt] when both are present」",

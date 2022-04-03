@@ -21,10 +21,12 @@ const zh = {
     panel_height: "面板显示高度",
     panle_control: "面板开关控制",
     screen_always_on: "保持屏幕常亮",
-    lock_excerpt: "锁定摘录文字"
+    lock_excerpt: "锁定摘录文字",
+    auto_backup: "自动备份配置"
   },
   help: {
     profile: "【当前文档生效】不同场景，不同配置",
+    auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
     has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
   }
 }
@@ -50,10 +52,13 @@ const en: typeof zh = {
     panel_height: "Panel Height",
     panle_control: "Panel Open and Close",
     screen_always_on: "Keep Screen Always On",
-    lock_excerpt: "Lock Excerpt Text"
+    lock_excerpt: "Lock Excerpt Text",
+    auto_backup: "Auto Backup Profile"
   },
   help: {
     profile: "[Current Doc Takes Effect] Different scenes, different profile",
+    auto_backup:
+      "First you need to do, MagicAction for Card —> Manage Profile -> Write Profile",
     has_title_then:
       "Drag and drop the selection to merge into the card, and if a new title will be created by ohmymn, then"
   }

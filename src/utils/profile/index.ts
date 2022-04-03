@@ -6,6 +6,7 @@ import { MbBookNote } from "typings"
 import Base64 from "utils/third party/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { deepCopy } from "utils"
+import lang from "lang"
 export * from "./updateDataSource"
 
 let allProfile: IProfile[]
@@ -33,11 +34,11 @@ export const enum Range {
 const clearTitleCache = (_: typeof allDocProfile) => {
   try {
     Object.values(_).forEach(k => {
-      // 超过一个月没修改过，就清除该数据
       let { additional } = k
       if (!additional) additional = deepCopy(docProfilePreset.additional)
       else if (
         additional.lastExcerpt &&
+        // one month
         Date.now() - additional.lastExcerpt > 2592000000
       ) {
         additional.lastExcerpt = Date.now()
@@ -74,30 +75,28 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
   let isFirst = false
   switch (range) {
     case Range.First:
-      // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
+      // Read local data only on first open, then read doc profile and global profile
       isFirst = true
       const docProfileSaved: {
         [k: string]: IDocProfile
       } = getDataByKey(docProfileKey)
-      if (!docProfileSaved) console.log("初始化文档配置", "profile")
+      if (!docProfileSaved) console.log("Initialize doc profile", "profile")
       allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
       const profileSaved: IProfile[] = getDataByKey(profileKey)
-      if (!profileSaved) console.log("初始化全局配置", "profile")
+      if (!profileSaved) console.log("Initialize global profile", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
-      // 如果有新的配置信息，全部初始化
+      // Initialize all profile when new version release
       initNewVerProfile()
 
     case Range.Doc: {
-      // 打开文档时读文档配置，此时也必须读全局配置
       updateProfileDataSource(
         self.docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
       isFirst && clearTitleCache(allDocProfile)
-      console.log("读取当前文档配置", "profile")
+      console.log("Read currect doc profile", "profile")
     }
     case Range.Global: {
-      // 切换配置时只读全局配置，读全局配置不需要 md5
       updateProfileDataSource(
         self.profile,
         allProfile[self.docProfile.addon.profile[0]],
@@ -105,23 +104,43 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       )
     }
   }
-  console.log("读取全局配置", "profile")
+  console.log("Read global profile", "profile")
 }
 
-// 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
-// 传入 undefine 会使用默认参数
+/**
+ *
+ *  Saving the doc profile must save the global profile.
+ *  Switching profile only save the global profile.
+ *  Switching doc will be saved to the previous doc profile
+ *
+ * @param docmd5
+ * @param num profile number
+ */
 const saveProfile = (
   docmd5?: string,
   num = self.docProfile.addon.profile[0]
 ) => {
   allProfile[num] = deepCopy(self.profile)
   setDataByKey(allProfile, profileKey)
-  console.log("保存全局配置", "profile")
-
+  console.log("Save global profile", "profile")
   if (docmd5 != undefined) {
     allDocProfile[docmd5] = deepCopy(self.docProfile)
     setDataByKey(allDocProfile, docProfileKey)
-    console.log("保存当前文档配置", "profile")
+    console.log("Save current doc profile", "profile")
+  }
+  const { backupID } = self.profile.additional
+  if (backupID) {
+    const node = MN.db.getNoteById(backupID)
+    if (node) {
+      node.excerptText = Base64.encode(
+        JSON.stringify({
+          allProfileTemp: allProfile,
+          allDocProfileTemp: allDocProfile
+        })
+      )
+      node.noteTitle =
+        lang.profile_manage.prohibit + new Date().toLocaleString()
+    }
   }
 }
 
@@ -133,25 +152,7 @@ const removeProfile = () => {
 
 export { saveProfile, readProfile, removeProfile }
 
-export const manageProfileAction = (params: {
-  nodes: MbBookNote[]
-  option: number
-}) => {
-  const { option, nodes } = params
-  const node = nodes[0]
-  const lang = MN.isZH
-    ? {
-        success: "配置读取成功",
-        fail: "配置读取失败",
-        not_find: "未找到配置信息",
-        prohibit: `「${Addon.title}」配置（禁止直接修改）`
-      }
-    : {
-        success: "Configuration read successfully",
-        fail: "Configuration read fail",
-        not_find: "Configuration information not found",
-        prohibit: `「${Addon.title}」 configuration (no direct modification is allowed）`
-      }
+export const manageProfileAction = (node: MbBookNote, option: number) => {
   if (option) {
     saveProfile(self.docMD5)
     node.excerptText = Base64.encode(
@@ -160,7 +161,7 @@ export const manageProfileAction = (params: {
         allDocProfileTemp: allDocProfile
       })
     )
-    node.noteTitle = lang.prohibit + new Date().toLocaleString()
+    node.noteTitle = lang.profile_manage.prohibit + new Date().toLocaleString()
     node.colorIndex = 11
   } else {
     const str = node.excerptText
@@ -177,12 +178,12 @@ export const manageProfileAction = (params: {
         setDataByKey(allDocProfileTemp, Addon.docProfileKey)
         readProfile(Range.First)
         layoutViewController()
-        showHUD(lang.success)
+        showHUD(lang.profile_manage.success)
       } catch {
-        showHUD(lang.fail)
+        showHUD(lang.profile_manage.fail)
       }
     } else {
-      showHUD(lang.not_find)
+      showHUD(lang.profile_manage.not_find)
     }
   }
 }

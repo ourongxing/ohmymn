@@ -170,8 +170,9 @@ const handleMagicAction = async (
           break
         case "manageProfile":
           undoGroupingWithRefresh(
-            () => void manageProfileAction({ nodes, option })
+            () => void manageProfileAction(nodes[0], option)
           )
+          self.profile.additional.backupID = nodes[0].noteId!
           break
         default:
           // Promise can not be placed in undoGroupingWithRefresh()
