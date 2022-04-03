@@ -197,7 +197,8 @@ const profilePreset = {
 // Each document has a independent profile
 const docProfilePreset = {
   addon: {
-    profile: [0]
+    profile: [0],
+    pageOffset: "0"
   },
   autoocr: {
     on: false,

@@ -60,8 +60,14 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
       )
     },
     page: isRequire("page.") && {
-      end: node.endPage,
-      start: node.startPage
+      end: undefine2undefine(
+        node.endPage,
+        t => t + Number(self.docProfile.addon.pageOffset ?? 0)
+      ),
+      start: undefine2undefine(
+        node.startPage,
+        t => t + Number(self.docProfile.addon.pageOffset ?? 0)
+      )
     },
     tags: isRequire("tags") && getAllTags(node, false),
     allText: isRequire("allText") && getAllText(node),

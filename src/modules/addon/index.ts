@@ -1,8 +1,9 @@
 import { Addon } from "const"
 import { lang } from "./lang"
-import type { IConfig } from "typings"
+import type { ICheckMethod, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
+import { checkInteger } from "utils/checkInput"
 
 const { link, label, help, option } = lang
 const configs: IConfig<
@@ -63,12 +64,34 @@ const configs: IConfig<
       key: "lockExcerpt",
       type: CellViewType.Switch,
       label: label.lock_excerpt
+    },
+    {
+      key: "autoBackup",
+      type: CellViewType.Switch,
+      label: label.auto_backup,
+      help: help.auto_backup
+    },
+    {
+      key: "pageOffset",
+      type: CellViewType.InlineInput,
+      label: label.page_offset,
+      help: help.page_offset
     }
   ]
 }
 
+const checker: ICheckMethod<IDocProfile["addon"]> = (input, key) => {
+  switch (key) {
+    case "pageOffset":
+      checkInteger(Number(input))
+    default:
+      return false
+  }
+}
+
 const addon = {
-  configs
+  configs,
+  checker
 }
 
 export default addon

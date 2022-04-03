@@ -22,9 +22,11 @@ const zh = {
     panle_control: "面板开关控制",
     screen_always_on: "保持屏幕常亮",
     lock_excerpt: "锁定摘录文字",
-    auto_backup: "自动备份配置"
+    auto_backup: "自动备份配置",
+    page_offset: "页码偏移量"
   },
   help: {
+    page_offset: "【当前文档生效】",
     profile: "【当前文档生效】不同场景，不同配置",
     auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
     has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
@@ -53,9 +55,11 @@ const en: typeof zh = {
     panle_control: "Panel Open and Close",
     screen_always_on: "Keep Screen Always On",
     lock_excerpt: "Lock Excerpt Text",
-    auto_backup: "Auto Backup Profile"
+    auto_backup: "Auto Backup Profile",
+    page_offset: "Page Offset"
   },
   help: {
+    page_offset: "[Current Doc Takes Effect]",
     profile: "[Current Doc Takes Effect] Different scenes, different profile",
     auto_backup:
       "First you need to do, MagicAction for Card —> Manage Profile -> Write Profile",

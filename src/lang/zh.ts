@@ -34,14 +34,14 @@ const dict = {
   handle_user_action: {
     gesture: {
       alert:
-        "该功能打开后，OhMyMN 会监测在脑图卡片单选和多选工具栏上的滑动，并触发您设定的动作。\n该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
+        "该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
       option: ["不清楚，查看文档", "我已知晓"],
       doc: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8"
     }
   },
   profile_manage: {
-    success: "配置读取成功",
-    fail: "配置读取失败",
+    success: "读取成功",
+    fail: "读取失败",
     not_find: "未找到配置信息",
     prohibit: `「${Addon.title}」配置（禁止直接修改）`
   }

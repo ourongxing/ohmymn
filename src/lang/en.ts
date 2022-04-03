@@ -31,21 +31,20 @@ const dict: Dict = {
       "Detect all selected cards of the same level have child nodes"
   },
   magicaction_from_which_module: (module: string) =>
-    `This action comes from ${module} and uses the same profile`,
+    `This action comes from ${module} and uses the same settings`,
   handle_user_action: {
     gesture: {
       alert:
-        "When it is turned on, OhMyMN will monitor swipes on the mindmap nodes single and multiple selection toolbars and triggers the actions you set.\nThis feature is provided by OhMyMN and is not related to MarginNote. Have you read the doc and are aware of the specific gesture monitoring areas and the risks associated with their use?",
+        "This feature is provided by OhMyMN and not related to MarginNote. Have you read the doc and are aware of the specific gesture monitoring areas and the risks associated with their use?",
       option: ["Not sure, check the doc", "Sure, I know"],
       doc: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73"
     }
   },
   profile_manage: {
-    success: "Configuration read successfully",
-    fail: "Configuration read fail",
-    not_find: "Configuration information not found",
-    prohibit:
-      "「${Addon.title}」configuration (no direct modification is allowed）"
+    success: "Read successfully",
+    fail: "Read fail",
+    not_find: "Not found",
+    prohibit: `「${Addon.title}」Profile (no direct modification is allowed）`
   },
   action_not_work: "is not enabled, the action cannot be executed"
 }
