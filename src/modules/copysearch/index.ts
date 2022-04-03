@@ -179,7 +179,7 @@ const utils = {
       Addon.title,
       tip,
       UIAlertViewStyle.Default,
-      parts.map(k => byteSlice(k.replace("\n", ""), 0, 40)),
+      parts.map(k => byteSlice(k.replace(/\n/g, ""), 0, 40)),
       (alert: UIAlertView, buttonIndex: number) => ({
         option: buttonIndex
       })
@@ -191,7 +191,7 @@ const utils = {
       Addon.title,
       tip,
       UIAlertViewStyle.Default,
-      parts.map(k => byteSlice(k.replace("\n", ""), 0, 40)),
+      parts.map(k => byteSlice(k.replace(/\n/g, ""), 0, 40)),
       (alert: UIAlertView, buttonIndex: number) => ({
         option: buttonIndex
       })
