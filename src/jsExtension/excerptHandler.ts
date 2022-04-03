@@ -116,7 +116,10 @@ const processExcerpt = (text: string, title?: string, tags?: string[]) => {
       if (isComment) {
         const index = getCommentIndex(nodeNote, note)
         if (index != -1) lastRemovedComment = { nodeNote, index, note }
-        if (isOCR && nodeNote.excerptText == nodeNote.noteTitle)
+        if (
+          isOCR &&
+          nodeNote.excerptText?.trim() === nodeNote.noteTitle?.trim()
+        )
           nodeNote.excerptText = title
       }
       // Excerpts can't be cleared after being OCR, otherwise the image will be displayed,
