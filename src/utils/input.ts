@@ -2,15 +2,58 @@ import { MN } from "const"
 import { unique } from "utils"
 
 /**
- * 反转义字符串，用于处理用户输入
+ *  Reverse escape string in order to process user input
+ * @param str : The string to be processed
+ * @param quote : Boolean. If quote is true, the output string will be surrounded by double quotes
+ * @returns The string after reverse escape
+ * 
+ * @example 
+ * ```
+ * // Output string with double quotes surrounded
+ * const myReverseEscape = reverseEscape(123,true)
+ * // output: "123"
+ * ```
  */
 const reverseEscape = (str: string, quote = false) =>
   JSON.parse(quote ? `{"key": "${str}"}` : `{"key": ${str}}`).key
+
+/**
+ *  Escape double quotes of the string. We often use backslash(`\`) to escape double quote in order to prevent Typescript from interpreting the quote as the end of the string
+ * @param str : The string to be processed
+ * @returns A string after processing
+ * @example
+ * ```
+ * const Myquote = escapeDoubleQuote("\"file\"-123")
+ * // output: \\\"file\\\"-123
+ * ```
+ */
 const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
+/**
+ *  Detect if the string is a number
+ * @param text : The string to be processed
+ * @returns Boolean, true if the input is a number
+ * @example
+ * ```
+ * const myIsNumber = isNumber("1")
+ * // output: true
+ * const myIsNumber = isNumber("a")
+ * // output: false
+ * ```
+ */
 const isNumber = (text: string) => /^[0-9]+$/.test(text)
 
+/**
+ *  process user input and return a dict which contains Regexp ,string want to be replaced and fnkey.
+ * @param str : string, the format is `(regexp,string,fnkey:optional);(regexp,string,fnkey:optional);...`
+ * @returns list like `[{regexp:RegExp;newSubStr:any;fnkey:number},{regexp:RegExp;newSubStr:any;fnkey:number},...]`
+ * @example
+ * ```
+ * const myReplaceParam = replaceParam("(/sd/g,"");(/tt/g,)"")
+ * //output
+ * [{regexp: /sd/g, newSubStr: "", fnkey: 0}, {regexp: /tt/g, newSubStr: "", fnkey: 0}]
+ * ```
+ */
 const string2ReplaceParam = (str: string): ReplaceParam[] => {
-  // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
   for (const bracket of brackets) {
@@ -21,7 +64,7 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
     if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""
     params.push({
       regexp: string2Reg(regString),
-      // newSubStr 始终有双引号，反转义也是字符串
+      // newSubStr : always have double quotes
       newSubStr: reverseEscape(newSubStr),
       fnKey: fnKey ? Number(fnKey) : 0
     })
@@ -29,24 +72,33 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
   return params
 }
 
+/**
+ * @internal
+ *  A function to return RegExp used by string2RegArray
+ * @param str : The string to be processed like `/[/xxx/, /yyy/]; [/xxx/]/`
+ * @returns RegExp
+ */
 const string2Reg = (str: string) => {
   const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
   if (!regParts) throw ""
   return new RegExp(regParts[1], regParts[2])
 }
 
-// https://github.com/sindresorhus/escape-string-regexp/blob/main/index.js
+/**
+ * @internal
+ *  A function to escape string for RegExp, used by string2RegArray
+ * @param str : The string to be processed
+ * @returns string 
+ */
 const escapeStringRegexp = (str: string) =>
   str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
 
+/**
+ *  Procecss user input and return 
+ * @param str : The string to be processed, input like `[/sd/,/sd/];[/sd/,/sd/]` => output like [[/sd/]]
+ * @returns List of RegExp
+ */
 const string2RegArray = (str: string): RegExp[][] => {
-  /**
-   * 输入 [/sd/,/sd/];[/sd/,/sd/]
-   * /sd/
-   * sd => 会转义，相当于普通字符串
-   * 输出 [[/sd/]]
-   */
-
   if (/^\(.*\)$/.test(str)) throw ""
   if (!/^\[.*\]$/.test(str))
     return [
@@ -67,6 +119,11 @@ const string2RegArray = (str: string): RegExp[][] => {
   )
 }
 
+/**
+ * @descrption Add or remove flags to RegExp
+ * @method add Add flags to RegExp
+ * @method remove Remove flags from RegExp
+ */
 const regFlag = {
   add(reg: RegExp, flag: "g" | "i" | "m" | "s" | "y" | "u") {
     return reg.flags.includes(flag)
@@ -86,6 +143,10 @@ export interface ReplaceParam {
   fnKey: number
 }
 
+/**
+ * @param text The string to be processed
+ * @param params The Array of {@link ReplaceParam}
+ */
 const extractArray = (text: string, params: ReplaceParam[]) =>
   unique(
     params
@@ -99,6 +160,10 @@ const extractArray = (text: string, params: ReplaceParam[]) =>
       .flat()
   )
 
+/**
+ * @param link Card link (UUID)
+ * @returns ID of note or the linked card value
+ */
 const getMNLinkValue = (link: string) => {
   const noteid = link.replace("marginnote3app://note/", "")
   if (noteid === link) return link
