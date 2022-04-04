@@ -118,7 +118,6 @@ const configs: IConfig<IProfile["export2devonthink"], typeof ActionKey> = {
       key: "exportCard2app",
       label: "导出到Devonthink",
       method: async ({ nodes, option }) => {
-        nodes = getSelectNodes()
         for (const node of nodes){
             const c = await utils.getContent(node, option)
             console.log(c,"export2devonthink")

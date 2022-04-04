@@ -13,12 +13,12 @@ export interface MNPic {
    * @example
    * ```
    * // Get base64 string of the image 
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let pic_input = note.excerptPic;
-   * let hash = (pic_input?.paint) ? pic_input.paint : ""
-   * try{let pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
-   * let pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const pic_input = note.excerptPic;
+   * const hash = (pic_input?.paint) ? pic_input.paint : ""
+   * try{const pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
+   * const pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
    * ```
    * 
   */
@@ -85,9 +85,9 @@ export interface textComment {
    * @example
    * ```
    * // Judge if the first comment is a text comment
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let comment = note.comment;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const comment = note.comment;
    * if(comment[0].type == "TextNote"){
    *  // do something
    * }
@@ -122,9 +122,9 @@ export interface htmlComment {
    * @example
    * ```
    * // Judge if the first comment is a html comment
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let comment = note.comment;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const comment = note.comment;
    * if(comment[0].type == "HtmlNote"){
    * // do something
    * }
@@ -188,9 +188,9 @@ export interface linkComment_text {
    * @example
    * ```
    * // Judge if the first comment is a link comment
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let comment = note.comment;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const comment = note.comment;
    * if(comment[0].type == "LinkNote"){
    * // do something
    * }
@@ -226,9 +226,9 @@ export interface linkComment_pic {
    * @example
    * ```
    * // Judge if the first comment is a link comment
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let comment = note.comment;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const comment = note.comment;
    * if(comment[0].type == "LinkNote"){
    * // do something
    * }
@@ -270,9 +270,9 @@ export interface paintComment extends MNPic {
    * @example
    * ```
    * // Judge if the first comment is a paint comment
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let comment = note.comment;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const comment = note.comment;
    * if(comment[0].type == "PaintNote"){
    * // do something
    * }
@@ -355,9 +355,9 @@ export class MbBookNote {
    * Excerpt text of the note
    * @example
    * ```
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let text = note.excerptText;
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const text = note.excerptText;
    * ```
    * @type {string}
    * @memberof MbBookNote
@@ -367,9 +367,9 @@ export class MbBookNote {
    * Title of the note(card)
    * @example 
    * ```
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let note.noteTitle = "This is a Test" //Change the title of the note
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const note.noteTitle = "This is a Test" //Change the title of the note
    * Application.sharedInstance().showHUD(note.noteTitle,self.window,1) //Display the title with showHUD
    * ```
    * @type {string}
@@ -392,7 +392,7 @@ export class MbBookNote {
   // mindmapPosition: CGPoint
   /**
    * Note id, usually get from sender
-   * let noteid = sender.userInfo.noteid;
+   * const noteid = sender.userInfo.noteid;
    * @type {string}
    * @memberof MbBookNote
    */
@@ -436,7 +436,7 @@ export class MbBookNote {
    * @example
    * ```
    * //get the pos and size of the picture
-   * let getExcerptArea(note: MbBookNote) {
+   * const getExcerptArea(note: MbBookNote) {
    * const [x1, y1, x2, y2] = (
    *   reverseEscape(`[${note.startPos},${note.endPos}]`) as number[]
    * ).map(item => Number(item))
@@ -456,7 +456,7 @@ export class MbBookNote {
    * @example
    * ```
    * //get the pos and size of the picture
-   * let getExcerptArea(note: MbBookNote) {
+   * const getExcerptArea(note: MbBookNote) {
    * const [x1, y1, x2, y2] = (
    *   reverseEscape(`[${note.startPos},${note.endPos}]`) as number[]
    * ).map(item => Number(item))
@@ -473,12 +473,12 @@ export class MbBookNote {
    * @example
    * ```
    * // Get base64 string of the image
-   * let noteid = sender.userInfo.noteid;
-   * let note = Database.sharedInstance().getNoteById(noteid);
-   * let pic_input = note.excerptPic;
-   * let hash = (pic_input?.paint) ? pic_input.paint : ""
-   * try{let pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
-   * let pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
+   * const noteid = sender.userInfo.noteid;
+   * const note = Database.sharedInstance().getNoteById(noteid);
+   * const pic_input = note.excerptPic;
+   * const hash = (pic_input?.paint) ? pic_input.paint : ""
+   * try{const pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
+   * const pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
    * ```
    * @type {excerptPic}
    * @memberof MbBookNote
@@ -530,8 +530,8 @@ export class MbBookNote {
    * @example
    * ```
    * // get all comments of the note card
-   * let note = getNoteById(note.groupNoteId)
-   * let comments = note.comments
+   * const note = getNoteById(note.groupNoteId)
+   * const comments = note.comments
    * ```
    * @type {string}
    * @memberof MbBookNote
@@ -542,8 +542,8 @@ export class MbBookNote {
    * @example
    * ```
    * // get all comments of the note card
-   * let note = getNoteById(note.groupNoteId)
-   * let comments = note.comments
+   * const note = getNoteById(note.groupNoteId)
+   * const comments = note.comments
    * ```
    * @type {noteComment[]}
    * @memberof MbBookNote
@@ -554,9 +554,9 @@ export class MbBookNote {
    * @example
    * ```
    * \\get ID of the parent note card
-   * let note = getNoteById(note.groupNoteId)
-   * let parentNoteId = note.parentNoteId
-   * let parentNote = getNoteById(parentNoteId)
+   * const note = getNoteById(note.groupNoteId)
+   * const parentNoteId = note.parentNoteId
+   * const parentNote = getNoteById(parentNoteId)
    * ```
    * @type {MbBookNote}
    * @memberof MbBookNote
@@ -567,10 +567,10 @@ export class MbBookNote {
    * @example
    * ```
    * // get all linked note card and display
-   * let note = getNoteById(note.groupNoteId)
-   * let linkedNoteIds = note.linkedNoteIds
-   * for(let i = 0; i < linkedNoteIds.length; i++){
-   * let linkedNote = getNoteById(linkedNoteIds[i])
+   * const note = getNoteById(note.groupNoteId)
+   * const linkedNoteIds = note.linkedNoteIds
+   * for(const i = 0; i < linkedNoteIds.length; i++){
+   * const linkedNote = getNoteById(linkedNoteIds[i])
    * }
    * ```
    * @type {LinkedNote[]}
@@ -582,10 +582,10 @@ export class MbBookNote {
    * @example
    * ```
    * // get all child note card and display
-   * let note = getNoteById(note.groupNoteId)
-   * let childNoteIds = note.childNoteIds
-   * for(let i = 0; i < childNoteIds.length; i++){
-   * let childNote = getNoteById(childNoteIds[i])
+   * const note = getNoteById(note.groupNoteId)
+   * const childNoteIds = note.childNoteIds
+   * for(const i = 0; i < childNoteIds.length; i++){
+   * const childNote = getNoteById(childNoteIds[i])
    * }
    * ```
    * @type {MbBookNote[]}
@@ -703,11 +703,11 @@ export class MbBookNote {
    * @example
    * ```
    * // append a HTML comment to the note, text will be used if html is invalid
-   * let note = getNoteById(note.groupNoteId)
-   * let html = '<p>This is a comment</p>'
-   * let text = 'This is a comment'
-   * let size = {width: 100, height: 100}
-   * let tag = 'comment' // if use tag = 'MNCKEditor' and install CKEditor add-on, users can edit the comment with CKEditor
+   * const note = getNoteById(note.groupNoteId)
+   * const html = '<p>This is a comment</p>'
+   * const text = 'This is a comment'
+   * const size = {width: 100, height: 100}
+   * const tag = 'comment' // if use tag = 'MNCKEditor' and install CKEditor add-on, users can edit the comment with CKEditor
    * note.appendComment(html, text, size, tag)
    * ```
    */
@@ -719,8 +719,8 @@ export class MbBookNote {
    * @example
    * ```
    * // append a Text comment to the note
-   * let note = getNoteById(note.groupNoteId)
-   * let text = 'This is a comment'
+   * const note = getNoteById(note.groupNoteId)
+   * const text = 'This is a comment'
    * note.appendTextComment(text)
    * ```
    */
@@ -734,14 +734,14 @@ export class MbBookNote {
   /**
    * Remove comment by index 
    * Index Explanation:
-   * index = -1 => excerptPic pr excerptText (excerptText cannot be removed; excerptText can be deleted if noteTitle exists)
+   * index = -1 => excerptPic pr excerptText (excerptText cannot be removed; excerptText can be deconsted if noteTitle exists)
    * index = 0,1,2... => other comments below
    * @returns void
    * @param index NSInteger
    * @example
    * ```
    * // remove the first comment(Note:not the excerptPic or excerptText)
-   * let note = getNoteById(note.groupNoteId)
+   * const note = getNoteById(note.groupNoteId)
    * note.removeComment(0)
    */
   removeCommentByIndex(index: number): void

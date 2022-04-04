@@ -4,19 +4,27 @@ import { MN } from "const"
 import { unique } from "utils"
 
 /**
- * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
+ * Cancellable actions, all actions that modify data should be wrapped in this method.
+ * @param f f:()=>void, the action need to be cancelled.
+ * @returns void
  */
 const undoGrouping = (f: () => void) => {
   UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
 }
 
+/**
+ * Undo group and then refresh the view.
+ * @param f f:()=>void, the action need to be cancelled.
+ * @returns void
+ */
 const undoGroupingWithRefresh = (f: () => void) => {
   undoGrouping(f)
   RefreshAfterDBChange()
 }
 
 /**
- * 保存数据，刷新界面
+ * Refresh the view after database change.
+ * @returns void
  */
 const RefreshAfterDBChange = () => {
   MN.db.setNotebookSyncDirty(self.notebookid)
@@ -26,7 +34,13 @@ const RefreshAfterDBChange = () => {
 }
 
 /**
- * 获取选中的卡片
+ * Get infomation of the selected nodes.
+ * @returns Array which contains the infomation of the selected nodes.
+ * @example
+ * ```
+ * //get the infomation of the first selected node
+ * const mySelection = getSelection()[0]
+ * ```
  */
 const getSelectNodes = (): MbBookNote[] => {
   const MindMapNodes: any[] | undefined =
@@ -35,7 +49,29 @@ const getSelectNodes = (): MbBookNote[] => {
 }
 
 /**
- * 获取整个卡片树
+ * Get card tree recursively, including all the node's children,grandchildren and grandgrandchildren etc.
+ * @param node The card that you want to get its children node information.
+ * @returns
+ * ```
+ *  If the node has no child node, 
+ * return {
+      onlyChildren: [],
+      onlyFirstLevel: [],
+      allNodes: [node],
+      treeIndex: [[]] as number[][]
+    }
+    If the node has child node, 
+    return {
+    // only has child node
+    onlyChildren: children,
+    // only has the first level child node
+    onlyFirstLevel: node.childNotes!,
+    // card selected and its children nodes
+    allNodes: [node, ...children],
+    //index of the node in the tree
+    treeIndex
+  }
+    ```
  */
 const getNodeTree = (node: MbBookNote) => {
   const DFS = (
@@ -76,6 +112,14 @@ const getNodeTree = (node: MbBookNote) => {
   }
 }
 
+/**
+ * Get ancester nodes recursively, including all the node's parent, grandparent and grandgrandparent etc.
+ * @param node The card that you want to get its ancestor nodes information.
+ * @returns 
+ * ```
+ * {node:currentNode,ancestorNodes[]:ancestorNodes}
+ * ```
+ */
 const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
   const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {
     if (node.parentNote) {
@@ -87,7 +131,9 @@ const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
 }
 
 /**
- * 获取卡片中的所有摘录节点
+ * Get all excerptions of one node.
+ * @param node The card that you want to get its excerptions.
+ * @returns Array Each element of the array contains one excerpt note's info.
  */
 const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
   return node.comments.reduce(
@@ -99,6 +145,11 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
   )
 }
 
+/**
+ * Get picture base64 code by {@param} pic.
+ * @param pic {@link MNPic}
+ * @returns Base64 code of the picture.
+ */
 const exportPic = (pic: MNPic) => {
   const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
   return base64
@@ -112,10 +163,11 @@ const exportPic = (pic: MNPic) => {
 }
 
 /**
- * 获取卡片中的所有摘录文字
- * @param node 卡片节点
- * @param highlight 默认有重点
- * @param pic 默认为 OCR 后的文字
+ * Get all excerpt text in a card.
+ * @param node The card that you want to get its excerpt text.
+ * @param highlight Highlighted by default.
+ * @param pic Text after OCR by default.
+ * @returns Dict of excerpt text.
  */
 const getExcerptText = (node: MbBookNote, highlight = true) => {
   const res = {
@@ -144,7 +196,10 @@ const getExcerptText = (node: MbBookNote, highlight = true) => {
 }
 
 /**
- * 获取评论的索引
+ * Get index of comments.
+ * @param node The card that you want to get its comments' index.
+ * @param comment The comment that you want to get its index.
+ * @returns Number The index of the comment.
  */
 const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
   const comments = note.comments
@@ -159,13 +214,12 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
 }
 
 /**
- * 获取卡片内所有的文字
- * @param note
- * @param separator 分隔符号
- * @param highlight 是否保留划重点
+ * Get all the text in the card.
+ * @param note The card that you want to get its text and comments.
+ * @param separator The separator between the text and comments.
+ * @param highlight If the text is highlighted.
  * @returns
  */
-
 const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
   return [
     ...getExcerptText(node, highlight).ocr,
@@ -174,8 +228,19 @@ const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
   ].join(separator)
 }
 
+/**
+ * Remove the highlight in the text.
+ * @param text The text that you want to remove the highlight.
+ * @returns Processed text.
+ */
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
 
+/**
+ * Get all tags of one node.
+ * @param node The card that you want to get its tags.
+ * @param hash True by default. If false, will delete "#" in the tag.
+ * @returns Array of strings. Each element is a tag.
+ */
 const getAllTags = (node: MbBookNote, hash = true) => {
   const tags = node.comments.reduce((acc, cur) => {
     if (cur.type == "TextNote" || cur.type == "HtmlNote") {
@@ -186,6 +251,11 @@ const getAllTags = (node: MbBookNote, hash = true) => {
   return hash ? tags : tags.map(k => k.slice(1))
 }
 
+/**
+ * Get all comments of one node.
+ * @param node The card that you want to get all kind of its comments.
+ * @returns Resource dict. 
+ */
 const getAllCommnets = (node: MbBookNote) => {
   const res = {
     nopic: [] as string[],
@@ -211,8 +281,10 @@ const getAllCommnets = (node: MbBookNote) => {
 }
 
 /**
- * 添加标签，并且会去除划重点
- * @param force 强制整理合并标签，就算没有添加标签
+ * Add labels, and remove emphasis
+ * @param node The card that you want to process.
+ * @param tags The tags that you want to add.
+ * @param force Force merging tags, even if no tags are added
  */
 const addTags = (node: MbBookNote, tags: string[], force = false) => {
   const existingTags: string[] = []
