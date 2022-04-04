@@ -310,7 +310,7 @@ export class StudyController extends UIViewController {
    * @example 
    * ```
    * // add sub UIview to study controller
-   * let studyController = Application.sharedInstance().studyController(self.window)
+   * const studyController = Application.sharedInstance().studyController(self.window)
    * studyController.view.addSubview(UIView())
    */
   view: UIView
@@ -323,8 +323,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // studymode
-   * let studyController = Application.sharedInstance().studyController(self.window)
-   * let studyMode = studyController.studyMode
+   * const studyController = Application.sharedInstance().studyController(self.window)
+   * const studyMode = studyController.studyMode
    * ```
    */
   readonly studyMode: studyMode
@@ -335,8 +335,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // narrow mode
-   * let studyController = Application.sharedInstance().studyController(self.window)
-   * let narrowMode = studyController.narrowMode
+   * const studyController = Application.sharedInstance().studyController(self.window)
+   * const narrowMode = studyController.narrowMode
    * ```
    */
   readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
@@ -349,8 +349,8 @@ export class StudyController extends UIViewController {
   * @example
   * ```
   * // docmap split mode
-  * let studyController = Application.sharedInstance().studyController(self.window)
-  * let docMapSplitMode = studyController.docMapSplitMode
+  * const studyController = Application.sharedInstance().studyController(self.window)
+  * const docMapSplitMode = studyController.docMapSplitMode
   * ```
   */
   docMapSplitMode: docMapSplitMode
@@ -362,8 +362,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // right map mode
-   * let studyController = Application.sharedInstance().studyController(self.window)
-   * let rightMapMode = studyController.rightMapMode
+   * const studyController = Application.sharedInstance().studyController(self.window)
+   * const rightMapMode = studyController.rightMapMode
    * ```
    */
   rightMapMode: boolean
@@ -376,8 +376,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // notebook controller
-   * let studyController = Application.sharedInstance().studyController(self.window)
-   * let notebookController = studyController.notebookController
+   * const studyController = Application.sharedInstance().studyController(self.window)
+   * const notebookController = studyController.notebookController
    * ```
    */
   readonly notebookController: WrapperObj<NotebookController>
@@ -390,8 +390,8 @@ export class StudyController extends UIViewController {
    * @example
    * ```
    * // reader controller
-   * let studyController = Application.sharedInstance().studyController(self.window)
-   * let readerController = studyController.readerController
+   * const studyController = Application.sharedInstance().studyController(self.window)
+   * const readerController = studyController.readerController
    * ```
    */
   readonly readerController: WrapperObj<ReaderController>
@@ -447,7 +447,7 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
+     * const app = Application.sharedInstance()
      * ```
      */
     static sharedInstance(): Application
@@ -457,8 +457,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let cuurentTheme = app.currentTheme!
+     * const app = Application.sharedInstance()
+     * const cuurentTheme = app.currentTheme!
      * ```
      */
     readonly currentTheme?: string
@@ -469,8 +469,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultTintColorForDarkBackground = app.defaultTintColorForDarkBackground!
+     * const app = Application.sharedInstance()
+     * const defaultTintColorForDarkBackground = app.defaultTintColorForDarkBackground!
      * ```
      */
     readonly defaultTintColorForDarkBackground?: UIColor
@@ -481,8 +481,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultTintColorForSelected = app.defaultTintColorForSelected!
+     * const app = Application.sharedInstance()
+     * const defaultTintColorForSelected = app.defaultTintColorForSelected!
      * ```
      */
     readonly defaultTintColorForSelected?: UIColor
@@ -493,8 +493,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultTintColor = app.defaultTintColor!
+     * const app = Application.sharedInstance()
+     * const defaultTintColor = app.defaultTintColor!
      * ```
      */
     readonly defaultTintColor?: UIColor
@@ -505,8 +505,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultBookPageColor = app.defaultBookPageColor!
+     * const app = Application.sharedInstance()
+     * const defaultBookPageColor = app.defaultBookPageColor!
      * ```
      */
     readonly defaultBookPageColor?: UIColor
@@ -517,8 +517,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultTextColor = app.defaultTextColor!
+     * const app = Application.sharedInstance()
+     * const defaultTextColor = app.defaultTextColor!
      * ```
      */
     readonly defaultNotebookColor?: UIColor
@@ -529,8 +529,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultTextColor = app.defaultTextColor!
+     * const app = Application.sharedInstance()
+     * const defaultTextColor = app.defaultTextColor!
      * ```
      */
     readonly defaultTextColor?: UIColor
@@ -541,8 +541,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultDisableColor = app.defaultDisableColor!
+     * const app = Application.sharedInstance()
+     * const defaultDisableColor = app.defaultDisableColor!
      * ```
      */
     readonly defaultDisableColor?: UIColor
@@ -553,8 +553,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let defaultHighlightBlendColor = app.defaultHighlightBlendColor!
+     * const app = Application.sharedInstance()
+     * const defaultHighlightBlendColor = app.defaultHighlightBlendColor!
      * ```
      */
     readonly defaultHighlightBlendColor?: UIColor
@@ -572,8 +572,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let dbPath = app.dbPath!
+     * const app = Application.sharedInstance()
+     * const dbPath = app.dbPath!
      * ```
      */
     readonly dbPath?: string
@@ -584,8 +584,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let documentPath = app.documentPath!
+     * const app = Application.sharedInstance()
+     * const documentPath = app.documentPath!
      * ```
      */
     readonly documentPath?: string
@@ -596,8 +596,8 @@ declare global {
      * @memberof Application
      * @example
      * ```
-     * let app = Application.sharedInstance()
-     * let cachePath = app.cachePath!
+     * const app = Application.sharedInstance()
+     * const cachePath = app.cachePath!
      * ```
      */
     readonly cachePath?: string
