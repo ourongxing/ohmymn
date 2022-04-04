@@ -35,8 +35,10 @@ export const checkReplaceParamFromMNLink = (input: string) => {
   checkReplaceParam(res)
 }
 
-export const checkPositiveinteger = (input: number) => {
-  if (isNaN(input)) throw lang.input_number
+export const checkInteger = (input: number) => {
   if (!Number.isInteger(input)) throw lang.input_integer
+}
+export const checkPositiveinteger = (input: number) => {
+  checkInteger(input)
   if (input < 0) throw lang.input_positive
 }

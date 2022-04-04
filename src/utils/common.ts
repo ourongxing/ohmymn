@@ -15,8 +15,9 @@ const console = {
   }
 }
 
-const showHUD = (message: string, duration = 2, window = self.window) =>
-  void MN.app.showHUD(message, window, duration)
+const showHUD = (message: string, duration = 2, window = self.window) => {
+  MN.app.showHUD(message, window, duration)
+}
 
 const HUDController = {
   show(message: string, window = self.window) {
@@ -27,7 +28,9 @@ const HUDController = {
   }
 }
 
-const alert = (message: string) => void MN.app.alert(message)
+const alert = (message: string) => {
+  MN.app.alert(message)
+}
 
 const getObjCClassDeclar = (
   name: string,
@@ -60,8 +63,9 @@ const delayBreak = async (
   return false
 }
 
-const openUrl = (url: string) =>
-  void MN.app.openURL(NSURL.URLWithString(encodeURI(url)))
+const openUrl = (url: string) => {
+  MN.app.openURL(NSURL.URLWithString(encodeURI(url)))
+}
 
 const postNotification = (key: string, userInfo: any) => {
   NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
@@ -71,8 +75,9 @@ const postNotification = (key: string, userInfo: any) => {
   )
 }
 
-const isThisWindow = (sender: any, window = self.window) =>
-  MN.app.checkNotifySenderInWindow(sender, window)
+const isThisWindow = (sender: any, window = self.window) => {
+  return MN.app.checkNotifySenderInWindow(sender, window)
+}
 
 const popup = (
   title: string,

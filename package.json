@@ -6,7 +6,7 @@
   "description": "The most powerful addon of Marginnote3",
   "scripts": {
     "build": "NODE_ENV=production tsup && cd ./dist && zip -qrm \"${npm_package_name}_v$npm_package_version.mnaddon\" *",
-    "eslint:fix": "eslint . --fix --ext.ts",
+    "eslint:fix": "eslint . --fix --ext .ts",
     "eslint": "eslint . --ext .ts",
     "dev": "rollup -w --config rollup.config.ts",
     "prepare": "husky install"

@@ -23,7 +23,6 @@ export type UIWindow = any
 export type UILocalNotification = any
 export type UILabel = any
 export type UIImageView = any
-export type UIEdgeInsets = any
 export type UITouch = any
 
 declare global {
