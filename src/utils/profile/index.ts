@@ -50,28 +50,18 @@ const clearTitleCache = (_: typeof allDocProfile) => {
   }
 }
 
-const initNewVerProfile = () => {
-  const checkNewVerProfile = (
-    profile: IProfile | IDocProfile,
-    profileSaved: any
-  ) => {
-    for (const [name, _] of Object.entries(profile)) {
-      for (const [key, val] of Object.entries(_)) {
-        if (profileSaved?.[name]?.[key] === undefined) return true
-      }
+const checkNewVerProfile = (
+  profile: IProfile | IDocProfile,
+  profileSaved: any
+) => {
+  for (const [name, _] of Object.entries(profile)) {
+    for (const [key, val] of Object.entries(_)) {
+      if (profileSaved?.[name]?.[key] === undefined) return true
     }
-  }
-  if (checkNewVerProfile(profilePreset, allProfile[0])) {
-    allProfile.forEach((_, index) => {
-      const profile = deepCopy(profilePreset)
-      updateProfileDataSource(profile, allProfile[index])
-      allProfile[index] = profile
-    })
-    setDataByKey(allProfile, profileKey)
   }
 }
 
-const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
+export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
   let isFirst = false
   switch (range) {
     case Range.First:
@@ -86,7 +76,14 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       if (!profileSaved) console.log("Initialize global profile", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
       // Initialize all profile when new version release
-      initNewVerProfile()
+      if (checkNewVerProfile(profilePreset, allProfile[0])) {
+        allProfile.forEach((_, index) => {
+          const profile = deepCopy(profilePreset)
+          updateProfileDataSource(profile, allProfile[index])
+          allProfile[index] = profile
+        })
+        setDataByKey(allProfile, profileKey)
+      }
 
     case Range.Doc: {
       updateProfileDataSource(
@@ -111,12 +108,12 @@ const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
  *
  *  Saving the doc profile must save the global profile.
  *  Switching profile only save the global profile.
- *  Switching doc will be saved to the previous doc profile
+ *  Switching doc will be saved to the previous doc profile.
  *
  * @param docmd5
- * @param num profile number
+ * @param num  which profile
  */
-const saveProfile = (
+export const writeProfile = (
   docmd5?: string,
   num = self.docProfile.addon.profile[0]
 ) => {
@@ -144,17 +141,48 @@ const saveProfile = (
   }
 }
 
-const removeProfile = () => {
+export const saveProfile = (name: string, key: string, value: any) => {
+  try {
+    switch (key) {
+      case "quickSwitch":
+        self.profile.addon.quickSwitch = value
+        break
+      case "pageOffset":
+        self.docProfile.addon.pageOffset = value
+        break
+      default: {
+        if (self.profile?.[name]?.[key] === undefined) {
+          self.docProfile[name][key] = value
+          if (self.docProfile.addon.profile[0] === 4) {
+            Object.entries(allDocProfile).forEach(([m, p]) => {
+              if (p[name]?.[key] !== undefined)
+                allDocProfile[m][name][key] = value
+            })
+          }
+        } else {
+          self.profile[name][key] = value
+          if (self.docProfile.addon.profile[0] === 4) {
+            Object.entries(allProfile).forEach(([m, p]) => {
+              if (p[name]?.[key] !== undefined) allProfile[m][name][key] = value
+            })
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error(String(err))
+  }
+}
+
+export const removeProfile = () => {
   NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
   readProfile(Range.First)
 }
 
-export { saveProfile, readProfile, removeProfile }
-
 export const manageProfileAction = (node: MbBookNote, option: number) => {
   if (option) {
-    saveProfile(self.docMD5)
+    writeProfile(self.docMD5)
     node.excerptText = Base64.encode(
       JSON.stringify({
         allProfileTemp: allProfile,

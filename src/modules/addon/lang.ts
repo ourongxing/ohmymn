@@ -4,6 +4,7 @@ const zh = {
   link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
   option: {
     profile: "配置",
+    initialize: "初始化",
     has_title_then: ["保持原样", "标题链接", "覆盖标题"],
     panel_position: ["自动", "靠左", "居中", "靠右"],
     panel_height: ["高点", "标准", "矮点"],
@@ -27,7 +28,7 @@ const zh = {
   },
   help: {
     page_offset: "【当前文档生效】",
-    profile: "【当前文档生效】不同场景，不同配置",
+    profile: "【当前文档生效】不同场景，不同配置。",
     auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
     has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
   }
@@ -37,6 +38,7 @@ const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
   option: {
     profile: "Profile",
+    initialize: "Initialize",
     has_title_then: ["Keep Intact", "As Title Link Style", "Override"],
     panel_position: ["Auto", "Left", "Center", "Right"],
     panel_height: ["Higher", "Standard", "Lower"],

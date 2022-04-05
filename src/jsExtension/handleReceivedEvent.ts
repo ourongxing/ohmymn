@@ -11,7 +11,7 @@ import {
   isThisWindow,
   showHUD
 } from "utils/common"
-import { Range, readProfile, saveProfile } from "utils/profile"
+import { Range, readProfile, saveProfile, writeProfile } from "utils/profile"
 import { updateProfileTemp } from "utils/profile/updateDataSource"
 import handleMagicAction from "./magicActionHandler"
 
@@ -44,9 +44,7 @@ const onSwitchChange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("Switch the switch", "event")
   const { name, key, status } = sender.userInfo
-  if (self.profile?.[name]?.[key] !== undefined)
-    self.profile[name][key] = status
-  else self.docProfile[name][key] = status
+  saveProfile(name, key, status)
   switch (key) {
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled = status
@@ -56,17 +54,15 @@ const onSwitchChange: EventHandler = sender => {
 
 const onSelectChange: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  console.log("Change the select", "event")
+  console.log("Change the selection", "event")
   const { name, key, selections } = sender.userInfo
   if (key == "profile") {
     const lastProfileNum = self.docProfile.addon.profile[0]
     self.docProfile.addon.profile = selections
-    saveProfile(undefined, lastProfileNum)
+    writeProfile(undefined, lastProfileNum)
     readProfile(Range.Global)
   } else {
-    if (self.profile?.[name]?.[key] !== undefined)
-      self.profile[name][key] = selections
-    else self.docProfile[name][key] = selections
+    saveProfile(name, key, selections)
     switch (key) {
       case "panelPosition":
       case "panelHeight":
@@ -80,9 +76,7 @@ const onInputOver: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   console.log("Input", "event")
   const { name, key, content } = sender.userInfo
-  if (self.profile?.[name]?.[key] !== undefined)
-    self.profile[name][key] = content
-  else self.docProfile[name][key] = content
+  saveProfile(name, key, content)
   updateProfileTemp(key, content)
   const { input_clear, input_saved } = lang
   showHUD(content ? input_saved : input_clear)

@@ -1,5 +1,5 @@
 import settingViewControllerInst from "settingViewController"
-import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
+import { Range, readProfile, removeProfile, writeProfile } from "utils/profile"
 import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
@@ -85,13 +85,13 @@ const notebookWillClose = (notebookid: string) => {
 const documentWillClose = (docmd5: string) => {
   console.log("Close a document", "lifeCycle")
   removeLastCommentCacheTitle()
-  saveProfile(docmd5)
+  writeProfile(docmd5)
 }
 
 // Not triggered on ipad
 const sceneDidDisconnect = () => {
   console.log("Close a window", "lifeCycle")
-  if (self.docMD5) saveProfile(self.docMD5)
+  if (self.docMD5) writeProfile(self.docMD5)
 }
 
 const addonWillDisconnect = () => {
@@ -106,7 +106,7 @@ const sceneWillResignActive = () => {
   console.log("Window is inactivation", "lifeCycle")
   removeLastCommentCacheTitle()
   !MN.isMac && closePanel()
-  if (self.docMD5) saveProfile(self.docMD5)
+  if (self.docMD5) writeProfile(self.docMD5)
 }
 
 const sceneDidBecomeActive = () => {

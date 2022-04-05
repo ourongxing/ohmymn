@@ -19,9 +19,12 @@ const configs: IConfig<
       help: help.profile,
       key: "profile",
       type: CellViewType.Select,
-      option: Array(5)
-        .fill(option.profile)
-        .map((_, index) => _ + " " + (index + 1)),
+      option: [
+        ...Array(4)
+          .fill(option.profile)
+          .map((_, index) => _ + " " + (index + 1)),
+        option.initialize
+      ],
       label: label.profile
     },
     {
