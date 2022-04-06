@@ -79,7 +79,7 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 }
 
 const queryAddonCommandStatus = () => {
-  return MN.studyController().studyMode == studyMode.study
+  return MN.studyController().studyMode !== studyMode.review
     ? {
         image: "logo.png",
         object: self,
