@@ -2,7 +2,7 @@ import { IDocProfile, IProfile, IProfileTemp } from "profile"
 import { ReplaceParam } from "utils/input"
 import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
-import { UITableView, UITableViewController, UIWindow } from "./UIKit"
+import { UITableView, UITableViewController, UIView, UIWindow } from "./UIKit"
 import { DirectionOfSelection } from "./enum"
 
 export * from "./Foundation"
@@ -12,12 +12,10 @@ export * from "./UIKit"
 
 declare global {
   const self: {
-    [k: string]: any
-    studyController: StudyController
+    view: UIView
     window: UIWindow
     docMD5?: string
     noteid: string
-    node?: MbBookNote
     notebookid: string
     tableView: UITableView
     OCROnline: {
@@ -39,17 +37,16 @@ declare global {
     isModify: boolean
     customSelectedNodes: MbBookNote[]
     panelStatus: boolean
-    docProfile: {
-      [k: string]: { [k: string]: boolean | string | number[] }
-    } & IDocProfile
-    profile: {
-      [k: string]: { [k: string]: boolean | string | number[] }
-    } & IProfile
-    profileTemp: {
-      [k: string]: { [k: string]: RegExp[][] | ReplaceParam[] | undefined }
-    } & IProfileTemp
+    docProfile: IDocProfile &
+      Record<string, { [k: string]: boolean | string | number[] }>
+    profile: IProfile &
+      Record<string, { [k: string]: boolean | string | number[] }>
+    profileTemp: IProfileTemp &
+      Record<string, { [k: string]: RegExp[][] | ReplaceParam[] | undefined }>
     dataSource: ISection[]
     settingViewController: UITableViewController
+    popoverController: UIPopoverController
+    studyController: StudyController
   }
   class JSB {
     static defineClass(
