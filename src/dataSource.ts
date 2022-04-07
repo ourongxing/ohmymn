@@ -3,7 +3,6 @@ import { ISection, IConfig, IRow, IRowButton } from "typings"
 import { CellViewType } from "typings/enum"
 import { SerialCode } from "utils/text"
 import { constModules, ModuleKeyType, modules } from "synthesizer"
-import { MN } from "const"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 

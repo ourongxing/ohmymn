@@ -3,13 +3,7 @@ import type { UITableView, IRowSelect } from "typings"
 import { console, isOCNull } from "utils/common"
 import { MN } from "const"
 import { CellViewType, NSTextAlignment } from "typings/enum"
-import {
-  byteLength,
-  byteSlice,
-  byteSplitByLen,
-  isHalfWidth,
-  SerialCode
-} from "utils/text"
+import { byteLength, byteSlice, byteSplitByLen, SerialCode } from "utils/text"
 import lang from "lang"
 import { moduleKeyArray, ModuleKeyType } from "synthesizer"
 
