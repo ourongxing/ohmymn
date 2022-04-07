@@ -60,17 +60,20 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
       )
     },
     page: isRequire("page.") && {
-      end: node.endPage,
       start: node.startPage,
+      end: node.endPage === node.startPage ? undefined : node.endPage,
       real: isRequire("real") && {
-        end: undefine2undefine(
-          node.endPage,
-          t => t + Number(self.docProfile.addon.pageOffset ?? 0)
-        ),
         start: undefine2undefine(
           node.startPage,
           t => t + Number(self.docProfile.addon.pageOffset ?? 0)
-        )
+        ),
+        end:
+          node.endPage === node.startPage
+            ? undefined
+            : undefine2undefine(
+                node.endPage,
+                t => t + Number(self.docProfile.addon.pageOffset ?? 0)
+              )
       }
     },
     tags: isRequire("tags") && getAllTags(node, false),
@@ -91,7 +94,13 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
       path: undefine2undefine(
         node.docMd5,
         t => MN.db.getDocumentById(t)?.pathFile
-      )
+      ),
+      author: self.docProfile.addon.author,
+      outherInfo: self.docProfile.addon.otherInfo,
+      publisher: self.docProfile.addon.publisher,
+      publicationDate: self.docProfile.addon.publicationDate,
+      publicationPlace: self.docProfile.addon.publicationPlace,
+      type: self.docProfile.addon.type
     },
     notebook: isRequire("notebook.") && {
       title: undefine2undefine(
@@ -144,30 +153,6 @@ export const renderTemplateOfNodeProperties = (
       children:
         isRequire("children") &&
         undefine2undefine(node.childNotes, k =>
-          k.map((k: MbBookNote) => getNodeProperties(k, template))
-        )
-    }).trim()
-  } catch (err) {
-    console.log(String(err))
-    return template
-  }
-}
-
-export const renderTemplateOfNodePropertiesWhenExcerpt = (template: string) => {
-  if (!/{{.*}}/.test(template)) return template
-  if (!self.node) return template
-  const isRequire = (key: string) => template.includes(key)
-  try {
-    return render(template, {
-      ...getNodeProperties(self.node, template),
-      parent:
-        isRequire("parent.") &&
-        undefine2undefine(self.node.parentNote, t =>
-          getNodeProperties(t, template)
-        ),
-      children:
-        isRequire("children") &&
-        undefine2undefine(self.node.childNotes, k =>
           k.map((k: MbBookNote) => getNodeProperties(k, template))
         )
     }).trim()

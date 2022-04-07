@@ -5,7 +5,7 @@ const zh = {
   option: {
     profile: "配置",
     initialize: "初始化",
-    has_title_then: ["保持原样", "标题链接", "覆盖标题"],
+    has_title_then: ["保持原样", "合并标题", "覆盖标题"],
     panel_position: ["自动", "靠左", "居中", "靠右"],
     panel_height: ["高点", "标准", "矮点"],
     panle_control: [
@@ -39,7 +39,7 @@ const en: typeof zh = {
   option: {
     profile: "Profile",
     initialize: "Initialize",
-    has_title_then: ["Keep Intact", "As Title Link Style", "Override"],
+    has_title_then: ["Keep Intact", "Merge", "Override"],
     panel_position: ["Auto", "Left", "Center", "Right"],
     panel_height: ["Higher", "Standard", "Lower"],
     panle_control: [

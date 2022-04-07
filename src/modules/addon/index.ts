@@ -75,10 +75,51 @@ const configs: IConfig<
       help: help.auto_backup
     },
     {
+      key: "showDocInfo",
+      type: CellViewType.Switch,
+      label: "显示 / 隐藏文档信息"
+    },
+    {
+      key: "author",
+      type: CellViewType.InlineInput,
+      label: "作者",
+      bind: [["showDocInfo", 1]]
+    },
+    {
+      key: "type",
+      type: CellViewType.InlineInput,
+      label: "类型",
+      bind: [["showDocInfo", 1]]
+    },
+    {
+      key: "publisher",
+      type: CellViewType.InlineInput,
+      label: "出版社",
+      bind: [["showDocInfo", 1]]
+    },
+    {
+      key: "publicationDate",
+      type: CellViewType.InlineInput,
+      label: "出版时间",
+      bind: [["showDocInfo", 1]]
+    },
+    {
+      key: "publicationPlace",
+      type: CellViewType.InlineInput,
+      label: "出版地",
+      bind: [["showDocInfo", 1]]
+    },
+    {
       key: "pageOffset",
       type: CellViewType.InlineInput,
       label: label.page_offset,
-      help: help.page_offset
+      bind: [["showDocInfo", 1]]
+    },
+    {
+      key: "otherInfo",
+      type: CellViewType.Input,
+      help: "其他信息",
+      bind: [["showDocInfo", 1]]
     }
   ]
 }
