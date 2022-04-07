@@ -22,7 +22,7 @@ const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/AutoReplace-1cf1399ed90e4fc7a3e16843d37f2a56", //Todo:修改英文版Notion
   option: {
     preset: ["Custom"],
-    replace_selected: ["Use AutoReplace Configuration", "Confirm"]
+    replace_selected: ["Use AutoReplace Settings", "Confirm"]
   },
   help: {
     custom_replace: "Customize. Click for specific formats"
