@@ -111,7 +111,7 @@ export const getLayerSerialInfo = (
 export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
   content = /^\(.*\)$/.test(content)
     ? content
-    : `(/^.*$/g, "${escapeDoubleQuote(content)}")`
+    : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
   const { newSubStr, regexp } = string2ReplaceParam(content)[0]
   // 分级序列命名
   if (/#\[(.+)\]/.test(newSubStr)) {

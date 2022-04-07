@@ -7,7 +7,10 @@ const console = {
     JSB.log(`${Addon.key}-${suffix} %@`, obj)
   },
   error(obj: any, suffix = "error") {
-    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+    JSB.log(
+      `${Addon.key}-${suffix} %@`,
+      String(obj) === "[object Object]" ? JSON.stringify(obj) : String(obj)
+    )
   },
   /** Unrelated to the real meaning, used for stringify objects */
   assert(obj: any, suffix = "normal") {

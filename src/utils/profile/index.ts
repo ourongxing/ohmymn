@@ -7,10 +7,12 @@ import Base64 from "utils/third party/base64"
 import { layoutViewController } from "jsExtension/switchPanel"
 import { deepCopy } from "utils"
 import lang from "lang"
+import { checkNewVerProfile } from "./utils"
+export * from "./utils"
 export * from "./updateDataSource"
 
 let allProfile: IProfile[]
-let allDocProfile: { [k: string]: IDocProfile }
+let allDocProfile: Record<string, IDocProfile>
 
 const { profileKey, docProfileKey } = Addon
 
@@ -19,7 +21,7 @@ const getDataByKey = (key: string): any => {
 }
 
 const setDataByKey = (
-  data: IProfile[] | { [k: string]: IDocProfile },
+  data: IProfile[] | Record<string, IDocProfile>,
   key: string
 ) => {
   NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
@@ -31,42 +33,10 @@ export const enum Range {
   Global
 }
 
-const clearTitleCache = (_: typeof allDocProfile) => {
-  try {
-    Object.values(_).forEach(k => {
-      let { additional } = k
-      if (!additional) additional = deepCopy(docProfilePreset.additional)
-      else if (
-        additional.lastExcerpt &&
-        // one month
-        Date.now() - additional.lastExcerpt > 2592000000
-      ) {
-        additional.lastExcerpt = Date.now()
-        additional.cacheExcerptTitle = {}
-      }
-    })
-  } catch (err) {
-    console.error(String(err))
-  }
-}
-
-const checkNewVerProfile = (
-  profile: IProfile | IDocProfile,
-  profileSaved: any
-) => {
-  for (const [name, _] of Object.entries(profile)) {
-    for (const [key, val] of Object.entries(_)) {
-      if (profileSaved?.[name]?.[key] === undefined) return true
-    }
-  }
-}
-
 export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
-  let isFirst = false
   switch (range) {
     case Range.First:
       // Read local data only on first open, then read doc profile and global profile
-      isFirst = true
       const docProfileSaved: {
         [k: string]: IDocProfile
       } = getDataByKey(docProfileKey)
@@ -84,13 +54,13 @@ export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
         })
         setDataByKey(allProfile, profileKey)
       }
+    // reuseCacheTitle()
 
     case Range.Doc: {
       updateProfileDataSource(
         self.docProfile,
         allDocProfile?.[docmd5] ?? docProfilePreset
       )
-      isFirst && clearTitleCache(allDocProfile)
       console.log("Read currect doc profile", "profile")
     }
     case Range.Global: {

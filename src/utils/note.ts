@@ -53,14 +53,14 @@ const getSelectNodes = (): MbBookNote[] => {
  * @param node The card that you want to get its children node information.
  * @returns
  * ```
- *  If the node has no child node, 
+ *  If the node has no child node,
  * return {
       onlyChildren: [],
       onlyFirstLevel: [],
       allNodes: [node],
       treeIndex: [[]] as number[][]
     }
-    If the node has child node, 
+    If the node has child node,
     return {
     // only has child node
     onlyChildren: children,
@@ -115,7 +115,7 @@ const getNodeTree = (node: MbBookNote) => {
 /**
  * Get ancester nodes recursively, including all the node's parent, grandparent and grandgrandparent etc.
  * @param node The card that you want to get its ancestor nodes information.
- * @returns 
+ * @returns
  * ```
  * {node:currentNode,ancestorNodes[]:ancestorNodes}
  * ```
@@ -254,7 +254,7 @@ const getAllTags = (node: MbBookNote, hash = true) => {
 /**
  * Get all comments of one node.
  * @param node The card that you want to get all kind of its comments.
- * @returns Resource dict. 
+ * @returns Resource dict.
  */
 const getAllCommnets = (node: MbBookNote) => {
   const res = {
@@ -308,9 +308,10 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
     .reverse()
     .forEach(index => void node.removeCommentByIndex(index))
 
-  const tagLine = unique([...existingTags, ...tags])
-    .map(tag => `#${tag}`)
-    .join(" ")
+  const tagLine = unique([...existingTags, ...tags]).reduce((acc, cur) => {
+    if (cur) return acc ? `${acc} #${cur}` : `#${cur}`
+    else return acc
+  }, "")
 
   tagLine && node.appendTextComment(removeHighlight(tagLine))
 }

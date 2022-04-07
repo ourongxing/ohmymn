@@ -1,4 +1,3 @@
-import { MN } from "const"
 import { unique } from "utils"
 
 /**
@@ -6,8 +5,8 @@ import { unique } from "utils"
  * @param str : The string to be processed
  * @param quote : Boolean. If quote is true, the output string will be surrounded by double quotes
  * @returns The string after reverse escape
- * 
- * @example 
+ *
+ * @example
  * ```
  * // Output string with double quotes surrounded
  * const myReverseEscape = reverseEscape(123,true)
@@ -90,13 +89,13 @@ const string2Reg = (str: string) => {
  * @internal
  *  A function to escape string for RegExp, used by string2RegArray
  * @param str : The string to be processed
- * @returns string 
+ * @returns string
  */
 const escapeStringRegexp = (str: string) =>
   str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
 
 /**
- *  Procecss user input and return 
+ *  Procecss user input and return
  * @param str : The string to be processed, input like `[/sd/,/sd/];[/sd/,/sd/]` => output like [[/sd/]]
  * @returns List of RegExp
  */
@@ -139,40 +138,18 @@ export interface ReplaceParam {
  * @param text The string to be processed
  * @param params The Array of {@link ReplaceParam}
  */
-const extractArray = (text: string, params: ReplaceParam[]) =>
-  unique(
-    params
-      .filter(param => param.regexp.test(text))
-      .map(param => {
-        param.regexp = regFlag.add(param.regexp, "g")
-        return text
-          .match(param.regexp)!
-          .map(item => item.replace(param.regexp, param.newSubStr))
-      })
-      .flat()
-  )
-
-/**
- * @param link Card link (UUID)
- * @returns ID of note or the linked card value
- */
-const getMNLinkValue = (link: string) => {
-  const noteid = link.replace("marginnote3app://note/", "")
-  if (noteid === link) return link
-  const node = MN.db.getNoteById(noteid)
-  if (node && node.childNotes?.length) {
-    const x = node.childNotes.reduce((acc, cur) => {
-      const firstComment = cur.comments[0]
-      if (
-        cur.colorIndex !== 13 &&
-        firstComment.type === "TextNote" &&
-        firstComment.text
-      )
-        return [...acc, firstComment.text]
+const extractArray = (text: string, params: ReplaceParam[]) => {
+  return unique(
+    params.reduce((acc, cur) => {
+      const { newSubStr } = cur
+      let { regexp } = cur
+      regexp = regFlag.add(regexp, "g")
+      if (regexp.test(text)) {
+        acc.push(...text.match(regexp)!.map(k => k.replace(regexp, newSubStr)))
+      }
       return acc
     }, [] as string[])
-    if (x.length) return x.join(";")
-  } else return undefined
+  )
 }
 
 export {
@@ -183,6 +160,5 @@ export {
   escapeDoubleQuote,
   escapeStringRegexp,
   regFlag,
-  extractArray,
-  getMNLinkValue
+  extractArray
 }

@@ -2,13 +2,9 @@ import { layoutViewController } from "jsExtension/switchPanel"
 import { IProfile, IDocProfile } from "profile"
 import { dataSourceIndex } from "dataSource"
 import { IRowInlineInput, IRowInput, IRowSelect, IRowSwitch } from "typings"
-import {
-  getMNLinkValue,
-  ReplaceParam,
-  string2RegArray,
-  string2ReplaceParam
-} from "utils/input"
+import { ReplaceParam, string2RegArray, string2ReplaceParam } from "utils/input"
 import { deepCopy } from "utils"
+import { getMNLinkValue } from "./utils"
 
 export const updateProfileTemp = (key: string, val: string) => {
   const newValue = getMNLinkValue(val)

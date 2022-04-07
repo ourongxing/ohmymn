@@ -2,7 +2,6 @@ import {
   addTags,
   getAllText,
   getAncestorNodes,
-  getNodeTree,
   removeHighlight
 } from "utils/note"
 import {
@@ -204,7 +203,7 @@ const checker: ICheckMethod<typeof ActionKey> = (input, key) => {
     case "renameTitle":
       input = /^\(.+\)$/.test(input)
         ? input
-        : `(/^.*$/g, "${escapeDoubleQuote(input)}")`
+        : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
       const { regexp, newSubStr } = string2ReplaceParam(input)[0]
       "test".replace(regexp, newSubStr)
       if (/%\[.+\]/.test(newSubStr)) getSerialInfo(newSubStr, 1)

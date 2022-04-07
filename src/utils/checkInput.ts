@@ -1,11 +1,11 @@
 import lang from "lang"
 import {
   escapeDoubleQuote,
-  getMNLinkValue,
   reverseEscape,
   string2RegArray,
   string2ReplaceParam
 } from "./input"
+import { getMNLinkValue } from "./profile/utils"
 
 export const checkPlainText = (input: string) => {
   reverseEscape(`${escapeDoubleQuote(input)}`, true)
