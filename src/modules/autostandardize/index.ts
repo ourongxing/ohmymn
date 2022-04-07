@@ -3,7 +3,7 @@ import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { CellViewType } from "typings/enum"
-import type { ICheckMethod, IConfig } from "typings"
+import type { ICheckMethod, IConfig, MbBookNote } from "typings"
 import { lang } from "./lang"
 import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
 import { IProfile } from "profile"
@@ -51,7 +51,7 @@ const configs: IConfig<IProfile["autostandardize"], typeof ActionKey> = {
         nodes.forEach(node => {
           const title = node.noteTitle
           if (option != StandardizeSelected.OnlyExcerptText && title) {
-            let newTitle = utils.main(title)
+            let newTitle = utils.main(node, title)
             if (self.profile.autostandardize.standardizeTitle)
               newTitle = utils.toTitleCase(newTitle)
             node.noteTitle = newTitle
@@ -59,7 +59,7 @@ const configs: IConfig<IProfile["autostandardize"], typeof ActionKey> = {
           if (option != StandardizeSelected.OnlyTitle) {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
-              if (text) note.excerptText = utils.main(text)
+              if (text) note.excerptText = utils.main(node, text)
             })
           }
         })
@@ -77,7 +77,7 @@ const utils = {
       .map(title => (isHalfWidth(title) ? toTitleCase(title) : title))
       .join("; ")
   },
-  main(text: string): string {
+  main(note: MbBookNote, text: string): string {
     if (isHalfWidth(text)) return text
     const { preset } = self.profile.autostandardize
     text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
@@ -130,5 +130,5 @@ const checker: ICheckMethod<
   }
 }
 
-const autostandardize = { configs, utils }
+const autostandardize = { configs, utils,checker}
 export default autostandardize
