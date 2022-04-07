@@ -6,12 +6,16 @@ const profilePreset = {
     quickSwitch: [] as number[],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    // Single select is not allowed to be empty, generally set an option to none
-    hasTitleThen: [0],
+    // Single select is not allowed to be empty, generally set option to none
+    hasTitleThen: [1],
     panelControl: [] as number[],
     panelPosition: [0],
     panelHeight: [1],
-    autoBackup: false
+    autoBackup: false,
+    showDocInfo: false
+  },
+  magicaction4card: {
+    smartSelection: false
   },
   gesture: {
     singleBarSwipeUp: [0],
@@ -70,6 +74,12 @@ const profilePreset = {
     preset: [] as number[],
     customTag: ""
   },
+  autocomment: {
+    on: false,
+    preset: [] as number[],
+    citation: `(/^.*$/gs, "{{doc.author}} ( {{doc.publicationDate}} ) {{doc.title}}.{{doc.publisher}}, {{doc.publicationPlace}}.P{{page.real.start}}{{#page.real.end}}-P{{page.real.end}}{{/page.real.end}}", 1)`,
+    customComment: ""
+  },
   autostyle: {
     on: false,
     preset: [] as number[],
@@ -79,9 +89,6 @@ const profilePreset = {
     defaultPicExcerptColor: [0],
     defaultTextExcerptStyle: [0],
     defaultPicExcerptStyle: [0]
-  },
-  magicaction4card: {
-    smartSelection: false
   },
   copysearch: {
     multipleTitles: [0],
@@ -99,12 +106,14 @@ const profilePreset = {
   autoocr: {
     baiduSecretKey: "",
     baiduApiKey: "",
+    lang: [0],
     formulaOCRProviders: [0],
     mathpixAppKey: "",
     showKey: true
   },
   autotranslate: {
     on: false,
+    wordCount: "[10, 5]",
     baiduSecretKey: "",
     baiduAppID: "",
     baiduThesaurus: false,
@@ -112,8 +121,12 @@ const profilePreset = {
     translateProviders: [0],
     caiyunToken: "",
     showKey: true,
-    outFormat: [1],
-    hudTime: "3"
+    autoCopy: false,
+    hudTime: "3",
+    baiduFromLang: [0],
+    caiyunFromLang: [0],
+    baiduToLang: [0],
+    caiyunToLang: [0]
   },
   export2flomo: {
     exportMethod: [1],
@@ -198,20 +211,19 @@ const profilePreset = {
 const docProfilePreset = {
   addon: {
     profile: [0],
-    pageOffset: "0"
-  },
-  autoocr: {
-    on: false,
-    lang: [0]
+    pageOffset: "0",
+    author: "",
+    publisher: "",
+    publicationDate: "",
+    publicationPlace: "",
+    type: "",
+    otherInfo: ""
   },
   magicaction4text: {
     preOCR: false
   },
-  autotranslate: {
-    baiduFromLang: [0],
-    caiyunFromLang: [0],
-    baiduToLang: [0],
-    caiyunToLang: [0]
+  autoocr: {
+    on: false
   },
   copysearch: {
     searchWord: "eudic://dict/{{keyword}}",
@@ -226,9 +238,11 @@ const docProfilePreset = {
   },
   // Information not displayed on the UI
   additional: {
-    lastExcerpt: 0,
-    cacheExcerptTitle: {} as {
-      [noteid: string]: string[] | undefined
+    cacheTitle: {} as {
+      [noteid: string]: [string, string, string][]
+    },
+    cacheComment: {} as {
+      [noteid: string]: [string, string, string][]
     }
   }
 }
@@ -237,6 +251,7 @@ const docProfilePreset = {
 const profileTempPreset = {
   replaceParam: {
     customTag: [] as ReplaceParam[] | undefined,
+    customComment: [] as ReplaceParam[] | undefined,
     customList: [] as ReplaceParam[] | undefined,
     customReplace: [] as ReplaceParam[] | undefined,
     customExtractTitle: [] as ReplaceParam[] | undefined,

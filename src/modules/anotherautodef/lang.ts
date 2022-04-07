@@ -10,7 +10,7 @@ const zh = {
     to_title_link: "别名转为标题链接",
     preset: "选择需要的预设",
     title_link_split: "选择别名分词",
-    extract_title: "从摘录提取标题"
+    extract_title: "提取标题"
   },
   help: {
     custom_title_split: "自定义别名分词，点击查看具体格式",
@@ -44,7 +44,7 @@ const en: typeof zh = {
     to_title_link: "Convert Alias To Title Link",
     title_link_split: "Select Alias Participle",
     preset: "Select Presets",
-    extract_title: "Extract Title From Excerpt"
+    extract_title: "Extract Title"
   },
   help: {
     custom_title_split:
@@ -66,7 +66,7 @@ const en: typeof zh = {
       "yyy，___称(之)为 xxx",
       "yyy(被)称(之)为 xxx"
     ],
-    extract_title: ["Use AutoDef Configuration", "Confirm"]
+    extract_title: ["Use AutoDef Settings", "Confirm"]
   }
 }
 export const lang = MN.isZH ? zh : en

@@ -1,4 +1,4 @@
-import type { ICheckMethod, IConfig } from "typings"
+import type { ICheckMethod, IConfig, MbBookNote } from "typings"
 import { lang } from "./lang"
 import { CellViewType } from "typings/enum"
 import { addTags, getAllText } from "utils/note"
@@ -7,16 +7,13 @@ import {
   extractArray,
   string2ReplaceParam
 } from "utils/input"
-import { ActionKey, AutoTagPreset, TagSelected } from "./enum"
+import { ActionKey, AutoTagPreset, AddTag } from "./enum"
 import { IProfile } from "profile"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
 } from "utils/checkInput"
-import {
-  renderTemplateOfNodeProperties,
-  renderTemplateOfNodePropertiesWhenExcerpt
-} from "jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 const { intro, option, label, link, help } = lang
 
@@ -47,35 +44,31 @@ const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.tag_selected,
-      key: "tagSelected",
-      option: option.tag_selected,
+      label: label.add_tag,
+      key: "addTag",
+      option: option.add_tag,
       method: ({ nodes, option, content }) => {
-        if (option == TagSelected.UseAutoTag) {
+        if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {
             const text = getAllText(node)
-            if (text) {
-              const tags = utils.main(text)
-              if (tags.length) addTags(node, tags)
-            }
+            const tags = utils.main(node, text)
+            if (tags?.length) addTags(node, tags)
           })
         } else if (content) {
           content = /^\(.*\)$/.test(content)
             ? content
-            : `(/^.*$/, "${escapeDoubleQuote(content)}")`
+            : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
             const text = getAllText(node)
-            if (text) {
-              const allTags = extractArray(
-                text,
-                params.map(k => ({
-                  ...k,
-                  newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-                }))
-              )
-              if (allTags.length) addTags(node, allTags)
-            }
+            const allTags = extractArray(
+              text,
+              params.map(k => ({
+                ...k,
+                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+              }))
+            )
+            if (allTags.length) addTags(node, allTags)
           })
         }
       }
@@ -84,7 +77,7 @@ const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
 }
 
 const utils = {
-  main(text: string) {
+  main(note: MbBookNote, text: string) {
     const { customTag: params } = self.profileTemp.replaceParam
     const { preset } = self.profile.autotag
     if (preset.includes(AutoTagPreset.Custom) && params)
@@ -92,10 +85,9 @@ const utils = {
         text,
         params.map(k => ({
           ...k,
-          newSubStr: renderTemplateOfNodePropertiesWhenExcerpt(k.newSubStr)
+          newSubStr: renderTemplateOfNodeProperties(note, k.newSubStr)
         }))
       )
-    else return []
   }
 }
 
@@ -103,10 +95,10 @@ const checker: ICheckMethod<
   PickByValue<IProfile["autotag"], string> & typeof ActionKey
 > = (input, key) => {
   switch (key) {
-    case "tagSelected":
+    case "addTag":
       input = /^\(.*\)$/.test(input)
         ? input
-        : `(/^.*$/, "${escapeDoubleQuote(input)}")`
+        : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
       checkReplaceParam(input)
       break
     case "customTag":

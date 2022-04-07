@@ -49,7 +49,9 @@ const configs: IConfig<IProfile["autocomplete"], typeof ActionKey> = {
         }
         const getCompletedWord = (node: MbBookNote) => {
           const title = node?.noteTitle
-          return title ? utils.main(title.split(/\s*[;；]\s*/)[0]) : undefined
+          return title
+            ? utils.main(node, title.split(/\s*[;；]\s*/)[0])
+            : undefined
         }
         const allInfo = await Promise.all(
           nodes.map(node => getCompletedWord(node))
@@ -159,10 +161,9 @@ const utils = {
       en: null2false(info.definition),
       zh: null2false(info.translation, t => utils.getPureZH(t))
     }
-    // 优化一下格式
     return render(template, vars)
   },
-  async main(text: string) {
+  async main(note: MbBookNote, text: string) {
     try {
       if (!/^\w[a-z]+$/.test(text)) return undefined
       let word = text.toLowerCase()
@@ -179,7 +180,8 @@ const utils = {
       }
       return {
         title,
-        text: utils.getFillInfo(info)
+        comments: [utils.getFillInfo(info)],
+        text: ""
       }
     } catch (error) {
       console.error(String(error))

@@ -1,11 +1,11 @@
 export enum ActionKey {
-  tagSelected
+  addTag
 }
 
 export const enum AutoTagPreset {
   Custom
 }
 
-export const enum TagSelected {
+export const enum AddTag {
   UseAutoTag
 }

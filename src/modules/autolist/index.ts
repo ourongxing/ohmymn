@@ -1,7 +1,7 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import type { ICheckMethod, IConfig } from "typings"
+import type { ICheckMethod, IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoListPreset, ListSelected } from "./enum"
@@ -48,7 +48,7 @@ const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
-              if (text) note.excerptText = utils.main(text)
+              if (text) note.excerptText = utils.main(note, text)
             })
           })
         } else if (content) {
@@ -71,7 +71,7 @@ const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
 
 const utils = {
   // 匹配到就在前面或后面添加换行
-  main(text: string): string {
+  main(note: MbBookNote, text: string): string {
     const { preset } = self.profile.autolist
     for (const set of preset) {
       switch (set) {

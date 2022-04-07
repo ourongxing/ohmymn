@@ -24,7 +24,7 @@ const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882",
   option: {
     preset: ["Custom", "ABCD...", "一二三四...", "1234..."],
-    list_selected: ["Use AutoList Configuration", "Confirm"]
+    list_selected: ["Use AutoList Settings", "Confirm"]
   },
   help: {
     custom_list: "Customize. Click for specific formats"

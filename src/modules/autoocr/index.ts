@@ -25,8 +25,7 @@ const configs: IConfig<(IProfile & IDocProfile)["autoocr"], typeof ActionKey> =
         key: "lang",
         label: label.lang,
         type: CellViewType.Select,
-        option: option.lang,
-        help: help.lang
+        option: option.lang
       },
       {
         key: "formulaOCRProviders",
@@ -264,7 +263,7 @@ const utils = {
           },
           form: {
             image: imgBase64,
-            language_type: langKey[self.docProfile.autoocr.lang[0]]
+            language_type: langKey[self.profile.autoocr.lang[0]]
           }
         }
       ).then(res => res.json())) as {

@@ -13,8 +13,8 @@ import {
   undoGroupingWithRefresh
 } from "utils/note"
 import { MN } from "const"
-import { getMNLinkValue } from "utils/input"
 import autoocr from "modules/autoocr"
+import { getMNLinkValue } from "utils/profile"
 
 export default async (
   type: "card" | "text",

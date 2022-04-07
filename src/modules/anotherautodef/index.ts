@@ -1,6 +1,6 @@
 import { extractArray, regFlag, string2ReplaceParam } from "utils/input"
-import { getExcerptNotes, getExcerptText, removeHighlight } from "utils/note"
-import type { ICheckMethod, IConfig } from "typings"
+import { getAllText, removeHighlight } from "utils/note"
+import type { ICheckMethod, IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
@@ -11,10 +11,7 @@ import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
 } from "utils/checkInput"
-import {
-  renderTemplateOfNodeProperties,
-  renderTemplateOfNodePropertiesWhenExcerpt
-} from "jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 const { label, option, intro, link, help } = lang
 
@@ -84,25 +81,37 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
       key: "extractTitle",
       method: ({ nodes, content, option }) => {
         if (option == ExtractTitle.UseAutoDef) {
+          const { customExtractTitle } = self.profile.anotherautodef
+          const params = customExtractTitle
+            ? string2ReplaceParam(customExtractTitle)
+            : false
           nodes.forEach(node => {
-            const allTitles = getExcerptNotes(node).reduce((acc, cur) => {
-              if (cur.excerptText) {
-                const res = utils.main(cur.excerptText)
-                if (res) {
-                  const { title, text } = res
-                  cur.excerptText = text
-                  if (title.length) acc.push(...title)
-                }
-              }
-              return acc
-            }, [] as string[])
+            const allTitles: string[] = []
+            const res = utils.main(node, node.excerptText ?? "")
+            if (res) {
+              const { text, title } = res
+              allTitles.push(...title)
+              node.excerptText = text
+            }
+            if (params) {
+              const text = getAllText(node)
+              allTitles.push(
+                ...extractArray(
+                  text,
+                  params.map(k => ({
+                    ...k,
+                    newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+                  }))
+                )
+              )
+            }
             if (allTitles.length)
               node.noteTitle = removeHighlight(unique(allTitles).join("; "))
           })
         } else if (content) {
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
-            const text = getExcerptText(node).ocr.join("\n")
+            const text = getAllText(node)
             const allTitles = extractArray(
               text,
               params.map(k => ({
@@ -144,36 +153,39 @@ const utils = {
     return defs.length > 1 ? unique<string>(defs) : [text]
   },
 
-  main(text: string) {
+  main(note: MbBookNote, text: string) {
     const { preset, onlyDesc } = self.profile.anotherautodef
     for (const set of preset)
       switch (set) {
         case AutoDefPreset.CustomExtract: {
           const { customExtractTitle: params } = self.profileTemp.replaceParam
           if (!params) continue
-          let fnKey = 0
-          const allTitles = unique<string>(
-            params
-              .filter(param => param.regexp.test(text))
-              .map(param => {
-                // 有 1 则为1
-                if (fnKey == 0) fnKey = param.fnKey
-                param.regexp = regFlag.add(param.regexp, "g")
-                return text
-                  .match(param.regexp)!
-                  .map(item =>
-                    item.replace(
-                      param.regexp,
-                      renderTemplateOfNodePropertiesWhenExcerpt(param.newSubStr)
+          let flag = 0
+          const allTitles = unique(
+            params.reduce((acc, cur) => {
+              const { newSubStr, fnKey } = cur
+              let { regexp } = cur
+              if (flag === 0) flag = fnKey
+              regexp = regFlag.add(regexp, "g")
+              if (regexp.test(text)) {
+                acc.push(
+                  ...text
+                    .match(regexp)!
+                    .map(k =>
+                      k.replace(
+                        regexp,
+                        renderTemplateOfNodeProperties(note, newSubStr)
+                      )
                     )
-                  )
-              })
-              .flat()
+                )
+              }
+              return acc
+            }, [] as string[])
           )
           if (allTitles.length)
             return {
               title: allTitles,
-              text: fnKey ? "" : text
+              text: flag ? "" : text
             }
           break
         }

@@ -16,6 +16,7 @@ import autotranslate from "modules/autotranslate"
 import export2flomo from "modules/export2flomo"
 import export2anki from "modules/export2anki"
 import export2devonthink from "modules/export2devonthink"
+import autocomment from "modules/autocomment"
 import type {
   IActionMethod4Card,
   IActionMethod4Text,
@@ -40,21 +41,29 @@ export const modules = {
   autotranslate,
   export2flomo,
   export2anki,
-  export2devonthink
+  export2devonthink,
+  autocomment
 }
 
 export const utils: Utils = {
   customOCR: [imgBase64 => isON("autoocr") && autoocr.utils.main(imgBase64)],
   modifyExcerptText: [
-    text => isON("autostandardize") && autostandardize.utils.main(text),
-    text => isON("autolist") && autolist.utils.main(text),
-    text => isON("autoreplace") && autoreplace.utils.main(text)
+    (note, text) =>
+      isON("autostandardize") && autostandardize.utils.main(note, text),
+    (note, text) => isON("autolist") && autolist.utils.main(note, text),
+    (note, text) => isON("autoreplace") && autoreplace.utils.main(note, text)
   ],
   generateTitles: [
-    text => isON("autocomplete") && autocomplete.utils.main(text),
-    text => isON("autotranslate") && autotranslate.utils.main(text),
-    text => isON("anotherautodef") && anotherautodef.utils.main(text),
-    text => isON("anotherautotitle") && anotherautotitle.utils.main(text)
+    (note, text) => isON("autocomplete") && autocomplete.utils.main(note, text),
+    (note, text) =>
+      isON("anotherautodef") && anotherautodef.utils.main(note, text),
+    (note, text) =>
+      isON("anotherautotitle") && anotherautotitle.utils.main(note, text)
+  ],
+  generateComments: [
+    (note, text) =>
+      isON("autotranslate") && autotranslate.utils.main(note, text),
+    (note, text) => isON("autocomment") && autocomment.utils.main(note, text)
   ],
   modifyTitles: [
     titles =>
@@ -62,7 +71,9 @@ export const utils: Utils = {
       self.profile.autostandardize.standardizeTitle &&
       titles.map(k => autostandardize.utils.toTitleCase(k))
   ],
-  generateTags: [text => isON("autotag") && autotag.utils.main(text)],
+  generateTags: [
+    (note, text) => isON("autotag") && autotag.utils.main(note, text)
+  ],
   modifyStyle: [note => isON("autostyle") && autostyle.utils.main(note)]
 }
 
@@ -70,11 +81,24 @@ type Utils = {
   customOCR?: ((
     imgBase64: string
   ) => MaybePromise<string | undefined | false>)[]
-  modifyExcerptText?: ((text: string) => MaybePromise<string | false>)[]
-  generateTitles?: ((
+  modifyExcerptText?: ((
+    note: MbBookNote,
     text: string
-  ) => MaybePromise<{ title: string[]; text: string } | undefined | false>)[]
-  generateTags?: ((text: string) => MaybePromise<string[] | false>)[]
+  ) => MaybePromise<string | false>)[]
+  generateTitles?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<
+    { title: string[]; text: string; comments?: string[] } | undefined | false
+  >)[]
+  generateTags?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
+  generateComments?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
   modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
   modifyStyle?: ((
     note: MbBookNote
@@ -94,7 +118,7 @@ const isON = (key: AutoModuleKeyType) => {
   return (
     self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
     //@ts-ignore
-    (self.profile[key]?.on || self.docProfile[key]?.on)
+    (self.profile[key]?.on ?? self.docProfile[key]?.on ?? false)
   )
 }
 

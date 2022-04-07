@@ -31,7 +31,6 @@ const zh = {
     formulaOCR: ["Pure Latex", "$ Latex $", "$$ Latex $$"]
   },
   help: {
-    lang: "【当前文档生效】",
     on: "【当前文档生效】",
     baiduApiKey: "百度 Api Key，点击查看如何获取。",
     baiduSecretKey: "百度 Secret Key",
@@ -89,7 +88,6 @@ const en: typeof zh = {
     formulaOCR: ["Pure Latex", "$ Latex $", "$$ Latex $$"]
   },
   help: {
-    lang: "[Current Doc Takes Effect]",
     on: "[Current Doc Takes Effect]",
     baiduApiKey: "Baidu Api Key, click to see how to get it.",
     baiduSecretKey: "Baidu Secret Key",

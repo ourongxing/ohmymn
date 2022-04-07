@@ -3,11 +3,11 @@ import { delayBreak } from "utils/common"
 import {
   customOCR,
   newColorStyle,
-  newTag,
-  newTitleText
+  newTitleTextCommentTag
 } from "./newExcerptGenerater"
 import { MbBookNote } from "typings"
 import { MN } from "const"
+import { cacheTransformer } from "utils/profile"
 
 let note: MbBookNote
 let nodeNote: MbBookNote
@@ -26,7 +26,6 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   // Initialize global variables
   note = _note
   nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
-  self.node = nodeNote
   isComment = nodeNote !== note
   self.isModify = lastExcerptText !== undefined
   if (
@@ -34,7 +33,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
     self.isModify &&
     lastExcerptText !== "😎"
   ) {
-    processExcerpt(lastExcerptText!)
+    processExcerpt({ text: lastExcerptText! })
     return console.log(
       "Locked excerpt option is detected, restore excerpt",
       "excerpt"
@@ -97,16 +96,27 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   decorateExecrpt()
   const excerptText = note.excerptText?.trim()
   if (!excerptText) return
-  const { title, text } = await newTitleText(
-    excerptText,
-    nodeNote.noteTitle?.split(/\s*[;；]\s*/),
+  const { title, text, comments, tags } = await newTitleTextCommentTag({
+    note,
+    text: excerptText,
+    nodeTitle: nodeNote.noteTitle?.split(/\s*[;；]\s*/),
     isComment
-  )
-  const tags = await newTag(excerptText)
-  processExcerpt(text, title?.join("; "), tags)
+  })
+  processExcerpt({
+    text,
+    title: title.join("; "),
+    comments,
+    tags
+  })
 }
 
-const processExcerpt = (text: string, title?: string, tags?: string[]) => {
+const processExcerpt = (parms: {
+  text: string
+  title?: string
+  tags?: string[]
+  comments?: string[]
+}) => {
+  const { text, title, tags, comments } = parms
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text
@@ -128,6 +138,27 @@ const processExcerpt = (text: string, title?: string, tags?: string[]) => {
       else note.excerptText = ""
     }
     if (title) nodeNote.noteTitle = title
+    if (comments?.length) {
+      const { cacheComment } = self.docProfile.additional
+      const oldComments = cacheComment[note.noteId!]
+      if (oldComments) {
+        const existComments = nodeNote.comments
+        const index: number[] = []
+        oldComments.forEach(h => {
+          existComments.forEach((k, i) => {
+            if (k.type === "TextNote" && cacheTransformer.tell(h, k.text))
+              index.unshift(i)
+          })
+        })
+        index.forEach(i => {
+          nodeNote.removeCommentByIndex(i)
+        })
+      }
+      cacheComment[note.noteId!] = comments.map(k => cacheTransformer.to(k))
+      comments.forEach(k => {
+        k && nodeNote.appendTextComment(k)
+      })
+    }
     if (tags?.length) addTags(nodeNote, tags)
   })
 }
@@ -152,9 +183,8 @@ export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
   })
   lastRemovedComment = undefined
   if (onlyLastComment) return
-  const { cacheExcerptTitle } = self.docProfile.additional
-  self.docProfile.additional.lastExcerpt = Date.now()
-  Object.keys(cacheExcerptTitle).forEach(k => {
-    if (!MN.db.getNoteById(k)) cacheExcerptTitle[k] = undefined
-  })
+  const noteid = note.noteId!
+  const { cacheTitle, cacheComment } = self.docProfile.additional
+  if (cacheTitle[noteid]) cacheTitle[noteid] = []
+  if (cacheComment[noteid]) cacheComment[note.noteId!] = []
 }

@@ -1,14 +1,11 @@
 import { getExcerptNotes } from "utils/note"
 import { string2ReplaceParam } from "utils/input"
-import type { IConfig } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
 import { IProfile } from "profile"
-import {
-  renderTemplateOfNodeProperties,
-  renderTemplateOfNodePropertiesWhenExcerpt
-} from "jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 const { intro, link, label, option, help } = lang
 
 const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
@@ -46,7 +43,7 @@ const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
-              if (text) note.excerptText = utils.main(text)
+              if (text) note.excerptText = utils.main(node, text)
             })
           })
         } else if (content) {
@@ -72,7 +69,7 @@ const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
 }
 
 const utils = {
-  main(text: string) {
+  main(note: MbBookNote, text: string) {
     const { preset } = self.profile.autoreplace
     for (const set of preset) {
       switch (set) {
@@ -83,7 +80,7 @@ const utils = {
             (acc, param) =>
               acc.replace(
                 param.regexp,
-                renderTemplateOfNodePropertiesWhenExcerpt(param.newSubStr)
+                renderTemplateOfNodeProperties(note, param.newSubStr)
               ),
             text
           )

@@ -1,6 +1,6 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
-import type { ICheckMethod, IConfig } from "typings"
+import type { ICheckMethod, IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./enum"
@@ -49,12 +49,12 @@ const configs: IConfig<IProfile["anotherautotitle"], Record<string, string>> = {
 }
 
 const utils = {
-  main(text: string) {
+  main(note: MbBookNote, text: string) {
     const { preset, wordCount, changeTitleNoLimit } =
       self.profile.anotherautotitle
-    const { cacheExcerptTitle } = self.docProfile.additional
+    const { cacheTitle } = self.docProfile.additional
     if (self.isModify) text = removeHighlight(text)
-    if (changeTitleNoLimit && self.isModify && cacheExcerptTitle[self.noteid])
+    if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
       return {
         title: [text],
         text: ""

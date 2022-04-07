@@ -15,7 +15,7 @@ const zh = {
     default_text_excerpt_style: "文本摘录默认样式",
     default_pic_excerpt_style: "图片摘录默认样式",
     word_count_area:
-      "[中文句子中的字数, 英文句子中的字数, 选区面积]，超过则将摘录样式设置为线框，否则默认"
+      "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认"
   },
   help: {
     change_color: "输入颜色索引，也就是顺序，1 到 16"
@@ -73,19 +73,19 @@ const en: typeof zh = {
     default_text_excerpt_style: "Default Text Excerpt Style",
     default_pic_excerpt_style: "Default Pic Excerpt Style",
     word_count_area:
-      "[number of words in a Chinese sentence, in a English sentence, selected area size], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n"
+      "[Chinese words, English words, Selected area size], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n"
   },
   help: {
     change_color: "Enter the color index, 1 to 16"
   },
   option: {
     change_style: [
-      "Use AutoStyle Configuration",
+      "Use AutoStyle Settings",
       "Wireframe+Fill",
       "Fill",
       "Wireframe"
     ],
-    change_color: ["Use AutoStyle Configuration", "Confirm"],
+    change_color: ["Use AutoStyle Settings", "Confirm"],
     preset: [
       "Style is determined by word count or area",
       "Color follow card",

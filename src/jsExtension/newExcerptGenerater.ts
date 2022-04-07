@@ -3,6 +3,7 @@ import { utils } from "synthesizer"
 import { HasTitleThen } from "modules/addon/enum"
 import { MN } from "const"
 import { removeHighlight } from "utils/note"
+import { cacheTransformer } from "utils/profile"
 
 export const customOCR = async () => {
   const imgBase64 = MN.studyController()
@@ -15,24 +16,41 @@ export const customOCR = async () => {
     }
 }
 
-export const newTitleText = async (
-  text: string,
-  nodeTitle: string[] | undefined,
+export const newTitleTextCommentTag = async (param: {
+  note: MbBookNote
+  text: string
+  nodeTitle: string[] | undefined
   isComment: boolean
-) => {
+}) => {
+  const { note, text, nodeTitle, isComment } = param
   const { hasTitleThen } = self.profile.addon
-  const { cacheExcerptTitle } = self.docProfile.additional
+  const { cacheTitle } = self.docProfile.additional
+  const comments: string[] = []
+  const tags: string[] = []
 
   const newText = await (async text => {
     if (utils.modifyExcerptText)
       for (const util of utils.modifyExcerptText) {
-        const res = await util(text)
+        const res = await util(note, text)
         if (res) text = res
       }
     return text
   })(text)
 
-  const defaultRet = { text: newText, title: undefined }
+  if (utils.generateComments)
+    for (const util of utils.generateComments) {
+      const res = await util(note, text)
+      if (res) comments.push(...res)
+    }
+
+  if (utils.generateTags)
+    for (const util of utils.generateTags) {
+      const res = await util(note, text)
+      if (res) tags.push(...res)
+    }
+
+  const defaultRet = { text: newText, title: [] as string[], comments, tags }
+
   if (
     isComment &&
     nodeTitle?.length &&
@@ -43,7 +61,7 @@ export const newTitleText = async (
   const res = await (async text => {
     if (utils.generateTitles)
       for (const util of utils.generateTitles) {
-        const res = await util(text)
+        const res = await util(note, text)
         if (res) return res
       }
   })(newText)
@@ -61,40 +79,42 @@ export const newTitleText = async (
   })(res.title)
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
-    const [oldTitles, unchanged] = (() => {
-      if (self.isModify && cacheExcerptTitle[self.noteid]) {
-        // If you are modifying, compare the original title first, divide the original title into changed and unchanged ones,
-        // delete the changed ones and keep the unchanged ones
-        const [unchanged, changed] = cacheExcerptTitle[self.noteid]!.reduce(
-          (acc, cur) => {
-            if (res.title.includes(cur)) acc[0].push(cur)
-            else acc[1].push(cur)
-            return acc
-          },
-          [[], []] as string[][]
-        )
-        return [nodeTitle.filter(k => !changed.includes(k)), unchanged]
-      } else return [nodeTitle, []]
+    const newTitles = (() => {
+      if (self.isModify && cacheTitle[self.noteid]) {
+        const cached = cacheTitle[self.noteid]
+        // 记录当前笔记产生的所有旧标题的索引
+        const index = nodeTitle.reduce((acc, k, i) => {
+          cached?.some(h => cacheTransformer.tell(h, k)) && acc.unshift(i)
+          return acc
+        }, [] as number[])
+        index.forEach((k, i) => {
+          if (i === index.length - 1) {
+            nodeTitle.splice(k, 1, ...res.title)
+          } else nodeTitle.splice(k, 1)
+        })
+        return nodeTitle
+      } else return [...nodeTitle, ...res.title]
     })()
-    // Filter new titles without duplicating previous ones
-    const newTitles = res.title.filter(k => !oldTitles.includes(k))
-    // Cache new title
-    cacheExcerptTitle[self.noteid] = [...unchanged, ...newTitles]
+    cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
     return {
       text: res.text,
-      title: [...oldTitles, ...newTitles]
+      title: newTitles,
+      comments: res.comments?.length
+        ? [...res.comments, ...comments]
+        : comments,
+      tags
     }
   }
-  cacheExcerptTitle[self.noteid] = res.title
-  return res
+  cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
+  return {
+    ...res,
+    comments: res.comments?.length ? [...res.comments, ...comments] : comments,
+    tags
+  }
 }
 
-export const newTag = async (text: string) => {
-  if (utils.generateTags)
-    for (const util of utils.generateTags) {
-      const res = await util(text)
-      if (res) return res
-    }
+export const newTag = async (note: MbBookNote, text: string) => {
+  if (!text) return
 }
 
 export const newColorStyle = async (note: MbBookNote) => {
