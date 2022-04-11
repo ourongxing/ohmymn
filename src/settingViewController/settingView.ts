@@ -11,7 +11,7 @@ const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
 
 // If the module is not enabled, the menu will be hidden
-const _isModuleOFF = (key: ModuleKeyType): boolean => {
+export const _isModuleOFF = (key: ModuleKeyType): boolean => {
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeyArray.indexOf(key)

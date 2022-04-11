@@ -46,77 +46,60 @@ export const modules = {
 }
 
 export const utils: Utils = {
-  customOCR: [imgBase64 => isON("autoocr") && autoocr.utils.main(imgBase64)],
+  customOCR: [
+    imgBase64 => isModuleAutoON("autoocr") && autoocr.utils.main(imgBase64)
+  ],
   modifyExcerptText: [
     (note, text) =>
-      isON("autostandardize") && autostandardize.utils.main(note, text),
-    (note, text) => isON("autolist") && autolist.utils.main(note, text),
-    (note, text) => isON("autoreplace") && autoreplace.utils.main(note, text)
+      isModuleAutoON("autostandardize") &&
+      autostandardize.utils.main(note, text),
+    (note, text) =>
+      isModuleAutoON("autolist") && autolist.utils.main(note, text),
+    (note, text) =>
+      isModuleAutoON("autoreplace") && autoreplace.utils.main(note, text)
   ],
   generateTitles: [
-    (note, text) => isON("autocomplete") && autocomplete.utils.main(note, text),
     (note, text) =>
-      isON("anotherautodef") && anotherautodef.utils.main(note, text),
+      isModuleAutoON("autocomplete") && autocomplete.utils.main(note, text),
     (note, text) =>
-      isON("anotherautotitle") && anotherautotitle.utils.main(note, text)
+      isModuleAutoON("anotherautodef") && anotherautodef.utils.main(note, text),
+    (note, text) =>
+      isModuleAutoON("anotherautotitle") &&
+      anotherautotitle.utils.main(note, text)
   ],
   generateComments: [
     (note, text) =>
-      isON("autotranslate") && autotranslate.utils.main(note, text),
-    (note, text) => isON("autocomment") && autocomment.utils.main(note, text)
+      isModuleAutoON("autotranslate") && autotranslate.utils.main(note, text),
+    (note, text) =>
+      isModuleAutoON("autocomment") && autocomment.utils.main(note, text)
   ],
   modifyTitles: [
     titles =>
-      isON("autostandardize") &&
+      isModuleAutoON("autostandardize") &&
       self.profile.autostandardize.standardizeTitle &&
       titles.map(k => autostandardize.utils.toTitleCase(k))
   ],
   generateTags: [
-    (note, text) => isON("autotag") && autotag.utils.main(note, text)
+    (note, text) => isModuleAutoON("autotag") && autotag.utils.main(note, text)
   ],
-  modifyStyle: [note => isON("autostyle") && autostyle.utils.main(note)]
-}
-
-type Utils = {
-  customOCR?: ((
-    imgBase64: string
-  ) => MaybePromise<string | undefined | false>)[]
-  modifyExcerptText?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string | false>)[]
-  generateTitles?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<
-    { title: string[]; text: string; comments?: string[] } | undefined | false
-  >)[]
-  generateTags?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  generateComments?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
-  modifyStyle?: ((
-    note: MbBookNote
-  ) => MaybePromise<
-    { color: number | undefined; style: number | undefined } | false
-  >)[]
+  modifyStyle: [
+    note => isModuleAutoON("autostyle") && autostyle.utils.main(note)
+  ]
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }
-export type ModuleKeyType =
-  | keyof (typeof modules & typeof constModules)
-  | "more"
 export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
-type AutoModuleKeyType = Include<keyof typeof modules, "auto">
 
-const isON = (key: AutoModuleKeyType) => {
+export const isModuleON = (key: ModuleKeyType): boolean => {
+  const { quickSwitch } = self.profile.addon
+  const index = moduleKeyArray.indexOf(key)
+  return index === -1 || quickSwitch.includes(index)
+}
+
+const isModuleAutoON = (key: AutoModuleKeyType) => {
+  const { quickSwitch } = self.profile.addon
   return (
-    self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
+    quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
     //@ts-ignore
     (self.profile[key]?.on ?? self.docProfile[key]?.on ?? false)
   )
@@ -136,7 +119,7 @@ export const checkInputCorrect = async (
 ): Promise<boolean> => {
   try {
     for (const checker of checkers) {
-      const res = await checker(input, key)
+      const res = await checker({ input, key })
       if (res === undefined) return true
     }
   } catch (err) {
@@ -169,3 +152,38 @@ export const actions4card = (() => {
   })
   return actions
 })()
+
+type Utils = {
+  customOCR?: ((
+    imgBase64: string
+  ) => MaybePromise<string | undefined | false>)[]
+  modifyExcerptText?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string | false>)[]
+  generateTitles?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<
+    { title: string[]; text: string; comments?: string[] } | undefined | false
+  >)[]
+  generateTags?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
+  generateComments?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
+  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
+  modifyStyle?: ((
+    note: MbBookNote
+  ) => MaybePromise<
+    { color: number | undefined; style: number | undefined } | false
+  >)[]
+}
+
+export type ModuleKeyType =
+  | keyof (typeof modules & typeof constModules)
+  | "more"
+type AutoModuleKeyType = Include<keyof typeof modules, "auto">

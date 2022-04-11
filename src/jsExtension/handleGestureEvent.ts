@@ -1,4 +1,4 @@
-import type { GestureHandler, IRowButton, IRowSelect } from "typings"
+import type { GestureHandler, IRowButton } from "typings"
 import {
   groupMode,
   UISwipeGestureRecognizerDirection,
@@ -15,7 +15,7 @@ import { PanelControl } from "modules/addon/enum"
 import { showHUD } from "utils/common"
 import lang from "lang"
 import { reverseEscape } from "utils/input"
-import { moduleKeyArray, ModuleKeyType } from "synthesizer"
+import { isModuleON, moduleKeyArray } from "synthesizer"
 
 // Not support Mac
 export const gestureHandlers = gesture.utils.gestureHandlerController([
@@ -223,13 +223,6 @@ const actionTrigger = async (
     !self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf("gesture"))
   )
     return
-  const isModuleOFF = (key: ModuleKeyType): boolean => {
-    const [sec, row] = dataSourceIndex.addon.quickSwitch
-    const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect)
-      .selections
-    const index = moduleKeyArray.indexOf(key)
-    return index !== -1 && !quickSwitch.includes(index)
-  }
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
 
@@ -250,7 +243,7 @@ const actionTrigger = async (
 
   const { key, module, option, moduleName } = actionInfo
   if (key == "open_panel") openPanel()
-  else if (module && isModuleOFF(module))
+  else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {
     const [sec, row] =
@@ -259,7 +252,7 @@ const actionTrigger = async (
       ][key]
     await handleMagicAction(
       type,
-      <IRowButton>self.dataSource[sec].rows[row],
+      self.dataSource[sec].rows[row] as IRowButton,
       option
     )
   }

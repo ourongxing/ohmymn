@@ -1,11 +1,14 @@
-import { openUrl, popup, postNotification, showHUD } from "utils/common"
-import { checkInputCorrect } from "synthesizer"
+import { openUrl, postNotification } from "utils/common"
+import { checkInputCorrect, ModuleKeyType } from "synthesizer"
 import { Addon, MN } from "const"
 import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
-import { UIAlertViewStyle, CellViewType } from "typings/enum"
+import { CellViewType } from "typings/enum"
 import { byteLength } from "utils/text"
 import lang from "lang"
 import { moduleKeyArray } from "synthesizer"
+import { actionKey4Card, actionKey4Text, dataSourceIndex } from "dataSource"
+import { _isModuleOFF } from "./settingView"
+import popup from "utils/popup"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -112,18 +115,19 @@ const selectAction = async (param: {
     ) {
       const { gesture } = lang.handle_user_action
       const { option } = await popup(
-        Addon.title,
-        gesture.alert,
-        UIAlertViewStyle.Default,
-        gesture.option,
-        (alert: UIAlertView, buttonIndex: number) => ({
+        {
+          title: Addon.title,
+          message: gesture.alert,
+          buttons: gesture.option
+        },
+        ({ buttonIndex }) => ({
           option: buttonIndex
         })
       )
       if (option === 0) {
         openUrl(gesture.doc)
         return
-      }
+      } else if (option === -1) return
     }
 
     const nowSelect = row.selections.includes(selection)
@@ -153,14 +157,37 @@ const selectAction = async (param: {
 const clickSelectButton = (sender: UIButton) => {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
-  const row = <IRowSelect>section.rows[indexPath.row]
+  const row = section.rows[indexPath.row] as IRowSelect
   const menuController = MenuController.new()
   const height = 44
+  const zero = 0.00001
+  const cacheModuleOFF: Partial<Record<ModuleKeyType, boolean>> = {}
+  const isHidden = (sectionKey: string, rowKey: string, index: number) => {
+    if (sectionKey === "gesture") {
+      try {
+        const { module } = rowKey.includes("selectionBar")
+          ? actionKey4Text[index]
+          : actionKey4Card[index]
+        if (!module) return false
+        const status = cacheModuleOFF[module]
+        if (status !== undefined) {
+          return status
+        } else {
+          const status = _isModuleOFF(module)
+          cacheModuleOFF[module] = status
+          return status
+        }
+      } catch {
+        return true
+      }
+    } else return false
+  }
+
   menuController.commandTable = row.option.map((item, index) => ({
     title: item,
     object: self,
     selector: "selectAction:",
-    height,
+    height: isHidden(section.key, row.key, index) ? zero : height,
     param: {
       indexPath,
       menuController,
@@ -168,12 +195,11 @@ const clickSelectButton = (sender: UIButton) => {
     },
     checked: row.selections.includes(index)
   }))
-  menuController.rowHeight = height
   const width = Math.max(...row.option.map(k => byteLength(k))) * 10 + 80
   menuController.preferredContentSize = {
     width: width > 300 ? 300 : width,
     height:
-      height * menuController.commandTable.filter(k => k.height !== 0).length
+      height * menuController.commandTable.filter(k => k.height !== zero).length
   }
 
   const studyControllerView = MN.studyController().view
