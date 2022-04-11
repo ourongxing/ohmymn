@@ -1,5 +1,3 @@
-import lang from "lang"
-import { UIAlertViewStyle } from "typings/enum"
 import { Addon, MN } from "../const"
 
 const console = {
@@ -82,35 +80,6 @@ const isThisWindow = (sender: any, window = self.window) => {
   return MN.app.checkNotifySenderInWindow(sender, window)
 }
 
-const popup = (
-  title: string,
-  message: string,
-  type: UIAlertViewStyle,
-  buttons: string[],
-  f: (
-    alert: UIAlertView,
-    buttonIndex: number
-  ) => {
-    option?: number
-    content?: string
-  }
-) =>
-  new Promise<{
-    option?: number
-    content?: string
-  }>(resolve =>
-    UIAlertView.showWithTitleMessageStyleCancelButtonTitleOtherButtonTitlesTapBlock(
-      title,
-      message,
-      type,
-      lang.cancel,
-      buttons,
-      (alert: UIAlertView, buttonIndex: number) => {
-        if (buttonIndex != 0) resolve(f(alert, buttonIndex - 1))
-      }
-    )
-  )
-
 const isOCNull = (obj: any): obj is OCNull => obj === NSNull.new()
 
 const OCNull2null = <T>(k: T) => {
@@ -161,6 +130,5 @@ export {
   isThisWindow,
   isOCNull,
   OCNull2null,
-  popup,
   eventHandlerController
 }
