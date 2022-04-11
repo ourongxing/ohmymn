@@ -4,13 +4,13 @@ import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
 import { ActionKey, AddTags, ExportMethod } from "./enum"
 import { Addon } from "const"
-import { openUrl, popup, showHUD } from "utils/common"
-import { byteSlice } from "utils/text"
+import { openUrl, showHUD } from "utils/common"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 import fetch from "utils/network"
 import { reverseEscape } from "utils/input"
 import { removeHighlight } from "utils/note"
 import { escapeURLParam } from "utils"
+import popup from "utils/popup"
 const { link, intro, lable, option, help } = lang
 
 const configs: IConfig<
@@ -134,17 +134,21 @@ const configs: IConfig<
 }
 
 const utils = {
-  async selectPartOfParts(parts: string[], tip = "选择你想要的") {
+  async selectPartOfParts(parts: string[], message = "选择你想要的") {
     const { option } = await popup(
-      Addon.title,
-      tip,
-      UIAlertViewStyle.Default,
-      parts.map(k => byteSlice(k.replace(/\n/g, ""), 0, 40)),
-      (alert: UIAlertView, buttonIndex: number) => ({
+      {
+        title: Addon.title,
+        message,
+        type: UIAlertViewStyle.Default,
+        buttons: parts,
+        canCancel: false,
+        multiLine: true
+      },
+      ({ buttonIndex }) => ({
         option: buttonIndex
       })
     )
-    return parts[option!]
+    return parts[option]
   },
   getContent(node: MbBookNote, option: number) {
     const {
@@ -198,10 +202,10 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<IProfile["export2flomo"], string>> = (
+const checker: ICheckMethod<PickByValue<IProfile["export2flomo"], string>> = ({
   input,
   key
-) => {
+}) => {
   switch (key) {
     default:
       return false

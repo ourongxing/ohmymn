@@ -191,10 +191,10 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = (
+const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = ({
   input,
   key
-) => {
+}) => {
   switch (key) {
     case "customFill":
       checkPlainText(input)

@@ -110,13 +110,17 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   })
 }
 
-const processExcerpt = (parms: {
+const processExcerpt = ({
+  text,
+  title,
+  tags,
+  comments
+}: {
   text: string
   title?: string
   tags?: string[]
   comments?: string[]
 }) => {
-  const { text, title, tags, comments } = parms
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text

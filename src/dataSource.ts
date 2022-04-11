@@ -162,7 +162,11 @@ const genDataSource = (
 }
 
 const genDataSourceIndex = (dataSource: ISection[]) => {
-  const dataSourceIndex: Record<string, { [k: string]: [number, number] }> = {}
+  // @ts-ignore
+  const dataSourceIndex: Record<
+    ModuleKeyType,
+    Record<string, [number, number]>
+  > = {}
   dataSource.forEach((section, secIndex) => {
     const name = section.key
     dataSourceIndex[name] = {}

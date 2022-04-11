@@ -93,7 +93,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["autotag"], string> & typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "addTag":
       input = /^\(.*\)$/.test(input)

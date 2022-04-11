@@ -120,7 +120,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["autolist"], string> & typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "customList":
       checkReplaceParamFromMNLink(input)

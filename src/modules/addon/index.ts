@@ -124,7 +124,7 @@ const configs: IConfig<
   ]
 }
 
-const checker: ICheckMethod<IDocProfile["addon"]> = (input, key) => {
+const checker: ICheckMethod<IDocProfile["addon"]> = ({ input, key }) => {
   switch (key) {
     case "pageOffset":
       checkInteger(Number(input))

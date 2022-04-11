@@ -278,7 +278,7 @@ const utils = {
   },
   async caiyunTranslate(text: string) {
     const { caiyunToken } = self.profile.autotranslate
-    const { caiyunFromLang, caiyunToLang } = self.docProfile.autotranslate
+    const { caiyunFromLang, caiyunToLang } = self.profile.autotranslate
     if (isHalfWidth(text)) {
       if ([1, 4].includes(caiyunFromLang[0])) return ""
     } else if (![1, 4].includes(caiyunFromLang[0])) return ""
@@ -328,7 +328,7 @@ const utils = {
 const checker: ICheckMethod<
   PickByValue<(IProfile & IDocProfile)["autotranslate"], string> &
     typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "hudTime": {
       checkPositiveinteger(Number(input))

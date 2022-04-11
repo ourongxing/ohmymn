@@ -195,7 +195,7 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
   ]
 }
 
-const checker: ICheckMethod<typeof ActionKey> = (input, key) => {
+const checker: ICheckMethod<typeof ActionKey> = ({ input, key }) => {
   switch (key) {
     case "mergeText":
       checkPlainText(input)

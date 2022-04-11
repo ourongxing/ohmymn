@@ -252,7 +252,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["anotherautodef"], string> & typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "customDefLink":
     case "customTitleSplit":

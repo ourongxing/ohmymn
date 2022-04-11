@@ -1,15 +1,15 @@
 import { lang } from "./lang"
 import type { IConfig, MbBookNote, ISettingInput, ICheckMethod } from "typings"
-import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { openUrl, popup, showHUD } from "utils/common"
+import { CellViewType } from "typings/enum"
+import { openUrl, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import { getExcerptText } from "utils/note"
-import { byteSlice } from "utils/text"
 import { ActionKey, MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
 import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
+import popup from "utils/popup"
 const { link, intro, lable, option, help, hud } = lang
 
 const configs: IConfig<
@@ -157,12 +157,10 @@ const utils = {
     switch (type === "title" ? multipleTitles[0] : multipleExcerpts[0]) {
       case MultipleTitlesExcerpt.All: {
         const r = k.join(type === "title" ? "; " : "\n")
-        if (origin) return [r]
-        return k.join(r)
+        return origin ? [r] : k.join(r)
       }
       case MultipleTitlesExcerpt.First:
-        if (origin) return [k[0]]
-        return k[0]
+        return origin ? [k[0]] : k[0]
       default:
         if (origin) return k
         return k.length === 1 ? k[0] : await utils.selectPartOfCard(k)
@@ -174,29 +172,35 @@ const utils = {
     const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
     return renderTemplateOfNodeProperties(node, template)
   },
-  async selectPartOfCard(parts: string[], tip = lang.choose_you_want) {
+  async selectPartOfCard(parts: string[], message = lang.choose_you_want) {
     const { option } = await popup(
-      Addon.title,
-      tip,
-      UIAlertViewStyle.Default,
-      parts.map(k => byteSlice(k.replace(/\n/g, ""), 0, 40)),
-      (alert: UIAlertView, buttonIndex: number) => ({
+      {
+        title: Addon.title,
+        message,
+        buttons: parts,
+        multiLine: true,
+        canCancel: false
+      },
+      ({ buttonIndex }) => ({
         option: buttonIndex
       })
     )
-    return parts[option!]
+    return parts[option]
   },
-  async selectPartIndexOfCard(parts: string[], tip = lang.choose_you_want) {
+  async selectPartIndexOfCard(parts: string[], message = lang.choose_you_want) {
     const { option } = await popup(
-      Addon.title,
-      tip,
-      UIAlertViewStyle.Default,
-      parts.map(k => byteSlice(k.replace(/\n/g, ""), 0, 40)),
-      (alert: UIAlertView, buttonIndex: number) => ({
+      {
+        title: Addon.title,
+        message,
+        buttons: parts,
+        multiLine: true,
+        canCancel: false
+      },
+      ({ buttonIndex }) => ({
         option: buttonIndex
       })
     )
-    return option!
+    return option
   },
   async getContentofOneCard(node: MbBookNote, option: number) {
     const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
@@ -298,7 +302,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<(IProfile & IDocProfile)["copysearch"], string>
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "searchChineseText":
     case "searchEnglishText":

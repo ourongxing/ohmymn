@@ -142,7 +142,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["autocomment"], string> & typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "addComment":
       input = /^\(.*\)$/.test(input)

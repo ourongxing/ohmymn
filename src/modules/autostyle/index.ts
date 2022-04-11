@@ -207,7 +207,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["autostyle"], string> & typeof ActionKey
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "changeColor":
       const index = Number(input)

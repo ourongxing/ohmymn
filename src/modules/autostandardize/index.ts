@@ -120,7 +120,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["autostandardize"], string>
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "customStandardize":
       checkReplaceParamFromMNLink(input)
@@ -130,5 +130,5 @@ const checker: ICheckMethod<
   }
 }
 
-const autostandardize = { configs, utils,checker}
+const autostandardize = { configs, utils, checker }
 export default autostandardize

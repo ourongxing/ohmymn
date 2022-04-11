@@ -89,7 +89,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["anotherautotitle"], string>
-> = (input, key) => {
+> = ({ input, key }) => {
   switch (key) {
     case "wordCount": {
       input = reverseEscape(input)

@@ -4,7 +4,7 @@ import { PanelControl } from "modules/addon/enum"
 import { checkInputCorrect } from "synthesizer"
 import type { IRowButton, MbBookNote } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { popup, showHUD, HUDController } from "utils/common"
+import { showHUD, HUDController } from "utils/common"
 import { manageProfileAction } from "utils/profile"
 import { closePanel } from "./switchPanel"
 import {
@@ -15,6 +15,7 @@ import {
 import { MN } from "const"
 import autoocr from "modules/autoocr"
 import { getMNLinkValue } from "utils/profile"
+import popup from "utils/popup"
 
 export default async (
   type: "card" | "text",
@@ -22,54 +23,72 @@ export default async (
   option?: number
 ) => {
   if (option !== undefined)
-    await handleMagicAction(type, row.key, option, undefined)
+    await handleMagicAction({ type, key: row.key, option })
   else
     switch (row.type) {
       case CellViewType.ButtonWithInput:
-        for (;;) {
+        while (1) {
           const { option, content } = await popup(
-            row.label,
-            row.help ?? "",
-            UIAlertViewStyle.PlainTextInput,
-            row.option ? row.option : [lang.sure],
-            (alert: UIAlertView, buttonIndex: number) => {
+            {
+              title: row.label,
+              message: row.help ?? "",
+              type: UIAlertViewStyle.PlainTextInput,
               // It is better to have only two options, because then the last option will be automatically selected after the input
-              return {
-                content: alert.textFieldAtIndex(0).text,
-                option: buttonIndex
-              }
-            }
+              buttons: row.option ? row.option : [lang.sure]
+            },
+            ({ alert, buttonIndex }) => ({
+              content: alert.textFieldAtIndex(0).text,
+              option: buttonIndex
+            })
           )
+          if (option === -1) return
           const text = content ? getMNLinkValue(content) : ""
           // Allowed to be empty
           if (
             text === "" ||
             (text && (await checkInputCorrect(text, row.key)))
           ) {
-            await handleMagicAction(type, row.key, option!, text)
+            await handleMagicAction({
+              type,
+              key: row.key,
+              option,
+              content: text
+            })
             return
           }
         }
       case CellViewType.Button:
         const { option } = await popup(
-          row.label,
-          row.help ?? "",
-          UIAlertViewStyle.Default,
-          row.option ?? [lang.sure],
-          (_, buttonIndex: number) => ({
+          {
+            title: row.label,
+            message: row.help ?? "",
+            type: UIAlertViewStyle.Default,
+            buttons: row.option ?? [lang.sure]
+          },
+          ({ buttonIndex }) => ({
             option: buttonIndex
           })
         )
-        await handleMagicAction(type, row.key, option!)
+        if (option === -1) return
+        await handleMagicAction({
+          type,
+          key: row.key,
+          option
+        })
     }
 }
 
-const handleMagicAction = async (
-  type: "card" | "text",
-  key: string,
-  option: number,
+const handleMagicAction = async ({
+  type,
+  key,
+  option,
   content = ""
-) => {
+}: {
+  type: "card" | "text"
+  key: string
+  option: number
+  content?: string
+}) => {
   try {
     if (type === "text") {
       const documentController =
@@ -134,18 +153,22 @@ const handleMagicAction = async (
           !noNeedSmartSelection
         ) {
           const { option } = await popup(
-            smart_select.title,
-            nodes.length > 1
-              ? smart_select.cards_with_children
-              : smart_select.card_with_children,
-            UIAlertViewStyle.Default,
-            smart_select.option,
-            (alert: UIAlertView, buttonIndex: number) => ({
+            {
+              title: smart_select.title,
+              message:
+                nodes.length > 1
+                  ? smart_select.cards_with_children
+                  : smart_select.card_with_children,
+              type: UIAlertViewStyle.Default,
+              buttons: smart_select.option,
+              canCancel: false
+            },
+            ({ buttonIndex }) => ({
               option: buttonIndex
             })
           )
 
-          if (option) {
+          if (option !== 0) {
             const { onlyChildren, onlyFirstLevel, allNodes } = nodes
               .slice(1)
               .reduce((acc, node) => {

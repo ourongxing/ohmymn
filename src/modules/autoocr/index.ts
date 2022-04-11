@@ -5,8 +5,9 @@ import { ActionKey } from "./enum"
 import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import fetch from "utils/network"
-import { openUrl, popup, showHUD } from "utils/common"
+import { openUrl, showHUD } from "utils/common"
 import { BaiduOCRError } from "./typings"
+import popup from "utils/popup"
 const { intro, link, label, option, help, other } = lang
 
 const configs: IConfig<(IProfile & IDocProfile)["autoocr"], typeof ActionKey> =
@@ -111,18 +112,18 @@ const configs: IConfig<(IProfile & IDocProfile)["autoocr"], typeof ActionKey> =
               /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
             )
             if (url?.[0]) {
-              await popup(
-                Addon.title,
-                other.link,
-                UIAlertViewStyle.Default,
-                [other.sure],
-                (alert: UIAlertView, buttonIndex: number) => {
-                  return {
-                    option: buttonIndex
-                  }
-                }
+              const { option } = await popup(
+                {
+                  title: Addon.title,
+                  message: other.link,
+                  type: UIAlertViewStyle.Default,
+                  buttons: [other.sure]
+                },
+                ({ buttonIndex }) => ({
+                  option: buttonIndex
+                })
               )
-              openUrl(url[0])
+              option !== -1 && openUrl(url[0])
             } else {
               utils.copy(res)
             }

@@ -221,7 +221,7 @@ const utils = {
 
 const checker: ICheckMethod<
   PickByValue<IProfile["export2anki"], string>
-> = async (input, key) => {
+> = async ({ input, key }) => {
   const { ankiConnectAPI, exportMethod, showTemplate } =
     self.profile.export2anki
   if (key.startsWith("field")) {
