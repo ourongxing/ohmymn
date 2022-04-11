@@ -59,7 +59,7 @@ const notebookWillOpen = (notebookid: string) => {
   self.notebookid = notebookid
   // Add hooks, aka observers
   eventHandlers.add()
-  gestureHandlers.add()
+  gestureHandlers().add()
 }
 
 const documentDidOpen = (docmd5: string) => {
@@ -70,6 +70,9 @@ const documentDidOpen = (docmd5: string) => {
     UIApplication.sharedApplication().idleTimerDisabled =
       self.profile.addon.screenAlwaysOn
   }
+  // if (MN.db.getDocumentById(docmd5)?.textContentsForPageNo(1).length)
+  //   showHUD("识别出来了")
+  // else showHUD("没有文字层")
   console.log("Open a document", "lifeCycle")
   self.docMD5 = docmd5
 }
@@ -79,7 +82,7 @@ const notebookWillClose = (notebookid: string) => {
   closePanel()
   // Remove hooks, aka observers
   eventHandlers.remove()
-  gestureHandlers.remove()
+  gestureHandlers().remove()
 }
 
 const documentWillClose = (docmd5: string) => {

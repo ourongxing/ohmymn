@@ -38,6 +38,11 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       key: "smartSelection",
       type: CellViewType.Switch,
       label: label.smart_selection
+    },
+    {
+      key: "defaultMergeText",
+      type: CellViewType.InlineInput,
+      label: "合并文字的分隔符"
     }
   ],
   actions4card: [
@@ -130,26 +135,25 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       method: renameTitle
     },
     {
-      type: CellViewType.ButtonWithInput,
+      type: CellViewType.Button,
       label: label.merge_text,
       key: "mergeText",
-      help: help.merge_text,
       option: option.merge_text,
-      method: ({ option, nodes, content }) => {
+      method: ({ option, nodes }) => {
+        const { defaultMergeText } = self.profile.magicaction4card
+        const separator = reverseEscape(
+          `${escapeDoubleQuote(defaultMergeText)}`,
+          true
+        )
         for (const node of nodes) {
-          const allText = getAllText(
-            node,
-            reverseEscape(`${escapeDoubleQuote(content ?? "")}`, true)
-          )
+          const allText = getAllText(node, separator)
           // MN 这个里的 API 名称设计的有毛病
           const linkComments: textComment[] = []
           while (node.comments.length) {
             const comment = node.comments[0]
-
             comment.type == "TextNote" &&
               comment.text.includes("marginnote3app") &&
               linkComments.push(comment)
-
             node.removeCommentByIndex(0)
           }
           switch (option) {

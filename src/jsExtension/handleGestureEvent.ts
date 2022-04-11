@@ -18,49 +18,46 @@ import { reverseEscape } from "utils/input"
 import { isModuleON, moduleKeyArray } from "synthesizer"
 
 // Not support Mac
-export const gestureHandlers = gesture.utils.gestureHandlerController([
-  {
-    // Cannot access self unless use function
-    view: () => MN.studyController().view,
-    gesture: () =>
-      gesture.utils.initGesture.swipe(
+// Cannot access self unless use function
+export const gestureHandlers = () =>
+  gesture.utils.gestureHandlerController([
+    {
+      view: MN.studyController().view,
+      gesture: gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
         "SwipeUpOnMindMapView"
       )
-  },
-  {
-    view: () => MN.studyController().view,
-    gesture: () =>
-      gesture.utils.initGesture.swipe(
+    },
+    {
+      view: MN.studyController().view,
+      gesture: gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
         "SwipeDownOnMindMapView"
       )
-  },
-  {
-    view: () => MN.studyController().view,
-    gesture: () =>
-      gesture.utils.initGesture.swipe(
+    },
+    {
+      view: MN.studyController().view,
+      gesture: gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
         "SwipeLeftOnMindMapView"
       )
-  },
-  {
-    view: () => MN.studyController().view,
-    gesture: () =>
-      gesture.utils.initGesture.swipe(
+    },
+    {
+      view: MN.studyController().view,
+      gesture: gesture.utils.initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,
         "SwipeRightOnMindMapView"
       )
-  },
-  {
-    view: () => self.settingViewController.tableView!,
-    gesture: () => gesture.utils.initGesture.tap(1, 2, "DoubleClickOnTableView")
-  }
-])
+    },
+    {
+      view: self.settingViewController.tableView!,
+      gesture: gesture.utils.initGesture.tap(1, 2, "DoubleClickOnTableView")
+    }
+  ])
 
 const enum SwipePosition {
   None = 0,
@@ -70,19 +67,25 @@ const enum SwipePosition {
 }
 
 const isWithinArea = (
-  pos: {
+  {
+    swipeX,
+    swipeY
+  }: {
     swipeX?: number
     swipeY?: number
   },
-  area: {
+  {
+    x,
+    y,
+    height,
+    width
+  }: {
     x?: number
     y?: number
     height?: number
     width?: number
   }
 ) => {
-  const { swipeX, swipeY } = pos
-  const { x, y, width, height } = area
   const xx =
     x === undefined ||
     width === undefined ||
@@ -127,7 +130,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
         {
           // mme 中修改了
           // y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
-          y: y - (arrow === DirectionOfSelection.toRight ? 150 : 220),
+          y: y - (arrow === DirectionOfSelection.toRight ? 155 : 220),
           height: 35
         }
       )

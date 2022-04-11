@@ -15,7 +15,8 @@ const profilePreset = {
     showDocInfo: false
   },
   magicaction4card: {
-    smartSelection: false
+    smartSelection: false,
+    defaultMergeText: "\n"
   },
   gesture: {
     singleBarSwipeUp: [0],
