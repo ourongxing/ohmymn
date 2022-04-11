@@ -193,17 +193,15 @@ const getActionKeyGetureOption = (section: ISection) => {
       actionKeys.push({
         key: row.key,
         module: row.module,
-        moduleName: row.moduleName,
-        option: 0
+        moduleName: row.moduleName
       })
     else {
       actionKeys.push({
         key: row.key,
         module: row.module,
-        moduleName: row.moduleName,
-        option: 0
+        moduleName: row.moduleName
       })
-      if (row.type == CellViewType.Button || row.key == "mergeText") {
+      if (row.type == CellViewType.Button) {
         row.option.forEach((option, index) => {
           gestureOption.push("——" + option)
           actionKeys.push({
