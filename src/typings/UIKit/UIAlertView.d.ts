@@ -8,7 +8,7 @@ declare global {
       style: UIAlertViewStyle,
       cancelButtonTitle: string,
       otherButtonTitles: Array<string>,
-      tapBlock: object
+      tapBlock: Function
     ): void
     static makeWithTitleMessageDelegateCancelButtonTitleOtherButtonTitles(
       title: string,

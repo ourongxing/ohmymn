@@ -37,12 +37,9 @@ declare global {
     isModify: boolean
     customSelectedNodes: MbBookNote[]
     panelStatus: boolean
-    docProfile: IDocProfile &
-      Record<string, { [k: string]: boolean | string | number[] }>
-    profile: IProfile &
-      Record<string, { [k: string]: boolean | string | number[] }>
-    profileTemp: IProfileTemp &
-      Record<string, { [k: string]: RegExp[][] | ReplaceParam[] | undefined }>
+    docProfile: IDocProfile
+    profile: IProfile
+    profileTemp: IProfileTemp
     dataSource: ISection[]
     settingViewController: UITableViewController
     popoverController: UIPopoverController

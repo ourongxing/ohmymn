@@ -5,14 +5,13 @@ import { MbBook, MbTopic } from "./NoteDatabase"
  * @class MbBookNote
  */
 export interface MNPic {
-  /** 
+  /**
    * hash value, used to get image info. Usually used to get [base64](https://en.wikipedia.org/wiki/Base64) image data.
    * For example: {@link MbBookNote.excerptPic}
    * @type {string}
-   * @memberof MNPic
    * @example
    * ```
-   * // Get base64 string of the image 
+   * // Get base64 string of the image
    * const noteid = sender.userInfo.noteid;
    * const note = Database.sharedInstance().getNoteById(noteid);
    * const pic_input = note.excerptPic;
@@ -20,60 +19,48 @@ export interface MNPic {
    * try{const pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
    * const pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
    * ```
-   * 
-  */
+   *
+   */
   paint: string
   size: unknown
 }
 
 /**
  * inherit from {@link MNPic}
- * @class MbBookNote
  */
 export interface excerptPic extends MNPic {
   selLst: {
     [key: number]: {
       /**
        * Rotation of the picture
-       * 
-       * @type {number}
-       * @memberof excerptPic
        */
       rotation: number
       /**
-       * Cannot be read(which means you can only log it and see it but cannot transform it to any type by using JS or TS)，but you can use end pos and start pos to get the position and size
-       * @type {NSValue}
-       * @memberof excerptPic
+       * Cannot be read(which means you can only log it and see it but cannot transform it to any type by using JS or TS)，
+       * but you can use end pos and start pos to get the position and size
        */
       imgRect: NSValue
       /**
        * CGRect Value
-       * 
-       * @type {NSValue}
-       * @memberof excerptPic
        */
       rect: NSValue
-      /**
-       * @type {number}
-       * @memberof excerptPic
-       */
       pageNo: number
     }
   }
 }
 /**
  * All type of comment
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
- * 
+ *
  */
 export type noteComment = textComment | htmlComment | linkComment | paintComment
 
 /**
  * Basic Comment，when merging Note, title will be merged of this type
  * Another three types of comments are {@link htmlComment}, {@link textComment}, {@link linkComment}
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
  */
@@ -81,7 +68,6 @@ export interface textComment {
   /**
    * identifier of the comment
    * @type {string}
-   * @memberof textComment
    * @example
    * ```
    * // Judge if the first comment is a text comment
@@ -97,20 +83,18 @@ export interface textComment {
   /**
    * Get the content of the comment
    * @type {string}
-   * @memberof textComment
    */
   text: string
   /**
    * NoteID of the note
    * @type {string}
-   * @memberof textComment
    */
   noteid?: string
 }
 /**
  * Generate when html copied to note
  * Another three types of comments are {@link textComment}, {@link linkComment}, {@link paintComment}
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
  */
@@ -118,7 +102,6 @@ export interface htmlComment {
   /**
    * identifier of the comment
    * @type {string}
-   * @memberof htmlComment
    * @example
    * ```
    * // Judge if the first comment is a html comment
@@ -134,31 +117,26 @@ export interface htmlComment {
   /**
    * Size of the render image
    * @type {DictObj}
-   * @memberof htmlComment
    */
   htmlSize: DictObj
   /**
    * RTF
    * @type {DictObj}
-   * @memberof htmlComment
    */
   rtf: DictObj
   /**
    * HTML code
    * @type {string}
-   * @memberof htmlComment
    */
   html: string
   /**
    * Text
    * @type {string}
-   * @memberof htmlComment
    */
   text: string
   /**
    * NoteID of the note
    * @type {string}
-   * @memberof htmlComment
    */
   noteid?: string
 }
@@ -166,7 +144,7 @@ export interface htmlComment {
 /**
  * Link text or picture Comments
  * Another three types of comments are {@link textComment}, {@link htmlComment}, {@link paintComment}
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
  * more detail see {@link linkComment_pic} and {@link linkComment_text}
@@ -176,7 +154,7 @@ export type linkComment = linkComment_text | linkComment_pic
 /**
  * Link text Comments
  * Another related interface is {@link linkComment_pic}, and makes {@link linkComment}
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
  */
@@ -184,7 +162,6 @@ export interface linkComment_text {
   /**
    * identifier of the comment
    * @type {string}
-   * @memberof linkComment_text
    * @example
    * ```
    * // Judge if the first comment is a link comment
@@ -200,13 +177,11 @@ export interface linkComment_text {
   /**
    * NoteID of the note
    * @type {string}
-   * @memberof linkComment_text
    */
   noteid: string
   /**
    * Text of the comment : {@link textComment.text}
    * @type {string}
-   * @memberof linkComment_text
    */
   q_htext: textComment["text"]
 }
@@ -214,7 +189,7 @@ export interface linkComment_text {
 /**
  * Link picture Comments
  * Another related interface is {@link linkComment_text}, and makes {@link linkComment}
- * 
+ *
  * @class MbBookNote
  * Get it by {@link MbBookNote.comment}
  */
@@ -222,7 +197,6 @@ export interface linkComment_pic {
   /**
    * identifier of the comment
    * @type {string}
-   * @memberof linkComment_pic
    * @example
    * ```
    * // Judge if the first comment is a link comment
@@ -238,19 +212,16 @@ export interface linkComment_pic {
   /**
    * NoteID of the note
    * @type {string}
-   * @memberof linkComment_pic
    */
   noteid: string
   /**
    * Text of the comment : {@link textComment.text}
    * @type {string}
-   * @memberof linkComment_pic
    */
   q_htext?: textComment["text"]
   /**
    * Image of the comment : {@link MNPic}
    * @type {string}
-   * @memberof linkComment_pic
    */
   q_hpic: MNPic
 }
@@ -258,15 +229,14 @@ export interface linkComment_pic {
 /**
  * Picture comment
  * Another three types of comments are {@link textComment}, {@link htmlComment}, {@link linkComment}
- * 
+ *
  * @class MbBookNote
- * Get it by {@link MbBookNote.comment}, inherit from {@link MNPic} 
+ * Get it by {@link MbBookNote.comment}, inherit from {@link MNPic}
  */
 export interface paintComment extends MNPic {
   /**
    * identifier of the comment
    * @type {string}
-   * @memberof paintComment
    * @example
    * ```
    * // Judge if the first comment is a paint comment
@@ -287,19 +257,16 @@ export interface paintComment extends MNPic {
 export interface LinkedNote {
   /**
    * @type {boolean}
-   * @memberof LinkedNote
    */
   summary: boolean
   /**
    * nodeid of the linked note
    * @type {string}
-   * @memberof LinkedNote
    */
   noteid: string
   /**
    * text of the linked note
    * @type {string}
-   * @memberof LinkedNote
    */
   linktext: string
 }
@@ -340,7 +307,7 @@ export interface LinkedNote {
  * @property {number} flagged
  * @property {DictObj} textHighlight
  * @property {DictObj} options
- * 
+ *
  * @function paste
  * @function clearFormat
  * @function allNoteText
@@ -360,12 +327,11 @@ export class MbBookNote {
    * const text = note.excerptText;
    * ```
    * @type {string}
-   * @memberof MbBookNote
    */
   excerptText?: string
   /**
    * Title of the note(card)
-   * @example 
+   * @example
    * ```
    * const noteid = sender.userInfo.noteid;
    * const note = Database.sharedInstance().getNoteById(noteid);
@@ -373,35 +339,30 @@ export class MbBookNote {
    * Application.sharedInstance().showHUD(note.noteTitle,self.window,1) //Display the title with showHUD
    * ```
    * @type {string}
-   * @memberof MbBookNote
    */
   noteTitle?: string
   /**
-   * int 
+   * int
    * Index of the color
    * @type {number}
-   * @memberof MbBookNote
-  */
+   */
   colorIndex: number
   /**
    * int
    * @type {number}
-   * @memberof MbBookNote
-  */
+   */
   fillIndex: number
   // mindmapPosition: CGPoint
   /**
    * Note id, usually get from sender
    * const noteid = sender.userInfo.noteid;
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly noteId?: string
   /**
    * MD5 of the document
    *
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly docMd5?: string
   /**
@@ -413,26 +374,22 @@ export class MbBookNote {
    * }
    * ```
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly notebookId?: string
-  /** 
+  /**
    * Page number of the start position(int)
    * @type {number}
-   * @memberof MbBookNote
-  */
+   */
   readonly startPage?: number
-  /** 
+  /**
    * Page number of the end position(int)
    * @type {number}
-   * @memberof MbBookNote
-  */
+   */
   readonly endPage?: number
   /**
    * Used to get the size of the picture, which can not be directly getten from {@link excerptPic.selLst} imgrect
-   * 
+   *
    * @type {string}
-   * @memberof MbBookNote
    * @example
    * ```
    * //get the pos and size of the picture
@@ -452,7 +409,6 @@ export class MbBookNote {
    * Used to get the size of the picture, which can not be directly getten from {@link excerptPic.selLst} imgrect
    *
    * @type {string}
-   * @memberof MbBookNote
    * @example
    * ```
    * //get the pos and size of the picture
@@ -481,52 +437,45 @@ export class MbBookNote {
    * const pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
    * ```
    * @type {excerptPic}
-   * @memberof MbBookNote
    */
   readonly excerptPic?: excerptPic
   /**
    * Date of the note created
    *
    * @type {Date}
-   * @memberof MbBookNote
    */
   readonly createDate?: Date
   /**
    * Date of the note modified
    *
    * @type {Date}
-   * @memberof MbBookNote
    */
   readonly modifiedDate?: Date
-  /** 
-   * List of media hash seprated by '-' 
+  /**
+   * List of media hash seprated by '-'
    * @type {string}
-   * @memberof MbBookNote
-  */
+   */
   readonly mediaList?: string
   /**
    * Origin note id
    *
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly originNoteId?: string
   /**
-   * 
+   *
    *
    * @type {number}
-   * @memberof MbBookNote
    */
   readonly mindmapBranchClose?: number
   /**
-   * 
+   *
    *
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly notesText?: string
   /**
-   * groupNoteID used to locate the note card  
+   * groupNoteID used to locate the note card
    * @example
    * ```
    * // get all comments of the note card
@@ -534,7 +483,6 @@ export class MbBookNote {
    * const comments = note.comments
    * ```
    * @type {string}
-   * @memberof MbBookNote
    */
   readonly groupNoteId?: string
   /**
@@ -546,7 +494,6 @@ export class MbBookNote {
    * const comments = note.comments
    * ```
    * @type {noteComment[]}
-   * @memberof MbBookNote
    */
   readonly comments: noteComment[]
   /**
@@ -559,7 +506,6 @@ export class MbBookNote {
    * const parentNote = getNoteById(parentNoteId)
    * ```
    * @type {MbBookNote}
-   * @memberof MbBookNote
    */
   readonly parentNote?: MbBookNote
   /**
@@ -574,7 +520,6 @@ export class MbBookNote {
    * }
    * ```
    * @type {LinkedNote[]}
-   * @memberof MbBookNote
    */
   readonly linkedNotes: LinkedNote[]
   /**
@@ -589,71 +534,60 @@ export class MbBookNote {
    * }
    * ```
    * @type {MbBookNote[]}
-   * @memberof MbBookNote
    */
   readonly childNotes?: MbBookNote[]
   /**
    * Array of summarized note-id
-   * 
+   *
    * @type {string[]}
-   * @memberof MbBookNote
    */
   readonly summaryLinks: string[]
 
-  /** 
+  /**
    * int
    * @type {number}
-   * @memberof MbBookNote  
    */
   readonly zLevel?: number
   /**
    * Show if the card is hidden
    *
    * @type {boolean}
-   * @memberof MbBookNote
    */
   readonly hidden?: boolean
-  /** 
-   * int 
+  /**
+   * int
    * @type {number}
-   * @memberof MbBookNote
    */
   readonly toc?: number
   /**
    *
    * @type {boolean}
-   * @memberof MbBookNote
    */
   readonly annotation?: boolean
   /**
    *
    *
    * @type {boolean}
-   * @memberof MbBookNote
    */
   readonly textFirst?: boolean
-  /** 
-   * int 
+  /**
+   * int
    * @type {groupMode}
-   * @memberof MbBookNote
    */
   readonly groupMode?: groupMode
-  /** 
-   * int 
+  /**
+   * int
    * @type {number}
-   * @memberof MbBookNote
    */
   readonly flashcard?: number
-  /** 
-   * int 
+  /**
+   * int
    * @type {number}
-   * @memberof MbBookNote
    */
   readonly summary: number
-  /** 
-   * int 
+  /**
+   * int
    * @type {number}
-   * @memberof MbBookNote
    */
   readonly flagged?: number
   /**
@@ -665,7 +599,6 @@ export class MbBookNote {
    *     maskList?: string[]
    *     textSelLst?: any[]
    *   }}
-   * @memberof MbBookNote
    */
   readonly textHighlight?: {
     highlight_text: string
@@ -711,7 +644,7 @@ export class MbBookNote {
    * note.appendComment(html, text, size, tag)
    * ```
    */
-  appendHtmlComment(html: string, text: string, size:CGSize, tag: string): void
+  appendHtmlComment(html: string, text: string, size: CGSize, tag: string): void
   /**
    * Append one text comment to the note
    * @returns void
@@ -732,7 +665,7 @@ export class MbBookNote {
    */
   appendNoteLink(note: MbBookNote): void
   /**
-   * Remove comment by index 
+   * Remove comment by index
    * Index Explanation:
    * index = -1 => excerptPic pr excerptText (excerptText cannot be removed; excerptText can be deconsted if noteTitle exists)
    * index = 0,1,2... => other comments below
@@ -761,18 +694,15 @@ declare global {
     static createWithTitleNotebookDocument(
       /**
        * @type {string}
-       * @memberof Note
        */
       title: string,
-      /** 
+      /**
        * @type {MbTopic}
-       * @memberof Note
-      */
+       */
       topic: MbTopic,
       /**
        * @type {MbBook}
-       * @memberof Note
-      */
+       */
       book: MbBook
     ): MbBookNote
   }

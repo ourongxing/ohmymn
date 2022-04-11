@@ -143,7 +143,6 @@ export class StudyController extends UIViewController {
    *
    * {@link UIView}
    * @type {UIView}
-   * @memberof StudyController
    * @example
    * ```
    * // add sub UIview to study controller
