@@ -1,12 +1,13 @@
-<div style="display: flex; flex-direction:column;align-items: center; justify-content: center;">
+<p align="center">
   <a href="https://github.com/mnaddon/ohmymn">
     <img src="assets/logo.svg" alt="Logo" width="150" height="150">
   </a>
-  <span style="font-size:3rem">OhMyMN</span>
-  <span style="margin-top: -15px;margin-bottom: 1rem">The official MarginNote Addon now</span>
+</p>
+<p align="center" style="font-size:3rem; margin-top: -10px">OhMyMN</p>
+<p align="center" style="margin-top: -30px;margin-bottom: 1rem">The official MarginNote Addon now</p>
+<p align="center">
   <b style="margin-bottom: 1rem;opacity: 0.6">MarginNote Addon Control Panel and Development Framework</b>
-</div>
-
+</p>
 <p align="center">
   <a href="https://github.com/mnaddon/ohmymn/network/members"><img src="https://img.shields.io/github/forks/mnaddon/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/mnaddon/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/mnaddon/ohmymn.svg?style=flat" alt="stars"></a>
