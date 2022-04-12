@@ -214,11 +214,11 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
 }
 
 /**
- * Get all the text in the card.
- * @param note The card that you want to get its text and comments.
+ * Get all the text in the card, include excerpt text, comment, tags.
+ * @param node MindMap node, a card.
  * @param separator The separator between the text and comments.
- * @param highlight If the text is highlighted.
- * @returns
+ * @param highlight default true, will retention highlight symbol, **.
+ * @returns string
  */
 const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
   return [
@@ -229,8 +229,8 @@ const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
 }
 
 /**
- * Remove the highlight in the text.
- * @param text The text that you want to remove the highlight.
+ * Remove the highlight symbol in the text.
+ * @param text The text that you want to remove the highlight symbol.
  * @returns Processed text.
  */
 const removeHighlight = (text: string) => text.replace(/\*\*/g, "")

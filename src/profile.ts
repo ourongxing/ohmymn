@@ -16,7 +16,7 @@ const profilePreset = {
   },
   magicaction4card: {
     smartSelection: false,
-    defaultMergeText: "\n"
+    defaultMergeText: "\\n"
   },
   gesture: {
     singleBarSwipeUp: [0],
@@ -248,6 +248,12 @@ const docProfilePreset = {
   }
 }
 
+const notebookProfilePreset = {
+  addon: {
+    profile: [0]
+  }
+}
+
 // Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
 const profileTempPreset = {
   replaceParam: {
@@ -268,12 +274,17 @@ const profileTempPreset = {
 type IProfileTemp = typeof profileTempPreset
 type IProfile = typeof profilePreset
 type IDocProfile = typeof docProfilePreset
+type INotebookProfile = typeof notebookProfilePreset
+type IAllProfile = IProfile & IDocProfile & INotebookProfile
 
 export {
   profilePreset,
   docProfilePreset,
   profileTempPreset,
+  notebookProfilePreset,
   IProfile,
   IDocProfile,
-  IProfileTemp
+  INotebookProfile,
+  IProfileTemp,
+  IAllProfile
 }

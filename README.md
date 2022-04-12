@@ -4,7 +4,7 @@
   </a>
 </p>
 <h1 align="center" style="margin-top: -20px;">OhMyMN</h1>
-<p align="center" style="margin-top: -30px;margin-bottom: 1rem">The official MarginNote Addon now</p>
+<p align="center" style="margin-top: -30px;margin-bottom: 1rem">The Official MarginNote Addon Now!</p>
 <p align="center">
   <b style="margin-bottom: 16px;opacity: 0.6">MarginNote Addon Control Panel and Development Framework</b>
 </p>
