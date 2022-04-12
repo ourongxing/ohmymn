@@ -3,7 +3,7 @@
     <img src="assets/logo.svg" alt="Logo" width="150" height="150">
   </a>
 </p>
-<p align="center" style="margin-top: -20px;font-size: 60px">OhMyMN</p>
+<h1 align="center" style="margin-top: -20px;font-size: 60px;font-weight: 300">OhMyMN</h1>
 <p align="center" style="margin-top: -30px;margin-bottom: 1rem">The official MarginNote Addon now</p>
 <p align="center">
   <b style="margin-bottom: 16px;opacity: 0.6">MarginNote Addon Control Panel and Development Framework</b>
