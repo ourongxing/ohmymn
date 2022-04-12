@@ -4,8 +4,7 @@ import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
-import { ActionKey, AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
-import { IProfile } from "profile"
+import { AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
 import {
   checkRegArrayFromMNLink,
   checkReplaceParam,
@@ -15,7 +14,7 @@ import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 const { label, option, intro, link, help } = lang
 
-const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
+const configs: IConfig<"anotherautodef"> = {
   name: "Another AutoDef",
   intro,
   link,

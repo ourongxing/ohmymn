@@ -4,7 +4,7 @@ import { CellViewType } from "typings/enum"
 import { openUrl, showHUD } from "utils/common"
 import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import { getExcerptText } from "utils/note"
-import { ActionKey, MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
+import { MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
 import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import { checkPlainText } from "utils/checkInput"
@@ -12,10 +12,7 @@ import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 import popup from "utils/popup"
 const { link, intro, lable, option, help, hud } = lang
 
-const configs: IConfig<
-  (IProfile & IDocProfile)["copysearch"],
-  typeof ActionKey
-> = {
+const configs: IConfig<"copysearch"> = {
   name: "CopySearch",
   intro,
   link,

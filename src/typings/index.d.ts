@@ -1,5 +1,4 @@
-import { IDocProfile, IProfile, IProfileTemp } from "profile"
-import { ReplaceParam } from "utils/input"
+import { IDocProfile, INotebookProfile, IProfile, IProfileTemp } from "profile"
 import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
 import { UITableView, UITableViewController, UIView, UIWindow } from "./UIKit"
@@ -40,6 +39,7 @@ declare global {
     docProfile: IDocProfile
     profile: IProfile
     profileTemp: IProfileTemp
+    notebookProfile: INotebookProfile
     dataSource: ISection[]
     settingViewController: UITableViewController
     popoverController: UIPopoverController

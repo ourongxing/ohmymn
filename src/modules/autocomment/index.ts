@@ -20,7 +20,7 @@ import { unique } from "utils"
 
 const { intro, option, label, link, help } = lang
 
-const configs: IConfig<IProfile["autocomment"], typeof ActionKey> = {
+const configs: IConfig<"autocomment"> = {
   name: "AutoComment",
   intro,
   link,

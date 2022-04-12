@@ -3,14 +3,13 @@ import pangu from "utils/third party/pangu"
 import { toTitleCase } from "utils/third party/toTitleCase"
 import { CJK, isHalfWidth } from "utils/text"
 import { CellViewType } from "typings/enum"
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { lang } from "./lang"
-import { ActionKey, AutoStandardizePreset, StandardizeSelected } from "./enum"
-import { IProfile } from "profile"
+import { AutoStandardizePreset, StandardizeSelected } from "./enum"
 import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang
-const configs: IConfig<IProfile["autostandardize"], typeof ActionKey> = {
+const configs: IConfig<"autostandardize"> = {
   name: "AutoStandardize",
   intro,
   link,

@@ -1,5 +1,5 @@
 import { lang } from "./lang"
-import type { IConfig, ICheckMethod, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
 import { ActionKey, AddTags, ExportMethod } from "./enum"
@@ -13,10 +13,7 @@ import { escapeURLParam } from "utils"
 import popup from "utils/popup"
 const { link, intro, lable, option, help } = lang
 
-const configs: IConfig<
-  (IProfile & IDocProfile)["export2flomo"],
-  typeof ActionKey
-> = {
+const configs: IConfig<"export2flomo"> = {
   name: "Export to Flomo",
   key: "export2flomo",
   intro,

@@ -14,24 +14,17 @@ import {
   string2ReplaceParam
 } from "utils/input"
 import { HUDController, showHUD } from "utils/common"
-import type { textComment, IConfig, ICheckMethod } from "typings"
+import type { textComment, IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { getLayerSerialInfo, getSerialInfo, renameTitle } from "./renameTitle"
-import {
-  ActionKey,
-  FilterCards,
-  MergeCards,
-  MergeText,
-  SwitchTitle
-} from "./enum"
-import { IProfile } from "profile"
+import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./enum"
 import { checkPlainText, checkRegArray } from "utils/checkInput"
 
 const { help, option, intro, label, link, hud } = lang
 
-const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
+const configs: IConfig<"magicaction4card"> = {
   name: "MagicAction for Card",
   key: "magicaction4card",
   intro,

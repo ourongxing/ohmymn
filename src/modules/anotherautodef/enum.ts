@@ -9,10 +9,6 @@ export const enum TitleLinkSplit {
   Punctuation
 }
 
-export enum ActionKey {
-  extractTitle
-}
-
 export const enum ExtractTitle {
   UseAutoDef
 }

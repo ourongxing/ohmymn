@@ -1,8 +1,7 @@
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { ActionKey, TranslateProviders } from "./enum"
-import { IDocProfile, IProfile } from "profile"
+import { TranslateProviders } from "./enum"
 import fetch from "utils/network"
 import MD5 from "utils/third party/md5"
 import { showHUD } from "utils/common"
@@ -11,7 +10,7 @@ import { countWord, isHalfWidth } from "utils/text"
 import { reverseEscape } from "utils/input"
 const { intro, link, label, option, help } = lang
 
-const configs: IConfig<IProfile["autotranslate"], typeof ActionKey> = {
+const configs: IConfig<"autotranslate"> = {
   name: "AutoTranslate",
   intro: "摘录时自动附加上翻译结果",
   link,

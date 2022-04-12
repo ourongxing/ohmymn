@@ -17,7 +17,7 @@ import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 const { intro, option, label, link, help } = lang
 
-const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
+const configs: IConfig<"autotag"> = {
   name: "AutoTag",
   intro,
   link,

@@ -16,7 +16,7 @@ const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
-const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
+const configs: IConfig<"autostyle"> = {
   name: "AutoStyle",
   intro,
   link,

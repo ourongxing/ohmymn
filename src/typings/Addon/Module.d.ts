@@ -1,15 +1,16 @@
+import { IAllProfile } from "profile"
 import { MbBookNote } from "typings/MarginNote"
 import { CellViewType } from "./enum"
 
-export type IConfig<T = Record<string, any>, K = undefined> = Expand<{
+export type IConfig<T extends keyof IAllProfile = keyof IAllProfile> = {
   name: string
   key?: string
   intro: string
   link?: string
-  settings: ISetting<T>[]
-  actions4card?: IAction<keyof K, IActionMethod4Card>[]
-  actions4text?: IAction<keyof K, IActionMethod4Text>[]
-}>
+  settings: ISetting<IAllProfile[T]>[]
+  actions4card?: IAction<IActionMethod4Card>[]
+  actions4text?: IAction<IActionMethod4Text>[]
+}
 
 /** Help must be set before using link */
 type HelpLink = XOR<{ help: string; link?: string }, {}>
@@ -56,11 +57,8 @@ export type ISetting<T> =
   | ISettingSwitch<T>
   | ISettingInlineInput<T>
 
-export type IAction<
-  K,
-  T extends IActionMethod4Card | IActionMethod4Text
-> = Expand<{
-  key: K
+export type IAction<T extends IActionMethod4Card | IActionMethod4Text> = {
+  key: string
   label: string
   type: CellViewType.Button | CellViewType.ButtonWithInput
   /** auto generate. value is module's key*/
@@ -71,7 +69,7 @@ export type IAction<
   help?: string
   method: T
   check?: ICheckMethod
-}>
+}
 
 export type IActionMethod4Card = ({
   content,

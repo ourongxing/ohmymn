@@ -1,16 +1,14 @@
 import { Addon } from "const"
 import { lang } from "./lang"
-import type { ICheckMethod, IConfig } from "typings"
+import type { IConfig } from "typings"
 import { CellViewType } from "typings/enum"
-import { IDocProfile, IProfile } from "profile"
 import { checkInteger } from "utils/checkInput"
 
-const { link, label, help, option } = lang
-const configs: IConfig<(IProfile & IDocProfile)["addon"]> = {
+const { label, help, option } = lang
+const configs: IConfig<"addon"> = {
   name: Addon.title,
   key: "addon",
   intro: `version: ${Addon.version}`,
-  link,
   settings: [
     {
       help: help.profile,

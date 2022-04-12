@@ -10,10 +10,7 @@ import { AnkiConnect } from "./ankiconnect"
 import { MN } from "const"
 const { link, intro, lable, option, help } = lang
 
-const configs: IConfig<
-  (IProfile & IDocProfile)["export2anki"],
-  typeof ActionKey
-> = {
+const configs: IConfig<"export2anki"> = {
   name: "Export to Anki",
   key: "export2anki",
   intro,

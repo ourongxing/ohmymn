@@ -34,3 +34,17 @@ type PickByValueExact<T, ValueType> = Pick<
       : never
   }[keyof T]
 >
+
+type Tuple<T, N extends number, R extends T[] = []> = R["length"] extends N
+  ? R
+  : Tuple<T, N, [T, ...R]>
+
+type Test<T> = T extends object
+  ? T extends infer O
+    ? {
+        [K in keyof O]: O[K] extends string[]
+          ? Tuple<string, O[K]["length"]>
+          : Test<O[K]>
+      }
+    : never
+  : T

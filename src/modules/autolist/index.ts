@@ -1,11 +1,10 @@
 import { getExcerptNotes } from "utils/note"
 import { regFlag, string2ReplaceParam } from "utils/input"
 import { isHalfWidth, SerialCode } from "utils/text"
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { ActionKey, AutoListPreset, ListSelected } from "./enum"
-import { IProfile } from "profile"
+import { AutoListPreset, ListSelected } from "./enum"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink
@@ -13,7 +12,7 @@ import {
 
 const { intro, option, label, link, help } = lang
 
-const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
+const configs: IConfig<"autolist"> = {
   name: "AutoList",
   intro,
   link,

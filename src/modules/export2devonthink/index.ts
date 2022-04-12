@@ -11,7 +11,7 @@ import { removeHighlight } from "utils/note"
 import { escapeURLParam, unescapeURLParam } from "utils"
 const { link, intro, lable, option, help } = lang
 
-const configs: IConfig<IProfile["export2devonthink"], typeof ActionKey> = {
+const configs: IConfig<"export2devonthink"> = {
   name: "Export to Devonthink",
   key: "export2devonthink",
   intro,

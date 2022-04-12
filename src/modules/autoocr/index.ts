@@ -1,8 +1,6 @@
 import type { IConfig } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"
 import { lang } from "./lang"
-import { ActionKey } from "./enum"
-import { IDocProfile, IProfile } from "profile"
 import { Addon } from "const"
 import fetch from "utils/network"
 import { openUrl, showHUD } from "utils/common"
@@ -10,130 +8,129 @@ import { BaiduOCRError } from "./typings"
 import popup from "utils/popup"
 const { intro, link, label, option, help, other } = lang
 
-const configs: IConfig<(IProfile & IDocProfile)["autoocr"], typeof ActionKey> =
-  {
-    name: "AutoOCR",
-    intro,
-    link,
-    settings: [
-      {
-        key: "on",
-        type: CellViewType.Switch,
-        label: label.on,
-        help: help.on
-      },
-      {
-        key: "lang",
-        label: label.lang,
-        type: CellViewType.Select,
-        option: option.lang
-      },
-      {
-        key: "formulaOCRProviders",
-        type: CellViewType.Select,
-        option: option.formulaOCRProviders,
-        label: label.formulaOCRProviders
-      },
-      {
-        key: "showKey",
-        type: CellViewType.Switch,
-        label: label.showKey
-      },
-      {
-        key: "baiduApiKey",
-        type: CellViewType.Input,
-        help: help.baiduApiKey,
-        bind: [["showKey", 1]]
-      },
-      {
-        key: "baiduSecretKey",
-        type: CellViewType.Input,
-        help: help.baiduSecretKey,
-        bind: [["showKey", 1]]
-      },
-      {
-        key: "mathpixAppKey",
-        type: CellViewType.Input,
-        help: help.mathpixAppKey,
-        bind: [
-          ["showKey", 1],
-          ["formulaOCRProviders", 1]
-        ]
+const configs: IConfig<"autoocr"> = {
+  name: "AutoOCR",
+  intro,
+  link,
+  settings: [
+    {
+      key: "on",
+      type: CellViewType.Switch,
+      label: label.on,
+      help: help.on
+    },
+    {
+      key: "lang",
+      label: label.lang,
+      type: CellViewType.Select,
+      option: option.lang
+    },
+    {
+      key: "formulaOCRProviders",
+      type: CellViewType.Select,
+      option: option.formulaOCRProviders,
+      label: label.formulaOCRProviders
+    },
+    {
+      key: "showKey",
+      type: CellViewType.Switch,
+      label: label.showKey
+    },
+    {
+      key: "baiduApiKey",
+      type: CellViewType.Input,
+      help: help.baiduApiKey,
+      bind: [["showKey", 1]]
+    },
+    {
+      key: "baiduSecretKey",
+      type: CellViewType.Input,
+      help: help.baiduSecretKey,
+      bind: [["showKey", 1]]
+    },
+    {
+      key: "mathpixAppKey",
+      type: CellViewType.Input,
+      help: help.mathpixAppKey,
+      bind: [
+        ["showKey", 1],
+        ["formulaOCRProviders", 1]
+      ]
+    }
+  ],
+  actions4text: [
+    {
+      type: CellViewType.Button,
+      key: "formulaOCR",
+      label: label.formulaOCR,
+      option: option.formulaOCR,
+      method: async ({ imgBase64, option }) => {
+        try {
+          const res =
+            self.profile.autoocr.formulaOCRProviders[0] === 0
+              ? await utils.baiduFormulaOCR(imgBase64)
+              : await utils.mathpixOCR(imgBase64)
+          utils.copy([res, `$${res}$`, `$$${res}$$`][option])
+        } catch (err) {
+          showHUD(String(err), 2)
+        }
       }
-    ],
-    actions4text: [
-      {
-        type: CellViewType.Button,
-        key: "formulaOCR",
-        label: label.formulaOCR,
-        option: option.formulaOCR,
-        method: async ({ imgBase64, option }) => {
-          try {
-            const res =
-              self.profile.autoocr.formulaOCRProviders[0] === 0
-                ? await utils.baiduFormulaOCR(imgBase64)
-                : await utils.mathpixOCR(imgBase64)
-            utils.copy([res, `$${res}$`, `$$${res}$$`][option])
-          } catch (err) {
-            showHUD(String(err), 2)
-          }
+    },
+    {
+      type: CellViewType.Button,
+      key: "textOCR",
+      label: label.textOCR,
+      method: async ({ imgBase64 }) => {
+        const res = await utils.main(imgBase64)
+        res && utils.copy(res)
+      }
+    },
+    {
+      type: CellViewType.Button,
+      key: "handWrittingOCR",
+      label: label.handWrittingOCR,
+      method: async ({ imgBase64 }) => {
+        try {
+          const res = await utils.baiduHandWrittingOCR(imgBase64)
+          utils.copy(res)
+        } catch (err) {
+          showHUD(String(err), 2)
         }
-      },
-      {
-        type: CellViewType.Button,
-        key: "textOCR",
-        label: label.textOCR,
-        method: async ({ imgBase64 }) => {
-          const res = await utils.main(imgBase64)
-          res && utils.copy(res)
-        }
-      },
-      {
-        type: CellViewType.Button,
-        key: "handWrittingOCR",
-        label: label.handWrittingOCR,
-        method: async ({ imgBase64 }) => {
-          try {
-            const res = await utils.baiduHandWrittingOCR(imgBase64)
-            utils.copy(res)
-          } catch (err) {
-            showHUD(String(err), 2)
-          }
-        }
-      },
-      {
-        type: CellViewType.Button,
-        key: "QRCodeOCR",
-        label: label.QRCodeOCR,
-        method: async ({ imgBase64 }) => {
-          try {
-            const res = await utils.QRCodeOCR(imgBase64)
-            const url = res.match(
-              /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
+      }
+    },
+    {
+      type: CellViewType.Button,
+      key: "QRCodeOCR",
+      label: label.QRCodeOCR,
+      method: async ({ imgBase64 }) => {
+        try {
+          const res = await utils.QRCodeOCR(imgBase64)
+          const url = res.match(
+            /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
+          )
+          if (url?.[0]) {
+            const { option } = await popup(
+              {
+                title: Addon.title,
+                message: other.link,
+                type: UIAlertViewStyle.Default,
+                buttons: [other.sure]
+              },
+              ({ buttonIndex }) => ({
+                option: buttonIndex
+              })
             )
-            if (url?.[0]) {
-              const { option } = await popup(
-                {
-                  title: Addon.title,
-                  message: other.link,
-                  type: UIAlertViewStyle.Default,
-                  buttons: [other.sure]
-                },
-                ({ buttonIndex }) => ({
-                  option: buttonIndex
-                })
-              )
-              option !== -1 && openUrl(url[0])
-            } else {
-              utils.copy(res)
-            }
-          } catch (err) {
-            showHUD(String(err), 2)
+            option !== -1 && openUrl(url[0])
+          } else {
+            utils.copy(res)
           }
+        } catch (err) {
+          showHUD(String(err), 2)
         }
       }
-    ]
-  }
+    }
+  ]
+}
 
 const utils = {
   async getBaiduToken() {

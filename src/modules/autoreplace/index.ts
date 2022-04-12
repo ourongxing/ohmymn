@@ -3,12 +3,11 @@ import { string2ReplaceParam } from "utils/input"
 import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { ActionKey, AutoReplacePreset, ReplaceSelected } from "./enum"
-import { IProfile } from "profile"
+import { AutoReplacePreset, ReplaceSelected } from "./enum"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 const { intro, link, label, option, help } = lang
 
-const configs: IConfig<IProfile["autoreplace"], typeof ActionKey> = {
+const configs: IConfig<"autoreplace"> = {
   name: "AutoReplace",
   intro,
   link,
