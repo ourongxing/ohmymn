@@ -1,15 +1,16 @@
+import { Addon } from "@/const"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
+import { escapeURLParam } from "@/utils"
+import { showHUD, openUrl } from "@/utils/common"
+import { reverseEscape } from "@/utils/input"
+import fetch from "@/utils/network"
+import { removeHighlight } from "@/utils/note"
+import popup from "@/utils/popup"
 import { lang } from "./lang"
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { AddTags, ExportMethod } from "./typings"
-import { Addon } from "const"
-import { openUrl, showHUD } from "utils/common"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
-import fetch from "utils/network"
-import { reverseEscape } from "utils/input"
-import { removeHighlight } from "utils/note"
-import { escapeURLParam } from "utils"
-import popup from "utils/popup"
+import { ExportMethod, AddTags } from "./typings"
+
 const { link, intro, lable, option, help } = lang
 
 const configs: IConfig<"export2flomo"> = {

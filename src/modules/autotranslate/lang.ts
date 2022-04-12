@@ -1,4 +1,4 @@
-import { MN } from "const"
+import { MN } from "@/const"
 
 const zh = {
   intro: "自动替换摘录中的某些错误",

@@ -1,14 +1,14 @@
-import { render } from "utils/third party/mustache"
-import { MbBookNote } from "typings"
-import { dateFormat } from "utils"
-import { MN } from "const"
+import { MN } from "@/const"
+import { MbBookNote } from "@/typings"
+import { dateFormat } from "@/utils"
 import {
-  getExcerptText,
-  getAllText,
+  removeHighlight,
   getAllTags,
-  getAllCommnets,
-  removeHighlight
-} from "utils/note"
+  getAllText,
+  getExcerptText,
+  getAllCommnets
+} from "@/utils/note"
+import { render } from "@/utils/third party/mustache"
 
 /** undefine can be auto hidden when using Mustache */
 const undefine2undefine = (v: any, f: (t: any) => any) => {

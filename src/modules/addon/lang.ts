@@ -1,4 +1,4 @@
-import { MN } from "const"
+import { MN } from "@/const"
 
 const zh = {
   link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",

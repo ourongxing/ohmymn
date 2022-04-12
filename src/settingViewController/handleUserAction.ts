@@ -1,14 +1,13 @@
-import { openUrl, postNotification } from "utils/common"
-import { checkInputCorrect, ModuleKeyType } from "synthesizer"
-import { Addon, MN } from "const"
-import type { IRowInput, IRowSelect, IRowSwitch, UITableView } from "typings"
-import { CellViewType } from "typings/enum"
-import { byteLength } from "utils/text"
-import lang from "lang"
-import { moduleKeyArray } from "synthesizer"
-import { actionKey4Card, actionKey4Text, dataSourceIndex } from "dataSource"
+import { Addon, MN } from "@/const"
+import { actionKey4Text, actionKey4Card } from "@/dataSource"
+import lang from "@/lang"
+import { checkInputCorrect, moduleKeyArray, ModuleKeyType } from "@/synthesizer"
+import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { openUrl, postNotification } from "@/utils/common"
+import popup from "@/utils/popup"
+import { byteLength } from "@/utils/text"
 import { _isModuleOFF } from "./settingView"
-import popup from "utils/popup"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(

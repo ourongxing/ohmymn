@@ -1,4 +1,4 @@
-import { ModuleKeyType } from "synthesizer"
+import { ModuleKeyType } from "@/synthesizer"
 import { CellViewType } from "./enum"
 
 export type ISection = {

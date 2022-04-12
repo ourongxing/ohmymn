@@ -1,11 +1,12 @@
-import type { IConfig } from "typings"
-import { CellViewType, UIAlertViewStyle } from "typings/enum"
+import { Addon } from "@/const"
+import { IConfig } from "@/typings"
+import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
+import { showHUD, openUrl } from "@/utils/common"
+import fetch from "@/utils/network"
+import popup from "@/utils/popup"
 import { lang } from "./lang"
-import { Addon } from "const"
-import fetch from "utils/network"
-import { openUrl, showHUD } from "utils/common"
 import { BaiduOCRError } from "./typings"
-import popup from "utils/popup"
+
 const { intro, link, label, option, help, other } = lang
 
 const configs: IConfig<"autoocr"> = {

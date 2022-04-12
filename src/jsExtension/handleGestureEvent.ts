@@ -1,21 +1,21 @@
-import type { GestureHandler, IRowButton } from "typings"
+import { MN } from "@/const"
+import { actionKey4Card, actionKey4Text, dataSourceIndex } from "@/dataSource"
+import lang from "@/lang"
+import { PanelControl } from "@/modules/addon/typings"
+import gesture from "@/modules/gesture"
+import { moduleKeyArray, isModuleON } from "@/synthesizer"
+import { IRowButton, GestureHandler } from "@/typings"
 import {
-  groupMode,
   UISwipeGestureRecognizerDirection,
-  docMapSplitMode,
   studyMode,
-  DirectionOfSelection
-} from "typings/enum"
-import { MN } from "const"
-import gesture from "modules/gesture"
-import { actionKey4Card, actionKey4Text, dataSourceIndex } from "dataSource"
-import handleMagicAction from "./magicActionHandler"
-import { closePanel, openPanel } from "./switchPanel"
-import { PanelControl } from "modules/addon/typings"
-import { showHUD } from "utils/common"
-import lang from "lang"
-import { reverseEscape } from "utils/input"
-import { isModuleON, moduleKeyArray } from "synthesizer"
+  DirectionOfSelection,
+  docMapSplitMode,
+  groupMode
+} from "@/typings/enum"
+import { showHUD } from "@/utils/common"
+import { reverseEscape } from "@/utils/input"
+import { openPanel, closePanel } from "./switchPanel"
+import magicActionHandler from "./magicActionHandler"
 
 // Not support Mac
 // Cannot access self unless use function
@@ -254,7 +254,7 @@ const actionTrigger = async (
       dataSourceIndex[
         type === "card" ? "magicaction4card" : "magicaction4text"
       ][key]
-    await handleMagicAction(
+    await magicActionHandler(
       type,
       self.dataSource[sec].rows[row] as IRowButton,
       option

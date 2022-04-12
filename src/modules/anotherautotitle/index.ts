@@ -1,11 +1,11 @@
-import { reverseEscape } from "utils/input"
-import { isHalfWidth, countWord } from "utils/text"
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkRegArrayFromMNLink } from "@/utils/checkInput"
+import { reverseEscape } from "@/utils/input"
+import { removeHighlight } from "@/utils/note"
+import { countWord, isHalfWidth } from "@/utils/text"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
-import { checkRegArrayFromMNLink } from "utils/checkInput"
-import { removeHighlight } from "utils/note"
 
 const { option, intro, help, link, label, check } = lang
 

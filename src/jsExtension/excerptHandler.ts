@@ -1,13 +1,13 @@
-import { addTags, getCommentIndex, undoGroupingWithRefresh } from "utils/note"
-import { delayBreak } from "utils/common"
+import { MN } from "@/const"
+import { MbBookNote } from "@/typings"
+import { delayBreak } from "@/utils/common"
+import { undoGroupingWithRefresh, getCommentIndex, addTags } from "@/utils/note"
+import { cacheTransformer } from "@/utils/profile"
 import {
   customOCR,
-  newColorStyle,
-  newTitleTextCommentTag
+  newTitleTextCommentTag,
+  newColorStyle
 } from "./newExcerptGenerater"
-import { MbBookNote } from "typings"
-import { MN } from "const"
-import { cacheTransformer } from "utils/profile"
 
 let note: MbBookNote
 let nodeNote: MbBookNote

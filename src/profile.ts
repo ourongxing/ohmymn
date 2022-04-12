@@ -1,5 +1,5 @@
-import { MN } from "const"
-import { ReplaceParam } from "utils/input"
+import { MN } from "./const"
+import { ReplaceParam } from "./utils/input"
 
 const profilePreset = {
   addon: {

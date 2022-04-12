@@ -1,13 +1,12 @@
-import type { IConfig } from "typings"
-import { CellViewType } from "typings/enum"
+import { MN } from "@/const"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { showHUD } from "@/utils/common"
+import { reverseEscape } from "@/utils/input"
+import { getExcerptNotes, removeHighlight } from "@/utils/note"
+import { SerialCode, countWord, isHalfWidth } from "@/utils/text"
 import { lang } from "./lang"
-import { getExcerptNotes, removeHighlight } from "utils/note"
-import { MbBookNote } from "typings"
-import { countWord, isHalfWidth, SerialCode } from "utils/text"
-import { reverseEscape } from "utils/input"
-import { showHUD } from "utils/common"
-import { AutoStylePreset, ChangeStyle, Style } from "./typings"
-import { MN } from "const"
+import { ChangeStyle, AutoStylePreset, Style } from "./typings"
 
 const { help, intro, option, label, link, check } = lang
 

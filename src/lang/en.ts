@@ -1,5 +1,6 @@
-import { Addon } from "const"
-import { Dict } from "lang"
+import { Addon } from "@/const"
+import { Dict } from "."
+
 const dict: Dict = {
   input_saved: "Input Saved",
   input_clear: "Input Clear",

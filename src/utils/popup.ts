@@ -1,5 +1,5 @@
-import lang from "lang"
-import { UIAlertViewStyle } from "typings/enum"
+import lang from "@/lang"
+import { UIAlertViewStyle } from "@/typings/enum"
 import { byteSlice } from "./text"
 
 function popup<T>(

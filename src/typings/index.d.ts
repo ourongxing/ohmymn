@@ -1,4 +1,9 @@
-import { IDocProfile, INotebookProfile, IProfile, IProfileTemp } from "profile"
+import {
+  IDocProfile,
+  INotebookProfile,
+  IProfile,
+  IProfileTemp
+} from "@/profile"
 import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
 import { UITableView, UITableViewController, UIView, UIWindow } from "./UIKit"

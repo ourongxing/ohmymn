@@ -1,7 +1,6 @@
+import { IConfig } from "@/typings"
+import { CellViewType } from "@/typings/enum"
 import { lang } from "./lang"
-import { IDocProfile } from "profile"
-import type { IConfig } from "typings"
-import { CellViewType } from "typings/enum"
 
 const configs: IConfig<"magicaction4text"> = {
   name: "MagicAction for Text",

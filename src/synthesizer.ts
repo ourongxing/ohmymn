@@ -1,30 +1,30 @@
-import anotherautotitle from "modules/anotherautotitle"
-import magicaction4card from "modules/magicaction4card"
-import autocomplete from "modules/autocomplete"
-import autolist from "modules/autolist"
-import autoreplace from "modules/autoreplace"
-import autostandardize from "modules/autostandardize"
-import anotherautodef from "modules/anotherautodef"
-import autotag from "modules/autotag"
-import autostyle from "modules/autostyle"
-import gesture from "modules/gesture"
-import copysearch from "modules/copysearch"
-import addon from "modules/addon"
-import magicaction4text from "modules/magicaction4text"
-import autoocr from "modules/autoocr"
-import autotranslate from "modules/autotranslate"
-import export2flomo from "modules/export2flomo"
-import export2anki from "modules/export2anki"
-import export2devonthink from "modules/export2devonthink"
-import autocomment from "modules/autocomment"
-import type {
+import {
   AutoUtils,
-  IActionMethod4Card,
+  ICheckMethod,
   IActionMethod4Text,
-  ICheckMethod
-} from "typings"
-import { showHUD } from "utils/common"
-import lang from "lang"
+  IActionMethod4Card
+} from "./typings"
+import lang from "./lang"
+import addon from "./modules/addon"
+import { showHUD } from "./utils/common"
+import anotherautodef from "./modules/anotherautodef"
+import anotherautotitle from "./modules/anotherautotitle"
+import autocomment from "./modules/autocomment"
+import autocomplete from "./modules/autocomplete"
+import autolist from "./modules/autolist"
+import autoocr from "./modules/autoocr"
+import autoreplace from "./modules/autoreplace"
+import autostandardize from "./modules/autostandardize"
+import autostyle from "./modules/autostyle"
+import autotag from "./modules/autotag"
+import autotranslate from "./modules/autotranslate"
+import copysearch from "./modules/copysearch"
+import export2anki from "./modules/export2anki"
+import export2devonthink from "./modules/export2devonthink"
+import export2flomo from "./modules/export2flomo"
+import gesture from "./modules/gesture"
+import magicaction4card from "./modules/magicaction4card"
+import magicaction4text from "./modules/magicaction4text"
 
 export const modules = {
   gesture,

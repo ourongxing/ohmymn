@@ -1,8 +1,8 @@
-import { Addon } from "const"
+import { Addon } from "@/const"
+import { IConfig } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkInteger } from "@/utils/checkInput"
 import { lang } from "./lang"
-import type { IConfig } from "typings"
-import { CellViewType } from "typings/enum"
-import { checkInteger } from "utils/checkInput"
 
 const { label, help, option } = lang
 const configs: IConfig<"addon"> = {

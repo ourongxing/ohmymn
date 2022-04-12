@@ -1,5 +1,5 @@
-import { DirectionOfSelection } from "typings/enum"
-import { MbBookNote, DocumentController } from "typings/MarginNote"
+import { DocumentController, MbBookNote } from ".."
+import { DirectionOfSelection } from "../enum"
 import { IRowButton } from "./DataSource"
 export * from "./Module"
 export * from "./DataSource"

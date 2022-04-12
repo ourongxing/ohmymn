@@ -1,16 +1,16 @@
-import { extractArray, regFlag, string2ReplaceParam } from "utils/input"
-import { getAllText, removeHighlight } from "utils/note"
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
-import { lang } from "./lang"
-import { unique } from "utils"
-import { AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./typings"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { unique } from "@/utils"
 import {
+  checkReplaceParamFromMNLink,
   checkRegArrayFromMNLink,
-  checkReplaceParam,
-  checkReplaceParamFromMNLink
-} from "utils/checkInput"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
+  checkReplaceParam
+} from "@/utils/checkInput"
+import { string2ReplaceParam, regFlag } from "@/utils/input"
+import { getAllText, removeHighlight } from "@/utils/note"
+import { lang } from "./lang"
+import { ExtractTitle, TitleLinkSplit, AutoDefPreset } from "./typings"
 
 const { label, option, intro, link, help } = lang
 

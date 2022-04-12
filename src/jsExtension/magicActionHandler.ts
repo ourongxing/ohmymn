@@ -1,21 +1,24 @@
-import lang from "lang"
-import { actions4card, actions4text, moduleKeyArray } from "synthesizer"
-import { PanelControl } from "modules/addon/typings"
-import { checkInputCorrect } from "synthesizer"
-import type { IRowButton, MbBookNote } from "typings"
-import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { showHUD, HUDController } from "utils/common"
-import { manageProfileAction } from "utils/profile"
-import { closePanel } from "./switchPanel"
+import { MN } from "@/const"
+import lang from "@/lang"
+import { PanelControl } from "@/modules/addon/typings"
+import autoocr from "@/modules/autoocr"
+import {
+  checkInputCorrect,
+  moduleKeyArray,
+  actions4text,
+  actions4card
+} from "@/synthesizer"
+import { IRowButton, MbBookNote } from "@/typings"
+import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
+import { showHUD, HUDController } from "@/utils/common"
 import {
   getSelectNodes,
   getNodeTree,
   undoGroupingWithRefresh
-} from "utils/note"
-import { MN } from "const"
-import autoocr from "modules/autoocr"
-import { getMNLinkValue } from "utils/profile"
-import popup from "utils/popup"
+} from "@/utils/note"
+import popup from "@/utils/popup"
+import { getMNLinkValue, manageProfileAction } from "@/utils/profile"
+import { closePanel } from "./switchPanel"
 
 export default async (
   type: "card" | "text",

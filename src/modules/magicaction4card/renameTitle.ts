@@ -1,14 +1,14 @@
-import { lang } from "./lang"
-import { IActionMethod4Card } from "typings"
-import { showHUD } from "utils/common"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IActionMethod4Card } from "@/typings"
+import { showHUD } from "@/utils/common"
 import {
-  escapeDoubleQuote,
   reverseEscape,
+  escapeDoubleQuote,
   string2ReplaceParam
-} from "utils/input"
-import { getNodeTree } from "utils/note"
-import { SerialCode } from "utils/text"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
+} from "@/utils/input"
+import { getNodeTree } from "@/utils/note"
+import { SerialCode } from "@/utils/text"
+import { lang } from "./lang"
 
 const genCharArray = (char: string, len: number, step = 1): string[] => {
   const serialCode = Object.values(SerialCode).filter(k => k.includes(char))[0]

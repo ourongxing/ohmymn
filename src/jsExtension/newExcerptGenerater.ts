@@ -1,9 +1,9 @@
-import { MbBookNote } from "typings"
-import { utils } from "synthesizer"
-import { HasTitleThen } from "modules/addon/typings"
-import { MN } from "const"
-import { removeHighlight } from "utils/note"
-import { cacheTransformer } from "utils/profile"
+import { MN } from "@/const"
+import { HasTitleThen } from "@/modules/addon/typings"
+import { utils } from "@/synthesizer"
+import { MbBookNote } from "@/typings"
+import { removeHighlight } from "@/utils/note"
+import { cacheTransformer } from "@/utils/profile"
 
 export const customOCR = async () => {
   const imgBase64 = MN.studyController()

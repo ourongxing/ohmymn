@@ -1,4 +1,4 @@
-import { UIWindow, UIViewController, UITableView } from "typings/UIKit"
+import { UIWindow, UIViewController, UITableView } from "@/typings/UIKit"
 
 declare global {
   class SpeechManager {

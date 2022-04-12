@@ -1,4 +1,4 @@
-import { MN } from "const"
+import { MN } from "@/const"
 
 const viewDidLoad = () => {
   self.tableView.allowsSelection = true

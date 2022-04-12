@@ -1,18 +1,14 @@
-import type { IConfig, MbBookNote } from "typings"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import {
+  checkReplaceParamFromMNLink,
+  checkReplaceParam
+} from "@/utils/checkInput"
+import { escapeDoubleQuote, string2ReplaceParam } from "@/utils/input"
+import { getAllText, addTags } from "@/utils/note"
 import { lang } from "./lang"
-import { CellViewType } from "typings/enum"
-import { addTags, getAllText } from "utils/note"
-import {
-  escapeDoubleQuote,
-  extractArray,
-  string2ReplaceParam
-} from "utils/input"
-import { AutoTagPreset, AddTag } from "./typings"
-import {
-  checkReplaceParam,
-  checkReplaceParamFromMNLink
-} from "utils/checkInput"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
+import { AddTag, AutoTagPreset } from "./typings"
 
 const { intro, option, label, link, help } = lang
 

@@ -1,26 +1,26 @@
+import { IConfig, textComment } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { unique } from "@/utils"
+import { checkPlainText, checkRegArray } from "@/utils/checkInput"
+import { showHUD, HUDController } from "@/utils/common"
 import {
-  addTags,
-  getAllCommnets,
+  string2RegArray,
+  escapeDoubleQuote,
+  string2ReplaceParam,
+  reverseEscape
+} from "@/utils/input"
+import {
   getAllTags,
+  getExcerptText,
+  getAllCommnets,
   getAllText,
   getAncestorNodes,
-  getExcerptText,
+  addTags,
   removeHighlight
-} from "utils/note"
-import {
-  escapeDoubleQuote,
-  reverseEscape,
-  string2RegArray,
-  string2ReplaceParam
-} from "utils/input"
-import { HUDController, showHUD } from "utils/common"
-import type { textComment, IConfig } from "typings"
-import { CellViewType } from "typings/enum"
+} from "@/utils/note"
 import { lang } from "./lang"
-import { unique } from "utils"
-import { getLayerSerialInfo, getSerialInfo, renameTitle } from "./renameTitle"
+import { renameTitle, getSerialInfo, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
-import { checkPlainText, checkRegArray } from "utils/checkInput"
 
 const { help, option, intro, label, link, hud } = lang
 

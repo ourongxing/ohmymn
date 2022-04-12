@@ -1,10 +1,11 @@
-import { getExcerptNotes } from "utils/note"
-import { string2ReplaceParam } from "utils/input"
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { string2ReplaceParam } from "@/utils/input"
+import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"
-import { AutoReplacePreset, ReplaceSelected } from "./typings"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
+import { ReplaceSelected, AutoReplacePreset } from "./typings"
+
 const { intro, link, label, option, help } = lang
 
 const configs: IConfig<"autoreplace"> = {

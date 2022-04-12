@@ -1,4 +1,4 @@
-import { Addon } from "const"
+import { Addon } from "@/const"
 
 const dict = {
   input_saved: "输入已保存",

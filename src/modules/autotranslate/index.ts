@@ -1,13 +1,14 @@
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkPositiveinteger } from "@/utils/checkInput"
+import { showHUD } from "@/utils/common"
+import { reverseEscape } from "@/utils/input"
+import fetch from "@/utils/network"
+import { isHalfWidth, countWord } from "@/utils/text"
+import MD5 from "@/utils/third party/md5"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
-import fetch from "utils/network"
-import MD5 from "utils/third party/md5"
-import { showHUD } from "utils/common"
-import { checkPositiveinteger } from "utils/checkInput"
-import { countWord, isHalfWidth } from "utils/text"
-import { reverseEscape } from "utils/input"
+
 const { intro, link, label, option, help } = lang
 
 const configs: IConfig<"autotranslate"> = {

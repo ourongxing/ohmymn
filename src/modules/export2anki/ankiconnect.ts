@@ -1,5 +1,5 @@
-import { isOCNull, OCNull2null } from "utils/common"
-import fetch from "utils/network"
+import { OCNull2null } from "@/utils/common"
+import fetch from "@/utils/network"
 import { AnkiNote } from "./typings"
 
 export class AnkiConnect {

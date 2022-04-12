@@ -1,7 +1,7 @@
-import { MbBookNote, MNPic } from "typings"
+import { MN } from "@/const"
+import { MbBookNote, MNPic } from "@/typings"
+import { unique } from "."
 import { postNotification } from "./common"
-import { MN } from "const"
-import { unique } from "utils"
 
 /**
  * Cancellable actions, all actions that modify data should be wrapped in this method.

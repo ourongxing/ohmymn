@@ -1,12 +1,17 @@
-import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
-import { showHUD } from "utils/common"
-import { Addon, MN } from "const"
+import { Addon, MN } from "@/const"
+import { layoutViewController } from "@/jsExtension/switchPanel"
+import lang from "@/lang"
+import {
+  IProfile,
+  IDocProfile,
+  docProfilePreset,
+  profilePreset
+} from "@/profile"
+import { MbBookNote } from "@/typings"
+import { deepCopy } from ".."
+import { showHUD } from "../common"
+import Base64 from "../third party/base64"
 import { updateProfileDataSource } from "./updateDataSource"
-import { MbBookNote } from "typings"
-import Base64 from "utils/third party/base64"
-import { layoutViewController } from "jsExtension/switchPanel"
-import { deepCopy } from "utils"
-import lang from "lang"
 import { checkNewVerProfile } from "./utils"
 export * from "./utils"
 export * from "./updateDataSource"

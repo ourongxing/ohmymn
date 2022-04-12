@@ -1,13 +1,14 @@
-import { lang } from "./lang"
-import type { IConfig, ICheckMethod, ISettingInput, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
-import { IDocProfile, IProfile } from "profile"
-import { AddTags, AnkiNote, ExportMethod } from "./typings"
-import { openUrl, showHUD } from "utils/common"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
-import { reverseEscape } from "utils/input"
+import { MN } from "@/const"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IProfile, IDocProfile } from "@/profile"
+import { ICheckMethod, IConfig, ISettingInput, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { showHUD, openUrl } from "@/utils/common"
+import { reverseEscape } from "@/utils/input"
 import { AnkiConnect } from "./ankiconnect"
-import { MN } from "const"
+import { lang } from "./lang"
+import { ExportMethod, AnkiNote, AddTags } from "./typings"
+
 const { link, intro, lable, option, help } = lang
 
 const checker: Record<"field" | "modelName", ICheckMethod> = {

@@ -1,4 +1,4 @@
-import { MN } from "const"
+import { MN } from "@/const"
 
 const zh = {
   intro: "导出卡片信息到其他支持URLScheme的应用",

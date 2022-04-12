@@ -1,4 +1,4 @@
-import { MN } from "const"
+import { MN } from "@/const"
 
 const zh = {
   intro: "使用百度 OCR API，不需要激活 OCR Pro 即可使用，并支持多个小语种。",

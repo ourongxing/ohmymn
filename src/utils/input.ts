@@ -1,4 +1,4 @@
-import { unique } from "utils"
+import { unique } from "."
 
 /**
  *  Reverse escape string in order to process user input

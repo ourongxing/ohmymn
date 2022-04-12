@@ -1,11 +1,11 @@
-import { dataSourceIndex } from "dataSource"
-import type { UITableView, IRowSelect } from "typings"
-import { console, isOCNull } from "utils/common"
-import { MN } from "const"
-import { CellViewType, NSTextAlignment } from "typings/enum"
-import { byteLength, byteSlice, byteSplitByLen, SerialCode } from "utils/text"
-import lang from "lang"
-import { moduleKeyArray, ModuleKeyType } from "synthesizer"
+import { MN } from "@/const"
+import { dataSourceIndex } from "@/dataSource"
+import lang from "@/lang"
+import { ModuleKeyType, moduleKeyArray } from "@/synthesizer"
+import { IRowSelect, UITableView } from "@/typings"
+import { CellViewType, NSTextAlignment } from "@/typings/enum"
+import { isOCNull } from "@/utils/common"
+import { byteSplitByLen, SerialCode, byteLength, byteSlice } from "@/utils/text"
 
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999

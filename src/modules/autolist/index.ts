@@ -1,14 +1,14 @@
-import { getExcerptNotes } from "utils/note"
-import { regFlag, string2ReplaceParam } from "utils/input"
-import { isHalfWidth, SerialCode } from "utils/text"
-import type { IConfig, MbBookNote } from "typings"
-import { CellViewType } from "typings/enum"
-import { lang } from "./lang"
-import { AutoListPreset, ListSelected } from "./typings"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
 import {
-  checkReplaceParam,
-  checkReplaceParamFromMNLink
-} from "utils/checkInput"
+  checkReplaceParamFromMNLink,
+  checkReplaceParam
+} from "@/utils/checkInput"
+import { string2ReplaceParam, regFlag } from "@/utils/input"
+import { getExcerptNotes } from "@/utils/note"
+import { isHalfWidth, SerialCode } from "@/utils/text"
+import { lang } from "./lang"
+import { ListSelected, AutoListPreset } from "./typings"
 
 const { intro, option, label, link, help } = lang
 

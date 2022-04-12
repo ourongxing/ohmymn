@@ -1,14 +1,14 @@
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkPlainText } from "@/utils/checkInput"
+import { showHUD, isOCNull } from "@/utils/common"
+import { reverseEscape, escapeDoubleQuote } from "@/utils/input"
+import fetch from "@/utils/network"
+import { undoGroupingWithRefresh } from "@/utils/note"
+import { render } from "@/utils/third party/mustache"
+import pangu from "@/utils/third party/pangu"
 import { lang } from "./lang"
-import type { MbBookNote, IConfig } from "typings"
-import { CellViewType } from "typings/enum"
-import { isOCNull, showHUD } from "utils/common"
-import { escapeDoubleQuote, reverseEscape } from "utils/input"
-import fetch from "utils/network"
-import { undoGroupingWithRefresh } from "utils/note"
-import pangu from "utils/third party/pangu"
 import { CompleteSelected, Dict, FillWordInfo } from "./typings"
-import { checkPlainText } from "utils/checkInput"
-import { render } from "utils/third party/mustache"
 
 const { error, intro, link, option, label, help } = lang
 const configs: IConfig<"autocomplete"> = {

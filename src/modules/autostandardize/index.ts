@@ -1,12 +1,12 @@
-import { getExcerptNotes } from "utils/note"
-import pangu from "utils/third party/pangu"
-import { toTitleCase } from "utils/third party/toTitleCase"
-import { CJK, isHalfWidth } from "utils/text"
-import { CellViewType } from "typings/enum"
-import type { IConfig, MbBookNote } from "typings"
+import { IConfig, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkReplaceParamFromMNLink } from "@/utils/checkInput"
+import { getExcerptNotes } from "@/utils/note"
+import { isHalfWidth, CJK } from "@/utils/text"
+import pangu from "@/utils/third party/pangu"
+import { toTitleCase } from "@/utils/third party/toTitleCase"
 import { lang } from "./lang"
-import { AutoStandardizePreset, StandardizeSelected } from "./typings"
-import { checkReplaceParamFromMNLink } from "utils/checkInput"
+import { StandardizeSelected, AutoStandardizePreset } from "./typings"
 
 const { help, intro, option, label, link } = lang
 const configs: IConfig<"autostandardize"> = {

@@ -1,20 +1,25 @@
-import settingViewControllerInst from "settingViewController"
-import { Range, readProfile, removeProfile, writeProfile } from "utils/profile"
-import { getObjCClassDeclar, showHUD } from "utils/common"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
-import { dataSourcePreset } from "dataSource"
-import { UIWindow } from "typings"
-import { deepCopy } from "utils"
-import lang from "lang"
-import { MN } from "const"
+import { MN } from "@/const"
+import { dataSourcePreset } from "@/dataSource"
+import lang from "@/lang"
+import { profilePreset, docProfilePreset, profileTempPreset } from "@/profile"
+import { UIWindow } from "@/typings"
+import { deepCopy } from "@/utils"
+import { getObjCClassDeclar, showHUD } from "@/utils/common"
+import { inst } from "@/settingViewController"
+import {
+  readProfile,
+  Range,
+  writeProfile,
+  removeProfile
+} from "@/utils/profile"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
-  settingViewControllerInst
+  inst
 )
 
 /**

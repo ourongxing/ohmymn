@@ -1,5 +1,5 @@
-import { CellViewType, UISwipeGestureRecognizerDirection } from "typings/enum"
-import type { UIView, IConfig, ISettingSelect } from "typings"
+import { IConfig, ISettingSelect, UIView } from "@/typings"
+import { CellViewType, UISwipeGestureRecognizerDirection } from "@/typings/enum"
 import { lang } from "./lang"
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang

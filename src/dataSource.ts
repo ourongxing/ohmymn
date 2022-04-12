@@ -1,8 +1,9 @@
-import lang from "lang"
-import { ISection, IConfig, IRow, IRowButton } from "typings"
-import { CellViewType } from "typings/enum"
-import { SerialCode } from "utils/text"
-import { constModules, ModuleKeyType, modules } from "synthesizer"
+import lang from "./lang"
+import { constModules, ModuleKeyType } from "./synthesizer"
+import { ISection, IConfig, IRow, IRowButton } from "./typings"
+import { CellViewType } from "./typings/enum"
+import { SerialCode } from "./utils/text"
+import { modules } from "./synthesizer"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -160,20 +161,15 @@ const genDataSource = (
 }
 
 const genDataSourceIndex = (dataSource: ISection[]) => {
-  // @ts-ignore
-  const dataSourceIndex: Record<
-    ModuleKeyType,
-    Record<string, [number, number]>
-  > = {}
-  dataSource.forEach((section, secIndex) => {
-    const name = section.key
-    dataSourceIndex[name] = {}
-    section.rows.forEach((row, rowIndex) => {
-      if (row.type != CellViewType.PlainText)
-        dataSourceIndex[name][row.key] = [secIndex, rowIndex]
-    })
-  })
-  return dataSourceIndex
+  return dataSource.reduce((acc, sec, secIndex) => {
+    acc[sec.key] = sec.rows.reduce((acc, row, rowIndex) => {
+      if (row.type != CellViewType.PlainText) {
+        acc[row.key] = [secIndex, rowIndex]
+      }
+      return acc
+    }, {} as Record<string, [number, number]>)
+    return acc
+  }, {} as Record<ModuleKeyType, Record<string, [number, number]>>)
 }
 
 const getActionKeyGetureOption = (section: ISection) => {

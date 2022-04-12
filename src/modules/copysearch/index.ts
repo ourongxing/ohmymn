@@ -1,15 +1,16 @@
+import { Addon } from "@/const"
+import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
+import { IProfile, IDocProfile } from "@/profile"
+import { IConfig, ISettingInput, MbBookNote } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { checkPlainText } from "@/utils/checkInput"
+import { openUrl, showHUD } from "@/utils/common"
+import { reverseEscape, escapeDoubleQuote } from "@/utils/input"
+import { getExcerptText } from "@/utils/note"
+import popup from "@/utils/popup"
+import { WhichPartofCard, MultipleTitlesExcerpt } from "./enum"
 import { lang } from "./lang"
-import type { IConfig, MbBookNote, ISettingInput, ICheckMethod } from "typings"
-import { CellViewType } from "typings/enum"
-import { openUrl, showHUD } from "utils/common"
-import { escapeDoubleQuote, reverseEscape } from "utils/input"
-import { getExcerptText } from "utils/note"
-import { MultipleTitlesExcerpt, WhichPartofCard } from "./enum"
-import { IDocProfile, IProfile } from "profile"
-import { Addon } from "const"
-import { checkPlainText } from "utils/checkInput"
-import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
-import popup from "utils/popup"
+
 const { link, intro, lable, option, help, hud } = lang
 
 const configs: IConfig<"copysearch"> = {
