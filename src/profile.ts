@@ -3,12 +3,12 @@ import { ReplaceParam } from "./utils/input"
 
 const globalProfilePreset = {
   addon: {
-    quickSwitch: [] as number[],
+    quickSwitch: [],
     lockExcerpt: false,
     screenAlwaysOn: false,
     // Single select is not allowed to be empty, generally set option to none
     hasTitleThen: [1],
-    panelControl: [] as number[],
+    panelControl: [],
     panelPosition: [0],
     panelHeight: [1],
     autoBackup: false,
@@ -39,20 +39,20 @@ const globalProfilePreset = {
   },
   autostandardize: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     customStandardize: "",
     standardizeTitle: false
   },
   anotherautotitle: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     changeTitleNoLimit: false,
     wordCount: "[10, 5]",
     customBeTitle: ""
   },
   anotherautodef: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     onlyDesc: false,
     toTitleLink: false,
     titleLinkSplit: [0],
@@ -62,28 +62,28 @@ const globalProfilePreset = {
   },
   autolist: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     customList: ""
   },
   autoreplace: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     customReplace: ""
   },
   autotag: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     customTag: ""
   },
   autocomment: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     citation: `(/^.*$/gs, "{{doc.author}} ( {{doc.publicationDate}} ) {{doc.title}}.{{doc.publisher}}, {{doc.publicationPlace}}.P{{page.real.start}}{{#page.real.end}}-P{{page.real.end}}{{/page.real.end}}", 1)`,
     customComment: ""
   },
   autostyle: {
     on: false,
-    preset: [] as number[],
+    preset: [],
     wordCountArea: "[10, 5, 10]",
     showArea: false,
     defaultTextExcerptColor: [0],
@@ -257,30 +257,48 @@ const notebookProfilePreset = {
 // Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
 const tempProfilePreset = {
   replaceParam: {
-    customTag: [] as ReplaceParam[] | undefined,
-    customComment: [] as ReplaceParam[] | undefined,
-    customList: [] as ReplaceParam[] | undefined,
-    customReplace: [] as ReplaceParam[] | undefined,
-    customExtractTitle: [] as ReplaceParam[] | undefined,
-    customStandardize: [] as ReplaceParam[] | undefined
+    customTag: [],
+    customComment: [],
+    customList: [],
+    customReplace: [],
+    customExtractTitle: [],
+    customStandardize: []
   },
   regArray: {
-    customTitleSplit: [] as RegExp[][] | undefined,
-    customBeTitle: [] as RegExp[][] | undefined,
-    customDefLink: [] as RegExp[][] | undefined
+    customTitleSplit: [],
+    customBeTitle: [],
+    customDefLink: []
   }
 }
 
-type ITempProfile = typeof tempProfilePreset
-type IGlobalProfile = typeof globalProfilePreset
-type IDocProfile = typeof docProfilePreset
-type INotebookProfile = typeof notebookProfilePreset
+type UtilTemp<T> = {
+  [K in keyof T]: K extends "replaceParam"
+    ? {
+        [M in keyof T[K]]: ReplaceParam[] | undefined
+      }
+    : {
+        [M in keyof T[K]]: RegExp[][] | undefined
+      }
+}
+
+type UtilProfile<T> = {
+  [K in keyof T]: K extends "additional"
+    ? T[K]
+    : {
+        [M in keyof T[K]]: T[K][M] extends any[] ? number[] : T[K][M]
+      }
+}
+
+type ITempProfile = UtilTemp<typeof tempProfilePreset>
+type IGlobalProfile = UtilProfile<typeof globalProfilePreset>
+type IDocProfile = UtilProfile<typeof docProfilePreset>
+type INotebookProfile = UtilProfile<typeof notebookProfilePreset>
 type IAllProfile = IGlobalProfile & IDocProfile & INotebookProfile
 
 export {
-  globalProfilePreset as profilePreset,
+  globalProfilePreset,
   docProfilePreset,
-  tempProfilePreset as profileTempPreset,
+  tempProfilePreset,
   notebookProfilePreset,
   IGlobalProfile,
   IDocProfile,

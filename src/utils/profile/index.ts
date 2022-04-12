@@ -5,7 +5,7 @@ import {
   IGlobalProfile,
   IDocProfile,
   docProfilePreset,
-  profilePreset
+  globalProfilePreset
 } from "@/profile"
 import { MbBookNote } from "@/typings"
 import { deepCopy } from ".."
@@ -49,11 +49,11 @@ export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
       const profileSaved: IGlobalProfile[] = getDataByKey(profileKey)
       if (!profileSaved) console.log("Initialize global profile", "profile")
-      allProfile = profileSaved ?? Array(5).fill(profilePreset)
+      allProfile = profileSaved ?? Array(5).fill(globalProfilePreset)
       // Initialize all profile when new version release
-      if (checkNewVerProfile(profilePreset, allProfile[0])) {
+      if (checkNewVerProfile(globalProfilePreset, allProfile[0])) {
         allProfile.forEach((_, index) => {
-          const profile = deepCopy(profilePreset)
+          const profile = deepCopy(globalProfilePreset)
           updateProfileDataSource(profile, allProfile[index])
           allProfile[index] = profile
         })

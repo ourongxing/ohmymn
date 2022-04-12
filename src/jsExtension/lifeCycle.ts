@@ -5,7 +5,11 @@ import { eventHandlers } from "./handleReceivedEvent"
 import { MN } from "@/const"
 import { dataSourcePreset } from "@/dataSource"
 import lang from "@/lang"
-import { profilePreset, docProfilePreset, profileTempPreset } from "@/profile"
+import {
+  globalProfilePreset,
+  docProfilePreset,
+  tempProfilePreset
+} from "@/profile"
 import { UIWindow } from "@/typings"
 import { deepCopy } from "@/utils"
 import { getObjCClassDeclar, showHUD } from "@/utils/common"
@@ -46,9 +50,9 @@ const sceneWillConnect = () => {
   _window = self.window
   // Multiple windows will share global variables, so they need to be saved to self.
   self.panelStatus = false
-  self.globalProfile = deepCopy(profilePreset)
+  self.globalProfile = deepCopy(globalProfilePreset)
   self.docProfile = deepCopy(docProfilePreset)
-  self.tempProfile = deepCopy(profileTempPreset)
+  self.tempProfile = deepCopy(tempProfilePreset)
   self.dataSource = deepCopy(dataSourcePreset)
   self.OCROnline = { times: 0, status: "free" }
   self.customSelectedNodes = []
