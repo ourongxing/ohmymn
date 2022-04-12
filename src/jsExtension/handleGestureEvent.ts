@@ -224,7 +224,7 @@ const actionTrigger = async (
   sender: UIGestureRecognizer
 ) => {
   if (
-    !self.profile.addon.quickSwitch.includes(moduleKeyArray.indexOf("gesture"))
+    !self.globalProfile.addon.quickSwitch.includes(moduleKeyArray.indexOf("gesture"))
   )
     return
   const swipePosition = checkSwipePosition(sender)
@@ -264,7 +264,7 @@ const actionTrigger = async (
 
 const onSwipeUpOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeUp, muiltBarSwipeUp, selectionBarSwipeUp } =
-    self.profile.gesture
+    self.globalProfile.gesture
   actionTrigger(
     singleBarSwipeUp[0],
     muiltBarSwipeUp[0],
@@ -274,7 +274,7 @@ const onSwipeUpOnMindMapView: GestureHandler = sender => {
 }
 const onSwipeDownOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeDown, muiltBarSwipeDown, selectionBarSwipeDown } =
-    self.profile.gesture
+    self.globalProfile.gesture
   actionTrigger(
     singleBarSwipeDown[0],
     muiltBarSwipeDown[0],
@@ -284,7 +284,7 @@ const onSwipeDownOnMindMapView: GestureHandler = sender => {
 }
 const onSwipeLeftOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeLeft, muiltBarSwipeLeft, selectionBarSwipeLeft } =
-    self.profile.gesture
+    self.globalProfile.gesture
   actionTrigger(
     singleBarSwipeLeft[0],
     muiltBarSwipeLeft[0],
@@ -294,7 +294,7 @@ const onSwipeLeftOnMindMapView: GestureHandler = sender => {
 }
 const onSwipeRightOnMindMapView: GestureHandler = sender => {
   const { singleBarSwipeRight, muiltBarSwipeRight, selectionBarSwipeRight } =
-    self.profile.gesture
+    self.globalProfile.gesture
   actionTrigger(
     singleBarSwipeRight[0],
     muiltBarSwipeRight[0],
@@ -304,7 +304,7 @@ const onSwipeRightOnMindMapView: GestureHandler = sender => {
 }
 
 const onDoubleClickOnTableView: GestureHandler = () => {
-  const { panelControl } = self.profile.addon
+  const { panelControl } = self.globalProfile.addon
   if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
 }
 

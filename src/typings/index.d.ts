@@ -1,8 +1,8 @@
 import {
   IDocProfile,
   INotebookProfile,
-  IProfile,
-  IProfileTemp
+  IGlobalProfile,
+  ITempProfile
 } from "@/profile"
 import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
@@ -42,8 +42,8 @@ declare global {
     customSelectedNodes: MbBookNote[]
     panelStatus: boolean
     docProfile: IDocProfile
-    profile: IProfile
-    profileTemp: IProfileTemp
+    globalProfile: IGlobalProfile
+    tempProfile: ITempProfile
     notebookProfile: INotebookProfile
     dataSource: ISection[]
     settingViewController: UITableViewController

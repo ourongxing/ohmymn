@@ -1,7 +1,7 @@
 import { MN } from "./const"
 import { ReplaceParam } from "./utils/input"
 
-const profilePreset = {
+const globalProfilePreset = {
   addon: {
     quickSwitch: [] as number[],
     lockExcerpt: false,
@@ -255,7 +255,7 @@ const notebookProfilePreset = {
 }
 
 // Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
-const profileTempPreset = {
+const tempProfilePreset = {
   replaceParam: {
     customTag: [] as ReplaceParam[] | undefined,
     customComment: [] as ReplaceParam[] | undefined,
@@ -271,20 +271,20 @@ const profileTempPreset = {
   }
 }
 
-type IProfileTemp = typeof profileTempPreset
-type IProfile = typeof profilePreset
+type ITempProfile = typeof tempProfilePreset
+type IGlobalProfile = typeof globalProfilePreset
 type IDocProfile = typeof docProfilePreset
 type INotebookProfile = typeof notebookProfilePreset
-type IAllProfile = IProfile & IDocProfile & INotebookProfile
+type IAllProfile = IGlobalProfile & IDocProfile & INotebookProfile
 
 export {
-  profilePreset,
+  globalProfilePreset as profilePreset,
   docProfilePreset,
-  profileTempPreset,
+  tempProfilePreset as profileTempPreset,
   notebookProfilePreset,
-  IProfile,
+  IGlobalProfile,
   IDocProfile,
   INotebookProfile,
-  IProfileTemp,
+  ITempProfile,
   IAllProfile
 }

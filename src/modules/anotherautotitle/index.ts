@@ -60,7 +60,7 @@ const configs: IConfig<"anotherautotitle"> = {
 const utils = {
   main(note: MbBookNote, text: string) {
     const { preset, wordCount, changeTitleNoLimit } =
-      self.profile.anotherautotitle
+      self.globalProfile.anotherautotitle
     const { cacheTitle } = self.docProfile.additional
     if (self.isModify) text = removeHighlight(text)
     if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
@@ -72,7 +72,7 @@ const utils = {
       for (const set of preset) {
         switch (set) {
           case AutoTitlePreset.Custom:
-            const { customBeTitle: regGroup } = self.profileTemp.regArray
+            const { customBeTitle: regGroup } = self.tempProfile.regArray
             if (!regGroup) continue
             if (regGroup.some(regs => regs.every(reg => reg.test(text))))
               return text

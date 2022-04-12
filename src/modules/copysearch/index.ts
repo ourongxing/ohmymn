@@ -1,6 +1,6 @@
 import { Addon } from "@/const"
 import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IProfile, IDocProfile } from "@/profile"
+import { IGlobalProfile, IDocProfile } from "@/profile"
 import { IConfig, ISettingInput, MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { checkPlainText } from "@/utils/checkInput"
@@ -82,7 +82,7 @@ const configs: IConfig<"copysearch"> = {
           if (!input.includes("{{keyword}}")) throw hud.no_keyword
         }
       }
-    }) as ISettingInput<(IProfile & IDocProfile)["copysearch"]>[])
+    }) as ISettingInput<(IGlobalProfile & IDocProfile)["copysearch"]>[])
   ],
   actions4card: [
     {
@@ -92,14 +92,15 @@ const configs: IConfig<"copysearch"> = {
       option: option.search_engine,
       async method({ nodes, option }) {
         if (nodes.length == 1) {
-          const { whichPartofCard } = self.profile.copysearch
+          const { whichPartofCard } = self.globalProfile.copysearch
           const text = (await utils.getContentofOneCard(
             nodes[0],
             whichPartofCard[0]
           )) as string
           text && utils.search(text, option)
         } else {
-          const { separatorSymbols, whichPartofCard } = self.profile.copysearch
+          const { separatorSymbols, whichPartofCard } =
+            self.globalProfile.copysearch
           let opt = whichPartofCard[0]
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
             opt = await utils.selectPartIndexOfCard(lang.option.muiltple_cards)
@@ -128,7 +129,7 @@ const configs: IConfig<"copysearch"> = {
           )) as string
           text && utils.copy(text)
         } else {
-          const { separatorSymbols } = self.profile.copysearch
+          const { separatorSymbols } = self.globalProfile.copysearch
           const contentList = utils.getContentofMuiltCards(nodes, option)
           contentList?.length &&
             utils.copy(
@@ -159,7 +160,7 @@ const utils = {
     type: "title" | "excerpt",
     origin = false
   ) {
-    const { multipleTitles, multipleExcerpts } = self.profile.copysearch
+    const { multipleTitles, multipleExcerpts } = self.globalProfile.copysearch
     if (k.length === 0) return undefined
     switch (type === "title" ? multipleTitles[0] : multipleExcerpts[0]) {
       case MultipleTitlesExcerpt.All: {
@@ -174,7 +175,7 @@ const utils = {
     }
   },
   getCustomContent(node: MbBookNote) {
-    const { customContent } = self.profile.copysearch
+    const { customContent } = self.globalProfile.copysearch
     if (!customContent) return undefined
     const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
     return renderTemplateOfNodeProperties(node, template)
@@ -252,7 +253,7 @@ const utils = {
   getContentofMuiltCards(nodes: MbBookNote[], option: number) {
     switch (option) {
       case 0: {
-        const { multipleTitles } = self.profile.copysearch
+        const { multipleTitles } = self.globalProfile.copysearch
         return nodes.reduce((acc, cur) => {
           const t = cur.noteTitle
           if (!t) return acc
@@ -263,7 +264,7 @@ const utils = {
         }, [] as string[])
       }
       case 1: {
-        const { multipleTitles } = self.profile.copysearch
+        const { multipleTitles } = self.globalProfile.copysearch
         return nodes.reduce((acc, cur) => {
           const l = getExcerptText(cur, false).ocr
           if (!l.length) return acc
@@ -287,7 +288,7 @@ const utils = {
       searchEnglishText,
       searchOtherText,
       searchQuestion
-    } = self.profile.copysearch
+    } = self.globalProfile.copysearch
     const { searchTranslation, searchWord } = self.docProfile.copysearch
     const searchEngine = [
       searchChineseText,

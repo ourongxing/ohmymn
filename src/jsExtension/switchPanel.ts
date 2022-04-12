@@ -6,8 +6,8 @@ import { delay } from "@/utils/common"
 
 // Set the position and size of the panel
 export const layoutViewController = (
-  heightNum = self.profile.addon.panelHeight[0],
-  positionNum = self.profile.addon.panelPosition[0]
+  heightNum = self.globalProfile.addon.panelHeight[0],
+  positionNum = self.globalProfile.addon.panelPosition[0]
 ) => {
   const studyController = MN.studyController()
   const frame = studyController.view.bounds
@@ -63,7 +63,9 @@ const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
     if (
-      self.profile.addon.panelControl.includes(PanelControl.DoubleClickOpen)
+      self.globalProfile.addon.panelControl.includes(
+        PanelControl.DoubleClickOpen
+      )
     ) {
       const now = Date.now()
       if (tmp.lastClickButton && now - tmp.lastClickButton < 300) openPanel()

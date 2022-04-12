@@ -82,7 +82,7 @@ const configs: IConfig<"export2flomo"> = {
       label: "导出到 Flomo",
       option: ["默认", "模板 1", "模版 2", "模版 3"],
       method: async ({ nodes, option }) => {
-        const { exportMethod } = self.profile.export2flomo
+        const { exportMethod } = self.globalProfile.export2flomo
         const { defaultTemplate } = self.docProfile.export2flomo
         option = option === 0 ? defaultTemplate[0] : option - 1
         if (exportMethod[0] === ExportMethod.URL) {
@@ -113,7 +113,7 @@ const configs: IConfig<"export2flomo"> = {
       key: "exportText2Flomo",
       label: "导出到 Flomo",
       method: async ({ text }) => {
-        const { exportMethod } = self.profile.export2flomo
+        const { exportMethod } = self.globalProfile.export2flomo
         if (exportMethod[0] === ExportMethod.URL) {
           openUrl("flomo://create?content=" + escapeURLParam(text))
         } else {
@@ -154,7 +154,7 @@ const utils = {
       flomoTemplate3,
       tagTemplate,
       addTags
-    } = self.profile.export2flomo
+    } = self.globalProfile.export2flomo
     const list = [flomoTemplate1, flomoTemplate2, flomoTemplate3].reduce(
       (acc, cur) => {
         if (cur) {
@@ -185,7 +185,7 @@ const utils = {
     return list[option]
   },
   async exportByAPI(content: string) {
-    const { flomoAPI } = self.profile.export2flomo
+    const { flomoAPI } = self.globalProfile.export2flomo
     const res = (await fetch(flomoAPI, {
       method: "POST",
       json: {

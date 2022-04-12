@@ -1,5 +1,5 @@
 import { MN } from "@/const"
-import { IProfile, IDocProfile } from "@/profile"
+import { IGlobalProfile, IDocProfile } from "@/profile"
 import { noteComment } from "@/typings"
 
 /**
@@ -26,7 +26,7 @@ export const getMNLinkValue = (link: string) => {
 }
 
 export const checkNewVerProfile = (
-  profile: IProfile | IDocProfile,
+  profile: IGlobalProfile | IDocProfile,
   profileSaved: any
 ) => {
   for (const [name, _] of Object.entries(profile)) {

@@ -183,7 +183,7 @@ const configs: IConfig<"autotranslate"> = {
       method: async ({ text }) => {
         try {
           const { autoCopy, hudTime, translateProviders } =
-            self.profile.autotranslate
+            self.globalProfile.autotranslate
           const translation =
             translateProviders[0] === TranslateProviders.Baidu
               ? await utils.baiduTranslate(text)
@@ -210,7 +210,7 @@ const utils = {
       baiduThesaurus,
       baiduFromLang,
       baiduToLang
-    } = self.profile.autotranslate
+    } = self.globalProfile.autotranslate
     if (isHalfWidth(text)) {
       if ([1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
     } else if (![1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
@@ -280,8 +280,8 @@ const utils = {
     return res.trans_result.map(k => k.dst).join("\n")
   },
   async caiyunTranslate(text: string) {
-    const { caiyunToken } = self.profile.autotranslate
-    const { caiyunFromLang, caiyunToLang } = self.profile.autotranslate
+    const { caiyunToken } = self.globalProfile.autotranslate
+    const { caiyunFromLang, caiyunToLang } = self.globalProfile.autotranslate
     if (isHalfWidth(text)) {
       if ([1, 4].includes(caiyunFromLang[0])) return ""
     } else if (![1, 4].includes(caiyunFromLang[0])) return ""
@@ -311,7 +311,7 @@ const utils = {
   },
   async main(note: MbBookNote, text: string) {
     try {
-      const { translateProviders, wordCount } = self.profile.autotranslate
+      const { translateProviders, wordCount } = self.globalProfile.autotranslate
       if (wordCount) {
         const [zh, en] = reverseEscape(wordCount) as number[]
         if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return undefined

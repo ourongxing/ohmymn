@@ -70,11 +70,11 @@ const configs: IConfig<"autoreplace"> = {
 
 const utils = {
   main(note: MbBookNote, text: string) {
-    const { preset } = self.profile.autoreplace
+    const { preset } = self.globalProfile.autoreplace
     for (const set of preset) {
       switch (set) {
         case AutoReplacePreset.Custom:
-          const { customReplace: params } = self.profileTemp.replaceParam
+          const { customReplace: params } = self.tempProfile.replaceParam
           if (!params) continue
           text = params.reduce(
             (acc, param) =>

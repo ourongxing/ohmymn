@@ -164,7 +164,7 @@ const configs: IConfig<"magicaction4card"> = {
       option: option.merge_text,
       help: "仅支持合并文字摘录和文字评论，如果存在图片，则在合并后会置顶。",
       method: ({ option, nodes }) => {
-        const { defaultMergeText } = self.profile.magicaction4card
+        const { defaultMergeText } = self.globalProfile.magicaction4card
         const separator = reverseEscape(
           `${escapeDoubleQuote(defaultMergeText)}`,
           true

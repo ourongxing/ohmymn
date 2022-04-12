@@ -1,6 +1,6 @@
 import { MN } from "@/const"
 import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IProfile, IDocProfile } from "@/profile"
+import { IGlobalProfile, IDocProfile } from "@/profile"
 import { ICheckMethod, IConfig, ISettingInput, MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { showHUD, openUrl } from "@/utils/common"
@@ -14,7 +14,7 @@ const { link, intro, lable, option, help } = lang
 const checker: Record<"field" | "modelName", ICheckMethod> = {
   async field({ input }) {
     const { ankiConnectAPI, exportMethod, showTemplate } =
-      self.profile.export2anki
+      self.globalProfile.export2anki
     console.log(ankiConnectAPI)
     if (!input.includes("——")) throw "请务必用 —— 来隔开字段名及其内容"
     const [key, value] = input.split(/\s*——\s*/)
@@ -24,7 +24,8 @@ const checker: Record<"field" | "modelName", ICheckMethod> = {
       ankiConnectAPI &&
       exportMethod[0] === ExportMethod.API
     ) {
-      const modelName = self.profile.export2anki["modelName" + showTemplate[0]]
+      const modelName =
+        self.globalProfile.export2anki["modelName" + showTemplate[0]]
       const anki = new AnkiConnect(ankiConnectAPI)
       if (modelName) {
         const res = await anki.getModelFieldNames(modelName)
@@ -34,7 +35,7 @@ const checker: Record<"field" | "modelName", ICheckMethod> = {
     }
   },
   async modelName({ input }) {
-    const { ankiConnectAPI, exportMethod } = self.profile.export2anki
+    const { ankiConnectAPI, exportMethod } = self.globalProfile.export2anki
     if (exportMethod[0] === ExportMethod.API && ankiConnectAPI) {
       const anki = new AnkiConnect(ankiConnectAPI)
       const res = await anki.getModelList()
@@ -144,7 +145,7 @@ const configs: IConfig<"export2anki"> = {
               }
         })
       )
-      .flat() as ISettingInput<(IProfile & IDocProfile)["export2anki"]>[])
+      .flat() as ISettingInput<(IGlobalProfile & IDocProfile)["export2anki"]>[])
   ],
   actions4card: [
     {
@@ -155,7 +156,7 @@ const configs: IConfig<"export2anki"> = {
       async method({ nodes, option }) {
         try {
           const { exportMethod, ankiConnectAPI, autoSync } =
-            self.profile.export2anki
+            self.globalProfile.export2anki
           const { defaultTemplate } = self.docProfile.export2anki
           option = option === 0 ? defaultTemplate[0] : option - 1
           if (exportMethod[0] === ExportMethod.URL) {
@@ -187,7 +188,7 @@ const configs: IConfig<"export2anki"> = {
 
 const utils = {
   genAnkiNote(node: MbBookNote, option: number): AnkiNote {
-    const { tagTemplate, addTags } = self.profile.export2anki
+    const { tagTemplate, addTags } = self.globalProfile.export2anki
     const tags = (
       (() => {
         if (addTags[0] === AddTags.CardTags) {
@@ -210,7 +211,7 @@ const utils = {
     if (!deckName) throw "请输入牌组名"
     else deckName = renderTemplateOfNodeProperties(node, deckName)
     const { modelName, fields } = Object.entries(
-      self.profile.export2anki
+      self.globalProfile.export2anki
     ).reduce(
       (acc, cur) => {
         const [key, value] = cur
@@ -240,7 +241,8 @@ const utils = {
     }
   },
   genUrlScheme(note: AnkiNote, id: string) {
-    const { profileName, allowRepeat, jumpBack } = self.profile.export2anki
+    const { profileName, allowRepeat, jumpBack } =
+      self.globalProfile.export2anki
     const { modelName, deckName, fields, tags } = note
     const ankiUrl = "anki://x-callback-url/addnote?"
     const fieldsText = Object.entries(fields).reduce((acc, cur) => {

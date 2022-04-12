@@ -2,7 +2,7 @@ import { Addon, MN } from "@/const"
 import { layoutViewController } from "@/jsExtension/switchPanel"
 import lang from "@/lang"
 import {
-  IProfile,
+  IGlobalProfile,
   IDocProfile,
   docProfilePreset,
   profilePreset
@@ -16,7 +16,7 @@ import { checkNewVerProfile } from "./utils"
 export * from "./utils"
 export * from "./updateDataSource"
 
-let allProfile: IProfile[]
+let allProfile: IGlobalProfile[]
 let allDocProfile: Record<string, IDocProfile>
 
 const { profileKey, docProfileKey } = Addon
@@ -26,7 +26,7 @@ const getDataByKey = (key: string): any => {
 }
 
 const setDataByKey = (
-  data: IProfile[] | Record<string, IDocProfile>,
+  data: IGlobalProfile[] | Record<string, IDocProfile>,
   key: string
 ) => {
   NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
@@ -47,7 +47,7 @@ export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
       } = getDataByKey(docProfileKey)
       if (!docProfileSaved) console.log("Initialize doc profile", "profile")
       allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
-      const profileSaved: IProfile[] = getDataByKey(profileKey)
+      const profileSaved: IGlobalProfile[] = getDataByKey(profileKey)
       if (!profileSaved) console.log("Initialize global profile", "profile")
       allProfile = profileSaved ?? Array(5).fill(profilePreset)
       // Initialize all profile when new version release
@@ -70,7 +70,7 @@ export const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
     }
     case Range.Global: {
       updateProfileDataSource(
-        self.profile,
+        self.globalProfile,
         allProfile[self.docProfile.addon.profile[0]],
         true
       )
@@ -92,7 +92,7 @@ export const writeProfile = (
   docmd5?: string,
   num = self.docProfile.addon.profile[0]
 ) => {
-  allProfile[num] = deepCopy(self.profile)
+  allProfile[num] = deepCopy(self.globalProfile)
   setDataByKey(allProfile, profileKey)
   console.log("Save global profile", "profile")
   if (docmd5 != undefined) {
@@ -100,7 +100,7 @@ export const writeProfile = (
     setDataByKey(allDocProfile, docProfileKey)
     console.log("Save current doc profile", "profile")
   }
-  const { backupID } = self.profile.additional
+  const { backupID } = self.globalProfile.additional
   if (backupID) {
     const node = MN.db.getNoteById(backupID)
     if (node) {
@@ -120,13 +120,13 @@ export const saveProfile = (name: string, key: string, value: any) => {
   try {
     switch (key) {
       case "quickSwitch":
-        self.profile.addon.quickSwitch = value
+        self.globalProfile.addon.quickSwitch = value
         break
       case "pageOffset":
         self.docProfile.addon.pageOffset = value
         break
       default: {
-        if (self.profile?.[name]?.[key] === undefined) {
+        if (self.globalProfile?.[name]?.[key] === undefined) {
           self.docProfile[name][key] = value
           if (self.docProfile.addon.profile[0] === 4) {
             Object.entries(allDocProfile).forEach(([m, p]) => {
@@ -135,7 +135,7 @@ export const saveProfile = (name: string, key: string, value: any) => {
             })
           }
         } else {
-          self.profile[name][key] = value
+          self.globalProfile[name][key] = value
           if (self.docProfile.addon.profile[0] === 4) {
             Object.entries(allProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined) allProfile[m][name][key] = value

@@ -128,7 +128,7 @@ const utils = {
   },
 
   getFillInfo(info: Dict) {
-    const { customFill, fillWordInfo } = self.profile.autocomplete
+    const { customFill, fillWordInfo } = self.globalProfile.autocomplete
     if (
       fillWordInfo[0] === FillWordInfo.None ||
       (fillWordInfo[0] === FillWordInfo.Custom && !customFill)

@@ -54,7 +54,7 @@ const configs: IConfig<"autostandardize"> = {
           const title = node.noteTitle
           if (option != StandardizeSelected.OnlyExcerptText && title) {
             let newTitle = utils.main(node, title)
-            if (self.profile.autostandardize.standardizeTitle)
+            if (self.globalProfile.autostandardize.standardizeTitle)
               newTitle = utils.toTitleCase(newTitle)
             node.noteTitle = newTitle
           }
@@ -72,7 +72,7 @@ const configs: IConfig<"autostandardize"> = {
 
 const utils = {
   toTitleCase(text: string) {
-    const { standardizeTitle } = self.profile.autostandardize
+    const { standardizeTitle } = self.globalProfile.autostandardize
     if (!standardizeTitle) return text
     return text
       .split(/\s*[；;]\s*/)
@@ -81,7 +81,7 @@ const utils = {
   },
   main(note: MbBookNote, text: string): string {
     if (isHalfWidth(text)) return text
-    const { preset } = self.profile.autostandardize
+    const { preset } = self.globalProfile.autostandardize
     text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
       isHalfWidth(match)
         ? `placeholder${match}placeholder`
@@ -90,7 +90,7 @@ const utils = {
     for (const set of preset) {
       switch (set) {
         case AutoStandardizePreset.Custom:
-          const { customStandardize: params } = self.profileTemp.replaceParam
+          const { customStandardize: params } = self.tempProfile.replaceParam
           if (!params) continue
           params.forEach(param => {
             text = text.replace(param.regexp, param.newSubStr)

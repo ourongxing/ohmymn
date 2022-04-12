@@ -101,8 +101,8 @@ const configs: IConfig<"autocomment"> = {
 
 const utils = {
   main(note: MbBookNote, text: string) {
-    const { customComment } = self.profileTemp.replaceParam
-    const { preset, citation } = self.profile.autocomment
+    const { customComment } = self.tempProfile.replaceParam
+    const { preset, citation } = self.globalProfile.autocomment
     const params = preset.reduce((acc, k) => {
       if (k === AutoCommentPreset.Custom && customComment) {
         acc.push(...customComment)

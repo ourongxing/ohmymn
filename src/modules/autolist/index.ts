@@ -77,11 +77,11 @@ const configs: IConfig<"autolist"> = {
 const utils = {
   // 匹配到就在前面或后面添加换行
   main(note: MbBookNote, text: string): string {
-    const { preset } = self.profile.autolist
+    const { preset } = self.globalProfile.autolist
     for (const set of preset) {
       switch (set) {
         case AutoListPreset.Custom:
-          const { customList: params } = self.profileTemp.replaceParam
+          const { customList: params } = self.tempProfile.replaceParam
           if (!params) continue
           text = params.reduce((acc, param) => {
             param.regexp = regFlag.add(param.regexp, "g")

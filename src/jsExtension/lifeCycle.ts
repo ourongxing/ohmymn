@@ -46,16 +46,16 @@ const sceneWillConnect = () => {
   _window = self.window
   // Multiple windows will share global variables, so they need to be saved to self.
   self.panelStatus = false
-  self.profile = deepCopy(profilePreset)
+  self.globalProfile = deepCopy(profilePreset)
   self.docProfile = deepCopy(docProfilePreset)
-  self.profileTemp = deepCopy(profileTempPreset)
+  self.tempProfile = deepCopy(profileTempPreset)
   self.dataSource = deepCopy(dataSourcePreset)
   self.OCROnline = { times: 0, status: "free" }
   self.customSelectedNodes = []
   self.settingViewController = new SettingViewController()
   self.settingViewController.dataSource = self.dataSource
   self.settingViewController.window = self.window
-  self.settingViewController.profile = self.profile
+  self.settingViewController.profile = self.globalProfile
   self.settingViewController.docProfile = self.docProfile
 }
 
@@ -73,7 +73,7 @@ const documentDidOpen = (docmd5: string) => {
   else {
     readProfile(Range.First, docmd5)
     UIApplication.sharedApplication().idleTimerDisabled =
-      self.profile.addon.screenAlwaysOn
+      self.globalProfile.addon.screenAlwaysOn
   }
   // if (MN.db.getDocumentById(docmd5)?.textContentsForPageNo(1).length)
   //   showHUD("识别出来了")

@@ -215,8 +215,8 @@ const utils = {
       referrer,
       width,
       paginated
-    } = self.profile.export2devonthink
-    if (self.profile.export2devonthink.exportMethod[0] == 0) {
+    } = self.globalProfile.export2devonthink
+    if (self.globalProfile.export2devonthink.exportMethod[0] == 0) {
       const content_list = [
         title,
         comment,
@@ -245,7 +245,7 @@ const utils = {
         tags
       )
       return "x-devonthink://createPDF?" + output
-    } else if (self.profile.export2devonthink.exportMethod[0] == 1) {
+    } else if (self.globalProfile.export2devonthink.exportMethod[0] == 1) {
       const content_list = [
         title,
         comment,
@@ -270,7 +270,7 @@ const utils = {
         tags
       )
       return "x-devonthink://createHTML?" + output
-    } else if (self.profile.export2devonthink.exportMethod[0] == 2) {
+    } else if (self.globalProfile.export2devonthink.exportMethod[0] == 2) {
       console.log(
         [title, comment, destination, mdtext, hide, referrer],
         "export2devonthink"
@@ -292,7 +292,7 @@ const utils = {
         tags
       )
       return "x-devonthink://createMarkdown?" + output
-    } else if (self.profile.export2devonthink.exportMethod[0] == 3) {
+    } else if (self.globalProfile.export2devonthink.exportMethod[0] == 3) {
       const content_list = [title, comment, destination, txtext, hide, referrer]
       const content_key = [
         "title",

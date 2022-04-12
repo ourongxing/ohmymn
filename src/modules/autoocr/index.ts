@@ -68,7 +68,7 @@ const configs: IConfig<"autoocr"> = {
       method: async ({ imgBase64, option }) => {
         try {
           const res =
-            self.profile.autoocr.formulaOCRProviders[0] === 0
+            self.globalProfile.autoocr.formulaOCRProviders[0] === 0
               ? await utils.baiduFormulaOCR(imgBase64)
               : await utils.mathpixOCR(imgBase64)
           utils.copy([res, `$${res}$`, `$$${res}$$`][option])
@@ -135,21 +135,21 @@ const configs: IConfig<"autoocr"> = {
 
 const utils = {
   async getBaiduToken() {
-    const { lastGetToken, baiduToken } = self.profile.additional.autoocr
-    const { baiduApiKey, baiduSecretKey } = self.profile.autoocr
+    const { lastGetToken, baiduToken } = self.globalProfile.additional.autoocr
+    const { baiduApiKey, baiduSecretKey } = self.globalProfile.autoocr
     if (baiduToken && Date.now() - lastGetToken < 2592000000) return baiduToken
     const res = (await fetch(
       `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${baiduApiKey}&client_secret=${baiduSecretKey}`
     ).then(res => res.json())) as { access_token: string }
     if (!res.access_token) throw other.baidu_token_error
-    self.profile.additional.autoocr = {
+    self.globalProfile.additional.autoocr = {
       lastGetToken: Date.now(),
       baiduToken: res.access_token
     }
     return res.access_token
   },
   async mathpixOCR(imgBase64: string) {
-    const { mathpixAppKey } = self.profile.autoocr
+    const { mathpixAppKey } = self.globalProfile.autoocr
     if (!mathpixAppKey) throw other.no_mathpix_key
     const res = (await fetch("https://api.mathpix.com/v3/latex", {
       method: "POST",
@@ -262,7 +262,7 @@ const utils = {
           },
           form: {
             image: imgBase64,
-            language_type: langKey[self.profile.autoocr.lang[0]]
+            language_type: langKey[self.globalProfile.autoocr.lang[0]]
           }
         }
       ).then(res => res.json())) as {

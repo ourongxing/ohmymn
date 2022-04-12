@@ -148,7 +148,7 @@ const utils = {
       defaultPicExcerptStyle,
       defaultTextExcerptColor,
       defaultTextExcerptStyle
-    } = self.profile.autostyle
+    } = self.globalProfile.autostyle
 
     const color = note.excerptPic
       ? defaultPicExcerptColor[0] !== 0

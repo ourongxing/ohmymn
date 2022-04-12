@@ -89,7 +89,7 @@ const configs: IConfig<"anotherautodef"> = {
       key: "extractTitle",
       method: ({ nodes, content, option }) => {
         if (option == ExtractTitle.UseAutoDef) {
-          const { customExtractTitle } = self.profile.anotherautodef
+          const { customExtractTitle } = self.globalProfile.anotherautodef
           const params = customExtractTitle
             ? string2ReplaceParam(customExtractTitle)
             : false
@@ -141,10 +141,10 @@ const configs: IConfig<"anotherautodef"> = {
 
 const utils = {
   toTitleLink(text: string) {
-    if (!self.profile.anotherautodef.toTitleLink) return [text]
+    if (!self.globalProfile.anotherautodef.toTitleLink) return [text]
     const regs: RegExp[] = []
-    const { titleLinkSplit } = self.profile.anotherautodef
-    const { customTitleSplit } = self.profileTemp.regArray
+    const { titleLinkSplit } = self.globalProfile.anotherautodef
+    const { customTitleSplit } = self.tempProfile.regArray
     if (titleLinkSplit.includes(TitleLinkSplit.Custom) && customTitleSplit)
       regs.push(...customTitleSplit[0])
     if (titleLinkSplit.includes(TitleLinkSplit.Default))
@@ -165,11 +165,11 @@ const utils = {
   },
 
   main(note: MbBookNote, text: string) {
-    const { preset, onlyDesc } = self.profile.anotherautodef
+    const { preset, onlyDesc } = self.globalProfile.anotherautodef
     for (const set of preset)
       switch (set) {
         case AutoDefPreset.CustomExtract: {
-          const { customExtractTitle: params } = self.profileTemp.replaceParam
+          const { customExtractTitle: params } = self.tempProfile.replaceParam
           if (!params) continue
           let flag = 0
           const allTitles = unique(
@@ -201,7 +201,7 @@ const utils = {
           break
         }
         case AutoDefPreset.CustomTitleSplit: {
-          const { customDefLink } = self.profileTemp.regArray
+          const { customDefLink } = self.tempProfile.regArray
           if (!customDefLink) continue
           const regs = customDefLink.flat()
           for (let reg of regs) {

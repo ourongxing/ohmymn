@@ -76,7 +76,7 @@ export const utils: AutoUtils = {
   modifyTitles: [
     titles =>
       isModuleAutoON("autostandardize") &&
-      self.profile.autostandardize.standardizeTitle &&
+      self.globalProfile.autostandardize.standardizeTitle &&
       titles.map(k => autostandardize.utils.toTitleCase(k))
   ],
   generateTags: [
@@ -91,17 +91,17 @@ export const constModules = { addon, magicaction4card, magicaction4text }
 export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
 
 export const isModuleON = (key: ModuleKeyType): boolean => {
-  const { quickSwitch } = self.profile.addon
+  const { quickSwitch } = self.globalProfile.addon
   const index = moduleKeyArray.indexOf(key)
   return index === -1 || quickSwitch.includes(index)
 }
 
 const isModuleAutoON = (key: AutoModuleKeyType) => {
-  const { quickSwitch } = self.profile.addon
+  const { quickSwitch } = self.globalProfile.addon
   return (
     quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
     //@ts-ignore
-    (self.profile[key]?.on ?? self.docProfile[key]?.on ?? false)
+    (self.globalProfile[key]?.on ?? self.docProfile[key]?.on ?? false)
   )
 }
 

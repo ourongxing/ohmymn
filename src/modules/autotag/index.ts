@@ -82,8 +82,8 @@ const configs: IConfig<"autotag"> = {
 
 const utils = {
   main(note: MbBookNote, text: string) {
-    const { customTag: params } = self.profileTemp.replaceParam
-    const { preset } = self.profile.autotag
+    const { customTag: params } = self.tempProfile.replaceParam
+    const { preset } = self.globalProfile.autotag
     if (preset.includes(AutoTagPreset.Custom) && params)
       return extractArray(
         text,

@@ -29,7 +29,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   isComment = nodeNote !== note
   self.isModify = lastExcerptText !== undefined
   if (
-    self.profile.addon.lockExcerpt &&
+    self.globalProfile.addon.lockExcerpt &&
     self.isModify &&
     lastExcerptText !== "😎"
   ) {

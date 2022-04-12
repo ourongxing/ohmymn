@@ -105,7 +105,7 @@ const handleMagicAction = async ({
       }
       const text =
         self.docProfile.magicaction4text.preOCR &&
-        self.profile.addon.quickSwitch.includes(
+        self.globalProfile.addon.quickSwitch.includes(
           moduleKeyArray.indexOf("autoocr")
         )
           ? (await autoocr.utils.main(imageFromSelection)) ??
@@ -126,7 +126,9 @@ const handleMagicAction = async ({
     } else if (type === "card") {
       let nodes: MbBookNote[] = []
       key != "filterCards" &&
-        self.profile.addon.panelControl.includes(PanelControl.CompleteClose) &&
+        self.globalProfile.addon.panelControl.includes(
+          PanelControl.CompleteClose
+        ) &&
         closePanel()
 
       if (self.customSelectedNodes.length) {
@@ -151,7 +153,7 @@ const handleMagicAction = async ({
 
         const { smart_select } = lang
         if (
-          self.profile.magicaction4card.smartSelection &&
+          self.globalProfile.magicaction4card.smartSelection &&
           isHavingChildren &&
           !noNeedSmartSelection
         ) {
@@ -198,7 +200,7 @@ const handleMagicAction = async ({
           undoGroupingWithRefresh(
             () => void manageProfileAction(nodes[0], option)
           )
-          self.profile.additional.backupID = nodes[0].noteId!
+          self.globalProfile.additional.backupID = nodes[0].noteId!
           break
         default:
           // Promise can not be placed in undoGroupingWithRefresh()
