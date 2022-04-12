@@ -4,7 +4,7 @@ const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
   link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
   option: {
-    filter_cards: ["仅筛选标题", "筛选整个卡片内容"],
+    filter_cards: ["所有", "标题", "摘录", "评论", "标签"] as Tuple<string, 5>,
     switch_title: ["切换为不存在的", "交换标题和摘录"],
     merge_text: ["合并为摘录", "合并为评论"],
     merge_cards: ["同时合并标题", "不合并标题"],
@@ -37,10 +37,10 @@ const en: typeof zh = {
     "All actions need to select the card first. Click for the specific useage",
   link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734",
   option: {
-    switch_title: ["Switch to Another", "Swap Titles and Excerpts"],
-    filter_cards: ["Filter Only Title", "Filter Entire Card"],
+    switch_title: ["Switch to Another", "Swap Title and Excerpt"],
+    filter_cards: ["All", "Title", "Excerpt", "Comment", "Tag"],
     merge_text: ["Merged as Excerpt", "Merged as Comment"],
-    merge_cards: ["Merge Title Simultaneously", "Do not Merge Titles"],
+    merge_cards: ["Merge Title", "Not Merge Titles"],
     manage_profile: ["Read Profile", "Write Profile"]
   },
   help: {

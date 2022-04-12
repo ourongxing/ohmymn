@@ -3,7 +3,7 @@ import type { UIView, IConfig, ISettingSelect } from "typings"
 import { lang } from "./lang"
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang
-const configs: IConfig<Record<string, string>, Record<string, string>> = {
+const configs: IConfig = {
   name: "Gesture",
   intro,
   link,

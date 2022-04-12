@@ -31,3 +31,33 @@ export interface EventHandler {
 export interface GestureHandler {
   (sender: UIGestureRecognizer): void
 }
+
+export type AutoUtils = {
+  customOCR?: ((
+    imgBase64: string
+  ) => MaybePromise<string | undefined | false>)[]
+  modifyExcerptText?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string | false>)[]
+  generateTitles?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<
+    { title: string[]; text: string; comments?: string[] } | undefined | false
+  >)[]
+  generateTags?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
+  generateComments?: ((
+    note: MbBookNote,
+    text: string
+  ) => MaybePromise<string[] | false>)[]
+  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
+  modifyStyle?: ((
+    note: MbBookNote
+  ) => MaybePromise<
+    { color: number | undefined; style: number | undefined } | false
+  >)[]
+}

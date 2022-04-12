@@ -1,7 +1,7 @@
 import { MbBookNote } from "typings/MarginNote"
 import { CellViewType } from "./enum"
 
-export type IConfig<T, K> = Expand<{
+export type IConfig<T = Record<string, any>, K = undefined> = Expand<{
   name: string
   key?: string
   intro: string
@@ -25,6 +25,7 @@ type HelpLinkLabel = HelpLink & {
 export type ISettingInlineInput<T> = {
   key: PickKeyByValue<T, string>
   type: CellViewType.InlineInput
+  check?: ICheckMethod
 } & HelpLinkLabel &
   Bind<T>
 
@@ -33,6 +34,7 @@ export type ISettingInput<T> = {
   type: CellViewType.Input
   help: string
   link?: string
+  check?: ICheckMethod
 } & Bind<T>
 
 export type ISettingSwitch<T> = {
@@ -68,6 +70,7 @@ export type IAction<
   option?: string[]
   help?: string
   method: T
+  check?: ICheckMethod
 }>
 
 export type IActionMethod4Card = ({
@@ -88,11 +91,6 @@ export type IActionMethod4Text = ({
   text: string
   imgBase64: string
   option: number
-}) => void
-export type ICheckMethod<T> = ({
-  input,
-  key
-}: {
-  input: string
-  key: keyof T
-}) => MaybePromise<undefined | boolean>
+}) => any
+
+export type ICheckMethod = ({ input }: { input: string }) => MaybePromise<void>

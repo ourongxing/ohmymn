@@ -316,14 +316,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["export2devonthink"], string>
-> = ({ input, key }) => {
-  switch (key) {
-    default:
-      return undefined
-  }
-}
-
-const export2devonthink = { configs, utils, checker }
-export default export2devonthink
+export default { configs, utils }

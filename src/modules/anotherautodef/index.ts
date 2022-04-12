@@ -1,6 +1,6 @@
 import { extractArray, regFlag, string2ReplaceParam } from "utils/input"
 import { getAllText, removeHighlight } from "utils/note"
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
@@ -36,14 +36,20 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
       type: CellViewType.Input,
       bind: [["preset", 0]],
       help: help.custom_extract_title,
-      link
+      link,
+      check({ input }) {
+        checkReplaceParamFromMNLink(input)
+      }
     },
     {
       key: "customDefLink",
       type: CellViewType.Input,
       bind: [["preset", 1]],
       help: help.custom_def_link,
-      link
+      link,
+      check({ input }) {
+        checkRegArrayFromMNLink(input)
+      }
     },
     {
       key: "onlyDesc",
@@ -70,7 +76,10 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
         ["toTitleLink", 1],
         ["titleLinkSplit", 0]
       ],
-      link
+      link,
+      check({ input }) {
+        checkRegArrayFromMNLink(input)
+      }
     }
   ],
   actions4card: [
@@ -123,6 +132,9 @@ const configs: IConfig<IProfile["anotherautodef"], typeof ActionKey> = {
               node.noteTitle = removeHighlight(allTitles.join("; "))
           })
         }
+      },
+      check({ input }) {
+        checkReplaceParam(input)
       }
     }
   ]
@@ -250,25 +262,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["anotherautodef"], string> & typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "customDefLink":
-    case "customTitleSplit":
-      checkRegArrayFromMNLink(input)
-      break
-    case "customExtractTitle":
-      checkReplaceParamFromMNLink(input)
-      break
-    case "extractTitle":
-      checkReplaceParam(input)
-      break
-    default:
-      return false
-  }
-}
-
-const anotherautodef = { configs, utils, checker }
-
-export default anotherautodef
+export default { configs, utils }

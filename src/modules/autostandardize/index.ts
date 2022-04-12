@@ -31,7 +31,10 @@ const configs: IConfig<IProfile["autostandardize"], typeof ActionKey> = {
       type: CellViewType.Input,
       help: help.custom_standardize,
       bind: [["preset", 0]],
-      link
+      link,
+      check({ input }) {
+        checkReplaceParamFromMNLink(input)
+      }
     },
     {
       key: "standardizeTitle",
@@ -118,17 +121,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["autostandardize"], string>
-> = ({ input, key }) => {
-  switch (key) {
-    case "customStandardize":
-      checkReplaceParamFromMNLink(input)
-      break
-    default:
-      return false
-  }
-}
-
-const autostandardize = { configs, utils, checker }
-export default autostandardize
+export default { configs, utils }

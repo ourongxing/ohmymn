@@ -34,7 +34,10 @@ const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
       type: CellViewType.Input,
       help: help.custom_list,
       bind: [["preset", 0]],
-      link
+      link,
+      check({ input }) {
+        checkReplaceParamFromMNLink(input)
+      }
     }
   ],
   actions4card: [
@@ -43,7 +46,7 @@ const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
       label: label.list_selected,
       key: "listSelected",
       option: option.list_selected,
-      method: ({ nodes, content, option }) => {
+      method({ nodes, content, option }) {
         if (option == ListSelected.UseAutoList) {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
@@ -64,6 +67,9 @@ const configs: IConfig<IProfile["autolist"], typeof ActionKey> = {
             })
           })
         }
+      },
+      check({ input }) {
+        checkReplaceParam(input)
       }
     }
   ]
@@ -118,20 +124,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["autolist"], string> & typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "customList":
-      checkReplaceParamFromMNLink(input)
-      break
-    case "listSelected":
-      checkReplaceParam(input)
-      break
-    default:
-      return false
-  }
-}
-
-const autolist = { configs, utils, checker }
-export default autolist
+export default { configs, utils }

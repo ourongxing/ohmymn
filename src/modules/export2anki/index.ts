@@ -29,7 +29,11 @@ const configs: IConfig<
       type: CellViewType.Input,
       key: "ankiConnectAPI",
       help: "Anki Connect API，需要电脑端安装 Anki Connect。点击查看获取方法。",
-      bind: [["exportMethod", 1]]
+      bind: [["exportMethod", 1]],
+      async check({ input }) {
+        const anki = new AnkiConnect(input)
+        await anki.getModelList()
+      }
     },
     {
       type: CellViewType.Select,
@@ -94,7 +98,8 @@ const configs: IConfig<
                 type: CellViewType.InlineInput,
                 key: `modelName${i + 1}`,
                 label: `Anki 模版名`,
-                bind: [["showTemplate", i + 1]]
+                bind: [["showTemplate", i + 1]],
+                check: checker.modelName
               }
             : {
                 type: CellViewType.Input,
@@ -104,7 +109,8 @@ const configs: IConfig<
                     ? "。第一个字段会用来判断卡片是否存在，点击查看输入格式"
                     : ""
                 }`,
-                bind: [["showTemplate", i + 1]]
+                bind: [["showTemplate", i + 1]],
+                check: checker.field
               }
         })
       )
@@ -116,7 +122,7 @@ const configs: IConfig<
       key: "exportCard2Anki",
       label: "导出到 Anki",
       option: ["默认", "模板 1", "模版 2", "模版 3"],
-      method: async ({ nodes, option }) => {
+      async method({ nodes, option }) {
         try {
           const { exportMethod, ankiConnectAPI, autoSync } =
             self.profile.export2anki
@@ -219,12 +225,10 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["export2anki"], string>
-> = async ({ input, key }) => {
-  const { ankiConnectAPI, exportMethod, showTemplate } =
-    self.profile.export2anki
-  if (key.startsWith("field")) {
+const checker: Record<"field" | "modelName", ICheckMethod> = {
+  async field({ input }) {
+    const { ankiConnectAPI, exportMethod, showTemplate } =
+      self.profile.export2anki
     if (!input.includes("——")) throw "请务必用 —— 来隔开字段名及其内容"
     const [key, value] = input.split(/\s*——\s*/)
     if (!key) throw "没有输入字段名"
@@ -235,27 +239,21 @@ const checker: ICheckMethod<
     ) {
       const modelName = self.profile.export2anki["modelName" + showTemplate[0]]
       const anki = new AnkiConnect(ankiConnectAPI)
-      if (!modelName) return true
-      const res = await anki.getModelFieldNames(modelName)
-      if (!res.result?.includes(key))
-        throw `输入错误，模版 ${modelName} 中没有此字段`
+      if (modelName) {
+        const res = await anki.getModelFieldNames(modelName)
+        if (!res.result?.includes(key))
+          throw `输入错误，模版 ${modelName} 中没有此字段`
+      }
     }
-  } else if (key.startsWith("modelName")) {
+  },
+  async modelName({ input }) {
+    const { ankiConnectAPI, exportMethod } = self.profile.export2anki
     if (exportMethod[0] === ExportMethod.API && ankiConnectAPI) {
       const anki = new AnkiConnect(ankiConnectAPI)
       const res = await anki.getModelList()
       if (!res.result?.includes(input)) throw `输入错误，Anki 中没有此模板`
     }
-  } else
-    switch (key) {
-      case "ankiConnectAPI":
-        const anki = new AnkiConnect(input)
-        await anki.getModelList()
-        break
-      default:
-        return false
-    }
+  }
 }
 
-const export2anki = { configs, utils, checker }
-export default export2anki
+export default { configs, utils }

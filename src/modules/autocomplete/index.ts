@@ -33,7 +33,10 @@ const configs: IConfig<IProfile["autocomplete"], typeof ActionKey> = {
       type: CellViewType.Input,
       help: help.custom_fill,
       bind: [["fillWordInfo", 1]],
-      link
+      link,
+      check({ input }) {
+        checkPlainText(input)
+      }
     }
   ],
   actions4card: [
@@ -191,18 +194,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<IProfile["autocomplete"], string>> = ({
-  input,
-  key
-}) => {
-  switch (key) {
-    case "customFill":
-      checkPlainText(input)
-      break
-    default:
-      return false
-  }
-}
-
-const autocomplete = { configs, utils, checker }
-export default autocomplete
+export default { configs, utils }

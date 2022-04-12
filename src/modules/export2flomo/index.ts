@@ -202,15 +202,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<PickByValue<IProfile["export2flomo"], string>> = ({
-  input,
-  key
-}) => {
-  switch (key) {
-    default:
-      return false
-  }
-}
-
-const export2flomo = { configs, utils, checker }
-export default export2flomo
+export default { configs, utils }

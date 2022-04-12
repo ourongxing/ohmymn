@@ -3,10 +3,7 @@ import { IDocProfile } from "profile"
 import type { IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 
-const configs: IConfig<
-  IDocProfile["magicaction4text"],
-  Record<string, string>
-> = {
+const configs: IConfig<IDocProfile["magicaction4text"]> = {
   name: "MagicAction for Text",
   key: "magicaction4text",
   intro: lang.intro,

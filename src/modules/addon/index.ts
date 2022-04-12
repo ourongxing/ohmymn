@@ -6,10 +6,7 @@ import { IDocProfile, IProfile } from "profile"
 import { checkInteger } from "utils/checkInput"
 
 const { link, label, help, option } = lang
-const configs: IConfig<
-  (IProfile & IDocProfile)["addon"],
-  Record<string, string>
-> = {
+const configs: IConfig<(IProfile & IDocProfile)["addon"]> = {
   name: Addon.title,
   key: "addon",
   intro: `version: ${Addon.version}`,
@@ -113,7 +110,10 @@ const configs: IConfig<
       key: "pageOffset",
       type: CellViewType.InlineInput,
       label: label.page_offset,
-      bind: [["showDocInfo", 1]]
+      bind: [["showDocInfo", 1]],
+      check({ input }) {
+        checkInteger(Number(input))
+      }
     },
     {
       key: "otherInfo",
@@ -124,18 +124,4 @@ const configs: IConfig<
   ]
 }
 
-const checker: ICheckMethod<IDocProfile["addon"]> = ({ input, key }) => {
-  switch (key) {
-    case "pageOffset":
-      checkInteger(Number(input))
-    default:
-      return false
-  }
-}
-
-const addon = {
-  configs,
-  checker
-}
-
-export default addon
+export default { configs }

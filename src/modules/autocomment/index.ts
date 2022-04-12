@@ -41,7 +41,10 @@ const configs: IConfig<IProfile["autocomment"], typeof ActionKey> = {
       type: CellViewType.Input,
       help: help.custom_comment,
       bind: [["preset", 0]],
-      link
+      link,
+      check({ input }) {
+        checkReplaceParamFromMNLink(input)
+      }
     },
     {
       key: "citation",
@@ -57,7 +60,7 @@ const configs: IConfig<IProfile["autocomment"], typeof ActionKey> = {
       label: label.add_comment,
       key: "addComment",
       option: option.add_comment,
-      method: ({ nodes, option, content }) => {
+      method({ nodes, option, content }) {
         if (option == AddComment.UseAutoComment) {
           nodes.forEach(node => {
             const text = getAllText(node)
@@ -87,6 +90,12 @@ const configs: IConfig<IProfile["autocomment"], typeof ActionKey> = {
               })
           })
         }
+      },
+      check({ input }) {
+        input = /^\(.*\)$/.test(input)
+          ? input
+          : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
+        checkReplaceParam(input)
       }
     }
   ]
@@ -140,27 +149,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["autocomment"], string> & typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "addComment":
-      input = /^\(.*\)$/.test(input)
-        ? input
-        : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
-      checkReplaceParam(input)
-      break
-    case "customComment":
-      checkReplaceParamFromMNLink(input)
-    default:
-      return false
-  }
-}
-
-const autocomment = {
-  configs,
-  utils,
-  checker
-}
-
-export default autocomment
+export default { configs, utils }

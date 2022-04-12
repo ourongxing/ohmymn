@@ -43,13 +43,19 @@ const configs: IConfig<
       label: lable.separator_symbols_multiple_card,
       help: help.separator_symbols_multiple_card,
       key: "separatorSymbols",
-      type: CellViewType.InlineInput
+      type: CellViewType.InlineInput,
+      check({ input }) {
+        checkPlainText(input)
+      }
     },
     {
       help: lable.custom_copy,
+      type: CellViewType.Input,
       key: "customContent",
       link,
-      type: CellViewType.Input
+      check({ input }) {
+        checkPlainText(input)
+      }
     },
     {
       label: lable.show_search_engine,
@@ -73,7 +79,10 @@ const configs: IConfig<
           option.search_engine[i]
         }`,
         key: k,
-        bind: [["showSearchEngine", 1]]
+        bind: [["showSearchEngine", 1]],
+        check({ input }) {
+          if (!input.includes("{{keyword}}")) throw hud.no_keyword
+        }
       }
     }) as ISettingInput<(IProfile & IDocProfile)["copysearch"]>[])
   ],
@@ -83,7 +92,7 @@ const configs: IConfig<
       key: "searchCardInfo",
       label: lable.search_card_info,
       option: option.search_engine,
-      method: async ({ nodes, option }) => {
+      async method({ nodes, option }) {
         if (nodes.length == 1) {
           const { whichPartofCard } = self.profile.copysearch
           const text = (await utils.getContentofOneCard(
@@ -113,7 +122,7 @@ const configs: IConfig<
       key: "copyCardInfo",
       label: lable.copy_card_info,
       option: option.which_partof_card,
-      method: async ({ nodes, option }) => {
+      async method({ nodes, option }) {
         if (nodes.length == 1) {
           const text = (await utils.getContentofOneCard(
             nodes[0],
@@ -139,7 +148,7 @@ const configs: IConfig<
       key: "searchText",
       label: lable.search_text,
       option: option.search_engine,
-      method: ({ text, option }) => {
+      method({ text, option }) {
         text && utils.search(text, option)
       }
     }
@@ -300,27 +309,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<(IProfile & IDocProfile)["copysearch"], string>
-> = ({ input, key }) => {
-  switch (key) {
-    case "searchChineseText":
-    case "searchEnglishText":
-    case "searchWord":
-    case "searchTranslation":
-    case "searchAcademic":
-    case "searchQuestion":
-    case "searchOtherText":
-      if (!input.includes("{{keyword}}")) throw hud.no_keyword
-      break
-    case "customContent":
-    case "separatorSymbols":
-      checkPlainText(input)
-      break
-    default:
-      return false
-  }
-}
-
-const copysearch = { configs, utils, checker }
-export default copysearch
+export default { configs, utils }

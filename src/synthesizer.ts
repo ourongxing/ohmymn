@@ -18,10 +18,10 @@ import export2anki from "modules/export2anki"
 import export2devonthink from "modules/export2devonthink"
 import autocomment from "modules/autocomment"
 import type {
+  AutoUtils,
   IActionMethod4Card,
   IActionMethod4Text,
-  ICheckMethod,
-  MbBookNote
+  ICheckMethod
 } from "typings"
 import { showHUD } from "utils/common"
 import lang from "lang"
@@ -45,7 +45,7 @@ export const modules = {
   autocomment
 }
 
-export const utils: Utils = {
+export const utils: AutoUtils = {
   customOCR: [
     imgBase64 => isModuleAutoON("autoocr") && autoocr.utils.main(imgBase64)
   ],
@@ -107,10 +107,24 @@ const isModuleAutoON = (key: AutoModuleKeyType) => {
 
 const checkers = Object.values({ ...constModules, ...modules }).reduce(
   (acc, cur) => {
-    if ("checker" in cur) acc.push(cur.checker)
+    cur.configs.settings.forEach(k => {
+      if ("check" in k) {
+        acc[k.key] = k["check"]!
+      }
+    })
+    cur.configs.actions4card?.forEach(k => {
+      if ("check" in k) {
+        acc[k.key] = k["check"]!
+      }
+    })
+    cur.configs.actions4text?.forEach(k => {
+      if ("check" in k) {
+        acc[k.key] = k["check"]!
+      }
+    })
     return acc
   },
-  [] as ICheckMethod<Record<string, any>>[]
+  {} as Record<string, ICheckMethod>
 )
 
 export const checkInputCorrect = async (
@@ -118,9 +132,8 @@ export const checkInputCorrect = async (
   key: string
 ): Promise<boolean> => {
   try {
-    for (const checker of checkers) {
-      const res = await checker({ input, key })
-      if (res === undefined) return true
+    if (checkers[key]) {
+      checkers[key]({ input })
     }
   } catch (err) {
     showHUD(err ? String(err) : lang.input_error, 3)
@@ -152,36 +165,6 @@ export const actions4card = (() => {
   })
   return actions
 })()
-
-type Utils = {
-  customOCR?: ((
-    imgBase64: string
-  ) => MaybePromise<string | undefined | false>)[]
-  modifyExcerptText?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string | false>)[]
-  generateTitles?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<
-    { title: string[]; text: string; comments?: string[] } | undefined | false
-  >)[]
-  generateTags?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  generateComments?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
-  modifyStyle?: ((
-    note: MbBookNote
-  ) => MaybePromise<
-    { color: number | undefined; style: number | undefined } | false
-  >)[]
-}
 
 export type ModuleKeyType =
   | keyof (typeof modules & typeof constModules)

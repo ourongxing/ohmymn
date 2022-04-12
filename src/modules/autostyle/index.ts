@@ -42,7 +42,14 @@ const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
       key: "wordCountArea",
       type: CellViewType.Input,
       bind: [["preset", 0]],
-      help: label.word_count_area
+      help: label.word_count_area,
+      check({ input }) {
+        input = reverseEscape(input)
+        if (!Array.isArray(input)) throw check.input_array
+        if (input.length !== 3) throw check.input_three_number
+        if (input.some(item => !Number.isInteger(item)))
+          throw lang.check.enter_positive
+      }
     },
     {
       key: "defaultTextExcerptColor",
@@ -76,7 +83,7 @@ const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
       key: "changeColor",
       option: option.change_color,
       help: help.change_color,
-      method: ({ content, nodes, option }) => {
+      method({ content, nodes, option }) {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
             getExcerptNotes(node).forEach(note => {
@@ -93,6 +100,11 @@ const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
             })
           }
         }
+      },
+      check({ input }) {
+        const index = Number(input)
+        if (!Number.isInteger(index)) throw check.enter_positive
+        if (index > 16 || index < 1) throw check.out_of_range
       }
     },
     {
@@ -100,7 +112,7 @@ const configs: IConfig<IProfile["autostyle"], typeof ActionKey> = {
       label: label.change_style,
       key: "changeStyle",
       option: option.change_style,
-      method: ({ option, nodes }) => {
+      method({ option, nodes }) {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
             getExcerptNotes(node).forEach(note => {
@@ -205,32 +217,7 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["autostyle"], string> & typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "changeColor":
-      const index = Number(input)
-      if (!Number.isInteger(index)) throw check.enter_positive
-      if (index > 16 || index < 1) throw check.out_of_range
-      break
-    case "wordCountArea": {
-      input = reverseEscape(input)
-      if (!Array.isArray(input)) throw check.input_array
-      if (input.length !== 3) throw check.input_three_number
-      if (input.some(item => !Number.isInteger(item)))
-        throw lang.check.enter_positive
-      break
-    }
-    default:
-      return false
-  }
-}
-
-const autostyle = {
+export default {
   configs,
-  utils,
-  checker
+  utils
 }
-
-export default autostyle

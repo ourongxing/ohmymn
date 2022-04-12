@@ -1,7 +1,10 @@
 import {
   addTags,
+  getAllCommnets,
+  getAllTags,
   getAllText,
   getAncestorNodes,
+  getExcerptText,
   removeHighlight
 } from "utils/note"
 import {
@@ -42,7 +45,10 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
     {
       key: "defaultMergeText",
       type: CellViewType.InlineInput,
-      label: "合并文字的分隔符"
+      label: "合并文字的分隔符",
+      check({ input }) {
+        checkPlainText(input)
+      }
     }
   ],
   actions4card: [
@@ -61,7 +67,7 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       label: label.filter_cards,
       option: option.filter_cards,
       key: "filterCards",
-      method: ({ nodes, content, option }) => {
+      method({ nodes, content, option }) {
         if (!content) {
           showHUD(hud.none_card)
           return []
@@ -69,11 +75,22 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
         const regGroup = string2RegArray(content)
         const customSelectedNodes = nodes.filter(node => {
           const title = node.noteTitle ?? ""
-          const content = `${title}\n${getAllText(node)}`
+          const searchContent = (() => {
+            switch (option) {
+              case FilterCards.Title:
+                return title
+              case FilterCards.Tag:
+                return getAllTags(node).join(" ")
+              case FilterCards.Excerpt:
+                return getExcerptText(node).ocr.join("\n")
+              case FilterCards.Comment:
+                return getAllCommnets(node).nopic.join("\n")
+              default:
+                return `${title}\n${getAllText(node)}`
+            }
+          })()
           return regGroup.some(regs =>
-            regs.every(reg =>
-              reg.test(option == FilterCards.AllText ? content : title)
-            )
+            regs.every(reg => reg.test(searchContent))
           )
         })
         if (customSelectedNodes.length) {
@@ -83,6 +100,9 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
           showHUD(hud.none_card)
           return []
         }
+      },
+      check({ input }) {
+        checkRegArray(input)
       }
     },
     {
@@ -90,7 +110,7 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       label: label.merge_cards,
       key: "mergeCards",
       option: option.merge_cards,
-      method: ({ option, nodes }) => {
+      method({ option, nodes }) {
         if (nodes.length == 1) return
         const { node } = nodes.slice(1).reduce(
           (acc, cur) => {
@@ -132,13 +152,24 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
       label: label.rename_title,
       key: "renameTitle",
       help: help.rename_title,
-      method: renameTitle
+      method: renameTitle,
+      check({ input }) {
+        input = /^\(.+\)$/.test(input)
+          ? input
+          : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
+        const { regexp, newSubStr } = string2ReplaceParam(input)[0]
+        "test".replace(regexp, newSubStr)
+        if (/%\[.+\]/.test(newSubStr)) getSerialInfo(newSubStr, 1)
+        if (/#\[.+\]/.test(newSubStr))
+          getLayerSerialInfo(newSubStr, [[1, 1, 1]])
+      }
     },
     {
       type: CellViewType.Button,
       label: label.merge_text,
       key: "mergeText",
       option: option.merge_text,
+      help: "仅支持合并文字摘录和文字评论，如果存在图片，则在合并后会置顶。",
       method: ({ option, nodes }) => {
         const { defaultMergeText } = self.profile.magicaction4card
         const separator = reverseEscape(
@@ -146,9 +177,12 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
           true
         )
         for (const node of nodes) {
-          const allText = getAllText(node, separator)
-          // MN 这个里的 API 名称设计的有毛病
+          const allText = [
+            ...getExcerptText(node, true).ocr,
+            ...getAllCommnets(node).nopic
+          ].join(separator)
           const linkComments: textComment[] = []
+          const tags = getAllTags(node, false)
           while (node.comments.length) {
             const comment = node.comments[0]
             comment.type == "TextNote" &&
@@ -167,6 +201,7 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
           linkComments.forEach(linkComment => {
             node.appendTextComment(linkComment.text)
           })
+          addTags(node, tags)
         }
       }
     },
@@ -199,31 +234,4 @@ const configs: IConfig<IProfile["magicaction4card"], typeof ActionKey> = {
   ]
 }
 
-const checker: ICheckMethod<typeof ActionKey> = ({ input, key }) => {
-  switch (key) {
-    case "mergeText":
-      checkPlainText(input)
-      break
-    case "renameTitle":
-      input = /^\(.+\)$/.test(input)
-        ? input
-        : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
-      const { regexp, newSubStr } = string2ReplaceParam(input)[0]
-      "test".replace(regexp, newSubStr)
-      if (/%\[.+\]/.test(newSubStr)) getSerialInfo(newSubStr, 1)
-      if (/#\[.+\]/.test(newSubStr)) getLayerSerialInfo(newSubStr, [[1, 1, 1]])
-      break
-    case "filterCards":
-      checkRegArray(input)
-      break
-    default:
-      return false
-  }
-}
-
-const magicaction4card = {
-  configs,
-  checker
-}
-
-export default magicaction4card
+export default { configs }

@@ -1,6 +1,9 @@
 export enum FilterCards {
-  OnlyTitle,
-  AllText
+  All,
+  Title,
+  Excerpt,
+  Comment,
+  Tag
 }
 
 export enum MergeCards {

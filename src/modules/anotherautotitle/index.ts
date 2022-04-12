@@ -30,14 +30,24 @@ const configs: IConfig<IProfile["anotherautotitle"], Record<string, string>> = {
       key: "wordCount",
       type: CellViewType.Input,
       bind: [["preset", 1]],
-      help: label.word_count
+      help: label.word_count,
+      check({ input }) {
+        input = reverseEscape(input)
+        if (!Array.isArray(input)) throw check.input_array
+        if (input.length !== 2) throw check.input_three_number
+        if (input.some(item => !Number.isInteger(item)))
+          throw check.enter_positive
+      }
     },
     {
       key: "customBeTitle",
       type: CellViewType.Input,
       help: help.custom_be_title,
       bind: [["preset", 0]],
-      link
+      link,
+      check({ input }) {
+        checkRegArrayFromMNLink(input)
+      }
     },
     {
       key: "changeTitleNoLimit",
@@ -87,24 +97,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["anotherautotitle"], string>
-> = ({ input, key }) => {
-  switch (key) {
-    case "wordCount": {
-      input = reverseEscape(input)
-      if (!Array.isArray(input)) throw check.input_array
-      if (input.length !== 2) throw check.input_three_number
-      if (input.some(item => !Number.isInteger(item)))
-        throw check.enter_positive
-      break
-    }
-    case "customBeTitle":
-      checkRegArrayFromMNLink(input)
-    default:
-      return false
-  }
-}
-
-const anotherautotitle = { configs, utils, checker }
-export default anotherautotitle
+export default { configs, utils }

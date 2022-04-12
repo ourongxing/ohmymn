@@ -137,7 +137,10 @@ const configs: IConfig<IProfile["autotranslate"], typeof ActionKey> = {
       key: "hudTime",
       type: CellViewType.InlineInput,
       label: "翻译弹窗显示时间",
-      help: "【Action】"
+      help: "【Action】",
+      check({ input }) {
+        checkPositiveinteger(Number(input))
+      }
     },
     {
       key: "showKey",
@@ -325,18 +328,4 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<(IProfile & IDocProfile)["autotranslate"], string> &
-    typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "hudTime": {
-      checkPositiveinteger(Number(input))
-    }
-    default:
-      return false
-  }
-}
-
-const autotranslate = { configs, utils, checker }
-export default autotranslate
+export default { configs, utils }

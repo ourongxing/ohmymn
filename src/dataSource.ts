@@ -29,9 +29,7 @@ const more: ISection = {
   ]
 }
 
-const genSection = (
-  config: IConfig<Record<string, string>, Record<string, string>>
-): ISection => {
+const genSection = (config: IConfig): ISection => {
   const rows: IRow[] = [
     {
       type: CellViewType.PlainText,
@@ -74,9 +72,9 @@ const genSection = (
 }
 
 const genDataSource = (
-  configs: IConfig<Record<string, string>, Record<string, string>>[],
-  magicaction4card: IConfig<Record<string, string>, Record<string, string>>,
-  magicaction4text: IConfig<Record<string, string>, Record<string, string>>
+  configs: IConfig[],
+  magicaction4card: IConfig,
+  magicaction4text: IConfig
 ): ISection[] => {
   const dataSource: ISection[] = []
   const moduleNameList: string[] = []

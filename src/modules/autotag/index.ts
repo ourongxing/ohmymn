@@ -38,7 +38,10 @@ const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
       type: CellViewType.Input,
       help: help.custom_tag,
       bind: [["preset", 0]],
-      link
+      link,
+      check({ input }) {
+        checkReplaceParamFromMNLink(input)
+      }
     }
   ],
   actions4card: [
@@ -47,7 +50,7 @@ const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
       label: label.add_tag,
       key: "addTag",
       option: option.add_tag,
-      method: ({ nodes, option, content }) => {
+      method({ nodes, option, content }) {
         if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {
             const text = getAllText(node)
@@ -71,6 +74,12 @@ const configs: IConfig<IProfile["autotag"], typeof ActionKey> = {
             if (allTags.length) addTags(node, allTags)
           })
         }
+      },
+      check({ input }) {
+        input = /^\(.*\)$/.test(input)
+          ? input
+          : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
+        checkReplaceParam(input)
       }
     }
   ]
@@ -91,27 +100,7 @@ const utils = {
   }
 }
 
-const checker: ICheckMethod<
-  PickByValue<IProfile["autotag"], string> & typeof ActionKey
-> = ({ input, key }) => {
-  switch (key) {
-    case "addTag":
-      input = /^\(.*\)$/.test(input)
-        ? input
-        : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
-      checkReplaceParam(input)
-      break
-    case "customTag":
-      checkReplaceParamFromMNLink(input)
-    default:
-      return false
-  }
-}
-
-const autotag = {
+export default {
   configs,
-  utils,
-  checker
+  utils
 }
-
-export default autotag

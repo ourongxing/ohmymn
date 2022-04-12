@@ -19,11 +19,12 @@ import { isModuleON, moduleKeyArray } from "synthesizer"
 
 // Not support Mac
 // Cannot access self unless use function
+const { initGesture } = gesture.utils
 export const gestureHandlers = () =>
   gesture.utils.gestureHandlerController([
     {
       view: MN.studyController().view,
-      gesture: gesture.utils.initGesture.swipe(
+      gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
         "SwipeUpOnMindMapView"
@@ -31,7 +32,7 @@ export const gestureHandlers = () =>
     },
     {
       view: MN.studyController().view,
-      gesture: gesture.utils.initGesture.swipe(
+      gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
         "SwipeDownOnMindMapView"
@@ -39,7 +40,7 @@ export const gestureHandlers = () =>
     },
     {
       view: MN.studyController().view,
-      gesture: gesture.utils.initGesture.swipe(
+      gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
         "SwipeLeftOnMindMapView"
@@ -47,7 +48,7 @@ export const gestureHandlers = () =>
     },
     {
       view: MN.studyController().view,
-      gesture: gesture.utils.initGesture.swipe(
+      gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,
         "SwipeRightOnMindMapView"
@@ -55,7 +56,7 @@ export const gestureHandlers = () =>
     },
     {
       view: self.settingViewController.tableView!,
-      gesture: gesture.utils.initGesture.tap(1, 2, "DoubleClickOnTableView")
+      gesture: initGesture.tap(1, 2, "DoubleClickOnTableView")
     }
   ])
 
