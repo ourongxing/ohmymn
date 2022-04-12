@@ -3,7 +3,7 @@ import { string2ReplaceParam } from "utils/input"
 import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { AutoReplacePreset, ReplaceSelected } from "./enum"
+import { AutoReplacePreset, ReplaceSelected } from "./typings"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 const { intro, link, label, option, help } = lang
 

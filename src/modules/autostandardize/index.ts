@@ -5,7 +5,7 @@ import { CJK, isHalfWidth } from "utils/text"
 import { CellViewType } from "typings/enum"
 import type { IConfig, MbBookNote } from "typings"
 import { lang } from "./lang"
-import { AutoStandardizePreset, StandardizeSelected } from "./enum"
+import { AutoStandardizePreset, StandardizeSelected } from "./typings"
 import { checkReplaceParamFromMNLink } from "utils/checkInput"
 
 const { help, intro, option, label, link } = lang

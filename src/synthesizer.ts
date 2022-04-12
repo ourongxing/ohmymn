@@ -133,7 +133,7 @@ export const checkInputCorrect = async (
 ): Promise<boolean> => {
   try {
     if (checkers[key]) {
-      checkers[key]({ input })
+      await checkers[key]({ input })
     }
   } catch (err) {
     showHUD(err ? String(err) : lang.input_error, 3)

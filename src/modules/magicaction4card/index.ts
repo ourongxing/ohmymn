@@ -19,7 +19,7 @@ import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
 import { getLayerSerialInfo, getSerialInfo, renameTitle } from "./renameTitle"
-import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./enum"
+import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
 import { checkPlainText, checkRegArray } from "utils/checkInput"
 
 const { help, option, intro, label, link, hud } = lang

@@ -1,7 +1,3 @@
-export enum ActionKey {
-  addComment
-}
-
 export const enum AutoCommentPreset {
   Custom,
   Citation,

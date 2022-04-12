@@ -1,4 +1,4 @@
-import type { ICheckMethod, IConfig } from "typings"
+import type { IConfig } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { getExcerptNotes, removeHighlight } from "utils/note"
@@ -6,8 +6,7 @@ import { MbBookNote } from "typings"
 import { countWord, isHalfWidth, SerialCode } from "utils/text"
 import { reverseEscape } from "utils/input"
 import { showHUD } from "utils/common"
-import { ActionKey, AutoStylePreset, ChangeStyle, Style } from "./enum"
-import { IProfile } from "profile"
+import { AutoStylePreset, ChangeStyle, Style } from "./typings"
 import { MN } from "const"
 
 const { help, intro, option, label, link, check } = lang

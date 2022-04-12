@@ -1,7 +1,3 @@
-export enum ActionKey {
-  listSelected
-}
-
 export const enum ListSelected {
   UseAutoList
 }

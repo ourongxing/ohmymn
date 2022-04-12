@@ -1,10 +1,9 @@
 import { reverseEscape } from "utils/input"
 import { isHalfWidth, countWord } from "utils/text"
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { AutoTitlePreset } from "./enum"
-import { IProfile } from "profile"
+import { AutoTitlePreset } from "./typings"
 import { checkRegArrayFromMNLink } from "utils/checkInput"
 import { removeHighlight } from "utils/note"
 

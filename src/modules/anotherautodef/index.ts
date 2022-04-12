@@ -4,7 +4,7 @@ import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
 import { unique } from "utils"
-import { AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./enum"
+import { AutoDefPreset, ExtractTitle, TitleLinkSplit } from "./typings"
 import {
   checkRegArrayFromMNLink,
   checkReplaceParam,

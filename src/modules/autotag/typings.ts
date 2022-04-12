@@ -1,7 +1,3 @@
-export enum ActionKey {
-  addTag
-}
-
 export const enum AutoTagPreset {
   Custom
 }

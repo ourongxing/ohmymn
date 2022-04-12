@@ -4,7 +4,7 @@ import { isHalfWidth, SerialCode } from "utils/text"
 import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { AutoListPreset, ListSelected } from "./enum"
+import { AutoListPreset, ListSelected } from "./typings"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink

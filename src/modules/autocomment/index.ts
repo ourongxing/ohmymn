@@ -1,4 +1,4 @@
-import type { ICheckMethod, IConfig, MbBookNote } from "typings"
+import type { IConfig, MbBookNote } from "typings"
 import { lang } from "./lang"
 import { CellViewType } from "typings/enum"
 import { getAllText } from "utils/note"
@@ -9,8 +9,7 @@ import {
   ReplaceParam,
   string2ReplaceParam
 } from "utils/input"
-import { ActionKey, AddComment, AutoCommentPreset } from "./enum"
-import { IProfile } from "profile"
+import { AddComment, AutoCommentPreset } from "./typings"
 import {
   checkReplaceParam,
   checkReplaceParamFromMNLink

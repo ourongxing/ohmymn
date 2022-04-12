@@ -1,14 +1,13 @@
 import { lang } from "./lang"
-import type { IConfig, ICheckMethod, MbBookNote } from "typings"
-import { CellViewType, UIAlertViewStyle } from "typings/enum"
-import { IProfile } from "profile"
-import { ActionKey, AddTags } from "./enum"
+import type { IConfig, MbBookNote } from "typings"
+import { CellViewType } from "typings/enum"
 import { openUrl, showHUD } from "utils/common"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 
 import { reverseEscape } from "utils/input"
 import { removeHighlight } from "utils/note"
 import { escapeURLParam, unescapeURLParam } from "utils"
+import { AddTags } from "./typings"
 const { link, intro, lable, option, help } = lang
 
 const configs: IConfig<"export2devonthink"> = {

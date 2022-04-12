@@ -1,6 +1,6 @@
 import { MN } from "const"
 import { delay } from "utils/common"
-import { PanelControl } from "modules/addon/enum"
+import { PanelControl } from "modules/addon/typings"
 import type { UIViewController } from "typings"
 import { studyMode } from "typings/enum"
 

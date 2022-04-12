@@ -1,7 +1,7 @@
 import type { IConfig, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { lang } from "./lang"
-import { TranslateProviders } from "./enum"
+import { TranslateProviders } from "./typings"
 import fetch from "utils/network"
 import MD5 from "utils/third party/md5"
 import { showHUD } from "utils/common"

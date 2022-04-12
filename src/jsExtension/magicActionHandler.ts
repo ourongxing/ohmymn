@@ -1,6 +1,6 @@
 import lang from "lang"
 import { actions4card, actions4text, moduleKeyArray } from "synthesizer"
-import { PanelControl } from "modules/addon/enum"
+import { PanelControl } from "modules/addon/typings"
 import { checkInputCorrect } from "synthesizer"
 import type { IRowButton, MbBookNote } from "typings"
 import { CellViewType, UIAlertViewStyle } from "typings/enum"

@@ -1,6 +1,6 @@
 import { MbBookNote } from "typings"
 import { utils } from "synthesizer"
-import { HasTitleThen } from "modules/addon/enum"
+import { HasTitleThen } from "modules/addon/typings"
 import { MN } from "const"
 import { removeHighlight } from "utils/note"
 import { cacheTransformer } from "utils/profile"

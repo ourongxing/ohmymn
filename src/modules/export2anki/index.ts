@@ -2,13 +2,45 @@ import { lang } from "./lang"
 import type { IConfig, ICheckMethod, ISettingInput, MbBookNote } from "typings"
 import { CellViewType } from "typings/enum"
 import { IDocProfile, IProfile } from "profile"
-import { ActionKey, AddTags, AnkiNote, ExportMethod } from "./typings"
+import { AddTags, AnkiNote, ExportMethod } from "./typings"
 import { openUrl, showHUD } from "utils/common"
 import { renderTemplateOfNodeProperties } from "jsExtension/nodeProperties"
 import { reverseEscape } from "utils/input"
 import { AnkiConnect } from "./ankiconnect"
 import { MN } from "const"
 const { link, intro, lable, option, help } = lang
+
+const checker: Record<"field" | "modelName", ICheckMethod> = {
+  async field({ input }) {
+    const { ankiConnectAPI, exportMethod, showTemplate } =
+      self.profile.export2anki
+    console.log(ankiConnectAPI)
+    if (!input.includes("——")) throw "请务必用 —— 来隔开字段名及其内容"
+    const [key, value] = input.split(/\s*——\s*/)
+    if (!key) throw "没有输入字段名"
+    if (
+      showTemplate[0] &&
+      ankiConnectAPI &&
+      exportMethod[0] === ExportMethod.API
+    ) {
+      const modelName = self.profile.export2anki["modelName" + showTemplate[0]]
+      const anki = new AnkiConnect(ankiConnectAPI)
+      if (modelName) {
+        const res = await anki.getModelFieldNames(modelName)
+        if (!res.result?.includes(key))
+          throw `输入错误，模版 ${modelName} 中没有此字段`
+      }
+    }
+  },
+  async modelName({ input }) {
+    const { ankiConnectAPI, exportMethod } = self.profile.export2anki
+    if (exportMethod[0] === ExportMethod.API && ankiConnectAPI) {
+      const anki = new AnkiConnect(ankiConnectAPI)
+      const res = await anki.getModelList()
+      if (!res.result?.includes(input)) throw `输入错误，Anki 中没有此模板`
+    }
+  }
+}
 
 const configs: IConfig<"export2anki"> = {
   name: "Export to Anki",
@@ -219,37 +251,6 @@ const utils = {
     }${allowRepeat ? "&dupes=1" : ""}${
       jumpBack ? "&x-success=marginnote3app://note/" + id : ""
     }`
-  }
-}
-
-const checker: Record<"field" | "modelName", ICheckMethod> = {
-  async field({ input }) {
-    const { ankiConnectAPI, exportMethod, showTemplate } =
-      self.profile.export2anki
-    if (!input.includes("——")) throw "请务必用 —— 来隔开字段名及其内容"
-    const [key, value] = input.split(/\s*——\s*/)
-    if (!key) throw "没有输入字段名"
-    if (
-      showTemplate[0] &&
-      ankiConnectAPI &&
-      exportMethod[0] === ExportMethod.API
-    ) {
-      const modelName = self.profile.export2anki["modelName" + showTemplate[0]]
-      const anki = new AnkiConnect(ankiConnectAPI)
-      if (modelName) {
-        const res = await anki.getModelFieldNames(modelName)
-        if (!res.result?.includes(key))
-          throw `输入错误，模版 ${modelName} 中没有此字段`
-      }
-    }
-  },
-  async modelName({ input }) {
-    const { ankiConnectAPI, exportMethod } = self.profile.export2anki
-    if (exportMethod[0] === ExportMethod.API && ankiConnectAPI) {
-      const anki = new AnkiConnect(ankiConnectAPI)
-      const res = await anki.getModelList()
-      if (!res.result?.includes(input)) throw `输入错误，Anki 中没有此模板`
-    }
   }
 }
 

@@ -6,7 +6,7 @@ import { escapeDoubleQuote, reverseEscape } from "utils/input"
 import fetch from "utils/network"
 import { undoGroupingWithRefresh } from "utils/note"
 import pangu from "utils/third party/pangu"
-import { CompleteSelected, FillWordInfo } from "./enum"
+import { CompleteSelected, Dict, FillWordInfo } from "./typings"
 import { checkPlainText } from "utils/checkInput"
 import { render } from "utils/third party/mustache"
 
@@ -73,17 +73,6 @@ const configs: IConfig<"autocomplete"> = {
   ]
 }
 
-type Dict = {
-  word: string
-  sw: string
-  exchange: string | OCNull
-  phonetic: string | OCNull
-  definition: string | OCNull
-  translation: string | OCNull
-  tag: string | OCNull
-  collins: string | OCNull
-}
-
 const utils = {
   getPureZH(text: string) {
     const arr = text.split("\n")
@@ -133,9 +122,11 @@ const utils = {
       .split(/\x20+/)
       .filter(k => k)
   },
+
   getCollinsStar(num: number) {
     return "⭐".repeat(num)
   },
+
   getFillInfo(info: Dict) {
     const { customFill, fillWordInfo } = self.profile.autocomplete
     if (
@@ -165,6 +156,7 @@ const utils = {
     }
     return render(template, vars)
   },
+
   async main(note: MbBookNote, text: string) {
     try {
       if (!/^\w[a-z]+$/.test(text)) return undefined
