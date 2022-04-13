@@ -24,6 +24,10 @@ const zh = {
     screen_always_on: "保持屏幕常亮",
     lock_excerpt: "锁定摘录文字",
     auto_backup: "自动备份配置",
+    publisher: "出版社",
+    publication_date: "出版时间",
+    publication_place: "出版地",
+    other_info: "其他信息",
     page_offset: "页码偏移量"
   },
   help: {
@@ -58,7 +62,11 @@ const en: typeof zh = {
     screen_always_on: "Keep Screen Always On",
     lock_excerpt: "Lock Excerpt Text",
     auto_backup: "Auto Backup Profile",
-    page_offset: "Page Offset"
+    page_offset: "Page Offset",
+    publisher: "Publisher",
+    publication_date: "Publication Date",
+    publication_place: "Publication Place",
+    other_info: "Other Info"
   },
   help: {
     page_offset: "[Current Doc Takes Effect]",

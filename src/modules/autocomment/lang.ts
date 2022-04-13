@@ -8,7 +8,8 @@ const zh = {
     add_comment: ["使用 AutoComment 的配置", "确定"]
   },
   help: {
-    custom_comment: "自定义，点击查看具体格式"
+    custom_comment: "自定义，点击查看具体格式",
+    citaion_style: "引用格式"
   },
   label: {
     on: "摘录时自动执行",
@@ -25,7 +26,8 @@ const en: typeof zh = {
     add_comment: ["Use AutoComment Settings", "Confirm"]
   },
   help: {
-    custom_comment: "Customize. Click for specific formats"
+    custom_comment: "Customize. Click for specific formats",
+    citaion_style: "Citation Style"
   },
   label: {
     on: "Auto Executed",

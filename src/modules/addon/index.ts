@@ -89,19 +89,19 @@ const configs: IConfig<"addon"> = {
     {
       key: "publisher",
       type: CellViewType.InlineInput,
-      label: "出版社",
+      label: label.publisher,
       bind: [["showDocInfo", 1]]
     },
     {
       key: "publicationDate",
       type: CellViewType.InlineInput,
-      label: "出版时间",
+      label: label.publication_date,
       bind: [["showDocInfo", 1]]
     },
     {
       key: "publicationPlace",
       type: CellViewType.InlineInput,
-      label: "出版地",
+      label: label.publication_place,
       bind: [["showDocInfo", 1]]
     },
     {
@@ -116,7 +116,7 @@ const configs: IConfig<"addon"> = {
     {
       key: "otherInfo",
       type: CellViewType.Input,
-      help: "其他信息",
+      help: label.other_info,
       bind: [["showDocInfo", 1]]
     }
   ]

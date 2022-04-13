@@ -47,7 +47,7 @@ const configs: IConfig<"autocomment"> = {
     {
       key: "citation",
       type: CellViewType.Input,
-      help: "引用格式",
+      help: help.citaion_style,
       bind: [["preset", 2]],
       link
     }
