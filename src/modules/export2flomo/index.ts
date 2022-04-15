@@ -49,7 +49,7 @@ const configs: IConfig<"export2flomo"> = {
       key: "defaultTemplate",
       label: "默认导出模版",
       option: ["模版 1", "模版 2", "模版 3"],
-      help: "【仅当前文档有效】"
+      help: "【当前笔记本】"
     },
     {
       type: CellViewType.Switch,
@@ -83,7 +83,7 @@ const configs: IConfig<"export2flomo"> = {
       option: ["默认", "模板 1", "模版 2", "模版 3"],
       method: async ({ nodes, option }) => {
         const { exportMethod } = self.globalProfile.export2flomo
-        const { defaultTemplate } = self.docProfile.export2flomo
+        const { defaultTemplate } = self.notebookProfile.export2flomo
         option = option === 0 ? defaultTemplate[0] : option - 1
         if (exportMethod[0] === ExportMethod.URL) {
           if (nodes.length > 1) {

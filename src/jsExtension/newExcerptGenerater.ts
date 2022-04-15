@@ -24,7 +24,7 @@ export const newTitleTextCommentTag = async (param: {
 }) => {
   const { note, text, nodeTitle, isComment } = param
   const { hasTitleThen } = self.globalProfile.addon
-  const { cacheTitle } = self.docProfile.additional
+  const { cacheTitle } = self.notebookProfile.additional
   const comments: string[] = []
   const tags: string[] = []
 

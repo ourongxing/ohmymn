@@ -106,14 +106,14 @@ const configs: IConfig<"export2anki"> = {
     {
       type: CellViewType.Input,
       key: "deckName",
-      help: "【仅当前文档有效】Anki 牌组名"
+      help: "【当前笔记本】Anki 牌组名"
     },
     {
       type: CellViewType.Select,
       key: "defaultTemplate",
       label: "默认导出模版",
       option: ["模版 1", "模版 2", "模版 3"],
-      help: "【仅当前文档有效】"
+      help: "【当前笔记本】"
     },
     {
       type: CellViewType.Select,
@@ -157,7 +157,7 @@ const configs: IConfig<"export2anki"> = {
         try {
           const { exportMethod, ankiConnectAPI, autoSync } =
             self.globalProfile.export2anki
-          const { defaultTemplate } = self.docProfile.export2anki
+          const { defaultTemplate } = self.notebookProfile.export2anki
           option = option === 0 ? defaultTemplate[0] : option - 1
           if (exportMethod[0] === ExportMethod.URL) {
             nodes.length > 1 &&
@@ -207,7 +207,7 @@ const utils = {
       .split(/\s*?#\s*?/)
       .filter(k => k)
 
-    let { deckName } = self.docProfile.export2anki
+    let { deckName } = self.notebookProfile.export2anki
     if (!deckName) throw "请输入牌组名"
     else deckName = renderTemplateOfNodeProperties(node, deckName)
     const { modelName, fields } = Object.entries(

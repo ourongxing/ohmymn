@@ -22,7 +22,6 @@ const zh = {
     search_engine: ["中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
   },
   help: {
-    cur_doc_effect: "【当前文档有效】",
     show_search_engine: "点击查看如何自定义 URL",
     separator_symbols_multiple_card: "选中多张卡片时，用来隔开每张卡片的内容",
     which_partof_card:
@@ -75,7 +74,6 @@ const en: typeof zh = {
     ]
   },
   help: {
-    cur_doc_effect: "[Current Doc Takes Effect]",
     which_partof_card:
       "If the first content is empty, it will get the content in the order of Title > Excerpt > Custom. Not valid when multiple cards are selected",
     show_search_engine: "Click to see how to customize the URL",

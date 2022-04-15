@@ -15,9 +15,9 @@ import {
   saveProfile,
   writeProfile,
   readProfile,
-  Range,
   updateProfileTemp
 } from "@/utils/profile"
+import { Range } from "@/utils/profile/typings"
 import handleMagicAction from "./magicActionHandler"
 
 export const eventHandlers = eventHandlerController([
@@ -62,10 +62,16 @@ const onSelectChange: EventHandler = async sender => {
   console.log("Change the selection", "event")
   const { name, key, selections } = sender.userInfo
   if (key == "profile") {
-    const lastProfileNum = self.docProfile.addon.profile[0]
-    self.docProfile.addon.profile = selections
-    writeProfile(undefined, lastProfileNum)
-    readProfile(Range.Global)
+    const lastProfileNum = self.notebookProfile.addon.profile[0]
+    self.notebookProfile.addon.profile = selections
+    writeProfile({
+      range: Range.Global,
+      profileNO: lastProfileNum
+    })
+    readProfile({
+      range: Range.Global,
+      profileNO: selections[0]
+    })
   } else {
     saveProfile(name, key, selections)
     switch (key) {

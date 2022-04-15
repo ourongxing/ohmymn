@@ -143,7 +143,7 @@ const processExcerpt = ({
     }
     if (title) nodeNote.noteTitle = title
     if (comments?.length) {
-      const { cacheComment } = self.docProfile.additional
+      const { cacheComment } = self.notebookProfile.additional
       const oldComments = cacheComment[note.noteId!]
       if (oldComments) {
         const existComments = nodeNote.comments
@@ -188,7 +188,7 @@ export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
   lastRemovedComment = undefined
   if (onlyLastComment) return
   const noteid = note.noteId!
-  const { cacheTitle, cacheComment } = self.docProfile.additional
+  const { cacheTitle, cacheComment } = self.notebookProfile.additional
   if (cacheTitle[noteid]) cacheTitle[noteid] = []
   if (cacheComment[noteid]) cacheComment[note.noteId!] = []
 }

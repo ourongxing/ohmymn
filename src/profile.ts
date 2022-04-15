@@ -6,7 +6,7 @@ const globalProfilePreset = {
     quickSwitch: [],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    // Single select is not allowed to be empty, generally set option to none
+    // Single select is not allowed to be empty, generally set option to None
     hasTitleThen: [1],
     panelControl: [],
     panelPosition: [0],
@@ -55,7 +55,7 @@ const globalProfilePreset = {
     preset: [],
     onlyDesc: false,
     toTitleLink: false,
-    titleLinkSplit: [0],
+    titleLinkSplit: [1],
     customTitleSplit: "",
     customDefLink: "",
     customExtractTitle: ""
@@ -102,6 +102,8 @@ const globalProfilePreset = {
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",
     searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
     searchQuestion: "https://www.zhihu.com/search?q={{keyword}}",
+    searchWord: "eudic://dict/{{keyword}}",
+    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}",
     searchOtherText: ""
   },
   autoocr: {
@@ -150,7 +152,7 @@ const globalProfilePreset = {
     addTags: [0],
     autoSync: [0],
     tagTemplate: "{{#tags}}#{{.}} {{/tags}}#{{notebook.title}} #MarginNote",
-    showTemplate: [0],
+    showTemplate: [1],
     modelName1: "",
     field11: "",
     field12: "",
@@ -211,7 +213,6 @@ const globalProfilePreset = {
 // Each document has a independent profile
 const docProfilePreset = {
   addon: {
-    profile: [0],
     pageOffset: "0",
     author: "",
     publisher: "",
@@ -224,11 +225,14 @@ const docProfilePreset = {
     preOCR: false
   },
   autoocr: {
-    on: false
-  },
-  copysearch: {
-    searchWord: "eudic://dict/{{keyword}}",
-    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}"
+    on: false,
+    lang: [0]
+  }
+}
+
+const notebookProfilePreset = {
+  addon: {
+    profile: [0]
   },
   export2anki: {
     deckName: "{{notebook.title}}",
@@ -239,18 +243,8 @@ const docProfilePreset = {
   },
   // Information not displayed on the UI
   additional: {
-    cacheTitle: {} as {
-      [noteid: string]: [string, string, string][]
-    },
-    cacheComment: {} as {
-      [noteid: string]: [string, string, string][]
-    }
-  }
-}
-
-const notebookProfilePreset = {
-  addon: {
-    profile: [0]
+    cacheTitle: {} as Record<string, [string, string, string][]>,
+    cacheComment: {} as Record<string, [string, string, string][]>
   }
 }
 

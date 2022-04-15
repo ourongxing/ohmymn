@@ -1,25 +1,22 @@
-import { closePanel, layoutViewController } from "./switchPanel"
-import { removeLastCommentCacheTitle } from "./excerptHandler"
-import { gestureHandlers } from "./handleGestureEvent"
-import { eventHandlers } from "./handleReceivedEvent"
 import { MN } from "@/const"
 import { dataSourcePreset } from "@/dataSource"
 import lang from "@/lang"
 import {
-  globalProfilePreset,
   docProfilePreset,
+  globalProfilePreset,
+  notebookProfilePreset,
   tempProfilePreset
 } from "@/profile"
+import { inst } from "@/settingViewController"
 import { UIWindow } from "@/typings"
 import { deepCopy } from "@/utils"
 import { getObjCClassDeclar, showHUD } from "@/utils/common"
-import { inst } from "@/settingViewController"
-import {
-  readProfile,
-  Range,
-  writeProfile,
-  removeProfile
-} from "@/utils/profile"
+import { readProfile, removeProfile, writeProfile } from "@/utils/profile"
+import { Range } from "@/utils/profile/typings"
+import { removeLastCommentCacheTitle } from "./excerptHandler"
+import { gestureHandlers } from "./handleGestureEvent"
+import { eventHandlers } from "./handleReceivedEvent"
+import { closePanel, layoutViewController } from "./switchPanel"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
@@ -52,6 +49,7 @@ const sceneWillConnect = () => {
   self.panelStatus = false
   self.globalProfile = deepCopy(globalProfilePreset)
   self.docProfile = deepCopy(docProfilePreset)
+  self.notebookProfile = deepCopy(notebookProfilePreset)
   self.tempProfile = deepCopy(tempProfilePreset)
   self.dataSource = deepCopy(dataSourcePreset)
   self.OCROnline = { times: 0, status: "free" }
@@ -61,34 +59,50 @@ const sceneWillConnect = () => {
   self.settingViewController.window = self.window
   self.settingViewController.profile = self.globalProfile
   self.settingViewController.docProfile = self.docProfile
+  self.settingViewController.notebookProfile = self.notebookProfile
 }
 
 const notebookWillOpen = (notebookid: string) => {
   console.log("Open a notebook", "lifeCycle")
   self.notebookid = notebookid
+  if (self.docmd5)
+    readProfile({
+      range: Range.Notebook,
+      notebookid
+    })
   // Add hooks, aka observers
   eventHandlers.add()
   gestureHandlers().add()
 }
 
 const documentDidOpen = (docmd5: string) => {
-  // Switch docment
-  if (self.docMD5) readProfile(Range.Doc, docmd5)
+  // Switch document, read doc profile
+  if (self.docmd5)
+    readProfile({
+      range: Range.Doc,
+      docmd5
+    })
   else {
-    readProfile(Range.First, docmd5)
+    // First open a document, init all profile
+    readProfile({
+      range: Range.All,
+      docmd5,
+      notebookid: self.notebookid
+    })
     UIApplication.sharedApplication().idleTimerDisabled =
       self.globalProfile.addon.screenAlwaysOn
   }
+  self.docmd5 = docmd5
+  console.log("Open a document", "lifeCycle")
   // if (MN.db.getDocumentById(docmd5)?.textContentsForPageNo(1).length)
   //   showHUD("识别出来了")
   // else showHUD("没有文字层")
-  console.log("Open a document", "lifeCycle")
-  self.docMD5 = docmd5
 }
 
 const notebookWillClose = (notebookid: string) => {
   console.log("Close a notebook", "lifeCycle")
   closePanel()
+  writeProfile({ range: Range.Notebook, notebookid })
   // Remove hooks, aka observers
   eventHandlers.remove()
   gestureHandlers().remove()
@@ -97,13 +111,18 @@ const notebookWillClose = (notebookid: string) => {
 const documentWillClose = (docmd5: string) => {
   console.log("Close a document", "lifeCycle")
   removeLastCommentCacheTitle()
-  writeProfile(docmd5)
+  writeProfile({ range: Range.Doc, docmd5 })
 }
 
 // Not triggered on ipad
 const sceneDidDisconnect = () => {
   console.log("Close a window", "lifeCycle")
-  if (self.docMD5) writeProfile(self.docMD5)
+  if (self.docmd5)
+    writeProfile({
+      range: Range.All,
+      docmd5: self.docmd5,
+      notebookid: self.notebookid
+    })
 }
 
 const addonWillDisconnect = () => {
@@ -118,7 +137,12 @@ const sceneWillResignActive = () => {
   console.log("Window is inactivation", "lifeCycle")
   removeLastCommentCacheTitle()
   !MN.isMac && closePanel()
-  if (self.docMD5) writeProfile(self.docMD5)
+  if (self.docmd5)
+    writeProfile({
+      range: Range.All,
+      docmd5: self.docmd5,
+      notebookid: self.notebookid
+    })
 }
 
 const sceneDidBecomeActive = () => {

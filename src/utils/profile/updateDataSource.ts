@@ -1,6 +1,6 @@
 import { dataSourceIndex } from "@/dataSource"
 import { layoutViewController } from "@/jsExtension/switchPanel"
-import { IGlobalProfile, IDocProfile } from "@/profile"
+import { IGlobalProfile, IDocProfile, INotebookProfile } from "@/profile"
 import { IRowSwitch, IRowInlineInput, IRowInput, IRowSelect } from "@/typings"
 import { deepCopy } from ".."
 import { string2RegArray, ReplaceParam, string2ReplaceParam } from "../input"
@@ -29,9 +29,8 @@ export const updateProfileTemp = (key: string, val: string) => {
 }
 
 export const updateProfileDataSource = (
-  profile: IGlobalProfile | IDocProfile,
-  profileSaved: any,
-  refresh = false
+  profile: IGlobalProfile | IDocProfile | INotebookProfile,
+  profileSaved: any
 ) => {
   // Update DateSouce and profile
   for (const [name, _] of Object.entries(profile)) {
@@ -69,8 +68,10 @@ export const updateProfileDataSource = (
       }
     }
   }
-  if (refresh) {
-    self.settingViewController.tableView?.reloadData()
-    layoutViewController()
-  }
+}
+
+export const refreshPanel = () => {
+  self.settingViewController.tableView?.reloadData()
+  layoutViewController()
+  console.log("Refresh Panel", "profile")
 }

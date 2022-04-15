@@ -24,7 +24,8 @@ const configs: IConfig<"autoocr"> = {
       key: "lang",
       label: label.lang,
       type: CellViewType.Select,
-      option: option.lang
+      option: option.lang,
+      help: help.lang
     },
     {
       key: "formulaOCRProviders",

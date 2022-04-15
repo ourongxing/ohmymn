@@ -73,9 +73,7 @@ const configs: IConfig<"copysearch"> = {
     ].map((k, i) => {
       return {
         type: CellViewType.Input,
-        help: `${i === 2 || i === 3 ? help.cur_doc_effect : ""}${
-          option.search_engine[i]
-        }`,
+        help: option.search_engine[i],
         key: k,
         bind: [["showSearchEngine", 1]],
         check({ input }) {
@@ -287,9 +285,10 @@ const utils = {
       searchChineseText,
       searchEnglishText,
       searchOtherText,
-      searchQuestion
+      searchQuestion,
+      searchTranslation,
+      searchWord
     } = self.globalProfile.copysearch
-    const { searchTranslation, searchWord } = self.docProfile.copysearch
     const searchEngine = [
       searchChineseText,
       searchEnglishText,

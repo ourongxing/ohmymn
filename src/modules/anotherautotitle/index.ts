@@ -61,7 +61,7 @@ const utils = {
   main(note: MbBookNote, text: string) {
     const { preset, wordCount, changeTitleNoLimit } =
       self.globalProfile.anotherautotitle
-    const { cacheTitle } = self.docProfile.additional
+    const { cacheTitle } = self.notebookProfile.additional
     if (self.isModify) text = removeHighlight(text)
     if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
       return {

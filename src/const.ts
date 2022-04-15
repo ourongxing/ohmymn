@@ -20,7 +20,8 @@ export const Addon = {
   version: mnaddon.version,
   key: mnaddon.addonid.split(".")[2],
   profileKey: mnaddon.profileKey,
-  docProfileKey: mnaddon.docProfileKey
+  docProfileKey: mnaddon.docProfileKey,
+  notebookProfileKey: mnaddon.docProfileKey
 }
 
 export const MN = new MNCore()

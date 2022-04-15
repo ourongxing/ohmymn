@@ -18,7 +18,7 @@ declare global {
   const self: {
     view: UIView
     window: UIWindow
-    docMD5?: string
+    docmd5: string | undefined
     noteid: string
     notebookid: string
     tableView: UITableView

@@ -31,8 +31,7 @@ const zh = {
     page_offset: "页码偏移量"
   },
   help: {
-    page_offset: "【当前文档生效】",
-    profile: "【当前文档生效】不同场景，不同配置。",
+    profile: "【当前笔记本】不同场景，不同配置。",
     auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
     has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
   }
@@ -69,8 +68,7 @@ const en: typeof zh = {
     other_info: "Other Info"
   },
   help: {
-    page_offset: "[Current Doc Takes Effect]",
-    profile: "[Current Doc Takes Effect] Different scenes, different profile",
+    profile: "[Current Notebook] Different scenes, different profile",
     auto_backup:
       "First you need to do, MagicAction for Card —> Manage Profile -> Write Profile",
     has_title_then:
