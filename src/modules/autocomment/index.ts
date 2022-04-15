@@ -10,7 +10,8 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam,
   ReplaceParam,
-  regFlag
+  regFlag,
+  extractArray
 } from "@/utils/input"
 import { getAllText } from "@/utils/note"
 import { lang } from "./lang"

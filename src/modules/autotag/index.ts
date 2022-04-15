@@ -5,7 +5,11 @@ import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
-import { escapeDoubleQuote, string2ReplaceParam } from "@/utils/input"
+import {
+  escapeDoubleQuote,
+  extractArray,
+  string2ReplaceParam
+} from "@/utils/input"
 import { getAllText, addTags } from "@/utils/note"
 import { lang } from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"

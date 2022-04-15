@@ -7,7 +7,7 @@ import {
   checkRegArrayFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
-import { string2ReplaceParam, regFlag } from "@/utils/input"
+import { string2ReplaceParam, regFlag, extractArray } from "@/utils/input"
 import { getAllText, removeHighlight } from "@/utils/note"
 import { lang } from "./lang"
 import { ExtractTitle, TitleLinkSplit, AutoDefPreset } from "./typings"
