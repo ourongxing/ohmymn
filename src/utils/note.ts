@@ -2,7 +2,7 @@ import { MbBookNote, MNPic } from "typings"
 import { postNotification } from "./common"
 import { MN } from "const"
 import { unique } from "utils"
-
+import { escapeURLParam } from "utils"
 /**
  * Cancellable actions, all actions that modify data should be wrapped in this method.
  * @param f f:()=>void, the action need to be cancelled.
@@ -51,27 +51,11 @@ const getSelectNodes = (): MbBookNote[] => {
 /**
  * Get card tree recursively, including all the node's children,grandchildren and grandgrandchildren etc.
  * @param node The card that you want to get its children node information.
- * @returns
+ * @returns MbBookNote[] - An array which contains all the children nodes.
+ * @example
  * ```
- *  If the node has no child node, 
- * return {
-      onlyChildren: [],
-      onlyFirstLevel: [],
-      allNodes: [node],
-      treeIndex: [[]] as number[][]
-    }
-    If the node has child node, 
-    return {
-    // only has child node
-    onlyChildren: children,
-    // only has the first level child node
-    onlyFirstLevel: node.childNotes!,
-    // card selected and its children nodes
-    allNodes: [node, ...children],
-    //index of the node in the tree
-    treeIndex
-  }
-    ```
+ * const { treeIndex, onlyChildren } = getNodeTree(node)
+ * ```
  */
 const getNodeTree = (node: MbBookNote) => {
   const DFS = (
@@ -115,10 +99,8 @@ const getNodeTree = (node: MbBookNote) => {
 /**
  * Get ancester nodes recursively, including all the node's parent, grandparent and grandgrandparent etc.
  * @param node The card that you want to get its ancestor nodes information.
- * @returns 
- * ```
- * {node:currentNode,ancestorNodes[]:ancestorNodes}
- * ```
+ * @returns MbBookNote[] - An array which contains all the ancestor nodes.
+ * 
  */
 const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
   const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {
@@ -150,14 +132,14 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
  * @param pic {@link MNPic}
  * @returns Base64 code of the picture.
  */
-const exportPic = (pic: MNPic) => {
+const exportPic = (pic: MNPic, mdsize = "") => {
   const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
   return base64
     ? {
         base64,
-        img: `data:image/jpeg;base64,${base64}`,
+        img: `data:image/jpeg;base64,${escapeURLParam(base64)}`,
         html: `<img src="data:image/jpeg;base64,${base64}"/>`,
-        md: `![](data:image/jpeg;base64,${base64})`
+        md: `![${mdsize}](data:image/jpeg;base64,${escapeURLParam(base64)})`
       }
     : undefined
 }
@@ -169,7 +151,7 @@ const exportPic = (pic: MNPic) => {
  * @param pic Text after OCR by default.
  * @returns Dict of excerpt text.
  */
-const getExcerptText = (node: MbBookNote, highlight = true) => {
+const getExcerptText = (node: MbBookNote, highlight = true, mdsize="") => {
   const res = {
     ocr: [] as string[],
     base64: [] as string[],
@@ -180,7 +162,7 @@ const getExcerptText = (node: MbBookNote, highlight = true) => {
   return getExcerptNotes(node).reduce((acc, cur) => {
     const text = cur.excerptText?.trim() ?? ""
     if (cur.excerptPic) {
-      const imgs = exportPic(cur.excerptPic)
+      const imgs = exportPic(cur.excerptPic,mdsize)
       if (imgs)
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
@@ -220,10 +202,10 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
  * @param highlight If the text is highlighted.
  * @returns
  */
-const getAllText = (node: MbBookNote, separator = "\n", highlight = true) => {
+const getAllText = (node: MbBookNote, separator = "\n", highlight = true, mdsize = "") => {
   return [
-    ...getExcerptText(node, highlight).ocr,
-    ...getAllCommnets(node).nopic,
+    ...getExcerptText(node, highlight, mdsize).ocr,
+    ...getAllCommnets(node, mdsize).nopic,
     getAllTags(node).join(" ")
   ].join(separator)
 }
@@ -256,7 +238,7 @@ const getAllTags = (node: MbBookNote, hash = true) => {
  * @param node The card that you want to get all kind of its comments.
  * @returns Resource dict. 
  */
-const getAllCommnets = (node: MbBookNote) => {
+const getAllCommnets = (node: MbBookNote,mdsize="") => {
   const res = {
     nopic: [] as string[],
     base64: [] as string[],
@@ -266,7 +248,7 @@ const getAllCommnets = (node: MbBookNote) => {
   }
   return node.comments.reduce((acc, cur) => {
     if (cur.type === "PaintNote") {
-      const imgs = exportPic(cur)
+      const imgs = exportPic(cur,mdsize)
       if (imgs)
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
@@ -329,5 +311,6 @@ export {
   addTags,
   getAllTags,
   getAllCommnets,
-  removeHighlight
+  removeHighlight,
+  exportPic
 }

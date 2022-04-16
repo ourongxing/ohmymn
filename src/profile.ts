@@ -184,6 +184,15 @@ const profilePreset = {
     width:"",
     paginated:"",
   },
+  exportoutline:{
+    // exportMethod:[0],
+    vault: "",
+    fileName: "",
+    contentMethod: [0],
+    imgprocess: [0],
+    imgsize: "",
+    writeMethod: [0]
+  },
   additional: {
     autoocr: {
       lastGetToken: 0,
@@ -237,6 +246,15 @@ const docProfilePreset = {
     referrer:"",
     width:"",
     paginated:"",
+  },
+  exportoutline:{
+    // exportMethod:[0],
+    vault: "",
+    fileName: "",
+    contentMethod: [0],
+    imgprocess: [0],
+    imgsize: "",
+    writeMethod: [0]
   },
   // Information not displayed on the UI
   additional: {

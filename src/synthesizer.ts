@@ -16,6 +16,7 @@ import autotranslate from "modules/autotranslate"
 import export2flomo from "modules/export2flomo"
 import export2anki from "modules/export2anki"
 import export2devonthink from "modules/export2devonthink"
+import exportoutline from "modules/exportoutline"
 import type {
   IActionMethod4Card,
   IActionMethod4Text,
@@ -40,7 +41,8 @@ export const modules = {
   autotranslate,
   export2flomo,
   export2anki,
-  export2devonthink
+  export2devonthink,
+  exportoutline
 }
 
 export const utils: Utils = {

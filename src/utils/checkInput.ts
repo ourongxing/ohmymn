@@ -7,9 +7,14 @@ import {
   string2ReplaceParam
 } from "./input"
 
+/**
+ * 
+ */
 export const checkPlainText = (input: string) => {
   reverseEscape(`${escapeDoubleQuote(input)}`, true)
 }
+
+
 
 export const checkRegArray = (input: string) => {
   string2RegArray(input)
