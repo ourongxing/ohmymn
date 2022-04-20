@@ -1,25 +1,30 @@
-import { IConfig, MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { checkPositiveinteger } from "@/utils/checkInput"
-import { showHUD } from "@/utils/common"
-import { reverseEscape } from "@/utils/input"
-import fetch from "@/utils/network"
-import { isHalfWidth, countWord } from "@/utils/text"
-import MD5 from "@/utils/third party/md5"
+import { defineConfig, showHUD } from "@/utils/common"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
+import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
 
-const { intro, link, label, option, help } = lang
+const { link, label } = lang
 
-const configs: IConfig<"autotranslate"> = {
+export default defineConfig({
   name: "AutoTranslate",
+  key: "autotranslate",
   intro: "摘录时自动附加上翻译结果",
   link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on
+      label: label.on,
+      auto: {
+        generateComments: {
+          index: -1,
+          method({ text }) {
+            return translateText(text)
+          }
+        }
+      }
     },
     {
       key: "wordCount",
@@ -37,14 +42,14 @@ const configs: IConfig<"autotranslate"> = {
       label: "输入语言",
       type: CellViewType.Select,
       option: ["自动检测", "中文", "英文", "日文"],
-      bind: [["translateProviders", 1]]
+      bind: ["translateProviders", 1]
     },
     {
       key: "caiyunToLang",
       label: "输出语言",
       type: CellViewType.Select,
       option: ["中文", "英文", "日文"],
-      bind: [["translateProviders", 1]]
+      bind: ["translateProviders", 1]
     },
     {
       key: "baiduFromLang",
@@ -81,7 +86,7 @@ const configs: IConfig<"autotranslate"> = {
         "繁体中文",
         "越南语"
       ],
-      bind: [["translateProviders", 0]]
+      bind: ["translateProviders", 0]
     },
     {
       key: "baiduToLang",
@@ -117,7 +122,7 @@ const configs: IConfig<"autotranslate"> = {
         "繁体中文",
         "越南语"
       ],
-      bind: [["translateProviders", 0]]
+      bind: ["translateProviders", 0]
     },
     {
       key: "baiduThesaurus",
@@ -125,7 +130,7 @@ const configs: IConfig<"autotranslate"> = {
       label: "自定义术语库",
       help: "百度翻译高级版可用，仅支持中英互译，点击新建自定义术语。",
       link: "https://fanyi-api.baidu.com/manage/term",
-      bind: [["translateProviders", 0]]
+      bind: ["translateProviders", 0]
     },
     {
       key: "autoCopy",
@@ -186,8 +191,8 @@ const configs: IConfig<"autotranslate"> = {
             self.globalProfile.autotranslate
           const translation =
             translateProviders[0] === TranslateProviders.Baidu
-              ? await utils.baiduTranslate(text)
-              : await utils.caiyunTranslate(text)
+              ? await baiduTranslate(text)
+              : await caiyunTranslate(text)
           if (autoCopy) UIPasteboard.generalPasteboard().string = translation
           showHUD(translation, Number(hudTime))
         } catch (err) {
@@ -196,136 +201,4 @@ const configs: IConfig<"autotranslate"> = {
       }
     }
   ]
-}
-
-const utils = {
-  getBaiduSign(text: string, appid: string, key: string, salt: number) {
-    // appid + q + salt + 密钥
-    return MD5(appid + text + salt + key)
-  },
-  async baiduTranslate(text: string) {
-    const {
-      baiduAppID,
-      baiduSecretKey,
-      baiduThesaurus,
-      baiduFromLang,
-      baiduToLang
-    } = self.globalProfile.autotranslate
-    if (isHalfWidth(text)) {
-      if ([1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
-    } else if (![1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
-    const fromLangKey = [
-      "auto",
-      "zh",
-      "en",
-      "yue",
-      "wyw",
-      "jp",
-      "kor",
-      "fra",
-      "spa",
-      "th",
-      "ara",
-      "ru",
-      "pt",
-      "de",
-      "it",
-      "el",
-      "nl",
-      "pl",
-      "bul",
-      "est",
-      "dan",
-      "fin",
-      "cs",
-      "rom",
-      "slo",
-      "swe",
-      "hu",
-      "cht",
-      "vie"
-    ]
-    const toLangKey = fromLangKey.slice(1)
-    const salt = Date.now()
-    const sign = utils.getBaiduSign(text, baiduAppID, baiduSecretKey, salt)
-    const res = (await fetch(
-      "https://fanyi-api.baidu.com/api/trans/vip/translate",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        form: {
-          sign,
-          salt,
-          q: text,
-          appid: baiduAppID,
-          from: fromLangKey[baiduFromLang[0]],
-          to: toLangKey[baiduToLang[0]],
-          action: baiduThesaurus ? 1 : 0
-        }
-      }
-    ).then(res => res.json())) as {
-      trans_result: [
-        {
-          src: string
-          dst: string
-        }
-      ]
-      error_code?: number
-      error_msg?: string
-    }
-    if (res.error_code && res.error_msg)
-      throw `${res.error_code}: ${res.error_msg}`
-    return res.trans_result.map(k => k.dst).join("\n")
-  },
-  async caiyunTranslate(text: string) {
-    const { caiyunToken } = self.globalProfile.autotranslate
-    const { caiyunFromLang, caiyunToLang } = self.globalProfile.autotranslate
-    if (isHalfWidth(text)) {
-      if ([1, 4].includes(caiyunFromLang[0])) return ""
-    } else if (![1, 4].includes(caiyunFromLang[0])) return ""
-    const fromLangKey = ["auto", "zh", "en", "ja"]
-    const toLangKey = fromLangKey.slice(1)
-    const res = (await fetch(
-      "http://api.interpreter.caiyunai.com/v1/translator",
-      {
-        method: "POST",
-        headers: {
-          "X-Authorization": `token ${caiyunToken}`
-        },
-        json: {
-          source: [text],
-          trans_type: `${fromLangKey[caiyunFromLang[0]]}2${
-            toLangKey[caiyunToLang[0]]
-          }`,
-          request_id: "ohmymn",
-          detect: true
-        }
-      }
-    ).then(res => res.json())) as {
-      target: string[]
-    }
-    if (!res.target.length) throw "没有获取到结果"
-    return res.target.join("\n")
-  },
-  async main(note: MbBookNote, text: string) {
-    try {
-      const { translateProviders, wordCount } = self.globalProfile.autotranslate
-      if (wordCount) {
-        const [zh, en] = reverseEscape(wordCount) as number[]
-        if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return undefined
-      }
-      const translation =
-        translateProviders[0] === TranslateProviders.Baidu
-          ? await utils.baiduTranslate(text)
-          : await utils.caiyunTranslate(text)
-      return [translation]
-    } catch (err) {
-      showHUD(String(err), 2)
-      return undefined
-    }
-  }
-}
-
-export default { configs, utils }
+})

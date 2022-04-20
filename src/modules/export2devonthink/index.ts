@@ -31,13 +31,13 @@ const configs: IConfig<"export2devonthink"> = {
       type: CellViewType.Input,
       key: "title",
       help: "标题",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,
       key: "comment",
       help: "评论",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Select,
@@ -50,13 +50,13 @@ const configs: IConfig<"export2devonthink"> = {
       type: CellViewType.Input,
       key: "tags",
       help: "标签模版，点击查看支持的变量。",
-      bind: [["addTags", 2]]
+      bind: ["addTags", 2]
     },
     {
       type: CellViewType.Input,
       key: "destination",
       help: "目标文件夹(输入对应文件夹UUID)",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,
@@ -98,13 +98,13 @@ const configs: IConfig<"export2devonthink"> = {
       type: CellViewType.Input,
       key: "hide",
       help: "隐藏(1/0)",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,
       key: "referrer",
       help: "URL链接(用于引用)",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,

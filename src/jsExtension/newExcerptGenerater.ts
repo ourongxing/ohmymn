@@ -1,6 +1,6 @@
 import { MN } from "@/const"
 import { HasTitleThen } from "@/modules/addon/typings"
-import { utils } from "@/synthesizer"
+import { autoUtils } from "@/synthesizer"
 import { MbBookNote } from "@/typings"
 import { removeHighlight } from "@/utils/note"
 import { cacheTransformer } from "@/utils/profile"
@@ -9,9 +9,9 @@ export const customOCR = async () => {
   const imgBase64 = MN.studyController()
     .readerController.currentDocumentController.imageFromFocusNote()
     .base64Encoding()
-  if (utils.customOCR)
-    for (const util of utils.customOCR) {
-      const res = await util(imgBase64)
+  if (autoUtils.customOCR)
+    for (const util of autoUtils.customOCR) {
+      const res = await util({ imgBase64 })
       if (res) return res
     }
 }
@@ -29,23 +29,23 @@ export const newTitleTextCommentTag = async (param: {
   const tags: string[] = []
 
   const newText = await (async text => {
-    if (utils.modifyExcerptText)
-      for (const util of utils.modifyExcerptText) {
-        const res = await util(note, text)
+    if (autoUtils.modifyExcerptText)
+      for (const util of autoUtils.modifyExcerptText) {
+        const res = await util({ note, text })
         if (res) text = res
       }
     return text
   })(text)
 
-  if (utils.generateComments)
-    for (const util of utils.generateComments) {
-      const res = await util(note, text)
+  if (autoUtils.generateComments)
+    for (const util of autoUtils.generateComments) {
+      const res = await util({ note, text })
       if (res) comments.push(...res)
     }
 
-  if (utils.generateTags)
-    for (const util of utils.generateTags) {
-      const res = await util(note, text)
+  if (autoUtils.generateTags)
+    for (const util of autoUtils.generateTags) {
+      const res = await util({ note, text })
       if (res) tags.push(...res)
     }
 
@@ -59,23 +59,23 @@ export const newTitleTextCommentTag = async (param: {
     return defaultRet
 
   const res = await (async text => {
-    if (utils.generateTitles)
-      for (const util of utils.generateTitles) {
-        const res = await util(note, text)
+    if (autoUtils.generateTitles)
+      for (const util of autoUtils.generateTitles) {
+        const res = await util({ note, text })
         if (res) return res
       }
   })(newText)
 
   if (!res) return defaultRet
 
-  res.title = await (async title => {
-    if (self.isModify) title = title.map(k => removeHighlight(k))
-    if (utils.modifyTitles)
-      for (const util of utils.modifyTitles) {
-        const res = await util(title)
-        if (res) title = res
+  res.title = await (async titles => {
+    if (self.isModify) titles = titles.map(k => removeHighlight(k))
+    if (autoUtils.modifyTitles)
+      for (const util of autoUtils.modifyTitles) {
+        const res = await util({ titles })
+        if (res) titles = res
       }
-    return title
+    return titles
   })(res.title)
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
@@ -118,9 +118,9 @@ export const newTag = async (note: MbBookNote, text: string) => {
 }
 
 export const newColorStyle = async (note: MbBookNote) => {
-  if (utils.modifyStyle)
-    for (const util of utils.modifyStyle) {
-      const res = await util(note)
+  if (autoUtils.modifyStyle)
+    for (const util of autoUtils.modifyStyle) {
+      const res = await util({ note })
       if (res) return res
     }
 }

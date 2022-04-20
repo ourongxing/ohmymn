@@ -1,10 +1,13 @@
-import { IConfig, ISettingSelect, UIView } from "@/typings"
-import { CellViewType, UISwipeGestureRecognizerDirection } from "@/typings/enum"
+import { IAllProfile } from "@/profile"
+import { ISettingSelect } from "@/typings"
+import { CellViewType } from "@/typings/enum"
+import { defineConfig } from "@/utils/common"
 import { lang } from "./lang"
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang
-const configs: IConfig = {
+export default defineConfig({
   name: "Gesture",
+  key: "gesture",
   intro,
   link,
   settings: [
@@ -25,50 +28,5 @@ const configs: IConfig = {
         option: [] as string[]
       }))
     })
-    .flat() as ISettingSelect<Record<string, string>>[]
-}
-
-const utils = {
-  initGesture: {
-    swipe(
-      touchNumber: number,
-      direction: UISwipeGestureRecognizerDirection,
-      action: string
-    ) {
-      const swipe = new UISwipeGestureRecognizer(self, `on${action}:`)
-      swipe.numberOfTouchesRequired = touchNumber
-      swipe.direction = direction
-      return swipe
-    },
-    tap(touchNumber: number, tapNumber: number, action: string) {
-      const tap = new UITapGestureRecognizer(self, `on${action}:`)
-      tap.numberOfTapsRequired = tapNumber
-      tap.numberOfTouchesRequired = touchNumber
-      return tap
-    }
-  },
-  gestureHandlerController(
-    handlerList: {
-      view: UIView
-      gesture: UIGestureRecognizer
-    }[]
-  ): {
-    add: () => void
-    remove: () => void
-  } {
-    const add = () => {
-      handlerList.forEach(v => {
-        v.view.addGestureRecognizer(v.gesture)
-      })
-    }
-    const remove = () => {
-      handlerList.forEach(v => {
-        v.view.removeGestureRecognizer(v.gesture)
-      })
-    }
-    return { add, remove }
-  }
-}
-
-const gesture = { configs, utils }
-export default gesture
+    .flat() as ISettingSelect<IAllProfile["gesture"]>[]
+})

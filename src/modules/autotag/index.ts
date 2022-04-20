@@ -1,10 +1,11 @@
 import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IConfig, MbBookNote } from "@/typings"
+import { MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
+import { defineConfig } from "@/utils/common"
 import {
   escapeDoubleQuote,
   extractArray,
@@ -16,15 +17,34 @@ import { AddTag, AutoTagPreset } from "./typings"
 
 const { intro, option, label, link, help } = lang
 
-const configs: IConfig<"autotag"> = {
+function generateTags(note: MbBookNote, text: string) {
+  const { customTag: params } = self.tempProfile.replaceParam
+  const { preset } = self.globalProfile.autotag
+  if (preset.includes(AutoTagPreset.Custom) && params)
+    return extractArray(
+      text,
+      params.map(k => ({
+        ...k,
+        newSubStr: renderTemplateOfNodeProperties(note, k.newSubStr)
+      }))
+    )
+}
+
+export default defineConfig({
   name: "AutoTag",
+  key: "autotag",
   intro,
   link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on
+      label: label.on,
+      auto: {
+        generateTags({ note, text }) {
+          return generateTags(note, text)
+        }
+      }
     },
     {
       key: "preset",
@@ -36,7 +56,7 @@ const configs: IConfig<"autotag"> = {
       key: "customTag",
       type: CellViewType.Input,
       help: help.custom_tag,
-      bind: [["preset", 0]],
+      bind: ["preset", 0],
       link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
@@ -53,7 +73,7 @@ const configs: IConfig<"autotag"> = {
         if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {
             const text = getAllText(node)
-            const tags = utils.main(node, text)
+            const tags = generateTags(node, text)
             if (tags?.length) addTags(node, tags)
           })
         } else if (content) {
@@ -82,24 +102,4 @@ const configs: IConfig<"autotag"> = {
       }
     }
   ]
-}
-
-const utils = {
-  main(note: MbBookNote, text: string) {
-    const { customTag: params } = self.tempProfile.replaceParam
-    const { preset } = self.globalProfile.autotag
-    if (preset.includes(AutoTagPreset.Custom) && params)
-      return extractArray(
-        text,
-        params.map(k => ({
-          ...k,
-          newSubStr: renderTemplateOfNodeProperties(note, k.newSubStr)
-        }))
-      )
-  }
-}
-
-export default {
-  configs,
-  utils
-}
+})

@@ -1,23 +1,68 @@
-import { IConfig, MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { checkRegArrayFromMNLink } from "@/utils/checkInput"
+import { defineConfig } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
 import { removeHighlight } from "@/utils/note"
 import { countWord, isHalfWidth } from "@/utils/text"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
-
 const { option, intro, help, link, label, check } = lang
 
-const configs: IConfig<"anotherautotitle"> = {
+function transform2Title(text: string) {
+  const { preset, wordCount, changeTitleNoLimit } =
+    self.globalProfile.anotherautotitle
+  const { cacheTitle } = self.notebookProfile.additional
+  if (self.isModify) text = removeHighlight(text)
+  if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
+    return {
+      title: [text],
+      text: ""
+    }
+  const newTitle = (() => {
+    for (const set of preset) {
+      switch (set) {
+        case AutoTitlePreset.Custom:
+          const { customBeTitle: regGroup } = self.tempProfile.regArray
+          if (!regGroup) continue
+          if (regGroup.some(regs => regs.every(reg => reg.test(text))))
+            return text
+          break
+        case AutoTitlePreset.WordLimit:
+          if (!wordCount) continue
+          const [zh, en] = reverseEscape(wordCount) as number[]
+          if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return text
+          break
+        case AutoTitlePreset.NoPunctuation:
+          const reg = /[。.、？?！!，,；;：:]/
+          if (!reg.test(text)) return text
+      }
+    }
+  })()
+  if (newTitle)
+    return {
+      title: [newTitle],
+      text: ""
+    }
+}
+
+export default defineConfig({
   name: "Another AutoTitle",
+  key: "anotherautotitle",
   intro,
   link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on
+      label: label.on,
+      auto: {
+        generateTitles: {
+          index: 999,
+          method({ text }) {
+            return transform2Title(text)
+          }
+        }
+      }
     },
     {
       key: "preset",
@@ -28,7 +73,7 @@ const configs: IConfig<"anotherautotitle"> = {
     {
       key: "wordCount",
       type: CellViewType.Input,
-      bind: [["preset", 1]],
+      bind: ["preset", 1],
       help: label.word_count,
       check({ input }) {
         input = reverseEscape(input)
@@ -42,7 +87,7 @@ const configs: IConfig<"anotherautotitle"> = {
       key: "customBeTitle",
       type: CellViewType.Input,
       help: help.custom_be_title,
-      bind: [["preset", 0]],
+      bind: ["preset", 0],
       link,
       check({ input }) {
         checkRegArrayFromMNLink(input)
@@ -55,45 +100,4 @@ const configs: IConfig<"anotherautotitle"> = {
       help: help.change_title_no_limit
     }
   ]
-}
-
-const utils = {
-  main(note: MbBookNote, text: string) {
-    const { preset, wordCount, changeTitleNoLimit } =
-      self.globalProfile.anotherautotitle
-    const { cacheTitle } = self.notebookProfile.additional
-    if (self.isModify) text = removeHighlight(text)
-    if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
-      return {
-        title: [text],
-        text: ""
-      }
-    const newTitle = (() => {
-      for (const set of preset) {
-        switch (set) {
-          case AutoTitlePreset.Custom:
-            const { customBeTitle: regGroup } = self.tempProfile.regArray
-            if (!regGroup) continue
-            if (regGroup.some(regs => regs.every(reg => reg.test(text))))
-              return text
-            break
-          case AutoTitlePreset.WordLimit:
-            if (!wordCount) continue
-            const [zh, en] = reverseEscape(wordCount) as number[]
-            if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return text
-            break
-          case AutoTitlePreset.NoPunctuation:
-            const reg = /[。.、？?！!，,；;：:]/
-            if (!reg.test(text)) return text
-        }
-      }
-    })()
-    if (newTitle)
-      return {
-        title: [newTitle],
-        text: ""
-      }
-  }
-}
-
-export default { configs, utils }
+})

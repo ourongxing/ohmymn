@@ -18,6 +18,7 @@ const dict = {
   input_number: "请输入数字",
   input_integer: "请输入整数",
   input_positive: "请输入正整数",
+  copy_success: "复制成功, 快去粘贴吧!",
   smart_select: {
     title: `${Addon.title} 智能选择`,
     option: [

@@ -36,8 +36,14 @@ const tableViewTitleForHeaderInSection = (
 }
 
 // If one of the bind objects does not meet the requirements, it will be hidden
-const _isBindOFF = (bindArr: [string, number][], sectionKey: string) => {
-  return !bindArr.every(bind => {
+const _isBindOFF = (
+  bindArr: MaybeArray<[string, number]>,
+  sectionKey: string
+) => {
+  const bindItems = Array.isArray(bindArr[0])
+    ? (bindArr as [string, number][])
+    : ([bindArr] as [string, number][])
+  return !bindItems.every(bind => {
     const [key, index] = bind
     const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
     if (secIndex === undefined) {

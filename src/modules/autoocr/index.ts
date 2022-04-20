@@ -1,16 +1,22 @@
 import { Addon } from "@/const"
-import { IConfig } from "@/typings"
 import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
-import { showHUD, openUrl } from "@/utils/common"
-import fetch from "@/utils/network"
+import { showHUD, openUrl, defineConfig } from "@/utils/common"
 import popup from "@/utils/popup"
 import { lang } from "./lang"
-import { BaiduOCRError } from "./typings"
+import {
+  baiduFormulaOCR,
+  baiduHandWrittingOCR,
+  copy,
+  mainOCR,
+  mathpixOCR,
+  QRCodeOCR
+} from "./utils"
 
 const { intro, link, label, option, help, other } = lang
 
-const configs: IConfig<"autoocr"> = {
+export default defineConfig({
   name: "AutoOCR",
+  key: "autoocr",
   intro,
   link,
   settings: [
@@ -18,7 +24,15 @@ const configs: IConfig<"autoocr"> = {
       key: "on",
       type: CellViewType.Switch,
       label: label.on,
-      help: help.on
+      help: help.on,
+      auto: {
+        customOCR: {
+          index: 1,
+          method({ imgBase64 }) {
+            return mainOCR(imgBase64)
+          }
+        }
+      }
     },
     {
       key: "lang",
@@ -42,13 +56,13 @@ const configs: IConfig<"autoocr"> = {
       key: "baiduApiKey",
       type: CellViewType.Input,
       help: help.baiduApiKey,
-      bind: [["showKey", 1]]
+      bind: ["showKey", 1]
     },
     {
       key: "baiduSecretKey",
       type: CellViewType.Input,
       help: help.baiduSecretKey,
-      bind: [["showKey", 1]]
+      bind: ["showKey", 1]
     },
     {
       key: "mathpixAppKey",
@@ -70,9 +84,9 @@ const configs: IConfig<"autoocr"> = {
         try {
           const res =
             self.globalProfile.autoocr.formulaOCRProviders[0] === 0
-              ? await utils.baiduFormulaOCR(imgBase64)
-              : await utils.mathpixOCR(imgBase64)
-          utils.copy([res, `$${res}$`, `$$${res}$$`][option])
+              ? await baiduFormulaOCR(imgBase64)
+              : await mathpixOCR(imgBase64)
+          copy([res, `$${res}$`, `$$${res}$$`][option])
         } catch (err) {
           showHUD(String(err), 2)
         }
@@ -83,8 +97,8 @@ const configs: IConfig<"autoocr"> = {
       key: "textOCR",
       label: label.textOCR,
       method: async ({ imgBase64 }) => {
-        const res = await utils.main(imgBase64)
-        res && utils.copy(res)
+        const res = await mainOCR(imgBase64)
+        res && copy(res)
       }
     },
     {
@@ -93,8 +107,8 @@ const configs: IConfig<"autoocr"> = {
       label: label.handWrittingOCR,
       method: async ({ imgBase64 }) => {
         try {
-          const res = await utils.baiduHandWrittingOCR(imgBase64)
-          utils.copy(res)
+          const res = await baiduHandWrittingOCR(imgBase64)
+          copy(res)
         } catch (err) {
           showHUD(String(err), 2)
         }
@@ -106,7 +120,7 @@ const configs: IConfig<"autoocr"> = {
       label: label.QRCodeOCR,
       method: async ({ imgBase64 }) => {
         try {
-          const res = await utils.QRCodeOCR(imgBase64)
+          const res = await QRCodeOCR(imgBase64)
           const url = res.match(
             /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
           )
@@ -124,7 +138,7 @@ const configs: IConfig<"autoocr"> = {
             )
             option !== -1 && openUrl(url[0])
           } else {
-            utils.copy(res)
+            copy(res)
           }
         } catch (err) {
           showHUD(String(err), 2)
@@ -132,158 +146,4 @@ const configs: IConfig<"autoocr"> = {
       }
     }
   ]
-}
-
-const utils = {
-  async getBaiduToken() {
-    const { lastGetToken, baiduToken } = self.globalProfile.additional.autoocr
-    const { baiduApiKey, baiduSecretKey } = self.globalProfile.autoocr
-    if (baiduToken && Date.now() - lastGetToken < 2592000000) return baiduToken
-    const res = (await fetch(
-      `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${baiduApiKey}&client_secret=${baiduSecretKey}`
-    ).then(res => res.json())) as { access_token: string }
-    if (!res.access_token) throw other.baidu_token_error
-    self.globalProfile.additional.autoocr = {
-      lastGetToken: Date.now(),
-      baiduToken: res.access_token
-    }
-    return res.access_token
-  },
-  async mathpixOCR(imgBase64: string) {
-    const { mathpixAppKey } = self.globalProfile.autoocr
-    if (!mathpixAppKey) throw other.no_mathpix_key
-    const res = (await fetch("https://api.mathpix.com/v3/latex", {
-      method: "POST",
-      headers: {
-        app_key: mathpixAppKey
-      },
-      json: {
-        src: "data:image/jpg;base64," + imgBase64,
-        formats: ["latex_styled"],
-        ocr: ["math", "text"]
-      }
-    }).then(res => res.json())) as {
-      latex_styled: string
-    }
-    if (!res.latex_styled) throw other.mathpix_key_error
-    return res.latex_styled
-  },
-  async QRCodeOCR(imgBase64: string) {
-    const token = await utils.getBaiduToken()
-    const res = (await fetch(
-      `https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode?access_token=${token}}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        form: {
-          image: imgBase64
-        }
-      }
-    ).then(res => res.json())) as {
-      codes_result: { text: string }[]
-    } & BaiduOCRError
-    if (res.error_code && res.error_msg)
-      throw `${res.error_code}: ${res.error_msg}`
-    return res.codes_result.map(k => k.text).join("")
-  },
-  async baiduFormulaOCR(imgBase64: string) {
-    const token = await utils.getBaiduToken()
-    const res = (await fetch(
-      `https://aip.baidubce.com/rest/2.0/ocr/v1/formula?access_token=${token}}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        form: {
-          image: imgBase64
-        }
-      }
-    ).then(res => res.json())) as {
-      words_result: { words: string }[]
-    } & BaiduOCRError
-    if (res.error_code && res.error_msg)
-      throw `${res.error_code}: ${res.error_msg}`
-    return res.words_result.map(k => k.words).join("")
-  },
-  async baiduHandWrittingOCR(imgBase64: string) {
-    const token = await utils.getBaiduToken()
-    const res = (await fetch(
-      `https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting?access_token=${token}}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        form: {
-          image: imgBase64
-        }
-      }
-    ).then(res => res.json())) as {
-      words_result: { words: string }[]
-    } & BaiduOCRError
-    if (res.error_code && res.error_msg)
-      throw `${res.error_code}: ${res.error_msg}`
-    return res.words_result.map(k => k.words).join("")
-  },
-  async main(imgBase64: string) {
-    try {
-      const langKey = [
-        "auto_detect",
-        "CHN_ENG",
-        "ENG",
-        "JAP",
-        "KOR",
-        "FRE",
-        "SPA",
-        "POR",
-        "GER",
-        "ITA",
-        "RUS",
-        "DAN",
-        "DUT",
-        "MAL",
-        "SWE",
-        "IND",
-        "POL",
-        "ROM",
-        "TUR",
-        "GRE",
-        "HUN"
-      ]
-      const token = await utils.getBaiduToken()
-      const res = (await fetch(
-        `https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=${token}}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          form: {
-            image: imgBase64,
-            language_type: langKey[self.globalProfile.autoocr.lang[0]]
-          }
-        }
-      ).then(res => res.json())) as {
-        words_result: { words: string }[]
-      } & BaiduOCRError
-      if (res.error_code && res.error_msg)
-        throw `${res.error_code}: ${res.error_msg}`
-      return res.words_result
-        .map(k => (/[.。;；·?？！!]$/.test(k.words) ? k.words + "\n" : k.words))
-        .join("")
-    } catch (err) {
-      showHUD(String(err))
-      return undefined
-    }
-  },
-  copy(text: string) {
-    UIPasteboard.generalPasteboard().string = text.trim()
-    showHUD(other.success_clipboard, 2)
-  }
-}
-
-const autoocr = { configs, utils }
-export default autoocr
+})

@@ -1,19 +1,13 @@
-import { Addon } from "@/const"
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IConfig, MbBookNote } from "@/typings"
-import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
+import { CellViewType } from "@/typings/enum"
 import { escapeURLParam } from "@/utils"
-import { showHUD, openUrl } from "@/utils/common"
-import { reverseEscape } from "@/utils/input"
-import fetch from "@/utils/network"
-import { removeHighlight } from "@/utils/note"
-import popup from "@/utils/popup"
+import { showHUD, openUrl, defineConfig } from "@/utils/common"
 import { lang } from "./lang"
-import { ExportMethod, AddTags } from "./typings"
+import { ExportMethod } from "./typings"
+import { getContent, exportByAPI } from "./utils"
 
-const { link, intro, lable, option, help } = lang
+const { link, intro } = lang
 
-const configs: IConfig<"export2flomo"> = {
+export default defineConfig({
   name: "Export to Flomo",
   key: "export2flomo",
   intro,
@@ -29,7 +23,7 @@ const configs: IConfig<"export2flomo"> = {
       type: CellViewType.Input,
       key: "flomoAPI",
       help: "Flomo API，需要 Flomo Pro。点击获取 API。",
-      bind: [["exportMethod", 1]]
+      bind: ["exportMethod", 1]
     },
     {
       type: CellViewType.Select,
@@ -42,7 +36,7 @@ const configs: IConfig<"export2flomo"> = {
       type: CellViewType.Input,
       key: "tagTemplate",
       help: "标签模版，点击查看支持的变量。",
-      bind: [["addTags", 2]]
+      bind: ["addTags", 2]
     },
     {
       type: CellViewType.Select,
@@ -60,19 +54,19 @@ const configs: IConfig<"export2flomo"> = {
       type: CellViewType.Input,
       key: "flomoTemplate1",
       help: "模版 1，点击查看支持的变量。",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,
       key: "flomoTemplate2",
       help: "模版 2",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     },
     {
       type: CellViewType.Input,
       key: "flomoTemplate3",
       help: "模版 3",
-      bind: [["showTemplate", 1]]
+      bind: ["showTemplate", 1]
     }
   ],
   actions4card: [
@@ -89,14 +83,14 @@ const configs: IConfig<"export2flomo"> = {
           if (nodes.length > 1) {
             showHUD("请注意，URL Scheme 单次只能导出一张卡片的内容！")
           }
-          const c = utils.getContent(nodes[0], option)
+          const c = getContent(nodes[0], option)
           if (c) openUrl("flomo://create?content=" + escapeURLParam(c))
           else showHUD("模版对应的内容为空")
         } else
           try {
             for (const node of nodes) {
-              const c = utils.getContent(node, option)
-              if (c) await utils.exportByAPI(c)
+              const c = getContent(node, option)
+              if (c) await exportByAPI(c)
               else showHUD("模版对应的内容为空")
             }
             showHUD("导出成功")
@@ -118,7 +112,7 @@ const configs: IConfig<"export2flomo"> = {
           openUrl("flomo://create?content=" + escapeURLParam(text))
         } else {
           try {
-            await utils.exportByAPI(text)
+            await exportByAPI(text)
             showHUD("导出成功")
           } catch (err) {
             console.error(String(err))
@@ -128,75 +122,4 @@ const configs: IConfig<"export2flomo"> = {
       }
     }
   ]
-}
-
-const utils = {
-  async selectPartOfParts(parts: string[], message = "选择你想要的") {
-    const { option } = await popup(
-      {
-        title: Addon.title,
-        message,
-        type: UIAlertViewStyle.Default,
-        buttons: parts,
-        canCancel: false,
-        multiLine: true
-      },
-      ({ buttonIndex }) => ({
-        option: buttonIndex
-      })
-    )
-    return parts[option]
-  },
-  getContent(node: MbBookNote, option: number) {
-    const {
-      flomoTemplate1,
-      flomoTemplate2,
-      flomoTemplate3,
-      tagTemplate,
-      addTags
-    } = self.globalProfile.export2flomo
-    const list = [flomoTemplate1, flomoTemplate2, flomoTemplate3].reduce(
-      (acc, cur) => {
-        if (cur) {
-          const tags = (() => {
-            if (addTags[0] === AddTags.CardTags) {
-              return renderTemplateOfNodeProperties(
-                node,
-                "{{#tags}}#{{.}} {{/tags}}"
-              )
-            } else if (addTags[0] === AddTags.Custom && tagTemplate) {
-              return renderTemplateOfNodeProperties(
-                node,
-                reverseEscape(tagTemplate, true)
-              )
-            }
-          })()
-          const main = renderTemplateOfNodeProperties(
-            node,
-            reverseEscape(cur, true)
-          )
-          const c = removeHighlight(main + "\n" + (tags ?? "")).trim()
-          if (c) acc.push(c)
-        }
-        return acc
-      },
-      [] as string[]
-    )
-    return list[option]
-  },
-  async exportByAPI(content: string) {
-    const { flomoAPI } = self.globalProfile.export2flomo
-    const res = (await fetch(flomoAPI, {
-      method: "POST",
-      json: {
-        content
-      }
-    }).then(res => res.json())) as {
-      message: string
-      code: number
-    }
-    if (res.code !== 0) throw res.message
-  }
-}
-
-export default { configs, utils }
+})

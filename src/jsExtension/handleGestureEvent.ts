@@ -2,7 +2,7 @@ import { MN } from "@/const"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "@/dataSource"
 import lang from "@/lang"
 import { PanelControl } from "@/modules/addon/typings"
-import gesture from "@/modules/gesture"
+import { gestureHandlerController, initGesture } from "@/modules/gesture/utils"
 import { moduleKeyArray, isModuleON } from "@/synthesizer"
 import { IRowButton, GestureHandler } from "@/typings"
 import {
@@ -19,9 +19,8 @@ import magicActionHandler from "./magicActionHandler"
 
 // Not support Mac
 // Cannot access self unless use function
-const { initGesture } = gesture.utils
 export const gestureHandlers = () =>
-  gesture.utils.gestureHandlerController([
+  gestureHandlerController([
     {
       view: MN.studyController().view,
       gesture: initGesture.swipe(
@@ -224,7 +223,9 @@ const actionTrigger = async (
   sender: UIGestureRecognizer
 ) => {
   if (
-    !self.globalProfile.addon.quickSwitch.includes(moduleKeyArray.indexOf("gesture"))
+    !self.globalProfile.addon.quickSwitch.includes(
+      moduleKeyArray.indexOf("gesture")
+    )
   )
     return
   const swipePosition = checkSwipePosition(sender)

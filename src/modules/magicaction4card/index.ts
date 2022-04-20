@@ -1,8 +1,8 @@
-import { IConfig, textComment } from "@/typings"
+import { textComment } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { unique } from "@/utils"
 import { checkPlainText, checkRegArray } from "@/utils/checkInput"
-import { showHUD, HUDController } from "@/utils/common"
+import { showHUD, HUDController, defineConfig } from "@/utils/common"
 import {
   string2RegArray,
   escapeDoubleQuote,
@@ -24,7 +24,7 @@ import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
 
 const { help, option, intro, label, link, hud } = lang
 
-const configs: IConfig<"magicaction4card"> = {
+export default defineConfig({
   name: "MagicAction for Card",
   key: "magicaction4card",
   intro,
@@ -225,6 +225,4 @@ const configs: IConfig<"magicaction4card"> = {
       }
     }
   ]
-}
-
-export default { configs }
+})

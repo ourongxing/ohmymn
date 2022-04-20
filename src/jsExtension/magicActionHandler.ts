@@ -1,7 +1,7 @@
 import { MN } from "@/const"
 import lang from "@/lang"
 import { PanelControl } from "@/modules/addon/typings"
-import autoocr from "@/modules/autoocr"
+import { mainOCR as autoocr } from "@/modules/autoocr/utils"
 import {
   checkInputCorrect,
   moduleKeyArray,
@@ -108,7 +108,7 @@ const handleMagicAction = async ({
         self.globalProfile.addon.quickSwitch.includes(
           moduleKeyArray.indexOf("autoocr")
         )
-          ? (await autoocr.utils.main(imageFromSelection)) ??
+          ? (await autoocr(imageFromSelection)) ??
             documentController.selectionText ??
             ""
           : documentController.selectionText ?? ""

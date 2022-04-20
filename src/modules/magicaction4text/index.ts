@@ -1,8 +1,8 @@
-import { IConfig } from "@/typings"
 import { CellViewType } from "@/typings/enum"
+import { defineConfig } from "@/utils/common"
 import { lang } from "./lang"
 
-const configs: IConfig<"magicaction4text"> = {
+export default defineConfig({
   name: "MagicAction for Text",
   key: "magicaction4text",
   intro: lang.intro,
@@ -14,7 +14,4 @@ const configs: IConfig<"magicaction4text"> = {
       help: lang.help.preOCR
     }
   ]
-}
-
-const magicaction4text = { configs }
-export default magicaction4text
+})

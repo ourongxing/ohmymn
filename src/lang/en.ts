@@ -19,6 +19,7 @@ const dict: Dict = {
   not_select_card: "No card is selected",
   not_select_text: "No text is selected",
   no_text_selection: "Unable to get to the text of the selection",
+  copy_success: "Copy successfully, go ahead and paste",
   smart_select: {
     title: `${Addon.title} Smart Selector`,
     option: [

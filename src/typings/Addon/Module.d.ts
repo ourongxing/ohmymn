@@ -1,13 +1,16 @@
 import { IAllProfile } from "@/profile"
 import { MbBookNote } from "../MarginNote"
+import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
 import { CellViewType } from "./enum"
 
-export type IConfig<T extends keyof IAllProfile = keyof IAllProfile> = {
+export type IConfig<T extends keyof IAllProfile | null = null> = {
   name: string
-  key?: string
+  key: T extends keyof IAllProfile ? T : string
   intro: string
   link?: string
-  settings: ISetting<IAllProfile[T]>[]
+  settings: ISetting<
+    T extends keyof IAllProfile ? IAllProfile[T] : Record<string, any>
+  >[]
   actions4card?: IAction<IActionMethod4Card>[]
   actions4text?: IAction<IActionMethod4Text>[]
 }
@@ -16,7 +19,7 @@ export type IConfig<T extends keyof IAllProfile = keyof IAllProfile> = {
 type HelpLink = XOR<{ help: string; link?: string }, {}>
 
 type Bind<T> = {
-  bind?: [PickKeyByValue<T, number[] | boolean>, number][]
+  bind?: MaybeArray<[PickKeyByValue<T, number[] | boolean>, number]>
 }
 
 type HelpLinkLabel = HelpLink & {
@@ -38,10 +41,18 @@ export type ISettingInput<T> = {
   check?: ICheckMethod
 } & Bind<T>
 
-export type ISettingSwitch<T> = {
-  key: PickKeyByValue<T, boolean>
-  type: CellViewType.Switch
-} & HelpLinkLabel &
+export type ISettingSwitch<T> = (
+  | {
+      key: Exclude<PickKeyByValue<T, boolean>, "on">
+      type: CellViewType.Switch
+    }
+  | {
+      key: "on"
+      type: CellViewType.Switch
+      auto: TypeUtilIndex<AutoUtilType>
+    }
+) &
+  HelpLinkLabel &
   Bind<T>
 
 export type ISettingSelect<T> = {

@@ -1,4 +1,7 @@
 import { Addon, MN } from "../const"
+import type { IConfig } from "@/typings"
+import { IAllProfile } from "@/profile"
+import lang from "@/lang"
 
 const console = {
   log(obj: any, suffix = "normal") {
@@ -117,6 +120,14 @@ const eventHandlerController = (
   return { add, remove }
 }
 
+const defineConfig = <T extends keyof IAllProfile>(options: IConfig<T>) =>
+  options
+
+const copy = (text: string) => {
+  UIPasteboard.generalPasteboard().string = text.trim()
+  showHUD(lang.copy_success)
+}
+
 export {
   console,
   showHUD,
@@ -130,5 +141,7 @@ export {
   isThisWindow,
   isOCNull,
   OCNull2null,
-  eventHandlerController
+  eventHandlerController,
+  defineConfig,
+  copy
 }

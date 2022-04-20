@@ -10,14 +10,14 @@ export type ISection = {
 interface KeyLabelBind {
   key: string
   label: string
-  bind?: [string, number][]
+  bind?: MaybeArray<[string, number]>
 }
 
 export type IRowPlainText = {
   type: CellViewType.PlainText
   label: string
   link?: string
-  bind?: [string, number][]
+  bind?: MaybeArray<[string, number]>
 }
 
 export type IRowSwitch = Expand<

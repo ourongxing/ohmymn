@@ -1,12 +1,11 @@
-import { MN } from "@/const"
-import { IConfig, MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
-import { showHUD } from "@/utils/common"
+import { defineConfig } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
-import { getExcerptNotes, removeHighlight } from "@/utils/note"
-import { SerialCode, countWord, isHalfWidth } from "@/utils/text"
+import { getExcerptNotes } from "@/utils/note"
+import { SerialCode } from "@/utils/text"
 import { lang } from "./lang"
-import { ChangeStyle, AutoStylePreset, Style } from "./typings"
+import { ChangeStyle } from "./typings"
+import { modifyStyle } from "./utils"
 
 const { help, intro, option, label, link, check } = lang
 
@@ -14,15 +13,21 @@ const colors = option.color.map((color, index) =>
   index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
 )
 
-const configs: IConfig<"autostyle"> = {
+export default defineConfig({
   name: "AutoStyle",
+  key: "autostyle",
   intro,
   link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on
+      label: label.on,
+      auto: {
+        modifyStyle({ note }) {
+          return modifyStyle(note)
+        }
+      }
     },
     {
       key: "preset",
@@ -33,13 +38,13 @@ const configs: IConfig<"autostyle"> = {
     {
       key: "showArea",
       type: CellViewType.Switch,
-      bind: [["preset", 0]],
+      bind: ["preset", 0],
       label: label.show_area
     },
     {
       key: "wordCountArea",
       type: CellViewType.Input,
-      bind: [["preset", 0]],
+      bind: ["preset", 0],
       help: label.word_count_area,
       check({ input }) {
         input = reverseEscape(input)
@@ -85,7 +90,7 @@ const configs: IConfig<"autostyle"> = {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
             getExcerptNotes(node).forEach(note => {
-              const { color } = utils.main(note)
+              const { color } = modifyStyle(note)
               if (color !== undefined)
                 note.colorIndex = color !== -1 ? color : 12
             })
@@ -114,7 +119,7 @@ const configs: IConfig<"autostyle"> = {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
             getExcerptNotes(node).forEach(note => {
-              const { style } = utils.main(note)
+              const { style } = modifyStyle(note)
               if (style !== undefined) note.fillIndex = style
             })
           }
@@ -129,93 +134,4 @@ const configs: IConfig<"autostyle"> = {
       }
     }
   ]
-}
-
-const utils = {
-  getExcerptArea(note: MbBookNote) {
-    const [x1, y1, x2, y2] = (
-      reverseEscape(`[${note.startPos},${note.endPos}]`) as number[]
-    ).map(item => Number(item))
-    return Math.floor(Math.abs((x1 - x2) * (y2 - y1)) / 100)
-  },
-  main(note: MbBookNote) {
-    // 就跟随卡片 => 跟随兄弟节点 => 跟随父节点 => 默认 => 不动
-    const {
-      preset,
-      showArea,
-      wordCountArea,
-      defaultPicExcerptColor,
-      defaultPicExcerptStyle,
-      defaultTextExcerptColor,
-      defaultTextExcerptStyle
-    } = self.globalProfile.autostyle
-
-    const color = note.excerptPic
-      ? defaultPicExcerptColor[0] !== 0
-        ? defaultPicExcerptColor[0] - 1
-        : undefined
-      : defaultTextExcerptColor[0] !== 0
-      ? defaultTextExcerptColor[0] - 1
-      : undefined
-
-    const style = note.excerptPic
-      ? defaultPicExcerptStyle[0] !== 0
-        ? defaultPicExcerptStyle[0] - 1
-        : undefined
-      : defaultTextExcerptStyle[0] !== 0
-      ? defaultTextExcerptStyle[0] - 1
-      : undefined
-
-    const res = {
-      color,
-      style
-    }
-
-    const nodeNote = note.groupNoteId
-      ? MN.db.getNoteById(note.groupNoteId)!
-      : note
-    if (
-      preset.includes(AutoStylePreset.StyleByWordCountAndArea) &&
-      wordCountArea
-    ) {
-      const [zh, en, area] = reverseEscape(wordCountArea) as number[]
-      if (note.excerptPic) {
-        const actualArea = utils.getExcerptArea(note)
-        if (actualArea > area) res.style = Style.Wireframe
-        if (showArea) showHUD(lang.area + ": " + actualArea)
-      } else if (note.excerptText) {
-        const text = removeHighlight(note.excerptText)
-        if (countWord(text) > (isHalfWidth(text) ? en : zh))
-          res.style = Style.Wireframe
-      }
-    }
-
-    for (const set of preset)
-      switch (set) {
-        case AutoStylePreset.ColorFollowCard:
-          if (note.groupNoteId) {
-            res.color = nodeNote.colorIndex
-            return res
-          }
-          break
-        case AutoStylePreset.ColorFollowBrother:
-          const len = nodeNote.parentNote?.childNotes?.length
-          if (len && len > 1) {
-            res.color = nodeNote.parentNote.childNotes[0].colorIndex
-            return res
-          }
-          break
-        case AutoStylePreset.ColorFollowParents:
-          if (nodeNote.parentNote) {
-            res.color = nodeNote.parentNote.colorIndex
-            return res
-          }
-      }
-    return res
-  }
-}
-
-export default {
-  configs,
-  utils
-}
+})

@@ -1,6 +1,7 @@
 import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IConfig, MbBookNote } from "@/typings"
+import { MbBookNote } from "@/typings"
 import { CellViewType } from "@/typings/enum"
+import { defineConfig } from "@/utils/common"
 import { string2ReplaceParam } from "@/utils/input"
 import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"
@@ -8,15 +9,44 @@ import { ReplaceSelected, AutoReplacePreset } from "./typings"
 
 const { intro, link, label, option, help } = lang
 
-const configs: IConfig<"autoreplace"> = {
+function replaceText(note: MbBookNote, text: string) {
+  const { preset } = self.globalProfile.autoreplace
+  for (const set of preset) {
+    switch (set) {
+      case AutoReplacePreset.Custom:
+        const { customReplace: params } = self.tempProfile.replaceParam
+        if (!params) continue
+        text = params.reduce(
+          (acc, param) =>
+            acc.replace(
+              param.regexp,
+              renderTemplateOfNodeProperties(note, param.newSubStr)
+            ),
+          text
+        )
+    }
+  }
+  return text
+}
+
+export default defineConfig({
   name: "AutoReplace",
+  key: "autoreplace",
   intro,
   link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on
+      label: label.on,
+      auto: {
+        modifyExcerptText: {
+          index: 999,
+          method({ note, text }) {
+            return replaceText(note, text)
+          }
+        }
+      }
     },
     {
       key: "preset",
@@ -28,7 +58,7 @@ const configs: IConfig<"autoreplace"> = {
       key: "customReplace",
       type: CellViewType.Input,
       help: help.custom_replace,
-      bind: [["preset", 0]],
+      bind: ["preset", 0],
       link
     }
   ],
@@ -43,7 +73,7 @@ const configs: IConfig<"autoreplace"> = {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
-              if (text) note.excerptText = utils.main(node, text)
+              if (text) note.excerptText = replaceText(node, text)
             })
           })
         } else if (content) {
@@ -66,29 +96,4 @@ const configs: IConfig<"autoreplace"> = {
       }
     }
   ]
-}
-
-const utils = {
-  main(note: MbBookNote, text: string) {
-    const { preset } = self.globalProfile.autoreplace
-    for (const set of preset) {
-      switch (set) {
-        case AutoReplacePreset.Custom:
-          const { customReplace: params } = self.tempProfile.replaceParam
-          if (!params) continue
-          text = params.reduce(
-            (acc, param) =>
-              acc.replace(
-                param.regexp,
-                renderTemplateOfNodeProperties(note, param.newSubStr)
-              ),
-            text
-          )
-      }
-    }
-    return text
-  }
-}
-
-const autoreplace = { configs, utils }
-export default autoreplace
+})

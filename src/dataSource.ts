@@ -1,9 +1,9 @@
 import lang from "./lang"
-import { constModules, ModuleKeyType } from "./synthesizer"
+import { constModules, modules } from "./module"
+import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./typings/enum"
 import { SerialCode } from "./utils/text"
-import { modules } from "./synthesizer"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -66,8 +66,7 @@ const genSection = (config: IConfig): ISection => {
   }
   return {
     header: config.name,
-    key: (config.key ??
-      config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
+    key: config.key as ModuleKeyType,
     rows
   }
 }
@@ -98,8 +97,7 @@ const genDataSource = (
         ...config.actions4card.map(k => ({
           ...k,
           moduleName: config.name,
-          module: (config.key ??
-            config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
+          module: config.key as ModuleKeyType,
           help:
             lang.magicaction_from_which_module(config.name) +
             (k.help ? "\n" + k.help : "")
@@ -220,9 +218,9 @@ const getActionKeyGetureOption = (section: ISection) => {
 }
 
 export const dataSourcePreset = genDataSource(
-  //@ts-ignore
-  [addon, ...Object.values(modules)].map(module => module.configs),
-  magicaction4card.configs,
-  magicaction4text.configs
+  // @ts-ignore
+  [addon, ...Object.values(modules)],
+  magicaction4card,
+  magicaction4text
 )
 export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)

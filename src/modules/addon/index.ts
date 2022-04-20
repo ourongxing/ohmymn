@@ -1,11 +1,11 @@
 import { Addon } from "@/const"
-import { IConfig } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { checkInteger } from "@/utils/checkInput"
+import { defineConfig } from "@/utils/common"
 import { lang } from "./lang"
 
 const { label, help, option } = lang
-const configs: IConfig<"addon"> = {
+export default defineConfig({
   name: Addon.title,
   key: "addon",
   intro: `version: ${Addon.version}`,
@@ -78,37 +78,37 @@ const configs: IConfig<"addon"> = {
       key: "author",
       type: CellViewType.InlineInput,
       label: "作者",
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     },
     {
       key: "type",
       type: CellViewType.InlineInput,
       label: "类型",
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     },
     {
       key: "publisher",
       type: CellViewType.InlineInput,
       label: label.publisher,
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     },
     {
       key: "publicationDate",
       type: CellViewType.InlineInput,
       label: label.publication_date,
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     },
     {
       key: "publicationPlace",
       type: CellViewType.InlineInput,
       label: label.publication_place,
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     },
     {
       key: "pageOffset",
       type: CellViewType.InlineInput,
       label: label.page_offset,
-      bind: [["showDocInfo", 1]],
+      bind: ["showDocInfo", 1],
       check({ input }) {
         checkInteger(Number(input))
       }
@@ -117,9 +117,7 @@ const configs: IConfig<"addon"> = {
       key: "otherInfo",
       type: CellViewType.Input,
       help: label.other_info,
-      bind: [["showDocInfo", 1]]
+      bind: ["showDocInfo", 1]
     }
   ]
-}
-
-export default { configs }
+})
