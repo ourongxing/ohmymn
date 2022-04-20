@@ -8,7 +8,7 @@ import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
 const { option, intro, help, link, label, check } = lang
 
-function transform2Title(text: string) {
+function turn2Title(text: string) {
   const { preset, wordCount, changeTitleNoLimit } =
     self.globalProfile.anotherautotitle
   const { cacheTitle } = self.notebookProfile.additional
@@ -59,7 +59,7 @@ export default defineConfig({
         generateTitles: {
           index: 999,
           method({ text }) {
-            return transform2Title(text)
+            return turn2Title(text)
           }
         }
       }

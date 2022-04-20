@@ -56,22 +56,12 @@ type Tuple<T, N extends number, R extends T[] = []> = R["length"] extends N
 //     : T[P]
 // }
 
-// type Test<T> = Expand<{
-//   [K in keyof T]: IsObjectLiteral<T[K]> extends true
-//     ? {
-//         [M in keyof T[K]]: T[K][M] extends any[] ? readonly string[] : T[K][M]
-//       }
-//     : T[K] extends any[]
-//     ? readonly string[]
-//     : T[K]
-// }>
-
 // type Test2<T> = T extends Record<string, any>
 //   ? T extends infer O
 //     ? {
-//         [K in keyof O]: O[K] extends readonly string[]
-//           ? Tuple<string, O[K]["length"]>
-//           : Test<O[K]>
+//         [K in keyof O]: O[K] extends string[] & { length: infer L }
+//           ? O[K] & { length: L }
+//           : Test2<O[K]>
 //       }
 //     : never
 //   : T

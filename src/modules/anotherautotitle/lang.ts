@@ -27,7 +27,7 @@ const en: typeof zh = {
   intro: "What kind of excerpts should be automatically converted to titles?",
   link: "https://www.notion.so/huangkewei/AnotherAutoTitle-bdd09b713c844a82aeea1c0d3bd4cb48", //Todo:修改英文版Notion
   option: {
-    preset: ["Custom", "Word Count", "Do not Contain Dots"]
+    preset: ["Custom", "Word Count", "Not Contain Dots"]
   },
   label: {
     on: "Auto Executed",
