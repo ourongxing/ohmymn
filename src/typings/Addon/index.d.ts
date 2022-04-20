@@ -3,6 +3,7 @@ import { DirectionOfSelection } from "../enum"
 import { IRowButton } from "./DataSource"
 export * from "./Module"
 export * from "./DataSource"
+export * from "./AutoUtils"
 
 export interface EventHandler {
   (sender: {

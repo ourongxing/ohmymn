@@ -6,7 +6,7 @@ import {
   AutoUtilType,
   TypeUtilFalseArray,
   TypeUtilIndexFalseArray
-} from "./typings/Addon/AutoUtils"
+} from "./typings/Addon"
 export type ModuleKeyType =
   | keyof (typeof modules & typeof constModules)
   | "more"
