@@ -14,12 +14,7 @@ export default defineConfig({
       help: help.profile,
       key: "profile",
       type: CellViewType.Select,
-      option: [
-        ...Array(4)
-          .fill(option.profile)
-          .map((_, index) => _ + " " + (index + 1)),
-        option.initialize
-      ],
+      option: option.profile,
       label: label.profile
     },
     {
@@ -54,6 +49,13 @@ export default defineConfig({
       option: option.has_title_then
     },
     {
+      key: "removeExcerpt",
+      type: CellViewType.Select,
+      label: label.remove_excerpt,
+      option: option.remove_excerpt,
+      bind: ["hasTitleThen", 1]
+    },
+    {
       key: "screenAlwaysOn",
       type: CellViewType.Switch,
       label: label.screen_always_on
@@ -72,18 +74,18 @@ export default defineConfig({
     {
       key: "showDocInfo",
       type: CellViewType.Switch,
-      label: "显示 / 隐藏文档信息"
+      label: label.show_doc_info
     },
     {
       key: "author",
       type: CellViewType.InlineInput,
-      label: "作者",
+      label: label.author,
       bind: ["showDocInfo", 1]
     },
     {
       key: "type",
       type: CellViewType.InlineInput,
-      label: "类型",
+      label: label.type,
       bind: ["showDocInfo", 1]
     },
     {

@@ -6,8 +6,8 @@ const globalProfilePreset = {
     quickSwitch: [],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    // Single select is not allowed to be empty, generally set option to None
     hasTitleThen: [1],
+    removeExcerpt: [1],
     panelControl: [],
     panelPosition: [0],
     panelHeight: [1],

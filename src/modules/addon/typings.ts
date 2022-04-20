@@ -22,3 +22,9 @@ export const enum HasTitleThen {
   TitleLink,
   OverrideTitle
 }
+
+export const enum RemoveExcerpt {
+  Now,
+  Later,
+  NO
+}

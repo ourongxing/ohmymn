@@ -1,4 +1,5 @@
 import { MN } from "@/const"
+import { RemoveExcerpt } from "@/modules/addon/typings"
 import { MbBookNote } from "@/typings"
 import { delayBreak } from "@/utils/common"
 import { undoGroupingWithRefresh, getCommentIndex, addTags } from "@/utils/note"
@@ -129,7 +130,17 @@ const processExcerpt = ({
       // as comment
       if (isComment) {
         const index = getCommentIndex(nodeNote, note)
-        if (index != -1) lastRemovedComment = { nodeNote, index, note }
+        if (index != -1) {
+          const { removeExcerpt } = self.globalProfile.addon
+          switch (removeExcerpt[0]) {
+            case RemoveExcerpt.Later:
+              lastRemovedComment = { nodeNote, index, note }
+              break
+            case RemoveExcerpt.Now:
+              nodeNote.removeCommentByIndex(index)
+              break
+          }
+        }
         if (
           isOCR &&
           nodeNote.excerptText?.trim() === nodeNote.noteTitle?.trim()
