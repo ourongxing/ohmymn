@@ -7,7 +7,7 @@ module.exports = {
     "plugin:prettier/recommended"
   ],
   rules: {
-    "prettier/prettier": "off",
+    // "prettier/prettier": "on",
     "no-unused-vars": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-comment": "off",
