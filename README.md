@@ -17,10 +17,11 @@
 
 ## Acknowledgements
 
-* [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop MN plugins.
-* [mn-addon-api](https://github.com/aidenlx/mn-addon-api) MN Addon API Declaration Files.
-* [pangu.js](https://github.com/vinta/pangu.js) Add spaces between Chinese and English for AutoStandrized.
-* [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) Provide data support for AutoComplete.
+- [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop MN plugins.
+- [mn-addon-api](https://github.com/aidenlx/mn-addon-api) MN Addon API Declaration Files.
+- [pangu.js](https://github.com/vinta/pangu.js) Add spaces between Chinese and English for AutoStandrized.
+- [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) Provide data support for AutoComplete.
 
 ## License
+
 [MIT](https://github.com/mnaddon/ohmymn/blob/main/LICENSE)

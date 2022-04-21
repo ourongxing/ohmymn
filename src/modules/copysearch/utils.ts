@@ -8,7 +8,7 @@ import popup from "@/utils/popup"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 
-export async function getTitleExcerpt(
+async function getTitleExcerpt(
   k: string[],
   type: "title" | "excerpt",
   origin = false
@@ -27,13 +27,13 @@ export async function getTitleExcerpt(
       return k.length === 1 ? k[0] : await selectPartOfCard(k)
   }
 }
-export function getCustomContent(node: MbBookNote) {
+function getCustomContent(node: MbBookNote) {
   const { customContent } = self.globalProfile.copysearch
   if (!customContent) return undefined
   const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
   return renderTemplateOfNodeProperties(node, template)
 }
-export async function selectPartOfCard(
+async function selectPartOfCard(
   parts: string[],
   message = lang.choose_you_want
 ) {

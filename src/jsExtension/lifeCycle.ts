@@ -74,7 +74,6 @@ const notebookWillOpen = (notebookid: string) => {
   eventHandlers.add()
   gestureHandlers().add()
 }
-
 const documentDidOpen = (docmd5: string) => {
   // Switch document, read doc profile
   if (self.docmd5)
@@ -94,9 +93,6 @@ const documentDidOpen = (docmd5: string) => {
   }
   self.docmd5 = docmd5
   console.log("Open a document", "lifeCycle")
-  // if (MN.db.getDocumentById(docmd5)?.textContentsForPageNo(1).length)
-  //   showHUD("识别出来了")
-  // else showHUD("没有文字层")
 }
 
 const notebookWillClose = (notebookid: string) => {
@@ -144,7 +140,6 @@ const sceneWillResignActive = () => {
       notebookid: self.notebookid
     })
 }
-
 const sceneDidBecomeActive = () => {
   layoutViewController()
   // or go to the foreground

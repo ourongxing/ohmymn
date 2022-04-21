@@ -201,5 +201,5 @@ export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
   const noteid = note.noteId!
   const { cacheTitle, cacheComment } = self.notebookProfile.additional
   if (cacheTitle[noteid]) cacheTitle[noteid] = []
-  if (cacheComment[noteid]) cacheComment[note.noteId!] = []
+  if (cacheComment[noteid]) cacheComment[noteid] = []
 }

@@ -7,3 +7,4 @@ yarn-error.log
 src/test.js
 test.ts
 .eslintcache
+.pnpm*
