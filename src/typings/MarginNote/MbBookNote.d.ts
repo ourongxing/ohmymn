@@ -1,4 +1,3 @@
-import { Dict } from "lang"
 import { groupMode } from "./enum"
 import { MbBook, MbTopic } from "./NoteDatabase"
 /**
@@ -9,17 +8,6 @@ export interface MNPic {
    * hash value, used to get image info. Usually used to get [base64](https://en.wikipedia.org/wiki/Base64) image data.
    * For example: {@link MbBookNote.excerptPic}
    * @type {string}
-   * @example
-   * ```
-   * // Get base64 string of the image
-   * const noteid = sender.userInfo.noteid;
-   * const note = Database.sharedInstance().getNoteById(noteid);
-   * const pic_input = note.excerptPic;
-   * const hash = (pic_input?.paint) ? pic_input.paint : ""
-   * try{const pic_info = Database.sharedInstance().getMediaByHash(hash)}catch(error){showHUD('Cannot Find the Picture')}
-   * const pic_base64 = (pic_info) ? pic_info?.base64Encoding() : ""
-   * ```
-   *
    */
   paint: string
   size: unknown

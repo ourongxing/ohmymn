@@ -1,8 +1,8 @@
 import { MbBookNote } from "./MbBookNote"
 interface TextContent {
   /** decimal unicode value, you should change to hexadecimal, and append \u */
-  char: string
-  rect: NSValue
+  readonly char: string
+  readonly rect: NSValue
 }
 export class MbBook {
   /**
@@ -26,7 +26,7 @@ export class MbBook {
    */
   readonly docTitle?: string
   readonly pageCount: number
-  textContentsForPageNo(pageNo: number): TextContent[]
+  textContentsForPageNo(pageNo: number): TextContent[][]
 }
 
 export class MbTopic {
@@ -168,8 +168,6 @@ export class MbModelTool {
     storePath: string,
     merge: boolean
   ): WrapperObj<any>
-  transDictionaryToJSCompatible<T>(dic: T): T
-  transArrayToJSCompatible<T>(arr: T): T
 }
 
 declare global {
@@ -179,5 +177,7 @@ declare global {
      * @returns MbModelTool*
      */
     static sharedInstance(): MbModelTool
+    static transDictionaryToJSCompatible(dic: any): any
+    static transArrayToJSCompatible(arr: any): any
   }
 }

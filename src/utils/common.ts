@@ -128,6 +128,26 @@ const copy = (text: string) => {
   showHUD(lang.copy_success)
 }
 
+function NSValue2String(v: NSValue) {
+  return Database.transArrayToJSCompatible([v])[0] as string
+}
+
+function CGRectString2CGRect(s: string): CGRect {
+  // {{116, 565}, {11, 15}}
+  // {x,y}, {h,w}
+  const arr = s.match(/\d+/g)!.map(k => Number(k))
+  return {
+    x: arr[0],
+    y: arr[1],
+    height: arr[2],
+    width: arr[3]
+  }
+}
+
+function CGRectValue2CGRect(v: NSValue) {
+  return CGRectString2CGRect(NSValue2String(v))
+}
+
 export {
   console,
   showHUD,
@@ -143,5 +163,8 @@ export {
   OCNull2null,
   eventHandlerController,
   defineConfig,
-  copy
+  copy,
+  NSValue2String,
+  CGRectValue2CGRect,
+  CGRectString2CGRect
 }

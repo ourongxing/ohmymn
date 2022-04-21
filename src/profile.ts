@@ -35,7 +35,11 @@ const globalProfilePreset = {
   autocomplete: {
     on: false,
     fillWordInfo: [0],
-    customFill: "{{zh}}"
+    customFill:
+      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\\n{{zh}}{{#tags}}\\n🏷️{{tags}}{{/tags}}",
+    selectMeaning: false,
+    autoContext: false,
+    translateContext: false
   },
   autostandardize: {
     on: false,

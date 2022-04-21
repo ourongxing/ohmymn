@@ -6,7 +6,8 @@ const zh = {
   label: {
     on: "摘录时自动执行",
     fill_word_info: "填充单词信息",
-    complete_selected: "补全单词词形"
+    complete_selected: "补全单词词形",
+    select_meaning: "动态选择含义"
   },
   help: {
     custom_fill: "自定义单词填充信息，点击查看支持变量"
@@ -27,7 +28,8 @@ const en: typeof zh = {
   label: {
     on: "Auto Executed",
     fill_word_info: "Fill Word Info",
-    complete_selected: "Complete Word Form"
+    complete_selected: "Complete Word Form",
+    select_meaning: "Dynamic Select Meaning"
   },
   help: {
     custom_fill:

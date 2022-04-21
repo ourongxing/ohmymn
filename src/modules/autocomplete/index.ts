@@ -22,8 +22,8 @@ export default defineConfig({
       auto: {
         generateTitles: {
           index: -999,
-          method({ text }) {
-            return completeWords(text)
+          method({ text, note }) {
+            return completeWords(text, note)
           }
         }
       }
@@ -43,6 +43,23 @@ export default defineConfig({
       check({ input }) {
         checkPlainText(input)
       }
+    },
+    {
+      key: "selectMeaning",
+      type: CellViewType.Switch,
+      label: label.select_meaning
+    },
+    {
+      key: "autoContext",
+      type: CellViewType.Switch,
+      label: "自动摘录上下文"
+    },
+    {
+      key: "translateContext",
+      type: CellViewType.Switch,
+      label: "翻译上下文",
+      help: "使用 AutoTranslate, 请设置好改模块.",
+      bind: ["autoContext", 1]
     }
   ],
   actions4card: [
@@ -59,7 +76,7 @@ export default defineConfig({
         const getCompletedWord = (node: MbBookNote) => {
           const title = node?.noteTitle
           return title
-            ? completeWords(title.split(/\s*[;；]\s*/)[0])
+            ? completeWords(title.split(/\s*[;；]\s*/)[0], node)
             : undefined
         }
         const allInfo = await Promise.all(
@@ -71,7 +88,7 @@ export default defineConfig({
             if (info) {
               node.noteTitle = info.title.join("; ")
               if (option == CompleteSelected.AlsoFillWordInfo)
-                node.excerptText = info.text
+                node.appendTextComment(info.text)
             }
           })
         })
