@@ -6,3 +6,5 @@ yarn.lock
 yarn-error.log
 src/test.js
 test.ts
+.eslintcache
+src/.pnpm-debug.log
