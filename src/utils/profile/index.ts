@@ -74,7 +74,7 @@ export const readProfile: ReadPrifile = ({
       allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
 
       const notebookProfileSaved: Record<string, INotebookProfile> =
-        getDataByKey(docProfileKey)
+        getDataByKey(notebookProfileKey)
       if (!notebookProfileKey)
         console.log("Initialize notebook profile", "profile")
       allNotebookProfile = notebookProfileSaved ?? {
@@ -145,10 +145,10 @@ export const writeProfile: WritePrifile = ({
   }
   const writeNotebookProfile = (notebookid: string) => {
     allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
+    console.assert(allNotebookProfile)
     setDataByKey(allNotebookProfile, notebookProfileKey)
-    console.log("Save global profile", "profile")
+    console.log("Save notebook profile", "profile")
   }
-
   switch (range) {
     case Range.All: {
       writeNotebookProfile(notebookid)
