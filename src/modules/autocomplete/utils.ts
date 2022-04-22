@@ -203,7 +203,7 @@ function getContext(note: MbBookNote, text: string) {
     const wordY = y1 < y2 ? y1 : y2
     const wordX = x1 < x2 ? x1 : x2
     if (data?.length) {
-      const contextArray = data.reduce(
+      let contextArray = data.reduce(
         (acc, cur) => {
           const { y } = CGRectValue2CGRect(cur[0].rect)
           const des = y - wordY
@@ -219,16 +219,19 @@ function getContext(note: MbBookNote, text: string) {
               return a
             }, "")
             if (
-              !/[.?!]['"’”]$|[.?!]$/.test(acc[acc.length - 1]?.text ?? "") &&
-              /^\W/.test(line)
+              !/[.?!, ]['"’”]$|[.?!, ]$/.test(
+                acc[acc.length - 1]?.text ?? ""
+              ) &&
+              /^\s*[A-Z]\w+/.test(line)
             ) {
               line = "." + line
             }
-            if (flag !== 2 && line)
+            line &&
               acc.push({
                 text: line,
                 flag,
-                des
+                des,
+                index: acc.length
               })
           }
           return acc
@@ -237,18 +240,31 @@ function getContext(note: MbBookNote, text: string) {
           text: string
           flag: number
           des: number
+          index: number
         }[]
       )
+      const row = contextArray.filter(k => k.flag !== 0)
+      if (row.length > 1) {
+        const x = row.findIndex(k => k.flag === 1)
+        if (x === 0) {
+          contextArray = contextArray.slice(0, row[x + 1].index)
+        } else if (x === row.length - 1) {
+          contextArray = contextArray.slice(row[x - 1].index)
+        } else
+          contextArray = contextArray.slice(row[x - 1].index, row[x + 1].index)
+      }
       const context = contextArray.map(k => k.text).join("")
       if (contextArray.find(k => k.flag === 1)?.text.includes(text))
         return context
+          .replace(new RegExp(`^.*“(.*?${text}.*?)[,. !?]?”.*$`), "$1")
           .replace(
             new RegExp(
-              `^.*?[, !.?]?((?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘’”“$])*${text}(?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘’”“$])*[.?!]?['"’”]?).*$`
+              `^.*?[, !.?]?((?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘“$])*${text}(?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"’”$])*[.?!]?['"’”]?).*$`
             ),
             "$1"
           )
           .trim()
+          .replace(/^O([A-Z])\w/, "$1")
     }
   }
 }
