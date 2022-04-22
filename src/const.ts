@@ -19,9 +19,9 @@ export const Addon = {
   author: mnaddon.author,
   version: mnaddon.version,
   key: mnaddon.addonid.split(".")[2],
-  profileKey: mnaddon.profileKey,
+  globalProfileKey: mnaddon.globalProfileKey,
   docProfileKey: mnaddon.docProfileKey,
-  notebookProfileKey: mnaddon.docProfileKey
+  notebookProfileKey: mnaddon.notebookProfileKey
 }
 
 export const MN = new MNCore()

@@ -2,6 +2,7 @@ import { MN } from "@/const"
 import { HasTitleThen } from "@/modules/addon/typings"
 import { autoUtils } from "@/synthesizer"
 import { MbBookNote } from "@/typings"
+import { unique } from "@/utils"
 import { removeHighlight } from "@/utils/note"
 import { cacheTransformer } from "@/utils/profile"
 
@@ -62,7 +63,11 @@ export const newTitleTextCommentTag = async (param: {
     if (autoUtils.generateTitles)
       for (const util of autoUtils.generateTitles) {
         const res = await util({ note, text })
-        if (res) return res
+        if (res)
+          return {
+            ...res,
+            comments: res.comments ? res.comments.filter(k => k) : []
+          }
       }
   })(newText)
 
@@ -98,7 +103,7 @@ export const newTitleTextCommentTag = async (param: {
     cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
     return {
       text: res.text,
-      title: newTitles,
+      title: unique(newTitles),
       comments: res.comments?.length
         ? [...res.comments, ...comments]
         : comments,

@@ -5,7 +5,7 @@
   "version": "4.0.0 beta",
   "marginnote_version_min": "3.7.18",
   "cert_key": "",
-  "profileKey": "ohmymn_profile_global_v4",
+  "globalProfileKey": "ohmymn_profile_global_v4",
   "docProfileKey": "ohmymn_profile_doc_v4",
   "notebookProfileKey": "ohmymn_profile_notebook_v4"
 }

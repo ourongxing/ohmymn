@@ -137,7 +137,8 @@ const processExcerpt = ({
               lastRemovedComment = { nodeNote, index, note }
               break
             case RemoveExcerpt.Now:
-              nodeNote.removeCommentByIndex(index)
+              lastRemovedComment = { nodeNote, index, note }
+              removeLastCommentCacheTitle()
               break
           }
         }
@@ -190,16 +191,17 @@ const decorateExecrpt = async () => {
   })
 }
 
-export const removeLastCommentCacheTitle = (onlyLastComment = false) => {
+export const removeLastCommentCacheTitle = () => {
   if (!lastRemovedComment) return
   const { nodeNote, index, note } = lastRemovedComment
   undoGroupingWithRefresh(() => {
     if (note?.excerptText) nodeNote.removeCommentByIndex(index)
   })
   lastRemovedComment = undefined
-  if (onlyLastComment) return
   const noteid = note.noteId!
   const { cacheTitle, cacheComment } = self.notebookProfile.additional
-  if (cacheTitle[noteid]) cacheTitle[noteid] = []
-  if (cacheComment[noteid]) cacheComment[noteid] = []
+  console.assert(cacheTitle)
+  if (cacheTitle[noteid]) delete cacheTitle[noteid]
+  console.assert(cacheTitle)
+  if (cacheComment[noteid]) delete cacheComment[noteid]
 }

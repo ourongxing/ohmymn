@@ -97,6 +97,7 @@ const documentDidOpen = (docmd5: string) => {
 
 const notebookWillClose = (notebookid: string) => {
   console.log("Close a notebook", "lifeCycle")
+  removeLastCommentCacheTitle()
   closePanel()
   writeProfile({ range: Range.Notebook, notebookid })
   // Remove hooks, aka observers
@@ -106,7 +107,6 @@ const notebookWillClose = (notebookid: string) => {
 
 const documentWillClose = (docmd5: string) => {
   console.log("Close a document", "lifeCycle")
-  removeLastCommentCacheTitle()
   writeProfile({ range: Range.Doc, docmd5 })
 }
 

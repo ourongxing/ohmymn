@@ -23,7 +23,7 @@ let allGlobalProfile: IGlobalProfile[]
 let allDocProfile: Record<string, IDocProfile>
 let allNotebookProfile: Record<string, INotebookProfile>
 
-const { profileKey, docProfileKey, notebookProfileKey } = Addon
+const { globalProfileKey, docProfileKey, notebookProfileKey } = Addon
 
 const getDataByKey = (key: string): any => {
   return NSUserDefaults.standardUserDefaults().objectForKey(key)
@@ -55,6 +55,8 @@ export const readProfile: ReadPrifile = ({
       self.notebookProfile,
       allNotebookProfile?.[notebookid] ?? notebookProfilePreset
     )
+    console.assert(allNotebookProfile)
+    console.log(allNotebookProfile?.[notebookid])
     console.log("Read currect notebook profile", "profile")
   }
 
@@ -81,20 +83,22 @@ export const readProfile: ReadPrifile = ({
         [notebookid]: notebookProfilePreset
       }
 
-      const profileSaved: IGlobalProfile[] = getDataByKey(profileKey)
-      if (!profileSaved) console.log("Initialize global profile", "profile")
-      allGlobalProfile = profileSaved ?? Array(5).fill(globalProfilePreset)
+      const globalProfileSaved: IGlobalProfile[] =
+        getDataByKey(globalProfileKey)
+      if (!globalProfileSaved)
+        console.log("Initialize global profile", "profile")
+      allGlobalProfile =
+        globalProfileSaved ?? Array(5).fill(globalProfilePreset)
 
       // Initialize all profile when new version release
       if (checkNewVerProfile(globalProfilePreset, allGlobalProfile[0])) {
         allGlobalProfile.forEach((_, index) => {
-          const profile = deepCopy(globalProfilePreset)
-          updateProfileDataSource(profile, allGlobalProfile[index])
-          allGlobalProfile[index] = profile
+          const globalProfile = deepCopy(globalProfilePreset)
+          updateProfileDataSource(globalProfile, allGlobalProfile[index])
+          allGlobalProfile[index] = globalProfile
         })
-        setDataByKey(allGlobalProfile, profileKey)
+        setDataByKey(allGlobalProfile, globalProfileKey)
       }
-      // reuseCacheTitle()
       readNoteBookProfile(notebookid)
       readDocProfile(docmd5)
       readGlobalProfile(self.notebookProfile.addon.profile[0])
@@ -136,18 +140,18 @@ export const writeProfile: WritePrifile = ({
   const writeDocProfile = (docmd5: string) => {
     allDocProfile[docmd5] = deepCopy(self.docProfile)
     setDataByKey(allDocProfile, docProfileKey)
-    console.log("Save current doc profile", "profile")
+    console.log("write current doc profile", "profile")
   }
   const writeGlobalProfile = (profileNO: number) => {
     allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
-    setDataByKey(allGlobalProfile, profileKey)
-    console.log("Save global profile", "profile")
+    setDataByKey(allGlobalProfile, globalProfileKey)
+    console.log("write global profile", "profile")
   }
   const writeNotebookProfile = (notebookid: string) => {
     allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
-    console.assert(allNotebookProfile)
     setDataByKey(allNotebookProfile, notebookProfileKey)
-    console.log("Save notebook profile", "profile")
+    console.assert(allNotebookProfile)
+    console.log("write notebook profile", "profile")
   }
   switch (range) {
     case Range.All: {
@@ -227,7 +231,7 @@ export const saveProfile = (name: string, key: string, value: any) => {
 }
 
 export const removeProfile = () => {
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(globalProfileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(notebookProfileKey)
   self.docmd5 = undefined
@@ -263,7 +267,7 @@ export const manageProfileAction = (node: MbBookNote, option: number) => {
           allNotebookTemp: typeof allNotebookProfile
         } = JSON.parse(Base64.decode(str))
         if (allDocProfile && allProfileTemp && allNotebookProfile) {
-          setDataByKey(allProfileTemp, Addon.profileKey)
+          setDataByKey(allProfileTemp, Addon.globalProfileKey)
           setDataByKey(allDocProfileTemp, Addon.docProfileKey)
           setDataByKey(allNotebookTemp, Addon.notebookProfileKey)
           readProfile({

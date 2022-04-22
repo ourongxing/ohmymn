@@ -4,7 +4,7 @@ const zh = {
   intro: "自动添加评论",
   link: "https://busiyi.notion.site/AutoTag-3a7fc5e0b84e47d18366d4cb60c4943d",
   option: {
-    preset: ["自定义", "修改时间", "引用"],
+    preset: ["自定义", "引用", "修改时间"],
     add_comment: ["使用 AutoComment 的配置", "确定"]
   },
   help: {
@@ -22,7 +22,7 @@ const en: typeof zh = {
   intro: "Auto Add Comments",
   link: "https://www.notion.so/huangkewei/AutoTag-9e0bb2106d984ded8c29e781b53a1c23",
   option: {
-    preset: ["Custom"],
+    preset: ["Custom", "Citation", "Modified Time"],
     add_comment: ["Use AutoComment Settings", "Confirm"]
   },
   help: {

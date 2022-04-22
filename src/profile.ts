@@ -36,7 +36,7 @@ const globalProfilePreset = {
     on: false,
     fillWordInfo: [0],
     customFill:
-      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\\n{{zh}}{{#tags}}\\n🏷️{{tags}}{{/tags}}",
+      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\\n{{zh}}{{#tags}}\\n🏷️ {{tags}}{{/tags}}",
     selectMeaning: false,
     autoContext: false,
     translateContext: false

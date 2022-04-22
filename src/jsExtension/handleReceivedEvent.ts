@@ -185,7 +185,7 @@ const onProcessNewExcerpt: EventHandler = sender => {
   const note = MN.db.getNoteById(self.noteid)!
   tmp.isProcessNewExcerpt = true
   if (self.globalProfile.addon.lockExcerpt) tmp.lastExcerptText = "😎"
-  removeLastCommentCacheTitle(true)
+  removeLastCommentCacheTitle()
   handleExcerpt(note)
 }
 
