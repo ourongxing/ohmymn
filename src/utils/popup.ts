@@ -61,4 +61,40 @@ function popup<T>(
   )
 }
 
+export async function select(parts: string[], message: string, title: string) {
+  const { option } = await popup(
+    {
+      title,
+      message,
+      buttons: parts,
+      multiLine: true,
+      canCancel: false
+    },
+    ({ buttonIndex }) => ({
+      option: buttonIndex
+    })
+  )
+  return parts[option]
+}
+
+export async function selectIndex(
+  parts: string[],
+  title: string,
+  message: string
+) {
+  const { option } = await popup(
+    {
+      title,
+      message,
+      buttons: parts,
+      multiLine: true,
+      canCancel: false
+    },
+    ({ buttonIndex }) => ({
+      option: buttonIndex
+    })
+  )
+  return option
+}
+
 export default popup

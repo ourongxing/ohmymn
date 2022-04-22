@@ -3,7 +3,7 @@ import { MbBookNote } from "@/typings"
 import { CGRectValue2CGRect, isOCNull, showHUD } from "@/utils/common"
 import { reverseEscape, escapeDoubleQuote } from "@/utils/input"
 import fetch from "@/utils/network"
-import popup from "@/utils/popup"
+import { select } from "@/utils/popup"
 import { render } from "@/utils/third party/mustache"
 import pangu from "@/utils/third party/pangu"
 import { translateText } from "../autotranslate/utils"
@@ -27,7 +27,7 @@ async function getPureZH(text: string) {
         else return k
       })
       .flat()
-    if (m.length > 1) return [await select(m)]
+    if (m.length > 1) return [await select(m, Addon.title, lang.choose_meaning)]
   }
   return allMeanings
 }
@@ -36,24 +36,8 @@ async function getEN(text: string) {
   const allMeanings = text.split("\n")
   const { selectMeaning } = self.globalProfile.autocomplete
   if (selectMeaning && allMeanings.length > 1) {
-    return [await select(allMeanings)]
+    return [await select(allMeanings, Addon.title, lang.choose_meaning)]
   } else return allMeanings
-}
-
-async function select(parts: string[], message = "选择文中的含义") {
-  const { option } = await popup(
-    {
-      title: Addon.title,
-      message,
-      buttons: parts,
-      multiLine: true,
-      canCancel: false
-    },
-    ({ buttonIndex }) => ({
-      option: buttonIndex
-    })
-  )
-  return parts[option]
 }
 
 async function getWordInfo(word: string): Promise<Dict> {

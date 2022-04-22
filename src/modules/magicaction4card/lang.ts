@@ -8,13 +8,14 @@ const zh = {
     switch_title: ["切换为不存在的", "交换标题和摘录"],
     merge_text: ["合并为摘录", "合并为评论"],
     merge_cards: ["同时合并标题", "不合并标题"],
-    manage_profile: ["读取配置信息", "写入配置信息"]
+    manage_profile: ["读取配置", "写入配置"] as Tuple<string, 2>
   },
   help: {
     merge_text: "输入分隔符",
     switch_title: "当两者都存在时请使用「交换标题和摘录」",
     rename_title: "现在可以分层进行编号",
-    manage_profile: "禁止直接修改配置信息，读取后会覆盖现有配置"
+    manage_profile:
+      "写入时请确保至少有 1 个子卡片，理论上子卡片越多越好，读取后会覆盖现有配置"
   },
   label: {
     switch_title: "切换摘录标题",

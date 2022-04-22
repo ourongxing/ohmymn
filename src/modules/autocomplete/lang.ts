@@ -19,7 +19,8 @@ const zh = {
   error: {
     not_find_word: "查询不到该单词",
     forbid: "为减小服务器压力，禁止同时处理超过 5 张卡片"
-  }
+  },
+  choose_meaning: "选择在文中的含义"
 }
 
 const en: typeof zh = {
@@ -46,6 +47,7 @@ const en: typeof zh = {
     not_find_word: "No matching words found",
     forbid:
       "To reduce server pressure, it is forbidden to process more than 5 cards at the same time"
-  }
+  },
+  choose_meaning: "Select the meaning in the text."
 }
 export const lang = MN.isZH ? zh : en

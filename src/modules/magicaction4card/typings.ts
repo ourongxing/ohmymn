@@ -1,4 +1,4 @@
-export enum FilterCards {
+export const enum FilterCards {
   All,
   Title,
   Excerpt,
@@ -6,26 +6,17 @@ export enum FilterCards {
   Tag
 }
 
-export enum MergeCards {
+export const enum MergeCards {
   MergeTitle,
   NotMergeTitile
 }
 
-export enum MergeText {
+export const enum MergeText {
   ToExpertText,
   ToComment
 }
 
-export enum SwitchTitle {
+export const enum SwitchTitle {
   ToNonexistent,
   Exchange
-}
-
-export enum ActionKey {
-  manageProfile,
-  filterCards,
-  renameTitle,
-  mergeCards,
-  mergeText,
-  switchTitle
 }

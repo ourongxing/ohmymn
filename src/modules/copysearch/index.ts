@@ -6,12 +6,9 @@ import { copy, defineConfig } from "@/utils/common"
 import { reverseEscape, escapeDoubleQuote } from "@/utils/input"
 import { WhichPartofCard } from "./typings"
 import { lang } from "./lang"
-import {
-  getContentofOneCard,
-  search,
-  selectPartIndexOfCard,
-  getContentofMuiltCards
-} from "./utils"
+import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
+import { selectIndex } from "@/utils/popup"
+import { Addon } from "@/const"
 
 const { link, intro, lable, option, help, hud } = lang
 
@@ -104,7 +101,11 @@ export default defineConfig({
             self.globalProfile.copysearch
           let opt = whichPartofCard[0]
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
-            opt = await selectPartIndexOfCard(lang.option.muiltple_cards)
+            opt = await selectIndex(
+              lang.option.muiltple_cards,
+              Addon.title,
+              lang.choose_you_want
+            )
           } else opt -= 1
           const contentList = getContentofMuiltCards(nodes, opt)
           contentList?.length &&

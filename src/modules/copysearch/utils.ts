@@ -4,7 +4,7 @@ import { MbBookNote } from "@/typings"
 import { openUrl, showHUD } from "@/utils/common"
 import { reverseEscape, escapeDoubleQuote } from "@/utils/input"
 import { getExcerptText } from "@/utils/note"
-import popup from "@/utils/popup"
+import { select } from "@/utils/popup"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 
@@ -24,7 +24,9 @@ async function getTitleExcerpt(
       return origin ? [k[0]] : k[0]
     default:
       if (origin) return k
-      return k.length === 1 ? k[0] : await selectPartOfCard(k)
+      return k.length === 1
+        ? k[0]
+        : await select(k, Addon.title, lang.choose_you_want)
   }
 }
 function getCustomContent(node: MbBookNote) {
@@ -32,42 +34,6 @@ function getCustomContent(node: MbBookNote) {
   if (!customContent) return undefined
   const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
   return renderTemplateOfNodeProperties(node, template)
-}
-async function selectPartOfCard(
-  parts: string[],
-  message = lang.choose_you_want
-) {
-  const { option } = await popup(
-    {
-      title: Addon.title,
-      message,
-      buttons: parts,
-      multiLine: true,
-      canCancel: false
-    },
-    ({ buttonIndex }) => ({
-      option: buttonIndex
-    })
-  )
-  return parts[option]
-}
-export async function selectPartIndexOfCard(
-  parts: string[],
-  message = lang.choose_you_want
-) {
-  const { option } = await popup(
-    {
-      title: Addon.title,
-      message,
-      buttons: parts,
-      multiLine: true,
-      canCancel: false
-    },
-    ({ buttonIndex }) => ({
-      option: buttonIndex
-    })
-  )
-  return option
 }
 export async function getContentofOneCard(node: MbBookNote, option: number) {
   const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
@@ -105,7 +71,7 @@ export async function getContentofOneCard(node: MbBookNote, option: number) {
       ]
       if (customContent) list.push(customContent)
       if (list.length === 1) return list[0]
-      else return await selectPartOfCard(list)
+      else return await select(list, Addon.title, lang.choose_you_want)
     }
   }
 }
