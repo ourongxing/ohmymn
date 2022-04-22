@@ -45,8 +45,21 @@ const dict: Dict = {
   profile_manage: {
     success: "Read successfully",
     fail: "Read fail",
-    not_find: "Not found",
-    prohibit: `「${Addon.title}」Profile (no direct modification is allowed）`
+    prohibit: "🚫 禁止直接修改，子卡片的顺序也不能改变。",
+    children: "请确保该卡片至少有一张子卡片！多张卡片可以分担所有配置。",
+    select: {
+      array: [
+        "所有配置",
+        "全局配置 1",
+        "全局配置 2",
+        "全局配置 3",
+        "全局配置 4",
+        "全局配置 5",
+        "文档配置",
+        "笔记本配置"
+      ],
+      message: "选择需要导入的配置"
+    }
   },
   action_not_work: "is not enabled, the action cannot be executed"
 }

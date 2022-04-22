@@ -10,10 +10,12 @@ import {
   notebookProfilePreset
 } from "@/profile"
 import { MbBookNote } from "@/typings"
-import { deepCopy } from ".."
+import { dateFormat, deepCopy } from ".."
 import { showHUD } from "../common"
+import { undoGroupingWithRefresh } from "../note"
+import { selectIndex } from "../popup"
 import Base64 from "../third party/base64"
-import { Range, ReadPrifile, WritePrifile } from "./typings"
+import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile } from "./utils"
 export * from "./utils"
@@ -55,8 +57,6 @@ export const readProfile: ReadPrifile = ({
       self.notebookProfile,
       allNotebookProfile?.[notebookid] ?? notebookProfilePreset
     )
-    console.assert(allNotebookProfile)
-    console.log(allNotebookProfile?.[notebookid])
     console.log("Read currect notebook profile", "profile")
   }
 
@@ -150,7 +150,6 @@ export const writeProfile: WritePrifile = ({
   const writeNotebookProfile = (notebookid: string) => {
     allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
     setDataByKey(allNotebookProfile, notebookProfileKey)
-    console.assert(allNotebookProfile)
     console.log("write notebook profile", "profile")
   }
   switch (range) {
@@ -159,19 +158,11 @@ export const writeProfile: WritePrifile = ({
       writeDocProfile(docmd5)
       writeGlobalProfile(self.notebookProfile.addon.profile[0])
       const { backupID } = self.globalProfile.additional
-      if (backupID) {
+      const { autoBackup } = self.globalProfile.addon
+      if (backupID && autoBackup) {
         const node = MN.db.getNoteById(backupID)
-        if (node) {
-          node.excerptText = Base64.encode(
-            JSON.stringify({
-              allProfileTemp: allGlobalProfile,
-              allDocProfileTemp: allDocProfile,
-              allNoteBookProfileTemp: allNotebookProfile
-            })
-          )
-          node.noteTitle =
-            lang.profile_manage.prohibit + new Date().toLocaleString()
-        }
+        if (node) writeProfile2Card(node)
+        else self.globalProfile.additional.backupID = ""
       }
       break
     }
@@ -237,39 +228,92 @@ export const removeProfile = () => {
   self.docmd5 = undefined
 }
 
-export const manageProfileAction = (node: MbBookNote, option: number) => {
-  if (option) {
-    writeProfile({
-      range: Range.All,
-      docmd5: self.docmd5!,
-      notebookid: self.notebookid
-    })
-    node.excerptText = Base64.encode(
+const writeProfile2Card = (node: MbBookNote) => {
+  console.log("写入了")
+  undoGroupingWithRefresh(() => {
+    node.excerptText = `${lang.profile_manage.prohibit}\nversion: ${
+      Addon.version
+    }\n${dateFormat(new Date())}`
+    node.noteTitle = `OhMyMN 配置`
+    const { childNotes } = node
+    if (!childNotes?.length) return
+    const data = Base64.encode(
       JSON.stringify({
-        allProfileTemp: allGlobalProfile,
         allDocProfileTemp: allDocProfile,
-        allNotebookProfile: allNotebookProfile
+        allGlobalProfileTemp: allGlobalProfile,
+        allNotebookTemp: allNotebookProfile
       })
     )
-    node.noteTitle = lang.profile_manage.prohibit + new Date().toLocaleString()
-    node.colorIndex = 11
+    const dataLen = data.length
+    const step = Math.round(dataLen / childNotes.length)
+    for (let i = 0, j = 0; i < dataLen; i += step, j++) {
+      childNotes[j].excerptText = data.slice(i, i + step)
+      childNotes[j].noteTitle = ""
+    }
+  })
+}
+
+export const manageProfileAction = async (node: MbBookNote, option: number) => {
+  // Write
+  if (option === 1) {
+    if (!node.childNotes?.length) showHUD(lang.profile_manage.children)
+    else {
+      const { autoBackup } = self.globalProfile.addon
+      self.globalProfile.additional.backupID = node.noteId!
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5!,
+        notebookid: self.notebookid
+      })
+      !autoBackup && writeProfile2Card(node)
+    }
+    // Read
   } else {
-    const str = node.excerptText
-    if (str) {
-      try {
+    try {
+      const { childNotes } = node
+      const text = childNotes?.reduce((acc, cur) => {
+        acc += cur.excerptText
+        return acc
+      }, "")
+      if (text) {
         const {
           allDocProfileTemp,
-          allProfileTemp,
+          allGlobalProfileTemp,
           allNotebookTemp
         }: {
           allDocProfileTemp: typeof allDocProfile
-          allProfileTemp: typeof allGlobalProfile
+          allGlobalProfileTemp: typeof allGlobalProfile
           allNotebookTemp: typeof allNotebookProfile
-        } = JSON.parse(Base64.decode(str))
-        if (allDocProfile && allProfileTemp && allNotebookProfile) {
-          setDataByKey(allProfileTemp, Addon.globalProfileKey)
-          setDataByKey(allDocProfileTemp, Addon.docProfileKey)
-          setDataByKey(allNotebookTemp, Addon.notebookProfileKey)
+        } = JSON.parse(Base64.decode(text))
+        if (allDocProfile && allGlobalProfileTemp && allNotebookProfile) {
+          const index = await selectIndex(
+            lang.profile_manage.select.array,
+            Addon.title,
+            lang.profile_manage.select.message
+          )
+          switch (index) {
+            case ManageProfilePart.All:
+              allGlobalProfile = allGlobalProfileTemp
+              allDocProfile = allDocProfileTemp
+              allNotebookProfile = allNotebookTemp
+              break
+            case ManageProfilePart.Doc:
+              allDocProfile = allDocProfileTemp
+              break
+            case ManageProfilePart.Notebook:
+              allNotebookProfile = allNotebookTemp
+              break
+            case ManageProfilePart.Global1:
+            case ManageProfilePart.Global2:
+            case ManageProfilePart.Global3:
+            case ManageProfilePart.Global4:
+            case ManageProfilePart.Global5:
+              allGlobalProfile[index - 1] = allGlobalProfileTemp[index - 1]
+              break
+          }
+          setDataByKey(allNotebookProfile, notebookProfileKey)
+          setDataByKey(allGlobalProfile, globalProfileKey)
+          setDataByKey(allDocProfile, docProfileKey)
           readProfile({
             range: Range.All,
             docmd5: self.docmd5!,
@@ -278,11 +322,9 @@ export const manageProfileAction = (node: MbBookNote, option: number) => {
           layoutViewController()
           showHUD(lang.profile_manage.success)
         } else throw ""
-      } catch {
-        showHUD(lang.profile_manage.fail)
-      }
-    } else {
-      showHUD(lang.profile_manage.not_find)
+      } else throw ""
+    } catch {
+      showHUD(lang.profile_manage.fail)
     }
   }
 }

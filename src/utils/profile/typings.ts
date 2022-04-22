@@ -66,3 +66,14 @@ export type WritePrifile = ({
       docmd5?: string
       notebookid?: string
     }) => void
+
+export const enum ManageProfilePart {
+  All,
+  Global1,
+  Global2,
+  Global3,
+  Global4,
+  Global5,
+  Doc,
+  Notebook
+}
