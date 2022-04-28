@@ -13,5 +13,5 @@ export const enum AutoStandardizePreset {
 }
 
 export enum ActionKey {
-  standardizeSelected
+  formatSelected
 }

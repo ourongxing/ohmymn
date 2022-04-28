@@ -1,20 +1,19 @@
-import { MbBookNote } from "@/typings"
 import { isHalfWidth, CJK } from "@/utils/text"
 import pangu from "@/utils/third party/pangu"
 import { AutoStandardizePreset } from "./typings"
 import { toTitleCase } from "@/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
-  const { standardizeTitle } = self.globalProfile.autostandardize
-  if (!standardizeTitle) return titles
+  const { formatTitle } = self.globalProfile.autoformat
+  if (!formatTitle) return titles
   return titles.map(title =>
     isHalfWidth(title) ? (toTitleCase(title) as string) : title
   )
 }
 
-export function standrardizeText(text: string): string {
+export function formatText(text: string): string {
   if (isHalfWidth(text)) return text
-  const { preset } = self.globalProfile.autostandardize
+  const { preset } = self.globalProfile.autoformat
   text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
     isHalfWidth(match)
       ? `placeholder${match}placeholder`
@@ -23,7 +22,7 @@ export function standrardizeText(text: string): string {
   for (const set of preset) {
     switch (set) {
       case AutoStandardizePreset.Custom:
-        const { customStandardize: params } = self.tempProfile.replaceParam
+        const { customFormat: params } = self.tempProfile.replaceParam
         if (!params) continue
         params.forEach(param => {
           text = text.replace(param.regexp, param.newSubStr)

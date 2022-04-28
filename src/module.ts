@@ -4,7 +4,7 @@ import autocomplete from "./modules/autocomplete"
 import autolist from "./modules/autolist"
 import autoocr from "./modules/autoocr"
 import autoreplace from "./modules/autoreplace"
-import autostandardize from "./modules/autostandardize"
+import autoformat from "./modules/autoformat"
 import autostyle from "./modules/autostyle"
 import autotag from "./modules/autotag"
 import autotranslate from "./modules/autotranslate"
@@ -22,7 +22,7 @@ export const modules = {
   gesture,
   anotherautotitle,
   anotherautodef,
-  autostandardize,
+  autoformat,
   autocomplete,
   autoreplace,
   autolist,
@@ -31,10 +31,10 @@ export const modules = {
   copysearch,
   autoocr,
   autotranslate,
+  autocomment,
   export2flomo,
-  export2anki,
+  export2anki
   // export2devonthink,
-  autocomment
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }

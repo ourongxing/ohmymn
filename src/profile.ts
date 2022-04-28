@@ -36,16 +36,16 @@ const globalProfilePreset = {
     on: false,
     fillWordInfo: [0],
     customFill:
-      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\\n{{zh}}{{#tags}}\\n🏷️ {{tags}}{{/tags}}",
+      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\n{{zh}}{{#tags}}\n🏷 ️{{tags}}{{/tags}}",
     selectMeaning: false,
     autoContext: false,
     translateContext: false
   },
-  autostandardize: {
+  autoformat: {
     on: false,
     preset: [],
-    customStandardize: "",
-    standardizeTitle: false
+    customFormat: "",
+    formatTitle: false
   },
   anotherautotitle: {
     on: false,
@@ -260,7 +260,7 @@ const tempProfilePreset = {
     customList: [],
     customReplace: [],
     customExtractTitle: [],
-    customStandardize: []
+    customFormat: []
   },
   regArray: {
     customTitleSplit: [],

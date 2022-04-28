@@ -4,12 +4,12 @@ import { defineConfig } from "@/utils/common"
 import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"
 import { StandardizeSelected } from "./typings"
-import { standrardizeText, titleCase } from "./utils"
+import { formatText, titleCase } from "./utils"
 
 const { help, intro, option, label, link } = lang
 export default defineConfig({
-  name: "AutoStandardize",
-  key: "autostandardize",
+  name: "AutoFormat",
+  key: "autoformat",
   intro,
   link,
   settings: [
@@ -21,7 +21,7 @@ export default defineConfig({
         modifyExcerptText: {
           index: -1,
           method({ text }) {
-            return standrardizeText(text)
+            return formatText(text)
           }
         },
         modifyTitles({ titles }) {
@@ -36,9 +36,9 @@ export default defineConfig({
       label: label.preset
     },
     {
-      key: "customStandardize",
+      key: "customFormat",
       type: CellViewType.Input,
-      help: help.custom_standardize,
+      help: help.custom_format,
       bind: ["preset", 0],
       link,
       check({ input }) {
@@ -46,32 +46,32 @@ export default defineConfig({
       }
     },
     {
-      key: "standardizeTitle",
+      key: "formatTitle",
       type: CellViewType.Switch,
-      label: label.standardize_title,
-      help: help.standardize_title,
+      label: label.format_title,
+      help: help.format_title,
       link
     }
   ],
   actions4card: [
     {
-      key: "standardizeSelected",
+      key: "formatSelected",
       type: CellViewType.Button,
-      label: label.standardize_selected,
-      option: option.standardize_selected,
+      label: label.format_selected,
+      option: option.format_selected,
       method: ({ nodes, option }) => {
         nodes.forEach(node => {
           const title = node.noteTitle
           if (option != StandardizeSelected.OnlyExcerptText && title) {
-            let newTitle = standrardizeText(title)
-            if (self.globalProfile.autostandardize.standardizeTitle)
+            let newTitle = formatText(title)
+            if (self.globalProfile.autoformat.formatTitle)
               newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("\n")
             node.noteTitle = newTitle
           }
           if (option != StandardizeSelected.OnlyTitle) {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
-              if (text) note.excerptText = standrardizeText(text)
+              if (text) note.excerptText = formatText(text)
             })
           }
         })

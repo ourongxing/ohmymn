@@ -12,16 +12,16 @@ const zh = {
       "去除中文间空格",
       "去除重复空格"
     ],
-    standardize_selected: ["都优化", "仅优化标题", "仅优化摘录"]
+    format_selected: ["标题和摘录", "仅标题", "仅摘录"]
   },
   help: {
-    custom_standardize: "自定义，点击查看具体格式",
-    standardize_title: "涉及到首字母大写，点击查看具体规范"
+    custom_format: "自定义，点击查看具体格式",
+    format_title: "涉及到首字母大写，点击查看具体规范"
   },
   label: {
     on: "摘录时自动执行",
-    standardize_selected: "优化排版格式",
-    standardize_title: "英文标题规范化",
+    format_selected: "优化排版格式",
+    format_title: "英文标题规范化",
     preset: "选择需要的预设"
   }
 }
@@ -37,20 +37,20 @@ const en: typeof zh = {
       "Add Space Between Chinese&English", // Todo: 是否需要修改
       "Remove Multiple Spaces"
     ],
-    standardize_selected: [
+    format_selected: [
       "Optimize All",
       "Only Optimize Title",
       "Only Optimize Excerption"
     ]
   },
   help: {
-    custom_standardize: "Customize. Click for specific formats",
-    standardize_title: "Click for  specific specifications"
+    custom_format: "Customize. Click for specific formats",
+    format_title: "Click for  specific specifications"
   },
   label: {
     on: "Auto Executed",
-    standardize_selected: "Optimize Typography",
-    standardize_title: " Normalize English Title",
+    format_selected: "Optimize Typography",
+    format_title: " Normalize English Title",
     preset: "Select Presets"
   }
 }
