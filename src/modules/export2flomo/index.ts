@@ -100,26 +100,5 @@ export default defineConfig({
           }
       }
     }
-  ],
-  actions4text: [
-    {
-      type: CellViewType.Button,
-      key: "exportText2Flomo",
-      label: "导出到 Flomo",
-      method: async ({ text }) => {
-        const { exportMethod } = self.globalProfile.export2flomo
-        if (exportMethod[0] === ExportMethod.URL) {
-          openUrl("flomo://create?content=" + escapeURLParam(text))
-        } else {
-          try {
-            await exportByAPI(text)
-            showHUD("导出成功")
-          } catch (err) {
-            console.error(String(err))
-            showHUD(String(err))
-          }
-        }
-      }
-    }
   ]
 })
