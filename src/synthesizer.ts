@@ -7,25 +7,13 @@ import {
   TypeUtilFalseArray,
   TypeUtilIndexFalseArray
 } from "./typings/Addon"
-export type ModuleKeyType =
-  | keyof (typeof modules & typeof constModules)
-  | "more"
-type AutoModuleKeyType = Include<keyof typeof modules, "auto">
-const isModuleAutoON = (key: AutoModuleKeyType) => {
-  const { quickSwitch } = self.globalProfile.addon
-  return (
-    quickSwitch.includes(moduleKeyArray.indexOf(key)) &&
-    //@ts-ignore
-    (self.globalProfile[key]?.on ??
-      self.docProfile[key]?.on ??
-      self.notebookProfile[key] ??
-      false)
-  )
-}
+import { IAllProfile } from "./profile"
+export type ModuleKeyType = Exclude<keyof IAllProfile, "additional"> | "more"
+type AutoModuleKeyType = Include<ModuleKeyType, "auto">
 
 export const autoUtils = (() => {
   try {
-    const res = Object.entries(modules).reduce((acc, [key, module]) => {
+    const res = Object.values(modules).reduce((acc, module) => {
       for (const k of module.settings) {
         if (k.key === "on") {
           Object.entries(k.auto).forEach(([k, v]) => {
@@ -36,14 +24,14 @@ export const autoUtils = (() => {
                     index: v.index,
                     method: async (...rest: Parameters<typeof v.method>) =>
                       // @ts-ignore
-                      isModuleAutoON(key) && (await v.method(...rest))
+                      isModuleAutoON(module.key) && (await v.method(...rest))
                   }
                 : {
                     index: 0,
                     // @ts-ignore
                     method: async (...rest: Parameters<typeof v>) =>
                       // @ts-ignore
-                      isModuleAutoON(key) && (await v(...rest))
+                      isModuleAutoON(module.key) && (await v(...rest))
                   }
             ]
           })
@@ -62,38 +50,54 @@ export const autoUtils = (() => {
   }
 })()
 
-export const moduleKeyArray = Object.keys(modules) as ModuleKeyType[]
-export const isModuleON = (key: ModuleKeyType): boolean => {
-  const { quickSwitch } = self.globalProfile.addon
-  const index = moduleKeyArray.indexOf(key)
-  return index === -1 || quickSwitch.includes(index)
-}
-const checkers = Object.values({ ...constModules, ...modules }).reduce(
-  (acc, cur) => {
-    cur.settings.forEach(k => {
-      if ("check" in k) {
-        acc[k.key] = k["check"]!
-      }
-    })
-    cur.actions4card?.forEach(k => {
-      if ("check" in k) {
-        acc[k.key] = k["check"]!
-      }
-    })
-    cur.actions4text?.forEach(k => {
-      if ("check" in k) {
-        acc[k.key] = k["check"]!
-      }
-    })
+export const { actions4card, actions4text, checkers } = Object.values({
+  ...constModules,
+  ...modules
+}).reduce(
+  (acc, module) => {
+    module.settings.length &&
+      module.settings.forEach(k => {
+        if ("check" in k) {
+          acc.checkers[k.key] = k["check"]!
+        }
+      })
+    module.actions4card?.length &&
+      module.actions4card.forEach(k => {
+        acc.actions4card[k.key] = k.method
+        if ("check" in k) {
+          acc.checkers[k.key] = k["check"]!
+        }
+      })
+    module.actions4text?.length &&
+      module.actions4text.forEach(k => {
+        acc.actions4text[k.key] = k.method
+        if ("check" in k) {
+          acc.checkers[k.key] = k["check"]!
+        }
+      })
     return acc
   },
-  {} as Record<string, ICheckMethod>
+  {
+    actions4card: {} as Record<string, IActionMethod4Card>,
+    actions4text: {} as Record<string, IActionMethod4Text>,
+    checkers: {} as Record<string, ICheckMethod>
+  }
 )
+export const moduleKeys = Object.values(modules).reduce((acc, cur) => {
+  acc.push(cur.key)
+  return acc
+}, [] as ModuleKeyType[])
 
-export const checkInputCorrect = async (
+export function isModuleON(key: ModuleKeyType) {
+  const { quickSwitch } = self.globalProfile.addon
+  const index = moduleKeys.indexOf(key)
+  return index === -1 || quickSwitch.includes(index)
+}
+
+export async function checkInputCorrect(
   input: string,
   key: string
-): Promise<boolean> => {
+): Promise<boolean> {
   try {
     if (checkers[key]) {
       await checkers[key]({ input })
@@ -105,26 +109,14 @@ export const checkInputCorrect = async (
   return true
 }
 
-export const actions4text = (() => {
-  const actions = {} as Record<string, IActionMethod4Text>
-  Object.values({ ...constModules, ...modules }).forEach(module => {
-    const act = module.actions4text
-    if (act?.length)
-      act.forEach(k => {
-        actions[k.key] = k.method
-      })
-  })
-  return actions
-})()
-
-export const actions4card = (() => {
-  const actions = {} as Record<string, IActionMethod4Card>
-  Object.values({ ...constModules, ...modules }).forEach(module => {
-    const act = module.actions4card
-    if (act?.length)
-      act.forEach(k => {
-        actions[k.key] = k.method
-      })
-  })
-  return actions
-})()
+function isModuleAutoON(key: AutoModuleKeyType) {
+  const { quickSwitch } = self.globalProfile.addon
+  return (
+    quickSwitch.includes(moduleKeys.indexOf(key)) &&
+    //@ts-ignore
+    (self.globalProfile[key]?.on ??
+      self.docProfile[key]?.on ??
+      self.notebookProfile[key] ??
+      false)
+  )
+}

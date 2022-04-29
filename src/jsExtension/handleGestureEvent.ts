@@ -3,7 +3,7 @@ import { actionKey4Card, actionKey4Text, dataSourceIndex } from "@/dataSource"
 import lang from "@/lang"
 import { PanelControl } from "@/modules/addon/typings"
 import { gestureHandlerController, initGesture } from "@/modules/gesture/utils"
-import { moduleKeyArray, isModuleON } from "@/synthesizer"
+import { moduleKeys, isModuleON } from "@/synthesizer"
 import { IRowButton, GestureHandler } from "@/typings"
 import {
   UISwipeGestureRecognizerDirection,
@@ -224,7 +224,7 @@ const actionTrigger = async (
 ) => {
   if (
     !self.globalProfile.addon.quickSwitch.includes(
-      moduleKeyArray.indexOf("gesture")
+      moduleKeys.indexOf("gesture")
     )
   )
     return

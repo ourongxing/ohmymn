@@ -158,7 +158,7 @@ const genDataSource = (
   return dataSource
 }
 
-const genDataSourceIndex = (dataSource: ISection[]) => {
+function genDataSourceIndex(dataSource: ISection[]) {
   return dataSource.reduce((acc, sec, secIndex) => {
     acc[sec.key] = sec.rows.reduce((acc, row, rowIndex) => {
       if (row.type != CellViewType.PlainText) {

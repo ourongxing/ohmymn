@@ -4,7 +4,7 @@ import { PanelControl } from "@/modules/addon/typings"
 import { mainOCR as autoocr } from "@/modules/autoocr/utils"
 import {
   checkInputCorrect,
-  moduleKeyArray,
+  moduleKeys,
   actions4text,
   actions4card
 } from "@/synthesizer"
@@ -106,7 +106,7 @@ const handleMagicAction = async ({
       const text =
         self.docProfile.magicaction4text.preOCR &&
         self.globalProfile.addon.quickSwitch.includes(
-          moduleKeyArray.indexOf("autoocr")
+          moduleKeys.indexOf("autoocr")
         )
           ? (await autoocr(imageFromSelection)) ??
             documentController.selectionText ??

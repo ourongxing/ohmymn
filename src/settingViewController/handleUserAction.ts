@@ -1,7 +1,7 @@
 import { Addon, MN } from "@/const"
 import { actionKey4Text, actionKey4Card } from "@/dataSource"
 import lang from "@/lang"
-import { checkInputCorrect, moduleKeyArray, ModuleKeyType } from "@/synthesizer"
+import { checkInputCorrect, moduleKeys, ModuleKeyType } from "@/synthesizer"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { openUrl, postNotification } from "@/utils/common"
@@ -109,8 +109,8 @@ const selectAction = async (param: {
 
     if (
       row.key == "quickSwitch" &&
-      !selections.includes(moduleKeyArray.indexOf("gesture")) &&
-      selection == moduleKeyArray.indexOf("gesture")
+      !selections.includes(moduleKeys.indexOf("gesture")) &&
+      selection == moduleKeys.indexOf("gesture")
     ) {
       const { gesture } = lang.handle_user_action
       const { option } = await popup(

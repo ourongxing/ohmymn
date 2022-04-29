@@ -1,7 +1,7 @@
 import { MN } from "@/const"
 import { dataSourceIndex } from "@/dataSource"
 import lang from "@/lang"
-import { ModuleKeyType, moduleKeyArray } from "@/synthesizer"
+import { ModuleKeyType, moduleKeys } from "@/synthesizer"
 import { IRowSelect, UITableView } from "@/typings"
 import { CellViewType, NSTextAlignment } from "@/typings/enum"
 import { isOCNull } from "@/utils/common"
@@ -14,7 +14,7 @@ const _indexPath2tag = (indexPath: NSIndexPath): number =>
 export const _isModuleOFF = (key: ModuleKeyType): boolean => {
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
-  const index = moduleKeyArray.indexOf(key)
+  const index = moduleKeys.indexOf(key)
   return index !== -1 && !quickSwitch.includes(index)
 }
 
