@@ -13,7 +13,6 @@ const zh = {
     custom_fill: "自定义单词填充信息，点击查看支持变量"
   },
   option: {
-    complete_selected: ["仅补全单词词形", "同时填充单词信息"],
     fill_word_info: ["不填充", "自定义", "中文含义"]
   },
   error: {
@@ -37,11 +36,7 @@ const en: typeof zh = {
       "Custom excerption filling template, click for  support variables"
   },
   option: {
-    fill_word_info: ["None", "Custom", "Chinese"],
-    complete_selected: [
-      "Only complete word form",
-      "Fill the word information as well"
-    ]
+    fill_word_info: ["None", "Custom", "Chinese"]
   },
   error: {
     not_find_word: "No matching words found",

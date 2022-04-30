@@ -4,8 +4,7 @@ import { checkPlainText } from "@/utils/checkInput"
 import { defineConfig, showHUD } from "@/utils/common"
 import { undoGroupingWithRefresh } from "@/utils/note"
 import { lang } from "./lang"
-import { CompleteSelected } from "./typings"
-import { completeWords } from "./utils"
+import { completeWord } from "./utils"
 
 const { intro, link, option, label, help } = lang
 
@@ -23,7 +22,7 @@ export default defineConfig({
         generateTitles: {
           index: -999,
           method({ text, note }) {
-            return completeWords(text, note)
+            return completeWord(text, note)
           }
         }
       }
@@ -58,27 +57,26 @@ export default defineConfig({
       key: "translateContext",
       type: CellViewType.Switch,
       label: "翻译上下文",
-      help: "使用 AutoTranslate, 请设置好改模块.",
+      help: "使用 AutoTranslate, 请先将其设置好",
       bind: ["autoContext", 1]
     }
   ],
   actions4card: [
     {
-      key: "completeSelected",
+      key: "completeWord",
       type: CellViewType.Button,
-      label: label.complete_selected,
-      option: option.complete_selected,
+      label: "英文单词制卡",
       method: async ({ nodes, option }) => {
+        if (option === -1) return
         if (nodes.length > 5) {
           showHUD(lang.error.forbid, 2)
-          return
+          nodes = nodes.slice(0, 5)
         }
         const getCompletedWord = (node: MbBookNote) => {
-          const title = node?.noteTitle
-          return title
-            ? completeWords(title.split(/\s*[;；]\s*/)[0], node)
-            : undefined
+          const text = node?.noteTitle?.split(/\s*[;；]\s*/)[0]
+          return text ? completeWord(text, node) : undefined
         }
+
         const allInfo = await Promise.all(
           nodes.map(node => getCompletedWord(node))
         )
@@ -86,9 +84,14 @@ export default defineConfig({
           nodes.forEach((node, index) => {
             const info = allInfo?.[index]
             if (info) {
-              node.noteTitle = info.title.join("; ")
-              if (option == CompleteSelected.AlsoFillWordInfo)
-                node.appendTextComment(info.text)
+              const { title, comments } = info
+              node.noteTitle = title.join("; ")
+              while (node.comments.length) {
+                node.removeCommentByIndex(0)
+              }
+              comments.forEach(k => {
+                k && node.appendTextComment(k)
+              })
             }
           })
         })

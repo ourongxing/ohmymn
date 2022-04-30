@@ -170,7 +170,10 @@ const processExcerpt = ({
           nodeNote.removeCommentByIndex(i)
         })
       }
-      cacheComment[note.noteId!] = comments.map(k => cacheTransformer.to(k))
+      cacheComment[note.noteId!] = comments.reduce((acc, k) => {
+        k && acc.push(cacheTransformer.to(k))
+        return acc
+      }, [] as [string, string, string][])
       comments.forEach(k => {
         k && nodeNote.appendTextComment(k)
       })
@@ -200,8 +203,6 @@ export const removeLastCommentCacheTitle = () => {
   lastRemovedComment = undefined
   const noteid = note.noteId!
   const { cacheTitle, cacheComment } = self.notebookProfile.additional
-  console.assert(cacheTitle)
   if (cacheTitle[noteid]) delete cacheTitle[noteid]
-  console.assert(cacheTitle)
   if (cacheComment[noteid]) delete cacheComment[noteid]
 }

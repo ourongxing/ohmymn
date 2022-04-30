@@ -4,11 +4,6 @@ export const enum FillWordInfo {
   Chinese
 }
 
-export const enum CompleteSelected {
-  OnlyComplete,
-  AlsoFillWordInfo
-}
-
 export type Dict = {
   word: string
   sw: string
