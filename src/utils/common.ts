@@ -123,9 +123,9 @@ const eventHandlerController = (
 const defineConfig = <T extends keyof IAllProfile>(options: IConfig<T>) =>
   options
 
-const copy = (text: string) => {
+const copy = (text: string, hud = true) => {
   UIPasteboard.generalPasteboard().string = text.trim()
-  showHUD(lang.copy_success)
+  hud && showHUD(lang.copy_success)
 }
 
 function NSValue2String(v: NSValue) {

@@ -1,12 +1,11 @@
 import { Addon } from "@/const"
 import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
-import { showHUD, openUrl, defineConfig } from "@/utils/common"
+import { showHUD, openUrl, defineConfig, copy } from "@/utils/common"
 import popup from "@/utils/popup"
 import { lang } from "./lang"
 import {
   baiduFormulaOCR,
   baiduHandWrittingOCR,
-  copy,
   mainOCR,
   mathpixOCR,
   QRCodeOCR

@@ -9,7 +9,7 @@ import { AnkiConnect, checker, genAnkiNote, genUrlScheme } from "./utils"
 
 const { link, intro, lable, option, help } = lang
 
-export default defineConfig<"export2anki">({
+export default defineConfig({
   name: "Export to Anki",
   key: "export2anki",
   intro,

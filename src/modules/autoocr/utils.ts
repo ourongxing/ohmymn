@@ -148,7 +148,3 @@ export async function mainOCR(imgBase64: string) {
     return undefined
   }
 }
-export async function copy(text: string) {
-  UIPasteboard.generalPasteboard().string = text.trim()
-  showHUD(lang.other.success_clipboard, 2)
-}

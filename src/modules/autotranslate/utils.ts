@@ -9,19 +9,16 @@ function getBaiduSign(text: string, appid: string, key: string, salt: number) {
   // appid + q + salt + 密钥
   return MD5(appid + text + salt + key)
 }
-export async function baiduTranslate(text: string, Xcall = false) {
-  const {
-    baiduAppID,
-    baiduSecretKey,
-    baiduThesaurus,
-    baiduFromLang,
-    baiduToLang
-  } = self.globalProfile.autotranslate
-  if (!Xcall) {
-    if (isHalfWidth(text)) {
-      if ([1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
-    } else if (![1, 3, 4, 5, 6, 27].includes(baiduFromLang[0])) return ""
-  }
+export async function baiduTranslate(
+  text: string,
+  fromLang: number,
+  toLang: number
+) {
+  const { baiduAppID, baiduSecretKey, baiduThesaurus } =
+    self.globalProfile.autotranslate
+  if (isHalfWidth(text)) {
+    if ([1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
+  } else if (![1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
   const fromLangKey = [
     "auto",
     "zh",
@@ -68,8 +65,8 @@ export async function baiduTranslate(text: string, Xcall = false) {
         salt,
         q: text,
         appid: baiduAppID,
-        from: fromLangKey[Xcall ? 2 : baiduFromLang[0]],
-        to: toLangKey[Xcall ? 0 : baiduToLang[0]],
+        from: fromLangKey[fromLang],
+        to: toLangKey[toLang],
         action: baiduThesaurus ? 1 : 0
       }
     }
@@ -87,14 +84,16 @@ export async function baiduTranslate(text: string, Xcall = false) {
     throw `${res.error_code}: ${res.error_msg}`
   return res.trans_result.map(k => k.dst).join("\n")
 }
-export async function caiyunTranslate(text: string, Xcall = false) {
+
+export async function caiyunTranslate(
+  text: string,
+  fromLang: number,
+  toLang: number
+) {
   const { caiyunToken } = self.globalProfile.autotranslate
-  const { caiyunFromLang, caiyunToLang } = self.globalProfile.autotranslate
-  if (!Xcall) {
-    if (isHalfWidth(text)) {
-      if ([1, 4].includes(caiyunFromLang[0])) return ""
-    } else if (![1, 4].includes(caiyunFromLang[0])) return ""
-  }
+  if (isHalfWidth(text)) {
+    if ([1, 4].includes(fromLang)) return ""
+  } else if (![1, 4].includes(fromLang)) return ""
   const fromLangKey = ["auto", "zh", "en", "ja"]
   const toLangKey = fromLangKey.slice(1)
   const res = (await fetch(
@@ -106,9 +105,7 @@ export async function caiyunTranslate(text: string, Xcall = false) {
       },
       json: {
         source: [text],
-        trans_type: Xcall
-          ? "en2zh"
-          : `${fromLangKey[caiyunFromLang[0]]}2${toLangKey[caiyunToLang[0]]}`,
+        trans_type: `${fromLangKey[fromLang]}2${toLangKey[toLang]}`,
         request_id: "ohmymn",
         detect: true
       }
@@ -119,17 +116,25 @@ export async function caiyunTranslate(text: string, Xcall = false) {
   if (!res.target.length) throw "没有获取到结果"
   return res.target.join("\n")
 }
-export async function translateText(text: string, Xcall = false) {
+
+export async function translateText(text: string) {
   try {
-    const { translateProviders, wordCount } = self.globalProfile.autotranslate
-    if (!Xcall && wordCount) {
+    const {
+      translateProviders,
+      wordCount,
+      baiduFromLang,
+      baiduToLang,
+      caiyunFromLang,
+      caiyunToLang
+    } = self.globalProfile.autotranslate
+    if (wordCount) {
       const [zh, en] = reverseEscape(wordCount) as number[]
       if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return undefined
     }
     const translation =
       translateProviders[0] === TranslateProviders.Baidu
-        ? await baiduTranslate(text, Xcall)
-        : await caiyunTranslate(text, Xcall)
+        ? await baiduTranslate(text, baiduFromLang[0], baiduToLang[0])
+        : await caiyunTranslate(text, caiyunFromLang[0], caiyunToLang[0])
     return [translation]
   } catch (err) {
     showHUD(String(err), 2)

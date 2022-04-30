@@ -1,6 +1,6 @@
 import { CellViewType } from "@/typings/enum"
 import { checkPositiveinteger } from "@/utils/checkInput"
-import { defineConfig, showHUD } from "@/utils/common"
+import { copy, defineConfig, showHUD } from "@/utils/common"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
@@ -187,13 +187,20 @@ export default defineConfig({
       label: "翻译所选文字",
       method: async ({ text }) => {
         try {
-          const { autoCopy, hudTime, translateProviders } =
-            self.globalProfile.autotranslate
+          const {
+            autoCopy,
+            hudTime,
+            translateProviders,
+            baiduFromLang,
+            baiduToLang,
+            caiyunFromLang,
+            caiyunToLang
+          } = self.globalProfile.autotranslate
           const translation =
             translateProviders[0] === TranslateProviders.Baidu
-              ? await baiduTranslate(text)
-              : await caiyunTranslate(text)
-          if (autoCopy) UIPasteboard.generalPasteboard().string = translation
+              ? await baiduTranslate(text, baiduFromLang[0], baiduToLang[0])
+              : await caiyunTranslate(text, caiyunFromLang[0], caiyunToLang[0])
+          if (autoCopy) copy(translation, false)
           showHUD(translation, Number(hudTime))
         } catch (err) {
           showHUD(String(err), 2)
