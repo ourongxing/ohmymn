@@ -2,7 +2,8 @@ import { textComment } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { unique } from "@/utils"
 import { checkPlainText, checkRegArray } from "@/utils/checkInput"
-import { showHUD, HUDController, defineConfig } from "@/utils/common"
+import { showHUD, HUDController } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import {
   string2RegArray,
   escapeDoubleQuote,

@@ -1,6 +1,7 @@
 import { Addon } from "@/const"
 import { CellViewType, UIAlertViewStyle } from "@/typings/enum"
-import { showHUD, openUrl, defineConfig, copy } from "@/utils/common"
+import { showHUD, openUrl, copy } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import popup from "@/utils/popup"
 import { lang } from "./lang"
 import {

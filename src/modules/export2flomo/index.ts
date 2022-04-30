@@ -1,6 +1,7 @@
 import { CellViewType } from "@/typings/enum"
 import { escapeURLParam } from "@/utils"
-import { showHUD, openUrl, defineConfig } from "@/utils/common"
+import { showHUD, openUrl } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import { lang } from "./lang"
 import { ExportMethod } from "./typings"
 import { getContent, exportByAPI } from "./utils"

@@ -1,5 +1,5 @@
 import { CellViewType } from "@/typings/enum"
-import { defineConfig } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import { reverseEscape } from "@/utils/input"
 import { getExcerptNotes } from "@/utils/note"
 import { SerialCode } from "@/utils/text"

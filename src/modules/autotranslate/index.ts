@@ -1,6 +1,7 @@
 import { CellViewType } from "@/typings/enum"
 import { checkPositiveinteger } from "@/utils/checkInput"
-import { copy, defineConfig, showHUD } from "@/utils/common"
+import { copy, showHUD } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"

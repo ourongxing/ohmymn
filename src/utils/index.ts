@@ -1,3 +1,6 @@
+import { IAllProfile } from "@/profile"
+import { IConfig } from "@/typings"
+
 export const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
 export const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
@@ -55,3 +58,7 @@ export const unescapeURLParam = (param: string) => {
   ] as [RegExp, string][]
   return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
 }
+
+export const defineConfig = <T extends keyof IAllProfile>(
+  options: IConfig<T>
+) => options

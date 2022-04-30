@@ -1,6 +1,6 @@
 import { CellViewType } from "@/typings/enum"
 import { checkReplaceParamFromMNLink } from "@/utils/checkInput"
-import { defineConfig } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"
 import { StandardizeSelected } from "./typings"

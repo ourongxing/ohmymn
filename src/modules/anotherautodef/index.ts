@@ -6,7 +6,7 @@ import {
   checkRegArrayFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
-import { defineConfig } from "@/utils/common"
+import { defineConfig } from "@/utils"
 import { string2ReplaceParam, extractArray } from "@/utils/input"
 import { getAllText, removeHighlight } from "@/utils/note"
 import { lang } from "./lang"
