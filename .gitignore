@@ -4,7 +4,6 @@ api
 yarn.lock
 .vscode
 yarn-error.log
-src/test.js
-test.ts
+test*
 .eslintcache
 .pnpm*
