@@ -7,3 +7,4 @@ yarn-error.log
 test*
 .eslintcache
 .pnpm*
+.DS_Store
