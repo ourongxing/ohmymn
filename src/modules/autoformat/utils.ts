@@ -1,49 +1,45 @@
-import { isHalfWidth, CJK, notCJK } from "@/utils/text"
+import { CJK, notCJK } from "@/utils/text"
 import pangu from "@/utils/third party/pangu"
-import { AutoStandardizePreset } from "./typings"
+import { AutoFormatPreset } from "./typings"
 import { toTitleCase } from "@/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
-  const { formatTitle } = self.globalProfile.autoformat
-  if (!formatTitle) return titles
   return titles.map(title =>
     notCJK(title) ? (toTitleCase(title) as string) : title
   )
 }
 
 export function formatText(text: string): string {
-  if (isHalfWidth(text)) return text
+  if (notCJK(text)) return text
   const { preset } = self.globalProfile.autoformat
   text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
-    isHalfWidth(match)
-      ? `placeholder${match}placeholder`
-      : `占位符${match}占位符`
+    notCJK(match) ? `placeholder${match}placeholder` : `占位符${match}占位符`
   )
   for (const set of preset) {
     switch (set) {
-      case AutoStandardizePreset.Custom:
+      case AutoFormatPreset.Custom:
         const { customFormat: params } = self.tempProfile.replaceParam
         if (!params) continue
         params.forEach(param => {
           text = text.replace(param.regexp, param.newSubStr)
         })
         break
-      case AutoStandardizePreset.RemoveAllSpace:
+      case AutoFormatPreset.RemoveAllSpace:
         text = text.replace(/\x20/g, "")
         break
-      case AutoStandardizePreset.HalfToFull:
+      case AutoFormatPreset.HalfToFull:
         text = pangu.toFullwidth(text)
         break
-      case AutoStandardizePreset.AddSpace:
+      case AutoFormatPreset.AddSpace:
         text = pangu.spacing(text)
         break
-      case AutoStandardizePreset.RemoveCHSpace:
+      case AutoFormatPreset.RemoveCHSpace:
         text = text.replace(
           new RegExp(`([${CJK}])\x20+([${CJK}])`, "g"),
           "$1$2"
         )
         break
-      case AutoStandardizePreset.RemoveRepeatSpace:
+      case AutoFormatPreset.RemoveRepeatSpace:
         text = text.replace(/\x20{2,}/g, "\x20")
         break
     }

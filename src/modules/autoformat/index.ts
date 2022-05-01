@@ -3,7 +3,7 @@ import { checkReplaceParamFromMNLink } from "@/utils/checkInput"
 import { defineConfig } from "@/utils"
 import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"
-import { StandardizeSelected } from "./typings"
+import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
 
 const { help, intro, option, label, link } = lang
@@ -25,6 +25,8 @@ export default defineConfig({
           }
         },
         modifyTitles({ titles }) {
+          const { formatTitle } = self.globalProfile.autoformat
+          if (!formatTitle) return titles
           return titleCase(titles)
         }
       }
@@ -62,13 +64,13 @@ export default defineConfig({
       method: ({ nodes, option }) => {
         nodes.forEach(node => {
           const title = node.noteTitle
-          if (option != StandardizeSelected.OnlyExcerptText && title) {
+          if (option != Format.Excerpt && title) {
             let newTitle = formatText(title)
             if (self.globalProfile.autoformat.formatTitle)
               newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("\n")
             node.noteTitle = newTitle
           }
-          if (option != StandardizeSelected.OnlyTitle) {
+          if (option != Format.Title) {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
               if (text) note.excerptText = formatText(text)

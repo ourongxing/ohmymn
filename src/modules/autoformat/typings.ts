@@ -1,17 +1,13 @@
-export const enum StandardizeSelected {
-  All,
-  OnlyTitle,
-  OnlyExcerptText
+export const enum Format {
+  TitlenExcerpt,
+  Title,
+  Excerpt
 }
-export const enum AutoStandardizePreset {
+export const enum AutoFormatPreset {
   Custom,
   RemoveAllSpace,
   HalfToFull,
   AddSpace,
   RemoveCHSpace,
   RemoveRepeatSpace
-}
-
-export enum ActionKey {
-  formatSelected
 }
