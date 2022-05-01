@@ -3,7 +3,7 @@ import { MbBookNote } from "@/typings"
 import { showHUD } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
 import { removeHighlight } from "@/utils/note"
-import { countWord, isHalfWidth } from "@/utils/text"
+import { countWord, notCJK } from "@/utils/text"
 import { lang } from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 
@@ -60,7 +60,7 @@ export function modifyStyle(note: MbBookNote) {
       if (showArea) showHUD(lang.area + ": " + actualArea)
     } else if (note.excerptText) {
       const text = removeHighlight(note.excerptText)
-      if (countWord(text) > (isHalfWidth(text) ? en : zh))
+      if (countWord(text) > (notCJK(text) ? en : zh))
         res.style = Style.Wireframe
     }
   }

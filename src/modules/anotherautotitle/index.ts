@@ -3,7 +3,7 @@ import { checkRegArrayFromMNLink } from "@/utils/checkInput"
 import { defineConfig } from "@/utils"
 import { reverseEscape } from "@/utils/input"
 import { removeHighlight } from "@/utils/note"
-import { countWord, isHalfWidth } from "@/utils/text"
+import { countWord, notCJK } from "@/utils/text"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
 const { option, intro, help, link, label, check } = lang
@@ -30,7 +30,7 @@ function turn2Title(text: string) {
         case AutoTitlePreset.WordLimit:
           if (!wordCount) continue
           const [zh, en] = reverseEscape(wordCount) as number[]
-          if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return text
+          if (countWord(text) <= (notCJK(text) ? en : zh)) return text
           break
         case AutoTitlePreset.NoPunctuation:
           const reg = /[。.、？?！!，,；;：:]/

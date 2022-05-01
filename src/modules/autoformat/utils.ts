@@ -1,4 +1,4 @@
-import { isHalfWidth, CJK } from "@/utils/text"
+import { isHalfWidth, CJK, notCJK } from "@/utils/text"
 import pangu from "@/utils/third party/pangu"
 import { AutoStandardizePreset } from "./typings"
 import { toTitleCase } from "@/utils/third party/toTitleCase"
@@ -7,7 +7,7 @@ export function titleCase(titles: string[]) {
   const { formatTitle } = self.globalProfile.autoformat
   if (!formatTitle) return titles
   return titles.map(title =>
-    isHalfWidth(title) ? (toTitleCase(title) as string) : title
+    notCJK(title) ? (toTitleCase(title) as string) : title
   )
 }
 

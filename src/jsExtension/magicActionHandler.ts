@@ -1,4 +1,4 @@
-import { MN } from "@/const"
+import { Addon, MN } from "@/const"
 import lang from "@/lang"
 import { PanelControl } from "@/modules/addon/typings"
 import { mainOCR as autoocr } from "@/modules/autoocr/utils"
@@ -18,6 +18,7 @@ import {
 } from "@/utils/note"
 import popup from "@/utils/popup"
 import { getMNLinkValue, manageProfileAction } from "@/utils/profile"
+import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
 
 export default async (
@@ -94,35 +95,27 @@ const handleMagicAction = async ({
 }) => {
   try {
     if (type === "text") {
-      const documentController =
-        MN.studyController().readerController.currentDocumentController
-      const imageFromSelection = documentController
+      const { currentDocumentController } =
+        MN.studyController().readerController
+      const imageFromSelection = currentDocumentController
         .imageFromSelection()
         ?.base64Encoding()
       if (!imageFromSelection) {
         showHUD(lang.not_select_text, 2)
         return
       }
-      const text =
-        self.docProfile.magicaction4text.preOCR &&
-        self.globalProfile.addon.quickSwitch.includes(
-          moduleKeys.indexOf("autoocr")
-        )
-          ? (await autoocr(imageFromSelection)) ??
-            documentController.selectionText ??
-            ""
-          : documentController.selectionText ?? ""
+      const text = self.docProfile.magicaction4text.preOCR
+        ? (await autoocr(imageFromSelection)) ??
+          currentDocumentController.selectionText ??
+          ""
+        : currentDocumentController.selectionText ?? ""
 
-      if (!text) {
-        showHUD(lang.no_text_selection, 2)
-        return
-      }
-
-      actions4text[key]({
+      const res: string | undefined = await actions4text[key]({
         text,
         imgBase64: imageFromSelection,
         option
       })
+      res && (await handleTextAction(res, key))
     } else if (type === "card") {
       let nodes: MbBookNote[] = []
       key != "filterCards" &&

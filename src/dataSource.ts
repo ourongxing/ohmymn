@@ -185,7 +185,8 @@ const getActionKeyGetureOption = (section: ISection) => {
       actionKeys.push({
         key: row.key,
         module: row.module,
-        moduleName: row.moduleName
+        moduleName: row.moduleName,
+        option: 0
       })
     else {
       actionKeys.push({

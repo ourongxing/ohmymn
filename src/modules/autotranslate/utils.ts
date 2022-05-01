@@ -1,7 +1,7 @@
 import { showHUD } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
 import fetch from "@/utils/network"
-import { isHalfWidth, countWord } from "@/utils/text"
+import { countWord, notCJK } from "@/utils/text"
 import MD5 from "@/utils/third party/md5"
 import { TranslateProviders } from "./typings"
 
@@ -16,7 +16,7 @@ export async function baiduTranslate(
 ) {
   const { baiduAppID, baiduSecretKey, baiduThesaurus } =
     self.globalProfile.autotranslate
-  if (isHalfWidth(text)) {
+  if (notCJK(text)) {
     if ([1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
   } else if (![1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
   const fromLangKey = [
@@ -91,7 +91,7 @@ export async function caiyunTranslate(
   toLang: number
 ) {
   const { caiyunToken } = self.globalProfile.autotranslate
-  if (isHalfWidth(text)) {
+  if (notCJK(text)) {
     if ([1, 4].includes(fromLang)) return ""
   } else if (![1, 4].includes(fromLang)) return ""
   const fromLangKey = ["auto", "zh", "en", "ja"]
@@ -129,7 +129,7 @@ export async function translateText(text: string) {
     } = self.globalProfile.autotranslate
     if (wordCount) {
       const [zh, en] = reverseEscape(wordCount) as number[]
-      if (countWord(text) <= (isHalfWidth(text) ? en : zh)) return undefined
+      if (countWord(text) <= (notCJK(text) ? en : zh)) return undefined
     }
     const translation =
       translateProviders[0] === TranslateProviders.Baidu

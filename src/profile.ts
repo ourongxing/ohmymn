@@ -18,6 +18,9 @@ const globalProfilePreset = {
     smartSelection: false,
     defaultMergeText: "\\n"
   },
+  magicaction4text: {
+    noteOptions: []
+  },
   gesture: {
     singleBarSwipeUp: [0],
     singleBarSwipeDown: [0],
@@ -115,6 +118,7 @@ const globalProfilePreset = {
     baiduApiKey: "",
     lang: [0],
     formulaOCRProviders: [0],
+    markdown: [0],
     mathpixAppKey: "",
     showKey: true
   },
@@ -128,7 +132,6 @@ const globalProfilePreset = {
     translateProviders: [0],
     caiyunToken: "",
     showKey: true,
-    autoCopy: false,
     hudTime: "3",
     baiduFromLang: [0],
     caiyunFromLang: [0],

@@ -134,12 +134,6 @@ export default defineConfig({
       bind: ["translateProviders", 0]
     },
     {
-      key: "autoCopy",
-      type: CellViewType.Switch,
-      label: "翻译后自动复制",
-      help: "【Action】"
-    },
-    {
       key: "hudTime",
       type: CellViewType.InlineInput,
       label: "翻译弹窗显示时间",
@@ -188,9 +182,11 @@ export default defineConfig({
       label: "翻译所选文字",
       method: async ({ text }) => {
         try {
+          if (!text) {
+            showHUD("无法获取到选中的文字")
+            return
+          }
           const {
-            autoCopy,
-            hudTime,
             translateProviders,
             baiduFromLang,
             baiduToLang,
@@ -201,8 +197,7 @@ export default defineConfig({
             translateProviders[0] === TranslateProviders.Baidu
               ? await baiduTranslate(text, baiduFromLang[0], baiduToLang[0])
               : await caiyunTranslate(text, caiyunFromLang[0], caiyunToLang[0])
-          if (autoCopy) copy(translation, false)
-          showHUD(translation, Number(hudTime))
+          return translation
         } catch (err) {
           showHUD(String(err), 2)
         }

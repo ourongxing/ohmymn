@@ -29,7 +29,7 @@ async function getPureZH(text: string) {
         else return k
       })
       .flat()
-    if (m.length > 1) return [await select(m, Addon.title, lang.choose_meaning)]
+    if (m.length > 1) return [await select(m, lang.choose_meaning, Addon.title)]
   }
   return allMeanings
 }
@@ -38,7 +38,7 @@ async function getEN(text: string) {
   const allMeanings = text.split("\n")
   const { selectMeaning } = self.globalProfile.autocomplete
   if (selectMeaning && allMeanings.length > 1) {
-    return [await select(allMeanings, Addon.title, lang.choose_meaning)]
+    return [await select(allMeanings, lang.choose_meaning, Addon.title)]
   } else return allMeanings
 }
 

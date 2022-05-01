@@ -15,6 +15,7 @@ export class UIView extends UIResponder {
   autoresizesSubviews: boolean
   backgroundColor: UIColor
   convertRectToView(rect: CGRect, view: UIView): CGRect
+  convertPointToView(point: CGPoint, view: UIView): CGPoint
   addSubview(view: UIView): void
   addGestureRecognizer(gestureRecognizer: UIGestureRecognizer): void
   removeGestureRecognizer(gestureRecognizer: UIGestureRecognizer): void

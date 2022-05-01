@@ -16,13 +16,8 @@ export class DocumentController {
    * ID of Notebook
    */
   readonly notebookId?: string
-  /**
-   * FocusNote
-   */
   readonly focusNote?: MbBookNote
-  /**
-   * VisibleFocusNote
-   */
+  readonly lastFocusNote?: MbBookNote
   readonly visibleFocusNote?: MbBookNote
   /**
    * Select text
@@ -142,7 +137,6 @@ export class StudyController extends UIViewController {
    * View of the study controller
    *
    * {@link UIView}
-   * @type {UIView}
    * @example
    * ```
    * // add sub UIview to study controller

@@ -12,6 +12,19 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.label.preOCR,
       help: lang.help.preOCR
+    },
+    {
+      key: "noteOptions",
+      type: CellViewType.MuiltSelect,
+      option: [
+        "复制",
+        "设置为标题",
+        "合并标题",
+        "合并到摘录",
+        "设置为摘录",
+        "设置为评论"
+      ],
+      label: "选中笔记后的选项"
     }
   ]
 })

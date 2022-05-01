@@ -6,7 +6,7 @@ import {
 import { defineConfig } from "@/utils"
 import { regFlag, string2ReplaceParam } from "@/utils/input"
 import { getExcerptNotes } from "@/utils/note"
-import { isHalfWidth, SerialCode } from "@/utils/text"
+import { notCJK, SerialCode } from "@/utils/text"
 import { lang } from "./lang"
 import { AutoListPreset, ListSelected } from "./typings"
 
@@ -28,7 +28,7 @@ function addLineBreak(text: string): string {
         }, text)
         break
       case AutoListPreset.Letter:
-        if (isHalfWidth(text)) continue
+        if (notCJK(text)) continue
         const param: [RegExp, string] = [/\s*([A-Za-z][.、，,])/g, "\n$1"]
         const len = text.match(param[0])?.length
         if (len && len > 1) text = text.replace(param[0], param[1])

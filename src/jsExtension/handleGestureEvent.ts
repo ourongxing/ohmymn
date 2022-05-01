@@ -106,9 +106,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
   // Block some UI that can be touched by mistake
-  if (swipeY < 70 || swipeX < 70 || swipeX > width - 70)
+  if (swipeY < 100 || swipeX < 70 || swipeX > width - 70)
     return SwipePosition.None
-  if (studyController.studyMode != studyMode.study) return SwipePosition.None
   if (
     self.panelStatus &&
     isWithinArea({ swipeX, swipeY }, self.settingViewController.view.frame)
@@ -131,13 +130,14 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
           // mme 中修改了
           // y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
           y: y - (arrow === DirectionOfSelection.toRight ? 155 : 220),
-          height: 35
+          height: 40
         }
       )
     )
       return SwipePosition.SelectionBar
   }
 
+  if (studyController.studyMode != studyMode.study) return SwipePosition.None
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
   if (

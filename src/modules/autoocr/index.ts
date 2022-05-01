@@ -12,7 +12,7 @@ import {
   QRCodeOCR
 } from "./utils"
 
-const { intro, link, label, option, help, other } = lang
+const { intro, link, label, option, help } = lang
 
 export default defineConfig({
   name: "AutoOCR",
@@ -46,6 +46,12 @@ export default defineConfig({
       type: CellViewType.Select,
       option: option.formulaOCRProviders,
       label: label.formulaOCRProviders
+    },
+    {
+      key: "markdown",
+      type: CellViewType.Select,
+      option: ["Markdown", "myMarkDown"],
+      label: "使用的 Markdown 插件"
     },
     {
       key: "showKey",
@@ -86,7 +92,7 @@ export default defineConfig({
             self.globalProfile.autoocr.formulaOCRProviders[0] === 0
               ? await baiduFormulaOCR(imgBase64)
               : await mathpixOCR(imgBase64)
-          copy([res, `$${res}$`, `$$${res}$$`][option])
+          return [res, `$${res}$`, `$$${res}$$`][option]
         } catch (err) {
           showHUD(String(err), 2)
         }
@@ -98,7 +104,7 @@ export default defineConfig({
       label: label.textOCR,
       method: async ({ imgBase64 }) => {
         const res = await mainOCR(imgBase64)
-        res && copy(res)
+        return res
       }
     },
     {
@@ -107,8 +113,7 @@ export default defineConfig({
       label: label.handWrittingOCR,
       method: async ({ imgBase64 }) => {
         try {
-          const res = await baiduHandWrittingOCR(imgBase64)
-          copy(res)
+          return await baiduHandWrittingOCR(imgBase64)
         } catch (err) {
           showHUD(String(err), 2)
         }
@@ -120,26 +125,7 @@ export default defineConfig({
       label: label.QRCodeOCR,
       method: async ({ imgBase64 }) => {
         try {
-          const res = await QRCodeOCR(imgBase64)
-          const url = res.match(
-            /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/
-          )
-          if (url?.[0]) {
-            const { option } = await popup(
-              {
-                title: Addon.title,
-                message: other.link,
-                type: UIAlertViewStyle.Default,
-                buttons: [other.sure]
-              },
-              ({ buttonIndex }) => ({
-                option: buttonIndex
-              })
-            )
-            option !== -1 && openUrl(url[0])
-          } else {
-            copy(res)
-          }
+          return await QRCodeOCR(imgBase64)
         } catch (err) {
           showHUD(String(err), 2)
         }
