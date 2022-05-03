@@ -208,6 +208,15 @@ const globalProfilePreset = {
     width: "",
     paginated: ""
   },
+  exportoutline: {
+    // exportMethod:[0],
+    vault: "",
+    fileName: "",
+    contentMethod: [0],
+    imgprocess: [0],
+    imgsize: "",
+    writeMethod: [0]
+  },
   additional: {
     backupID: "",
     autoocr: {
