@@ -1,22 +1,22 @@
-export const enum osType {
+export const enum OSType {
   iPadOS = 0,
   iPhoneOS = 1,
   macOS = 2
 }
 
-export const enum groupMode {
+export const enum GroupMode {
   Tree,
   Frame
 }
 
-export const enum studyMode {
+export const enum StudyMode {
   doc0 = 0,
   doc1 = 1,
   study = 2,
   review = 3
 }
 
-export const enum docMapSplitMode {
+export const enum DocMapSplitMode {
   allMap = 0,
   half = 1,
   allDoc = 2

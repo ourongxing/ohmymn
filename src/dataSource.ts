@@ -121,14 +121,14 @@ const genDataSource = (
     index && moduleNameList.push(sec.header)
   })
 
-  const section_Action4Card = genSection(magicaction4card)
-  section_Action4Card.rows.push(...actions4card)
-  const section_Action4Text = genSection(magicaction4text)
-  section_Action4Text.rows.push(...actions4text)
+  const Action4CardSection = genSection(magicaction4card)
+  Action4CardSection.rows.push(...actions4card)
+  const Action4TextSection = genSection(magicaction4text)
+  Action4TextSection.rows.push(...actions4text)
 
   // 更新 quickSwitch 为 moduleList
-  const [section_Addon, section_Gesture] = dataSource
-  for (const row of section_Addon.rows) {
+  const [AddonSection, GestureSection] = dataSource
+  for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.map(
         (value, index) => SerialCode.hollow_circle_number[index] + " " + value
@@ -137,13 +137,13 @@ const genDataSource = (
 
   // 同步 gesture 的 option 为 magicaction 列表
   const { gestureOption: gestureOption4Card, actionKeys: _actionKey4Card } =
-    getActionKeyGetureOption(section_Action4Card)
+    getActionKeyGetureOption(Action4CardSection)
   const { gestureOption: gestureOption4Text, actionKeys: _actionKey4Text } =
-    getActionKeyGetureOption(section_Action4Text)
+    getActionKeyGetureOption(Action4TextSection)
 
   actionKey4Card.push(..._actionKey4Card)
   actionKey4Text.push(..._actionKey4Text)
-  section_Gesture.rows = section_Gesture.rows.map(row => {
+  GestureSection.rows = GestureSection.rows.map(row => {
     if (row.type == CellViewType.Select) {
       if (row.key.includes("selectionBar"))
         row.option = [lang.none, ...gestureOption4Text]
@@ -152,8 +152,8 @@ const genDataSource = (
     return row
   })
 
-  dataSource.splice(1, 0, section_Action4Card)
-  dataSource.splice(2, 0, section_Action4Text)
+  dataSource.splice(1, 0, Action4CardSection)
+  dataSource.splice(2, 0, Action4TextSection)
   dataSource.push(more)
   return dataSource
 }

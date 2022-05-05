@@ -1,5 +1,5 @@
 import { UIView, UIViewController, UIWindow } from "../UIKit"
-import { docMapSplitMode, osType, studyMode } from "./enum"
+import { DocMapSplitMode, OSType, StudyMode } from "./enum"
 import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
 
@@ -147,7 +147,7 @@ export class StudyController extends UIViewController {
   /**
    * Study Mode
    */
-  readonly studyMode: studyMode
+  readonly studyMode: StudyMode
   /**
    * Narrow Mode
    */
@@ -155,9 +155,9 @@ export class StudyController extends UIViewController {
   /**
    * DocMap Split Mode
    *
-   * {@link docMapSplitMode}
+   * {@link DocMapSplitMode}
    */
-  docMapSplitMode: docMapSplitMode
+  docMapSplitMode: DocMapSplitMode
   /**
    * Right Map Mode
    */
@@ -253,7 +253,7 @@ declare global {
     /**
      * OS type
      */
-    readonly osType: osType
+    readonly osType: OSType
     /**
      * @param topicid NSString*
      */

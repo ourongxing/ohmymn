@@ -89,8 +89,7 @@ const onInputOver: EventHandler = sender => {
   const { name, key, content } = sender.userInfo
   saveProfile(name, key, content)
   updateProfileTemp(key, content)
-  const { input_clear, input_saved } = lang
-  showHUD(content ? input_saved : input_clear)
+  showHUD(content ? lang.input_saved : lang.input_clear)
 }
 
 const onOCRImageBegin: EventHandler = sender => {

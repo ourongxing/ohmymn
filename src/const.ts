@@ -1,4 +1,4 @@
-import { osType } from "@/typings/enum"
+import { OSType } from "@/typings/enum"
 import mnaddon from "../mnaddon.json"
 
 class MNCore {
@@ -6,7 +6,7 @@ class MNCore {
   mainPath!: string
   studyController = () =>
     Application.sharedInstance().studyController(self.window)
-  isMac = Application.sharedInstance().osType == osType.macOS
+  isMac = Application.sharedInstance().osType == OSType.macOS
   app = Application.sharedInstance()
   db = Database.sharedInstance()
   isZH =

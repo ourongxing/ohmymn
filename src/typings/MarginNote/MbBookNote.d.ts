@@ -1,4 +1,4 @@
-import { groupMode } from "./enum"
+import { GroupMode } from "./enum"
 import { MbBook, MbTopic } from "./NoteDatabase"
 /**
  * @class MbBookNote
@@ -560,9 +560,9 @@ export class MbBookNote {
   readonly textFirst?: boolean
   /**
    * int
-   * @type {groupMode}
+   * @type {GroupMode}
    */
-  readonly groupMode?: groupMode
+  readonly groupMode?: GroupMode
   /**
    * int
    * @type {number}

@@ -7,10 +7,10 @@ import { moduleKeys, isModuleON } from "@/synthesizer"
 import { IRowButton, GestureHandler } from "@/typings"
 import {
   UISwipeGestureRecognizerDirection,
-  studyMode,
+  StudyMode,
   DirectionOfSelection,
-  docMapSplitMode,
-  groupMode
+  DocMapSplitMode,
+  GroupMode
 } from "@/typings/enum"
 import { showHUD } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
@@ -128,8 +128,8 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
         { swipeY },
         {
           // mme 中修改了
-          // y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
-          y: y - (arrow === DirectionOfSelection.toRight ? 155 : 220),
+          y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
+          // y: y - (arrow === DirectionOfSelection.toRight ? 155 : 220),
           height: 40
         }
       )
@@ -137,12 +137,12 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       return SwipePosition.SelectionBar
   }
 
-  if (studyController.studyMode != studyMode.study) return SwipePosition.None
+  if (studyController.studyMode != StudyMode.study) return SwipePosition.None
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
   if (
-    studyController.studyMode != studyMode.study ||
-    studyController.docMapSplitMode == docMapSplitMode.allDoc ||
+    studyController.studyMode != StudyMode.study ||
+    studyController.docMapSplitMode == DocMapSplitMode.allDoc ||
     !selViewLst?.length
   )
     return SwipePosition.None
@@ -152,7 +152,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
 
     // Block document area
     if (
-      studyController.docMapSplitMode == docMapSplitMode.half &&
+      studyController.docMapSplitMode == DocMapSplitMode.half &&
       ((studyController.rightMapMode && swipeX < readerViewWidth) ||
         (!studyController.rightMapMode && swipeX > width - readerViewWidth))
     )
@@ -171,7 +171,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
      * distance from the card 20
      */
     if (
-      mode === groupMode.Tree &&
+      mode === GroupMode.Tree &&
       isWithinArea(
         { swipeY },
         {
@@ -184,7 +184,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
 
     // Menu will be in the middle and above the card when frame style
     if (
-      mode === groupMode.Frame &&
+      mode === GroupMode.Frame &&
       isWithinArea(
         { swipeY },
         {

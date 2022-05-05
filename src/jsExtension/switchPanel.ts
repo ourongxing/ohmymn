@@ -1,7 +1,7 @@
 import { MN } from "@/const"
 import { PanelControl } from "@/modules/addon/typings"
 import { UIViewController } from "@/typings"
-import { studyMode } from "@/typings/enum"
+import { StudyMode } from "@/typings/enum"
 import { delay } from "@/utils/common"
 
 // Set the position and size of the panel
@@ -81,7 +81,7 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 }
 
 const queryAddonCommandStatus = () => {
-  return MN.studyController().studyMode !== studyMode.review
+  return MN.studyController().studyMode !== StudyMode.review
     ? {
         image: "logo.png",
         object: self,

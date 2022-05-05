@@ -144,7 +144,6 @@ const handleMagicAction = async ({
         const noNeedSmartSelection =
           key === "renameTitle" && /#\[(.+)\]/.test(content)
 
-        const { smart_select } = lang
         if (
           self.globalProfile.magicaction4card.smartSelection &&
           isHavingChildren &&
@@ -152,13 +151,13 @@ const handleMagicAction = async ({
         ) {
           const { option } = await popup(
             {
-              title: smart_select.title,
+              title: lang.smart_select.title,
               message:
                 nodes.length > 1
-                  ? smart_select.cards_with_children
-                  : smart_select.card_with_children,
+                  ? lang.smart_select.cards_with_children
+                  : lang.smart_select.card_with_children,
               type: UIAlertViewStyle.Default,
-              buttons: smart_select.option,
+              buttons: lang.smart_select.option,
               canCancel: false
             },
             ({ buttonIndex }) => ({
