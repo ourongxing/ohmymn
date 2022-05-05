@@ -9,6 +9,19 @@ module.exports = {
   rules: {
     "prettier/prettier": "off",
     "no-unused-vars": "off",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        selector: "variable",
+        format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        leadingUnderscore: "allow",
+        trailingUnderscore: "allow"
+      },
+      {
+        selector: "typeLike",
+        format: ["PascalCase"]
+      }
+    ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",

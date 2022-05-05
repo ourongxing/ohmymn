@@ -8,3 +8,4 @@ test*
 .eslintcache
 .pnpm*
 .DS_Store
+.local_history
