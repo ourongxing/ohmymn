@@ -10,14 +10,14 @@ import autotag from "./modules/autotag"
 import autotranslate from "./modules/autotranslate"
 import copysearch from "./modules/copysearch"
 import export2anki from "./modules/export2anki"
-// import export2devonthink from "./modules/export2devonthink"
+import export2devonthink from "./modules/export2devonthink"
 import export2flomo from "./modules/export2flomo"
 import gesture from "./modules/gesture"
 import magicaction4card from "./modules/magicaction4card"
 import magicaction4text from "./modules/magicaction4text"
 import addon from "./modules/addon"
 import anotherautodef from "./modules/anotherautodef"
-
+import exportoutline from "./modules/exportoutline"
 export const modules = {
   gesture,
   anotherautotitle,
@@ -33,8 +33,9 @@ export const modules = {
   autotranslate,
   autocomment,
   export2flomo,
-  export2anki
-  // export2devonthink,
+  export2anki,
+  export2devonthink,
+  exportoutline
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }
