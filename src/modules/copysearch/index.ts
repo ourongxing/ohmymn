@@ -76,7 +76,7 @@ export default defineConfig({
         type: CellViewType.Input,
         help: option.search_engine[i],
         key: k,
-        bind: ["showSearchEngine", 1],
+        bind: ["showSearchEngine", true],
         check({ input }) {
           if (!input.includes("{{keyword}}")) throw hud.no_keyword
         }

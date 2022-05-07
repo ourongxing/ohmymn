@@ -62,20 +62,20 @@ export default defineConfig({
       key: "baiduApiKey",
       type: CellViewType.Input,
       help: help.baiduApiKey,
-      bind: ["showKey", 1]
+      bind: ["showKey", true]
     },
     {
       key: "baiduSecretKey",
       type: CellViewType.Input,
       help: help.baiduSecretKey,
-      bind: ["showKey", 1]
+      bind: ["showKey", true]
     },
     {
       key: "mathpixAppKey",
       type: CellViewType.Input,
       help: help.mathpixAppKey,
       bind: [
-        ["showKey", 1],
+        ["showKey", true],
         ["formulaOCRProviders", 1]
       ]
     }

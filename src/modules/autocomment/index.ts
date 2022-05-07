@@ -98,7 +98,7 @@ export default defineConfig({
       key: "citation",
       type: CellViewType.Input,
       help: help.citaion_style,
-      bind: ["preset", 2],
+      bind: ["preset", 1],
       link
     }
   ],

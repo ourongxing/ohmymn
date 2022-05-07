@@ -2,7 +2,7 @@ import { MN } from "@/const"
 import { dataSourceIndex } from "@/dataSource"
 import lang from "@/lang"
 import { ModuleKeyType, moduleKeys } from "@/synthesizer"
-import { IRowSelect, UITableView } from "@/typings"
+import { BindType, IRowSelect, UITableView } from "@/typings"
 import { CellViewType, NSTextAlignment } from "@/typings/enum"
 import { isOCNull } from "@/utils/common"
 import { byteSplitByLen, SerialCode, byteLength, byteSlice } from "@/utils/text"
@@ -36,29 +36,49 @@ const tableViewTitleForHeaderInSection = (
 }
 
 // If one of the bind objects does not meet the requirements, it will be hidden
-const _isBindOFF = (
-  bindArr: MaybeArray<[string, number]>,
-  sectionKey: string
-) => {
+const _isBindOFF = (bindArr: BindType, sectionKey: string) => {
+  /**
+   * const bind = ["key", [1,2]]
+   * const bind = [
+   *  ["key", 1],
+   *  ["key", true]
+   * ]
+   * const bind = [
+   *  ["key", 1],
+   *  [
+   *    ["key", 1],
+   *    ["key", true]
+   *  ]
+   * ]
+   */
   const bindItems = Array.isArray(bindArr[0])
-    ? (bindArr as [string, number][])
-    : ([bindArr] as [string, number][])
+    ? (bindArr as Array<MaybeArray<[string, number | number[] | boolean]>>)
+    : ([bindArr] as Array<MaybeArray<[string, number | number[] | boolean]>>)
   return !bindItems.every(bind => {
-    const [key, index] = bind
-    const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
-    if (secIndex === undefined) {
-      console.error(`bind key does not exist：${key}`)
-      return true
-    }
-    const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-    if (row.type === CellViewType.Switch)
-      return row.status === (index ? true : false)
-    else if (
-      row.type === CellViewType.Select ||
-      row.type === CellViewType.MuiltSelect
-    )
-      return row.selections.includes(index)
-    return false
+    const binds = Array.isArray(bind[0])
+      ? (bind as [string, number | number[] | boolean][])
+      : ([bind] as [string, number | number[] | boolean][])
+    return binds.some(bind => {
+      const [key, v] = bind
+      const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
+      if (secIndex === undefined) {
+        console.error(`bind key does not exist：${key}`)
+        return true
+      }
+      const row = self.dataSource?.[secIndex].rows?.[rowIndex]
+      if (row.type === CellViewType.Switch && typeof v === "boolean")
+        return row.status === v
+      else if (
+        row.type === CellViewType.Select ||
+        row.type === CellViewType.MuiltSelect
+      ) {
+        if (typeof v === "number") return row.selections.includes(v)
+        else if (Array.isArray(v)) {
+          return v.some(h => row.selections.includes(h))
+        }
+      }
+      return false
+    })
   })
 }
 

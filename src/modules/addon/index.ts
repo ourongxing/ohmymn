@@ -53,7 +53,7 @@ export default defineConfig({
       type: CellViewType.Select,
       label: label.remove_excerpt,
       option: option.remove_excerpt,
-      bind: ["hasTitleThen", 1]
+      bind: ["hasTitleThen", [1, 2]]
     },
     {
       key: "screenAlwaysOn",
@@ -80,37 +80,37 @@ export default defineConfig({
       key: "author",
       type: CellViewType.InlineInput,
       label: label.author,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     },
     {
       key: "type",
       type: CellViewType.InlineInput,
       label: label.type,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     },
     {
       key: "publisher",
       type: CellViewType.InlineInput,
       label: label.publisher,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     },
     {
       key: "publicationDate",
       type: CellViewType.InlineInput,
       label: label.publication_date,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     },
     {
       key: "publicationPlace",
       type: CellViewType.InlineInput,
       label: label.publication_place,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     },
     {
       key: "pageOffset",
       type: CellViewType.InlineInput,
       label: label.page_offset,
-      bind: ["showDocInfo", 1],
+      bind: ["showDocInfo", true],
       check({ input }) {
         checkInteger(Number(input))
       }
@@ -119,7 +119,7 @@ export default defineConfig({
       key: "otherInfo",
       type: CellViewType.Input,
       help: label.other_info,
-      bind: ["showDocInfo", 1]
+      bind: ["showDocInfo", true]
     }
   ]
 })

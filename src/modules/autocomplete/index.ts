@@ -59,7 +59,7 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: "翻译上下文",
       help: "使用 AutoTranslate, 请先将其设置好",
-      bind: ["autoContext", 1]
+      bind: ["autoContext", true]
     }
   ],
   actions4card: [

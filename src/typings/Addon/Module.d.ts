@@ -19,7 +19,12 @@ export type IConfig<T extends keyof IAllProfile | null = null> = {
 type HelpLink = XOR<{ help: string; link?: string }, {}>
 
 type Bind<T> = {
-  bind?: MaybeArray<[PickKeyByValue<T, number[] | boolean>, number]>
+  bind?: MaybeArray<
+    MaybeArray<
+      | [PickKeyByValue<T, number[]>, number | number[]]
+      | [PickKeyByValue<T, boolean>, boolean]
+    >
+  >
 }
 
 type HelpLinkLabel = HelpLink & {

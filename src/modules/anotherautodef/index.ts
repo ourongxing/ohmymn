@@ -72,14 +72,14 @@ export default defineConfig({
       key: "titleLinkSplit",
       label: label.title_link_split,
       option: option.title_link_split,
-      bind: ["toTitleLink", 1]
+      bind: ["toTitleLink", true]
     },
     {
       key: "customTitleSplit",
       type: CellViewType.Input,
       help: help.custom_title_split,
       bind: [
-        ["toTitleLink", 1],
+        ["toTitleLink", true],
         ["titleLinkSplit", 0]
       ],
       link,

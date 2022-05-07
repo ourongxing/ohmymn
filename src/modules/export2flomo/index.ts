@@ -55,19 +55,19 @@ export default defineConfig({
       type: CellViewType.Input,
       key: "flomoTemplate1",
       help: "模版 1，点击查看支持的变量。",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "flomoTemplate2",
       help: "模版 2",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "flomoTemplate3",
       help: "模版 3",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     }
   ],
   actions4card: [

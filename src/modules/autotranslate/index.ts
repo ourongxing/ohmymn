@@ -152,7 +152,7 @@ export default defineConfig({
       type: CellViewType.Input,
       help: "百度 App ID，点击查看如何获取。",
       bind: [
-        ["showKey", 1],
+        ["showKey", true],
         ["translateProviders", 0]
       ]
     },
@@ -161,7 +161,7 @@ export default defineConfig({
       type: CellViewType.Input,
       help: "百度密钥",
       bind: [
-        ["showKey", 1],
+        ["showKey", true],
         ["translateProviders", 0]
       ]
     },
@@ -170,7 +170,7 @@ export default defineConfig({
       type: CellViewType.Input,
       help: "彩云小译 Token，点击查看如何获取。",
       bind: [
-        ["showKey", 1],
+        ["showKey", true],
         ["translateProviders", 1]
       ]
     }

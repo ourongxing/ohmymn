@@ -7,18 +7,20 @@ export type ISection = {
   rows: IRow[]
 }
 
-interface KeyLabelBind {
+export type BindType = MaybeArray<
+  MaybeArray<[string, number | number[] | boolean]>
+>
+
+type KeyLabelBind = {
   key: string
   label: string
-  bind?: MaybeArray<[string, number]>
+  bind?: BindType
 }
 
 export type IRowPlainText = {
   type: CellViewType.PlainText
-  label: string
   link?: string
-  bind?: MaybeArray<[string, number]>
-}
+} & Omit<KeyLabelBind, "key">
 
 export type IRowSwitch = Expand<
   {
@@ -27,37 +29,29 @@ export type IRowSwitch = Expand<
   } & KeyLabelBind
 >
 
-export type IRowSelect = Expand<
-  {
-    type: CellViewType.Select | CellViewType.MuiltSelect
-    selections: number[]
-    option: string[]
-  } & KeyLabelBind
->
+export type IRowSelect = {
+  type: CellViewType.Select | CellViewType.MuiltSelect
+  selections: number[]
+  option: string[]
+} & KeyLabelBind
 
-export type IRowInput = Expand<
-  {
-    type: CellViewType.Input
-    content: string
-  } & Omit<KeyLabelBind, "label">
->
+export type IRowInput = {
+  type: CellViewType.Input
+  content: string
+} & Omit<KeyLabelBind, "label">
 
-export type IRowInlineInput = Expand<
-  {
-    type: CellViewType.InlineInput
-    content: string
-  } & KeyLabelBind
->
+export type IRowInlineInput = {
+  type: CellViewType.InlineInput
+  content: string
+} & KeyLabelBind
 
-export type IRowButton = Expand<
-  {
-    type: CellViewType.Button | CellViewType.ButtonWithInput
-    module: ModuleKeyType
-    moduleName: string
-    option?: string[]
-    help?: string
-  } & Omit<KeyLabelBind, "bind">
->
+export type IRowButton = {
+  type: CellViewType.Button | CellViewType.ButtonWithInput
+  module: ModuleKeyType
+  moduleName: string
+  option?: string[]
+  help?: string
+} & Omit<KeyLabelBind, "bind">
 
 export type IRow =
   | IRowButton

@@ -26,13 +26,13 @@ export default defineConfig({
       type: CellViewType.Input,
       key: "title",
       help: "标题",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "comment",
       help: "评论",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Select,
@@ -51,14 +51,14 @@ export default defineConfig({
       type: CellViewType.Input,
       key: "destination",
       help: "目标文件夹(输入对应文件夹UUID)",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "htmlsource",
       help: "URL用于下载为HTML文件(请务必加上http或者https)",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 1]
       ]
     },
@@ -67,7 +67,7 @@ export default defineConfig({
       key: "pdfsource",
       help: "URL用于下载为PDF文件(请务必加上http或者https)",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 0]
       ]
     },
@@ -76,7 +76,7 @@ export default defineConfig({
       key: "mdtext",
       help: "正文文本",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 2]
       ]
     },
@@ -85,7 +85,7 @@ export default defineConfig({
       key: "txtext",
       help: "正文文本",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 3]
       ]
     },
@@ -93,20 +93,20 @@ export default defineConfig({
       type: CellViewType.Input,
       key: "hide",
       help: "隐藏(1/0)",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "referrer",
       help: "URL链接(用于引用)",
-      bind: ["showTemplate", 1]
+      bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "width",
       help: "宽度",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 0]
       ]
     },
@@ -115,7 +115,7 @@ export default defineConfig({
       key: "paginated",
       help: "分页(1/0)",
       bind: [
-        ["showTemplate", 1],
+        ["showTemplate", true],
         ["exportMethod", 0]
       ]
     }
