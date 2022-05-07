@@ -4,59 +4,13 @@ import {
   checkReplaceParam
 } from "@/utils/checkInput"
 import { defineConfig } from "@/utils"
-import { regFlag, string2ReplaceParam } from "@/utils/input"
+import { string2ReplaceParam } from "@/utils/input"
 import { getExcerptNotes } from "@/utils/note"
-import { notCJK, SerialCode } from "@/utils/text"
 import { lang } from "./lang"
-import { AutoListPreset, ListSelected } from "./typings"
+import { ListSelected } from "./typings"
+import { addLineBreak, addNumber } from "./utils"
 
 const { intro, option, label, link, help } = lang
-function addLineBreak(text: string): string {
-  const { preset } = self.globalProfile.autolist
-  for (const set of preset) {
-    switch (set) {
-      case AutoListPreset.Custom:
-        const { customList: params } = self.tempProfile.replaceParam
-        if (!params) continue
-        text = params.reduce((acc, param) => {
-          param.regexp = regFlag.add(param.regexp, "g")
-          const len = acc.match(param.regexp)?.length
-          // 必须有两个满足条件才生效
-          return len && len > 1
-            ? acc.replace(param.regexp, param.newSubStr)
-            : acc
-        }, text)
-        break
-      case AutoListPreset.Letter:
-        if (notCJK(text)) continue
-        const param: [RegExp, string] = [/\s*([A-Za-z][.、，,])/g, "\n$1"]
-        const len = text.match(param[0])?.length
-        if (len && len > 1) text = text.replace(param[0], param[1])
-        break
-      default: {
-        const params: [RegExp, string][] = [
-          [
-            new RegExp(
-              `\s*([其第]?[${SerialCode.chinese_number}]{1,2}[.、，,])|\s*([其第][${SerialCode.chinese_number}]{1,2}是?[.、，,]?)`,
-              "g"
-            ),
-            "\n$1$2"
-          ],
-          [
-            /\s*([\(（【\[]?\s*[0-9]{1,2}\s*[\)）\]】]?[.、，,]\D)|\s*([\(（【\[]\s*[0-9]{1,2}\s*[\)）\]】][.、，,]?)/g,
-            "\n$1$2"
-          ]
-        ]
-        const param = params[set - 2]
-        const len = text.match(param[0])?.length
-        if (len && len > 1) text = text.replace(param[0], param[1])
-        break
-      }
-    }
-  }
-  return text.replace(/\n{2,}/g, "\n").trim()
-}
-
 export default defineConfig({
   name: "AutoList",
   key: "autolist",
@@ -106,13 +60,17 @@ export default defineConfig({
           })
         } else if (content) {
           const params = string2ReplaceParam(content)
+          const { regexp, fnKey, newSubStr } = params[0]
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText
               if (text)
-                note.excerptText = params.reduce(
-                  (acc, params) => acc.replace(params.regexp, params.newSubStr),
+                note.excerptText = addNumber(
                   text
+                    .replace(regexp, newSubStr)
+                    .replace(/\n{2,}/g, "\n")
+                    .trim(),
+                  fnKey
                 )
             })
           })

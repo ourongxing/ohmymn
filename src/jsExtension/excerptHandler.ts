@@ -188,7 +188,6 @@ const processExcerpt = ({
 }
 
 const decorateExecrpt = async () => {
-  console.log("这中")
   const res = await newColorStyle(note)
   if (!res) return
   const { color, style } = res
