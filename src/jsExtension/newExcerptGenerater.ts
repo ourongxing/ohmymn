@@ -118,10 +118,6 @@ export const newTitleTextCommentTag = async (param: {
   }
 }
 
-export const newTag = async (note: MbBookNote, text: string) => {
-  if (!text) return
-}
-
 export const newColorStyle = async (note: MbBookNote) => {
   if (autoUtils.modifyStyle)
     for (const util of autoUtils.modifyStyle) {

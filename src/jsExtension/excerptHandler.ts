@@ -60,12 +60,17 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
         // If the PDF itself is pure text, is not the need for OCR. But other cases will call the online OCR to convert text,
         console.log(self.OCROnline.times === 1 ? "OCR" : "not OCR", "ocr")
         isOCR = true
-      } else return console.log("Image to text fail, no text", "ocr")
-    } else
+      } else {
+        decorateExecrpt()
+        return console.log("Image to text fail, no text", "ocr")
+      }
+    } else {
+      decorateExecrpt()
       return console.log(
         "No auto-to-text option on, no image processing",
         "ocr"
       )
+    }
   }
 
   // Indicates that the preceding rectangular excerpt to text does not use online OCR
@@ -183,6 +188,7 @@ const processExcerpt = ({
 }
 
 const decorateExecrpt = async () => {
+  console.log("这中")
   const res = await newColorStyle(note)
   if (!res) return
   const { color, style } = res
