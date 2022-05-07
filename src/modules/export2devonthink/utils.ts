@@ -1,11 +1,8 @@
 import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IConfig, MbBookNote } from "@/typings"
-import { CellViewType } from "@/typings/enum"
+import { MbBookNote } from "@/typings"
 import { escapeURLParam, unescapeURLParam } from "@/utils"
-import { openUrl, showHUD } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
 import { removeHighlight } from "@/utils/note"
-import { lang } from "./lang"
 import { AddTags } from "./typings"
 
 export function getDtContent(
@@ -15,7 +12,7 @@ export function getDtContent(
   addTags: number[],
   tags: string
 ) {
-  const content_final = content_list.reduce((acc, cur) => {
+  const finalContent = content_list.reduce((acc, cur) => {
     if (cur) {
       const main = renderTemplateOfNodeProperties(
         node,
@@ -34,11 +31,11 @@ export function getDtContent(
   }, [] as string[])
   let num = 0
   let output = ""
-  for (const value of content_final) {
+  for (const value of finalContent) {
     if (value != "") {
       if (content_key[num] == "location") {
-        const pro_value = unescapeURLParam(value)
-        output += content_key[num] + "=" + pro_value + "&"
+        const proValue = unescapeURLParam(value)
+        output += content_key[num] + "=" + proValue + "&"
       } else {
         output += content_key[num] + "=" + value + "&"
       }
@@ -48,16 +45,16 @@ export function getDtContent(
   console.log(output, "export2devonthink")
   console.log(addTags, "export2devonthink")
   console.log(tags, "export2devonthink")
-  const pro_tags = (() => {
+  const proTags = (() => {
     if (addTags[0] === AddTags.CardTags) {
       return renderTemplateOfNodeProperties(node, "{{#tags}}{{.}},{{/tags}}")
     } else if (addTags[0] === AddTags.Custom && tags) {
       return renderTemplateOfNodeProperties(node, reverseEscape(tags, true))
     }
   })()
-  console.log(pro_tags, "export2devonthink")
-  if (pro_tags) {
-    return output + "tags=" + pro_tags
+  console.log(proTags, "export2devonthink")
+  if (proTags) {
+    return output + "tags=" + proTags
   } else {
     return output.slice(0, -1)
   }
@@ -80,7 +77,7 @@ export async function getContent(node: MbBookNote, option: number) {
     paginated
   } = self.globalProfile.export2devonthink
   if (self.globalProfile.export2devonthink.exportMethod[0] == 0) {
-    const content_list = [
+    const contentList = [
       title,
       comment,
       destination,
@@ -90,7 +87,7 @@ export async function getContent(node: MbBookNote, option: number) {
       width,
       paginated
     ]
-    const content_key = [
+    const contentKey = [
       "title",
       "comment",
       "destination",
@@ -100,10 +97,10 @@ export async function getContent(node: MbBookNote, option: number) {
       "width",
       "paginated"
     ]
-    const output = getDtContent(node, content_list, content_key, addTags, tags)
+    const output = getDtContent(node, contentList, contentKey, addTags, tags)
     return "x-devonthink://createPDF?" + output
   } else if (self.globalProfile.export2devonthink.exportMethod[0] == 1) {
-    const content_list = [
+    const contentList = [
       title,
       comment,
       destination,
@@ -111,7 +108,7 @@ export async function getContent(node: MbBookNote, option: number) {
       hide,
       referrer
     ]
-    const content_key = [
+    const contentKey = [
       "title",
       "comment",
       "destination",
@@ -119,15 +116,15 @@ export async function getContent(node: MbBookNote, option: number) {
       "hide",
       "referrer"
     ]
-    const output = getDtContent(node, content_list, content_key, addTags, tags)
+    const output = getDtContent(node, contentList, contentKey, addTags, tags)
     return "x-devonthink://createHTML?" + output
   } else if (self.globalProfile.export2devonthink.exportMethod[0] == 2) {
     console.log(
       [title, comment, destination, mdtext, hide, referrer],
       "export2devonthink"
     )
-    const content_list = [title, comment, destination, mdtext, hide, referrer]
-    const content_key = [
+    const contentList = [title, comment, destination, mdtext, hide, referrer]
+    const contentKey = [
       "title",
       "comment",
       "destination",
@@ -135,11 +132,11 @@ export async function getContent(node: MbBookNote, option: number) {
       "hide",
       "referrer"
     ]
-    const output = getDtContent(node, content_list, content_key, addTags, tags)
+    const output = getDtContent(node, contentList, contentKey, addTags, tags)
     return "x-devonthink://createMarkdown?" + output
   } else if (self.globalProfile.export2devonthink.exportMethod[0] == 3) {
-    const content_list = [title, comment, destination, txtext, hide, referrer]
-    const content_key = [
+    const contentList = [title, comment, destination, txtext, hide, referrer]
+    const contentKey = [
       "title",
       "comment",
       "destination",
@@ -147,7 +144,7 @@ export async function getContent(node: MbBookNote, option: number) {
       "hide",
       "referrer"
     ]
-    const output = getDtContent(node, content_list, content_key, addTags, tags)
+    const output = getDtContent(node, contentList, contentKey, addTags, tags)
     return "x-devonthink://createText?" + output
   }
   return ""

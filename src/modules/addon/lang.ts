@@ -4,7 +4,7 @@ const zh = {
   link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
   option: {
     profile: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
-    has_title_then: ["保持原样", "合并标题", "覆盖标题"],
+    has_title_then: ["不转为标题", "合并标题", "覆盖标题"],
     panel_position: ["自动", "靠左", "居中", "靠右"],
     panel_height: ["高点", "标准", "矮点"],
     remove_excerpt: ["立即删除", "等会删除", "不删除"],

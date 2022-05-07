@@ -1,15 +1,6 @@
-import { lang } from "./lang"
-import type { IConfig, ICheckMethod, MbBookNote, MNPic } from "@/typings"
-import { CellViewType } from "@/typings/enum"
-import { ActionKey } from "./enum"
+import type { MbBookNote } from "@/typings"
 import { getExcerptText } from "@/utils/note"
-import { openUrl } from "@/utils/common"
-import { showHUD } from "@/utils/common"
 import { getAncestorNodes, getNodeTree, getAllCommnets } from "@/utils/note"
-import { privateEncrypt } from "crypto"
-import { escapeURLParam } from "@/utils"
-import { config, listenerCount } from "process"
-import { profile } from "console"
 import { MN } from "@/const"
 
 export function getExcerptNotes(node: MbBookNote) {

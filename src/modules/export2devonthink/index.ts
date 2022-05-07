@@ -1,4 +1,3 @@
-import { IConfig } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { openUrl, showHUD } from "@/utils/common"
 import { lang } from "./lang"
