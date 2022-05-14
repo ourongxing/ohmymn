@@ -214,7 +214,7 @@ const globalProfilePreset = {
     fileName: "",
     contentMethod: [0],
     imgprocess: [0],
-    imgsize: "",
+    imgsize: "100",
     writeMethod: [0]
   },
   additional: {
