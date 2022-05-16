@@ -2,7 +2,7 @@ import { Addon, MN } from "@/const"
 import { UIAlertViewStyle } from "@/typings/enum"
 import { copy, openUrl, showHUD } from "@/utils/common"
 import { reverseEscape } from "@/utils/input"
-import { undoGroupingWithRefresh } from "@/utils/note"
+import { modifyNodeTitle, undoGroupingWithRefresh } from "@/utils/note"
 import popup, { selectIndex } from "@/utils/popup"
 
 const enum NoteOption {
@@ -76,10 +76,10 @@ export default async function (res: string, key: string) {
           } else copy(res)
           break
         case NoteOption.Title:
-          lastFocusNote.noteTitle = res
+          modifyNodeTitle(lastFocusNote, res)
           break
         case NoteOption.MergeTitle:
-          lastFocusNote.noteTitle = lastFocusNote.noteTitle + "; " + res
+          modifyNodeTitle(lastFocusNote, lastFocusNote.noteTitle + "; " + res)
           break
         case NoteOption.Excerpt:
           lastFocusNote.excerptText = res

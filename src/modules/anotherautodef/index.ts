@@ -8,7 +8,7 @@ import {
 } from "@/utils/checkInput"
 import { defineConfig } from "@/utils"
 import { string2ReplaceParam, extractArray } from "@/utils/input"
-import { getAllText, removeHighlight } from "@/utils/note"
+import { getAllText, modifyNodeTitle } from "@/utils/note"
 import { lang } from "./lang"
 import { ExtractTitle } from "./typings"
 import { splitExtractTitles } from "./utils"
@@ -121,7 +121,7 @@ export default defineConfig({
               )
             }
             if (allTitles.length)
-              node.noteTitle = removeHighlight(unique(allTitles).join("; "))
+              modifyNodeTitle(node, unique(allTitles).join("; "))
           })
         } else if (content) {
           const params = string2ReplaceParam(content)
@@ -134,8 +134,7 @@ export default defineConfig({
                 newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
               }))
             )
-            if (allTitles.length)
-              node.noteTitle = removeHighlight(allTitles.join("; "))
+            if (allTitles.length) modifyNodeTitle(node, allTitles)
           })
         }
       },

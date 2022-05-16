@@ -2,7 +2,12 @@ import { MN } from "@/const"
 import { RemoveExcerpt } from "@/modules/addon/typings"
 import { MbBookNote } from "@/typings"
 import { delayBreak } from "@/utils/common"
-import { undoGroupingWithRefresh, getCommentIndex, addTags } from "@/utils/note"
+import {
+  undoGroupingWithRefresh,
+  getCommentIndex,
+  addTags,
+  modifyNodeTitle
+} from "@/utils/note"
 import { cacheTransformer } from "@/utils/profile"
 import {
   customOCR,
@@ -158,7 +163,7 @@ const processExcerpt = ({
       else if (isOCR) note.excerptText = title
       else note.excerptText = ""
     }
-    if (title) nodeNote.noteTitle = title
+    if (title) modifyNodeTitle(nodeNote, title)
     if (comments?.length) {
       const { cacheComment } = self.notebookProfile.additional
       const oldComments = cacheComment[note.noteId!]

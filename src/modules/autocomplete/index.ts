@@ -3,7 +3,7 @@ import { CellViewType } from "@/typings/enum"
 import { checkPlainText } from "@/utils/checkInput"
 import { showHUD } from "@/utils/common"
 import { defineConfig } from "@/utils"
-import { undoGroupingWithRefresh } from "@/utils/note"
+import { modifyNodeTitle, undoGroupingWithRefresh } from "@/utils/note"
 import { lang } from "./lang"
 import { completeWord } from "./utils"
 
@@ -86,7 +86,7 @@ export default defineConfig({
             const info = allInfo?.[index]
             if (info) {
               const { title, comments } = info
-              node.noteTitle = title.join("; ")
+              modifyNodeTitle(node, title)
               while (node.comments.length) {
                 node.removeCommentByIndex(0)
               }

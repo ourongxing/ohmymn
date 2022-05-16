@@ -229,7 +229,6 @@ export const removeProfile = () => {
 }
 
 const writeProfile2Card = (node: MbBookNote) => {
-  console.log("写入了")
   undoGroupingWithRefresh(() => {
     node.excerptText = `${lang.profile_manage.prohibit}\nversion: ${
       Addon.version

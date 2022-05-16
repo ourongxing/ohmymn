@@ -17,7 +17,8 @@ import {
   getAllText,
   getAncestorNodes,
   addTags,
-  removeHighlight
+  removeHighlight,
+  modifyNodeTitle
 } from "@/utils/note"
 import { lang } from "./lang"
 import { renameTitle, getSerialInfo, getLayerSerialInfo } from "./renameTitle"
@@ -136,7 +137,7 @@ export default defineConfig({
             node.removeCommentByIndex(len - index - 1)
         })
         if (option == MergeCards.MergeTitle)
-          node.noteTitle = unique(titles).join("; ")
+          modifyNodeTitle(node, unique(titles))
         // 合并标签
         addTags(node, [], true)
       }

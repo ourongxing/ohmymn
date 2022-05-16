@@ -6,7 +6,7 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam
 } from "@/utils/input"
-import { getNodeTree } from "@/utils/note"
+import { getNodeTree, modifyNodeTitle } from "@/utils/note"
 import { SerialCode } from "@/utils/text"
 import { lang } from "./lang"
 
@@ -129,9 +129,12 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
         onlyChildren.forEach((node, index) => {
           const title = node.noteTitle ?? ""
           if (newTitles[index])
-            node.noteTitle = title.replace(
-              regexp,
-              renderTemplateOfNodeProperties(node, newTitles[index])
+            modifyNodeTitle(
+              node,
+              title.replace(
+                regexp,
+                renderTemplateOfNodeProperties(node, newTitles[index])
+              )
             )
         })
       })
@@ -148,9 +151,12 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
     nodes.forEach((node, index) => {
       const title = node.noteTitle ?? ""
       if (newTitles[index])
-        node.noteTitle = title.replace(
-          regexp,
-          renderTemplateOfNodeProperties(node, newTitles[index])
+        modifyNodeTitle(
+          node,
+          title.replace(
+            regexp,
+            renderTemplateOfNodeProperties(node, newTitles[index])
+          )
         )
     })
   }
@@ -158,9 +164,9 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
   else {
     nodes.forEach(node => {
       const title = node.noteTitle ?? ""
-      node.noteTitle = title.replace(
-        regexp,
-        renderTemplateOfNodeProperties(node, newSubStr)
+      modifyNodeTitle(
+        node,
+        title.replace(regexp, renderTemplateOfNodeProperties(node, newSubStr))
       )
     })
   }

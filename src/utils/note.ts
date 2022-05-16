@@ -323,6 +323,18 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
   tagLine && node.appendTextComment(removeHighlight(tagLine))
 }
 
+const modifyNodeTitle = (node: MbBookNote, title: string | string[]) => {
+  node = node.groupNoteId ? MN.db.getNoteById(node.groupNoteId)! : node
+  if (typeof title !== "string") title = title.join("; ")
+  title = removeHighlight(title)
+  if (node.excerptText === node.noteTitle) {
+    node.noteTitle = title
+    node.excerptText = title
+  } else {
+    node.noteTitle = title
+  }
+}
+
 export {
   getSelectNodes,
   getNodeTree,
@@ -338,5 +350,6 @@ export {
   getAllTags,
   getAllCommnets,
   removeHighlight,
-  exportPic
+  exportPic,
+  modifyNodeTitle
 }

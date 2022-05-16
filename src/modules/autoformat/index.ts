@@ -1,7 +1,7 @@
 import { CellViewType } from "@/typings/enum"
 import { checkReplaceParamFromMNLink } from "@/utils/checkInput"
 import { defineConfig } from "@/utils"
-import { getExcerptNotes } from "@/utils/note"
+import { getExcerptNotes, modifyNodeTitle } from "@/utils/note"
 import { lang } from "./lang"
 import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
@@ -68,7 +68,7 @@ export default defineConfig({
             let newTitle = formatText(title)
             if (self.globalProfile.autoformat.formatTitle)
               newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("\n")
-            node.noteTitle = newTitle
+            modifyNodeTitle(node, newTitle)
           }
           if (option != Format.Title) {
             getExcerptNotes(node).forEach(note => {
