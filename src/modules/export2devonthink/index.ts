@@ -3,7 +3,7 @@ import { openUrl, showHUD } from "@/utils/common"
 import { lang } from "./lang"
 import { getContent } from "./utils"
 import { defineConfig } from "@/utils"
-const { link, intro, lable, option, help } = lang
+const { link, intro, lable, option, help, hud } = lang
 
 export default defineConfig({
   name: "Export to Devonthink",
@@ -15,48 +15,48 @@ export default defineConfig({
       type: CellViewType.Select,
       key: "exportMethod",
       option: ["PDF", "HTML", "Markdown", "Text"],
-      label: "下载or导出"
+      label: lable.export_method
     },
     {
       type: CellViewType.Switch,
       key: "showTemplate",
-      label: "显示/隐藏所有模板"
+      label: lable.show_template
     },
     {
       type: CellViewType.Input,
       key: "title",
-      help: "标题",
+      help: help.title,
       bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "comment",
-      help: "评论",
+      help: help.comment,
       bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Select,
       key: "addTags",
-      label: "添加标签",
+      label: lable.add_tags,
       help: "固定添加在最后",
-      option: ["无", "仅卡片中的标签", "自定义标签模板"]
+      option: option.add_tags
     },
     {
       type: CellViewType.Input,
       key: "tags",
-      help: "标签模版，点击查看支持的变量。",
+      help: help.tags,
       bind: ["addTags", 2]
     },
     {
       type: CellViewType.Input,
       key: "destination",
-      help: "目标文件夹(输入对应文件夹UUID)",
+      help: help.destination,
       bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "htmlsource",
-      help: "URL用于下载为HTML文件(请务必加上http或者https)",
+      help: help.html_source,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 1]
@@ -65,7 +65,7 @@ export default defineConfig({
     {
       type: CellViewType.Input,
       key: "pdfsource",
-      help: "URL用于下载为PDF文件(请务必加上http或者https)",
+      help: help.pdf_source,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 0]
@@ -74,7 +74,7 @@ export default defineConfig({
     {
       type: CellViewType.Input,
       key: "mdtext",
-      help: "正文文本",
+      help: help.md_text,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 2]
@@ -83,7 +83,7 @@ export default defineConfig({
     {
       type: CellViewType.Input,
       key: "txtext",
-      help: "正文文本",
+      help: help.tx_text,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 3]
@@ -92,19 +92,19 @@ export default defineConfig({
     {
       type: CellViewType.Input,
       key: "hide",
-      help: "隐藏(1/0)",
+      help: help.hide,
       bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "referrer",
-      help: "URL链接(用于引用)",
+      help: help.referrer,
       bind: ["showTemplate", true]
     },
     {
       type: CellViewType.Input,
       key: "width",
-      help: "宽度",
+      help: help.width,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 0]
@@ -113,7 +113,7 @@ export default defineConfig({
     {
       type: CellViewType.Input,
       key: "paginated",
-      help: "分页(1/0)",
+      help: help.paginated,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 0]
@@ -124,7 +124,7 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       key: "exportCard2app",
-      label: "导出到Devonthink",
+      label: lable.actions_card,
       method: async ({ nodes, option }) => {
         for (const node of nodes) {
           const c = await getContent(node, option)
@@ -132,7 +132,7 @@ export default defineConfig({
           if (c) {
             openUrl(c)
             console.log("success", "researchtool")
-          } else showHUD("模版对应的内容为空")
+          } else showHUD(hud.actions_card)
         }
       }
     }
