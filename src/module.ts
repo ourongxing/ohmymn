@@ -17,7 +17,7 @@ import magicaction4card from "./modules/magicaction4card"
 import magicaction4text from "./modules/magicaction4text"
 import addon from "./modules/addon"
 import anotherautodef from "./modules/anotherautodef"
-import exportoutline from "./modules/exportoutline"
+import export2obsidian from "./modules/export2obsidian"
 export const modules = {
   gesture,
   anotherautotitle,
@@ -35,7 +35,7 @@ export const modules = {
   export2flomo,
   export2anki,
   export2devonthink,
-  exportoutline
+  export2obsidian
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }

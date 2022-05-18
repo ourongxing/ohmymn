@@ -208,7 +208,7 @@ const globalProfilePreset = {
     width: "",
     paginated: ""
   },
-  exportoutline: {
+  export2obsidian: {
     // exportMethod:[0],
     vault: "",
     fileName: "",
