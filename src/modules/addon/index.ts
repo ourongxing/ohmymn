@@ -8,7 +8,7 @@ const { label, help, option } = lang
 export default defineConfig({
   name: Addon.title,
   key: "addon",
-  intro: `version: ${Addon.version}`,
+  intro: `当前版本: ${Addon.version}`,
   settings: [
     {
       help: help.profile,
