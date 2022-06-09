@@ -1,6 +1,6 @@
 import { CellViewType } from "@/typings/enum"
 import { checkRegArrayFromMNLink } from "@/utils/checkInput"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import { reverseEscape } from "@/utils/input"
 import { removeHighlight } from "@/utils/note"
 import { countWord, notCJK } from "@/utils/text"

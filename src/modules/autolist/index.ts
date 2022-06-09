@@ -3,7 +3,7 @@ import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import { string2ReplaceParam } from "@/utils/input"
 import { getExcerptNotes } from "@/utils/note"
 import { lang } from "./lang"

@@ -2,7 +2,7 @@ import { CellViewType } from "@/typings/enum"
 import { openUrl, showHUD } from "@/utils/common"
 import { lang } from "./lang"
 import { getContent } from "./utils"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 const { link, intro, lable, option, help, hud } = lang
 
 export default defineConfig({

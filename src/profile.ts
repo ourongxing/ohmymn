@@ -1,4 +1,5 @@
 import { MN } from "./const"
+import { IConfig } from "./typings"
 import { ReplaceParam } from "./utils/input"
 
 const globalProfilePreset = {
@@ -316,3 +317,7 @@ export {
   ITempProfile,
   IAllProfile
 }
+
+export const defineConfig = <T extends keyof IAllProfile>(
+  options: IConfig<T>
+) => options

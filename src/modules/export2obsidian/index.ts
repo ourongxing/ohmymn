@@ -1,6 +1,6 @@
 import { lang } from "./lang"
 import { CellViewType } from "@/typings/enum"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import { openUrl, showHUD } from "@/utils/common"
 import { makeObsidianOutline } from "./utils"
 import { MN } from "@/const"

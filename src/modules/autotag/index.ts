@@ -5,7 +5,7 @@ import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
 } from "@/utils/checkInput"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import {
   escapeDoubleQuote,
   extractArray,

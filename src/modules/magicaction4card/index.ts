@@ -3,7 +3,7 @@ import { CellViewType } from "@/typings/enum"
 import { unique } from "@/utils"
 import { checkPlainText, checkRegArray } from "@/utils/checkInput"
 import { showHUD, HUDController } from "@/utils/common"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import {
   string2RegArray,
   escapeDoubleQuote,

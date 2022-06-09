@@ -1,15 +1,15 @@
 import { OSType } from "@/typings/enum"
 import mnaddon from "../mnaddon.json"
 
-class MNCore {
-  textColor!: UIColor
-  mainPath!: string
-  studyController = () =>
-    Application.sharedInstance().studyController(self.window)
-  isMac = Application.sharedInstance().osType == OSType.macOS
-  app = Application.sharedInstance()
-  db = Database.sharedInstance()
-  isZH =
+export const MN = {
+  textColor: UIColor.blackColor(),
+  mainPath: "",
+  studyController: () =>
+    Application.sharedInstance().studyController(self.window),
+  isMac: Application.sharedInstance().osType == OSType.macOS,
+  app: Application.sharedInstance(),
+  db: Database.sharedInstance(),
+  isZH:
     NSLocale.preferredLanguages().length &&
     NSLocale.preferredLanguages()[0].startsWith("zh")
 }
@@ -19,9 +19,7 @@ export const Addon = {
   author: mnaddon.author,
   version: mnaddon.version,
   key: mnaddon.addonid.split(".")[2],
-  globalProfileKey: mnaddon.globalProfileKey,
-  docProfileKey: mnaddon.docProfileKey,
-  notebookProfileKey: mnaddon.notebookProfileKey
+  globalProfileKey: mnaddon.global_profile_key,
+  docProfileKey: mnaddon.doc_profile_key,
+  notebookProfileKey: mnaddon.notebook_profile_key
 }
-
-export const MN = new MNCore()

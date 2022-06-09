@@ -1,5 +1,5 @@
 import { CellViewType } from "@/typings/enum"
-import { defineConfig } from "@/utils"
+import { defineConfig } from "@/profile"
 import { lang } from "./lang"
 
 export default defineConfig({
