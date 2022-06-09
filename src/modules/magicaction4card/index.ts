@@ -2,7 +2,13 @@ import { textComment } from "@/typings"
 import { CellViewType } from "@/typings/enum"
 import { unique } from "@/utils"
 import { checkPlainText, checkRegArray } from "@/utils/checkInput"
-import { showHUD, HUDController } from "@/utils/common"
+import {
+  showHUD,
+  HUDController,
+  NSValue2String,
+  CGRectValue2CGRect,
+  postNotification
+} from "@/utils/common"
 import { defineConfig } from "@/utils"
 import {
   string2RegArray,
@@ -23,6 +29,7 @@ import {
 import { lang } from "./lang"
 import { renameTitle, getSerialInfo, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
+import { MN } from "@/const"
 
 const { help, option, intro, label, link, hud } = lang
 
@@ -224,6 +231,76 @@ export default defineConfig({
               break
           }
         }
+      }
+    },
+    {
+      key: "exportMarked",
+      type: CellViewType.Button,
+      label: "导出标注",
+      help: '开启智能选择，选择"仅处理所有后代节点"',
+      method({ nodes }) {
+        const document =
+          MN.studyController().readerController.currentDocumentController
+            .document
+        const docFolderPath = MN.app.documentPath
+        if (!docFolderPath || !document?.pathFile) return
+        const docPath = `${docFolderPath}/${document.pathFile}`
+        const res = nodes.reduce(
+          (acc, node) => {
+            const selection = node.excerptPic?.selLst[0]
+            if (selection) {
+              const pageNo = selection.pageNo
+              if (acc[pageNo] === undefined) acc[pageNo] = []
+              const { x, y, height, width } = CGRectValue2CGRect(selection.rect)
+              acc[pageNo].push({
+                color: node.colorIndex,
+                corrdinate: [x, y, width, height]
+              })
+            }
+            return acc
+          },
+          {} as Record<
+            number,
+            {
+              color: number
+              corrdinate: [number, number, number, number]
+            }[]
+          >
+        )
+        const fileManager = NSFileManager.defaultManager()
+        const tempDocFoler = MN.app.tempPath + document.docTitle
+        if (
+          !fileManager.createDirectoryAtPathAttributes(tempDocFoler, undefined)
+        ) {
+          fileManager.moveItemAtPathToPath(
+            tempDocFoler,
+            `${tempDocFoler}_${Date.now()}`
+          )
+        }
+        fileManager.createDirectoryAtPathAttributes(tempDocFoler, undefined)
+        fileManager.createDirectoryAtPathAttributes(
+          `${tempDocFoler}/labels`,
+          undefined
+        )
+        fileManager.copyItemAtPathToPath(docPath, `${tempDocFoler}/pdf.pdf`)
+        Object.entries(res).forEach(([k, v]) => {
+          const content = v.reduce((acc, cur) => {
+            acc += `${cur.color} ${cur.corrdinate.join(" ")}\n`
+            return acc
+          }, "")
+          NSData.dataWithStringEncoding(content, 4).writeToFileAtomically(
+            `${tempDocFoler}/labels/${k}.txt`,
+            false
+          )
+        })
+        postNotification("OpenInApp", {
+          fileURL: tempDocFoler,
+          UTI: "public.folder"
+          // UTI:  "com.adobe.pdf"
+        })
+        // fileManager.subpathsOfDirectoryAtPath(tempDocFoler).forEach(k => {
+        //   console.log(k)
+        // })
       }
     }
   ]

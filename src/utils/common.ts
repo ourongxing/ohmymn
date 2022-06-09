@@ -130,12 +130,12 @@ function NSValue2String(v: NSValue) {
 function CGRectString2CGRect(s: string): CGRect {
   // {{116, 565}, {11, 15}}
   // {x,y}, {h,w}
-  const arr = s.match(/\d+/g)!.map(k => Number(k))
+  const arr = s.match(/[0-9.]+/g)!.map(k => Number(k))
   return {
     x: arr[0],
     y: arr[1],
-    height: arr[2],
-    width: arr[3]
+    width: arr[2],
+    height: arr[3]
   }
 }
 

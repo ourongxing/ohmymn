@@ -90,10 +90,12 @@ export type IAction<T extends IActionMethod4Card | IActionMethod4Text> = {
 export type IActionMethod4Card = ({
   content,
   nodes,
-  option
+  option,
+  treeIndex
 }: {
   content: string
   nodes: MbBookNote[]
+  treeIndex: Record<string, number[][]> | undefined
   option: number
 }) => any
 

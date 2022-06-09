@@ -118,6 +118,8 @@ const handleMagicAction = async ({
       res && (await handleTextAction(res, key))
     } else if (type === "card") {
       let nodes: MbBookNote[] = []
+      let treeIndex: Record<string, number[][]> | undefined
+
       key != "filterCards" &&
         self.globalProfile.addon.panelControl.includes(
           PanelControl.CompleteClose
@@ -166,16 +168,27 @@ const handleMagicAction = async ({
           )
 
           if (option !== 0) {
-            const { onlyChildren, onlyFirstLevel, allNodes } = nodes
-              .slice(1)
-              .reduce((acc, node) => {
-                const { onlyChildren, onlyFirstLevel, allNodes } =
-                  getNodeTree(node)
+            if (option > 1) treeIndex = {}
+            const { onlyChildren, onlyFirstLevel, allNodes } = nodes.reduce(
+              (acc, node) => {
+                const {
+                  onlyChildren,
+                  onlyFirstLevel,
+                  allNodes,
+                  treeIndex: tmp
+                } = getNodeTree(node)
                 acc.allNodes.push(...allNodes)
                 acc.onlyChildren.push(...onlyChildren)
                 acc.onlyFirstLevel.push(...onlyFirstLevel)
+                if (treeIndex) treeIndex[node.noteId!] = tmp
                 return acc
-              }, getNodeTree(nodes[0]))
+              },
+              {
+                onlyChildren: [] as MbBookNote[],
+                allNodes: [] as MbBookNote[],
+                onlyFirstLevel: [] as MbBookNote[]
+              }
+            )
             nodes = [onlyFirstLevel, onlyChildren, allNodes][option - 1]
           }
         }
@@ -185,7 +198,8 @@ const handleMagicAction = async ({
           self.customSelectedNodes = actions4card.filterCards!({
             content,
             nodes,
-            option
+            option,
+            treeIndex
           })
           break
         case "manageProfile":
@@ -197,6 +211,7 @@ const handleMagicAction = async ({
             actions4card[key]({
               content,
               nodes,
+              treeIndex,
               option
             })
           else
@@ -205,6 +220,7 @@ const handleMagicAction = async ({
                 void actions4card[key]({
                   content,
                   nodes,
+                  treeIndex,
                   option
                 })
             )

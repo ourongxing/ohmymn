@@ -237,19 +237,19 @@ declare global {
     /**
      * Database path
      */
-    readonly dbPath?: string
+    readonly dbPath: string
     /**
      * Document relative path
      */
-    readonly documentPath?: string
+    readonly documentPath: string
     /**
      * Cache path
      */
-    readonly cachePath?: string
+    readonly cachePath: string
     /**
      * Temp path
      */
-    readonly tempPath?: string
+    readonly tempPath: string
     /**
      * OS type
      */

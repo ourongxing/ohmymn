@@ -1,4 +1,5 @@
 import { MN } from "@/const"
+import { showHUD } from "@/utils/common"
 
 const viewDidLoad = () => {
   self.tableView.allowsSelection = true
@@ -10,7 +11,9 @@ const viewWillAppear = () => {
   self.tableView.reloadData()
   self.tableView.backgroundColor = MN.app.defaultNotebookColor!
   MN.textColor =
-    MN.app.currentTheme == "Gray" ? UIColor.whiteColor() : UIColor.blackColor()
+    MN.app.currentTheme == "Gray" || MN.app.currentTheme == "Dark"
+      ? UIColor.whiteColor()
+      : UIColor.blackColor()
 }
 
 export default {
