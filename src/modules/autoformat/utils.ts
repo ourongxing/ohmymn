@@ -1,7 +1,7 @@
-import { CJK, notCJK } from "@/utils/text"
-import pangu from "@/utils/third party/pangu"
+import { CJK, notCJK } from "~/utils/text"
+import pangu from "~/utils/third party/pangu"
 import { AutoFormatPreset } from "./typings"
-import { toTitleCase } from "@/utils/third party/toTitleCase"
+import { toTitleCase } from "~/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
   return titles.map(title =>

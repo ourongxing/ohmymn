@@ -1,9 +1,9 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { ICheckMethod, MbBookNote } from "@/typings"
-import { reverseEscape } from "@/utils/input"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { ICheckMethod, MbBookNote } from "~/typings"
+import { reverseEscape } from "~/utils/input"
 import { AnkiNote, AddTags, ExportMethod } from "./typings"
-import { OCNull2null } from "@/utils/common"
-import fetch from "@/utils/network"
+import { OCNull2null } from "~/utils/common"
+import fetch from "~/utils/network"
 
 export class AnkiConnect {
   api!: string

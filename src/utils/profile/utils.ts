@@ -1,6 +1,6 @@
-import { MN } from "@/const"
-import { IGlobalProfile } from "@/profile"
-import { noteComment } from "@/typings"
+import { MN } from "~/const"
+import { IGlobalProfile } from "~/profile"
+import { noteComment } from "~/typings"
 
 /**
  * @param link Card link (UUID)

@@ -1,4 +1,4 @@
-import { MN } from "@/const"
+import { MN } from "~/const"
 
 const zh = {
   intro: "导出到 Anki。建议使用 API 导入。",

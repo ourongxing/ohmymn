@@ -1,8 +1,8 @@
-import { showHUD } from "@/utils/common"
-import { reverseEscape } from "@/utils/input"
-import fetch from "@/utils/network"
-import { countWord, notCJK } from "@/utils/text"
-import MD5 from "@/utils/third party/md5"
+import { showHUD } from "~/utils/common"
+import { reverseEscape } from "~/utils/input"
+import fetch from "~/utils/network"
+import { countWord, notCJK } from "~/utils/text"
+import MD5 from "~/utils/third party/md5"
 import { TranslateProviders } from "./typings"
 
 function getBaiduSign(text: string, appid: string, key: string, salt: number) {

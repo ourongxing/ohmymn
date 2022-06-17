@@ -1,23 +1,23 @@
-import { Addon, MN } from "@/const"
+import { Addon, MN } from "~/const"
 import handleExcerpt, {
   removeLastCommentCacheTitle
-} from "@/jsExtension/excerptHandler"
-import { layoutViewController } from "@/jsExtension/switchPanel"
-import lang from "@/lang"
-import { EventHandler } from "@/typings"
+} from "~/jsExtension/excerptHandler"
+import { layoutViewController } from "~/jsExtension/switchPanel"
+import lang from "~/lang"
+import { EventHandler } from "~/typings"
 import {
   eventHandlerController,
   isThisWindow,
   showHUD,
   delayBreak
-} from "@/utils/common"
+} from "~/utils/common"
 import {
   saveProfile,
   writeProfile,
   readProfile,
   updateProfileTemp
-} from "@/utils/profile"
-import { Range } from "@/utils/profile/typings"
+} from "~/utils/profile"
+import { Range } from "~/utils/profile/typings"
 import handleMagicAction from "./magicActionHandler"
 
 export const eventHandlers = eventHandlerController([

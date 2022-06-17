@@ -3,7 +3,7 @@ import {
   INotebookProfile,
   IGlobalProfile,
   ITempProfile
-} from "@/profile"
+} from "~/profile"
 import { ISection } from "./Addon"
 import { StudyController, MbBookNote } from "./MarginNote"
 import { UITableView, UITableViewController, UIView, UIWindow } from "./UIKit"

@@ -1,6 +1,6 @@
-import { Addon, MN } from "@/const"
-import { layoutViewController } from "@/jsExtension/switchPanel"
-import lang from "@/lang"
+import { Addon, MN } from "~/const"
+import { layoutViewController } from "~/jsExtension/switchPanel"
+import lang from "~/lang"
 import {
   IGlobalProfile,
   IDocProfile,
@@ -8,8 +8,8 @@ import {
   globalProfilePreset,
   INotebookProfile,
   notebookProfilePreset
-} from "@/profile"
-import { MbBookNote } from "@/typings"
+} from "~/profile"
+import { MbBookNote } from "~/typings"
 import { dateFormat, deepCopy } from ".."
 import { showHUD } from "../common"
 import { undoGroupingWithRefresh } from "../note"

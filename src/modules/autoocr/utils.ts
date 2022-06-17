@@ -1,6 +1,6 @@
-import { autoUtils } from "@/synthesizer"
-import { showHUD } from "@/utils/common"
-import fetch from "@/utils/network"
+import { autoUtils } from "~/synthesizer"
+import { showHUD } from "~/utils/common"
+import fetch from "~/utils/network"
 import { lang } from "./lang"
 import { BaiduOCRError } from "./typings"
 

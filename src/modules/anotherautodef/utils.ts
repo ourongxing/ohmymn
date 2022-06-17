@@ -1,7 +1,7 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { MbBookNote } from "@/typings"
-import { unique } from "@/utils"
-import { regFlag } from "@/utils/input"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { MbBookNote } from "~/typings"
+import { unique } from "~/utils"
+import { regFlag } from "~/utils/input"
 import { TitleLinkSplit, AutoDefPreset } from "./typings"
 
 export function toTitleLink(text: string) {

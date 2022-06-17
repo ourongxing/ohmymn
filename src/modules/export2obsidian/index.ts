@@ -1,9 +1,9 @@
 import { lang } from "./lang"
-import { CellViewType } from "@/typings/enum"
-import { defineConfig } from "@/profile"
-import { openUrl, showHUD } from "@/utils/common"
+import { CellViewType } from "~/typings/enum"
+import { defineConfig } from "~/profile"
+import { openUrl, showHUD } from "~/utils/common"
 import { makeObsidianOutline } from "./utils"
-import { MN } from "@/const"
+import { MN } from "~/const"
 const { link, intro, lable, option, help, hud } = lang
 
 export default defineConfig({

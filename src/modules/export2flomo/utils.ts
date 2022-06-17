@@ -1,8 +1,8 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { MbBookNote } from "@/typings"
-import { reverseEscape } from "@/utils/input"
-import fetch from "@/utils/network"
-import { removeHighlight } from "@/utils/note"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { MbBookNote } from "~/typings"
+import { reverseEscape } from "~/utils/input"
+import fetch from "~/utils/network"
+import { removeHighlight } from "~/utils/note"
 import { AddTags } from "./typings"
 
 export function getContent(node: MbBookNote, option: number) {

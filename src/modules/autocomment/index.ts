@@ -1,20 +1,20 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { MbBookNote } from "@/typings"
-import { CellViewType } from "@/typings/enum"
-import { unique } from "@/utils"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { MbBookNote } from "~/typings"
+import { CellViewType } from "~/typings/enum"
+import { unique } from "~/utils"
 import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
-} from "@/utils/checkInput"
-import { defineConfig } from "@/profile"
+} from "~/utils/checkInput"
+import { defineConfig } from "~/profile"
 import {
   escapeDoubleQuote,
   string2ReplaceParam,
   extractArray,
   regFlag,
   ReplaceParam
-} from "@/utils/input"
-import { getAllText } from "@/utils/note"
+} from "~/utils/input"
+import { getAllText } from "~/utils/note"
 import { lang } from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 const { intro, option, label, link, help } = lang

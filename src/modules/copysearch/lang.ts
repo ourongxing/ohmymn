@@ -1,4 +1,4 @@
-import { MN } from "@/const"
+import { MN } from "~/const"
 
 const zh = {
   intro: "搜索和复制你想要的",

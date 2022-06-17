@@ -42,7 +42,7 @@ export default defineConfig({
     AutoImport({
       imports: [
         {
-          "@/utils/common": ["console"]
+          "~/utils/common": ["console"]
         }
       ],
       dts: false

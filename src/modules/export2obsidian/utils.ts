@@ -1,7 +1,7 @@
-import type { MbBookNote } from "@/typings"
-import { getExcerptText } from "@/utils/note"
-import { getAncestorNodes, getNodeTree, getAllCommnets } from "@/utils/note"
-import { MN } from "@/const"
+import type { MbBookNote } from "~/typings"
+import { getExcerptText } from "~/utils/note"
+import { getAncestorNodes, getNodeTree, getAllCommnets } from "~/utils/note"
+import { MN } from "~/const"
 
 export function getExcerptNotes(node: MbBookNote) {
   return node.comments.reduce((acc, cur) => {

@@ -1,5 +1,5 @@
-import { regFlag } from "@/utils/input"
-import { isHalfWidth, SerialCode } from "@/utils/text"
+import { regFlag } from "~/utils/input"
+import { isHalfWidth, SerialCode } from "~/utils/text"
 import { AutoListPreset } from "./typings"
 
 export function addLineBreak(text: string): string {

@@ -1,15 +1,15 @@
-import { textComment } from "@/typings"
-import { CellViewType } from "@/typings/enum"
-import { unique } from "@/utils"
-import { checkPlainText, checkRegArray } from "@/utils/checkInput"
-import { showHUD, HUDController } from "@/utils/common"
-import { defineConfig } from "@/profile"
+import { textComment } from "~/typings"
+import { CellViewType } from "~/typings/enum"
+import { unique } from "~/utils"
+import { checkPlainText, checkRegArray } from "~/utils/checkInput"
+import { showHUD, HUDController } from "~/utils/common"
+import { defineConfig } from "~/profile"
 import {
   string2RegArray,
   escapeDoubleQuote,
   string2ReplaceParam,
   reverseEscape
-} from "@/utils/input"
+} from "~/utils/input"
 import {
   getAllTags,
   getExcerptText,
@@ -19,7 +19,7 @@ import {
   addTags,
   removeHighlight,
   modifyNodeTitle
-} from "@/utils/note"
+} from "~/utils/note"
 import { lang } from "./lang"
 import { renameTitle, getSerialInfo, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"

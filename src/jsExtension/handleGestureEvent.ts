@@ -1,19 +1,19 @@
-import { MN } from "@/const"
-import { actionKey4Card, actionKey4Text, dataSourceIndex } from "@/dataSource"
-import lang from "@/lang"
-import { PanelControl } from "@/modules/addon/typings"
-import { gestureHandlerController, initGesture } from "@/modules/gesture/utils"
-import { moduleKeys, isModuleON } from "@/synthesizer"
-import { IRowButton, GestureHandler } from "@/typings"
+import { MN } from "~/const"
+import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
+import lang from "~/lang"
+import { PanelControl } from "~/modules/addon/typings"
+import { gestureHandlerController, initGesture } from "~/modules/gesture/utils"
+import { moduleKeys, isModuleON } from "~/synthesizer"
+import { IRowButton, GestureHandler } from "~/typings"
 import {
   UISwipeGestureRecognizerDirection,
   StudyMode,
   DirectionOfSelection,
   DocMapSplitMode,
   GroupMode
-} from "@/typings/enum"
-import { showHUD } from "@/utils/common"
-import { reverseEscape } from "@/utils/input"
+} from "~/typings/enum"
+import { showHUD } from "~/utils/common"
+import { reverseEscape } from "~/utils/input"
 import { openPanel, closePanel } from "./switchPanel"
 import magicActionHandler from "./magicActionHandler"
 

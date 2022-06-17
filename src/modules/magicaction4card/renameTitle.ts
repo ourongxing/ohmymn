@@ -1,13 +1,13 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { IActionMethod4Card } from "@/typings"
-import { showHUD } from "@/utils/common"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { IActionMethod4Card } from "~/typings"
+import { showHUD } from "~/utils/common"
 import {
   reverseEscape,
   escapeDoubleQuote,
   string2ReplaceParam
-} from "@/utils/input"
-import { getNodeTree, modifyNodeTitle } from "@/utils/note"
-import { SerialCode } from "@/utils/text"
+} from "~/utils/input"
+import { getNodeTree, modifyNodeTitle } from "~/utils/note"
+import { SerialCode } from "~/utils/text"
 import { lang } from "./lang"
 
 const genCharArray = (char: string, len: number, step = 1): string[] => {

@@ -1,5 +1,5 @@
-import { UIView } from "@/typings"
-import { UISwipeGestureRecognizerDirection } from "@/typings/enum"
+import { UIView } from "~/typings"
+import { UISwipeGestureRecognizerDirection } from "~/typings/enum"
 
 export const initGesture = {
   swipe(

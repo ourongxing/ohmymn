@@ -1,4 +1,4 @@
-import { OSType } from "@/typings/enum"
+import { OSType } from "~/typings/enum"
 import mnaddon from "../mnaddon.json"
 
 export const MN = {

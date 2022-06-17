@@ -1,18 +1,18 @@
-import { MN } from "@/const"
-import { dataSourcePreset } from "@/dataSource"
-import lang from "@/lang"
+import { MN } from "~/const"
+import { dataSourcePreset } from "~/dataSource"
+import lang from "~/lang"
 import {
   docProfilePreset,
   globalProfilePreset,
   notebookProfilePreset,
   tempProfilePreset
-} from "@/profile"
-import { inst } from "@/settingViewController"
-import { UIWindow } from "@/typings"
-import { deepCopy } from "@/utils"
-import { getObjCClassDeclar, showHUD } from "@/utils/common"
-import { readProfile, removeProfile, writeProfile } from "@/utils/profile"
-import { Range } from "@/utils/profile/typings"
+} from "~/profile"
+import { inst } from "~/settingViewController"
+import { UIWindow } from "~/typings"
+import { deepCopy } from "~/utils"
+import { getObjCClassDeclar, showHUD } from "~/utils/common"
+import { readProfile, removeProfile, writeProfile } from "~/utils/profile"
+import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"

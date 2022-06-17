@@ -1,7 +1,7 @@
-import { Addon } from "@/const"
-import { CellViewType } from "@/typings/enum"
-import { checkInteger } from "@/utils/checkInput"
-import { defineConfig } from "@/profile"
+import { Addon } from "~/const"
+import { CellViewType } from "~/typings/enum"
+import { checkInteger } from "~/utils/checkInput"
+import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 
 const { label, help, option } = lang

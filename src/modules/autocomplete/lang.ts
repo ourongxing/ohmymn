@@ -1,4 +1,4 @@
-import { MN } from "@/const"
+import { MN } from "~/const"
 
 const zh = {
   intro: "补全单词词形，只支持动词和名词",

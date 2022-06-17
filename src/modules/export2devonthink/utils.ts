@@ -1,8 +1,8 @@
-import { renderTemplateOfNodeProperties } from "@/jsExtension/nodeProperties"
-import { MbBookNote } from "@/typings"
-import { escapeURLParam, unescapeURLParam } from "@/utils"
-import { reverseEscape } from "@/utils/input"
-import { removeHighlight } from "@/utils/note"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { MbBookNote } from "~/typings"
+import { escapeURLParam, unescapeURLParam } from "~/utils"
+import { reverseEscape } from "~/utils/input"
+import { removeHighlight } from "~/utils/note"
 import { AddTags } from "./typings"
 
 export function getDtContent(

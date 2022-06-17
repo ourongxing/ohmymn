@@ -1,4 +1,4 @@
-import { MN } from "@/const"
+import { MN } from "~/const"
 
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
