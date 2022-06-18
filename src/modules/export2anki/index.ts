@@ -8,7 +8,7 @@ import { lang } from "./lang"
 import { ExportMethod } from "./typings"
 import { AnkiConnect, checker, genAnkiNote, genUrlScheme } from "./utils"
 
-const { link, intro, lable, option, help } = lang
+const { link, intro } = lang
 
 export default defineConfig({
   name: "Export to Anki",
@@ -132,7 +132,6 @@ export default defineConfig({
               genAnkiNote(nodes[0], option),
               nodes[0].noteId!
             )
-            console.log(url)
             openUrl(url)
           } else {
             if (!ankiConnectAPI) throw "请输入 Anki Connect API"

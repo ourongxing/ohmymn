@@ -204,10 +204,10 @@ const globalProfilePreset = {
     pdfsource: "",
     mdtext: "{{allText}}",
     txtext: "{{allText}}",
-    hide: "",
+    hide: false,
     referrer: "",
     width: "",
-    paginated: ""
+    paginated: false
   },
   export2obsidian: {
     // exportMethod:[0],

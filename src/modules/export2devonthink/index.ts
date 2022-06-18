@@ -42,6 +42,12 @@ export default defineConfig({
       option: option.add_tags
     },
     {
+      type: CellViewType.Switch,
+      key: "hide",
+      label: help.hide,
+      bind: ["showTemplate", true]
+    },
+    {
       type: CellViewType.Input,
       key: "tags",
       help: help.tags,
@@ -91,12 +97,6 @@ export default defineConfig({
     },
     {
       type: CellViewType.Input,
-      key: "hide",
-      help: help.hide,
-      bind: ["showTemplate", true]
-    },
-    {
-      type: CellViewType.Input,
       key: "referrer",
       help: help.referrer,
       bind: ["showTemplate", true]
@@ -111,9 +111,9 @@ export default defineConfig({
       ]
     },
     {
-      type: CellViewType.Input,
+      type: CellViewType.Switch,
       key: "paginated",
-      help: help.paginated,
+      label: help.paginated,
       bind: [
         ["showTemplate", true],
         ["exportMethod", 0]
@@ -123,7 +123,7 @@ export default defineConfig({
   actions4card: [
     {
       type: CellViewType.Button,
-      key: "exportCard2app",
+      key: "exportCard2devonthink",
       label: lable.actions_card,
       method: async ({ nodes, option }) => {
         for (const node of nodes) {

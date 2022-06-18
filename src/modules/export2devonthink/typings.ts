@@ -3,3 +3,10 @@ export const enum AddTags {
   CardTags,
   Custom
 }
+
+export const enum ExportMethod {
+  PDF,
+  HTML,
+  Markdown,
+  Text
+}
