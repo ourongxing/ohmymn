@@ -61,20 +61,7 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
     },
     page: isRequire("page.") && {
       start: node.startPage,
-      end: node.endPage === node.startPage ? undefined : node.endPage,
-      real: isRequire("real") && {
-        start: undefine2undefine(
-          node.startPage,
-          t => t + Number(self.docProfile.addon.pageOffset ?? 0)
-        ),
-        end:
-          node.endPage === node.startPage
-            ? undefined
-            : undefine2undefine(
-                node.endPage,
-                t => t + Number(self.docProfile.addon.pageOffset ?? 0)
-              )
-      }
+      end: node.endPage === node.startPage ? undefined : node.endPage
     },
     tags: isRequire("tags") && getAllTags(node, false),
     allText: isRequire("allText") && getAllText(node),
@@ -94,13 +81,7 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
       path: undefine2undefine(
         node.docMd5,
         t => MN.db.getDocumentById(t)?.pathFile
-      ),
-      author: self.docProfile.addon.author,
-      outherInfo: self.docProfile.addon.otherInfo,
-      publisher: self.docProfile.addon.publisher,
-      publicationDate: self.docProfile.addon.publicationDate,
-      publicationPlace: self.docProfile.addon.publicationPlace,
-      type: self.docProfile.addon.type
+      )
     },
     notebook: isRequire("notebook.") && {
       title: undefine2undefine(

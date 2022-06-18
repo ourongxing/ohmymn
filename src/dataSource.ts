@@ -24,6 +24,21 @@ const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
+      label: "OhMyMN 官网：ohmymn.vercel.app",
+      link: "https://ohmymn.vercel.app"
+    },
+    {
+      type: CellViewType.PlainText,
+      label: "核心开发团队：ourongxing，Bryan",
+      link: ""
+    },
+    {
+      type: CellViewType.PlainText,
+      label: "OhMyMN 完全开源，官方支持，欢迎参与开发。",
+      link: ""
+    },
+    {
+      type: CellViewType.PlainText,
       label: "\n\n\n\n\n\n\n\n\n\n",
       link: ""
     }

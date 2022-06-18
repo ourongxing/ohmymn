@@ -11,8 +11,7 @@ const globalProfilePreset = {
     panelControl: [],
     panelPosition: [0],
     panelHeight: [1],
-    autoBackup: false,
-    showDocInfo: false
+    autoBackup: false
   },
   magicaction4card: {
     smartSelection: false,
@@ -149,15 +148,6 @@ const globalProfilePreset = {
 
 // Each document has a independent profile
 const docProfilePreset = {
-  addon: {
-    pageOffset: "0",
-    author: "",
-    publisher: "",
-    publicationDate: "",
-    publicationPlace: "",
-    type: "",
-    otherInfo: ""
-  },
   magicaction4text: {
     preOCR: false
   },

@@ -70,56 +70,6 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: label.auto_backup,
       help: help.auto_backup
-    },
-    {
-      key: "showDocInfo",
-      type: CellViewType.Switch,
-      label: label.show_doc_info
-    },
-    {
-      key: "author",
-      type: CellViewType.InlineInput,
-      label: label.author,
-      bind: ["showDocInfo", true]
-    },
-    {
-      key: "type",
-      type: CellViewType.InlineInput,
-      label: label.type,
-      bind: ["showDocInfo", true]
-    },
-    {
-      key: "publisher",
-      type: CellViewType.InlineInput,
-      label: label.publisher,
-      bind: ["showDocInfo", true]
-    },
-    {
-      key: "publicationDate",
-      type: CellViewType.InlineInput,
-      label: label.publication_date,
-      bind: ["showDocInfo", true]
-    },
-    {
-      key: "publicationPlace",
-      type: CellViewType.InlineInput,
-      label: label.publication_place,
-      bind: ["showDocInfo", true]
-    },
-    {
-      key: "pageOffset",
-      type: CellViewType.InlineInput,
-      label: label.page_offset,
-      bind: ["showDocInfo", true],
-      check({ input }) {
-        checkInteger(Number(input))
-      }
-    },
-    {
-      key: "otherInfo",
-      type: CellViewType.Input,
-      help: label.other_info,
-      bind: ["showDocInfo", true]
     }
   ]
 })
