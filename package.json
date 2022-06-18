@@ -5,12 +5,13 @@
   "license": "MIT",
   "description": "The most powerful addon of Marginnote3",
   "scripts": {
-    "build": "NODE_ENV=production tsup && cd ./dist && zip -qrm \"${npm_package_name}_v$npm_package_version.mnaddon\" *",
-    "build:iPad": "npm run build && airdrop ./dist/ohmymn*.mnaddon",
+    "dev": "tsx ./build.ts",
+    "build": "NODE_ENV=production pnpm dev && cd ./dist && zip -qrm \"${npm_package_name}_v$npm_package_version.mnaddon\" *",
+    "build:test": "NODE_ENV=production pnpm dev",
+    "build:iPad": "pnpm build && airdrop ./dist/ohmymn*.mnaddon",
     "lint:fix": "eslint . --fix --ext .ts",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write .",
-    "dev": "rollup -w --config rollup.config.ts",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -28,23 +29,21 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
-    "@rollup/plugin-json": "^4.1.0",
+    "@ourongxing/estrella": "^1.4.1",
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
-    "esbuild": "^0.14.25",
+    "esbuild": "^0.14.45",
     "esbuild-plugin-copy": "^1.1.0",
+    "esbuild-plugin-mxn-copy": "^1.0.1",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.5",
     "prettier": "^2.5.1",
-    "rollup": "^2.70.1",
-    "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-typescript2": "^0.31.2",
-    "tsup": "^5.12.1",
+    "tsx": "^3.4.3",
     "typescript": "^4.6.2",
-    "unplugin-auto-import": "^0.6.4"
+    "unplugin-auto-import": "^0.8.0"
   }
 }

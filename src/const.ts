@@ -6,7 +6,7 @@ export const MN = {
   mainPath: "",
   studyController: () =>
     Application.sharedInstance().studyController(self.window),
-  isMac: Application.sharedInstance().osType == OSType.macOS,
+  isMac: Application.sharedInstance().osType == OSType.iPhoneOS,
   app: Application.sharedInstance(),
   db: Database.sharedInstance(),
   isZH:

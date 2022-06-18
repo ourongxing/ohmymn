@@ -1,4 +1,8 @@
-import { UILocalNotification, UIViewController, UIWindow } from "typings/UIKit"
+import {
+  UILocalNotification,
+  UIViewController,
+  UIWindow
+} from "~/typings/UIKit"
 
 /**
  * LifeCycle of Addon

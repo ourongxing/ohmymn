@@ -1,5 +1,4 @@
-import { UIEdgeInsets } from "."
-import { UIImageOrientation } from "./enum"
+import { UIEdgeInsets, UIImageOrientation } from "./enum"
 
 declare global {
   class UIImage {

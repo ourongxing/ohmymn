@@ -18,6 +18,7 @@ import magicaction4text from "./modules/magicaction4text"
 import addon from "./modules/addon"
 import anotherautodef from "./modules/anotherautodef"
 import export2obsidian from "./modules/export2obsidian"
+
 export const modules = {
   gesture,
   anotherautotitle,

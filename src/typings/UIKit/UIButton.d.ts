@@ -1,5 +1,5 @@
-import { UIControl, UIEdgeInsets, UILabel } from "."
-import { NSLineBreakMode, UIButtonType } from "./enum"
+import { UIControl, UILabel } from "."
+import { NSLineBreakMode, UIButtonType, UIEdgeInsets } from "./enum"
 
 export enum UIControlState {}
 declare global {
