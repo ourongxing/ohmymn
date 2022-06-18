@@ -57,7 +57,7 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
   const params = []
   for (const bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
-      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\)?/, `$1😎"$2`)
+      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
     if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""

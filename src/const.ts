@@ -6,12 +6,10 @@ export const MN = {
   mainPath: "",
   studyController: () =>
     Application.sharedInstance().studyController(self.window),
-  isMac: Application.sharedInstance().osType == OSType.iPhoneOS,
+  isMac: Application.sharedInstance().osType == OSType.macOS,
   app: Application.sharedInstance(),
   db: Database.sharedInstance(),
-  isZH:
-    NSLocale.preferredLanguages().length &&
-    NSLocale.preferredLanguages()[0].startsWith("zh")
+  isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh")
 }
 
 export const Addon = {
