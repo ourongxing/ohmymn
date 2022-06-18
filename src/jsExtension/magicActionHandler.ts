@@ -1,13 +1,8 @@
-import { Addon, MN } from "~/const"
+import { MN } from "~/const"
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
-import {
-  checkInputCorrect,
-  moduleKeys,
-  actions4text,
-  actions4card
-} from "~/synthesizer"
+import { checkInputCorrect, actions4text, actions4card } from "~/synthesizer"
 import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/typings/enum"
 import { showHUD, HUDController } from "~/utils/common"
