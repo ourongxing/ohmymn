@@ -15,18 +15,19 @@ https://github.com/mnaddon/ohmymn
 version: ${mnaddon.version} by ${mnaddon.author}
 */
 `
+
 const outDir = isProd
   ? "./dist/"
   : os.homedir() +
     `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/${mnaddon.addonid}/`
 
-function clear(path: string): Plugin {
+function clear(dir: string): Plugin {
   return {
     name: "Clear",
     setup(build) {
       build.onStart(() => {
-        if (fs.existsSync(path)) {
-          fs.rmSync(path, { recursive: true })
+        if (fs.existsSync(dir)) {
+          fs.rmSync(dir, { recursive: true })
         }
       })
     }
