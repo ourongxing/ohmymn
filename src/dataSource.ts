@@ -1,9 +1,10 @@
 import lang from "./lang"
+import { more } from "./module"
 import { constModules, modules } from "./module"
 import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./typings/enum"
-import { SerialCode } from "./utils/text"
+import { SerialCode } from "./utils/number"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -17,33 +18,6 @@ export const actionKey4Text: typeof actionKey4Card = [
   { key: "none" },
   { key: "open_panel" }
 ]
-
-const more: ISection = {
-  header: "More",
-  key: "more",
-  rows: [
-    {
-      type: CellViewType.PlainText,
-      label: "OhMyMN 官网：ohmymn.vercel.app",
-      link: "https://ohmymn.vercel.app"
-    },
-    {
-      type: CellViewType.PlainText,
-      label: "核心开发团队：ourongxing，Bryan",
-      link: ""
-    },
-    {
-      type: CellViewType.PlainText,
-      label: "OhMyMN 完全开源，官方支持，欢迎参与开发。",
-      link: ""
-    },
-    {
-      type: CellViewType.PlainText,
-      label: "\n\n\n\n\n\n\n\n\n\n",
-      link: ""
-    }
-  ]
-}
 
 const genSection = (config: IConfig): ISection => {
   const rows: IRow[] = [

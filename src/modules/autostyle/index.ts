@@ -2,10 +2,10 @@ import { CellViewType } from "~/typings/enum"
 import { defineConfig } from "~/profile"
 import { reverseEscape } from "~/utils/input"
 import { getExcerptNotes } from "~/utils/note"
-import { SerialCode } from "~/utils/text"
 import { lang } from "./lang"
 import { ChangeStyle } from "./typings"
 import { modifyStyle } from "./utils"
+import { SerialCode } from "~/utils/number"
 
 const { help, intro, option, label, link, check } = lang
 

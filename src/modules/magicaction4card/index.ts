@@ -21,9 +21,9 @@ import {
   modifyNodeTitle
 } from "~/utils/note"
 import { lang } from "./lang"
-import { renameTitle, getSerialInfo, getLayerSerialInfo } from "./renameTitle"
+import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
-
+import { getSerialInfo } from "~/utils/number"
 const { help, option, intro, label, link, hud } = lang
 
 export default defineConfig({
