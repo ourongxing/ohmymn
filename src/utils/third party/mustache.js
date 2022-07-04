@@ -437,11 +437,12 @@ Context.prototype.lookup = function lookup(name) {
          * of an autoboxed primitive, such as the length of a string.
          **/
         while (intermediateValue != null && index < names.length) {
-          if (index === names.length - 1)
+          if (index === names.length - 1) {
+            // 如果使用点，是否有或原生有这个属性
             lookupHit =
               hasProperty(intermediateValue, names[index]) ||
               primitiveHasOwnProperty(intermediateValue, names[index])
-
+          }
           intermediateValue = intermediateValue[names[index++]]
         }
       } else {
@@ -469,6 +470,7 @@ Context.prototype.lookup = function lookup(name) {
         lookupHit = hasProperty(context.view, name)
       }
 
+      // 说明有这个数据源
       if (lookupHit) {
         value = intermediateValue
         break
@@ -482,7 +484,7 @@ Context.prototype.lookup = function lookup(name) {
 
   if (isFunction(value)) value = value.call(this.view)
 
-  return value
+  return lookupHit ? value : `{{${name}}}`
 }
 
 /**
@@ -608,9 +610,14 @@ Writer.prototype.renderTokens = function renderTokens(
     else if (symbol === "name") value = this.unescapedValue(token, context)
     else if (symbol === "text") value = this.rawValue(token)
 
-    if (value !== undefined) buffer += value
+    if (value) {
+      if (isArray(value)) {
+        buffer += value.join("; ")
+      } else if (typeof value === "object") {
+        buffer += JSON.stringify(value)
+      } else buffer += value
+    }
   }
-
   return buffer
 }
 
@@ -742,7 +749,7 @@ Writer.prototype.renderPartial = function renderPartial(
 
 Writer.prototype.unescapedValue = function unescapedValue(token, context) {
   var value = context.lookup(token[1])
-  if (value != null) return value
+  if (value) return value
 }
 
 Writer.prototype.escapedValue = function escapedValue(token, context, config) {

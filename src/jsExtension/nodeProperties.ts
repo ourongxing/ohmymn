@@ -8,6 +8,7 @@ import {
   getExcerptText,
   getAllCommnets
 } from "~/utils/note"
+import { getSerialInfo } from "~/utils/number"
 import { render } from "~/utils/third party/mustache"
 
 /** undefine can be auto hidden when using Mustache */
@@ -20,27 +21,41 @@ const undefine2undefine = (v: any, f: (t: any) => any) => {
   return res
 }
 
+const func: {
+  [key: string]: () => (text: string, render: (p: string) => string) => string
+} = {
+  nohl: () => (text, render) => removeHighlight(render(text)),
+  blod: () => (text, render) =>
+    render(text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"),
+  clozeSync: () => (text, render) =>
+    render(text).replace(/\*\*(.+?)\*\*/g, "{{c1::$1}}"),
+  cloze: () => (text, render) => {
+    let index = 1
+    return render(text).replace(/\*\*(.+?)\*\*/g, (_, m) => {
+      return `{{c${index++}::${m}}}}`
+    })
+  },
+  lower: () => (text, render) => render(text).toLowerCase(),
+  upper: () => (text, render) => render(text).toUpperCase(),
+  join: () => (text, render) => {
+    if (text.match(/{{.+}}/g)?.length !== 1) return render(text)
+    const [front, mustache, behind] = text.trimStart().split(/({{.+?}})/, 3)
+    const dataArr = render(mustache).split(/; /)
+    if (/\$\[.+\]/.test(front)) {
+      const serialArr = getSerialInfo(front, dataArr.length, "\\$")
+      return dataArr
+        .map((k, i) => front.replace(/\$\[(.+)\]/, serialArr[i]) + k)
+        .join(behind)
+    }
+    return dataArr.map(k => front + k).join(behind)
+  }
+}
+
 export const getNodeProperties = (node: MbBookNote, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
   return {
-    nohl: () => (text: string, render: (p: string) => string) =>
-      removeHighlight(render(text)),
-    blod: () => (text: string, render: (p: string) => string) =>
-      render(text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"),
-    clozeSync: () => (text: string, render: (p: string) => string) =>
-      render(text).replace(/\*\*(.+?)\*\*/g, "{{c1::$1}}"),
-    cloze: () => (text: string, render: (p: string) => string) => {
-      let index = 1
-      return render(text).replace(/\*\*(.+?)\*\*/g, (_, m) => {
-        return `{{c${index++}::${m}}}}`
-      })
-    },
-    lower: () => (text: string, render: (p: string) => string) =>
-      render(text).toLowerCase(),
-    upper: () => (text: string, render: (p: string) => string) =>
-      render(text).toUpperCase(),
-
+    ...func,
     titles:
       isRequire("titles") &&
       undefine2undefine(node.noteTitle, t => t.split(/\s*[;；]\s*/)),
