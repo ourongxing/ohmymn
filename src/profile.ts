@@ -15,7 +15,7 @@ const globalProfilePreset = {
   },
   magicaction4card: {
     smartSelection: false,
-    defaultMergeText: "\\n"
+    defaultMergeText: `%["1"]. $&\\n\\n`
   },
   magicaction4text: {
     noteOptions: []

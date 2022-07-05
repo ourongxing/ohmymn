@@ -39,10 +39,11 @@ export default defineConfig({
     },
     {
       key: "defaultMergeText",
-      type: CellViewType.InlineInput,
-      label: "合并文字的分隔符",
+      type: CellViewType.Input,
+      help: "合并卡片文字的修饰（$&代表每一段）",
       check({ input }) {
         checkPlainText(input)
+        if (!input.includes("$&")) throw "缺少 $&"
       }
     }
   ],
@@ -167,15 +168,25 @@ export default defineConfig({
       help: "仅支持合并文字摘录和文字评论，如果存在图片，则在合并后会置顶。",
       method: ({ option, nodes }) => {
         const { defaultMergeText } = self.globalProfile.magicaction4card
-        const separator = reverseEscape(
+        const [front, behind] = reverseEscape(
           `${escapeDoubleQuote(defaultMergeText)}`,
           true
-        )
+        ).split("$&")
         for (const node of nodes) {
-          const allText = [
+          const dataArr = [
             ...getExcerptText(node, true).ocr,
             ...getAllCommnets(node).nopic
-          ].join(separator)
+          ]
+          const allText = (() => {
+            if (/%\[.+\]/.test(front)) {
+              const serialArr = getSerialInfo(front, dataArr.length)
+              return dataArr
+                .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
+                .join(behind)
+            }
+            return dataArr.map(k => front + k).join(behind)
+          })()
+
           const linkComments: textComment[] = []
           const tags = getAllTags(node, false)
           while (node.comments.length) {

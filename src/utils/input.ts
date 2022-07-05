@@ -60,7 +60,8 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
       .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
-    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""
+    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr)))
+      throw "invalid replace param"
     params.push({
       regexp: string2Reg(regString),
       // newSubStr : always have double quotes
