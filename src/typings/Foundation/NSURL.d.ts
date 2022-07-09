@@ -31,7 +31,7 @@ declare global {
     /**
      * @param path NSString*
      */
-    static fileURLWithPath(path: string): WrapperObj<any>
+    static fileURLWithPath(path: string): NSURL
     /**
      * @param path const char*
      * @param baseURL NSURL*

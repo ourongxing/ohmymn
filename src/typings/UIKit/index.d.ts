@@ -18,6 +18,7 @@ export * from "./UITextField"
 export * from "./UIVIewController"
 export * from "./UIView"
 export * from "./UIGestureRecognizer"
+export * from "./UIWebView"
 
 export type UIWindow = any
 export type UILocalNotification = any

@@ -16,6 +16,17 @@ export * from "./UIKit"
 
 declare global {
   const self: {
+    html: string
+    text: string
+    respath: string
+    retfunc: (r: {
+      html: string
+      text: string
+      dirty: boolean
+      size?: CGSize
+    }) => void
+    webView: UIWebView
+    renderTemplate: string
     view: UIView
     window: UIWindow
     docmd5: string | undefined
@@ -47,6 +58,7 @@ declare global {
     notebookProfile: INotebookProfile
     dataSource: ISection[]
     settingViewController: UITableViewController
+    markdownEditController: UIWebView
     popoverController: UIPopoverController
     studyController: StudyController
   }

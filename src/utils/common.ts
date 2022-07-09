@@ -53,6 +53,12 @@ const delay = (sec: number) =>
     NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve)
   )
 
+const evaluateJavaScript = (webView: UIWebView, script: string) => {
+  return new Promise<string>(resolve =>
+    webView.evaluateJavaScript(script, resolve)
+  )
+}
+
 const delayBreak = async (
   times: number,
   sec: number,
@@ -160,5 +166,6 @@ export {
   copy,
   NSValue2String,
   CGRectValue2CGRect,
-  CGRectString2CGRect
+  CGRectString2CGRect,
+  evaluateJavaScript
 }
