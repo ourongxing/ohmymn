@@ -23,4 +23,8 @@ declare global {
     row: number
     section: number
   }
+
+  class NSString {
+    static stringWithContentsOfFile(path: string): string
+  }
 }
