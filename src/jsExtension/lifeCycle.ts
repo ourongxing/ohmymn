@@ -38,126 +38,108 @@ const SettingViewController = JSB.defineClass(
 /** Cache window */
 let _window: UIWindow
 
-const addonDidConnect = () => {
-  console.log("Addon connected", "lifeCycle")
-}
-
-const sceneWillConnect = () => {
-  console.log("Open a new window", "lifeCycle")
-  _window = self.window
-  // Multiple windows will share global variables, so they need to be saved to self.
-  self.panelStatus = false
-  self.globalProfile = deepCopy(globalProfilePreset)
-  self.docProfile = deepCopy(docProfilePreset)
-  self.notebookProfile = deepCopy(notebookProfilePreset)
-  self.tempProfile = deepCopy(tempProfilePreset)
-  self.dataSource = deepCopy(dataSourcePreset)
-  self.OCROnline = { times: 0, status: "free" }
-  self.customSelectedNodes = []
-  self.settingViewController = new SettingViewController()
-  self.settingViewController.dataSource = self.dataSource
-  self.settingViewController.window = self.window
-  self.settingViewController.profile = self.globalProfile
-  self.settingViewController.docProfile = self.docProfile
-  self.settingViewController.notebookProfile = self.notebookProfile
-}
-
-const notebookWillOpen = (notebookid: string) => {
-  console.log("Open a notebook", "lifeCycle")
-  self.notebookid = notebookid
-  if (self.docmd5)
-    readProfile({
-      range: Range.Notebook,
-      notebookid
-    })
-  // Add hooks, aka observers
-  eventHandlers.add()
-  gestureHandlers().add()
-}
-const documentDidOpen = (docmd5: string) => {
-  // Switch document, read doc profile
-  if (self.docmd5)
-    readProfile({
-      range: Range.Doc,
-      docmd5
-    })
-  else {
-    // First open a document, init all profile
-    readProfile({
-      range: Range.All,
-      docmd5,
-      notebookid: self.notebookid
-    })
-    UIApplication.sharedApplication().idleTimerDisabled =
-      self.globalProfile.addon.screenAlwaysOn
-  }
-  self.docmd5 = docmd5
-  console.log("Open a document", "lifeCycle")
-}
-
-const notebookWillClose = (notebookid: string) => {
-  console.log("Close a notebook", "lifeCycle")
-  removeLastCommentCacheTitle()
-  closePanel()
-  writeProfile({ range: Range.Notebook, notebookid })
-  // Remove hooks, aka observers
-  eventHandlers.remove()
-  gestureHandlers().remove()
-}
-
-const documentWillClose = (docmd5: string) => {
-  console.log("Close a document", "lifeCycle")
-  writeProfile({ range: Range.Doc, docmd5 })
-}
-
-// Not triggered on ipad
-const sceneDidDisconnect = () => {
-  console.log("Close a window", "lifeCycle")
-  if (self.docmd5)
-    writeProfile({
-      range: Range.All,
-      docmd5: self.docmd5,
-      notebookid: self.notebookid
-    })
-}
-
-const addonWillDisconnect = () => {
-  console.log("Addon disconected", "lifeCycle")
-  // could not get the value of self.window
-  showHUD(lang.disconnect_addon, 2, _window)
-  removeProfile()
-}
-
-const sceneWillResignActive = () => {
-  // or go to the background
-  console.log("Window is inactivation", "lifeCycle")
-  removeLastCommentCacheTitle()
-  !MN.isMac && closePanel()
-  if (self.docmd5)
-    writeProfile({
-      range: Range.All,
-      docmd5: self.docmd5,
-      notebookid: self.notebookid
-    })
-}
-
-const sceneDidBecomeActive = () => {
-  layoutViewController()
-  // or go to the foreground
-  console.log("Window is activated", "lifeCycle")
-}
-
 export const clsMethons = {
-  addonWillDisconnect
+  addonWillDisconnect() {
+    console.log("Addon disconected", "lifeCycle")
+    // could not get the value of self.window
+    showHUD(lang.disconnect_addon, 2, _window)
+    removeProfile()
+  }
 }
 
 export default {
-  sceneWillConnect,
-  notebookWillOpen,
-  documentDidOpen,
-  notebookWillClose,
-  documentWillClose,
-  sceneDidDisconnect,
-  sceneWillResignActive,
-  sceneDidBecomeActive
+  addonDidConnect() {
+    console.log("Addon connected", "lifeCycle")
+  },
+  sceneWillConnect() {
+    console.log("Open a new window", "lifeCycle")
+    _window = self.window
+    // Multiple windows will share global variables, so they need to be saved to self.
+    self.panelStatus = false
+    self.globalProfile = deepCopy(globalProfilePreset)
+    self.docProfile = deepCopy(docProfilePreset)
+    self.notebookProfile = deepCopy(notebookProfilePreset)
+    self.tempProfile = deepCopy(tempProfilePreset)
+    self.dataSource = deepCopy(dataSourcePreset)
+    self.OCROnline = { times: 0, status: "free" }
+    self.customSelectedNodes = []
+    self.settingViewController = new SettingViewController()
+    self.settingViewController.dataSource = self.dataSource
+    self.settingViewController.window = self.window
+    self.settingViewController.profile = self.globalProfile
+    self.settingViewController.docProfile = self.docProfile
+    self.settingViewController.notebookProfile = self.notebookProfile
+  },
+  notebookWillOpen(notebookid: string) {
+    console.log("Open a notebook", "lifeCycle")
+    self.notebookid = notebookid
+    if (self.docmd5)
+      readProfile({
+        range: Range.Notebook,
+        notebookid
+      })
+    // Add hooks, aka observers
+    eventHandlers.add()
+    gestureHandlers().add()
+  },
+  documentDidOpen(docmd5: string) {
+    // Switch document, read doc profile
+    if (self.docmd5)
+      readProfile({
+        range: Range.Doc,
+        docmd5
+      })
+    else {
+      // First open a document, init all profile
+      readProfile({
+        range: Range.All,
+        docmd5,
+        notebookid: self.notebookid
+      })
+      UIApplication.sharedApplication().idleTimerDisabled =
+        self.globalProfile.addon.screenAlwaysOn
+    }
+    self.docmd5 = docmd5
+    console.log("Open a document", "lifeCycle")
+  },
+  notebookWillClose(notebookid: string) {
+    console.log("Close a notebook", "lifeCycle")
+    removeLastCommentCacheTitle()
+    closePanel()
+    writeProfile({ range: Range.Notebook, notebookid })
+    // Remove hooks, aka observers
+    eventHandlers.remove()
+    gestureHandlers().remove()
+  },
+  documentWillClose(docmd5: string) {
+    console.log("Close a document", "lifeCycle")
+    writeProfile({ range: Range.Doc, docmd5 })
+  },
+  // Not triggered on ipad
+  sceneDidDisconnect() {
+    console.log("Close a window", "lifeCycle")
+    if (self.docmd5)
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5,
+        notebookid: self.notebookid
+      })
+  },
+  sceneWillResignActive() {
+    // or go to the background
+    console.log("Window is inactivation", "lifeCycle")
+    removeLastCommentCacheTitle()
+    !MN.isMac && closePanel()
+    if (self.docmd5)
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5,
+        notebookid: self.notebookid
+      })
+  },
+  sceneDidBecomeActive() {
+    layoutViewController()
+    // or go to the foreground
+    console.log("Window is activated", "lifeCycle")
+  }
 }
