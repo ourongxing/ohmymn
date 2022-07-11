@@ -60,9 +60,47 @@ export function addLineBreak(text: string): string {
 }
 
 export function addNumber(text: string, fnKey: number): string {
-  if (fnKey === 0) return text
-  let index = 1
-  return text.replace(/^/gm, k => {
-    return `${index++}. ${k}`
-  })
+  if (fnKey <= 0) return text
+  switch (fnKey) {
+    case 0:
+      return text
+    case 2:
+    case 3: {
+      const code = [SerialCode.capital_letter, SerialCode.lowercase_letter][
+        fnKey - 2
+      ]
+      let index = 0
+      return text.replace(/^/gm, k => {
+        return `${code[index++]}. ${k}`
+      })
+    }
+    case 4:
+    case 5: {
+      const code = [
+        SerialCode.chinese_capital_number,
+        SerialCode.chinese_number
+      ][fnKey - 4]
+      let index = 0
+      return text.replace(/^/gm, k => {
+        return `${code[index++]}、${k}`
+      })
+    }
+    case 6:
+    case 7: {
+      const code = [
+        SerialCode.hollow_circle_number,
+        SerialCode.solid_circle_number
+      ][fnKey - 6]
+      let index = 0
+      return text.replace(/^/gm, k => {
+        return `${code[index++]} ${k}`
+      })
+    }
+    default: {
+      let index = 1
+      return text.replace(/^/gm, k => {
+        return `${index++}. ${k}`
+      })
+    }
+  }
 }
