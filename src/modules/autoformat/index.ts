@@ -67,7 +67,7 @@ export default defineConfig({
           if (option != Format.Excerpt && title) {
             let newTitle = formatText(title)
             if (self.globalProfile.autoformat.formatTitle)
-              newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("\n")
+              newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("; ")
             modifyNodeTitle(node, newTitle)
           }
           if (option != Format.Title) {
