@@ -29,6 +29,20 @@ export default defineConfig({
       }
     },
     {
+      key: "collins",
+      type: CellViewType.MuiltSelect,
+      option: ["零", "一", "二", "三", "四", "五"],
+      label: "柯林斯星级筛选",
+      help: "星越多代表越常用，但也越简单"
+    },
+    {
+      key: "dataSource",
+      type: CellViewType.Select,
+      option: ["在线 API", "本地数据库"],
+      label: "数据来源",
+      help: "本地数据库体积较大，但更快，质量更高"
+    },
+    {
       key: "fillWordInfo",
       type: CellViewType.Select,
       option: option.fill_word_info,
@@ -69,9 +83,12 @@ export default defineConfig({
       label: "英文单词制卡",
       method: async ({ nodes, option }) => {
         if (option === -1) return
-        if (nodes.length > 5) {
-          showHUD(lang.error.forbid, 2)
-          nodes = nodes.slice(0, 5)
+        const { dataSource } = self.globalProfile.autocomplete
+        if (dataSource[0] === 0) {
+          if (nodes.length > 5) {
+            showHUD(lang.error.forbid, 2)
+            nodes = nodes.slice(0, 5)
+          }
         }
         const getCompletedWord = (node: MbBookNote) => {
           const text = node?.noteTitle?.split(/\s*[;；]\s*/)[0]

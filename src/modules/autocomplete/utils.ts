@@ -43,12 +43,37 @@ async function getEN(text: string) {
 }
 
 async function getWordInfo(word: string): Promise<Dict> {
-  const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + word).then(
-    res => res.json()
-  )
-  const info = <Dict[]>res.filter((info: any) => info.word == info.sw)
-  if (!info.length) throw error.not_find_word
-  return info[0]
+  const { dataSource } = self.globalProfile.autocomplete
+  if (dataSource[0] === 0) {
+    const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + word).then(
+      res => res.json()
+    )
+    const info = <Dict[]>res.filter((info: any) => info.word == info.sw)
+    if (!info.length) throw error.not_find_word
+    return info[0]
+  } else {
+    if (!self.enDict) {
+      if (
+        NSFileManager.defaultManager().fileExistsAtPath(
+          `${MN.mainPath}/dict.db`
+        )
+      ) {
+        self.enDict = SQLiteDatabase.databaseWithPath(`${MN.mainPath}/dict.db`)
+        self.enDict.open()
+      } else throw "没找到本地数据库"
+    }
+    const query = self.enDict.executeQueryWithArgumentsInArray(
+      `SELECT * FROM stardict WHERE word = '${word}'`,
+      []
+    )
+    let info!: Dict
+    while (query.next()) {
+      info = query.resultDictionary() as Dict
+    }
+    if (!info) throw error.not_find_word
+    query.close()
+    return info
+  }
 }
 
 function getWordEx(lemma: string, ex: string | OCNull) {
@@ -155,6 +180,13 @@ export async function completeWord(text: string, note: MbBookNote) {
     if (!/^\w[a-z]+$/.test(pureText)) return undefined
     const word = pureText.toLowerCase()
     const info = await getLemmaInfo(word)
+    const { collins } = self.globalProfile.autocomplete
+    if (
+      (!isOCNull(info.collins) && !collins.includes(Number(info.collins))) ||
+      (isOCNull(info.collins) && !collins.includes(0))
+    ) {
+      return undefined
+    }
     const title = getWordEx(info.word, info.exchange)
     const { context, translation } = await (async () => {
       const { autoContext, translateContext } = self.globalProfile.autocomplete

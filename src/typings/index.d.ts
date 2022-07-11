@@ -28,6 +28,7 @@ declare global {
     webView: UIWebView
     renderTemplate: string
     view: UIView
+    enDict: SQLiteDatabase
     window: UIWindow
     docmd5: string | undefined
     noteid: string

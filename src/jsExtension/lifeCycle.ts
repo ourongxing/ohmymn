@@ -140,6 +140,7 @@ const sceneWillResignActive = () => {
       notebookid: self.notebookid
     })
 }
+
 const sceneDidBecomeActive = () => {
   layoutViewController()
   // or go to the foreground
