@@ -96,20 +96,32 @@ export default async function (res: string, key: string) {
             const { markdown } = self.globalProfile.autoocr
             // 0. markdown
             // 1. mymarkdown
-            if (markdown[0] === 0) {
-              lastFocusNote.appendHtmlComment(
-                "```math\n" + res + "\n```",
-                "```math\n" + res + "\n```",
-                { width: 340, height: 100 },
-                "MarkDownEditor"
-              )
-            } else
-              lastFocusNote.appendHtmlComment(
-                res,
-                res,
-                { width: 340, height: 100 },
-                "MarkdownEditor"
-              )
+            switch (markdown[0]) {
+              case 0:
+                lastFocusNote.appendHtmlComment(
+                  "```math\n" + res + "\n```",
+                  "```math\n" + res + "\n```",
+                  { width: 508, height: 100 },
+                  "MarkDownEditor"
+                )
+                break
+              case 1:
+                lastFocusNote.appendHtmlComment(
+                  res,
+                  res,
+                  { width: 508, height: 100 },
+                  "MarkdownEditor"
+                )
+                break
+              case 2:
+                lastFocusNote.appendHtmlComment(
+                  res,
+                  res,
+                  { width: 508, height: 100 },
+                  "MilkdownEditor"
+                )
+                break
+            }
           } else lastFocusNote.appendTextComment(res)
       }
     })

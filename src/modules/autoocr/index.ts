@@ -1,8 +1,6 @@
-import { Addon } from "~/const"
-import { CellViewType, UIAlertViewStyle } from "~/typings/enum"
-import { showHUD, openUrl, copy } from "~/utils/common"
+import { CellViewType } from "~/typings/enum"
+import { showHUD } from "~/utils/common"
 import { defineConfig } from "~/profile"
-import popup from "~/utils/popup"
 import { lang } from "./lang"
 import {
   baiduFormulaOCR,
@@ -50,7 +48,7 @@ export default defineConfig({
     {
       key: "markdown",
       type: CellViewType.Select,
-      option: ["Markdown", "myMarkDown"],
+      option: ["Markdown", "myMarkDown", "Milkdown"],
       label: "使用的 Markdown 插件"
     },
     {
@@ -88,11 +86,12 @@ export default defineConfig({
       option: option.formulaOCR,
       method: async ({ imgBase64, option }) => {
         try {
-          const res =
+          const res = (
             self.globalProfile.autoocr.formulaOCRProviders[0] === 0
               ? await baiduFormulaOCR(imgBase64)
               : await mathpixOCR(imgBase64)
-          return [res, `$${res}$`, `$$${res}$$`][option]
+          ).trim()
+          return [res, `$${res}$`, `$$\n${res}\n$$`][option]
         } catch (err) {
           showHUD(String(err), 2)
         }
