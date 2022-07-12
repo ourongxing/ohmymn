@@ -137,7 +137,8 @@ const handleMagicAction = async ({
         )
 
         const noNeedSmartSelection =
-          key === "renameTitle" && /#\[(.+)\]/.test(content)
+          (key === "renameTitle" && /#\[(.+)\]/.test(content)) ||
+          key === "manageProfile"
 
         if (
           self.globalProfile.magicaction4card.smartSelection &&

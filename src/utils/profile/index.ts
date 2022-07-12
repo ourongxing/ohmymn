@@ -14,7 +14,7 @@ import { dateFormat, deepCopy } from ".."
 import { showHUD } from "../common"
 import { undoGroupingWithRefresh } from "../note"
 import { selectIndex } from "../popup"
-import Base64 from "../third party/base64"
+import { decode, encode } from "../third party/base64"
 import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile } from "./utils"
@@ -236,18 +236,18 @@ const writeProfile2Card = (node: MbBookNote) => {
     node.noteTitle = `OhMyMN 配置`
     const { childNotes } = node
     if (!childNotes?.length) return
-    const data = Base64.encode(
+    const data = encode(
       JSON.stringify({
         allDocProfileTemp: allDocProfile,
         allGlobalProfileTemp: allGlobalProfile,
-        allNotebookTemp: allNotebookProfile
+        allNotebookProfileTemp: allNotebookProfile
       })
     )
     const dataLen = data.length
     const step = Math.round(dataLen / childNotes.length)
     for (let i = 0, j = 0; i < dataLen; i += step, j++) {
       childNotes[j].excerptText = data.slice(i, i + step)
-      childNotes[j].noteTitle = ""
+      childNotes[j].noteTitle = String(j)
     }
   })
 }
@@ -269,22 +269,33 @@ export const manageProfileAction = async (node: MbBookNote, option: number) => {
     // Read
   } else {
     try {
-      const { childNotes } = node
-      const text = childNotes?.reduce((acc, cur) => {
-        acc += cur.excerptText
-        return acc
-      }, "")
-      if (text) {
+      if (node.childNotes?.length) {
+        const tmp = node.childNotes.map(k => ({
+          text: k.excerptText,
+          title: k.noteTitle
+        }))
+
+        const text = tmp
+          .sort((a, b) => Number(a.title) - Number(b.title))
+          .reduce((acc, cur) => {
+            acc += cur.text
+            return acc
+          }, "")
+
         const {
           allDocProfileTemp,
           allGlobalProfileTemp,
-          allNotebookTemp
+          allNotebookProfileTemp
         }: {
           allDocProfileTemp: typeof allDocProfile
           allGlobalProfileTemp: typeof allGlobalProfile
-          allNotebookTemp: typeof allNotebookProfile
-        } = JSON.parse(Base64.decode(text))
-        if (allDocProfile && allGlobalProfileTemp && allNotebookProfile) {
+          allNotebookProfileTemp: typeof allNotebookProfile
+        } = JSON.parse(decode(text))
+        if (
+          allDocProfileTemp &&
+          allGlobalProfileTemp &&
+          allNotebookProfileTemp
+        ) {
           const index = await selectIndex(
             lang.profile_manage.select.array,
             Addon.title,
@@ -294,13 +305,13 @@ export const manageProfileAction = async (node: MbBookNote, option: number) => {
             case ManageProfilePart.All:
               allGlobalProfile = allGlobalProfileTemp
               allDocProfile = allDocProfileTemp
-              allNotebookProfile = allNotebookTemp
+              allNotebookProfile = allNotebookProfileTemp
               break
             case ManageProfilePart.Doc:
               allDocProfile = allDocProfileTemp
               break
             case ManageProfilePart.Notebook:
-              allNotebookProfile = allNotebookTemp
+              allNotebookProfile = allNotebookProfileTemp
               break
             case ManageProfilePart.Global1:
             case ManageProfilePart.Global2:
@@ -322,7 +333,8 @@ export const manageProfileAction = async (node: MbBookNote, option: number) => {
           showHUD(lang.profile_manage.success)
         } else throw ""
       } else throw ""
-    } catch {
+    } catch (err) {
+      console.error(err)
       showHUD(lang.profile_manage.fail)
     }
   }
