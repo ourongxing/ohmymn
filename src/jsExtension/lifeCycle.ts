@@ -10,7 +10,7 @@ import {
 import { inst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
 import { deepCopy } from "~/utils"
-import { getObjCClassDeclar, showHUD } from "~/utils/common"
+import { getObjCClassDeclar, isfileExists, showHUD } from "~/utils/common"
 import { readProfile, removeProfile, writeProfile } from "~/utils/profile"
 import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
@@ -44,13 +44,21 @@ export const clsMethons = {
     // could not get the value of self.window
     showHUD(lang.disconnect_addon, 2, _window)
     removeProfile()
+  },
+  addonDidConnect() {
+    console.log("Addon connected", "lifeCycle")
+    if (
+      !isfileExists(`${MN.mainPath}/dict.db`) &&
+      isfileExists(`${MN.mainPath}/dict.zip`)
+    )
+      ZipArchive.unzipFileAtPathToDestination(
+        `${MN.mainPath}/dict.zip`,
+        MN.mainPath
+      )
   }
 }
 
 export default {
-  addonDidConnect() {
-    console.log("Addon connected", "lifeCycle")
-  },
   sceneWillConnect() {
     console.log("Open a new window", "lifeCycle")
     _window = self.window

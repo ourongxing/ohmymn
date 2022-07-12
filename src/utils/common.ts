@@ -149,6 +149,10 @@ function CGRectValue2CGRect(v: NSValue) {
   return CGRectString2CGRect(NSValue2String(v))
 }
 
+function isfileExists(path: string) {
+  return NSFileManager.defaultManager().fileExistsAtPath(path)
+}
+
 export {
   console,
   showHUD,
@@ -167,5 +171,6 @@ export {
   NSValue2String,
   CGRectValue2CGRect,
   CGRectString2CGRect,
-  evaluateJavaScript
+  evaluateJavaScript,
+  isfileExists
 }

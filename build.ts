@@ -49,7 +49,7 @@ build({
   pure: ["console.log", "console.error", "console.assert", "console.warn"],
   bundle: true,
   plugins: [
-    // clear(outDir),
+    clear(outDir),
     AutoImport({
       imports: [
         {
@@ -63,7 +63,7 @@ build({
         "assets/logo.png",
         "mnaddon.json",
         "assets/icon",
-        "assets/dict.db"
+        "assets/dict.zip"
       ].map(k => ({
         from: k,
         to: outDir

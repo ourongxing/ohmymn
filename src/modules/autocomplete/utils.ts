@@ -1,6 +1,11 @@
 import { Addon, MN } from "~/const"
 import { MbBookNote } from "~/typings"
-import { CGRectValue2CGRect, isOCNull, showHUD } from "~/utils/common"
+import {
+  CGRectValue2CGRect,
+  isfileExists,
+  isOCNull,
+  showHUD
+} from "~/utils/common"
 import { reverseEscape, escapeDoubleQuote } from "~/utils/input"
 import fetch from "~/utils/network"
 import { select } from "~/utils/popup"
@@ -53,11 +58,7 @@ async function getWordInfo(word: string): Promise<Dict> {
     return info[0]
   } else {
     if (!self.enDict) {
-      if (
-        NSFileManager.defaultManager().fileExistsAtPath(
-          `${MN.mainPath}/dict.db`
-        )
-      ) {
+      if (isfileExists(`${MN.mainPath}/dict.db`)) {
         self.enDict = SQLiteDatabase.databaseWithPath(`${MN.mainPath}/dict.db`)
         self.enDict.open()
       } else throw "没找到本地数据库"
