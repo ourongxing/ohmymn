@@ -61,7 +61,13 @@ export default defineConfig({
     {
       key: "selectMeaning",
       type: CellViewType.Switch,
-      label: label.select_meaning
+      label: label.select_meaning,
+      bind: [
+        [
+          ["fillWordInfo", 1],
+          ["fillWordInfo", 2]
+        ]
+      ]
     },
     {
       key: "autoContext",

@@ -3,7 +3,7 @@
 const _keyStr =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
-function encode(input) {
+export function encode(input) {
   let output = "",
     i = 0,
     chr1,
@@ -45,7 +45,7 @@ function encode(input) {
   return output
 }
 
-function decode(input) {
+export function decode(input) {
   let output = "",
     i = 0,
     chr1,

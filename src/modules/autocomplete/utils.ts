@@ -1,5 +1,7 @@
+import { match } from "assert"
 import { Addon, MN } from "~/const"
 import { MbBookNote } from "~/typings"
+import { UIAlertViewStyle } from "~/typings/enum"
 import {
   CGRectValue2CGRect,
   isfileExists,
@@ -8,7 +10,8 @@ import {
 } from "~/utils/common"
 import { reverseEscape, escapeDoubleQuote } from "~/utils/input"
 import fetch from "~/utils/network"
-import { select } from "~/utils/popup"
+import { SerialCode } from "~/utils/number"
+import popup, { select } from "~/utils/popup"
 import { CJK } from "~/utils/text"
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
@@ -17,6 +20,40 @@ import { baiduTranslate, caiyunTranslate } from "../autotranslate/utils"
 import { lang } from "./lang"
 import { Dict, FillWordInfo } from "./typings"
 const { error } = lang
+
+async function selectInput(parts: string[], message: string, title: string) {
+  const { option, content } = await popup(
+    {
+      title,
+      message,
+      buttons: [
+        ...parts.map((k, i) => `${SerialCode.hollow_circle_number[i]} ${k}`),
+        "自定义"
+      ],
+      multiLine: true,
+      canCancel: false,
+      type: UIAlertViewStyle.PlainTextInput
+    },
+    ({ alert, buttonIndex }) => ({
+      option: buttonIndex,
+      content: alert.textFieldAtIndex(0).text
+    })
+  )
+  if (option < parts.length) return parts[option]
+  else if (content) {
+    return (reverseEscape(content, true) as string).replace(
+      /^\s*\[((?:\w|-)+)\]\s*/,
+      (_, m) => {
+        const matched = Array.from({ length: parts.length }, (v, i) => i + 1)
+          .join(", ")
+          .match(new RegExp(`[${m}]`, "g"))
+        if (matched) {
+          return matched.map(k => parts[Number(k) - 1]).join("\n") + "\n"
+        } else return ""
+      }
+    )
+  }
+}
 
 async function getPureZH(text: string) {
   const arr = pangu.spacing(pangu.toFullwidth(text)).split("\n") as string[]
@@ -34,7 +71,8 @@ async function getPureZH(text: string) {
         else return k
       })
       .flat()
-    if (m.length > 1) return [await select(m, lang.choose_meaning, Addon.title)]
+    if (m.length > 1)
+      return [await selectInput(m, lang.choose_meaning, Addon.title)]
   }
   return allMeanings
 }
