@@ -1,4 +1,3 @@
-import { match } from "assert"
 import { Addon, MN } from "~/const"
 import { MbBookNote } from "~/typings"
 import { UIAlertViewStyle } from "~/typings/enum"
@@ -66,9 +65,13 @@ async function getPureZH(text: string) {
     const m = allMeanings
       .map(k => {
         const [category, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
-        if (meaning)
-          return meaning.split(/\s*[,，]\s*/).map(k => `${category}. ${k}`)
-        else return k
+        if (meaning) {
+          const { dataSource } = self.globalProfile.autocomplete
+          if (dataSource[0] === 0) {
+            return meaning.split(/\s*[,，]\s*/).map(k => `${category}. ${k}`)
+          } else
+            return meaning.split(/\s*[;；]\s*/).map(k => `${category}. ${k}`)
+        } else return k
       })
       .flat()
     if (m.length > 1)

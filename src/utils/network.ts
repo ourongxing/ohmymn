@@ -78,7 +78,10 @@ const initRequest = (
   return request
 }
 
-const fetch = (url: string, options: RequestOptions = {}): Promise<Response> =>
+export const fetch = (
+  url: string,
+  options: RequestOptions = {}
+): Promise<Response> =>
   new Promise((resolve, reject) => {
     // UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     const queue = NSOperationQueue.mainQueue()
