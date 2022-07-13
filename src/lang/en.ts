@@ -15,7 +15,7 @@ const dict: Dict = {
     "Make sure AutoOCR is enabled and the Key is entered, otherwise it won't work!",
   open_panel: "Open The Control Panel",
   input_error: "Input errors, please re-enter",
-  disconnect_addon: `${Addon.title} deactivated, configuration reset`,
+  disconnect_addon: "Profile has been reset",
   not_select_card: "No card is selected",
   not_select_text: "No text is selected",
   no_text_selection: "Unable to get to the text of the selection",

@@ -9,7 +9,7 @@ const dict = {
   sure: "确定",
   cancel: "取消",
   make_sure_autoocr: "请确保 AutoOCR 已启用，并且输入了 Key，否则没有效果！",
-  disconnect_addon: `${Addon.title} 已停用，配置已重置`,
+  disconnect_addon: "配置已重置",
   action_not_work: "未启用，该动作无法执行",
   not_select_card: "未选中任何脑图卡片",
   not_select_text: "没有框选任何文字",

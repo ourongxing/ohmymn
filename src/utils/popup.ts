@@ -1,19 +1,20 @@
+import { Addon } from "~/const"
 import lang from "~/lang"
 import { UIAlertViewStyle } from "~/typings/enum"
 import { byteSlice } from "./text"
 
 function popup<T>(
   {
-    title,
+    title = Addon.title,
     message,
     type = UIAlertViewStyle.Default,
-    buttons,
+    buttons = [lang.sure],
     canCancel = true,
     multiLine = false
   }: {
-    title: string
+    title?: string
     message: string
-    buttons: string[]
+    buttons?: string[]
     type?: UIAlertViewStyle
     canCancel?: boolean
     multiLine?: boolean

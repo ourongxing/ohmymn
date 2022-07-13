@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { Addon, MN } from "~/const"
 import { dataSourcePreset } from "~/dataSource"
 import lang from "~/lang"
 import {
@@ -10,7 +10,13 @@ import {
 import { inst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
 import { deepCopy } from "~/utils"
-import { getObjCClassDeclar, isfileExists, showHUD } from "~/utils/common"
+import {
+  getObjCClassDeclar,
+  isfileExists,
+  openUrl,
+  showHUD
+} from "~/utils/common"
+import popup from "~/utils/popup"
 import { readProfile, removeProfile, writeProfile } from "~/utils/profile"
 import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
@@ -39,11 +45,28 @@ const SettingViewController = JSB.defineClass(
 let _window: UIWindow
 
 export const clsMethons = {
-  addonWillDisconnect() {
+  async addonWillDisconnect() {
     console.log("Addon disconected", "lifeCycle")
-    // could not get the value of self.window
-    showHUD(lang.disconnect_addon, 2, _window)
-    removeProfile()
+    const { option } = await popup(
+      {
+        message: "遇到 bug 了吗，是否清空配置？",
+        buttons: ["确定", "去论坛更新"]
+      },
+      ({ buttonIndex }) => ({
+        option: buttonIndex
+      })
+    )
+    switch (option) {
+      case 0: {
+        removeProfile()
+        // could not get the value of self.window
+        showHUD(lang.disconnect_addon, 2, _window)
+        break
+      }
+      case 1: {
+        openUrl("https://bbs.marginnote.cn/t/topic/20501")
+      }
+    }
   },
   addonDidConnect() {
     console.log("Addon connected", "lifeCycle")
