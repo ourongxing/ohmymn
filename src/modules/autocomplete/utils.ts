@@ -261,86 +261,89 @@ export async function completeWord(text: string, note: MbBookNote) {
 }
 
 function getContext(note: MbBookNote, text: string) {
-  if (!note.excerptText) return
-  const data = MN.db
-    .getDocumentById(note.docMd5!)
-    ?.textContentsForPageNo(note.startPage!)
-  const [x1, y1, x2, y2] = reverseEscape(
-    `[${note.startPos},${note.endPos}]`
-  ) as number[]
-  const wordY = y1 < y2 ? y1 : y2
-  const wordX = x1 < x2 ? x1 : x2
-  if (data?.length) {
-    let contextArray = data.reduce(
-      (acc, cur) => {
-        const { y } = CGRectValue2CGRect(cur[0].rect)
-        const des = y - wordY
-        if (des < 50 && des > -50) {
-          let flag = 0
-          let line = cur.reduce((a, c) => {
-            a += String.fromCharCode(Number(c.char))
-            if (flag !== 1 && des < 5 && des > -5) {
-              const { x } = CGRectValue2CGRect(c.rect)
-              if (x - wordX < 5 && x - wordX > -5) flag = 1
-              else flag = 2
+  try {
+    const data = MN.db
+      .getDocumentById(note.docMd5!)
+      ?.textContentsForPageNo(note.startPage!)
+    const [x1, y1, x2, y2] = reverseEscape(
+      `[${note.startPos},${note.endPos}]`
+    ) as number[]
+    const wordY = y1 < y2 ? y1 : y2
+    const wordX = x1 < x2 ? x1 : x2
+    if (data?.length) {
+      let contextArray = data.reduce(
+        (acc, cur) => {
+          const { y } = CGRectValue2CGRect(cur[0].rect)
+          const des = y - wordY
+          if (des < 50 && des > -50) {
+            let flag = 0
+            let line = cur.reduce((a, c) => {
+              a += String.fromCharCode(Number(c.char))
+              if (flag !== 1 && des < 5 && des > -5) {
+                const { x } = CGRectValue2CGRect(c.rect)
+                if (x - wordX < 5 && x - wordX > -5) flag = 1
+                else flag = 2
+              }
+              return a
+            }, "")
+            if (!line.endsWith(" ")) line += " "
+            if (
+              acc.length &&
+              /\w\s*$/.test(acc[acc.length - 1].text) &&
+              /^\s*(?:[A-Z]\w+|[A-Z]\.|\d+\.|\W)/.test(line)
+            ) {
+              acc[acc.length - 1].text = acc[acc.length - 1].text.trim() + "."
             }
-            return a
-          }, "")
-          if (!line.endsWith(" ")) line += " "
-          if (
-            acc.length &&
-            /\w\s*$/.test(acc[acc.length - 1].text) &&
-            /^\s*(?:[A-Z]\w+|[A-Z]\.|\d+\.|\W)/.test(line)
-          ) {
-            acc[acc.length - 1].text = acc[acc.length - 1].text.trim() + "."
+            line &&
+              acc.push({
+                text: line,
+                flag,
+                des,
+                index: acc.length
+              })
           }
-          line &&
-            acc.push({
-              text: line,
-              flag,
-              des,
-              index: acc.length
-            })
-        }
-        return acc
-      },
-      [] as {
-        text: string
-        flag: number
-        des: number
-        index: number
-      }[]
-    )
-    const row = contextArray.filter(k => k.flag !== 0)
-    if (row.length > 1) {
-      const x = row.findIndex(k => k.flag === 1)
-      if (x === 0) {
-        contextArray = contextArray.slice(0, row[x + 1].index)
-      } else if (x === row.length - 1) {
-        contextArray = contextArray.slice(row[x - 1].index)
-      } else
-        contextArray = contextArray.slice(row[x - 1].index, row[x + 1].index)
+          return acc
+        },
+        [] as {
+          text: string
+          flag: number
+          des: number
+          index: number
+        }[]
+      )
+      const row = contextArray.filter(k => k.flag !== 0)
+      if (row.length > 1) {
+        const x = row.findIndex(k => k.flag === 1)
+        if (x === 0) {
+          contextArray = contextArray.slice(0, row[x + 1].index)
+        } else if (x === row.length - 1) {
+          contextArray = contextArray.slice(row[x - 1].index)
+        } else
+          contextArray = contextArray.slice(row[x - 1].index, row[x + 1].index)
+      }
+      const context = contextArray.map(k => k.text).join("")
+      if (context.includes(text)) {
+        const res = context
+          .replace(
+            new RegExp(`^.*?([\u0000-\u00ff]*${text}[\u0000-\u00ff]*).*$`),
+            "$1"
+          )
+          .replace(new RegExp(`^.*\\(([^)]*?${text}[^)]*?)\\).*$`), "$1")
+          .replace(new RegExp(`^.*“([^”]*?${text}[^”]*?)”.*$`), "$1")
+          .replace(new RegExp(`^.*"([^"]*?${text}[^"]*?)".*$`), "$1")
+          .replace(new RegExp(`^.*\\[([^\\]]*?${text}[^\\]]*?)\\].*$`), "$1")
+          .replace(
+            new RegExp(
+              `^.*?[ ,!.?)\\]]*?((?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"’‘“”$])*${text}(?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘“’”$])*[.?!]).*$`
+            ),
+            "$1"
+          )
+          .trim()
+          .replace(/^O([A-Z])\w/, "$1")
+        if (!/^\w+$/.test(res)) return res
+      }
     }
-    const context = contextArray.map(k => k.text).join("")
-    if (context.includes(text)) {
-      const res = context
-        .replace(
-          new RegExp(`^.*?([\u0000-\u00ff]*${text}[\u0000-\u00ff]*).*$`),
-          "$1"
-        )
-        .replace(new RegExp(`^.*\\(([^)]*?${text}[^)]*?)\\).*$`), "$1")
-        .replace(new RegExp(`^.*“([^”]*?${text}[^”]*?)”.*$`), "$1")
-        .replace(new RegExp(`^.*"([^"]*?${text}[^"]*?)".*$`), "$1")
-        .replace(new RegExp(`^.*\\[([^\\]]*?${text}[^\\]]*?)\\].*$`), "$1")
-        .replace(
-          new RegExp(
-            `^.*?[ ,!.?)\\]]*?((?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"’‘“”$])*${text}(?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘“’”$])*[.?!]).*$`
-          ),
-          "$1"
-        )
-        .trim()
-        .replace(/^O([A-Z])\w/, "$1")
-      if (!/^\w+$/.test(res)) return res
-    }
+  } catch {
+    return
   }
 }
