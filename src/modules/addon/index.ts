@@ -1,6 +1,5 @@
 import { Addon } from "~/const"
 import { CellViewType } from "~/typings/enum"
-import { checkInteger } from "~/utils/checkInput"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 
@@ -8,7 +7,7 @@ const { label, help, option } = lang
 export default defineConfig({
   name: Addon.title,
   key: "addon",
-  intro: `当前版本: ${Addon.version}`,
+  intro: lang.intro + Addon.version,
   settings: [
     {
       help: help.profile,

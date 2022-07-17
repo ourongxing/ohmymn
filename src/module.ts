@@ -16,6 +16,7 @@ import magicaction4card from "./modules/magicaction4card"
 import magicaction4text from "./modules/magicaction4text"
 import addon from "./modules/addon"
 import anotherautodef from "./modules/anotherautodef"
+import { MN } from "./const"
 
 export const modules = {
   gesture,
@@ -41,17 +42,26 @@ export const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
-      label: "OhMyMN 官网：ohmymn.vercel.app",
+      label: `OhMyMN ${MN.isZH ? "官网：" : "Website: "}ohmymn.vercel.app`,
       link: "https://ohmymn.vercel.app"
     },
     {
       type: CellViewType.PlainText,
-      label: "核心开发团队：ourongxing，Bryan",
+      label: `${MN.isZH ? "核心开发团队：" : "Core Team: "}ourongxing，Bryan`,
       link: ""
     },
     {
       type: CellViewType.PlainText,
-      label: "OhMyMN 完全开源，官方支持，欢迎参与开发。",
+      label: MN.isZH
+        ? "OhMyMN 完全开源，官方支持，欢迎加入。"
+        : "OhMyMN is open source, official support, welcome to join us.",
+      link: ""
+    },
+    {
+      type: CellViewType.PlainText,
+      label: MN.isZH
+        ? "OhMyMN 是 MarginNote 插件控制面板以及开发框架"
+        : "OhMyMN is MarginNote addon control panel and development framework.",
       link: ""
     },
     {

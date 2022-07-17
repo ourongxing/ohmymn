@@ -21,7 +21,7 @@ const zh = {
     switch_title: "切换摘录标题",
     filter_cards: "筛选卡片",
     merge_cards: "合并卡片",
-    merge_text: "合并卡片文字",
+    merge_text: "合并卡片内文字",
     rename_title: "重命名标题",
     manage_profile: "配置管理",
     smart_selection: "智能选择"

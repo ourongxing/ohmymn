@@ -2,6 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
+  intro: "当前版本：",
   option: {
     profile: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
     has_title_then: ["不转为标题", "合并标题", "覆盖标题"],
@@ -24,15 +25,7 @@ const zh = {
     panle_control: "面板开关控制",
     screen_always_on: "保持屏幕常亮",
     lock_excerpt: "锁定摘录文字",
-    auto_backup: "自动备份配置",
-    publisher: "出版社",
-    publication_date: "出版时间",
-    publication_place: "出版地",
-    other_info: "其他信息",
-    page_offset: "页码偏移量",
-    author: "作者",
-    type: "类型",
-    show_doc_info: "显示 / 隐藏文档信息"
+    auto_backup: "自动备份配置"
   },
   help: {
     profile: "【当前笔记本】不同场景，不同配置。",
@@ -43,6 +36,7 @@ const zh = {
 
 const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
+  intro: "Current Version: ",
   option: {
     profile: ["Profile 1", "Profile 2", "Profile 3", "Profile 4", "Initialize"],
     remove_excerpt: ["Remove Now", "Remove Later", "Not Remove"],
@@ -65,15 +59,7 @@ const en: typeof zh = {
     panle_control: "Panel Open and Close",
     screen_always_on: "Keep Screen Always On",
     lock_excerpt: "Lock Excerpt Text",
-    auto_backup: "Auto Backup Profile",
-    page_offset: "Page Offset",
-    publisher: "Publisher",
-    publication_date: "Publication Date",
-    publication_place: "Publication Place",
-    other_info: "Other Info",
-    author: "Author",
-    type: "Type",
-    show_doc_info: "Show / Hidden Doc Info"
+    auto_backup: "Auto Backup Profile"
   },
   help: {
     profile: "[Current Notebook] Different scenes, different profile",
