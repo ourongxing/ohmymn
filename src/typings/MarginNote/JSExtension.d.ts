@@ -81,7 +81,7 @@ declare class JSExtension {
      * object of the function, usually self
      * @type {JSExtension}
      */
-    object: WrapperObj<any>
+    object: any
     /**
      * selector of the function, for another word, when you click(tap) on the icon, what function will be executed
      * @type {string}

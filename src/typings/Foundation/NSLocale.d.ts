@@ -2,9 +2,9 @@ import { NSLocaleLanguageDirection } from "./enum"
 
 declare global {
   class NSLocale {
-    static autoupdatingCurrentLocale(): WrapperObj<NSLocale>
-    static currentLocale(): WrapperObj<NSLocale>
-    static systemLocale(): WrapperObj<NSLocale>
+    static autoupdatingCurrentLocale(): NSLocale
+    static currentLocale(): NSLocale
+    static systemLocale(): NSLocale
     /**
      * @param ident NSString*
      */
@@ -77,11 +77,11 @@ declare global {
     static lineDirectionForLanguage(
       isoLangCode: string
     ): NSLocaleLanguageDirection
-    objectForKey(key: WrapperObj<any>): WrapperObj<any>
+    objectForKey(key: any): any
     /**
      * @returns NSString*
      */
-    displayNameForKeyValue(key: WrapperObj<any>, value: WrapperObj<any>): string
+    displayNameForKeyValue(key: any, value: any): string
     /**
      * @returns NSString*
      */

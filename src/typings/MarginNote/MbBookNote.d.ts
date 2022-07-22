@@ -10,7 +10,7 @@ export interface MNPic {
    * @type {string}
    */
   paint: string
-  size: unknown
+  size: NSValue
 }
 
 /**
@@ -346,7 +346,7 @@ export class MbBookNote {
    * const noteid = sender.userInfo.noteid;
    * @type {string}
    */
-  readonly noteId?: string
+  readonly noteId: string
   /**
    * MD5 of the document
    *
@@ -432,7 +432,7 @@ export class MbBookNote {
    *
    * @type {Date}
    */
-  readonly createDate?: Date
+  readonly createDate: Date
   /**
    * Date of the note modified
    *
@@ -666,6 +666,10 @@ export class MbBookNote {
    * note.removeComment(0)
    */
   removeCommentByIndex(index: number): void
+  /**
+   * @return 手写笔画数
+   */
+  getStrokesCount(): number
 }
 
 declare global {

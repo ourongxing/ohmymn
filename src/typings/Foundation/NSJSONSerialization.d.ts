@@ -2,13 +2,10 @@ import { NSJSONReadingOptions, NSJSONWritingOptions } from "./enum"
 
 declare global {
   class NSJSONSerialization {
-    static isValidJSONObject(obj: WrapperObj<any>): boolean
-    static JSONObjectWithDataOptions(
-      obj: WrapperObj<any>,
-      data: NSJSONReadingOptions
-    ): WrapperObj<any>
+    static isValidJSONObject(obj: any): boolean
+    static JSONObjectWithDataOptions(obj: any, data: NSJSONReadingOptions): any
     static dataWithJSONObjectOptions(
-      obj: WrapperObj<any>,
+      obj: any,
       options: NSJSONWritingOptions
     ): NSData
   }

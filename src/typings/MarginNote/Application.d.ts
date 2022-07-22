@@ -35,6 +35,15 @@ export class DocumentController {
    * Image from focusNode
    */
   imageFromFocusNote(): NSData
+  /** start from 1. The virtual page has a large number of discontinuous pages */
+  readonly currPageNo: number
+  /** start from 0 */
+  readonly currPageIndex: number
+  indexFromPageNo(pageNo: number): number
+  pageNoFromIndex(index: number): number
+  setPageAtIndex(index: number): void
+  // 对于虚拟化下的特殊情形，一个页码编号可能存在多个页码索引，可以用下面方法获得全部页索引
+  indicesFromPageNo(pageNo: number): number[]
 }
 
 /**
@@ -78,12 +87,12 @@ export class NotebookController {
   /**
    * Outline view
    */
-  readonly outlineView: WrapperObj<OutlineView>
+  readonly outlineView: OutlineView
   /**
    * MindMap view
    *
    */
-  readonly mindmapView: WrapperObj<MindMapView>
+  readonly mindmapView: MindMapView
   /**
    * Notebook id
    */
@@ -114,7 +123,7 @@ export class ReaderController {
    *
    * inherit from {@link DocumentController}
    */
-  readonly currentDocumentController: WrapperObj<DocumentController>
+  readonly currentDocumentController: DocumentController
   /**
    * Document controllers
    */
@@ -165,11 +174,11 @@ export class StudyController extends UIViewController {
   /**
    * Get notebook controller
    */
-  readonly notebookController: WrapperObj<NotebookController>
+  readonly notebookController: NotebookController
   /**
    * Get reader controller
    */
-  readonly readerController: WrapperObj<ReaderController>
+  readonly readerController: ReaderController
   /**
    * @param noteId NSString*
    */
@@ -295,13 +304,13 @@ declare global {
     /**
      * Get the studyController of current window.
      */
-    studyController(window: UIWindow): WrapperObj<StudyController>
+    studyController(window: UIWindow): StudyController
     /**
      * Check the notify sender is current window.
      * @param obj Usually sender
      * @param window
      */
-    checkNotifySenderInWindow(obj: WrapperObj<any>, window: UIWindow): boolean
+    checkNotifySenderInWindow(obj: any, window: UIWindow): boolean
     openFileWithUTIs(
       types: Array<string>,
       controller: UIViewController,

@@ -24,10 +24,7 @@ declare global {
     /**
      * @param path NSString*
      */
-    static fileURLWithPathIsDirectory(
-      path: string,
-      isDir: boolean
-    ): WrapperObj<any>
+    static fileURLWithPathIsDirectory(path: string, isDir: boolean): any
     /**
      * @param path NSString*
      */
@@ -40,19 +37,16 @@ declare global {
       path: string,
       isDir: boolean,
       baseURL: NSURL
-    ): WrapperObj<any>
+    ): any
     /**
      * @param URLString NSString*
      */
-    static URLWithString(URLString: string): WrapperObj<any>
+    static URLWithString(URLString: string): any
     /**
      * @param URLString NSString*
      * @param baseURL NSURL*
      */
-    static URLWithStringRelativeToURL(
-      URLString: string,
-      baseURL: NSURL
-    ): WrapperObj<any>
+    static URLWithStringRelativeToURL(URLString: string, baseURL: NSURL): any
     /**
      * @param bookmarkData NSData*
      * @param relativeURL NSURL*
@@ -65,7 +59,7 @@ declare global {
       relativeURL: NSURL,
       isStale: boolean,
       error: NSError
-    ): WrapperObj<any>
+    ): any
     /**
      * @returns NSDictionary*
      * @param keys NSArray*
@@ -101,17 +95,17 @@ declare global {
     static componentsWithURLResolvingAgainstBaseURL(
       url: NSURL,
       resolve: boolean
-    ): WrapperObj<any>
+    ): any
     /**
      * @param URLString NSString*
      */
-    static componentsWithString(URLString: string): WrapperObj<any>
-    static URLUserAllowedCharacterSet(): WrapperObj<any>
-    static URLPasswordAllowedCharacterSet(): WrapperObj<any>
-    static URLHostAllowedCharacterSet(): WrapperObj<any>
-    static URLPathAllowedCharacterSet(): WrapperObj<any>
-    static URLQueryAllowedCharacterSet(): WrapperObj<any>
-    static URLFragmentAllowedCharacterSet(): WrapperObj<any>
+    static componentsWithString(URLString: string): any
+    static URLUserAllowedCharacterSet(): any
+    static URLPasswordAllowedCharacterSet(): any
+    static URLHostAllowedCharacterSet(): any
+    static URLPathAllowedCharacterSet(): any
+    static URLQueryAllowedCharacterSet(): any
+    static URLFragmentAllowedCharacterSet(): any
     /**
      * @returns NSURL*
      * @param components NSArray*
@@ -212,7 +206,7 @@ declare global {
      * @param error out NSError**
      */
     getResourceValueForKeyError(
-      value: WrapperObj<any>,
+      value: any,
       key: string,
       error: NSError
     ): boolean
@@ -227,7 +221,7 @@ declare global {
      * @param error NSError**
      */
     setResourceValueForKeyError(
-      value: WrapperObj<any>,
+      value: any,
       key: string,
       error: NSError
     ): boolean
@@ -244,7 +238,7 @@ declare global {
     /**
      * @param key NSString*
      */
-    setTemporaryResourceValueForKey(value: WrapperObj<any>, key: string): void
+    setTemporaryResourceValueForKey(value: any, key: string): void
     /**
      * @returns NSData*
      * @param keys NSArray*

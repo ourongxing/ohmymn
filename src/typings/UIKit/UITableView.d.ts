@@ -8,7 +8,7 @@ import {
 
 export class UITableView extends UIView {
   readonly style: UITableViewStyle
-  dataSource: WrapperObj<any>
+  dataSource: any
   rowHeight: CGFloat
   separatorStyle: UITableViewCellSeparatorStyle
   separatorColor?: UIColor

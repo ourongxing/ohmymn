@@ -124,7 +124,7 @@ declare global {
       path: string,
       directoryPath: string
     ): boolean
-    initWithPath(path: string): WrapperObj<any>
+    initWithPath(path: string): any
     open(): boolean
     writeFile(path: string): boolean
     writeDataFilename(data: NSData, filename: string): boolean

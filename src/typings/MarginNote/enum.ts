@@ -26,3 +26,10 @@ export const enum DirectionOfSelection {
   toRight = 1,
   toLeft = 2
 }
+
+export const enum NotebookType {
+  Hiden = 0,
+  Doc = 1,
+  MindMap = 2,
+  FlashCard = 3
+}

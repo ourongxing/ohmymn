@@ -25,6 +25,6 @@ declare global {
     setTolerance(tolerance: NSTimeInterval): void
     invalidate(): void
     isValid(): boolean
-    userInfo(): WrapperObj<any>
+    userInfo(): any
   }
 }

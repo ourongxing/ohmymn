@@ -5,12 +5,12 @@ export class UIControl extends UIView {
   highlighted: boolean
   selected: boolean
   addTargetActionForControlEvents(
-    target: WrapperObj<any>,
+    target: any,
     action: string,
     controlEvent: UIControlEvents
   ): void
   removeTargetActionForControlEvents(
-    target: WrapperObj<any>,
+    target: any,
     action: string,
     controlEvent: UIControlEvents
   ): void

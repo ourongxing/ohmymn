@@ -8,7 +8,7 @@ declare global {
     ): void
     static connectionWithRequest(
       request: NSURLRequest,
-      delegate: WrapperObj<any>
+      delegate: any
     ): NSURLConnection
   }
 }

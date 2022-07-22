@@ -6,7 +6,7 @@ declare global {
     [k: string]: any
     scalesPageToFit: boolean
     autoresizingMask: number
-    delegate: WrapperObj<any>
+    delegate: any
     scrollView: any
     loadFileURLAllowingReadAccessToURL(URL: NSURL, readAccessURL: NSURL): void
     evaluateJavaScript(script: string, res: (res: string) => void): void

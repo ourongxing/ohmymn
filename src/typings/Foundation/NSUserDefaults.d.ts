@@ -9,11 +9,11 @@ declare global {
     /**
      * @param defaultName NSString*
      */
-    objectForKey(defaultName: string): WrapperObj<any>
+    objectForKey(defaultName: string): any
     /**
      * @param defaultName NSString*
      */
-    setObjectForKey(value: WrapperObj<any>, defaultName: string): void
+    setObjectForKey(value: any, defaultName: string): void
     /**
      * @param defaultName NSString*
      */

@@ -7,7 +7,7 @@ declare global {
      *  NSInteger
      */
     readonly leftCapWidth: number
-    readonly CGImage: WrapperObj<any>
+    readonly CGImage: any
     readonly size: CGSize
     /**
      *  NSInteger
@@ -37,12 +37,12 @@ declare global {
     /**
      * @returns UIImage*
      */
-    static imageWithCGImage(cgImage: WrapperObj<any>): UIImage
+    static imageWithCGImage(cgImage: any): UIImage
     /**
      * @returns UIImage*
      */
     static imageWithCGImageScaleOrientation(
-      cgImage: WrapperObj<any>,
+      cgImage: any,
       scale: CGFloat,
       orientation: UIImageOrientation
     ): UIImage

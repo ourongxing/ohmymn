@@ -13,7 +13,7 @@ declare global {
     static makeWithTitleMessageDelegateCancelButtonTitleOtherButtonTitles(
       title: string,
       message: string,
-      delegate: WrapperObj<any>,
+      delegate: any,
       cancelButtonTitle: string,
       otherButtonTitles: Array<string>
     ): void

@@ -1,9 +1,11 @@
+import { NotebookType } from "./enum"
 import { MbBookNote } from "./MbBookNote"
 interface TextContent {
   /** decimal unicode value, you should change to hexadecimal, and append \u */
   readonly char: string
   readonly rect: NSValue
 }
+
 export class MbBook {
   /**
    * Current topic ID
@@ -26,6 +28,7 @@ export class MbBook {
    */
   readonly docTitle?: string
   readonly pageCount: number
+
   textContentsForPageNo(pageNo: number): TextContent[][]
 }
 
@@ -40,8 +43,9 @@ export class MbTopic {
   readonly hashtags?: string
   readonly docList?: string
   readonly options?: DictObj
-  readonly documents?: Array<any>
-  readonly notes?: Array<any>
+  readonly documents?: Array<MbBook>
+  readonly notes?: Array<MbBookNote>
+  readonly flags: NotebookType
   hideLinksInMindMapNode: boolean
 }
 
@@ -60,7 +64,7 @@ export class MbModelTool {
    * Database.sharedInstance().getNotebookById(node.notebookId)
    * ```
    */
-  getNotebookById(topicid: string): WrapperObj<MbTopic> | undefined
+  getNotebookById(topicid: string): MbTopic | undefined
   /**
    * @returns NSData*
    * @param hash NSString*
@@ -71,21 +75,18 @@ export class MbModelTool {
    * @param noteid NSString*
    * @returns MbBookNote*
    */
-  getNoteById(noteid: string): WrapperObj<MbBookNote> | undefined
+  getNoteById(noteid: string): MbBookNote | undefined
   /**
    * @param md5 NSString*
    * @returns MbBookNote*
    */
-  getDocumentById(md5: string): WrapperObj<MbBook> | undefined
+  getDocumentById(md5: string): MbBook | undefined
   /**
    * @param noteid NSString*
    * @param topicid NSString*
    * @returns MbBookNote*
    */
-  getFlashcardByNoteId(
-    noteid: string,
-    topicid: string
-  ): WrapperObj<MbBookNote> | undefined
+  getFlashcardByNoteId(noteid: string, topicid: string): MbBookNote | undefined
   /**
    * @returns NSArray*
    * @param noteid NSString*
@@ -162,12 +163,15 @@ export class MbModelTool {
   exportNotebookStorePath(topicid: string, storePath: string): boolean
   /**
    * @param storePath NSString*
-   * @returns WrapperObj<any>
+   * @returns any
    */
-  importNotebookFromStorePathMerge(
-    storePath: string,
-    merge: boolean
-  ): WrapperObj<any>
+  importNotebookFromStorePathMerge(storePath: string, merge: boolean): any
+  getSketchNotesForMindMap(notebookid: string): MbBookNote[]
+  getSketchNotesForDocumentMd5Page(
+    notebookid: string,
+    docmd5: string,
+    page: number
+  ): MbBookNote[]
 }
 
 declare global {

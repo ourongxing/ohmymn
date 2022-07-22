@@ -1,13 +1,13 @@
 import {
   IDocProfile,
-  INotebookProfile,
   IGlobalProfile,
-  ITempProfile
+  ITempProfile,
+  INotebookProfile
 } from "~/profile"
 import { ISection } from "./Addon"
-import { StudyController, MbBookNote } from "./MarginNote"
-import { UITableView, UITableViewController, UIView, UIWindow } from "./UIKit"
 import { DirectionOfSelection } from "./enum"
+import { MbBookNote, StudyController } from "./MarginNote"
+import { UIView, UIWindow, UITableView, UITableViewController } from "./UIKit"
 
 export * from "./Foundation"
 export * from "./MarginNote"
@@ -68,14 +68,15 @@ declare global {
       declaration: string,
       instanceMembers?: object,
       staticMembers?: object
-    ): WrapperObj<any>
-    static require(name: string): WrapperObj<any>
+    ): any
+    static require(name: string): any
     static log(format: string, arguments: Array<string> | string): void
-    static dump(object: WrapperObj<any>): void
+    static dump(object: any): void
     static newAddon(mainPath: string): any
   }
-  type WrapperObj<T> = T
   type DictObj = {
     [k: string]: any
   }
 }
+
+export type Timer = () => void

@@ -57,14 +57,11 @@ declare global {
     /**
      * @param pasteboardType NSString*
      */
-    valueForPasteboardType(pasteboardType: string): WrapperObj<any>
+    valueForPasteboardType(pasteboardType: string): any
     /**
      * @param pasteboardType NSString*
      */
-    setValueForPasteboardType(
-      value: WrapperObj<any>,
-      pasteboardType: string
-    ): void
+    setValueForPasteboardType(value: any, pasteboardType: string): void
     /**
      * @param data NSData*
      * @param pasteboardType NSString*

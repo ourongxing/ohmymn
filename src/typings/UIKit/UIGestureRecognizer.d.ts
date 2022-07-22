@@ -5,17 +5,17 @@ import {
 } from "./enum"
 declare global {
   class UIGestureRecognizer {
-    constructor(target: WrapperObj<any>, action: string)
+    constructor(target: any, action: string)
     state: UIGestureRecognizerState
-    delegate: WrapperObj<any>
+    delegate: any
     enabled: boolean
     view: UIView
     cancelsTouchesInView: boolean
     delaysTouchesBegan: boolean
     delaysTouchesEnded: boolean
     numberOfTouches(): number
-    addTargetAction(target: WrapperObj<any>, action: string): void
-    removeTargetAction(target: WrapperObj<any>, action: string): void
+    addTargetAction(target: any, action: string): void
+    removeTargetAction(target: any, action: string): void
     requireGestureRecognizerToFail(
       otherGestureRecognizer: UIGestureRecognizer
     ): void

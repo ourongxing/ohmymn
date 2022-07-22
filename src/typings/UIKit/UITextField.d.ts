@@ -6,13 +6,13 @@ declare global {
   class UITextField extends UIControl {
     [x: string]: any
     constructor(frame?: CGRect)
-    delegate: WrapperObj<any>
+    delegate: any
     textColor: UIColor
     background: UIImage
     placeholder: string
     textAlignment: NSTextAlignment
     leftView: UIView
-    font: WrapperObj<any>
+    font: any
     text: string
     rightView: UIView
     editing: boolean

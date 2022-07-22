@@ -7,7 +7,7 @@ import {
 
 declare global {
   class NSData {
-    static data(): WrapperObj<any>
+    static data(): any
     /**
      * @param string NSString*
      */
@@ -19,15 +19,12 @@ declare global {
      * @param bytes const void*
      * @param length NSUInteger
      */
-    static dataWithBytesLength(bytes: any, length: number): WrapperObj<any>
+    static dataWithBytesLength(bytes: any, length: number): any
     /**
      * @param bytes void*
      * @param length NSUInteger
      */
-    static dataWithBytesNoCopyLength(
-      bytes: any,
-      length: number
-    ): WrapperObj<any>
+    static dataWithBytesNoCopyLength(bytes: any, length: number): any
     /**
      * @param bytes void*
      * @param length NSUInteger
@@ -36,7 +33,7 @@ declare global {
       bytes: any,
       length: number,
       b: boolean
-    ): WrapperObj<any>
+    ): any
     /**
      * @param path NSString*
      * @param errorPtr NSError**
@@ -45,7 +42,7 @@ declare global {
       path: string,
       readOptionsMask: NSDataReadingOptions,
       errorPtr: NSError
-    ): WrapperObj<any>
+    ): any
     /**
      * @param url NSURL*
      * @param errorPtr NSError**
@@ -54,23 +51,23 @@ declare global {
       url: NSURL,
       readOptionsMask: NSDataReadingOptions,
       errorPtr: NSError
-    ): WrapperObj<any>
+    ): any
     /**
      * @param path NSString*
      */
-    static dataWithContentsOfFile(path: string): WrapperObj<any>
+    static dataWithContentsOfFile(path: string): any
     /**
      * @param url NSURL*
      */
-    static dataWithContentsOfURL(url: NSURL): WrapperObj<any>
+    static dataWithContentsOfURL(url: NSURL): any
     /**
      * @param data NSData*
      */
-    static dataWithData(data: NSData): WrapperObj<any>
+    static dataWithData(data: NSData): any
     /**
      * @param path NSString*
      */
-    static dataWithContentsOfMappedFile(path: string): WrapperObj<any>
+    static dataWithContentsOfMappedFile(path: string): any
 
     /**
      * @returns NSUInteger
