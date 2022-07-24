@@ -1,6 +1,6 @@
 import { MN } from "~/const"
 import { MbBookNote } from "~/typings"
-import { showHUD } from "~/utils/common"
+import { CGSizeValue2CGSize, showHUD } from "~/utils/common"
 import { reverseEscape } from "~/utils/input"
 import { removeHighlight } from "~/utils/note"
 import { countWord, notCJK } from "~/utils/text"
@@ -8,11 +8,10 @@ import { lang } from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 
 export function getExcerptArea(note: MbBookNote) {
-  const [x1, y1, x2, y2] = (
-    reverseEscape(`[${note.startPos},${note.endPos}]`) as number[]
-  ).map(item => Number(item))
-  return Math.floor(Math.abs((x1 - x2) * (y2 - y1)) / 100)
+  const { width, height } = CGSizeValue2CGSize(note.excerptPic!.size)
+  return Math.floor((width * height) / 1000)
 }
+
 export function modifyStyle(note: MbBookNote) {
   // 就跟随卡片 => 跟随兄弟节点 => 跟随父节点 => 默认 => 不动
   const {
@@ -54,7 +53,7 @@ export function modifyStyle(note: MbBookNote) {
     wordCountArea
   ) {
     const [zh, en, area] = reverseEscape(wordCountArea) as number[]
-    if (note.excerptPic) {
+    if (note.excerptPic?.size) {
       const actualArea = getExcerptArea(note)
       if (actualArea > area) res.style = Style.Wireframe
       if (showArea) showHUD(lang.area + ": " + actualArea)
