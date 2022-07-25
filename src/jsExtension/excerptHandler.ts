@@ -1,14 +1,14 @@
 import { MN } from "~/const"
 import { RemoveExcerpt } from "~/modules/addon/typings"
 import { MbBookNote } from "~/typings"
-import { delayBreak } from "~/utils/common"
 import {
+  delayBreak,
   undoGroupingWithRefresh,
   getCommentIndex,
   addTags,
-  modifyNodeTitle
-} from "~/utils/note"
-import { cacheTransformer } from "~/utils/profile"
+  modifyNodeTitle,
+  cacheTransformer
+} from "~/utils"
 import {
   customOCR,
   newTitleTextCommentTag,

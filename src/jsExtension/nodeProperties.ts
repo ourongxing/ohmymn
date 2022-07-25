@@ -1,14 +1,14 @@
 import { MN } from "~/const"
 import { MbBookNote } from "~/typings"
-import { dateFormat } from "~/utils"
 import {
+  dateFormat,
   removeHighlight,
   getAllTags,
   getAllText,
   getExcerptText,
-  getAllCommnets
-} from "~/utils/note"
-import { getSerialInfo } from "~/utils/number"
+  getAllCommnets,
+  getSerialInfo
+} from "~/utils"
 import { render } from "~/utils/third party/mustache"
 
 /** undefine can be auto hidden when using Mustache */

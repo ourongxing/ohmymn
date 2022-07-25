@@ -4,9 +4,13 @@ import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
 import { BindType, IRowSelect, UITableView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/typings/enum"
-import { isOCNull } from "~/utils/common"
-import { SerialCode } from "~/utils/number"
-import { byteSplitByLen, byteLength, byteSlice } from "~/utils/text"
+import {
+  byteSplitByLen,
+  byteLength,
+  byteSlice,
+  SerialCode,
+  isOCNull
+} from "~/utils"
 
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -97,7 +101,7 @@ const tableViewHeightForRowAtIndexPath = (
     case CellViewType.PlainText: {
       if (row.bind && _isBindOFF(row.bind, key)) return 0
       const lines = byteSplitByLen(row.label, 45).length - 1
-      const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
+      const lineBreaks = row.label.match(/\n/g)?.length ?? 0
       return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
     }
     default:

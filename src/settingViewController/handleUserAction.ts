@@ -4,9 +4,7 @@ import lang from "~/lang"
 import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/synthesizer"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { openUrl, postNotification } from "~/utils/common"
-import popup from "~/utils/popup"
-import { byteLength } from "~/utils/text"
+import { popup, byteLength, openUrl, postNotification } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>

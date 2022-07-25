@@ -1,6 +1,6 @@
 import { ICheckMethod, IActionMethod4Text, IActionMethod4Card } from "./typings"
 import lang from "./lang"
-import { showHUD } from "./utils/common"
+import { showHUD } from "./utils"
 import { modules, constModules } from "./module"
 import {
   AutoUtilType,

@@ -9,15 +9,17 @@ import {
 } from "~/profile"
 import { inst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
-import { deepCopy } from "~/utils"
 import {
+  deepCopy,
   getObjCClassDeclar,
   isfileExists,
   openUrl,
-  showHUD
-} from "~/utils/common"
-import popup from "~/utils/popup"
-import { readProfile, removeProfile, writeProfile } from "~/utils/profile"
+  showHUD,
+  popup,
+  readProfile,
+  removeProfile,
+  writeProfile
+} from "~/utils"
 import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"

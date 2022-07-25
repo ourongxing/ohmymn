@@ -12,8 +12,7 @@ import {
   DocMapSplitMode,
   GroupMode
 } from "~/typings/enum"
-import { showHUD } from "~/utils/common"
-import { reverseEscape } from "~/utils/input"
+import { showHUD, reverseEscape } from "~/utils"
 import { openPanel, closePanel } from "./switchPanel"
 import magicActionHandler from "./magicActionHandler"
 

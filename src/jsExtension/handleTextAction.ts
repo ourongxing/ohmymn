@@ -1,9 +1,15 @@
 import { Addon, MN } from "~/const"
 import { UIAlertViewStyle } from "~/typings/enum"
-import { copy, openUrl, showHUD } from "~/utils/common"
-import { reverseEscape } from "~/utils/input"
-import { modifyNodeTitle, undoGroupingWithRefresh } from "~/utils/note"
-import popup, { selectIndex } from "~/utils/popup"
+import {
+  modifyNodeTitle,
+  undoGroupingWithRefresh,
+  reverseEscape,
+  copy,
+  openUrl,
+  showHUD,
+  popup,
+  selectIndex
+} from "~/utils"
 
 const enum NoteOption {
   Copy,

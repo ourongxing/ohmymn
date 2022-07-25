@@ -4,7 +4,7 @@ import { constModules, modules } from "./module"
 import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./typings/enum"
-import { SerialCode } from "./utils/number"
+import { SerialCode } from "./utils"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 

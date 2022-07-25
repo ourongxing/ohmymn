@@ -9,14 +9,12 @@ import {
   eventHandlerController,
   isThisWindow,
   showHUD,
-  delayBreak
-} from "~/utils/common"
-import {
+  delayBreak,
   saveProfile,
   writeProfile,
   readProfile,
   updateProfileTemp
-} from "~/utils/profile"
+} from "~/utils"
 import { Range } from "~/utils/profile/typings"
 import handleMagicAction from "./magicActionHandler"
 

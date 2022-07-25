@@ -2,7 +2,7 @@ import { MN } from "~/const"
 import { PanelControl } from "~/modules/addon/typings"
 import { UIViewController } from "~/typings"
 import { StudyMode } from "~/typings/enum"
-import { delay } from "~/utils/common"
+import { delay } from "~/utils"
 
 // Set the position and size of the panel
 export const layoutViewController = (

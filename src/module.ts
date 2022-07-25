@@ -53,15 +53,8 @@ export const more: ISection = {
     {
       type: CellViewType.PlainText,
       label: MN.isZH
-        ? "OhMyMN 完全开源，官方支持，欢迎加入。"
-        : "OhMyMN is open source, official support, welcome to join us.",
-      link: ""
-    },
-    {
-      type: CellViewType.PlainText,
-      label: MN.isZH
-        ? "OhMyMN 是 MarginNote 插件控制面板以及开发框架"
-        : "OhMyMN is MarginNote addon control panel and development framework.",
+        ? "OhMyMN 是 MarginNote 插件控制面板及开发框架。OhMyMN 完全开源，官方支持，欢迎参与。"
+        : "OhMyMN is MarginNote addon control panel and development framework.OhMyMN is completely open source, officially supported, welcome to join.",
       link: ""
     },
     {
