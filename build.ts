@@ -3,8 +3,9 @@ import { Plugin } from "esbuild"
 import mnaddon from "./mnaddon.json"
 import copy from "esbuild-plugin-mxn-copy"
 import AutoImport from "unplugin-auto-import/esbuild"
-import os from "os"
+import { homedir } from "os"
 import fs from "fs"
+import { exec } from "child_process"
 
 const isProd = process.env.NODE_ENV === "production"
 
@@ -18,17 +19,31 @@ version: ${mnaddon.version} by ${mnaddon.author}
 
 const outDir = isProd
   ? "./dist/"
-  : os.homedir() +
+  : homedir() +
     `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/${mnaddon.addonid}/`
 
-function clear(dir: string): Plugin {
+function clear(): Plugin {
   return {
     name: "Clear",
     setup(build) {
       build.onStart(() => {
-        if (fs.existsSync(dir)) {
-          fs.rmSync(dir, { recursive: true })
+        if (fs.existsSync(outDir)) {
+          fs.rmSync(outDir, { recursive: true })
         }
+      })
+    }
+  }
+}
+
+function zip(): Plugin {
+  return {
+    name: "Zip",
+    setup(build) {
+      build.onEnd(() => {
+        const fileName = `${mnaddon.addonid.split(".")[2]} v${
+          mnaddon.version
+        }.mnaddon`
+        exec(`cd ${outDir} && zip -qr ${fileName.replace(/ /g, "_")} *`)
       })
     }
   }
@@ -49,7 +64,7 @@ build({
   pure: ["console.log", "console.error", "console.assert", "console.warn"],
   bundle: true,
   plugins: [
-    clear(outDir),
+    clear(),
     AutoImport({
       imports: [
         {
@@ -62,12 +77,13 @@ build({
       copy: [
         "assets/logo.png",
         "mnaddon.json",
-        "assets/icon",
-        "assets/dict.zip"
+        "assets/icon"
+        // "assets/dict.zip"
       ].map(k => ({
         from: k,
         to: outDir
       }))
-    })
+    }),
+    zip()
   ]
 })

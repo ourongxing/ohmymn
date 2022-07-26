@@ -1,11 +1,8 @@
 {
   "addonid": "marginnote.extension.ohmymn",
-  "author": "ourongxing",
+  "author": "mn+ourongxing",
   "title": "OhMyMN",
   "version": "4.0.0 b2",
-  "marginnote_version_min": "3.7.18",
-  "cert_key": "",
-  "global_profile_key": "ohmymn_profile_global_v4",
-  "doc_profile_key": "ohmymn_profile_doc_v4",
-  "notebook_profile_key": "ohmymn_profile_notebook_v4"
+  "marginnote_version_min": "3.7.19",
+  "cert_key": ""
 }

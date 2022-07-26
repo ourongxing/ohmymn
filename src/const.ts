@@ -17,7 +17,7 @@ export const Addon = {
   author: mnaddon.author,
   version: mnaddon.version,
   key: mnaddon.addonid.split(".")[2],
-  globalProfileKey: mnaddon.global_profile_key,
-  docProfileKey: mnaddon.doc_profile_key,
-  notebookProfileKey: mnaddon.notebook_profile_key
+  globalProfileKey: "ohmymn_profile_global_v4",
+  docProfileKey: "ohmymn_profile_doc_v4",
+  notebookProfileKey: "ohmymn_profile_notebook_v4"
 }
