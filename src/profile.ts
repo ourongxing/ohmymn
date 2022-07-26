@@ -1,5 +1,5 @@
 import { IConfig } from "./typings"
-import { ReplaceParam } from "./utils/input"
+import { ReplaceParam } from "./utils"
 
 const globalProfilePreset = {
   addon: {
@@ -38,9 +38,10 @@ const globalProfilePreset = {
     on: false,
     fillWordInfo: [0],
     dataSource: [0],
-    customFill:
-      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}\\n{{zh}}{{#tags}}\\n🏷 {{tags}}{{/tags}}",
-    selectMeaning: false,
+    customFillFront:
+      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}{{#tags}}\\n🏷 {{tags}}{{/tags}}",
+    customFill: "{{zh}}",
+    selectMeanings: [0],
     autoContext: false,
     translateContext: false,
     collins: [0, 1, 2, 3, 4, 5]

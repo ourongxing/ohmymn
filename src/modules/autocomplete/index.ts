@@ -1,9 +1,12 @@
 import { MbBookNote } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { checkPlainText } from "~/utils/checkInput"
-import { showHUD } from "~/utils/common"
+import {
+  showHUD,
+  checkPlainText,
+  modifyNodeTitle,
+  undoGroupingWithRefresh
+} from "~/utils"
 import { defineConfig } from "~/profile"
-import { modifyNodeTitle, undoGroupingWithRefresh } from "~/utils/note"
 import { lang } from "./lang"
 import { completeWord } from "./utils"
 
@@ -32,21 +35,33 @@ export default defineConfig({
       key: "collins",
       type: CellViewType.MuiltSelect,
       option: ["零", "一", "二", "三", "四", "五"],
-      label: "柯林斯星级筛选",
-      help: "星越多代表越常用，但也越简单"
+      label: label.collins,
+      help: help.collinns
     },
     {
       key: "dataSource",
       type: CellViewType.Select,
-      option: ["在线 API", "本地数据库"],
-      label: "数据来源",
-      help: "本地数据库体积较大，但更快，质量更高"
+      option: option.data_source,
+      label: label.data_source,
+      help: help.data_source
     },
     {
       key: "fillWordInfo",
       type: CellViewType.Select,
       option: option.fill_word_info,
       label: label.fill_word_info
+    },
+    {
+      key: "customFillFront",
+      type: CellViewType.Input,
+      help: help.custom_fill_front,
+      bind: ["fillWordInfo", 1],
+      link,
+      check({ input }) {
+        checkPlainText(input)
+        if (/{{\s*(?:zh|en)\s*}}/.test(input))
+          throw "当前输入栏不允许使用 {{zh}} 或 {{en}}"
+      }
     },
     {
       key: "customFill",
@@ -59,8 +74,9 @@ export default defineConfig({
       }
     },
     {
-      key: "selectMeaning",
-      type: CellViewType.Switch,
+      key: "selectMeanings",
+      type: CellViewType.MuiltSelect,
+      option: ["中文", "英文"],
       label: label.select_meaning,
       bind: [
         [
@@ -72,13 +88,14 @@ export default defineConfig({
     {
       key: "autoContext",
       type: CellViewType.Switch,
-      label: "自动摘录上下文"
+      label: label.auto_context,
+      help: help.auto_context
     },
     {
       key: "translateContext",
       type: CellViewType.Switch,
-      label: "翻译上下文",
-      help: "使用 AutoTranslate, 请先将其设置好",
+      label: label.translate_context,
+      help: help.translate_context,
       bind: ["autoContext", true]
     }
   ],
@@ -86,7 +103,8 @@ export default defineConfig({
     {
       key: "completeWord",
       type: CellViewType.Button,
-      label: "英文单词制卡",
+      label: label.complete_word,
+      option: ["追加", "替换"],
       method: async ({ nodes, option }) => {
         if (option === -1) return
         const { dataSource } = self.globalProfile.autocomplete
@@ -110,9 +128,10 @@ export default defineConfig({
             if (info) {
               const { title, comments } = info
               modifyNodeTitle(node, title)
-              while (node.comments.length) {
-                node.removeCommentByIndex(0)
-              }
+              if (option === 1)
+                while (node.comments.length) {
+                  node.removeCommentByIndex(0)
+                }
               comments.forEach(k => {
                 k && node.appendTextComment(k)
               })

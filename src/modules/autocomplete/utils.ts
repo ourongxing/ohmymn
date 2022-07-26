@@ -5,13 +5,14 @@ import {
   CGRectValue2CGRect,
   isfileExists,
   isOCNull,
-  showHUD
-} from "~/utils/common"
-import { reverseEscape, escapeDoubleQuote } from "~/utils/input"
-import fetch from "~/utils/network"
-import { SerialCode } from "~/utils/number"
-import popup, { select } from "~/utils/popup"
-import { CJK } from "~/utils/text"
+  showHUD,
+  reverseEscape,
+  escapeDoubleQuote,
+  fetch,
+  CJK,
+  SerialCode,
+  popup
+} from "~/utils"
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
 import { TranslateProviders } from "../autotranslate/typings"
@@ -40,52 +41,72 @@ async function selectInput(parts: string[], message: string, title: string) {
   )
   if (option < parts.length) return parts[option]
   else if (content) {
-    return (reverseEscape(content, true) as string).replace(
-      /^\s*\[((?:\w|-)+)\]\s*/,
-      (_, m) => {
+    return (reverseEscape(content, true) as string)
+      .replace(/\s*\[((?:\w|-)+)\]\s*/, (_, m) => {
         const matched = Array.from({ length: parts.length }, (v, i) => i + 1)
           .join(", ")
           .match(new RegExp(`[${m}]`, "g"))
         if (matched) {
-          return matched.map(k => parts[Number(k) - 1]).join("\n") + "\n"
+          return "\n" + matched.map(k => parts[Number(k) - 1]).join("\n") + "\n"
+          // const contents = matched
+          //   .map(k => parts[Number(k) - 1].split(/^(\w+)\.\s*/).filter(k => k))
+          //   .reduce((acc, k) => {
+          //     const [cat, con] = k
+          //     if (cat in acc) acc[cat] += `; ${con}`
+          //     else acc[cat] = con
+          //     return acc
+          //   }, {} as Record<string, string>)
+          // return (
+          //   "\n" +
+          //   Object.entries(contents)
+          //     .map(k => `${k[0]}. ${k[1]}`)
+          //     .join("\n") +
+          //   "\n"
+          // )
         } else return ""
-      }
-    )
+      })
+      .trim()
   }
 }
 
-async function getPureZH(text: string) {
+async function getPureZH(text: string, isSelect = false) {
   const arr = pangu.spacing(pangu.toFullwidth(text)).split("\n") as string[]
   const allMeanings = arr.reduce((acc, cur) => {
-    if (!/人名|\[.+\]/.test(cur)) acc.push(cur.replace(/\ba\. /g, "adj. "))
+    if (!/人名|\[.+\]/.test(cur)) acc.push(cur.replace(/^a\.\s*/gm, "adj. "))
     return acc
   }, [] as string[])
-  const { selectMeaning } = self.globalProfile.autocomplete
-  if (selectMeaning) {
+  if (isSelect) {
     const m = allMeanings
       .map(k => {
         const [category, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
         if (meaning) {
-          const { dataSource } = self.globalProfile.autocomplete
-          if (dataSource[0] === 0) {
-            return meaning.split(/\s*[,，]\s*/).map(k => `${category}. ${k}`)
-          } else
-            return meaning.split(/\s*[;；]\s*/).map(k => `${category}. ${k}`)
+          return meaning.split(/\s*[,，；;]\s*/).map(k => `${category}. ${k}`)
         } else return k
       })
       .flat()
     if (m.length > 1)
-      return [await selectInput(m, lang.choose_meaning, Addon.title)]
+      return await selectInput(m, lang.choose_meaning, Addon.title)
   }
-  return allMeanings
+  return allMeanings.join("\n")
 }
 
-async function getEN(text: string) {
-  const allMeanings = text.split("\n")
-  const { selectMeaning } = self.globalProfile.autocomplete
-  if (selectMeaning && allMeanings.length > 1) {
-    return [await select(allMeanings, lang.choose_meaning, Addon.title)]
-  } else return allMeanings
+async function getEN(text: string, isSelect = false) {
+  const allMeanings = text
+    .split("\n")
+    .map(k => k.replace(/^a\.\s*/gm, "adj. ").replace(/^[rs]\.\s*/gm, "adv. "))
+  if (isSelect) {
+    const m = allMeanings
+      .map(k => {
+        const [category, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
+        if (meaning) {
+          return meaning.split(/\s*[,，；;]\s*/).map(k => `${category}. ${k}`)
+        } else return k
+      })
+      .flat()
+    if (m.length > 1)
+      return await selectInput(allMeanings, lang.choose_meaning, Addon.title)
+  }
+  return allMeanings.join("\n")
 }
 
 async function getWordInfo(word: string): Promise<Dict> {
@@ -164,40 +185,53 @@ function null2false(
 }
 
 async function getFillInfo(info: Dict) {
-  const { customFill, fillWordInfo } = self.globalProfile.autocomplete
-  if (
-    fillWordInfo[0] === FillWordInfo.None ||
-    (fillWordInfo[0] === FillWordInfo.Custom && !customFill)
-  )
-    return ""
+  const { customFill, customFillFront, fillWordInfo, selectMeanings } =
+    self.globalProfile.autocomplete
+  if (fillWordInfo[0] === FillWordInfo.None) return ["", ""]
+
+  const templateFront =
+    fillWordInfo[0] === FillWordInfo.Custom
+      ? reverseEscape(`"${escapeDoubleQuote(customFillFront)}"`)
+      : ""
   const template =
     fillWordInfo[0] === FillWordInfo.Custom
       ? reverseEscape(`"${escapeDoubleQuote(customFill)}"`)
       : "{{zh}}"
-  let en
-  let zh
-  if (
-    template.includes("{{zh}}") &&
-    info.translation &&
-    !isOCNull(info.translation)
-  )
-    zh = (await getPureZH(info.translation)).join("\n")
-  if (
-    template.includes("{{en}}") &&
-    info.definition &&
-    !isOCNull(info.definition)
-  )
-    en = (await getEN(info.definition)).join("\n")
 
-  const vars = {
-    word: null2false(info.word),
-    phonetic: null2false(info.phonetic),
-    tags: null2false(info.tag, t => getTag(t).join("/")),
-    collins: null2false(info.collins, t => getCollinsStar(Number(t))),
-    en,
-    zh
+  const renderTemplate = async (
+    template: string,
+    isSelect = [] as number[]
+  ) => {
+    let en
+    let zh
+    if (
+      /{{\s*zh\s*}}/.test(template) &&
+      info.translation &&
+      !isOCNull(info.translation)
+    )
+      zh = await getPureZH(info.translation, isSelect.includes(0))
+    if (
+      /{{\s*en\s*}}/.test(template) &&
+      info.definition &&
+      !isOCNull(info.definition)
+    )
+      en = await getEN(info.definition, isSelect.includes(1))
+
+    const vars = {
+      word: null2false(info.word),
+      phonetic: null2false(info.phonetic),
+      tags: null2false(info.tag, t => getTag(t).join("/")),
+      collins: null2false(info.collins, t => getCollinsStar(Number(t))),
+      en,
+      zh
+    }
+    return render(template, vars).trim()
   }
-  return render(template, vars).trim()
+
+  return [
+    await renderTemplate(templateFront),
+    await renderTemplate(template, selectMeanings)
+  ]
 }
 
 export async function getLemmaInfo(word: string) {
@@ -250,7 +284,7 @@ export async function completeWord(text: string, note: MbBookNote) {
     })()
     return {
       title,
-      comments: [await getFillInfo(info), context, translation],
+      comments: [...(await getFillInfo(info)), context, translation],
       text: ""
     }
   } catch (error) {
