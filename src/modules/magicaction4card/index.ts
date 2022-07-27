@@ -40,7 +40,7 @@ export default defineConfig({
     {
       key: "defaultMergeText",
       type: CellViewType.Input,
-      help: "合并卡片内文字的修饰（$&代表每一段）",
+      help: "合并卡片内文字的前后修饰（$&代表每一段）",
       check({ input }) {
         checkPlainText(input)
         if (!input.includes("$&")) throw "缺少 $&"
@@ -191,14 +191,15 @@ export default defineConfig({
           const tags = getAllTags(node, false)
           let imgNum = 0
           // Do not delete picture
-          // TODO 图片删除
           while (node.comments.length - imgNum) {
-            const comment = node.comments[0]
-            comment.type == "TextNote" &&
-              comment.text.includes("marginnote3app") &&
+            const comment = node.comments[imgNum]
+            if (
+              comment.type == "TextNote" &&
+              comment.text.includes("marginnote3app")
+            )
               linkComments.push(comment)
-            comment.type === "PaintNote" && imgNum++
-            node.removeCommentByIndex(imgNum)
+            if (comment.type === "PaintNote") imgNum++
+            else node.removeCommentByIndex(imgNum)
           }
           switch (option) {
             case MergeText.ToExpertText:
