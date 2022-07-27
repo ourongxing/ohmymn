@@ -3,7 +3,7 @@ import lang from "~/lang"
 import { UIAlertViewStyle } from "~/typings/enum"
 import { byteSlice } from "./text"
 
-function popup<T>(
+export function popup<T>(
   {
     title = Addon.title,
     message,
@@ -97,5 +97,3 @@ export async function selectIndex(
   )
   return option
 }
-
-export default popup

@@ -1,5 +1,6 @@
-import { Addon, MN } from "~/const"
+import { Addon } from "~/const"
 import lang from "~/lang"
+import { Timer } from "~/typings"
 
 const console = {
   log(obj: any, suffix = "normal") {
@@ -8,37 +9,39 @@ const console = {
   error(obj: any, suffix = "error") {
     JSB.log(
       `${Addon.key}-${suffix} %@`,
-      String(obj) === "[object Object]" ? JSON.stringify(obj) : String(obj)
+      String(obj) === "[object Object]"
+        ? JSON.stringify(obj, undefined, 2)
+        : String(obj)
     )
   },
   /** Unrelated to the real meaning, used for stringify objects */
   assert(obj: any, suffix = "normal") {
-    JSB.log(`${Addon.key}-${suffix} %@`, JSON.stringify(obj))
+    JSB.log(`${Addon.key}-${suffix} %@`, JSON.stringify(obj, undefined, 2))
   }
 }
 
-const showHUD = (message: string, duration = 2, window = self.window) => {
-  MN.app.showHUD(message, window, duration)
+function showHUD(message: string, duration = 2, window = self.window) {
+  Application.sharedInstance().showHUD(message, window, duration)
 }
 
 const HUDController = {
   show(message: string, window = self.window) {
-    MN.app.waitHUDOnView(message, window)
+    Application.sharedInstance().waitHUDOnView(message, window)
   },
   hidden(window = self.window) {
-    MN.app.stopWaitHUDOnView(window)
+    Application.sharedInstance().stopWaitHUDOnView(window)
   }
 }
 
-const alert = (message: string) => {
-  MN.app.alert(message)
+function alert(message: string) {
+  Application.sharedInstance().alert(message)
 }
 
-const getObjCClassDeclar = (
+function getObjCClassDeclar(
   name: string,
   type: string,
   delegate: Array<string> = []
-) => {
+) {
   let str = `${name} : ${type}`
   if (delegate.length) {
     delegate.forEach(value => {
@@ -48,34 +51,56 @@ const getObjCClassDeclar = (
   return str
 }
 
-const delay = (sec: number) =>
-  new Promise(resolve =>
+function delay(sec: number) {
+  return new Promise(resolve =>
     NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve)
   )
+}
 
-const evaluateJavaScript = (webView: UIWebView, script: string) => {
+async function delayBreak(
+  times: number,
+  sec: number,
+  f: () => boolean
+): Promise<boolean> {
+  for (let i = 0; i < times; i++) {
+    if (f()) return true
+    await delay(sec)
+  }
+  return false
+}
+
+async function setTimeInterval(sec: number, f: () => any): Promise<Timer> {
+  const setTimer = async (
+    sec: number,
+    f: () => any,
+    config: { stop: boolean }
+  ): Promise<void> => {
+    while (1) {
+      if (config.stop) break
+      f()
+      await delay(sec)
+    }
+  }
+  const config = {
+    stop: false
+  }
+  setTimer(sec, f, config)
+  return () => {
+    config.stop = true
+  }
+}
+
+function evaluateJavaScript(webView: UIWebView, script: string) {
   return new Promise<string>(resolve =>
     webView.evaluateJavaScript(script, resolve)
   )
 }
 
-const delayBreak = async (
-  times: number,
-  sec: number,
-  f: () => boolean
-): Promise<boolean> => {
-  for (let i = 0; i < times; i++) {
-    await delay(sec)
-    if (f()) return true
-  }
-  return false
+function openUrl(url: string) {
+  Application.sharedInstance().openURL(NSURL.URLWithString(encodeURI(url)))
 }
 
-const openUrl = (url: string) => {
-  MN.app.openURL(NSURL.URLWithString(encodeURI(url)))
-}
-
-const postNotification = (key: string, userInfo: any) => {
+function postNotification(key: string, userInfo: any) {
   NSNotificationCenter.defaultCenter().postNotificationNameObjectUserInfo(
     key,
     self,
@@ -83,22 +108,24 @@ const postNotification = (key: string, userInfo: any) => {
   )
 }
 
-const isThisWindow = (sender: any, window = self.window) => {
-  return MN.app.checkNotifySenderInWindow(sender, window)
+function isThisWindow(sender: any, window = self.window) {
+  return Application.sharedInstance().checkNotifySenderInWindow(sender, window)
 }
 
-const isOCNull = (obj: any): obj is OCNull => obj === NSNull.new()
+function isOCNull(obj: any): obj is OCNull {
+  return obj === NSNull.new()
+}
 
-const OCNull2null = <T>(k: T) => {
+function OCNull2null<T>(k: T) {
   return isOCNull(k) ? null : (k as Exclude<T, OCNull>)
 }
 
-const eventHandlerController = (
+function eventHandlerController(
   handlerList: ({ event: string; handler?: string } | string)[]
 ): {
   add: () => void
   remove: () => void
-} => {
+} {
   const add = () => {
     handlerList.forEach(v => {
       v = typeof v == "string" ? { event: v } : v
@@ -124,7 +151,7 @@ const eventHandlerController = (
   return { add, remove }
 }
 
-const copy = (text: string, hud = true) => {
+function copy(text: string, hud = true) {
   UIPasteboard.generalPasteboard().string = text.trim()
   hud && showHUD(lang.copy_success)
 }
@@ -143,6 +170,18 @@ function CGRectString2CGRect(s: string): CGRect {
     height: arr[2],
     width: arr[3]
   }
+}
+
+function CGSizeString2CGSize(s: string): CGSize {
+  const arr = s.match(/\d+/g)!.map(k => Number(k))
+  return {
+    width: arr[0],
+    height: arr[1]
+  }
+}
+
+function CGSizeValue2CGSize(v: NSValue) {
+  return CGSizeString2CGSize(NSValue2String(v))
 }
 
 function CGRectValue2CGRect(v: NSValue) {
@@ -169,8 +208,11 @@ export {
   eventHandlerController,
   copy,
   NSValue2String,
+  evaluateJavaScript,
+  isfileExists,
   CGRectValue2CGRect,
   CGRectString2CGRect,
-  evaluateJavaScript,
-  isfileExists
+  CGSizeString2CGSize,
+  CGSizeValue2CGSize,
+  setTimeInterval
 }

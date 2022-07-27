@@ -1,13 +1,13 @@
 export const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
-export const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
+export function dateFormat(date: Date, fmt = "YYYY-mm-dd HH:MM") {
   let ret
   const opt = {
-    "Y+": date.getFullYear().toString(), // year
-    "m+": (date.getMonth() + 1).toString(), // month
-    "d+": date.getDate().toString(), // day
-    "H+": date.getHours().toString(), // hour
-    "M+": date.getMinutes().toString(), // minute
+    "Y+": date.getFullYear().toString(),
+    "m+": (date.getMonth() + 1).toString(),
+    "d+": date.getDate().toString(),
+    "H+": date.getHours().toString(),
+    "M+": date.getMinutes().toString(),
     "S+": date.getSeconds().toString() // second
   }
   Object.entries(opt).forEach(([k, v]) => {
@@ -22,7 +22,7 @@ export const dateFormat = (date: Date, fmt = "YYYY-mm-dd HH:MM") => {
   return fmt
 }
 
-export const escapeURLParam = (param: string) => {
+export function escapeURLParam(param: string) {
   const replaceParams = [
     [/%/g, "%25"],
     [/#/g, "%23"],
@@ -39,7 +39,7 @@ export const escapeURLParam = (param: string) => {
   return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
 }
 
-export const unescapeURLParam = (param: string) => {
+export function unescapeURLParam(param: string) {
   const replaceParams = [
     [/%25/g, "%"],
     [/%23/g, "#"],
@@ -55,3 +55,13 @@ export const unescapeURLParam = (param: string) => {
   ] as [RegExp, string][]
   return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
 }
+
+export * from "./popup"
+export * from "./text"
+export * from "./number"
+export * from "./input"
+export * from "./network"
+export * from "./note"
+export * from "./profile"
+export * from "./checkInput"
+export * from "./common"

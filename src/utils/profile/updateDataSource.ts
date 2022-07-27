@@ -6,7 +6,7 @@ import { deepCopy } from ".."
 import { string2RegArray, ReplaceParam, string2ReplaceParam } from "../input"
 import { getMNLinkValue } from "./utils"
 
-export const updateProfileTemp = (key: string, val: string) => {
+export function updateProfileTemp(key: string, val: string) {
   const newValue = getMNLinkValue(val)
   if (key in self.tempProfile.regArray) {
     let tmp: RegExp[][] | undefined
@@ -28,10 +28,10 @@ export const updateProfileTemp = (key: string, val: string) => {
   }
 }
 
-export const updateProfileDataSource = (
+export function updateProfileDataSource(
   profile: IGlobalProfile | IDocProfile | INotebookProfile,
   profileSaved: any
-) => {
+) {
   // Update DateSouce and profile
   for (const [name, _] of Object.entries(profile)) {
     if (name === "additional") {
@@ -70,7 +70,7 @@ export const updateProfileDataSource = (
   }
 }
 
-export const refreshPanel = () => {
+export function refreshPanel() {
   self.settingViewController.tableView?.reloadData()
   layoutViewController()
   console.log("Refresh Panel", "profile")

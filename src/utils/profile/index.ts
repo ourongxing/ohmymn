@@ -182,7 +182,7 @@ export const writeProfile: WritePrifile = ({
   }
 }
 
-export const saveProfile = (name: string, key: string, value: any) => {
+export function saveProfile(name: string, key: string, value: any) {
   try {
     switch (key) {
       case "quickSwitch":
@@ -221,14 +221,14 @@ export const saveProfile = (name: string, key: string, value: any) => {
   }
 }
 
-export const removeProfile = () => {
+export function removeProfile() {
   NSUserDefaults.standardUserDefaults().removeObjectForKey(globalProfileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(notebookProfileKey)
   self.docmd5 = undefined
 }
 
-const writeProfile2Card = (node: MbBookNote) => {
+function writeProfile2Card(node: MbBookNote) {
   undoGroupingWithRefresh(() => {
     node.excerptText = `${lang.profile_manage.prohibit}\nversion: ${
       Addon.version
@@ -252,7 +252,7 @@ const writeProfile2Card = (node: MbBookNote) => {
   })
 }
 
-export const manageProfileAction = async (node: MbBookNote, option: number) => {
+export async function manageProfileAction(node: MbBookNote, option: number) {
   // Write
   if (option === 1) {
     if (!node.childNotes?.length) showHUD(lang.profile_manage.children)

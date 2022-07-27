@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-/*!
+/*
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
  */
@@ -844,7 +844,12 @@ export function render(template, view, partials, config) {
     )
   }
 
-  return defaultWriter.render(template, view, partials, config)
+  return defaultWriter.render(
+    template.replace(/{{\s*(.+?)\s*}}/g, "{{$1}}"),
+    view,
+    partials,
+    config
+  )
 }
 
 mustache.render = render

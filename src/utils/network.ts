@@ -27,10 +27,10 @@ type RequestOptions = {
   { search?: Record<string, string | number | boolean> }
 >
 
-const initRequest = (
+function initRequest(
   url: string,
   options: RequestOptions
-): NSMutableURLRequest => {
+): NSMutableURLRequest {
   const request = NSMutableURLRequest.requestWithURL(
     NSURL.URLWithString(encodeURI(url))
   )
@@ -78,11 +78,11 @@ const initRequest = (
   return request
 }
 
-export const fetch = (
+export function fetch(
   url: string,
   options: RequestOptions = {}
-): Promise<Response> =>
-  new Promise((resolve, reject) => {
+): Promise<Response> {
+  return new Promise((resolve, reject) => {
     // UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     const queue = NSOperationQueue.mainQueue()
     const request = initRequest(url, options)
@@ -99,5 +99,6 @@ export const fetch = (
       }
     )
   })
+}
 
 export default fetch

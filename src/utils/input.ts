@@ -13,8 +13,9 @@ import { unique } from "."
  * // output: "123"
  * ```
  */
-const reverseEscape = (str: string, quote = false) =>
-  JSON.parse(quote ? `{"key": "${str}"}` : `{"key": ${str}}`).key
+function reverseEscape(str: string, quote = false) {
+  return JSON.parse(quote ? `"${str}"` : str)
+}
 
 /**
  *  Escape double quotes of the string. We often use backslash(`\`) to escape double quote in order to prevent Typescript from interpreting the quote as the end of the string
@@ -26,7 +27,9 @@ const reverseEscape = (str: string, quote = false) =>
  * // output: \\\"file\\\"-123
  * ```
  */
-const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
+function escapeDoubleQuote(str: string) {
+  return str.replace(/"/g, `\\"`)
+}
 /**
  *  Detect if the string is a number
  * @param text : The string to be processed
@@ -52,7 +55,7 @@ const isNumber = (text: string) => /^[0-9]+$/.test(text)
  * [{regexp: /sd/g, newSubStr: "", fnkey: 0}, {regexp: /tt/g, newSubStr: "", fnkey: 0}]
  * ```
  */
-const string2ReplaceParam = (str: string): ReplaceParam[] => {
+function string2ReplaceParam(str: string): ReplaceParam[] {
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
   for (const bracket of brackets) {
@@ -78,7 +81,7 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
  * @param str : The string to be processed like `/[/xxx/, /yyy/]; [/xxx/]/`
  * @returns RegExp
  */
-const string2Reg = (str: string) => {
+function string2Reg(str: string) {
   str = str.trim()
   if (!str.startsWith("/")) return new RegExp(escapeStringRegexp(str))
   const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
@@ -92,15 +95,16 @@ const string2Reg = (str: string) => {
  * @param str : The string to be processed
  * @returns string
  */
-const escapeStringRegexp = (str: string) =>
-  str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
+function escapeStringRegexp(str: string) {
+  return str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
+}
 
 /**
  *  Procecss user input and return
  * @param str : The string to be processed, input like `[/sd/,/sd/];[/sd/,/sd/]` => output like [[/sd/]]
  * @returns List of RegExp
  */
-const string2RegArray = (str: string): RegExp[][] => {
+function string2RegArray(str: string): RegExp[][] {
   if (/^\(.*\)$/.test(str)) throw ""
   const brackets = str.split(/\s*;\s*(?=(?:\[\s*\/|\/\s*[^\]gimsuy,]))/)
   return brackets.map(bracket => {
@@ -139,7 +143,7 @@ export interface ReplaceParam {
  * @param text The string to be processed
  * @param params The Array of {@link ReplaceParam}
  */
-const extractArray = (text: string, params: ReplaceParam[]) => {
+function extractArray(text: string, params: ReplaceParam[]) {
   return unique(
     params.reduce((acc, cur) => {
       const { newSubStr } = cur

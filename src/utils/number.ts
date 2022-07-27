@@ -13,7 +13,7 @@ export const SerialCode = {
   greek_number: "ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹ"
 }
 
-export const genCharArray = (char: string, len: number, step = 1): string[] => {
+export function genCharArray(char: string, len: number, step = 1): string[] {
   const serialCode = Object.values(SerialCode).filter(k => k.includes(char))[0]
   if (!serialCode) throw ""
   const charArr = []
@@ -28,7 +28,7 @@ export const genCharArray = (char: string, len: number, step = 1): string[] => {
   return charArr
 }
 
-export const genNumArr = (num: number, len: number, step = 1, digit = 0) => {
+export function genNumArr(num: number, len: number, step = 1, digit = 0) {
   const numArr = []
   for (let i = num, end = num + len * step - 1; i <= end; i = i + step) {
     numArr.push(String(i).padStart(digit, "0"))

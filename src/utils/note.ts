@@ -9,7 +9,7 @@ import { escapeURLParam } from "~/utils"
  * @param f f:()=>void, the action need to be cancelled.
  * @returns void
  */
-const undoGrouping = (f: () => void) => {
+function undoGrouping(f: () => void) {
   UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
 }
 
@@ -18,7 +18,7 @@ const undoGrouping = (f: () => void) => {
  * @param f f:()=>void, the action need to be cancelled.
  * @returns void
  */
-const undoGroupingWithRefresh = (f: () => void) => {
+function undoGroupingWithRefresh(f: () => void) {
   undoGrouping(f)
   RefreshAfterDBChange()
 }
@@ -27,7 +27,7 @@ const undoGroupingWithRefresh = (f: () => void) => {
  * Refresh the view after database change.
  * @returns void
  */
-const RefreshAfterDBChange = () => {
+function RefreshAfterDBChange() {
   MN.db.setNotebookSyncDirty(self.notebookid)
   postNotification("RefreshAfterDBChange", {
     topicid: self.notebookid
@@ -43,7 +43,7 @@ const RefreshAfterDBChange = () => {
  * const mySelection = getSelection()[0]
  * ```
  */
-const getSelectNodes = (): MbBookNote[] => {
+function getSelectNodes(): MbBookNote[] {
   const MindMapNodes: any[] | undefined =
     MN.studyController().notebookController.mindmapView.selViewLst
   return MindMapNodes?.length ? MindMapNodes.map(item => item.note.note) : []
@@ -77,7 +77,7 @@ const getSelectNodes = (): MbBookNote[] => {
   }
     ```
  */
-const getNodeTree = (node: MbBookNote) => {
+function getNodeTree(node: MbBookNote) {
   const DFS = (
     nodes: MbBookNote[],
     level = 0,
@@ -122,7 +122,7 @@ const getNodeTree = (node: MbBookNote) => {
  * @returns MbBookNote[] - An array which contains all the ancestor nodes.
  *
  */
-const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
+function getAncestorNodes(node: MbBookNote): MbBookNote[] {
   const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {
     if (node.parentNote) {
       ancestorNodes = up(node.parentNote, [...ancestorNodes, node.parentNote])
@@ -137,7 +137,7 @@ const getAncestorNodes = (node: MbBookNote): MbBookNote[] => {
  * @param node The card that you want to get its excerptions.
  * @returns Array Each element of the array contains one excerpt note's info.
  */
-const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
+function getExcerptNotes(node: MbBookNote): MbBookNote[] {
   return node.comments.reduce(
     (acc, cur) => {
       cur.type == "LinkNote" && acc.push(MN.db.getNoteById(cur.noteid)!)
@@ -152,7 +152,7 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
  * @param pic {@link MNPic}
  * @returns Base64 code of the picture.
  */
-const exportPic = (pic: MNPic, mdsize = "") => {
+function exportPic(pic: MNPic, mdsize = "") {
   const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
   return base64
     ? {
@@ -171,7 +171,7 @@ const exportPic = (pic: MNPic, mdsize = "") => {
  * @param pic Text after OCR by default.
  * @returns Dict of excerpt text.
  */
-const getExcerptText = (node: MbBookNote, highlight = true, mdsize = "") => {
+function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
   const res = {
     ocr: [] as string[],
     base64: [] as string[],
@@ -203,7 +203,7 @@ const getExcerptText = (node: MbBookNote, highlight = true, mdsize = "") => {
  * @param comment The comment that you want to get its index.
  * @returns Number The index of the comment.
  */
-const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
+function getCommentIndex(note: MbBookNote, comment: MbBookNote | string) {
   const comments = note.comments
   for (let i = 0; i < comments.length; i++) {
     const _comment = comments[i]
@@ -222,12 +222,12 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
  * @param highlight default true, will retention highlight symbol, **.
  * @returns string
  */
-const getAllText = (
+function getAllText(
   node: MbBookNote,
   separator = "\n",
   highlight = true,
   mdsize = ""
-) => {
+) {
   return [
     ...getExcerptText(node, highlight, mdsize).ocr,
     ...getAllCommnets(node, mdsize).nopic,
@@ -240,7 +240,9 @@ const getAllText = (
  * @param text The text that you want to remove the highlight symbol.
  * @returns Processed text.
  */
-const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
+function removeHighlight(text: string) {
+  return text.replace(/\*\*/g, "")
+}
 
 /**
  * Get all tags of one node.
@@ -248,7 +250,7 @@ const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
  * @param hash True by default. If false, will delete "#" in the tag.
  * @returns Array of strings. Each element is a tag.
  */
-const getAllTags = (node: MbBookNote, hash = true) => {
+function getAllTags(node: MbBookNote, hash = true) {
   const tags = node.comments.reduce((acc, cur) => {
     if (cur.type == "TextNote" || cur.type == "HtmlNote") {
       acc.push(...cur.text.split(/\s/).filter(k => k.startsWith("#")))
@@ -263,7 +265,7 @@ const getAllTags = (node: MbBookNote, hash = true) => {
  * @param node The card that you want to get all kind of its comments.
  * @returns Resource dict.
  */
-const getAllCommnets = (node: MbBookNote, mdsize = "") => {
+function getAllCommnets(node: MbBookNote, mdsize = "") {
   const res = {
     nopic: [] as string[],
     base64: [] as string[],
@@ -293,7 +295,7 @@ const getAllCommnets = (node: MbBookNote, mdsize = "") => {
  * @param tags The tags that you want to add.
  * @param force Force merging tags, even if no tags are added
  */
-const addTags = (node: MbBookNote, tags: string[], force = false) => {
+function addTags(node: MbBookNote, tags: string[], force = false) {
   const existingTags: string[] = []
   const tagCommentIndex: number[] = []
   node.comments.forEach((comment, index) => {
@@ -323,7 +325,7 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
   tagLine && node.appendTextComment(removeHighlight(tagLine))
 }
 
-const modifyNodeTitle = (node: MbBookNote, title: string | string[]) => {
+function modifyNodeTitle(node: MbBookNote, title: string | string[]) {
   node = node.groupNoteId ? MN.db.getNoteById(node.groupNoteId)! : node
   if (typeof title !== "string") title = title.join("; ")
   title = removeHighlight(title)

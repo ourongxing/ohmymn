@@ -6,7 +6,7 @@ import { noteComment } from "~/typings"
  * @param link Card link (UUID)
  * @returns ID of note or the linked card value
  */
-export const getMNLinkValue = (link: string) => {
+export function getMNLinkValue(link: string) {
   const noteid = link.replace("marginnote3app://note/", "")
   if (noteid === link) return link
   const node = MN.db.getNoteById(noteid)
@@ -25,10 +25,7 @@ export const getMNLinkValue = (link: string) => {
   } else return undefined
 }
 
-export const checkNewVerProfile = (
-  profile: IGlobalProfile,
-  profileSaved: any
-) => {
+export function checkNewVerProfile(profile: IGlobalProfile, profileSaved: any) {
   for (const [name, _] of Object.entries(profile)) {
     for (const [key, val] of Object.entries(_)) {
       if (profileSaved?.[name]?.[key] === undefined) {
