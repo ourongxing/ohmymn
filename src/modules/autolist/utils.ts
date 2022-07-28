@@ -1,5 +1,5 @@
 import { regFlag } from "~/utils/input"
-import { SerialCode } from "~/utils/number"
+import { serialSymbols } from "~/utils/number"
 import { isHalfWidth } from "~/utils/text"
 import { AutoListPreset } from "./typings"
 
@@ -36,7 +36,7 @@ export function addLineBreak(text: string): string {
             const params: [RegExp, string][] = [
               [
                 new RegExp(
-                  `\s*([其第]?[${SerialCode.chinese_number}]{1,2}[.、，,])|\s*([其第][${SerialCode.chinese_number}]{1,2}是?[.、，,]?)`,
+                  `\s*([其第]?[${serialSymbols.chinese_number}]{1,2}[.、，,])|\s*([其第][${serialSymbols.chinese_number}]{1,2}是?[.、，,]?)`,
                   "g"
                 ),
                 "\n$1$2"
@@ -66,9 +66,10 @@ export function addNumber(text: string, fnKey: number): string {
       return text
     case 2:
     case 3: {
-      const code = [SerialCode.capital_letter, SerialCode.lowercase_letter][
-        fnKey - 2
-      ]
+      const code = [
+        serialSymbols.capital_letter,
+        serialSymbols.lowercase_letter
+      ][fnKey - 2]
       let index = 0
       return text.replace(/^/gm, k => {
         return `${code[index++]}. ${k}`
@@ -77,8 +78,8 @@ export function addNumber(text: string, fnKey: number): string {
     case 4:
     case 5: {
       const code = [
-        SerialCode.chinese_capital_number,
-        SerialCode.chinese_number
+        serialSymbols.chinese_capital_number,
+        serialSymbols.chinese_number
       ][fnKey - 4]
       let index = 0
       return text.replace(/^/gm, k => {
@@ -88,8 +89,8 @@ export function addNumber(text: string, fnKey: number): string {
     case 6:
     case 7: {
       const code = [
-        SerialCode.hollow_circle_number,
-        SerialCode.solid_circle_number
+        serialSymbols.hollow_circle_number,
+        serialSymbols.solid_circle_number
       ][fnKey - 6]
       let index = 0
       return text.replace(/^/gm, k => {

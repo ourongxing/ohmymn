@@ -8,7 +8,7 @@ import {
   byteSplitByLen,
   byteLength,
   byteSlice,
-  SerialCode,
+  serialSymbols,
   isOCNull
 } from "~/utils"
 
@@ -248,7 +248,7 @@ const initCellView = {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
     text = text.replace(
-      new RegExp(`^[\x20—${SerialCode.hollow_circle_number}]+`),
+      new RegExp(`^[\x20—${serialSymbols.hollow_circle_number}]+`),
       ""
     )
     view.setTitleForState(

@@ -10,7 +10,7 @@ import {
   escapeDoubleQuote,
   fetch,
   CJK,
-  SerialCode,
+  serialSymbols,
   popup
 } from "~/utils"
 import { render } from "~/utils/third party/mustache"
@@ -27,7 +27,7 @@ async function selectInput(parts: string[], message: string, title: string) {
       title,
       message,
       buttons: [
-        ...parts.map((k, i) => `${SerialCode.hollow_circle_number[i]} ${k}`),
+        ...parts.map((k, i) => `${serialSymbols.hollow_circle_number[i]} ${k}`),
         "自定义"
       ],
       multiLine: true,

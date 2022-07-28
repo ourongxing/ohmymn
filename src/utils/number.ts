@@ -1,7 +1,7 @@
 import { reverseEscape } from "./input"
 
 // 序号 https://www.qqxiuzi.cn/wz/zixun/1704.htm
-export const SerialCode = {
+export const serialSymbols = {
   hollow_circle_number:
     "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿",
   solid_circle_number: "❶❷❸❹❺❻❼❽❾❿⓫⓬⓭⓮⓯⓰⓱⓲⓳⓴",
@@ -14,16 +14,18 @@ export const SerialCode = {
 }
 
 export function genCharArray(char: string, len: number, step = 1): string[] {
-  const serialCode = Object.values(SerialCode).filter(k => k.includes(char))[0]
-  if (!serialCode) throw ""
+  const serialSymbol = Object.values(serialSymbols).filter(k =>
+    k.includes(char)
+  )[0]
+  if (!serialSymbol) throw ""
   const charArr = []
-  const startIndex = serialCode.search(char)
+  const startIndex = serialSymbol.search(char)
   for (
     let i = startIndex, end = startIndex + len * step - 1;
     i <= end;
     i = i + step
   ) {
-    charArr.push(serialCode[i % serialCode.length])
+    charArr.push(serialSymbol[i % serialSymbol.length])
   }
   return charArr
 }
@@ -65,11 +67,11 @@ export function getSerialInfo(newSubStr: string, length: number, symbol = "%") {
 export function getSerialByIndex(startValue: string, index: number) {
   if (/^[0-9]+$/.test(startValue))
     return String(Number(startValue) + index).padStart(startValue.length, "0")
-  const serialCode = Object.values(SerialCode).filter(k =>
+  const serialSymbol = Object.values(serialSymbols).filter(k =>
     k.includes(startValue)
   )[0]
-  if (!serialCode) throw ""
-  const len = serialCode.length
-  const startIndex = serialCode.search(startValue)
-  return serialCode[(startIndex + index) % len]
+  if (!serialSymbol) throw "不支持该符号"
+  const len = serialSymbol.length
+  const startIndex = serialSymbol.search(startValue)
+  return serialSymbol[(startIndex + index) % len]
 }

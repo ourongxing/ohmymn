@@ -5,12 +5,12 @@ import { getExcerptNotes } from "~/utils/note"
 import { lang } from "./lang"
 import { ChangeStyle } from "./typings"
 import { modifyStyle } from "./utils"
-import { SerialCode } from "~/utils/number"
+import { serialSymbols } from "~/utils/number"
 
 const { help, intro, option, label, link, check } = lang
 
 const colors = option.color.map((color, index) =>
-  index ? SerialCode.hollow_circle_number[index - 1] + " " + color : color
+  index ? serialSymbols.hollow_circle_number[index - 1] + " " + color : color
 )
 
 export default defineConfig({

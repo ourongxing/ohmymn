@@ -4,7 +4,7 @@ import { constModules, modules } from "./module"
 import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./typings/enum"
-import { SerialCode } from "./utils"
+import { serialSymbols } from "./utils"
 
 const { addon, magicaction4card, magicaction4text } = constModules
 
@@ -120,7 +120,8 @@ const genDataSource = (
   for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.map(
-        (value, index) => SerialCode.hollow_circle_number[index] + " " + value
+        (value, index) =>
+          serialSymbols.hollow_circle_number[index] + " " + value
       )
   }
 
