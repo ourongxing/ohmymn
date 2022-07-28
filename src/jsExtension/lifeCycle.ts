@@ -1,4 +1,4 @@
-import { Addon, MN } from "~/const"
+import { MN } from "~/const"
 import { dataSourcePreset } from "~/dataSource"
 import lang from "~/lang"
 import {

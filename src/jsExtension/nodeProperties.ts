@@ -138,7 +138,7 @@ export const renderTemplateOfNodeProperties = (
   node: MbBookNote,
   template: string
 ) => {
-  if (!/{{.*}}/.test(template)) return template
+  if (!/{{.+}}/.test(template)) return template
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {
