@@ -14,29 +14,37 @@ export const getLayerSerialInfo = (
   newSubStr: string,
   treeIndex: number[][]
 ) => {
-  // string[], [...string[],[string,number]] 均可省略
+  // string[], [...string[],[string,number,boolean]]
   const serialArr = reverseEscape(
     newSubStr.replace(/^.*#(\[.+\]).*$/, "$1").replace(/'/g, '"')
   ) as any[]
   const option = {
-    linkCode: ".",
-    MAXLevel: Infinity
+    connectionSymbol: ".",
+    maxLevel: 999,
+    onlyShowCurrentLayer: false
   }
   if (Array.isArray(serialArr[serialArr.length - 1])) {
-    const opt = serialArr.pop() as any[]
-    if (opt.length > 2) throw "option 数组必须两个元素以内"
-    opt.forEach(k => {
-      if (typeof k === "number") option.MAXLevel = k
-      else if (typeof k === "string") option.linkCode = k
-      else throw "option 数组内只能是 number 或 string"
-    })
+    // 最后一个数组
+    const opt = serialArr.pop() as (number | string | boolean)[]
+    const [connectionSymbol, maxLevel, onlyShowCurrentLayer] = [
+      opt.find(k => typeof k === "string"),
+      opt.find(k => typeof k === "number"),
+      opt.find(k => typeof k === "boolean")
+    ]
+    if (connectionSymbol !== undefined)
+      option.connectionSymbol = connectionSymbol as string
+    if (maxLevel !== undefined) option.maxLevel = maxLevel as number
+    if (onlyShowCurrentLayer !== undefined)
+      option.onlyShowCurrentLayer = onlyShowCurrentLayer as boolean
   }
   const len = serialArr.length
   if (len == 0 || serialArr.some(serial => typeof serial !== "string"))
     throw "除开 option 必须还有元素，并且都必须是 string"
   // [[0],[1],[2],[2,0],[2,1],[2,1,1,1]]
-  return treeIndex.map(nodeIndex =>
-    nodeIndex.length <= option.MAXLevel
+  return treeIndex.map(nodeIndex => {
+    const indexLen = nodeIndex.length
+    if (option.onlyShowCurrentLayer) nodeIndex = nodeIndex.slice(-1)
+    return indexLen <= option.maxLevel
       ? nodeIndex
           .map((index, _index) => {
             return getSerialByIndex(
@@ -44,9 +52,9 @@ export const getLayerSerialInfo = (
               index
             )
           })
-          .join(option.linkCode)
+          .join(option.connectionSymbol)
       : ""
-  )
+  })
 }
 
 export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
@@ -54,7 +62,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
     ? content
     : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
   const { newSubStr, regexp } = string2ReplaceParam(content)[0]
-  // 分级序列命名
+  // 分层编号命名
   if (/#\[(.+)\]/.test(newSubStr)) {
     const isHavingChildren = nodes.every(
       node =>
@@ -84,7 +92,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
       return
     }
   }
-  // 如果含有序列信息，就把获取新的 replace 参数
+  // 如果含有编号信息，就获取新的 replaceValue
   else if (/%\[(.+)\]/.test(newSubStr)) {
     const newTitles = getSerialInfo(newSubStr, nodes.length).map(k =>
       newSubStr.replace(/%\[(.+)\]/, k)
