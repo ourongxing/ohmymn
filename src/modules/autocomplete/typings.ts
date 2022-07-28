@@ -4,13 +4,18 @@ export const enum FillWordInfo {
   Chinese
 }
 
-export type Dict = {
-  word: string
+export interface Word {
   sw: string
-  exchange: string | OCNull
-  phonetic: string | OCNull
-  definition: string | OCNull
-  translation: string | OCNull
-  tag: string | OCNull
-  collins: string | OCNull
+  word: string
+  translation?: string
+  exchange?: string
+  phonetic?: string
+  definition?: string
+  tag?: string
+  // pos: "v:46/n:54"
+  pos?: string
+  collins?: number
+  oxford?: number
+  frq?: number
+  bnc?: number
 }

@@ -18,7 +18,7 @@ import pangu from "~/utils/third party/pangu"
 import { TranslateProviders } from "../autotranslate/typings"
 import { baiduTranslate, caiyunTranslate } from "../autotranslate/utils"
 import { lang } from "./lang"
-import { Dict, FillWordInfo } from "./typings"
+import { Word, FillWordInfo } from "./typings"
 const { error } = lang
 
 async function selectInput(parts: string[], message: string, title: string) {
@@ -109,15 +109,24 @@ async function getEN(text: string, isSelect = false) {
   return allMeanings.join("\n")
 }
 
-async function getWordInfo(word: string): Promise<Dict> {
+async function getWordInfo(word: string): Promise<Word> {
   const { dataSource } = self.globalProfile.autocomplete
+  function unifiyData(obj: any) {
+    const newObj = {} as Word
+    Object.entries(obj).forEach(([k, v]) => {
+      if (isOCNull(v) || !v) newObj[k] = undefined
+      else if (!Number.isNaN(Number(v))) newObj[k] = Number(v)
+      else newObj[k] = v
+    })
+    return newObj
+  }
   if (dataSource[0] === 0) {
     const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + word).then(
       res => res.json()
     )
-    const info = <Dict[]>res.filter((info: any) => info.word == info.sw)
+    const info = <Word[]>res.filter((info: any) => info.word == info.sw)
     if (!info.length) throw error.not_find_word
-    return info[0]
+    return unifiyData(info[0])
   } else {
     if (!self.enDict) {
       if (isfileExists(`${MN.mainPath}/dict.db`)) {
@@ -129,19 +138,19 @@ async function getWordInfo(word: string): Promise<Dict> {
       `SELECT * FROM stardict WHERE word = '${word}'`,
       []
     )
-    let info!: Dict
+    let info!: any
     while (query.next()) {
-      info = query.resultDictionary() as Dict
+      info = query.resultDictionary()
     }
     if (!info) throw error.not_find_word
     query.close()
-    return info
+    return unifiyData(info)
   }
 }
 
-function getWordEx(lemma: string, ex: string | OCNull) {
+function getWordEx(lemma: string, ex: string | undefined) {
   // s:demands/p:demanded/i:demanding/d:demanded/3:demands
-  if (!ex || isOCNull(ex)) return [lemma]
+  if (!ex) return [lemma]
   return ex.split(/\//).reduce(
     (acc, k) => {
       if (!/[01]:/.test(k)) {
@@ -175,16 +184,16 @@ function getCollinsStar(num: number) {
   return "⭐".repeat(num)
 }
 
-function null2false(
-  v: OCNull | string,
-  f: (t: string) => string | string[] = t => t
-) {
-  if (isOCNull(v)) return undefined
-  const res = f(v as string)
-  return res ? res : undefined
+function undefine2undefine<T>(v: T | undefined, f?: (t: T) => string) {
+  if (v) {
+    if (f) {
+      const res = f(v)
+      if (res) return res
+    } else return v
+  }
 }
 
-async function getFillInfo(info: Dict) {
+async function getFillInfo(info: Word) {
   const { customFill, customFillFront, fillWordInfo, selectMeanings } =
     self.globalProfile.autocomplete
   if (fillWordInfo[0] === FillWordInfo.None) return ["", ""]
@@ -204,24 +213,16 @@ async function getFillInfo(info: Dict) {
   ) => {
     let en
     let zh
-    if (
-      /{{\s*zh\s*}}/.test(template) &&
-      info.translation &&
-      !isOCNull(info.translation)
-    )
+    if (/{{\s*zh\s*}}/.test(template) && info.translation)
       zh = await getPureZH(info.translation, isSelect.includes(0))
-    if (
-      /{{\s*en\s*}}/.test(template) &&
-      info.definition &&
-      !isOCNull(info.definition)
-    )
+    if (/{{\s*en\s*}}/.test(template) && info.definition)
       en = await getEN(info.definition, isSelect.includes(1))
 
     const vars = {
-      word: null2false(info.word),
-      phonetic: null2false(info.phonetic),
-      tags: null2false(info.tag, t => getTag(t).join("/")),
-      collins: null2false(info.collins, t => getCollinsStar(Number(t))),
+      word: info.word,
+      phonetic: info.phonetic,
+      tags: undefine2undefine(info.tag, t => getTag(t).join("/")),
+      collins: undefine2undefine(info.collins, t => getCollinsStar(t)),
       en,
       zh
     }
@@ -237,7 +238,7 @@ async function getFillInfo(info: Dict) {
 export async function getLemmaInfo(word: string) {
   const info = await getWordInfo(word)
   const { exchange } = info
-  if (exchange && !isOCNull(exchange)) {
+  if (exchange) {
     const lemma = exchange.replace(/^0:(\w+).*$/, "$1")
     if (lemma != exchange) {
       word = lemma
@@ -258,8 +259,8 @@ export async function completeWord(text: string, note: MbBookNote) {
     const info = await getLemmaInfo(word)
     const { collins } = self.globalProfile.autocomplete
     if (
-      (!isOCNull(info.collins) && !collins.includes(Number(info.collins))) ||
-      (isOCNull(info.collins) && !collins.includes(0))
+      (info.collins && !collins.includes(Number(info.collins))) ||
+      (!info.collins && !collins.includes(0))
     ) {
       return undefined
     }
