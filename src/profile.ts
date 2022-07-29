@@ -41,7 +41,8 @@ const globalProfilePreset = {
     customFillFront:
       "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}{{#tags}}\\n🏷 {{tags}}{{/tags}}",
     customFill: "{{zh}}",
-    selectMeanings: [0],
+    selectLemma: false,
+    selectMeanings: [],
     autoContext: false,
     translateContext: false,
     collins: [0, 1, 2, 3, 4, 5]

@@ -86,6 +86,11 @@ export default defineConfig({
       ]
     },
     {
+      key: "selectLemma",
+      type: CellViewType.Switch,
+      label: "动态选择单词原形"
+    },
+    {
       key: "autoContext",
       type: CellViewType.Switch,
       label: label.auto_context,

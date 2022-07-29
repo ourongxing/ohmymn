@@ -11,17 +11,25 @@ import {
   fetch,
   CJK,
   serialSymbols,
-  popup
+  popup,
+  selectIndex
 } from "~/utils"
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
 import { TranslateProviders } from "../autotranslate/typings"
 import { baiduTranslate, caiyunTranslate } from "../autotranslate/utils"
 import { lang } from "./lang"
-import { Word, FillWordInfo } from "./typings"
-const { error } = lang
+import { Word, FillWordInfo, Exchange } from "./typings"
 
-async function selectInput(parts: string[], message: string, title: string) {
+async function selectParaphrase(
+  obj: Record<string, string[]>,
+  message: string,
+  title: string
+) {
+  const parts = Object.entries(obj)
+    .map(k => k[1].map(m => `${k[0]}. ${m}`))
+    .flat()
+    .slice(0, 9)
   const { option, content } = await popup(
     {
       title,
@@ -42,27 +50,34 @@ async function selectInput(parts: string[], message: string, title: string) {
   if (option < parts.length) return parts[option]
   else if (content) {
     return (reverseEscape(content, true) as string)
-      .replace(/\s*\[((?:\w|-)+)\]\s*/, (_, m) => {
+      .replace(/\s*\[\s*([a-z]+)\s*\]\s*/, (_, m) => {
+        if (m === "all")
+          return Object.entries(obj)
+            .map(k => `${k[0]}. ${k[1].join("; ")}`)
+            .join("\n")
+        if (m in obj) return `${m}. ${obj[m].join("; ")}`
+        else return ""
+      })
+      .replace(/\s*\[([0-9\-]+)\]\s*/, (_, m) => {
         const matched = Array.from({ length: parts.length }, (v, i) => i + 1)
           .join(", ")
           .match(new RegExp(`[${m}]`, "g"))
-        if (matched) {
-          return "\n" + matched.map(k => parts[Number(k) - 1]).join("\n") + "\n"
-          // const contents = matched
-          //   .map(k => parts[Number(k) - 1].split(/^(\w+)\.\s*/).filter(k => k))
-          //   .reduce((acc, k) => {
-          //     const [cat, con] = k
-          //     if (cat in acc) acc[cat] += `; ${con}`
-          //     else acc[cat] = con
-          //     return acc
-          //   }, {} as Record<string, string>)
-          // return (
-          //   "\n" +
-          //   Object.entries(contents)
-          //     .map(k => `${k[0]}. ${k[1]}`)
-          //     .join("\n") +
-          //   "\n"
-          // )
+        if (matched?.length) {
+          return (
+            "\n" +
+            Object.entries(
+              matched.reduce((acc, k) => {
+                const [part, meaning] = parts[Number(k) - 1]
+                  .split(/^(\w+)\.\s*/)
+                  .filter(k => k)
+                acc[part] = [...(acc[part] ?? []), meaning]
+                return acc
+              }, {} as Record<string, string[]>)
+            )
+              .map(k => `${k[0]}. ${k[1].join("; ")}`)
+              .join("\n") +
+            "\n"
+          )
         } else return ""
       })
       .trim()
@@ -76,16 +91,25 @@ async function getPureZH(text: string, isSelect = false) {
     return acc
   }, [] as string[])
   if (isSelect) {
-    const m = allMeanings
-      .map(k => {
-        const [category, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
-        if (meaning) {
-          return meaning.split(/\s*[,，；;]\s*/).map(k => `${category}. ${k}`)
-        } else return k
-      })
-      .flat()
-    if (m.length > 1)
-      return await selectInput(m, lang.choose_meaning, Addon.title)
+    const m = {} as Record<string, string[]>
+    allMeanings.forEach(k => {
+      const [part, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
+      if (meaning) {
+        if (/[；;]/.test(meaning))
+          m[part] = [
+            ...(m[part] ?? []),
+            ...meaning.split(/\s*[；;]\s*/).map(k => k)
+          ]
+        else {
+          m[part] = [
+            ...(m[part] ?? []),
+            ...meaning.split(/\s*[,，]\s*/).map(k => k)
+          ]
+        }
+      } else m.un = [k]
+    })
+    if (Object.values(m).flat().length > 1)
+      return await selectParaphrase(m, lang.choose_meaning, Addon.title)
   }
   return allMeanings.join("\n")
 }
@@ -95,16 +119,25 @@ async function getEN(text: string, isSelect = false) {
     .split("\n")
     .map(k => k.replace(/^a\.\s*/gm, "adj. ").replace(/^[rs]\.\s*/gm, "adv. "))
   if (isSelect) {
-    const m = allMeanings
-      .map(k => {
-        const [category, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
-        if (meaning) {
-          return meaning.split(/\s*[,，；;]\s*/).map(k => `${category}. ${k}`)
-        } else return k
-      })
-      .flat()
-    if (m.length > 1)
-      return await selectInput(allMeanings, lang.choose_meaning, Addon.title)
+    const m = {} as Record<string, string[]>
+    allMeanings.forEach(k => {
+      const [part, meaning] = k.split(/^(\w+)\.\s*/).filter(k => k)
+      if (meaning) {
+        if (/[；;]/.test(meaning))
+          m[part] = [
+            ...(m[part] ?? []),
+            ...meaning.split(/\s*[；;]\s*/).map(k => k)
+          ]
+        else {
+          m[part] = [
+            ...(m[part] ?? []),
+            ...meaning.split(/\s*[,，]\s*/).map(k => k)
+          ]
+        }
+      } else m.un = [k]
+    })
+    if (Object.values(m).flat().length > 1)
+      return await selectParaphrase(m, lang.choose_meaning, Addon.title)
   }
   return allMeanings.join("\n")
 }
@@ -125,7 +158,7 @@ async function getWordInfo(word: string): Promise<Word> {
       res => res.json()
     )
     const info = <Word[]>res.filter((info: any) => info.word == info.sw)
-    if (!info.length) throw error.not_find_word
+    if (!info.length) throw ""
     return unifiyData(info[0])
   } else {
     if (!self.enDict) {
@@ -142,25 +175,10 @@ async function getWordInfo(word: string): Promise<Word> {
     while (query.next()) {
       info = query.resultDictionary()
     }
-    if (!info) throw error.not_find_word
     query.close()
+    if (info) throw ""
     return unifiyData(info)
   }
-}
-
-function getWordEx(lemma: string, ex: string | undefined) {
-  // s:demands/p:demanded/i:demanding/d:demanded/3:demands
-  if (!ex) return [lemma]
-  return ex.split(/\//).reduce(
-    (acc, k) => {
-      if (!/[01]:/.test(k)) {
-        const word = k.slice(2)
-        if (!acc.includes(word)) acc.push(word)
-      }
-      return acc
-    },
-    [lemma]
-  )
 }
 
 function getTag(str: string) {
@@ -235,64 +253,71 @@ async function getFillInfo(info: Word) {
   ]
 }
 
-export async function getLemmaInfo(word: string) {
-  const info = await getWordInfo(word)
-  const { exchange } = info
-  if (exchange) {
-    const lemma = exchange.replace(/^0:(\w+).*$/, "$1")
-    if (lemma != exchange) {
-      word = lemma
-      return await getWordInfo(lemma)
-    }
-  }
-  return info
+function getWordEx(lemma: string, ex: string | undefined) {
+  if (!ex) return [lemma]
+  return Object.entries(resolveExchange(ex)).reduce(
+    (acc, cur) => {
+      const [k, v] = cur
+      if (k !== "current" && k !== "lemma" && !acc.includes(v)) acc.push(v)
+      return acc
+    },
+    [lemma]
+  )
 }
 
-export async function completeWord(text: string, note: MbBookNote) {
-  try {
-    const pureText = text.replace(
-      new RegExp(`^[^${CJK}a-zA-Z]*(\\w+)[^${CJK}a-zA-Z]*$`, "g"),
-      "$1"
-    )
-    if (!/^\w[a-z]+$/.test(pureText)) return undefined
-    const word = pureText.toLowerCase()
-    const info = await getLemmaInfo(word)
-    const { collins } = self.globalProfile.autocomplete
-    if (
-      (info.collins && !collins.includes(Number(info.collins))) ||
-      (!info.collins && !collins.includes(0))
-    ) {
-      return undefined
+function resolveExchange(ex: string): Exchange {
+  /**
+       这个的意思就是 lay 的原型是 lie，它作为第三人称，但是 lay 本身也可以作为单词原型，所有后面它也有各种变换
+       lay
+       0:lie/1:p/d:laid/p:laid/i:laying/3:lays/s:lays
+       lie
+       p:lay/i:lying/3:lies/s:lies/d:lain
+       lain
+       0:lie/1:d
+       p	过去式（did）
+       d	过去分词（done）
+       i	现在分词（doing）
+       3	第三人称单数（does）
+       r	形容词比较级（-er）
+       t	形容词最高级（-est）
+       s	名词复数形式
+       0	Lemma，如 perceived 的 Lemma 是 perceive
+       1	Lemma 的变换形式，比如 s 代表 apples 是其 lemma 的复数形式
+     */
+  const ret: Exchange = {}
+  ex.split("/").forEach(k => {
+    const [m, n] = k.split(":")
+    switch (m) {
+      case "s":
+        ret.s = n
+        break
+      case "d":
+        ret.done = n
+        break
+      case "p":
+        ret.did = n
+        break
+      case "i":
+        ret.doing = n
+        break
+      case "3":
+        ret.does = n
+        break
+      case "r":
+        ret.er = n
+        break
+      case "t":
+        ret.est = n
+        break
+      case "0":
+        ret.lemma = n
+        break
+      case "1":
+        ret.current = n
+        break
     }
-    const title = getWordEx(info.word, info.exchange)
-    const { context, translation } = await (async () => {
-      const { autoContext, translateContext } = self.globalProfile.autocomplete
-      const res = {
-        context: "",
-        translation: ""
-      }
-      if (autoContext) {
-        res.context = getContext(note, pureText) ?? ""
-        if (res.context && translateContext) {
-          const { translateProviders } = self.globalProfile.autotranslate
-          res.translation =
-            translateProviders[0] === TranslateProviders.Baidu
-              ? await baiduTranslate(res.context, 2, 0)
-              : await caiyunTranslate(res.context, 2, 0)
-        }
-      }
-      return res
-    })()
-    return {
-      title,
-      comments: [...(await getFillInfo(info)), context, translation],
-      text: ""
-    }
-  } catch (error) {
-    console.error(error)
-    showHUD(String(error), 2)
-    return undefined
-  }
+  })
+  return ret
 }
 
 function getContext(note: MbBookNote, text: string) {
@@ -380,5 +405,79 @@ function getContext(note: MbBookNote, text: string) {
     }
   } catch {
     return
+  }
+}
+
+async function getLemmaInfo(word: string) {
+  const info = await getWordInfo(word)
+  const { exchange } = info
+  if (exchange) {
+    const exchanges = resolveExchange(exchange)
+    const { lemma, current } = exchanges
+    if (lemma && current) {
+      // 说明当前单词既是原型也是其他单词的变形
+      if (
+        Object.keys(exchanges).length > 2 &&
+        self.globalProfile.autocomplete.selectLemma
+      ) {
+        const i = await selectIndex(
+          [word, lemma],
+          Addon.title,
+          "检测到当前单词既可能是其他单词的变形，也可能就是原形，请选择单词原形"
+        )
+        if (i) return await getWordInfo(lemma)
+      } else {
+        word = lemma
+        return await getWordInfo(lemma)
+      }
+    }
+  }
+  return info
+}
+
+export async function completeWord(text: string, note: MbBookNote) {
+  try {
+    const pureText = text.replace(
+      new RegExp(`^[^${CJK}a-zA-Z]*(\\w+)[^${CJK}a-zA-Z]*$`, "g"),
+      "$1"
+    )
+    if (!/^\w[a-z]+$/.test(pureText)) return undefined
+    const word = pureText.toLowerCase()
+    const info = await getLemmaInfo(word)
+    const { collins } = self.globalProfile.autocomplete
+    if (
+      (info.collins && !collins.includes(Number(info.collins))) ||
+      (!info.collins && !collins.includes(0))
+    ) {
+      return undefined
+    }
+    const title = getWordEx(info.word, info.exchange)
+    const { context, translation } = await (async () => {
+      const { autoContext, translateContext } = self.globalProfile.autocomplete
+      const res = {
+        context: "",
+        translation: ""
+      }
+      if (autoContext) {
+        res.context = getContext(note, pureText) ?? ""
+        if (res.context && translateContext) {
+          const { translateProviders } = self.globalProfile.autotranslate
+          res.translation =
+            translateProviders[0] === TranslateProviders.Baidu
+              ? await baiduTranslate(res.context, 2, 0)
+              : await caiyunTranslate(res.context, 2, 0)
+        }
+      }
+      return res
+    })()
+    return {
+      title,
+      comments: [...(await getFillInfo(info)), context, translation],
+      text: ""
+    }
+  } catch (error) {
+    console.error(error)
+    error && showHUD(String(error), 2)
+    return undefined
   }
 }

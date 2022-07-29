@@ -19,3 +19,15 @@ export interface Word {
   frq?: number
   bnc?: number
 }
+
+export interface Exchange {
+  lemma?: string
+  current?: string
+  does?: string
+  done?: string
+  did?: string
+  doing?: string
+  s?: string
+  er?: string
+  est?: string
+}
