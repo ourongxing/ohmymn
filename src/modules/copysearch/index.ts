@@ -10,6 +10,7 @@ import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
 import { selectIndex } from "~/utils/popup"
 import { Addon } from "~/const"
+import { getSerialInfo } from "~/utils"
 
 const { link, intro, lable, option, help, hud } = lang
 
@@ -39,12 +40,12 @@ export default defineConfig({
       option: option.multiple_excerpts
     },
     {
-      label: lable.separator_symbols_multiple_card,
-      help: help.separator_symbols_multiple_card,
-      key: "separatorSymbols",
-      type: CellViewType.InlineInput,
+      key: "modifySymbols",
+      type: CellViewType.Input,
+      help: "选中多张卡片时，为每张卡片的内容添加前后修饰（$&代表每张卡片的内容）",
       check({ input }) {
         checkPlainText(input)
+        if (!input.includes("$&")) throw "缺少 $&"
       }
     },
     {
@@ -98,9 +99,13 @@ export default defineConfig({
           )) as string
           text && search(text, option)
         } else {
-          const { separatorSymbols, whichPartofCard } =
+          const { modifySymbols, whichPartofCard } =
             self.globalProfile.copysearch
           let opt = whichPartofCard[0]
+          const [front, behind] = reverseEscape(
+            `${escapeDoubleQuote(modifySymbols)}`,
+            true
+          ).split("$&")
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
             opt = await selectIndex(
               lang.option.muiltple_cards,
@@ -109,11 +114,18 @@ export default defineConfig({
             )
           } else opt -= 1
           const contentList = getContentofMuiltCards(nodes, opt)
+
           contentList?.length &&
             search(
-              contentList.join(
-                reverseEscape(`${escapeDoubleQuote(separatorSymbols)}`, true)
-              ),
+              ((arr: string[]) => {
+                if (/%\[.+\]/.test(front)) {
+                  const serialArr = getSerialInfo(front, arr.length)
+                  return arr
+                    .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
+                    .join(behind)
+                }
+                return arr.map(k => front + k).join(behind)
+              })(contentList),
               option
             )
         }
@@ -129,13 +141,23 @@ export default defineConfig({
           const text = (await getContentofOneCard(nodes[0], option)) as string
           text && copy(text)
         } else {
-          const { separatorSymbols } = self.globalProfile.copysearch
+          const { modifySymbols } = self.globalProfile.copysearch
+          const [front, behind] = reverseEscape(
+            `${escapeDoubleQuote(modifySymbols)}`,
+            true
+          ).split("$&")
           const contentList = getContentofMuiltCards(nodes, option)
           contentList?.length &&
             copy(
-              contentList.join(
-                reverseEscape(`${escapeDoubleQuote(separatorSymbols)}`, true)
-              )
+              ((arr: string[]) => {
+                if (/%\[.+\]/.test(front)) {
+                  const serialArr = getSerialInfo(front, arr.length)
+                  return arr
+                    .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
+                    .join(behind)
+                }
+                return arr.map(k => front + k).join(behind)
+              })(contentList)
             )
         }
       }

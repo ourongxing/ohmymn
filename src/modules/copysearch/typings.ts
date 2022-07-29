@@ -1,7 +1,7 @@
 export const enum MultipleTitlesExcerpt {
+  Choose,
   All,
-  First,
-  Choose
+  First
 }
 
 export const enum CopySearchCardInfo {

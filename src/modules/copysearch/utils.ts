@@ -29,12 +29,14 @@ async function getTitleExcerpt(
         : await select(k, Addon.title, lang.choose_you_want)
   }
 }
+
 function getCustomContent(node: MbBookNote) {
   const { customContent } = self.globalProfile.copysearch
   if (!customContent) return undefined
   const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
   return renderTemplateOfNodeProperties(node, template)
 }
+
 export async function getContentofOneCard(node: MbBookNote, option: number) {
   const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
   const excerptText = getExcerptText(node, false).ocr
@@ -51,16 +53,12 @@ export async function getContentofOneCard(node: MbBookNote, option: number) {
     case WhichPartofCard.Excerpt: {
       const res =
         ((await getTitleExcerpt(excerptText, "excerpt")) as string) ??
-        ((await getTitleExcerpt(titles, "title")) as string) ??
         customContent
       if (res) return res
       break
     }
     case WhichPartofCard.Custom: {
-      const res =
-        customContent ??
-        ((await getTitleExcerpt(titles, "title")) as string) ??
-        ((await getTitleExcerpt(excerptText, "excerpt")) as string)
+      const res = customContent
       if (res) return res
       break
     }

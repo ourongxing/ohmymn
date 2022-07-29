@@ -6,7 +6,7 @@ const zh = {
   lable: {
     multiple_titles: "如果有多个标题",
     multiple_excerpts: "如果有多个摘录",
-    custom_copy: "自定义搜索或复制的内容，点击查看支持哪些变量",
+    custom_copy: "自定义搜索或复制的内容，点击查看支持哪些变量。",
     search_card_info: "搜索卡片内容",
     which_partof_card: "默认搜索卡片内容",
     copy_card_info: "复制卡片内容",
@@ -15,9 +15,9 @@ const zh = {
     search_text: "搜索选中文字"
   },
   option: {
-    which_partof_card: ["即时选择", "优先标题", "优先摘录", "优先自定义"],
-    multiple_titles: ["所有标题", "第一个", "即时选择"],
-    multiple_excerpts: ["所有摘录", "第一个", "即时选择"],
+    which_partof_card: ["动态选择", "优先标题", "优先摘录", "自定义"],
+    multiple_titles: ["动态选择", "所有标题", "第一个"],
+    multiple_excerpts: ["动态选择", "所有摘录", "第一个"],
     muiltple_cards: ["标题", "摘录", "自定义"],
     search_engine: ["中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
   },
