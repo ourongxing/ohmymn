@@ -1,16 +1,15 @@
-import { textComment } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { unique } from "~/utils"
-import { checkPlainText, checkRegArray } from "~/utils/checkInput"
-import { showHUD, HUDController } from "~/utils/common"
 import { defineConfig } from "~/profile"
 import {
+  unique,
+  checkPlainText,
+  checkRegArray,
+  showHUD,
+  HUDController,
   string2RegArray,
   escapeDoubleQuote,
   string2ReplaceParam,
-  reverseEscape
-} from "~/utils/input"
-import {
+  reverseEscape,
   getAllTags,
   getExcerptText,
   getAllCommnets,
@@ -18,12 +17,14 @@ import {
   getAncestorNodes,
   addTags,
   removeHighlight,
-  modifyNodeTitle
-} from "~/utils/note"
+  modifyNodeTitle,
+  getSerialInfo,
+  removeCommentButLinkTag
+} from "~/utils"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
-import { getSerialInfo } from "~/utils/number"
+
 const { help, option, intro, label, link, hud } = lang
 
 export default defineConfig({
@@ -165,7 +166,7 @@ export default defineConfig({
       label: label.merge_text,
       key: "mergeText",
       option: option.merge_text,
-      help: "仅支持合并文字摘录和文字评论，如果存在图片，则会在合并后置顶。",
+      help: "仅支持合并文字摘录和文字评论，如果存在图片，则会在合并后置顶。框选摘录会自动 OCR。",
       method: ({ option, nodes }) => {
         const { defaultMergeText } = self.globalProfile.magicaction4card
         const [front, behind] = reverseEscape(
@@ -177,42 +178,29 @@ export default defineConfig({
             ...getExcerptText(node, true).ocr,
             ...getAllCommnets(node).nopic
           ]
-          const allText = (() => {
+          const allText = ((arr: string[]) => {
             if (/%\[.+\]/.test(front)) {
-              const serialArr = getSerialInfo(front, dataArr.length)
-              return dataArr
+              const serialArr = getSerialInfo(front, arr.length)
+              return arr
                 .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
                 .join(behind)
             }
-            return dataArr.map(k => front + k).join(behind)
-          })()
-
-          const linkComments: textComment[] = []
-          const tags = getAllTags(node, false)
-          let imgNum = 0
-          // Do not delete picture
-          while (node.comments.length - imgNum) {
-            const comment = node.comments[imgNum]
-            if (
-              comment.type == "TextNote" &&
-              comment.text.includes("marginnote3app")
-            )
-              linkComments.push(comment)
-            if (comment.type === "PaintNote") imgNum++
-            else node.removeCommentByIndex(imgNum)
-          }
-          switch (option) {
-            case MergeText.ToExpertText:
-              node.excerptText = allText
-              break
-            case MergeText.ToComment:
-              node.excerptText = ""
-              node.appendTextComment(removeHighlight(allText))
-          }
-          linkComments.forEach(linkComment => {
-            node.appendTextComment(linkComment.text)
-          })
-          addTags(node, tags)
+            return arr.map(k => front + k).join(behind)
+          })(dataArr)
+          removeCommentButLinkTag(
+            node,
+            k => k.type === "PaintNote",
+            k => {
+              switch (option) {
+                case MergeText.ToExpertText:
+                  k.excerptText = allText
+                  break
+                case MergeText.ToComment:
+                  k.excerptText = ""
+                  k.appendTextComment(removeHighlight(allText))
+              }
+            }
+          )
         }
       }
     },

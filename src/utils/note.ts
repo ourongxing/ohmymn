@@ -1,5 +1,5 @@
 import { MN } from "~/const"
-import { MbBookNote, MNPic } from "~/typings"
+import { MbBookNote, MNPic, noteComment } from "~/typings"
 import { unique } from "."
 import { postNotification } from "./common"
 import { escapeURLParam } from "~/utils"
@@ -215,6 +215,29 @@ function getCommentIndex(note: MbBookNote, comment: MbBookNote | string) {
   return -1
 }
 
+function removeCommentButLinkTag(
+  node: MbBookNote,
+  // 不删除
+  filter: (comment: noteComment) => boolean,
+  f?: (node: MbBookNote) => void
+) {
+  const reservedComments = [] as string[]
+  const len = node.comments.length
+  node.comments.reverse().forEach((k, i) => {
+    if (
+      k.type == "TextNote" &&
+      (k.text.includes("marginnote3app") || k.text.startsWith("#"))
+    ) {
+      reservedComments.push(k.text)
+      node.removeCommentByIndex(len - i - 1)
+    } else if (!filter(k)) node.removeCommentByIndex(len - i - 1)
+  })
+  f && f(node)
+  reservedComments.forEach(k => {
+    k && node.appendTextComment(k)
+  })
+}
+
 /**
  * Get all the text in the card, include excerpt text, comment, tags.
  * @param node MindMap node, a card.
@@ -317,12 +340,13 @@ function addTags(node: MbBookNote, tags: string[], force = false) {
     .reverse()
     .forEach(index => void node.removeCommentByIndex(index))
 
-  const tagLine = unique([...existingTags, ...tags]).reduce((acc, cur) => {
+  const newTags = unique([...existingTags, ...tags])
+  const tagLine = newTags.reduce((acc, cur) => {
     if (cur) return acc ? `${acc} #${cur}` : `#${cur}`
     else return acc
   }, "")
-
   tagLine && node.appendTextComment(removeHighlight(tagLine))
+  return tagLine
 }
 
 function modifyNodeTitle(node: MbBookNote, title: string | string[]) {
@@ -353,5 +377,6 @@ export {
   getAllCommnets,
   removeHighlight,
   exportPic,
-  modifyNodeTitle
+  modifyNodeTitle,
+  removeCommentButLinkTag
 }

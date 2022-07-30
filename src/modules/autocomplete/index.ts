@@ -4,7 +4,8 @@ import {
   showHUD,
   checkPlainText,
   modifyNodeTitle,
-  undoGroupingWithRefresh
+  undoGroupingWithRefresh,
+  removeCommentButLinkTag
 } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
@@ -133,13 +134,15 @@ export default defineConfig({
             if (info) {
               const { title, comments } = info
               modifyNodeTitle(node, title)
-              if (option === 1)
-                while (node.comments.length) {
-                  node.removeCommentByIndex(0)
+              removeCommentButLinkTag(
+                node,
+                k => k.type === "PaintNote" || option !== 1,
+                n => {
+                  comments.forEach(k => {
+                    n.appendTextComment(k)
+                  })
                 }
-              comments.forEach(k => {
-                k && node.appendTextComment(k)
-              })
+              )
             }
           })
         })
