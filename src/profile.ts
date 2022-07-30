@@ -104,9 +104,9 @@ const globalProfilePreset = {
   copysearch: {
     multipleTitles: [0],
     multipleExcerpts: [0],
-    customContent: "[{{title}}]({{link}})",
+    customContent: "[{{titles.0}}]({{url.pure}})",
     showSearchEngine: false,
-    separatorSymbols: "\\n\\n",
+    modifySymbols: "\\n\\n",
     whichPartofCard: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",

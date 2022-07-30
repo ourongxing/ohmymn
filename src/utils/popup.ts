@@ -62,7 +62,7 @@ export function popup<T>(
   )
 }
 
-export async function select(parts: string[], message: string, title: string) {
+export async function select(parts: string[], title: string, message: string) {
   const { option } = await popup(
     {
       title,

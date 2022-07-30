@@ -34,15 +34,10 @@ function escapeDoubleQuote(str: string) {
  *  Detect if the string is a number
  * @param text : The string to be processed
  * @returns Boolean, true if the input is a number
- * @example
- * ```
- * const myIsNumber = isNumber("1")
- * // output: true
- * const myIsNumber = isNumber("a")
- * // output: false
- * ```
- */
-const isNumber = (text: string) => /^[0-9]+$/.test(text)
+ **/
+
+const isIntegerString = (text: string) => /^[0-9]+$/.test(text)
+const isNumberString = (text: string) => /^[0-9]+\.?[0-9]*$/.test(text)
 
 /**
  *  process user input and return a dict which contains Regexp ,string want to be replaced and fnkey.
@@ -63,7 +58,10 @@ function string2ReplaceParam(str: string): ReplaceParam[] {
       .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
-    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr)))
+    if (
+      (fnKey && !isIntegerString(fnKey)) ||
+      (!fnKey && isIntegerString(newSubStr))
+    )
       throw "invalid replace param"
     params.push({
       regexp: string2Reg(regString),
@@ -165,5 +163,7 @@ export {
   escapeDoubleQuote,
   escapeStringRegexp,
   regFlag,
-  extractArray
+  extractArray,
+  isIntegerString,
+  isNumberString
 }
