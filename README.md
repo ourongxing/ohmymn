@@ -15,6 +15,11 @@
   <a href="https://github.com/mnaddon/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
+## Document
+[简体中文](https://ohmymn.vercel.app/)
+
+## Development
+🚧
 ## Acknowledgements
 
 - [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop MN plugins.
