@@ -21,16 +21,10 @@ const { intro, option, label, link, help } = lang
 
 function generateComments(note: MbBookNote, text: string) {
   const { customComment } = self.tempProfile.replaceParam
-  const { preset, citation } = self.globalProfile.autocomment
+  const { preset } = self.globalProfile.autocomment
   const params = preset.reduce((acc, k) => {
     if (k === AutoCommentPreset.Custom && customComment) {
       acc.push(...customComment)
-    }
-    if (k === AutoCommentPreset.Citation && citation) {
-      const params = string2ReplaceParam(
-        renderTemplateOfNodeProperties(note, citation)
-      )
-      params.length && acc.push(...params)
     }
     if (k === AutoCommentPreset.Time) {
       acc.push({
@@ -93,13 +87,6 @@ export default defineConfig({
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
-    },
-    {
-      key: "citation",
-      type: CellViewType.Input,
-      help: help.citaion_style,
-      bind: ["preset", 1],
-      link
     }
   ],
   actions4card: [
@@ -115,7 +102,7 @@ export default defineConfig({
             const comments = generateComments(node, text)
             if (comments?.length)
               comments.forEach(k => {
-                node.appendTextComment(k)
+                k && node.appendTextComment(k)
               })
           })
         } else if (content) {
@@ -134,7 +121,7 @@ export default defineConfig({
             )
             if (comments?.length)
               comments.forEach(k => {
-                node.appendTextComment(k)
+                k && node.appendTextComment(k)
               })
           })
         }

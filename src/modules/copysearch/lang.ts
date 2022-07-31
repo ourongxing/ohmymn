@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "搜索和复制你想要的",
-  link: "https://busiyi.notion.site/CopySearch-5977326e5d1640248e61ee855c4ef74b",
+  link: "https://ohmymn.vercel.app/guide/modules/copysearch.html",
   lable: {
     multiple_titles: "如果有多个标题",
     multiple_excerpts: "如果有多个摘录",

@@ -1,7 +1,7 @@
 import { MN } from "~/const"
 
 const zh = {
-  link: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8",
+  link: "https://ohmymn.vercel.app",
   intro: "当前版本：",
   option: {
     profile: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
@@ -19,7 +19,7 @@ const zh = {
     has_title_then: "如果标题存在",
     quick_switch: "模块快捷开关",
     profile: "选择配置文件",
-    remove_excerpt: "合并标题后, 摘录",
+    remove_excerpt: "转为标题后, 摘录将",
     panel_position: "面板显示位置",
     panel_height: "面板显示高度",
     panle_control: "面板开关控制",
@@ -30,7 +30,7 @@ const zh = {
   help: {
     profile: "【当前笔记本】不同场景，不同配置。",
     auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
-    has_title_then: "拖拽选区合并进卡片，如果会产生新标题，则"
+    has_title_then: "拖拽选区合并进卡片，如果会产生新标题，但此时已有标题，则"
   }
 }
 

@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "补全单词词形，只支持动词和名词",
-  link: "https://busiyi.notion.site/AutoComplete-1eab78ee6d7648339e088c593326b5ca",
+  link: "https://ohmymn.vercel.app/guide/modules/autocomplete.html",
   label: {
     on: "摘录时自动执行",
     fill_word_info: "填充单词信息",
@@ -24,7 +24,7 @@ const zh = {
     collinns: "星越多代表越常用，但也越简单"
   },
   option: {
-    fill_word_info: ["不填充", "自定义", "中文释"],
+    fill_word_info: ["不填充", "自定义", "中文释义"],
     data_source: ["在线 API", "本地数据库"]
   },
   error: {
@@ -37,7 +37,7 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Complete word form. Only support verbs and nouns",
-  link: "https://www.notion.so/huangkewei/AutoComplete-3b9b27baef8f414cb86c454a6128b608",
+  link: "https://ohmymn.vercel.app/guide/modules/autocomplete.html",
   label: {
     on: "Auto Executed",
     fill_word_info: "Fill Word Info",

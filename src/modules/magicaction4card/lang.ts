@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
-  link: "https://busiyi.notion.site/MagicAction-c4fb456af9a7407683c5cd615481f04c",
+  link: "https://ohmymn.vercel.app/guide/modules/magicaction4card.html",
   option: {
     filter_cards: ["所有", "标题", "摘录", "评论", "标签"] as Tuple<string, 5>,
     switch_title: ["切换为不存在的", "交换标题和摘录"],
@@ -29,7 +29,7 @@ const zh = {
   hud: {
     is_clicked: "您需要的卡片已选中，请继续操作",
     none_card: "未找到符合的卡片",
-    hierarchical_numbering: "请确保选中的每张卡片均为同层级且都有子节点"
+    hierarchical_numbering: "请确保选中的每张卡片均为同层级且都有子卡片"
   }
 }
 

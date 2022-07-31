@@ -136,7 +136,10 @@ export default defineConfig({
               modifyNodeTitle(node, title)
               removeCommentButLinkTag(
                 node,
-                k => k.type === "PaintNote" || option !== 1,
+                k =>
+                  k.type === "PaintNote" ||
+                  option !== 1 ||
+                  k.type === "HtmlNote",
                 n => {
                   comments.forEach(k => {
                     n.appendTextComment(k)

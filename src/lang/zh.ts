@@ -23,12 +23,12 @@ const dict = {
     title: `${Addon.title} 智能选择`,
     option: [
       "仅处理选中的卡片",
-      "仅处理子节点",
-      "仅处理所有后代节点",
-      "处理选中的卡片及其后代节点"
+      "仅处理子卡片",
+      "仅处理所有后代卡片",
+      "处理选中的卡片及其后代卡片"
     ],
-    card_with_children: "检测到您选中的唯一卡片有子节点",
-    cards_with_children: "检测到您选中的多张同层级卡片均有子节点"
+    card_with_children: "检测到您选中的唯一卡片有子卡片",
+    cards_with_children: "检测到您选中的多张同层级卡片均有子卡片"
   },
   magicaction_from_which_module: (module: string) =>
     `该动作来自于 ${module}，与其使用相同的配置`,
@@ -37,7 +37,7 @@ const dict = {
       alert:
         "该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
       option: ["不清楚，查看文档", "我已知晓"],
-      doc: "https://busiyi.notion.site/Gesture-468bbb3eca424c3bb85842e0b26138b8"
+      doc: "https://ohmymn.vercel.app/guide/modules/gesture.html"
     }
   },
   profile_manage: {

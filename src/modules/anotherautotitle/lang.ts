@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "什么样的摘录该自动转为标题？",
-  link: "https://busiyi.notion.site/AnotherAutoTitle-bef78c75901e4895b4fa2d03d83c48d6",
+  link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html",
   option: {
     preset: ["自定义", "根据字数", "不含有点号"]
   },

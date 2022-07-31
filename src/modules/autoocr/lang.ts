@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "使用百度 OCR API，不需要激活 OCR Pro 即可使用，并支持多个小语种。",
-  link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
+  link: "https://ohmymn.vercel.app/guide/modules/autoocr.html",
   option: {
     lang: [
       "自动检测",

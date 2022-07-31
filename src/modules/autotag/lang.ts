@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "自动添加标签",
-  link: "https://busiyi.notion.site/AutoTag-3a7fc5e0b84e47d18366d4cb60c4943d",
+  link: "https://ohmymn.vercel.app/guide/modules/autotag.html",
   option: {
     preset: ["自定义"],
     add_tag: ["使用 AutoTag 的配置", "确定"]

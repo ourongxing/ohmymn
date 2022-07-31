@@ -1,6 +1,5 @@
 export const enum AutoCommentPreset {
   Custom,
-  Citation,
   Time
 }
 

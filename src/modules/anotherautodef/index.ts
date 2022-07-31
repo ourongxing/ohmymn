@@ -42,7 +42,7 @@ export default defineConfig({
       type: CellViewType.Input,
       bind: ["preset", 0],
       help: help.custom_extract_title,
-      link,
+      link: "https://ohmymn.vercel.app/guide/modules/anotherautodef.html#自定义提取标题",
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -52,7 +52,7 @@ export default defineConfig({
       type: CellViewType.Input,
       bind: ["preset", 1],
       help: help.custom_def_link,
-      link,
+      link: "https://ohmymn.vercel.app/guide/modules/anotherautodef.html#自定义定义联项",
       check({ input }) {
         checkRegArrayFromMNLink(input)
       }
@@ -78,11 +78,11 @@ export default defineConfig({
       key: "customTitleSplit",
       type: CellViewType.Input,
       help: help.custom_title_split,
+      link: "https://ohmymn.vercel.app/guide/modules/anotherautodef.html#自定义别名分词",
       bind: [
         ["toTitleLink", true],
         ["titleLinkSplit", 0]
       ],
-      link,
       check({ input }) {
         checkRegArrayFromMNLink(input)
       }
@@ -102,12 +102,6 @@ export default defineConfig({
             : false
           nodes.forEach(node => {
             const allTitles: string[] = []
-            const res = splitExtractTitles(node, node.excerptText ?? "")
-            if (res) {
-              const { text, title } = res
-              allTitles.push(...title)
-              node.excerptText = text
-            }
             if (params) {
               const text = getAllText(node)
               allTitles.push(

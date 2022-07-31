@@ -166,7 +166,7 @@ export default defineConfig({
       label: label.merge_text,
       key: "mergeText",
       option: option.merge_text,
-      help: "仅支持合并文字摘录和文字评论，如果存在图片，则会在合并后置顶。框选摘录会自动 OCR。",
+      help: "仅支持合并文字摘录和文字评论，框选摘录会自动 OCR。",
       method: ({ option, nodes }) => {
         const { defaultMergeText } = self.globalProfile.magicaction4card
         const [front, behind] = reverseEscape(
@@ -189,7 +189,7 @@ export default defineConfig({
           })(dataArr)
           removeCommentButLinkTag(
             node,
-            k => k.type === "PaintNote",
+            k => k.type === "PaintNote" || k.type === "HtmlNote",
             k => {
               switch (option) {
                 case MergeText.ToExpertText:

@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "优化摘录和标题的排版与格式",
-  link: "https://busiyi.notion.site/AutoStandrize-b5e0d381d4814139a1b73d305ebc12d1",
+  link: "https://ohmymn.vercel.app/guide/modules/autoformat.html",
   option: {
     preset: [
       "自定义",
@@ -28,7 +28,7 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Optimize the typography and formatting of excerpts & titles",
-  link: "https://www.notion.so/huangkewei/AutoStandrize-ec4986eff67744d4b2a045a283267b99",
+  link: "https://ohmymn.vercel.app/guide/modules/autoformat.html",
   option: {
     preset: [
       "Custom",

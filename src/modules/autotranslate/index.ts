@@ -11,7 +11,7 @@ export default defineConfig({
   name: "AutoTranslate",
   key: "autotranslate",
   intro: "摘录时自动附加上翻译结果",
-  link,
+  link: "https://ohmymn.vercel.app/guide/modules/autotranslate.html",
   settings: [
     {
       key: "on",
@@ -150,6 +150,7 @@ export default defineConfig({
       key: "baiduAppID",
       type: CellViewType.Input,
       help: "百度 App ID，点击查看如何获取。",
+      link: "https://ohmymn.vercel.app/guide/modules/autotranslate.html#百度翻译",
       bind: [
         ["showKey", true],
         ["translateProviders", 0]
@@ -168,6 +169,7 @@ export default defineConfig({
       key: "caiyunToken",
       type: CellViewType.Input,
       help: "彩云小译 Token，点击查看如何获取。",
+      link: "https://ohmymn.vercel.app/guide/modules/autotranslate.html#彩云小译",
       bind: [
         ["showKey", true],
         ["translateProviders", 1]

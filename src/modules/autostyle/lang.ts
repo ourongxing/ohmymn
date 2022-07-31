@@ -1,7 +1,7 @@
 import { MN } from "~/const"
 
 const zh = {
-  link: "https://busiyi.notion.site/AutoStyle-008cc0fae7844e7fb171ca948da91cb5",
+  link: "https://ohmymn.vercel.app/guide/modules/autostyle.html",
   intro: "自动修改摘录颜色和样式",
   area: "面积",
   label: {
@@ -26,8 +26,8 @@ const zh = {
     preset: [
       "样式由字数或面积决定",
       "颜色跟随卡片",
-      "颜色跟随第一个兄弟节点",
-      "颜色跟随父节点"
+      "颜色跟随第一个兄弟卡片",
+      "颜色跟随父卡片"
     ],
     style: ["无", "线框+填充", "填充", "线框"],
     color: [

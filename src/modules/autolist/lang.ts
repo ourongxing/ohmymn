@@ -3,7 +3,7 @@ import { MN } from "~/const"
 const zh = {
   intro:
     "针对有序号的摘录，自动添加换行。所有预设均必须满足两个及以上，包括自定义",
-  link: "https://busiyi.notion.site/AutoList-4c52b2607225450f913a6bfaba1f15ec",
+  link: "https://ohmymn.vercel.app/guide/modules/autolist.html",
   option: {
     preset: ["自定义", "ABCD...", "一二三四...", "1234..."],
     list_selected: ["使用 AutoList 的配置", "确定"]
@@ -21,7 +21,7 @@ const zh = {
 const en: typeof zh = {
   intro:
     "For text with serial number, auto add line breaks. All presets need to meet a minimum of two serial numbers",
-  link: "https://www.notion.so/huangkewei/AutoList-e56366855c4a4a6e9c80364d7cca0882",
+  link: "https://ohmymn.vercel.app/guide/modules/autolist.html",
   option: {
     preset: ["Custom", "ABCD...", "一二三四...", "1234..."],
     list_selected: ["Use AutoList Settings", "Confirm"]

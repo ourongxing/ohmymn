@@ -7,6 +7,7 @@ const { label, help, option } = lang
 export default defineConfig({
   name: Addon.title,
   key: "addon",
+  link: lang.link,
   intro: lang.intro + Addon.version,
   settings: [
     {

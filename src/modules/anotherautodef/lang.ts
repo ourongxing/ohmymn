@@ -1,13 +1,12 @@
 import { MN } from "~/const"
 
 const zh = {
-  intro:
-    "提取被定义项或任意内容为标题或标题链接\n定义 = 被定义项 + 定义联项 + 定义项",
-  link: "https://busiyi.notion.site/AnotherAutoDef-13910b3b225743dcb72b29eabcc81e22",
+  intro: "将摘录分割为标题和摘录两部分\n定义 = 被定义项 + 定义联项 + 定义项。",
+  link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html",
   label: {
     on: "摘录时自动执行",
     only_desc: "摘录仅保留定义项",
-    to_title_link: "别名转为标题链接",
+    to_title_link: "别名转为多个标题",
     preset: "选择需要的预设",
     title_link_split: "选择别名分词",
     extract_title: "提取标题"

@@ -2,9 +2,9 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "自动添加评论",
-  link: "https://busiyi.notion.site/AutoTag-3a7fc5e0b84e47d18366d4cb60c4943d",
+  link: "https://ohmymn.vercel.app/guide/modules/autocomment.html",
   option: {
-    preset: ["自定义", "引用", "修改时间"],
+    preset: ["自定义", "修改时间"],
     add_comment: ["使用 AutoComment 的配置", "确定"]
   },
   help: {

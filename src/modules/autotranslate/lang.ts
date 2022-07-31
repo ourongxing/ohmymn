@@ -2,7 +2,7 @@ import { MN } from "~/const"
 
 const zh = {
   intro: "自动替换摘录中的某些错误",
-  link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
+  link: "https://ohmymn.vercel.app/guide/modules/autotranslate.html",
   option: {
     preset: ["自定义"],
     replace_selected: ["使用 AutoReplace 的配置", "确定"]

@@ -88,7 +88,7 @@ export default defineConfig({
       type: CellViewType.Input,
       help: help.custom_be_title,
       bind: ["preset", 0],
-      link,
+      link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html#自定义",
       check({ input }) {
         checkRegArrayFromMNLink(input)
       }
