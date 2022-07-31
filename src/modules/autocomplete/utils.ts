@@ -176,7 +176,7 @@ async function getWordInfo(word: string): Promise<Word> {
       info = query.resultDictionary()
     }
     query.close()
-    if (info) throw ""
+    if (!info) throw ""
     return unifiyData(info)
   }
 }
