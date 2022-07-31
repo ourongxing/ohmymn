@@ -48,14 +48,14 @@ export const more: ISection = {
     {
       type: CellViewType.PlainText,
       label: `${MN.isZH ? "核心开发团队：" : "Core Team: "}ourongxing，Bryan`,
-      link: ""
+      link: "https://github.com/marginnoteapp/ohmymn"
     },
     {
       type: CellViewType.PlainText,
       label: MN.isZH
         ? "OhMyMN 是 MarginNote 插件控制面板及开发框架。OhMyMN 完全开源，官方支持，欢迎参与。"
         : "OhMyMN is MarginNote addon control panel and development framework.OhMyMN is completely open source, officially supported, welcome to join.",
-      link: ""
+      link: "https://github.com/marginnoteapp/ohmymn"
     },
     {
       type: CellViewType.PlainText,

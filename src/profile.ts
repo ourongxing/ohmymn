@@ -40,7 +40,7 @@ const globalProfilePreset = {
     dataSource: [0],
     customFillFront:
       "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}{{#tags}}\\n🏷 {{tags}}{{/tags}}",
-    customFill: "{{zh}}",
+    customFill: "✍🏻\\n{{zh}}\\n👀",
     selectLemma: false,
     selectMeanings: [],
     autoContext: false,
@@ -63,7 +63,7 @@ const globalProfilePreset = {
   anotherautodef: {
     on: false,
     preset: [],
-    onlyDesc: false,
+    onlyDesc: true,
     toTitleLink: false,
     titleLinkSplit: [1],
     customTitleSplit: "",
@@ -88,7 +88,6 @@ const globalProfilePreset = {
   autocomment: {
     on: false,
     preset: [],
-    citation: `(/^.*$/gs, "{{doc.author}} ( {{doc.publicationDate}} ) {{doc.title}}.{{doc.publisher}}, {{doc.publicationPlace}}.P{{page.real.start}}{{#page.real.end}}-P{{page.real.end}}{{/page.real.end}}", 1)`,
     customComment: ""
   },
   autostyle: {
@@ -106,7 +105,7 @@ const globalProfilePreset = {
     multipleExcerpts: [0],
     customContent: "[{{titles.0}}]({{url.pure}})",
     showSearchEngine: false,
-    modifySymbols: "\\n\\n",
+    modifySymbols: '%["1"]. $&\\n\\n',
     whichPartofCard: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",

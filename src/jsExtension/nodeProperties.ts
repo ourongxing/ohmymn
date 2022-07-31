@@ -122,7 +122,7 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
         html: undefine2undefine(
           node.notebookId,
           t =>
-            `<a href="marginnote3app://notebook/${t}" class="MNLink">${
+            `<a href="marginnote3app://notebook/${t}" class="MNNotebookUrl">${
               undefine2undefine(
                 node.notebookId,
                 t => MN.db.getNotebookById(t)?.title

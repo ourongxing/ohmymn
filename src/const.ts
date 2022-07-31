@@ -9,7 +9,8 @@ export const MN = {
   isMac: Application.sharedInstance().osType == OSType.macOS,
   app: Application.sharedInstance(),
   db: Database.sharedInstance(),
-  isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh")
+  // isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh")
+  isZH: true
 }
 
 export const Addon = {
