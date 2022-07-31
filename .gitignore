@@ -10,3 +10,5 @@ test*
 .DS_Store
 .local_history
 assets/dict*
+.eslintcache
+
