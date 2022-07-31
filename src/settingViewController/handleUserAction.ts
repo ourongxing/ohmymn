@@ -1,11 +1,11 @@
-import { openUrl, popup, postNotification, showHUD } from "utils/common"
-import checkInputCorrect from "inputChecker"
-import { Addon, MN } from "const"
-import { cellViewType, IRowInput, IRowSelect, IRowSwitch } from "types/Addon"
-import { UIAlertViewStyle, UITableView } from "types/UIKit"
-import { byteLength } from "utils/text"
-import lang from "lang"
-import { QuickSwitch } from "synthesizer"
+import { Addon, MN } from "~/const"
+import { actionKey4Text, actionKey4Card } from "~/dataSource"
+import lang from "~/lang"
+import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/synthesizer"
+import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
+import { CellViewType } from "~/typings/enum"
+import { popup, byteLength, openUrl, postNotification } from "~/utils"
+import { _isModuleOFF } from "./settingView"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>
   NSIndexPath.indexPathForRowInSection(
@@ -18,37 +18,43 @@ const tableViewDidSelectRowAtIndexPath = async (
   indexPath: NSIndexPath
 ) => {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
-  const row = self.dataSource[indexPath.section].rows[indexPath.row]
+  const sec = self.dataSource[indexPath.section]
+  const row = sec.rows[indexPath.row]
   switch (row.type) {
-    case cellViewType.plainText:
+    case CellViewType.PlainText:
       if (row.link) openUrl(row.link)
       break
-    case cellViewType.buttonWithInput:
-    case cellViewType.button:
-      postNotification(Addon.key + "ButtonClick", {
-        row
-      })
+    case CellViewType.ButtonWithInput:
+    case CellViewType.Button:
+      if (sec.key === "magicaction4card")
+        postNotification(Addon.key + "ButtonClick", {
+          row,
+          type: "card"
+        })
+      else if (sec.key === "magicaction4text")
+        postNotification(Addon.key + "ButtonClick", {
+          row,
+          type: "text"
+        })
   }
 }
 
-const textFieldShouldReturn = (sender: UITextField) => {
+const textFieldShouldReturn = async (sender: UITextField) => {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
-  let text = sender.text.trim()
-  // 可以为空
+  const text = sender.text.trim()
+  // Allowed be empty
   if (/^marginnote3app:/.test(text)) openUrl(text)
-  if (!text || checkInputCorrect(text, row.key)) {
-    // 输入正确则取消光标
+  if (!text || (await checkInputCorrect(text, row.key))) {
+    // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
     row.content = text
     postNotification(Addon.key + "InputOver", {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       content: text
     })
-  } else {
-    showHUD(lang.handle_user_action.input_error)
   }
   return true
 }
@@ -60,17 +66,19 @@ const switchChange = (sender: UISwitch) => {
   row.status = sender.on ? true : false
   self.tableView.reloadData()
   postNotification(Addon.key + "SwitchChange", {
-    name: section.header.toLowerCase(),
+    name: section.key,
     key: row.key,
     status: sender.on ? true : false
   })
 }
 
-let lastSelectInfo: {
-  name: string
-  key: string
-  selections: number[]
-} | null
+let lastSelectInfo:
+  | {
+      name: string
+      key: string
+      selections: number[]
+    }
+  | undefined
 const selectAction = async (param: {
   indexPath: NSIndexPath
   selection: number
@@ -79,16 +87,16 @@ const selectAction = async (param: {
   const { indexPath, selection, menuController } = param
   const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
-  // 区分单选和多选
+  //  Distinguish between single and multiple selection
   if (
     (<IRowSelect>self.dataSource[indexPath.section].rows[indexPath.row]).type ==
-    cellViewType.select
+    CellViewType.Select
   ) {
     ;(<IRowSelect>(
       self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = [selection]
     postNotification(Addon.key + "SelectChange", {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       selections: [selection]
     })
@@ -99,23 +107,24 @@ const selectAction = async (param: {
 
     if (
       row.key == "quickSwitch" &&
-      !selections.includes(QuickSwitch.gesture) &&
-      selection == QuickSwitch.gesture
+      !selections.includes(moduleKeys.indexOf("gesture")) &&
+      selection == moduleKeys.indexOf("gesture")
     ) {
       const { gesture } = lang.handle_user_action
       const { option } = await popup(
-        "OhMyMN",
-        gesture.alert,
-        UIAlertViewStyle.Default,
-        gesture.option,
-        (alert: UIAlertView, buttonIndex: number) => ({
+        {
+          title: Addon.title,
+          message: gesture.alert,
+          buttons: gesture.option
+        },
+        ({ buttonIndex }) => ({
           option: buttonIndex
         })
       )
       if (option === 0) {
         openUrl(gesture.doc)
         return
-      }
+      } else if (option === -1) return
     }
 
     const nowSelect = row.selections.includes(selection)
@@ -127,7 +136,7 @@ const selectAction = async (param: {
     )).selections = nowSelect
 
     lastSelectInfo = {
-      name: section.header.toLowerCase(),
+      name: section.key,
       key: row.key,
       selections: nowSelect.sort()
     }
@@ -145,12 +154,37 @@ const selectAction = async (param: {
 const clickSelectButton = (sender: UIButton) => {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
-  const row = <IRowSelect>section.rows[indexPath.row]
+  const row = section.rows[indexPath.row] as IRowSelect
   const menuController = MenuController.new()
+  const height = 44
+  const zero = 0.00001
+  const cacheModuleOFF: Partial<Record<ModuleKeyType, boolean>> = {}
+  const isHidden = (sectionKey: string, rowKey: string, index: number) => {
+    if (sectionKey === "gesture") {
+      try {
+        const { module } = rowKey.includes("selectionBar")
+          ? actionKey4Text[index]
+          : actionKey4Card[index]
+        if (!module) return false
+        const status = cacheModuleOFF[module]
+        if (status !== undefined) {
+          return status
+        } else {
+          const status = _isModuleOFF(module)
+          cacheModuleOFF[module] = status
+          return status
+        }
+      } catch {
+        return true
+      }
+    } else return false
+  }
+
   menuController.commandTable = row.option.map((item, index) => ({
     title: item,
     object: self,
     selector: "selectAction:",
+    height: isHidden(section.key, row.key, index) ? zero : height,
     param: {
       indexPath,
       menuController,
@@ -158,17 +192,13 @@ const clickSelectButton = (sender: UIButton) => {
     },
     checked: row.selections.includes(index)
   }))
-  menuController.rowHeight = 44
-  const width =
-    byteLength(
-      row.option.reduce((a, b) => (byteLength(a) > byteLength(b) ? a : b))
-    ) *
-      10 +
-    80
+  const width = Math.max(...row.option.map(k => byteLength(k))) * 10 + 80
   menuController.preferredContentSize = {
     width: width > 300 ? 300 : width,
-    height: menuController.rowHeight * menuController.commandTable.length
+    height:
+      height * menuController.commandTable.filter(k => k.height !== zero).length
   }
+
   const studyControllerView = MN.studyController().view
   self.popoverController = new UIPopoverController(menuController)
   self.popoverController.presentPopoverFromRect(
@@ -180,13 +210,11 @@ const clickSelectButton = (sender: UIButton) => {
   self.popoverController.delegate = self
 }
 
-// 弹窗消失发送数据，只响应点击其他区域时，所以只能用来处理多选
-const popoverControllerDidDismissPopover = (
-  UIPopoverController: UIPopoverController
-) => {
+/** Send data when the popup disappears */
+const popoverControllerDidDismissPopover = () => {
   if (lastSelectInfo) {
     postNotification(Addon.key + "SelectChange", lastSelectInfo)
-    lastSelectInfo = null
+    lastSelectInfo = undefined
   }
 }
 

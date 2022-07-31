@@ -7,4 +7,4 @@ const inst = {
   ...handleUserAction
 }
 
-export default inst
+export { inst }

@@ -1,44 +1,55 @@
-import { MbBookNote } from "types/MarginNote"
-import { util as autotag } from "modules/autotag"
-import { util as autolist } from "modules/autolist"
-import { util as autostyle } from "modules/autostyle"
-import { util as autoreplace } from "modules/autoreplace"
-import { util as autocomplete } from "modules/autocomplete"
-import { util as anotherautodef } from "modules/anotherautodef"
-import { util as autostandardize } from "modules/autostandardize"
-import { util as anotherautotitle } from "modules/anotherautotitle"
-import { AutoModuleKey, QuickSwitch } from "synthesizer"
-import { HasTitleThen } from "modules/ohmymn"
-import { removeHighlight } from "utils/note"
+import { MN } from "~/const"
+import { HasTitleThen } from "~/modules/addon/typings"
+import { autoUtils } from "~/synthesizer"
+import { MbBookNote } from "~/typings"
+import { unique, removeHighlight, cacheTransformer } from "~/utils"
 
-export const newTitleText = async (
-  text: string,
-  noteid: string,
-  nodeTitle: string[] | undefined,
-  isModify: boolean,
+export const customOCR = async () => {
+  const imgBase64 = MN.studyController()
+    .readerController.currentDocumentController.imageFromFocusNote()
+    .base64Encoding()
+  if (autoUtils.customOCR)
+    for (const util of autoUtils.customOCR) {
+      const res = await util({ imgBase64 })
+      if (res) return res
+    }
+}
+
+export const newTitleTextCommentTag = async (param: {
+  note: MbBookNote
+  text: string
+  nodeTitle: string[] | undefined
   isComment: boolean
-) => {
-  const { quickSwitch, hasTitleThen } = self.profile.ohmymn
+}) => {
+  const { note, text, nodeTitle, isComment } = param
+  const { hasTitleThen } = self.globalProfile.addon
+  const { cacheTitle } = self.notebookProfile.additional
+  const comments: string[] = []
+  const tags: string[] = []
 
-  const isON = (key: AutoModuleKey) =>
-    quickSwitch.includes(QuickSwitch[key]) && self.profile[key]!.on
+  const newText = await (async text => {
+    if (autoUtils.modifyExcerptText)
+      for (const util of autoUtils.modifyExcerptText) {
+        const res = await util({ note, text })
+        if (res) text = res
+      }
+    return text
+  })(text)
 
-  const { cacheExcerptTitle } = self.docProfile.additional
+  if (autoUtils.generateComments)
+    for (const util of autoUtils.generateComments) {
+      const res = await util({ note, text })
+      if (res) comments.push(...res)
+    }
 
-  // 处理摘录的方法，返回 text
-  const utilText = [
-    ["autostandardize", autostandardize.standardizeText],
-    ["autolist", autolist.listText],
-    ["autoreplace", autoreplace.replaceText]
-  ] as [AutoModuleKey, (text: string) => string][]
+  if (autoUtils.generateTags)
+    for (const util of autoUtils.generateTags) {
+      const res = await util({ note, text })
+      if (res) tags.push(...res)
+    }
 
-  const newText = utilText.reduce(
-    (acc, cur) => (isON(cur[0]) ? cur[1](acc) : acc),
-    text
-  )
+  const defaultRet = { text: newText, title: [] as string[], comments, tags }
 
-  const defaultRet = { text: newText, title: undefined }
-  // 卡片标题
   if (
     isComment &&
     nodeTitle?.length &&
@@ -46,80 +57,69 @@ export const newTitleText = async (
   )
     return defaultRet
 
-  // 生成标题的方法，有返回值就结束，返回 {title,text} | undefine
   const res = await (async text => {
-    if (isON("autocomplete")) {
-      // 排除划重点的影响
-      const newText = isModify ? removeHighlight(text) : text
-      const res = await autocomplete.getCompletedWord(newText)
-      if (res) return res
-    }
-    if (isON("anotherautodef")) {
-      const res = anotherautodef.getDefTitle(text)
-      if (res) {
-        if (isModify) res.title = res.title.map(k => removeHighlight(k))
-        return res
+    if (autoUtils.generateTitles)
+      for (const util of autoUtils.generateTitles) {
+        const res = await util({ note, text })
+        if (res)
+          return {
+            ...res,
+            comments: res.comments ? res.comments.filter(k => k) : []
+          }
       }
-    }
-    if (isON("anotherautotitle")) {
-      const { changeTitleNoLimit } = self.profile.anotherautotitle
-      const newText = isModify ? removeHighlight(text) : text
-      if (changeTitleNoLimit && isModify && cacheExcerptTitle[noteid])
-        return {
-          title: [newText],
-          text: ""
-        }
-      const res = anotherautotitle.getTitle(newText)
-      if (res) return res
-    }
   })(newText)
 
   if (!res) return defaultRet
 
-  // 规范化英文标题
-  if (isON("autostandardize") && self.profile.autostandardize.standardizeTitle)
-    res.title = res.title.map(k => autostandardize.toTitleCase(k))
+  res.title = await (async titles => {
+    if (self.isModify) titles = titles.map(k => removeHighlight(k))
+    if (autoUtils.modifyTitles)
+      for (const util of autoUtils.modifyTitles) {
+        const res = await util({ titles })
+        if (res) titles = res
+      }
+    return titles
+  })(res.title)
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
-    const [oldTitle, stillUsingTitle] = (() => {
-      if (isModify && cacheExcerptTitle[noteid]) {
-        // 如果是在修改，要先对比原标题，将原来的标题分为改变了的和不变的，改变了的就删除，不变的就保留
-        const [stillUsing, deprecated] = cacheExcerptTitle[noteid]!.reduce(
-          (acc, cur) => {
-            if (res.title.includes(cur)) acc[0].push(cur)
-            else acc[1].push(cur)
-            return acc
-          },
-          [[], []] as string[][]
-        )
-        return [nodeTitle.filter(k => !deprecated.includes(k)), stillUsing]
-      } else return [nodeTitle, []]
+    const newTitles = (() => {
+      if (self.isModify && cacheTitle[self.noteid]) {
+        const cached = cacheTitle[self.noteid]
+        // 记录当前笔记产生的所有旧标题的索引
+        const index = nodeTitle.reduce((acc, k, i) => {
+          cached?.some(h => cacheTransformer.tell(h, k)) && acc.unshift(i)
+          return acc
+        }, [] as number[])
+        index.forEach((k, i) => {
+          if (i === index.length - 1) {
+            nodeTitle.splice(k, 1, ...res.title)
+          } else nodeTitle.splice(k, 1)
+        })
+        return nodeTitle
+      } else return [...nodeTitle, ...res.title]
     })()
-    // 筛选出新的标题，不与以前的标题重复
-    const newTitle = res.title.filter(k => !oldTitle.includes(k))
-    // 保存每次新的标题
-    cacheExcerptTitle[noteid] = [...stillUsingTitle, ...newTitle]
+    cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
     return {
       text: res.text,
-      title: [...oldTitle, ...newTitle]
+      title: unique(newTitles),
+      comments: res.comments?.length
+        ? [...res.comments, ...comments]
+        : comments,
+      tags
     }
   }
-  cacheExcerptTitle[noteid] = res.title
-  return res
+  cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
+  return {
+    ...res,
+    comments: res.comments?.length ? [...res.comments, ...comments] : comments,
+    tags
+  }
 }
 
-export const newTag = (text: string) => {
-  if (
-    self.profile.ohmymn.quickSwitch.includes(QuickSwitch.autotag) &&
-    self.profile.autotag.on
-  )
-    return autotag.getTag(text)
-}
-
-export const newColorStyle = (note: MbBookNote) => {
-  if (
-    self.profile.ohmymn.quickSwitch.includes(QuickSwitch.autostyle) &&
-    self.profile.autostyle.on
-  )
-    return autostyle.getColorStyle(note)
+export const newColorStyle = async (note: MbBookNote) => {
+  if (autoUtils.modifyStyle)
+    for (const util of autoUtils.modifyStyle) {
+      const res = await util({ note })
+      if (res) return res
+    }
 }

@@ -2,22 +2,22 @@
   "compilerOptions": {
     "noEmit": true,
     "module": "ESNext",
-    "target": "ES2018",
-    "allowJs": false,
+    "target": "ES2020",
+    "allowJs": true,
     "sourceMap": false,
     "noImplicitAny": true,
     "downlevelIteration": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
     "resolveJsonModule": true,
     "importHelpers": true,
     "strict": true,
-    "baseUrl": "src",
-    "lib": [
-      "ES2020"
-    ]
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    },
+    "lib": ["ES2020"]
   },
-  "include": [
-    "src/**/*.ts",
-  ]
+  "include": ["src/**/*.ts", "src/utils/third party/*.js"]
 }

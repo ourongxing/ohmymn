@@ -1,14 +1,13 @@
-import { docMapSplitMode, studyMode } from "types/MarginNote"
-import { delay, showHUD } from "utils/common"
-import { MN } from "const"
-import { UIViewController } from "types/UIKit"
-import lang from "lang"
-import { PanelControl } from "modules/ohmymn"
+import { MN } from "~/const"
+import { PanelControl } from "~/modules/addon/typings"
+import { UIViewController } from "~/typings"
+import { StudyMode } from "~/typings/enum"
+import { delay } from "~/utils"
 
-// 设置窗口面板的位置和大小
+// Set the position and size of the panel
 export const layoutViewController = (
-  heightNum = self.profile.ohmymn.panelHeight[0],
-  positionNum = self.profile.ohmymn.panelPosition[0]
+  heightNum = self.globalProfile.addon.panelHeight[0],
+  positionNum = self.globalProfile.addon.panelPosition[0]
 ) => {
   const studyController = MN.studyController()
   const frame = studyController.view.bounds
@@ -57,10 +56,6 @@ export const openPanel = () => {
   self.panelStatus = true
   studyController.refreshAddonCommands()
   tmp.lastOpenPanel = Date.now()
-  if (studyController.docMapSplitMode == docMapSplitMode.allDoc) {
-    studyController.docMapSplitMode = docMapSplitMode.half
-    showHUD(lang.switch_panel.better_with_mindmap, 1)
-  }
   delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
@@ -68,7 +63,9 @@ const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
     if (
-      self.profile.ohmymn.panelControl.includes(PanelControl.DoubleClickOpen)
+      self.globalProfile.addon.panelControl.includes(
+        PanelControl.DoubleClickOpen
+      )
     ) {
       const now = Date.now()
       if (tmp.lastClickButton && now - tmp.lastClickButton < 300) openPanel()
@@ -77,7 +74,6 @@ const switchPanel = () => {
   }
 }
 
-// 改变各个 view 的时候就会触发，非常频繁，我们只需要在打开面板的时候触发一次，记录一下最近一次面板打开的时间
 const controllerWillLayoutSubviews = (controller: UIViewController) => {
   if (controller != MN.studyController()) return
   if (!self.panelStatus) return
@@ -85,8 +81,7 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
 }
 
 const queryAddonCommandStatus = () => {
-  // 仅在学习模式下打开
-  return MN.studyController().studyMode == studyMode.study
+  return MN.studyController().studyMode !== StudyMode.review
     ? {
         image: "logo.png",
         object: self,

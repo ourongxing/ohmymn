@@ -1,22 +1,83 @@
-import { MbBook, MbBookNote, MbTopic } from "types/MarginNote"
+import { MN } from "~/const"
+import { MbBookNote, MNPic, noteComment } from "~/typings"
+import { unique } from "."
 import { postNotification } from "./common"
-import { MN } from "const"
-import { unique } from "utils"
-import { extractArray } from "./custom"
+import { escapeURLParam } from "~/utils"
 
 /**
- * 获取选中的卡片
+ * Cancellable actions, all actions that modify data should be wrapped in this method.
+ * @param f f:()=>void, the action need to be cancelled.
+ * @returns void
  */
-const getSelectNodes = (): MbBookNote[] => {
+function undoGrouping(f: () => void) {
+  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
+}
+
+/**
+ * Undo group and then refresh the view.
+ * @param f f:()=>void, the action need to be cancelled.
+ * @returns void
+ */
+function undoGroupingWithRefresh(f: () => void) {
+  undoGrouping(f)
+  RefreshAfterDBChange()
+}
+
+/**
+ * Refresh the view after database change.
+ * @returns void
+ */
+function RefreshAfterDBChange() {
+  MN.db.setNotebookSyncDirty(self.notebookid)
+  postNotification("RefreshAfterDBChange", {
+    topicid: self.notebookid
+  })
+}
+
+/**
+ * Get infomation of the selected nodes.
+ * @returns Array which contains the infomation of the selected nodes.
+ * @example
+ * ```
+ * //get the infomation of the first selected node
+ * const mySelection = getSelection()[0]
+ * ```
+ */
+function getSelectNodes(): MbBookNote[] {
   const MindMapNodes: any[] | undefined =
     MN.studyController().notebookController.mindmapView.selViewLst
   return MindMapNodes?.length ? MindMapNodes.map(item => item.note.note) : []
 }
 
 /**
- * 获取整个卡片树，传入 node 必须含有子节点
+ * Get card tree recursively, including all the node's children,grandchildren and grandgrandchildren etc.
+ * @param node The card that you want to get its children node information.
+ * @returns MbBookNote[] - An array which contains all the children nodes.
+ * @example
+ * ```
+ * const { treeIndex, onlyChildren } = getNodeTree(node)
+ * ```
+ *  If the node has no child node,
+ * return {
+      onlyChildren: [],
+      onlyFirstLevel: [],
+      allNodes: [node],
+      treeIndex: [[]] as number[][]
+    }
+    If the node has child node,
+    return {
+    // only has child node
+    onlyChildren: children,
+    // only has the first level child node
+    onlyFirstLevel: node.childNotes!,
+    // card selected and its children nodes
+    allNodes: [node, ...children],
+    //index of the node in the tree
+    treeIndex
+  }
+    ```
  */
-const getNodeTree = (node: MbBookNote) => {
+function getNodeTree(node: MbBookNote) {
   const DFS = (
     nodes: MbBookNote[],
     level = 0,
@@ -36,6 +97,13 @@ const getNodeTree = (node: MbBookNote) => {
     })
     return res
   }
+  if (!node.childNotes?.length)
+    return {
+      onlyChildren: [],
+      onlyFirstLevel: [],
+      allNodes: [node],
+      treeIndex: [[]] as number[][]
+    }
   const { children, treeIndex } = DFS(node.childNotes!)
   return {
     // 只有子节点
@@ -49,9 +117,27 @@ const getNodeTree = (node: MbBookNote) => {
 }
 
 /**
- * 获取卡片中的所有摘录节点
+ * Get ancester nodes recursively, including all the node's parent, grandparent and grandgrandparent etc.
+ * @param node The card that you want to get its ancestor nodes information.
+ * @returns MbBookNote[] - An array which contains all the ancestor nodes.
+ *
  */
-const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
+function getAncestorNodes(node: MbBookNote): MbBookNote[] {
+  const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {
+    if (node.parentNote) {
+      ancestorNodes = up(node.parentNote, [...ancestorNodes, node.parentNote])
+    }
+    return ancestorNodes
+  }
+  return up(node, [])
+}
+
+/**
+ * Get all excerptions of one node.
+ * @param node The card that you want to get its excerptions.
+ * @returns Array Each element of the array contains one excerpt note's info.
+ */
+function getExcerptNotes(node: MbBookNote): MbBookNote[] {
   return node.comments.reduce(
     (acc, cur) => {
       cur.type == "LinkNote" && acc.push(MN.db.getNoteById(cur.noteid)!)
@@ -62,57 +148,62 @@ const getExcerptNotes = (node: MbBookNote): MbBookNote[] => {
 }
 
 /**
- * 获取卡片中的所有摘录文字
- * @param node 卡片节点
- * @param highlight 默认有重点
+ * Get picture base64 code by {@param} pic.
+ * @param pic {@link MNPic}
+ * @returns Base64 code of the picture.
  */
-const getExcerptText = (node: MbBookNote, highlight = true): string[] => {
-  return node.comments.reduce(
-    (acc, cur) => {
-      cur.type == "LinkNote" &&
-        cur.q_htext &&
-        acc.push(highlight ? cur.q_htext : removeHighlight(cur.q_htext))
-      return acc
-    },
-    node.excerptText ? [node.excerptText] : []
-  )
-}
-
-const getNoteById = (noteid: string): MbBookNote => MN.db.getNoteById(noteid)!
-
-// topic 就是 notebook
-const getNotebookById = (notebookid: string): MbTopic =>
-  MN.db.getNotebookById(notebookid)!
-
-const getDocumentById = (docMd5: string): MbBook =>
-  MN.db.getDocumentById(docMd5)!
-
-/**
- * 可撤销的动作，所有修改数据的动作都应该用这个方法包裹
- */
-const undoGrouping = (f: () => void) => {
-  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
-}
-
-const undoGroupingWithRefresh = (f: () => void) => {
-  undoGrouping(f)
-  RefreshAfterDBChange()
+function exportPic(pic: MNPic, mdsize = "") {
+  const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
+  return base64
+    ? {
+        base64,
+        img: `data:image/jpeg;base64,${escapeURLParam(base64)}`,
+        html: `<img src="data:image/jpeg;base64,${base64}"/>`,
+        md: `![${mdsize}](data:image/jpeg;base64,${escapeURLParam(base64)})`
+      }
+    : undefined
 }
 
 /**
- * 保存数据，刷新界面
+ * Get all excerpt text in a card.
+ * @param node The card that you want to get its excerpt text.
+ * @param highlight Highlighted by default.
+ * @param pic Text after OCR by default.
+ * @returns Dict of excerpt text.
  */
-const RefreshAfterDBChange = () => {
-  MN.db.setNotebookSyncDirty(self.notebookid)
-  postNotification("RefreshAfterDBChange", {
-    topicid: self.notebookid
-  })
+function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
+  const res = {
+    ocr: [] as string[],
+    base64: [] as string[],
+    img: [] as string[],
+    html: [] as string[],
+    md: [] as string[]
+  }
+  return getExcerptNotes(node).reduce((acc, cur) => {
+    const text = cur.excerptText?.trim() ?? ""
+    if (cur.excerptPic) {
+      const imgs = exportPic(cur.excerptPic, mdsize)
+      if (imgs)
+        Object.entries(imgs).forEach(([k, v]) => {
+          if (k in acc) acc[k].push(v)
+        })
+      text && acc.ocr.push(text)
+    } else if (text) {
+      Object.values(acc).forEach(k =>
+        k.push(highlight ? text : removeHighlight(text))
+      )
+    }
+    return acc
+  }, res)
 }
 
 /**
- * 获取评论的索引
+ * Get index of comments.
+ * @param node The card that you want to get its comments' index.
+ * @param comment The comment that you want to get its index.
+ * @returns Number The index of the comment.
  */
-const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
+function getCommentIndex(note: MbBookNote, comment: MbBookNote | string) {
   const comments = note.comments
   for (let i = 0; i < comments.length; i++) {
     const _comment = comments[i]
@@ -124,37 +215,65 @@ const getCommentIndex = (note: MbBookNote, comment: MbBookNote | string) => {
   return -1
 }
 
-/**
- * 获取卡片内所有的文字
- * @param note
- * @param separator 分隔符号
- * @param highlight 是否保留划重点
- * @returns
- */
-
-const getAllText = (note: MbBookNote, separator = "\n", highlight = true) => {
-  const textArr = []
-  note.excerptText &&
-    textArr.push(
-      highlight ? note.excerptText : removeHighlight(note.excerptText)
-    )
-  note.comments.forEach(comment => {
-    switch (comment.type) {
-      case "TextNote":
-      case "HtmlNote":
-        const text = comment.text.trim()
-        text && !text.includes("marginnote3app") && textArr.push(text)
-        break
-      case "LinkNote":
-        comment.q_htext && textArr.push(comment.q_htext)
-    }
+function removeCommentButLinkTag(
+  node: MbBookNote,
+  // 不删除
+  filter: (comment: noteComment) => boolean,
+  f?: (node: MbBookNote) => void
+) {
+  const reservedComments = [] as string[]
+  const len = node.comments.length
+  node.comments.reverse().forEach((k, i) => {
+    if (
+      k.type == "TextNote" &&
+      (k.text.includes("marginnote3app") || k.text.startsWith("#"))
+    ) {
+      reservedComments.push(k.text)
+      node.removeCommentByIndex(len - i - 1)
+    } else if (!filter(k)) node.removeCommentByIndex(len - i - 1)
   })
-  return textArr.join(separator)
+  f && f(node)
+  reservedComments.forEach(k => {
+    k && node.appendTextComment(k)
+  })
 }
 
-const removeHighlight = (text: string) => text.replace(/\*\*/g, "")
+/**
+ * Get all the text in the card, include excerpt text, comment, tags.
+ * @param node MindMap node, a card.
+ * @param separator The separator between the text and comments.
+ * @param highlight default true, will retention highlight symbol, **.
+ * @returns string
+ */
+function getAllText(
+  node: MbBookNote,
+  separator = "\n",
+  highlight = true,
+  mdsize = ""
+) {
+  return [
+    ...getExcerptText(node, highlight, mdsize).ocr,
+    ...getAllCommnets(node, mdsize).nopic,
+    getAllTags(node).join(" ")
+  ].join(separator)
+}
 
-const getAllTags = (node: MbBookNote, hash = true) => {
+/**
+ * Remove the highlight symbol in the text.
+ * @param text The text that you want to remove the highlight symbol.
+ * @returns Processed text.
+ */
+function removeHighlight(text: string) {
+  return text.replace(/\*\*/g, "")
+}
+
+/**
+ * Get all tags of one node.
+ * @param node The card that you want to get its tags.
+ * @param hash True by default. If false, will delete "#" in the tag.
+ * @returns Array of strings. Each element is a tag.
+ */
+function getAllTags(node: MbBookNote, hash = true) {
   const tags = node.comments.reduce((acc, cur) => {
     if (cur.type == "TextNote" || cur.type == "HtmlNote") {
       acc.push(...cur.text.split(/\s/).filter(k => k.startsWith("#")))
@@ -164,24 +283,42 @@ const getAllTags = (node: MbBookNote, hash = true) => {
   return hash ? tags : tags.map(k => k.slice(1))
 }
 
-const getAllCommnets = (node: MbBookNote) => {
+/**
+ * Get all comments of one node.
+ * @param node The card that you want to get all kind of its comments.
+ * @returns Resource dict.
+ */
+function getAllCommnets(node: MbBookNote, mdsize = "") {
+  const res = {
+    nopic: [] as string[],
+    base64: [] as string[],
+    img: [] as string[],
+    html: [] as string[],
+    md: [] as string[]
+  }
   return node.comments.reduce((acc, cur) => {
-    if (cur.type == "TextNote" || cur.type == "HtmlNote") {
+    if (cur.type === "PaintNote") {
+      const imgs = exportPic(cur, mdsize)
+      if (imgs)
+        Object.entries(imgs).forEach(([k, v]) => {
+          if (k in acc) acc[k].push(v)
+        })
+    } else if (cur.type == "TextNote" || cur.type == "HtmlNote") {
       const text = cur.text.trim()
-      text &&
-        !text.includes("marginnote3app") &&
-        !text.startsWith("#") &&
-        acc.push(text)
+      if (text && !text.includes("marginnote3app") && !text.startsWith("#"))
+        Object.values(acc).map(k => k.push(text))
     }
     return acc
-  }, [] as string[])
+  }, res)
 }
 
 /**
- * 添加标签，并且会去除划重点
- * @param force 强制整理合并标签，就算没有添加标签
+ * Add labels, and remove emphasis
+ * @param node The card that you want to process.
+ * @param tags The tags that you want to add.
+ * @param force Force merging tags, even if no tags are added
  */
-const addTags = (node: MbBookNote, tags: string[], force = false) => {
+function addTags(node: MbBookNote, tags: string[], force = false) {
   const existingTags: string[] = []
   const tagCommentIndex: number[] = []
   node.comments.forEach((comment, index) => {
@@ -203,21 +340,34 @@ const addTags = (node: MbBookNote, tags: string[], force = false) => {
     .reverse()
     .forEach(index => void node.removeCommentByIndex(index))
 
-  const tagLine = unique([...existingTags, ...tags])
-    .map(tag => `#${tag}`)
-    .join(" ")
-
+  const newTags = unique([...existingTags, ...tags])
+  const tagLine = newTags.reduce((acc, cur) => {
+    if (cur) return acc ? `${acc} #${cur}` : `#${cur}`
+    else return acc
+  }, "")
   tagLine && node.appendTextComment(removeHighlight(tagLine))
+  return tagLine
+}
+
+function modifyNodeTitle(node: MbBookNote, title: string | string[]) {
+  node = node.groupNoteId ? MN.db.getNoteById(node.groupNoteId)! : node
+  if (typeof title !== "string") title = title.join("; ")
+  title = removeHighlight(title)
+  if (node.excerptText === node.noteTitle) {
+    node.noteTitle = title
+    node.excerptText = title
+  } else {
+    node.noteTitle = title
+  }
 }
 
 export {
   getSelectNodes,
   getNodeTree,
+  getAncestorNodes,
   getExcerptNotes,
   getExcerptText,
   getCommentIndex,
-  getNotebookById,
-  getNoteById,
   getAllText,
   undoGrouping,
   undoGroupingWithRefresh,
@@ -226,5 +376,7 @@ export {
   getAllTags,
   getAllCommnets,
   removeHighlight,
-  getDocumentById
+  exportPic,
+  modifyNodeTitle,
+  removeCommentButLinkTag
 }
