@@ -1,14 +1,16 @@
-import { osType, studyMode } from "types/MarginNote"
+import { OSType } from "~/typings/enum"
 import mnaddon from "../mnaddon.json"
 
-class MNCore {
-  textColor!: UIColor
-  mainPath!: string
-  studyController = () =>
-    Application.sharedInstance().studyController(self.window)
-  isMac = Application.sharedInstance().osType == osType.macOS
-  app = Application.sharedInstance()
-  db = Database.sharedInstance()
+export const MN = {
+  textColor: UIColor.blackColor(),
+  mainPath: "",
+  studyController: () =>
+    Application.sharedInstance().studyController(self.window),
+  isMac: Application.sharedInstance().osType == OSType.macOS,
+  app: Application.sharedInstance(),
+  db: Database.sharedInstance(),
+  // isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh")
+  isZH: true
 }
 
 export const Addon = {
@@ -16,8 +18,7 @@ export const Addon = {
   author: mnaddon.author,
   version: mnaddon.version,
   key: mnaddon.addonid.split(".")[2],
-  profileKey: "marginnote_ohmymn_profile_global_v300",
-  docProfileKey: "marginnote_ohmymn_profile_doc_v300"
+  globalProfileKey: "ohmymn_profile_global_v4",
+  docProfileKey: "ohmymn_profile_doc_v4",
+  notebookProfileKey: "ohmymn_profile_notebook_v4"
 }
-
-export const MN = new MNCore()

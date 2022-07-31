@@ -1,8 +1,6 @@
 import zh from "./zh"
 import en from "./en"
+import { MN } from "~/const"
 export type Dict = typeof zh
-const isZH =
-  NSLocale.preferredLanguages().length &&
-  NSLocale.preferredLanguages()[0].startsWith("zh")
-const lang = isZH ? zh : en
+const lang = MN.isZH ? zh : en
 export default lang

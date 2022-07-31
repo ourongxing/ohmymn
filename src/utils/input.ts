@@ -1,23 +1,71 @@
-/**
- * 反转义字符串，用于处理用户输入
- */
-const reverseEscape = (str: string) => JSON.parse(`{"key": ${str}}`).key
-const escapeDoubleQuote = (str: string) => str.replace(/"/g, `\\"`)
-const isNumber = (text: string) => /^[0-9]+$/.test(text)
+import { unique } from "."
 
-const string2ReplaceParam = (str: string): ReplaceParam[] => {
-  // 输入格式 (/sd/, "", 1);(/sd/, "", 1)
+/**
+ *  Reverse escape string in order to process user input
+ * @param str : The string to be processed
+ * @param quote : Boolean. If quote is true, the output string will be surrounded by double quotes
+ * @returns The string after reverse escape
+ *
+ * @example
+ * ```
+ * // Output string with double quotes surrounded
+ * const myReverseEscape = reverseEscape(123,true)
+ * // output: "123"
+ * ```
+ */
+function reverseEscape(str: string, quote = false) {
+  return JSON.parse(quote ? `"${str}"` : str)
+}
+
+/**
+ *  Escape double quotes of the string. We often use backslash(`\`) to escape double quote in order to prevent Typescript from interpreting the quote as the end of the string
+ * @param str : The string to be processed
+ * @returns A string after processing
+ * @example
+ * ```
+ * const Myquote = escapeDoubleQuote("\"file\"-123")
+ * // output: \\\"file\\\"-123
+ * ```
+ */
+function escapeDoubleQuote(str: string) {
+  return str.replace(/"/g, `\\"`)
+}
+/**
+ *  Detect if the string is a number
+ * @param text : The string to be processed
+ * @returns Boolean, true if the input is a number
+ **/
+
+const isIntegerString = (text: string) => /^[0-9]+$/.test(text)
+const isNumberString = (text: string) => /^[0-9]+\.?[0-9]*$/.test(text)
+
+/**
+ *  process user input and return a dict which contains Regexp ,string want to be replaced and fnkey.
+ * @param str : string, the format is `(regexp,string,fnkey:optional);(regexp,string,fnkey:optional);...`
+ * @returns list like `[{regexp:RegExp;newSubStr:any;fnkey:number},{regexp:RegExp;newSubStr:any;fnkey:number},...]`
+ * @example
+ * ```
+ * const myReplaceParam = replaceParam("(/sd/g,"");(/tt/g,)"")
+ * //output
+ * [{regexp: /sd/g, newSubStr: "", fnkey: 0}, {regexp: /tt/g, newSubStr: "", fnkey: 0}]
+ * ```
+ */
+function string2ReplaceParam(str: string): ReplaceParam[] {
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
-  for (let bracket of brackets) {
+  for (const bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
-      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\)?/, `$1😎"$2`)
+      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1😎"$2`)
       .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
       .split("😎")
-    if ((fnKey && !isNumber(fnKey)) || (!fnKey && isNumber(newSubStr))) throw ""
+    if (
+      (fnKey && !isIntegerString(fnKey)) ||
+      (!fnKey && isIntegerString(newSubStr))
+    )
+      throw "invalid replace param"
     params.push({
       regexp: string2Reg(regString),
-      // newSubStr 始终有双引号，反转义也是字符串
+      // newSubStr : always have double quotes
       newSubStr: reverseEscape(newSubStr),
       fnKey: fnKey ? Number(fnKey) : 0
     })
@@ -25,44 +73,51 @@ const string2ReplaceParam = (str: string): ReplaceParam[] => {
   return params
 }
 
-const string2Reg = (str: string) => {
+/**
+ * @internal
+ *  A function to return RegExp used by string2RegArray
+ * @param str : The string to be processed like `/[/xxx/, /yyy/]; [/xxx/]/`
+ * @returns RegExp
+ */
+function string2Reg(str: string) {
+  str = str.trim()
+  if (!str.startsWith("/")) return new RegExp(escapeStringRegexp(str))
   const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
   if (!regParts) throw ""
   return new RegExp(regParts[1], regParts[2])
 }
 
-// https://github.com/sindresorhus/escape-string-regexp/blob/main/index.js
-const escapeStringRegexp = (str: string) =>
-  str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
-
-const string2RegArray = (str: string): RegExp[][] => {
-  /**
-   * 输入 [/sd/,/sd/];[/sd/,/sd/]
-   * /sd/
-   * sd => 会转义，相当于普通字符串
-   * 输出 [[/sd/]]
-   */
-
-  if (/^\(.*\)$/.test(str)) throw ""
-  if (!/^\[.*\]$/.test(str))
-    return [
-      [
-        string2Reg(
-          /^\/(.*?)\/([gimsuy]*)$/.test(str)
-            ? str
-            : `/${escapeStringRegexp(str)}/g`
-        )
-      ]
-    ]
-  const brackets = str.split(/\s*;\s*(?=\[)/)
-  return brackets.map(bracket =>
-    bracket
-      .slice(1, -1)
-      .split(/\s*,\s*(?=\/)/)
-      .map(str => string2Reg(str))
-  )
+/**
+ * @internal
+ *  A function to escape string for RegExp, used by string2RegArray
+ * @param str : The string to be processed
+ * @returns string
+ */
+function escapeStringRegexp(str: string) {
+  return str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
 }
 
+/**
+ *  Procecss user input and return
+ * @param str : The string to be processed, input like `[/sd/,/sd/];[/sd/,/sd/]` => output like [[/sd/]]
+ * @returns List of RegExp
+ */
+function string2RegArray(str: string): RegExp[][] {
+  if (/^\(.*\)$/.test(str)) throw ""
+  const brackets = str.split(/\s*;\s*(?=(?:\[\s*\/|\/\s*[^\]gimsuy,]))/)
+  return brackets.map(bracket => {
+    return bracket
+      .replace(/^\s*\[(.*?)\]\s*$/, "$1")
+      .split(/\s*,\s*(?=\/[^\s,gimsuy]+)/)
+      .map(str => string2Reg(str))
+  })
+}
+
+/**
+ * @descrption Add or remove flags to RegExp
+ * @method add Add flags to RegExp
+ * @method remove Remove flags from RegExp
+ */
 const regFlag = {
   add(reg: RegExp, flag: "g" | "i" | "m" | "s" | "y" | "u") {
     return reg.flags.includes(flag)
@@ -82,6 +137,24 @@ export interface ReplaceParam {
   fnKey: number
 }
 
+/**
+ * @param text The string to be processed
+ * @param params The Array of {@link ReplaceParam}
+ */
+function extractArray(text: string, params: ReplaceParam[]) {
+  return unique(
+    params.reduce((acc, cur) => {
+      const { newSubStr } = cur
+      let { regexp } = cur
+      regexp = regFlag.add(regexp, "g")
+      if (regexp.test(text)) {
+        acc.push(...text.match(regexp)!.map(k => k.replace(regexp, newSubStr)))
+      }
+      return acc
+    }, [] as string[])
+  )
+}
+
 export {
   string2ReplaceParam,
   reverseEscape,
@@ -89,5 +162,8 @@ export {
   string2RegArray,
   escapeDoubleQuote,
   escapeStringRegexp,
-  regFlag
+  regFlag,
+  extractArray,
+  isIntegerString,
+  isNumberString
 }

@@ -1,33 +1,26 @@
-import {
-  PanelHeight,
-  PanelPosition,
-  HasTitleThen,
-  PanelControl
-} from "modules/ohmymn"
-import { AutoTitlePreset } from "modules/anotherautotitle"
-import { AutoListPreset } from "modules/autolist"
-import { AutoReplacePreset } from "modules/autoreplace"
-import { AutoStandardizePreset } from "modules/autostandardize"
-import { AutoStylePreset } from "modules/autostyle"
-import { AutoTagPreset } from "modules/autotag"
-import { QuickSwitch } from "synthesizer"
-import { ReplaceParam } from "utils/input"
-import { TitleLinkSplit } from "modules/anotherautodef"
-import { FillWordInfo } from "modules/autocomplete"
-import { MultipleTitlesExcerpt } from "modules/copysearch"
+import { IConfig } from "./typings"
+import { ReplaceParam } from "./utils"
 
-const profilePreset = {
-  ohmymn: {
-    quickSwitch: [] as QuickSwitch[],
+const globalProfilePreset = {
+  addon: {
+    quickSwitch: [],
     lockExcerpt: false,
     screenAlwaysOn: false,
-    hasTitleThen: [HasTitleThen.NoChange],
-    panelControl: [] as PanelControl[],
-    panelPosition: [PanelPosition.Auto],
-    panelHeight: [PanelHeight.Standard]
+    hasTitleThen: [1],
+    removeExcerpt: [1],
+    panelControl: [],
+    panelPosition: [0],
+    panelHeight: [1],
+    autoBackup: false
+  },
+  magicaction4card: {
+    smartSelection: false,
+    defaultMergeText: `%["1"]. $&\\n\\n`
+  },
+  magicaction4text: {
+    noteOptions: []
   },
   gesture: {
-    // 单选不允许为空，一般设置一个选项为空
     singleBarSwipeUp: [0],
     singleBarSwipeDown: [0],
     singleBarSwipeRight: [0],
@@ -35,54 +28,71 @@ const profilePreset = {
     muiltBarSwipeUp: [0],
     muiltBarSwipeDown: [0],
     muiltBarSwipeRight: [0],
-    muiltBarSwipeLeft: [0]
+    muiltBarSwipeLeft: [0],
+    selectionBarSwipeUp: [0],
+    selectionBarSwipeDown: [0],
+    selectionBarSwipeRight: [0],
+    selectionBarSwipeLeft: [0]
   },
   autocomplete: {
     on: false,
-    fillWordInfo: [FillWordInfo.None],
-    customFill: "{{zh}}"
+    fillWordInfo: [0],
+    dataSource: [0],
+    customFillFront:
+      "{{#phonetic}}🔈[{{phonetic}}] {{/phonetic}} {{collins}}{{#tags}}\\n🏷 {{tags}}{{/tags}}",
+    customFill: "✍🏻\\n{{zh}}\\n👀",
+    selectLemma: false,
+    selectMeanings: [],
+    autoContext: false,
+    translateContext: false,
+    collins: [0, 1, 2, 3, 4, 5]
   },
-  autostandardize: {
+  autoformat: {
     on: false,
-    preset: [] as AutoStandardizePreset[],
-    customStandardize: "",
-    standardizeTitle: false
+    preset: [],
+    customFormat: "",
+    formatTitle: false
   },
   anotherautotitle: {
     on: false,
-    preset: [] as AutoTitlePreset[],
+    preset: [],
     changeTitleNoLimit: false,
     wordCount: "[10, 5]",
     customBeTitle: ""
   },
   anotherautodef: {
     on: false,
-    preset: [] as number[],
-    onlyDesc: false,
+    preset: [],
+    onlyDesc: true,
     toTitleLink: false,
-    titleLinkSplit: [TitleLinkSplit.Default],
+    titleLinkSplit: [1],
     customTitleSplit: "",
     customDefLink: "",
     customExtractTitle: ""
   },
   autolist: {
     on: false,
-    preset: [] as AutoListPreset[],
+    preset: [],
     customList: ""
   },
   autoreplace: {
     on: false,
-    preset: [] as AutoReplacePreset[],
+    preset: [],
     customReplace: ""
   },
   autotag: {
     on: false,
-    preset: [] as AutoTagPreset[],
+    preset: [],
     customTag: ""
+  },
+  autocomment: {
+    on: false,
+    preset: [],
+    customComment: ""
   },
   autostyle: {
     on: false,
-    preset: [] as AutoStylePreset[],
+    preset: [],
     wordCountArea: "[10, 5, 10]",
     showArea: false,
     defaultTextExcerptColor: [0],
@@ -90,68 +100,130 @@ const profilePreset = {
     defaultTextExcerptStyle: [0],
     defaultPicExcerptStyle: [0]
   },
-  magicaction: {
-    smartSelection: false
-  },
   copysearch: {
-    multipleTitles: [MultipleTitlesExcerpt.All],
-    multipleExcerpts: [MultipleTitlesExcerpt.All],
-    customContent: "[{{title}}]({{link}})",
+    multipleTitles: [0],
+    multipleExcerpts: [0],
+    customContent: "[{{titles.0}}]({{url.pure}})",
     showSearchEngine: false,
-    separatorSymbols: "\\n\\n",
-    whichSearchEngine: [0],
+    modifySymbols: '%["1"]. $&\\n\\n',
+    whichPartofCard: [0],
     searchChineseText: "https://www.bing.com/search?q={{keyword}}&ensearch=0",
     searchEnglishText: "https://www.bing.com/search?q={{keyword}}&ensearch=1",
-    searchWord: "eudic://dict/{{keyword}}",
-    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}",
     searchAcademic: "https://scholar.google.com.hk/scholar?q={{keyword}}",
     searchQuestion: "https://www.zhihu.com/search?q={{keyword}}",
+    searchWord: "eudic://dict/{{keyword}}",
+    searchTranslation: "https://www.deepl.com/zh/translator#en/zh/{{keyword}}",
     searchOtherText: ""
-  }
-}
-
-const docProfilePreset = {
-  ohmymn: {
-    profile: [0],
-    autoCorrect: false
   },
-  // 不显示在 UI 上的配置信息
+  autoocr: {
+    baiduSecretKey: "",
+    baiduApiKey: "",
+    lang: [0],
+    formulaOCRProviders: [0],
+    markdown: [0],
+    mathpixAppKey: "",
+    showKey: true
+  },
+  autotranslate: {
+    on: false,
+    wordCount: "[10, 5]",
+    baiduSecretKey: "",
+    baiduAppID: "",
+    baiduThesaurus: false,
+    baiduAdvance: false,
+    translateProviders: [0],
+    caiyunToken: "",
+    showKey: true,
+    hudTime: "3",
+    baiduFromLang: [0],
+    caiyunFromLang: [0],
+    baiduToLang: [0],
+    caiyunToLang: [0]
+  },
   additional: {
-    // 这个文档上次打开的时间
-    lastExcerpt: 0,
-    // 保存每次自动生成的标题，如果一个月没打开过该文档，则删除该配置，防止配置文件过大。
-    cacheExcerptTitle: {} as {
-      [noteid: string]: string[] | undefined
+    backupID: "",
+    autoocr: {
+      lastGetToken: 0,
+      baiduToken: ""
     }
   }
 }
 
-// 感觉转换这么复杂，每次使用的时候都需要转换，有点浪费，应该在读配置的时候预先缓存
-// 主要还是 [//,//];[//,//] 和 (//,"",0);(//,"",0);
-const profileTempPreset = {
-  replaceParam: {
-    customTag: [] as ReplaceParam[] | undefined,
-    customList: [] as ReplaceParam[] | undefined,
-    customReplace: [] as ReplaceParam[] | undefined,
-    customExtractTitle: [] as ReplaceParam[] | undefined,
-    customStandardize: [] as ReplaceParam[] | undefined
+// Each document has a independent profile
+const docProfilePreset = {
+  magicaction4text: {
+    preOCR: false
   },
-  regArray: {
-    customTitleSplit: [] as RegExp[][] | undefined,
-    customBeTitle: [] as RegExp[][] | undefined,
-    customDefLink: [] as RegExp[][] | undefined
+  autoocr: {
+    on: false,
+    lang: [0]
   }
 }
 
-type IProfileTemp = typeof profileTempPreset
-type IProfile = typeof profilePreset
-type IDocProfile = typeof docProfilePreset
+const notebookProfilePreset = {
+  addon: {
+    profile: [0]
+  },
+  // Information not displayed on the UI
+  additional: {
+    cacheTitle: {} as Record<string, [string, string, string][]>,
+    cacheComment: {} as Record<string, [string, string, string][]>
+  }
+}
+
+// Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
+const tempProfilePreset = {
+  replaceParam: {
+    customTag: [],
+    customComment: [],
+    customList: [],
+    customReplace: [],
+    customExtractTitle: [],
+    customFormat: []
+  },
+  regArray: {
+    customTitleSplit: [],
+    customBeTitle: [],
+    customDefLink: []
+  }
+}
+
+type UtilTemp<T> = {
+  [K in keyof T]: K extends "replaceParam"
+    ? {
+        [M in keyof T[K]]: ReplaceParam[] | undefined
+      }
+    : {
+        [M in keyof T[K]]: RegExp[][] | undefined
+      }
+}
+
+type UtilProfile<T> = {
+  [K in keyof T]: K extends "additional"
+    ? T[K]
+    : {
+        [M in keyof T[K]]: T[K][M] extends any[] ? number[] : T[K][M]
+      }
+}
+
+type ITempProfile = UtilTemp<typeof tempProfilePreset>
+type IGlobalProfile = UtilProfile<typeof globalProfilePreset>
+type IDocProfile = UtilProfile<typeof docProfilePreset>
+type INotebookProfile = UtilProfile<typeof notebookProfilePreset>
+type IAllProfile = IGlobalProfile & IDocProfile & INotebookProfile
 
 export {
-  profilePreset,
+  globalProfilePreset,
   docProfilePreset,
-  profileTempPreset,
-  IProfile,
+  tempProfilePreset,
+  notebookProfilePreset,
+  IGlobalProfile,
   IDocProfile,
-  IProfileTemp
+  INotebookProfile,
+  ITempProfile,
+  IAllProfile
 }
+
+export const defineConfig = <T extends keyof IAllProfile>(
+  options: IConfig<T>
+) => options

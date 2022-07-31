@@ -1,128 +1,178 @@
-import settingViewControllerInst from "settingViewController"
-import { Range, readProfile, removeProfile, saveProfile } from "utils/profile"
-import { getObjCClassDeclar, showHUD } from "utils/common"
-import { closePanel, layoutViewController } from "./switchPanel"
-import { docProfilePreset, profilePreset, profileTempPreset } from "profile"
+import { MN } from "~/const"
+import { dataSourcePreset } from "~/dataSource"
+import lang from "~/lang"
+import {
+  docProfilePreset,
+  globalProfilePreset,
+  notebookProfilePreset,
+  tempProfilePreset
+} from "~/profile"
+import { inst } from "~/settingViewController"
+import { UIWindow } from "~/typings"
+import {
+  deepCopy,
+  getObjCClassDeclar,
+  isfileExists,
+  openUrl,
+  showHUD,
+  popup,
+  readProfile,
+  removeProfile,
+  writeProfile
+} from "~/utils"
+import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
-import { dataSourcePreset } from "synthesizer"
-import { UIWindow } from "types/UIKit"
-import { deepCopy } from "utils"
-import lang from "lang"
+import { closePanel, layoutViewController } from "./switchPanel"
 
 const SettingViewController = JSB.defineClass(
   getObjCClassDeclar("SettingViewController", "UITableViewController"),
-  settingViewControllerInst
+  inst
 )
 
 /**
- * MN 的生命周期有点离谱，尤其是先关闭笔记本再关闭文档，
- * 如果直接关闭窗口，是不会触发关闭笔记本和文档的
- * 1. 启用插件
- * 2. 打开窗口
- * 3. 打开笔记本
- * 4. 打开文档
- * 5. 关闭笔记本
- * 6. 关闭文档
- * 7. 关闭窗口
+ * Addon life cycle
+ * If you close the window directly, it will not trigger the closing of notebooks and documents
+ * 1. Addon connected
+ * 2. Open a new window
+ * 3. Open a notebook
+ * 4. Open a document
+ * 5. Close a notebook
+ * 6. Close a document
+ * 7. Close a window
  */
 
+/** Cache window */
 let _window: UIWindow
-// 打开窗口，可以用来初始化
-const sceneWillConnect = () => {
-  console.log("打开窗口", "lifeCycle")
-  _window = self.window
-  // MN 插件多窗口会共用全局变量，所以需要保存到 self 上。
-  self.panelStatus = false
-  self.profile = deepCopy(profilePreset)
-  self.docProfile = deepCopy(docProfilePreset)
-  self.profileTemp = deepCopy(profileTempPreset)
-  self.dataSource = deepCopy(dataSourcePreset)
-  self.customSelectedNodes = []
-  self.settingViewController = new SettingViewController()
-  self.settingViewController.dataSource = self.dataSource
-  self.settingViewController.window = self.window
-}
-
-// 关闭窗口，不会调用关闭笔记本和关闭文档的方法
-// iPad 上不触发，切换到后台可以
-const sceneDidDisconnect = () => {
-  console.log("关闭窗口", "lifeCycle")
-  // 只要打开过文档，再关闭窗口就保存
-  if (self.docMD5) saveProfile(self.docMD5)
-}
-
-// 打开笔记本
-const notebookWillOpen = (notebookid: string) => {
-  console.log("打开笔记本", "lifeCycle")
-  self.notebookid = notebookid
-  eventHandlers.add()
-  gestureHandlers.add()
-}
-
-// 关闭笔记本
-const notebookWillClose = (notebookid: string) => {
-  console.log("关闭笔记本", "lifeCycle")
-  closePanel()
-  eventHandlers.remove()
-  gestureHandlers.remove()
-}
-
-const documentDidOpen = (docmd5: string) => {
-  // 如果 docMD5 有值，说明是换书，反正不是第一次打开书
-  if (self.docMD5) readProfile(Range.Doc, docmd5)
-  // 如果 docMD5 没有值，说明是刚打开 MN
-  else {
-    readProfile(Range.First, docmd5)
-    UIApplication.sharedApplication().idleTimerDisabled =
-      self.profile.ohmymn.screenAlwaysOn
-  }
-  console.log("打开文档", "lifeCycle")
-  self.docMD5 = docmd5
-}
-
-// 关闭文档
-const documentWillClose = (docmd5: string) => {
-  console.log("关闭文档", "lifeCycle")
-  removeLastCommentCacheTitle()
-  saveProfile(docmd5)
-}
-
-const addonDidConnect = () => {
-  console.log("插件启用", "lifeCycle")
-}
-
-// 清空配置文件，如果出现问题可以关闭再打开插件开关，重启即可
-const addonWillDisconnect = () => {
-  console.log("插件停用", "lifeCycle")
-  // 这里竟然无法获取 self.window
-  showHUD(lang.addon_life_cycle.remove, 2, _window)
-  removeProfile()
-}
-
-const sceneWillResignActive = () => {
-  console.log("应用进入后台", "lifeCycle")
-  removeLastCommentCacheTitle()
-  if (self.docMD5) saveProfile(self.docMD5)
-}
-
-const sceneDidBecomeActive = () => {
-  layoutViewController()
-  console.log("应用进入前台", "lifeCycle")
-}
 
 export const clsMethons = {
-  addonWillDisconnect
+  async addonWillDisconnect() {
+    console.log("Addon disconected", "lifeCycle")
+    const { option } = await popup(
+      {
+        message: "遇到 bug 了吗，是否清空配置？",
+        buttons: ["确定", "去论坛更新"]
+      },
+      ({ buttonIndex }) => ({
+        option: buttonIndex
+      })
+    )
+    switch (option) {
+      case 0: {
+        removeProfile()
+        // could not get the value of self.window
+        showHUD(lang.disconnect_addon, 2, _window)
+        break
+      }
+      case 1: {
+        openUrl("https://bbs.marginnote.cn/t/topic/20501")
+      }
+    }
+  },
+  addonDidConnect() {
+    console.log("Addon connected", "lifeCycle")
+    if (
+      !isfileExists(`${MN.mainPath}/dict.db`) &&
+      isfileExists(`${MN.mainPath}/dict.zip`)
+    )
+      ZipArchive.unzipFileAtPathToDestination(
+        `${MN.mainPath}/dict.zip`,
+        MN.mainPath
+      )
+  }
 }
 
 export default {
-  sceneWillConnect,
-  sceneDidDisconnect,
-  sceneWillResignActive,
-  sceneDidBecomeActive,
-  notebookWillClose,
-  documentWillClose,
-  notebookWillOpen,
-  documentDidOpen
+  sceneWillConnect() {
+    console.log("Open a new window", "lifeCycle")
+    _window = self.window
+    // Multiple windows will share global variables, so they need to be saved to self.
+    self.panelStatus = false
+    self.globalProfile = deepCopy(globalProfilePreset)
+    self.docProfile = deepCopy(docProfilePreset)
+    self.notebookProfile = deepCopy(notebookProfilePreset)
+    self.tempProfile = deepCopy(tempProfilePreset)
+    self.dataSource = deepCopy(dataSourcePreset)
+    self.OCROnline = { times: 0, status: "free" }
+    self.customSelectedNodes = []
+    self.settingViewController = new SettingViewController()
+    self.settingViewController.dataSource = self.dataSource
+    self.settingViewController.window = self.window
+    self.settingViewController.profile = self.globalProfile
+    self.settingViewController.docProfile = self.docProfile
+    self.settingViewController.notebookProfile = self.notebookProfile
+  },
+  notebookWillOpen(notebookid: string) {
+    console.log("Open a notebook", "lifeCycle")
+    self.notebookid = notebookid
+    if (self.docmd5)
+      readProfile({
+        range: Range.Notebook,
+        notebookid
+      })
+    // Add hooks, aka observers
+    eventHandlers.add()
+    gestureHandlers().add()
+  },
+  documentDidOpen(docmd5: string) {
+    // Switch document, read doc profile
+    if (self.docmd5)
+      readProfile({
+        range: Range.Doc,
+        docmd5
+      })
+    else {
+      // First open a document, init all profile
+      readProfile({
+        range: Range.All,
+        docmd5,
+        notebookid: self.notebookid
+      })
+      UIApplication.sharedApplication().idleTimerDisabled =
+        self.globalProfile.addon.screenAlwaysOn
+    }
+    self.docmd5 = docmd5
+    console.log("Open a document", "lifeCycle")
+  },
+  notebookWillClose(notebookid: string) {
+    console.log("Close a notebook", "lifeCycle")
+    removeLastCommentCacheTitle()
+    closePanel()
+    writeProfile({ range: Range.Notebook, notebookid })
+    // Remove hooks, aka observers
+    eventHandlers.remove()
+    gestureHandlers().remove()
+  },
+  documentWillClose(docmd5: string) {
+    console.log("Close a document", "lifeCycle")
+    writeProfile({ range: Range.Doc, docmd5 })
+  },
+  // Not triggered on ipad
+  sceneDidDisconnect() {
+    console.log("Close a window", "lifeCycle")
+    if (self.docmd5)
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5,
+        notebookid: self.notebookid
+      })
+  },
+  sceneWillResignActive() {
+    // or go to the background
+    console.log("Window is inactivation", "lifeCycle")
+    removeLastCommentCacheTitle()
+    !MN.isMac && closePanel()
+    if (self.docmd5)
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5,
+        notebookid: self.notebookid
+      })
+  },
+  sceneDidBecomeActive() {
+    layoutViewController()
+    // or go to the foreground
+    console.log("Window is activated", "lifeCycle")
+  }
 }

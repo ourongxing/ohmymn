@@ -1,64 +1,89 @@
-import { dataSourceIndex, moduleList } from "synthesizer"
-import { cellViewType, IRow, IRowSelect } from "types/Addon"
-import { console, isOCNull } from "utils/common"
-import { MN } from "const"
-import { UITableView } from "types/UIKit"
-import { byteLength, isHalfWidth, SerialCode } from "utils/text"
-import lang from "lang"
+import { MN } from "~/const"
+import { dataSourceIndex } from "~/dataSource"
+import lang from "~/lang"
+import { ModuleKeyType, moduleKeys } from "~/synthesizer"
+import { BindType, IRowSelect, UITableView } from "~/typings"
+import { CellViewType, NSTextAlignment } from "~/typings/enum"
+import {
+  byteSplitByLen,
+  byteLength,
+  byteSlice,
+  serialSymbols,
+  isOCNull
+} from "~/utils"
 
-// _开头表示是普通函数，不会作为 OC 对象的实例方法。
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
 
-const numberOfSectionsInTableView = (tableView: UITableView) =>
-  self.dataSource.length
-
-// 模块未启用，则菜单隐藏
-const _isModuleOFF = (header: string): boolean => {
-  const [sec, row] = dataSourceIndex.ohmymn.quickSwitch
+// If the module is not enabled, the menu will be hidden
+export const _isModuleOFF = (key: ModuleKeyType): boolean => {
+  const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
-  return (
-    moduleList.includes(header) &&
-    !quickSwitch.includes(moduleList.findIndex(key => key === header))
-  )
+  const index = moduleKeys.indexOf(key)
+  return index !== -1 && !quickSwitch.includes(index)
 }
 
+const numberOfSectionsInTableView = () => self.dataSource.length
 const tableViewNumberOfRowsInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = self.dataSource[section]
-  return _isModuleOFF(header) ? 0 : self.dataSource[section].rows.length
+  const { key } = self.dataSource[section]
+  return _isModuleOFF(key) ? 0 : self.dataSource[section].rows.length
 }
 
 const tableViewTitleForHeaderInSection = (
   tableView: UITableView,
   section: number
 ) => {
-  const { header } = self.dataSource[section]
-  return _isModuleOFF(header) ? new NSNull() : header
+  const { key, header } = self.dataSource[section]
+  return _isModuleOFF(key) ? new NSNull() : header
 }
 
-// bind 的对象只要有一个不符合要求，就隐藏
-const _isBindOFF = (bindArr: [string, number][], header: string) => {
-  return !bindArr.every(bind => {
-    const [key, index] = bind
-    const [secIndex, rowIndex] = dataSourceIndex?.[header.toLowerCase()]?.[key]
-    const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-    // 输入的key找不到就显示
-    if (!row) {
-      console.error(`bind key 输入错误：${key}`)
-      return true
-    }
-    // row 有两种类型，switch 和 select
-    if (row.type === cellViewType.switch)
-      return row.status === (index ? true : false)
-    else if (
-      row.type === cellViewType.select ||
-      row.type === cellViewType.muiltSelect
-    )
-      return row.selections.includes(index)
-    return false
+// If one of the bind objects does not meet the requirements, it will be hidden
+const _isBindOFF = (bindArr: BindType, sectionKey: string) => {
+  /**
+   * const bind = ["key", [1,2]]
+   * const bind = [
+   *  ["key", 1],
+   *  ["key", true]
+   * ]
+   * const bind = [
+   *  ["key", 1],
+   *  [
+   *    ["key", 1],
+   *    ["key", true]
+   *  ]
+   * ]
+   */
+  const bindItems = Array.isArray(bindArr[0])
+    ? (bindArr as Array<MaybeArray<[string, number | number[] | boolean]>>)
+    : ([bindArr] as Array<MaybeArray<[string, number | number[] | boolean]>>)
+  return !bindItems.every(bind => {
+    const binds = Array.isArray(bind[0])
+      ? (bind as [string, number | number[] | boolean][])
+      : ([bind] as [string, number | number[] | boolean][])
+    return binds.some(bind => {
+      const [key, v] = bind
+      const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
+      if (secIndex === undefined) {
+        console.error(`bind key does not exist：${key}`)
+        return true
+      }
+      const row = self.dataSource?.[secIndex].rows?.[rowIndex]
+      if (row.type === CellViewType.Switch && typeof v === "boolean")
+        return row.status === v
+      else if (
+        row.type === CellViewType.Select ||
+        row.type === CellViewType.MuiltSelect
+      ) {
+        if (typeof v === "number") return row.selections.includes(v)
+        else if (Array.isArray(v)) {
+          return v.some(h => row.selections.includes(h))
+        }
+      }
+      return false
+    })
   })
 }
 
@@ -66,22 +91,21 @@ const tableViewHeightForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows, header } = self.dataSource[indexPath.section]
+  const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
-  if (row.bind && _isBindOFF(row.bind, header)) return 0
-  if (
-    (row.type === cellViewType.button ||
-      row.type === cellViewType.buttonWithInput) &&
-    row.module &&
-    _isModuleOFF(row.module)
-  )
-    return 0
-  if (row.type === cellViewType.plainText) {
-    // 每行大约可以容纳 45 个半角字符
-    const byte = byteLength(row.label)
-    const lines = (byte - (byte % 45)) / 45 - (byte % 45 ? 0 : 1)
-    const lineBreaks = row.label.length - row.label.replace(/\n/g, "").length
-    return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
+  switch (row.type) {
+    case CellViewType.Button:
+    case CellViewType.ButtonWithInput:
+      if (row.module && _isModuleOFF(row.module)) return 0
+      break
+    case CellViewType.PlainText: {
+      if (row.bind && _isBindOFF(row.bind, key)) return 0
+      const lines = byteSplitByLen(row.label, 45).length - 1
+      const lineBreaks = row.label.match(/\n/g)?.length ?? 0
+      return (lines > lineBreaks ? lines : lineBreaks) * 15 + 30
+    }
+    default:
+      if (row.bind && _isBindOFF(row.bind, key)) return 0
   }
   return 40
 }
@@ -90,16 +114,15 @@ const tableViewCellForRowAtIndexPath = (
   tableView: UITableView,
   indexPath: NSIndexPath
 ) => {
-  const { rows, header } = self.dataSource[indexPath.section]
+  const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
-    case cellViewType.plainText: {
+    case CellViewType.PlainText: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "PlainTextCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.opaque = false
       cell.textLabel.textAlignment = 0
@@ -110,14 +133,12 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       return cell
     }
-    case cellViewType.button:
-    case cellViewType.buttonWithInput: {
+    case CellViewType.Button:
+    case CellViewType.ButtonWithInput: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "ButtonCellID"
       )
-      if (!MN.isMac && row.bind && row.module && _isModuleOFF(row.module))
-        cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
@@ -129,19 +150,18 @@ const tableViewCellForRowAtIndexPath = (
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)
       return cell
     }
-    case cellViewType.switch: {
+    case CellViewType.Switch: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "SwitchCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       const view = initCellView.switch(row.status ?? false)
-      let newFrame = view.frame
+      const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
@@ -149,35 +169,33 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.inlineInput: {
+    case CellViewType.InlineInput: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "inlineInputCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
       const view = initCellView.inlineInput(row.content ?? "")
-      let newFrame = view.frame
+      const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
       view.frame = newFrame
       view.autoresizingMask = 1 << 0
-      // 传入位置，不要直接传入 indexPath，以及设置 indexPath 属性
-      // 唯一值，建议加一个较大数
+      // Do not pass indexPath directly, and set the indexPath property
+      // Tag is unqiue, larger will be better
       view.tag = _indexPath2tag(indexPath)
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.input: {
+    case CellViewType.Input: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "inputCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.selectionStyle = 0
@@ -187,24 +205,23 @@ const tableViewCellForRowAtIndexPath = (
       cell.contentView.addSubview(view)
       return cell
     }
-    case cellViewType.muiltSelect:
-    case cellViewType.select: {
+    case CellViewType.MuiltSelect:
+    case CellViewType.Select: {
       const cell = UITableViewCell.makeWithStyleReuseIdentifier(
         0,
         "selectCellID"
       )
-      if (!MN.isMac && row.bind && _isBindOFF(row.bind, header))
-        cell.hidden = true
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       cell.textLabel.textColor = MN.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
       const view = initCellView.select(
-        row.type == cellViewType.select
+        row.type == CellViewType.Select
           ? row.option[row?.selections?.[0] ?? 0]
           : row?.selections?.length
           ? `${row.selections.length} ✓`
-          : lang.implement_datasource_method.none
+          : lang.none
       )
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
@@ -217,7 +234,7 @@ const tableViewCellForRowAtIndexPath = (
   }
 }
 
-// 仅用于 SettingViewController
+// Only can be used in SettingViewController
 const initCellView = {
   switch(status: boolean) {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
@@ -231,17 +248,11 @@ const initCellView = {
     const frame = { x: 0, y: 5, width: 70, height: 30 }
     const view = new UIButton(frame)
     text = text.replace(
-      new RegExp(`^[\x20—${SerialCode.hollow_circle_number}]+`),
+      new RegExp(`^[\x20—${serialSymbols.hollow_circle_number}]+`),
       ""
     )
     view.setTitleForState(
-      isHalfWidth(text)
-        ? text
-            .split(/[^\w\d]/)
-            .filter(k => k)
-            .slice(0, 2)
-            .join(" ")
-        : text.slice(0, 4),
+      byteLength(text) <= 8 ? text : byteSlice(text, 0, 6).trimEnd() + "...",
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)
@@ -255,11 +266,14 @@ const initCellView = {
   },
   inlineInput(text: string) {
     const frame = { x: 0, y: 9, width: 70, height: 30 }
-    if (!MN.isMac) frame.y = 5
+    if (!MN.isMac) {
+      frame.y = 5
+      frame.width = 100
+    }
     const view = new UITextField(frame)
-    view.font = UIFont.systemFontOfSize(18)
+    view.font = UIFont.systemFontOfSize(15)
+    view.textAlignment = NSTextAlignment.Right
     view.textColor = MN.textColor
-    // 把协议和控制器连接
     view.delegate = self
     view.text = text
     view.placeholder = "enter"

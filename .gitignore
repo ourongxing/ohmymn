@@ -4,7 +4,11 @@ api
 yarn.lock
 .vscode
 yarn-error.log
-src/test.js
-test.ts
+test*
 .eslintcache
-src/.pnpm-debug.log
+.pnpm*
+.DS_Store
+.local_history
+assets/dict*
+.eslintcache
+

@@ -2,42 +2,26 @@
   <a href="https://github.com/mnaddon/ohmymn">
     <img src="assets/logo.svg" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">OhMyMN</h3>
-  <p align="center">最强大的 Marginnote3 插件，支持 Mac 和 iPad </p>
+</p>
+<h1 align="center" style="margin-top: -20px;">OhMyMN</h1>
+<p align="center" style="margin-top: -30px;margin-bottom: 1rem">The Official MarginNote Addon Now!</p>
+<p align="center">
+  <b style="margin-bottom: 16px;opacity: 0.6">MarginNote Addon Control Panel and Development Framework</b>
 </p>
 <p align="center">
   <a href="https://github.com/mnaddon/ohmymn/network/members"><img src="https://img.shields.io/github/forks/mnaddon/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/mnaddon/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/mnaddon/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/mnaddon/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/ohmymn-v3.2.1-orange" alt="version"></a>
+  <a href="https://github.com/mnaddon/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/version-v4.0.0-orange" alt="version"></a>
   <a href="https://github.com/mnaddon/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
-  <a href="https://github.com/mnaddon/ohmymn/releases"><img src="https://visitor-badge.vercel.app/page/ohmymn?color=blue" alt="visitor"></a>
 </p>
-
-![ohmymn](assets/pic-l.png)
-
-# ohmymn
-
-ohmymn 的**设计理念**是通过高度自定义的设置来对摘录进行无感处理，让你觉得一切都是那么自然。ohmymn 专注于**摘录，评论，标题，标签，卡片**的相关处理，有且只有两种触发方式，一是摘录时自动触发，二是选中卡片（可多选）后手动触发，避免了一切误触的可能。更多信息请直接查看[使用文档](https://busiyi.notion.site/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01)。
-
-## Development
-> 建议等待 MN5 重构插件系统，在 MN5 发布前 ohmymn 也不会再更新。
-
-ohmymn 作为插件面板，本身就是多个插件的集合，如果你认同我的设计理念，那么你可以为 ohmymn 开发插件，使得 ohmymn 更加强大。 更多信息请直接查看 [开发文档](https://busiyi.notion.site/busiyi/OhMyMN-wiki-74ac16d09d17420391b8ffb0dd8cab01#c5a601fcf71a4dda9bb05efdd5a1cf6f)。
 
 ## Acknowledgements
 
-* [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) 这是第一个使用 TypeScript 开发 MN 插件的项目，使得我在使用 TS 重构 ohmymn 时非常顺利。
-* [mn-addon-api](https://github.com/aidenlx/mn-addon-api)  MN API 的类型声明文件。
-* [pangu.js](https://github.com/vinta/pangu.js) 为中英文之间添加空格，十分有效。
-* [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) 为 AutoComplete 提供数据支持。
+- [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop MN plugins.
+- [mn-addon-api](https://github.com/aidenlx/mn-addon-api) MN Addon API Declaration Files.
+- [pangu.js](https://github.com/vinta/pangu.js) Add spaces between Chinese and English for AutoStandrized.
+- [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) Provide data support for AutoComplete.
 
 ## License
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/mnaddon/ohmymn/blob/main/LICENSE)。
 
-## Sponsors
-
-ohmymn 的复杂度远超任何一个 mn 插件，开发 ohmymn 耗费了我大量的精力。如果 ohmymn 对你有所帮助或对您的开发有所启发，欢迎赞赏。
-<details><summary>点击显示二维码</summary>
-
-![donate](assets/donate.gif)
-</details>
+[MIT](https://github.com/mnaddon/ohmymn/blob/main/LICENSE)

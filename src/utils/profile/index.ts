@@ -1,176 +1,341 @@
-import { IProfile, IDocProfile, profilePreset, docProfilePreset } from "profile"
-import { showHUD } from "utils/common"
-import { Addon } from "const"
-import { updateProfileDataSource } from "./updateDataSource"
-import { MbBookNote } from "types/MarginNote"
-import Base64 from "utils/third party/base64"
-import { layoutViewController } from "jsExtension/switchPanel"
-import lang from "lang"
-import { deepCopy } from "utils"
+import { Addon, MN } from "~/const"
+import { layoutViewController } from "~/jsExtension/switchPanel"
+import lang from "~/lang"
+import {
+  IGlobalProfile,
+  IDocProfile,
+  docProfilePreset,
+  globalProfilePreset,
+  INotebookProfile,
+  notebookProfilePreset
+} from "~/profile"
+import { MbBookNote } from "~/typings"
+import { dateFormat, deepCopy } from ".."
+import { showHUD } from "../common"
+import { undoGroupingWithRefresh } from "../note"
+import { selectIndex } from "../popup"
+import { decode, encode } from "../third party/base64"
+import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
+import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
+import { checkNewVerProfile } from "./utils"
+export * from "./utils"
+export * from "./updateDataSource"
 
-let allProfile: IProfile[]
-let allDocProfile: { [k: string]: IDocProfile }
+let allGlobalProfile: IGlobalProfile[]
+let allDocProfile: Record<string, IDocProfile>
+let allNotebookProfile: Record<string, INotebookProfile>
 
-const { profileKey, docProfileKey } = Addon
+const { globalProfileKey, docProfileKey, notebookProfileKey } = Addon
 
 const getDataByKey = (key: string): any => {
   return NSUserDefaults.standardUserDefaults().objectForKey(key)
 }
 
 const setDataByKey = (
-  data: IProfile[] | { [k: string]: IDocProfile },
+  data:
+    | typeof allGlobalProfile
+    | typeof allNotebookProfile
+    | typeof allDocProfile,
   key: string
 ) => {
   NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
 }
 
-export const enum Range {
-  First,
-  Doc,
-  Global
+export const readProfile: ReadPrifile = ({
+  range,
+  notebookid,
+  docmd5,
+  profileNO
+}) => {
+  const readGlobalProfile = (profileNO: number) => {
+    updateProfileDataSource(self.globalProfile, allGlobalProfile[profileNO])
+    console.log("Read current global profile", "profile")
+  }
+
+  const readNoteBookProfile = (notebookid: string) => {
+    updateProfileDataSource(
+      self.notebookProfile,
+      allNotebookProfile?.[notebookid] ?? notebookProfilePreset
+    )
+    console.log("Read currect notebook profile", "profile")
+  }
+
+  const readDocProfile = (docmd5: string) => {
+    updateProfileDataSource(
+      self.docProfile,
+      allDocProfile?.[docmd5] ?? docProfilePreset
+    )
+    console.log("Read currect doc profile", "profile")
+  }
+  switch (range) {
+    case Range.All: {
+      // Read local data only on first open, then read doc profile and global profile
+      const docProfileSaved: Record<string, IDocProfile> =
+        getDataByKey(docProfileKey)
+      if (!docProfileSaved) console.log("Initialize doc profile", "profile")
+      allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
+
+      const notebookProfileSaved: Record<string, INotebookProfile> =
+        getDataByKey(notebookProfileKey)
+      if (!notebookProfileKey)
+        console.log("Initialize notebook profile", "profile")
+      allNotebookProfile = notebookProfileSaved ?? {
+        [notebookid]: notebookProfilePreset
+      }
+
+      const globalProfileSaved: IGlobalProfile[] =
+        getDataByKey(globalProfileKey)
+      if (!globalProfileSaved)
+        console.log("Initialize global profile", "profile")
+      allGlobalProfile =
+        globalProfileSaved ?? Array(5).fill(globalProfilePreset)
+
+      // Initialize all profile when new version release
+      if (checkNewVerProfile(globalProfilePreset, allGlobalProfile[0])) {
+        allGlobalProfile.forEach((_, index) => {
+          const globalProfile = deepCopy(globalProfilePreset)
+          updateProfileDataSource(globalProfile, allGlobalProfile[index])
+          allGlobalProfile[index] = globalProfile
+        })
+        setDataByKey(allGlobalProfile, globalProfileKey)
+      }
+      readNoteBookProfile(notebookid)
+      readDocProfile(docmd5)
+      readGlobalProfile(self.notebookProfile.addon.profile[0])
+      break
+    }
+
+    case Range.Notebook: {
+      readNoteBookProfile(notebookid)
+      readGlobalProfile(self.notebookProfile.addon.profile[0])
+      break
+    }
+
+    case Range.Doc: {
+      readDocProfile(docmd5)
+      break
+    }
+
+    case Range.Global: {
+      readGlobalProfile(profileNO)
+      break
+    }
+  }
+  refreshPanel()
 }
 
-const clearTitleCache = (_: typeof allDocProfile) => {
+/**
+ *
+ *  Saving the doc profile must save the global profile.
+ *  Switching profile only save the global profile.
+ *  Switching doc will be saved to the previous doc profile.
+ *
+ */
+export const writeProfile: WritePrifile = ({
+  range,
+  notebookid,
+  docmd5,
+  profileNO
+}) => {
+  const writeDocProfile = (docmd5: string) => {
+    allDocProfile[docmd5] = deepCopy(self.docProfile)
+    setDataByKey(allDocProfile, docProfileKey)
+    console.log("write current doc profile", "profile")
+  }
+  const writeGlobalProfile = (profileNO: number) => {
+    allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
+    setDataByKey(allGlobalProfile, globalProfileKey)
+    console.log("write global profile", "profile")
+  }
+  const writeNotebookProfile = (notebookid: string) => {
+    allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
+    setDataByKey(allNotebookProfile, notebookProfileKey)
+    console.log("write notebook profile", "profile")
+  }
+  switch (range) {
+    case Range.All: {
+      writeNotebookProfile(notebookid)
+      writeDocProfile(docmd5)
+      writeGlobalProfile(self.notebookProfile.addon.profile[0])
+      const { backupID } = self.globalProfile.additional
+      const { autoBackup } = self.globalProfile.addon
+      if (backupID && autoBackup) {
+        const node = MN.db.getNoteById(backupID)
+        if (node) writeProfile2Card(node)
+        else self.globalProfile.additional.backupID = ""
+      }
+      break
+    }
+    case Range.Notebook: {
+      writeNotebookProfile(notebookid)
+      writeGlobalProfile(self.notebookProfile.addon.profile[0])
+      break
+    }
+    case Range.Doc: {
+      writeDocProfile(docmd5)
+      break
+    }
+    case Range.Global: {
+      writeGlobalProfile(profileNO)
+      break
+    }
+  }
+}
+
+export function saveProfile(name: string, key: string, value: any) {
   try {
-    Object.values(_).forEach(k => {
-      // 超过一个月没打开过，就清除该数据
-      let { additional } = k
-      if (
-        !additional ||
-        (additional.lastExcerpt &&
-          Date.now() - additional.lastExcerpt > 2629800000)
-      )
-        additional = {
-          lastExcerpt: 0,
-          cacheExcerptTitle: {}
+    switch (key) {
+      case "quickSwitch":
+        self.globalProfile.addon.quickSwitch = value
+        break
+      default: {
+        if (self.globalProfile?.[name]?.[key] !== undefined) {
+          self.globalProfile[name][key] = value
+          if (self.notebookProfile.addon.profile[0] === 4) {
+            Object.entries(allGlobalProfile).forEach(([m, p]) => {
+              if (p[name]?.[key] !== undefined)
+                allGlobalProfile[m][name][key] = value
+            })
+          }
+        } else if (self.notebookProfile?.[name]?.[key] !== undefined) {
+          self.notebookProfile[name][key] = value
+          if (self.notebookProfile.addon.profile[0] === 4) {
+            Object.entries(allNotebookProfile).forEach(([m, p]) => {
+              if (p[name]?.[key] !== undefined)
+                allNotebookProfile[m][name][key] = value
+            })
+          }
+        } else {
+          self.docProfile[name][key] = value
+          if (self.notebookProfile.addon.profile[0] === 4) {
+            Object.entries(allDocProfile).forEach(([m, p]) => {
+              if (p[name]?.[key] !== undefined)
+                allDocProfile[m][name][key] = value
+            })
+          }
         }
-    })
+      }
+    }
   } catch (err) {
     console.error(String(err))
   }
 }
 
-const initNewVerProfile = () => {
-  const checkNewVerProfile = (
-    profile: IProfile | IDocProfile,
-    profileSaved: any
-  ) => {
-    for (const [name, _] of Object.entries(profile)) {
-      for (const [key, val] of Object.entries(_)) {
-        if (profileSaved?.[name]?.[key] === undefined) return true
-      }
-    }
-  }
-  if (checkNewVerProfile(profilePreset, allProfile[0])) {
-    allProfile.forEach((_, index) => {
-      const profile = deepCopy(profilePreset)
-      updateProfileDataSource(profile, allProfile[index])
-      allProfile[index] = profile
-    })
-    setDataByKey(allProfile, profileKey)
-  }
-}
-
-const readProfile = (range: Range, docmd5 = self.docMD5 ?? "init") => {
-  let isFirst = false
-  switch (range) {
-    case Range.First:
-      // 仅第一次打开才读取本地数据，然后先后读取文档配置和全局配置
-      isFirst = true
-      const docProfileSaved: {
-        [k: string]: IDocProfile
-      } = getDataByKey(docProfileKey)
-      if (!docProfileSaved) console.log("初始化文档配置", "profile")
-      allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
-      const profileSaved: IProfile[] = getDataByKey(profileKey)
-      if (!profileSaved) console.log("初始化全局配置", "profile")
-      allProfile = profileSaved ?? Array(5).fill(profilePreset)
-      // 如果有新的配置信息，全部初始化
-      initNewVerProfile()
-
-    case Range.Doc: {
-      // 打开文档时读文档配置，此时也必须读全局配置
-      updateProfileDataSource(
-        self.docProfile,
-        allDocProfile?.[docmd5] ?? docProfilePreset
-      )
-      isFirst && clearTitleCache(allDocProfile)
-      console.log("读取当前文档配置", "profile")
-    }
-    case Range.Global: {
-      // 切换配置时只读全局配置，读全局配置不需要 md5
-      updateProfileDataSource(
-        self.profile,
-        allProfile[self.docProfile.ohmymn.profile[0]],
-        true
-      )
-    }
-  }
-  console.log("读取全局配置", "profile")
-}
-
-// 保存文档配置就必须保存全局配置，只有切换配置才只保存全局配置，切换配置是保存到上一个文档
-// 传入 undefine 会使用默认参数
-const saveProfile = (
-  docmd5?: string,
-  num = self.docProfile.ohmymn.profile[0]
-) => {
-  allProfile[num] = deepCopy(self.profile)
-  setDataByKey(allProfile, profileKey)
-  console.log("保存全局配置", "profile")
-
-  if (docmd5 != undefined) {
-    allDocProfile[docmd5] = deepCopy(self.docProfile)
-    setDataByKey(allDocProfile, docProfileKey)
-    console.log("保存当前文档配置", "profile")
-  }
-}
-
-const removeProfile = () => {
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(profileKey)
+export function removeProfile() {
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(globalProfileKey)
   NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
-  readProfile(Range.First)
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(notebookProfileKey)
+  self.docmd5 = undefined
 }
 
-export { saveProfile, readProfile, removeProfile }
-
-export const manageProfileAction = (params: {
-  nodes: MbBookNote[]
-  option: number
-}) => {
-  const { option, nodes } = params
-  const node = nodes[0]
-  if (option) {
-    saveProfile(self.docMD5)
-    node.excerptText = Base64.encode(
+function writeProfile2Card(node: MbBookNote) {
+  undoGroupingWithRefresh(() => {
+    node.excerptText = `${lang.profile_manage.prohibit}\nversion: ${
+      Addon.version
+    }\n${dateFormat(new Date())}`
+    node.noteTitle = `OhMyMN 配置`
+    const { childNotes } = node
+    if (!childNotes?.length) return
+    const data = encode(
       JSON.stringify({
-        allProfileTemp: allProfile,
-        allDocProfileTemp: allDocProfile
+        allDocProfileTemp: allDocProfile,
+        allGlobalProfileTemp: allGlobalProfile,
+        allNotebookProfileTemp: allNotebookProfile
       })
     )
-    node.noteTitle = lang.profile_manage.prohibit + new Date().toLocaleString()
-    node.colorIndex = 11
+    const dataLen = data.length
+    const step = Math.round(dataLen / childNotes.length)
+    for (let i = 0, j = 0; i < dataLen; i += step, j++) {
+      childNotes[j].excerptText = data.slice(i, i + step)
+      childNotes[j].noteTitle = String(j)
+    }
+  })
+}
+
+export async function manageProfileAction(node: MbBookNote, option: number) {
+  // Write
+  if (option === 1) {
+    if (!node.childNotes?.length) showHUD(lang.profile_manage.children)
+    else {
+      const { autoBackup } = self.globalProfile.addon
+      self.globalProfile.additional.backupID = node.noteId!
+      writeProfile({
+        range: Range.All,
+        docmd5: self.docmd5!,
+        notebookid: self.notebookid
+      })
+      !autoBackup && writeProfile2Card(node)
+    }
+    // Read
   } else {
-    const str = node.excerptText
-    if (str) {
-      try {
+    try {
+      if (node.childNotes?.length) {
+        const tmp = node.childNotes.map(k => ({
+          text: k.excerptText,
+          title: k.noteTitle
+        }))
+
+        const text = tmp
+          .sort((a, b) => Number(a.title) - Number(b.title))
+          .reduce((acc, cur) => {
+            acc += cur.text
+            return acc
+          }, "")
+
         const {
           allDocProfileTemp,
-          allProfileTemp
+          allGlobalProfileTemp,
+          allNotebookProfileTemp
         }: {
           allDocProfileTemp: typeof allDocProfile
-          allProfileTemp: typeof allProfile
-        } = JSON.parse(Base64.decode(str))
-        setDataByKey(allProfileTemp, Addon.profileKey)
-        setDataByKey(allDocProfileTemp, Addon.docProfileKey)
-        readProfile(Range.First)
-        layoutViewController()
-        showHUD(lang.profile_manage.success)
-      } catch {
-        showHUD(lang.profile_manage.fail)
-      }
-    } else {
-      showHUD(lang.profile_manage.not_find)
+          allGlobalProfileTemp: typeof allGlobalProfile
+          allNotebookProfileTemp: typeof allNotebookProfile
+        } = JSON.parse(decode(text))
+        if (
+          allDocProfileTemp &&
+          allGlobalProfileTemp &&
+          allNotebookProfileTemp
+        ) {
+          const index = await selectIndex(
+            lang.profile_manage.select.array,
+            Addon.title,
+            lang.profile_manage.select.message
+          )
+          switch (index) {
+            case ManageProfilePart.All:
+              allGlobalProfile = allGlobalProfileTemp
+              allDocProfile = allDocProfileTemp
+              allNotebookProfile = allNotebookProfileTemp
+              break
+            case ManageProfilePart.Doc:
+              allDocProfile = allDocProfileTemp
+              break
+            case ManageProfilePart.Notebook:
+              allNotebookProfile = allNotebookProfileTemp
+              break
+            case ManageProfilePart.Global1:
+            case ManageProfilePart.Global2:
+            case ManageProfilePart.Global3:
+            case ManageProfilePart.Global4:
+            case ManageProfilePart.Global5:
+              allGlobalProfile[index - 1] = allGlobalProfileTemp[index - 1]
+              break
+          }
+          setDataByKey(allNotebookProfile, notebookProfileKey)
+          setDataByKey(allGlobalProfile, globalProfileKey)
+          setDataByKey(allDocProfile, docProfileKey)
+          readProfile({
+            range: Range.All,
+            docmd5: self.docmd5!,
+            notebookid: self.notebookid
+          })
+          layoutViewController()
+          showHUD(lang.profile_manage.success)
+        } else throw ""
+      } else throw ""
+    } catch (err) {
+      console.error(err)
+      showHUD(lang.profile_manage.fail)
     }
   }
 }
