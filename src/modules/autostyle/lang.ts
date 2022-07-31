@@ -11,9 +11,9 @@ const zh = {
     change_color: "修改摘录颜色",
     show_area: "显示摘录面积",
     default_text_excerpt_color: "文本摘录默认颜色",
-    default_pic_excerpt_color: "图片摘录默认颜色",
+    default_pic_excerpt_color: "选区摘录默认颜色",
     default_text_excerpt_style: "文本摘录默认样式",
-    default_pic_excerpt_style: "图片摘录默认样式",
+    default_pic_excerpt_style: "选区摘录默认样式",
     word_count_area:
       "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认"
   },
