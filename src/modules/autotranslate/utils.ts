@@ -16,6 +16,8 @@ export async function baiduTranslate(
 ) {
   const { baiduAppID, baiduSecretKey, baiduThesaurus } =
     self.globalProfile.autotranslate
+  if (!baiduAppID) throw "没有设置百度翻译的 App ID"
+  if (!baiduSecretKey) throw "没有设置百度翻译的密钥"
   if (notCJK(text)) {
     if ([1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
   } else if (![1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
@@ -91,6 +93,7 @@ export async function caiyunTranslate(
   toLang: number
 ) {
   const { caiyunToken } = self.globalProfile.autotranslate
+  if (!caiyunToken) throw "没有设置彩云翻译的 Token"
   if (notCJK(text)) {
     if ([1, 4].includes(fromLang)) return ""
   } else if (![1, 4].includes(fromLang)) return ""

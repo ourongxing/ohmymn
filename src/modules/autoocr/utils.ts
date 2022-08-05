@@ -8,6 +8,8 @@ export async function getBaiduToken() {
   const { lastGetToken, baiduToken } = self.globalProfile.additional.autoocr
   const { baiduApiKey, baiduSecretKey } = self.globalProfile.autoocr
   if (baiduToken && Date.now() - lastGetToken < 2592000000) return baiduToken
+  if (!baiduApiKey) throw "没有设置百度 OCR 的 Api Key"
+  if (!baiduSecretKey) throw "没有设置百度 OCR 的 Secret Key"
   const res = (await fetch(
     `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${baiduApiKey}&client_secret=${baiduSecretKey}`
   ).then(res => res.json())) as { access_token: string }

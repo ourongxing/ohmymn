@@ -136,7 +136,7 @@ export default defineConfig({
       key: "hudTime",
       type: CellViewType.InlineInput,
       label: "翻译弹窗显示时间",
-      help: "【Action】",
+      help: "MagicAction for Text —— 翻译所选文字",
       check({ input }) {
         checkPositiveinteger(Number(input))
       }

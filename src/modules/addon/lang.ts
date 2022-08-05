@@ -29,8 +29,10 @@ const zh = {
   },
   help: {
     profile: "【当前笔记本】不同场景，不同配置。",
-    auto_backup: "首先你需要，MagicAction for Card -> 配置管理 -> 写入配置",
-    has_title_then: "拖拽选区合并进卡片，如果会产生新标题，但此时已有标题，则"
+    auto_backup:
+      "MagicAction for Card -> 配置管理 -> 写入配置，写入后才能自动备份。",
+    has_title_then:
+      "卡片已有标题，此时拖拽选区合并进该卡片，如果会产生新标题，则"
   }
 }
 

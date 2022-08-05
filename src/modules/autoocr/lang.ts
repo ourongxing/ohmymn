@@ -50,7 +50,7 @@ const zh = {
   other: {
     sure: "确定",
     link: "结果已复制到剪贴板上，但检测到识别结果中含有链接，是否直接在浏览器中打开？",
-    baidu_token_error: "Api Key 或 Secret Key 输入错误！",
+    baidu_token_error: "百度 OCR Api Key 或 Secret Key 输入错误！",
     no_mathpix_key: "没有输入 Mathpix key！",
     mathpix_key_error: "Mathpix key 输入错误！",
     success_clipboard: "结果已复制到剪贴板上，快去粘贴吧！"

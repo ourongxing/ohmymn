@@ -18,10 +18,11 @@ const zh = {
     custom_fill: "自定义单词填充信息（二）",
     custom_fill_front:
       "自定义单词填充信息（一），点击查看支持变量，当前输入栏不允许使用 {{zh}} 和 {{en}}。",
-    data_source: "本地数据库体积较大，但更快，质量更高",
+    data_source:
+      "本地数据库体积较大，但更快，质量更高，需要下载本地数据库版本。",
     auto_context: "目前不支持 OCR Pro",
-    translate_context: "请设置好 AutoTranslate",
-    collinns: "星越多代表越常用，但也越简单"
+    translate_context: "请设置好 AutoTranslate 的翻译 API Key。",
+    collinns: "星越多代表越常用，但也越简单，没有选中的星级单词会被排除。"
   },
   option: {
     fill_word_info: ["不填充", "自定义", "中文释义"],
@@ -51,9 +52,9 @@ const en: typeof zh = {
   },
   help: {
     custom_fill:
-      "Custom excerption filling template, click for  support variables",
+      "Custom excerption filling template, click for support variables",
     custom_fill_front:
-      "Custom excerption filling template, click for  support variables",
+      "Custom excerption filling template, click for support variables",
     data_source: "Local databases are larger, but faster and of higher quality",
     auto_context: "OCR Pro is not currently supported",
     translate_context: "Set it up first with AutoTranslate",
