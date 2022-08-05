@@ -176,7 +176,7 @@ const getActionKeyGetureOption = (section: ISection) => {
         key: row.key,
         module: row.module,
         moduleName: row.moduleName,
-        option: 0
+        option: row.type === CellViewType.ButtonWithInput ? undefined : 0
       })
     else {
       actionKeys.push({
