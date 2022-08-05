@@ -216,15 +216,47 @@ export default defineConfig({
           const text = note.excerptText ? removeHighlight(note.excerptText) : ""
           switch (option) {
             case SwitchTitle.ToNonexistent:
-              // 只允许存在一个
-              if ((title || text) && !(title && text)) {
-                note.noteTitle = text
-                note.excerptText = title
-              } else if (title == text) note.noteTitle = ""
+              /**
+               * 只有标题说明
+               * 1. 摘录和标题相同。此时摘录也有可能是图片转文字。
+               * 2. 摘录为空
+               *
+               * 而只有摘录，此时摘录也有可能由图片转文字。
+               *
+               * 既然想转标题，自然已经是文字了
+               */
+              if (note.excerptPic?.paint) {
+                if (text && !title) {
+                  note.noteTitle = text
+                  note.excerptText = text
+                } else {
+                  // 只有标题只能说明摘录和标题相同
+                  note.noteTitle = ""
+                }
+              } else {
+                if ((!text && title) || (text && !title)) {
+                  note.noteTitle = text
+                  note.excerptText = title
+                } else if (title == text) note.noteTitle = ""
+              }
               break
             case SwitchTitle.Exchange:
-              note.noteTitle = text
-              note.excerptText = title
+              if (note.excerptPic?.paint) {
+                if (text && title && text != title) {
+                  note.excerptText = title
+                  note.noteTitle = text
+                } else {
+                  if (text && !title) {
+                    note.noteTitle = text
+                    note.excerptText = text
+                  } else {
+                    note.noteTitle = ""
+                  }
+                }
+              } else {
+                note.noteTitle = text
+                note.excerptText = title
+              }
               break
           }
         }
