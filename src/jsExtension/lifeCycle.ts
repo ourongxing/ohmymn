@@ -162,7 +162,7 @@ export default {
     // or go to the background
     console.log("Window is inactivation", "lifeCycle")
     removeLastCommentCacheTitle()
-    !MN.isMac && closePanel()
+    // !MN.isMac && closePanel()
     if (self.docmd5)
       writeProfile({
         range: Range.All,
