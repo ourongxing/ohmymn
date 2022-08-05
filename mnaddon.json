@@ -2,7 +2,7 @@
   "addonid": "marginnote.extension.ohmymn",
   "author": "MN(ourongxing",
   "title": "OhMyMN",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "marginnote_version_min": "3.7.18",
   "cert_key": ""
 }

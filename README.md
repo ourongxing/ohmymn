@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://github.com/mnaddon/ohmymn/network/members"><img src="https://img.shields.io/github/forks/mnaddon/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/mnaddon/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/mnaddon/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/mnaddon/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/version-v4.0.0-orange" alt="version"></a>
+  <a href="https://github.com/mnaddon/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/version-v4.0.1-orange" alt="version"></a>
   <a href="https://github.com/mnaddon/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
