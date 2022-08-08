@@ -142,7 +142,7 @@ export default defineConfig({
                   k.type === "HtmlNote",
                 n => {
                   comments.forEach(k => {
-                    n.appendTextComment(k)
+                    k && n.appendTextComment(k)
                   })
                 }
               )
