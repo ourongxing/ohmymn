@@ -8,7 +8,8 @@ import {
   openUrl,
   showHUD,
   popup,
-  selectIndex
+  selectIndex,
+  appendTextComment
 } from "~/utils"
 
 const enum NoteOption {
@@ -128,7 +129,7 @@ export default async function (res: string, key: string) {
                 )
                 break
             }
-          } else lastFocusNote.appendTextComment(res)
+          } else appendTextComment(lastFocusNote, res)
       }
     })
   }

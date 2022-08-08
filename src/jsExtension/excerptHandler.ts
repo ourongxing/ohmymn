@@ -7,7 +7,8 @@ import {
   getCommentIndex,
   addTags,
   modifyNodeTitle,
-  cacheTransformer
+  cacheTransformer,
+  appendTextComment
 } from "~/utils"
 import {
   customOCR,
@@ -184,9 +185,7 @@ const processExcerpt = ({
         k && acc.push(cacheTransformer.to(k))
         return acc
       }, [] as [string, string, string][])
-      comments.forEach(k => {
-        k && nodeNote.appendTextComment(k)
-      })
+      appendTextComment(nodeNote, ...comments)
     }
     if (tags?.length) addTags(nodeNote, tags)
   })

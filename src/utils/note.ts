@@ -233,9 +233,7 @@ function removeCommentButLinkTag(
     } else if (!filter(k)) node.removeCommentByIndex(len - i - 1)
   })
   f && f(node)
-  reservedComments.forEach(k => {
-    k && node.appendTextComment(k)
-  })
+  appendTextComment(node, ...reservedComments)
 }
 
 /**
@@ -345,7 +343,7 @@ function addTags(node: MbBookNote, tags: string[], force = false) {
     if (cur) return acc ? `${acc} #${cur}` : `#${cur}`
     else return acc
   }, "")
-  tagLine && node.appendTextComment(removeHighlight(tagLine))
+  appendTextComment(node, removeHighlight(tagLine))
   return tagLine
 }
 
@@ -359,6 +357,13 @@ function modifyNodeTitle(node: MbBookNote, title: string | string[]) {
   } else {
     node.noteTitle = title
   }
+}
+
+function appendTextComment(node: MbBookNote, ...comments: string[]) {
+  comments.length &&
+    comments.forEach(comment => {
+      comment && node.appendTextComment(comment)
+    })
 }
 
 export {
@@ -378,5 +383,6 @@ export {
   removeHighlight,
   exportPic,
   modifyNodeTitle,
-  removeCommentButLinkTag
+  removeCommentButLinkTag,
+  appendTextComment
 }

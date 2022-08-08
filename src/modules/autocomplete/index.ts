@@ -5,7 +5,8 @@ import {
   checkPlainText,
   modifyNodeTitle,
   undoGroupingWithRefresh,
-  removeCommentButLinkTag
+  removeCommentButLinkTag,
+  appendTextComment
 } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
@@ -141,9 +142,7 @@ export default defineConfig({
                   option !== 1 ||
                   k.type === "HtmlNote",
                 n => {
-                  comments.forEach(k => {
-                    k && n.appendTextComment(k)
-                  })
+                  appendTextComment(n, ...comments)
                 }
               )
             }

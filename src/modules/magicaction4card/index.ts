@@ -19,7 +19,8 @@ import {
   removeHighlight,
   modifyNodeTitle,
   getSerialInfo,
-  removeCommentButLinkTag
+  removeCommentButLinkTag,
+  appendTextComment
 } from "~/utils"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
@@ -197,7 +198,7 @@ export default defineConfig({
                   break
                 case MergeText.ToComment:
                   k.excerptText = ""
-                  k.appendTextComment(removeHighlight(allText))
+                  appendTextComment(k, removeHighlight(allText))
               }
             }
           )

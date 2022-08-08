@@ -14,7 +14,7 @@ import {
   regFlag,
   ReplaceParam
 } from "~/utils/input"
-import { getAllText } from "~/utils/note"
+import { appendTextComment, getAllText } from "~/utils/note"
 import { lang } from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 const { intro, option, label, link, help } = lang
@@ -100,10 +100,7 @@ export default defineConfig({
           nodes.forEach(node => {
             const text = getAllText(node)
             const comments = generateComments(node, text)
-            if (comments?.length)
-              comments.forEach(k => {
-                k && node.appendTextComment(k)
-              })
+            appendTextComment(node, ...comments)
           })
         } else if (content) {
           content = /^\(.*\)$/.test(content)
@@ -119,10 +116,7 @@ export default defineConfig({
                 newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
               }))
             )
-            if (comments?.length)
-              comments.forEach(k => {
-                k && node.appendTextComment(k)
-              })
+            appendTextComment(node, ...comments)
           })
         }
       },
