@@ -35,8 +35,10 @@ export async function mathpixOCR(imgBase64: string) {
     }
   }).then(res => res.json())) as {
     latex_styled: string
+  } & {
+    error: string
   }
-  if (!res.latex_styled) throw lang.other.mathpix_key_error
+  if (res.error) throw `Mathpix: ${res.error}`
   return res.latex_styled
 }
 export async function QRCodeOCR(imgBase64: string) {
@@ -76,7 +78,7 @@ export async function baiduFormulaOCR(imgBase64: string) {
     words_result: { words: string }[]
   } & BaiduOCRError
   if (res.error_code && res.error_msg)
-    throw `${res.error_code}: ${res.error_msg}`
+    throw `Baidu OCR：${res.error_code} ${res.error_msg}`
   return res.words_result.map(k => k.words).join("")
 }
 export async function baiduHandWrittingOCR(imgBase64: string) {

@@ -92,7 +92,7 @@ export function fetch(
       (res: NSHTTPURLResponse, data: NSData, err: NSError) => {
         // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         // It's strange, I can't get the res property
-        if (err.localizedDescription) reject(err.localizedDescription)
+        // if (err.localizedDescription) reject(err.localizedDescription)
         if (data.length() == 0)
           reject("No return value received, please check the network")
         resolve(new Response(data as NSData))
