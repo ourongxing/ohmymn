@@ -1,8 +1,8 @@
-import { MN } from "~/const"
+import { Addon, MN } from "~/const"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
-import { BindType, IRowSelect, UITableView } from "~/typings"
+import { BindType, IRowSelect, UITableView, UIView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/typings/enum"
 import {
   byteSplitByLen,
@@ -140,7 +140,7 @@ const tableViewCellForRowAtIndexPath = (
         "ButtonCellID"
       )
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = MN.textColor
+      if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
       const iconColor = MN.app.currentTheme == "Gray" ? "white" : "black"
       const image = NSData.dataWithContentsOfFile(
@@ -159,7 +159,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.selectionStyle = 0
       cell.textLabel.text = row.label
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = MN.textColor
+      if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       const view = initCellView.switch(row.status ?? false)
       const newFrame = view.frame
       newFrame.x = cell.contentView.frame.width - newFrame.width - 10
@@ -177,7 +177,7 @@ const tableViewCellForRowAtIndexPath = (
       if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.selectionStyle = 0
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = MN.textColor
+      if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
       const view = initCellView.inlineInput(row.content ?? "")
       const newFrame = view.frame
@@ -197,7 +197,7 @@ const tableViewCellForRowAtIndexPath = (
       )
       if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = MN.textColor
+      if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       cell.selectionStyle = 0
       const view = initCellView.input(row.content ?? "")
       view.autoresizingMask = 1 << 0
@@ -213,7 +213,7 @@ const tableViewCellForRowAtIndexPath = (
       )
       if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
       cell.textLabel.font = UIFont.systemFontOfSize(16)
-      cell.textLabel.textColor = MN.textColor
+      if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
       cell.selectionStyle = 0
       const view = initCellView.select(
@@ -256,7 +256,7 @@ const initCellView = {
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)
-    view.backgroundColor = UIColor.grayColor()
+    view.backgroundColor = Addon.buttonColor
     view.layer.cornerRadius = 10
     view.layer.masksToBounds = true
     view.titleLabel.font = UIFont.boldSystemFontOfSize(14)
@@ -273,7 +273,7 @@ const initCellView = {
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
     view.textAlignment = NSTextAlignment.Right
-    view.textColor = MN.textColor
+    if (MN.isMac) view.textColor = Addon.textColor
     view.delegate = self
     view.text = text
     view.placeholder = "enter"
@@ -285,7 +285,7 @@ const initCellView = {
     if (!MN.isMac) frame.y = 5
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
-    view.textColor = MN.textColor
+    if (MN.isMac) view.textColor = Addon.textColor
     view.placeholder = "enter"
     view.delegate = self
     view.autoresizingMask = (1 << 1) | (1 << 5)
