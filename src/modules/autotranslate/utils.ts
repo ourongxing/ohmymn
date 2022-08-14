@@ -1,7 +1,7 @@
 import { showHUD } from "~/utils/common"
 import { reverseEscape } from "~/utils/input"
 import fetch from "~/utils/network"
-import { countWord, notCJK } from "~/utils/text"
+import { countWord, isLanguage, notCJK } from "~/utils/text"
 import MD5 from "~/utils/third party/md5"
 import { TranslateProviders } from "./typings"
 
@@ -18,9 +18,13 @@ export async function baiduTranslate(
     self.globalProfile.autotranslate
   if (!baiduAppID) throw "没有设置百度翻译的 App ID"
   if (!baiduSecretKey) throw "没有设置百度翻译的密钥"
-  if (notCJK(text)) {
-    if ([1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
-  } else if (![1, 3, 4, 5, 6, 27].includes(fromLang)) return ""
+  if ([1, 3, 4, 5, 6, 27].includes(fromLang) && !isLanguage.CJK(text)) return ""
+  else if (fromLang === 11 && !isLanguage.Cyrillic(text)) return ""
+  else if (
+    [2, 7, 8, 12, 13, 14, 15, 16, 17].includes(fromLang) &&
+    !isLanguage.Latin(text)
+  )
+    return ""
   const fromLangKey = [
     "auto",
     "zh",
@@ -94,9 +98,8 @@ export async function caiyunTranslate(
 ) {
   const { caiyunToken } = self.globalProfile.autotranslate
   if (!caiyunToken) throw "没有设置彩云翻译的 Token"
-  if (notCJK(text)) {
-    if ([1, 4].includes(fromLang)) return ""
-  } else if (![1, 4].includes(fromLang)) return ""
+  else if ([1, 3].includes(fromLang) && !isLanguage.CJK(text)) return ""
+  else if (fromLang === 2 && !/\w+/.test(text)) return ""
   const fromLangKey = ["auto", "zh", "en", "ja"]
   const toLangKey = fromLangKey.slice(1)
   const res = (await fetch(
