@@ -41,6 +41,7 @@ export async function mathpixOCR(imgBase64: string) {
   if (res.error) throw `Mathpix: ${res.error}`
   return res.latex_styled
 }
+
 export async function QRCodeOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
@@ -61,6 +62,7 @@ export async function QRCodeOCR(imgBase64: string) {
     throw `${res.error_code}: ${res.error_msg}`
   return res.codes_result.map(k => k.text).join("")
 }
+
 export async function baiduFormulaOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
@@ -81,6 +83,7 @@ export async function baiduFormulaOCR(imgBase64: string) {
     throw `Baidu OCR：${res.error_code} ${res.error_msg}`
   return res.words_result.map(k => k.words).join("")
 }
+
 export async function baiduHandWrittingOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
@@ -101,6 +104,7 @@ export async function baiduHandWrittingOCR(imgBase64: string) {
     throw `${res.error_code}: ${res.error_msg}`
   return res.words_result.map(k => k.words).join("")
 }
+
 export async function mainOCR(imgBase64: string) {
   try {
     const langKey = [

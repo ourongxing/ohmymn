@@ -43,13 +43,15 @@ export default defineConfig({
       key: "formulaOCRProviders",
       type: CellViewType.Select,
       option: option.formulaOCRProviders,
-      label: label.formulaOCRProviders
+      label: label.formulaOCRProviders,
+      help: "公式识别不支持摘录时自动识别，只能在 MagicAtion for Text 中手动进行公式识别。"
     },
     {
       key: "markdown",
       type: CellViewType.Select,
       option: ["Markdown", "myMarkDown", "Milkdown"],
-      label: "使用的 Markdown 插件"
+      label: "使用的 Markdown 插件",
+      help: "用于显示公式，推荐使用 Milkdown。"
     },
     {
       key: "showKey",

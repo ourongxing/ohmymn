@@ -15,7 +15,7 @@ function replaceText(note: MbBookNote, text: string) {
     switch (set) {
       case AutoReplacePreset.Custom:
         const { customReplace: params } = self.tempProfile.replaceParam
-        if (!params) continue
+        if (!params?.length) continue
         text = params.reduce(
           (acc, param) =>
             acc.replace(

@@ -136,7 +136,7 @@ export default defineConfig({
       key: "hudTime",
       type: CellViewType.InlineInput,
       label: "翻译弹窗显示时间",
-      help: "MagicAction for Text —— 翻译所选文字",
+      help: "MagicAction for Text —— 翻译选中文字",
       check({ input }) {
         checkPositiveinteger(Number(input))
       }
@@ -180,7 +180,7 @@ export default defineConfig({
     {
       key: "translateText",
       type: CellViewType.Button,
-      label: "翻译所选文字",
+      label: "翻译选中文字",
       method: async ({ text }) => {
         try {
           if (!text) {

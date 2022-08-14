@@ -153,7 +153,7 @@ export const renderTemplateOfNodeProperties = (
         )
     }).trim()
   } catch (err) {
-    console.log(String(err))
+    console.error(err)
     return template
   }
 }
