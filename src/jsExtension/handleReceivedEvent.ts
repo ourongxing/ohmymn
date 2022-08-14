@@ -5,6 +5,7 @@ import handleExcerpt, {
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import { EventHandler } from "~/typings"
+import { StudyMode } from "~/typings/enum"
 import {
   eventHandlerController,
   isThisWindow,
@@ -168,6 +169,7 @@ const onClosePopupMenuOnNote: EventHandler = async sender => {
 
 const onChangeExcerptRange: EventHandler = sender => {
   if (!isThisWindow(sender)) return
+  if (MN.studyController().studyMode !== StudyMode.study) return
   console.log("Change excerpt range", "event")
   self.noteid = sender.userInfo.noteid
   const note = MN.db.getNoteById(self.noteid)!
@@ -177,6 +179,7 @@ const onChangeExcerptRange: EventHandler = sender => {
 
 const onProcessNewExcerpt: EventHandler = sender => {
   if (!isThisWindow(sender)) return
+  if (MN.studyController().studyMode !== StudyMode.study) return
   console.log("Process new excerpt", "event")
   self.noteid = sender.userInfo.noteid
   const note = MN.db.getNoteById(self.noteid)!
