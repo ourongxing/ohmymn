@@ -5,7 +5,7 @@ import { toTitleCase } from "~/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
   return titles.map(title =>
-    notCJK(title) ? (toTitleCase(title) as string) : title
+    /^\w+$/.test(title) ? (toTitleCase(title) as string) : title
   )
 }
 
