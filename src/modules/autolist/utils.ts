@@ -27,8 +27,12 @@ export function addLineBreak(text: string): string {
       for (const set of preset.filter(k => k !== AutoListPreset.Custom)) {
         switch (set) {
           case AutoListPreset.Letter:
-            if (isHalfWidth(text)) continue
-            const param: [RegExp, string] = [/\s*([A-Za-z][.、，,])/g, "\n$1"]
+            const param: [RegExp, string] = isHalfWidth(text)
+              ? [/\s*([\(（【\[]\s*[A-Za-z]\s*[\)）\]】])/g, "\n$1"]
+              : [
+                  /\s*([A-Za-z]\s*[.、，,])|\s*([\(（【\[]\s*[A-Za-z]\s*[\)）\]】])/g,
+                  "\n$1$2"
+                ]
             const len = text.match(param[0])?.length
             if (len && len > 1) return text.replace(param[0], param[1])
             break
@@ -36,13 +40,13 @@ export function addLineBreak(text: string): string {
             const params: [RegExp, string][] = [
               [
                 new RegExp(
-                  `\s*([其第]?[${serialSymbols.chinese_number}]{1,2}[.、，,])|\s*([其第][${serialSymbols.chinese_number}]{1,2}是?[.、，,]?)`,
+                  `\s*([其第]?[${serialSymbols.chinese_number}]{1,2}[.、，,])|\s*([其第][${serialSymbols.chinese_number}]{1,2})`,
                   "g"
                 ),
                 "\n$1$2"
               ],
               [
-                /\s*([\(（【\[]?\s*[0-9]{1,2}\s*[\)）\]】]?[.、，,]\D)|\s*([\(（【\[]?\s*[0-9]{1,2}\s*[\)）\]】][.、，,]?)/g,
+                /\s*([0-9]{1,2}\s*[.、，,]\D)|\s*([\(（【\[]\s*[0-9]{1,2}\s*[\)）\]】])/g,
                 "\n$1$2"
               ]
             ]
