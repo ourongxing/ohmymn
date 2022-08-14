@@ -3,7 +3,6 @@ import { UIAlertViewStyle } from "~/typings/enum"
 import {
   modifyNodeTitle,
   undoGroupingWithRefresh,
-  reverseEscape,
   copy,
   openUrl,
   showHUD,
@@ -49,7 +48,6 @@ export default async function (res: string, key: string) {
   const { lastFocusNote } =
     MN.studyController().readerController.currentDocumentController
   const { noteOptions } = self.globalProfile.magicaction4text
-  console.log(!lastFocusNote)
   if (!lastFocusNote || noteOptions.length === 0) {
     if (key === "translateText") {
       const { hudTime } = self.globalProfile.autotranslate
@@ -68,8 +66,8 @@ export default async function (res: string, key: string) {
           "设置为摘录",
           "设置为评论"
         ].filter((k, i) => noteOptions.includes(i)),
-        "检测到您之前选中了一条笔记",
-        Addon.title
+        Addon.title,
+        "检测到您之前选中了一条摘录"
       )
       option = noteOptions[index]
     }
@@ -92,23 +90,21 @@ export default async function (res: string, key: string) {
           lastFocusNote.excerptText = res
           break
         case NoteOption.MergeExcerpt:
-          const { defaultMergeText } = self.globalProfile.magicaction4card
           const { excerptText } = lastFocusNote
-          lastFocusNote.excerptText = excerptText
-            ? excerptText + reverseEscape(defaultMergeText, true) + res
-            : res
+          lastFocusNote.excerptText = excerptText ?? "" + res
           break
         case NoteOption.Comment:
           if (key === "formulaOCR") {
             const { markdown } = self.globalProfile.autoocr
             // 0. markdown
             // 1. mymarkdown
+            // 2. milkdown
             switch (markdown[0]) {
               case 0:
                 lastFocusNote.appendHtmlComment(
                   "```math\n" + res + "\n```",
                   "```math\n" + res + "\n```",
-                  { width: 508, height: 100 },
+                  { width: 420, height: 100 },
                   "MarkDownEditor"
                 )
                 break
@@ -116,7 +112,7 @@ export default async function (res: string, key: string) {
                 lastFocusNote.appendHtmlComment(
                   res,
                   res,
-                  { width: 508, height: 100 },
+                  { width: 420, height: 100 },
                   "MarkdownEditor"
                 )
                 break
@@ -124,7 +120,7 @@ export default async function (res: string, key: string) {
                 lastFocusNote.appendHtmlComment(
                   res,
                   res,
-                  { width: 508, height: 100 },
+                  { width: 420, height: 100 },
                   "MilkdownEditor"
                 )
                 break
