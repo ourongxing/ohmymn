@@ -32,6 +32,7 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   console.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = _note
+  isOCR = false
   nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
   isComment = nodeNote !== note
   self.isModify = lastExcerptText !== undefined
