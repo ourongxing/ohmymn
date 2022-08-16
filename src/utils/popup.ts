@@ -62,14 +62,35 @@ export function popup<T>(
   )
 }
 
-export async function select(parts: string[], title: string, message: string) {
+export async function confirm(title = Addon.title, message = "") {
+  const { option } = await popup(
+    {
+      title,
+      message,
+      buttons: ["确定"],
+      multiLine: false,
+      canCancel: true
+    },
+    ({ buttonIndex }) => ({
+      option: buttonIndex
+    })
+  )
+  return option === 0 ? true : false
+}
+
+export async function select(
+  parts: string[],
+  title = Addon.title,
+  message = "选择你想要的",
+  canCancel = false
+) {
   const { option } = await popup(
     {
       title,
       message,
       buttons: parts,
       multiLine: true,
-      canCancel: false
+      canCancel
     },
     ({ buttonIndex }) => ({
       option: buttonIndex
@@ -80,8 +101,9 @@ export async function select(parts: string[], title: string, message: string) {
 
 export async function selectIndex(
   parts: string[],
-  title: string,
-  message: string
+  title = Addon.title,
+  message = "选择你想要的",
+  canCancel = false
 ) {
   const { option } = await popup(
     {
@@ -89,7 +111,7 @@ export async function selectIndex(
       message,
       buttons: parts,
       multiLine: true,
-      canCancel: false
+      canCancel
     },
     ({ buttonIndex }) => ({
       option: buttonIndex

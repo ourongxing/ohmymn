@@ -1,3 +1,4 @@
+import { MN } from "~/const"
 import lang from "~/lang"
 import {
   escapeDoubleQuote,
@@ -41,4 +42,10 @@ export function checkInteger(input: number) {
 export function checkPositiveinteger(input: number) {
   checkInteger(input)
   if (input < 0) throw lang.input_positive
+}
+
+export function checkMNLink(input: string) {
+  const noteid = input.replace("marginnote3app://note/", "")
+  if (noteid === input) throw "不是卡片链接"
+  if (!MN.db.getNoteById(noteid)) throw "卡片不存在"
 }

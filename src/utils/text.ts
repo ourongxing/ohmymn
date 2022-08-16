@@ -19,8 +19,6 @@ const isLanguage = {
   Korea: (text: string) => /\p{sc=Hangul}/u.test(text)
 }
 
-console.log(isLanguage.Latin("h"))
-
 function countWord(text: string): number {
   const en = text
     .split(new RegExp(`[^\\p{L}0-9\\-'.]|[${CJK}]`, "u"))

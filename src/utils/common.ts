@@ -1,6 +1,5 @@
 import { Addon } from "~/const"
 import lang from "~/lang"
-import { Timer } from "~/typings"
 
 const console = {
   log(obj: any, suffix = "normal") {
@@ -49,45 +48,6 @@ function getObjCClassDeclar(
     })
   }
   return str
-}
-
-function delay(sec: number) {
-  return new Promise(resolve =>
-    NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve)
-  )
-}
-
-async function delayBreak(
-  times: number,
-  sec: number,
-  f: () => boolean
-): Promise<boolean> {
-  for (let i = 0; i < times; i++) {
-    if (f()) return true
-    await delay(sec)
-  }
-  return false
-}
-
-async function setTimeInterval(sec: number, f: () => any): Promise<Timer> {
-  const setTimer = async (
-    sec: number,
-    f: () => any,
-    config: { stop: boolean }
-  ): Promise<void> => {
-    while (1) {
-      if (config.stop) break
-      f()
-      await delay(sec)
-    }
-  }
-  const config = {
-    stop: false
-  }
-  setTimer(sec, f, config)
-  return () => {
-    config.stop = true
-  }
 }
 
 function evaluateJavaScript(webView: UIWebView, script: string) {
@@ -156,38 +116,6 @@ function copy(text: string, hud = true) {
   hud && showHUD(lang.copy_success)
 }
 
-function NSValue2String(v: NSValue) {
-  return Database.transArrayToJSCompatible([v])[0] as string
-}
-
-function CGRectString2CGRect(s: string): CGRect {
-  // {{116, 565}, {11, 15}}
-  // {x,y}, {h,w}
-  const arr = s.match(/\d+/g)!.map(k => Number(k))
-  return {
-    x: arr[0],
-    y: arr[1],
-    height: arr[2],
-    width: arr[3]
-  }
-}
-
-function CGSizeString2CGSize(s: string): CGSize {
-  const arr = s.match(/\d+/g)!.map(k => Number(k))
-  return {
-    width: arr[0],
-    height: arr[1]
-  }
-}
-
-function CGSizeValue2CGSize(v: NSValue) {
-  return CGSizeString2CGSize(NSValue2String(v))
-}
-
-function CGRectValue2CGRect(v: NSValue) {
-  return CGRectString2CGRect(NSValue2String(v))
-}
-
 function isfileExists(path: string) {
   return NSFileManager.defaultManager().fileExistsAtPath(path)
 }
@@ -197,8 +125,6 @@ export {
   showHUD,
   HUDController,
   alert,
-  delay,
-  delayBreak,
   getObjCClassDeclar,
   openUrl,
   postNotification,
@@ -207,12 +133,6 @@ export {
   OCNull2null,
   eventHandlerController,
   copy,
-  NSValue2String,
   evaluateJavaScript,
-  isfileExists,
-  CGRectValue2CGRect,
-  CGRectString2CGRect,
-  CGSizeString2CGSize,
-  CGSizeValue2CGSize,
-  setTimeInterval
+  isfileExists
 }
