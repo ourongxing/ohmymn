@@ -11,8 +11,6 @@ const dict: Dict = {
   input_integer: "Please enter an integer",
   input_positive: "Please enter a positive integer",
   no_profile_in_card: "No profile exists in the card",
-  make_sure_autoocr:
-    "Make sure AutoOCR is enabled and the Key is entered, otherwise it won't work!",
   open_panel: "Open The Control Panel",
   input_error: "Input errors, please re-enter",
   disconnect_addon: "Profile has been reset",

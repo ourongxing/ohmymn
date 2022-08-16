@@ -22,7 +22,7 @@ const zh = {
     search_engine: ["中文", "英文", "词典", "翻译", "学术", "问题", "其他"]
   },
   help: {
-    show_search_engine: "点击查看如何自定义 URL",
+    show_search_engine: "点击查看如何自定义 URL。",
     separator_symbols_multiple_card: "选中多张卡片时，用来隔开每张卡片的内容",
     which_partof_card:
       "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"

@@ -8,7 +8,6 @@ const dict = {
   none: "无",
   sure: "确定",
   cancel: "取消",
-  make_sure_autoocr: "请确保 AutoOCR 已启用，并且输入了 Key，否则没有效果！",
   disconnect_addon: "配置已重置",
   action_not_work: "未启用，该动作无法执行",
   not_select_card: "未选中任何脑图卡片",
@@ -43,8 +42,9 @@ const dict = {
   profile_manage: {
     success: "读取成功",
     fail: "读取失败",
-    prohibit: "🚫 禁止直接修改，子卡片的顺序也不能改变。",
-    children: "请确保该卡片至少有一张子卡片！多张卡片可以分担所有配置。",
+    prohibit: "🚫 禁止直接修改",
+    children:
+      "请确保该卡片至少有一张子卡片！多张子卡片可以一起分担配置，防止单张卡片字数过多。",
     select: {
       array: [
         "所有配置",
@@ -53,6 +53,7 @@ const dict = {
         "全局配置 3",
         "全局配置 4",
         "全局配置 5",
+        "所有全局配置",
         "文档配置",
         "笔记本配置"
       ],

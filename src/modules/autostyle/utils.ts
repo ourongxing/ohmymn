@@ -1,9 +1,13 @@
 import { MN } from "~/const"
 import { MbBookNote } from "~/typings"
-import { CGSizeValue2CGSize, showHUD } from "~/utils/common"
-import { reverseEscape } from "~/utils/input"
-import { removeHighlight } from "~/utils/note"
-import { countWord, notCJK } from "~/utils/text"
+import {
+  reverseEscape,
+  removeHighlight,
+  countWord,
+  notCJK,
+  CGSizeValue2CGSize,
+  showHUD
+} from "~/utils"
 import { lang } from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 

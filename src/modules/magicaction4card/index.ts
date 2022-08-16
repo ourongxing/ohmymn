@@ -42,7 +42,8 @@ export default defineConfig({
     {
       key: "defaultMergeText",
       type: CellViewType.Input,
-      help: "合并卡片内文字的前后修饰（$&代表每一段）",
+      help: "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
+      link: "https://ohmymn.vercel.app/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97",
       check({ input }) {
         checkPlainText(input)
         if (!input.includes("$&")) throw "缺少 $&"
