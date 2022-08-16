@@ -17,8 +17,7 @@ import {
   showHUD,
   popup,
   readProfile,
-  removeProfile,
-  writeProfile
+  removeProfile
 } from "~/utils"
 import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
@@ -139,36 +138,22 @@ export default {
     console.log("Close a notebook", "lifeCycle")
     removeLastCommentCacheTitle()
     closePanel()
-    writeProfile({ range: Range.Notebook, notebookid })
     // Remove hooks, aka observers
     eventHandlers.remove()
     gestureHandlers().remove()
   },
   documentWillClose(docmd5: string) {
     console.log("Close a document", "lifeCycle")
-    writeProfile({ range: Range.Doc, docmd5 })
   },
   // Not triggered on ipad
   sceneDidDisconnect() {
     console.log("Close a window", "lifeCycle")
-    if (self.docmd5)
-      writeProfile({
-        range: Range.All,
-        docmd5: self.docmd5,
-        notebookid: self.notebookid
-      })
   },
   sceneWillResignActive() {
     // or go to the background
     console.log("Window is inactivation", "lifeCycle")
     removeLastCommentCacheTitle()
     // !MN.isMac && closePanel()
-    if (self.docmd5)
-      writeProfile({
-        range: Range.All,
-        docmd5: self.docmd5,
-        notebookid: self.notebookid
-      })
   },
   sceneDidBecomeActive() {
     layoutViewController()

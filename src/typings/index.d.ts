@@ -25,6 +25,7 @@ declare global {
       dirty: boolean
       size?: CGSize
     }) => void
+    backupWaitTimes: number | undefined
     webView: UIWebView
     renderTemplate: string
     view: UIView
@@ -79,4 +80,6 @@ declare global {
   }
 }
 
-export type Timer = () => void
+export type Timer = {
+  invalidate: () => void
+}

@@ -12,11 +12,8 @@ import {
   showHUD,
   delayBreak,
   saveProfile,
-  writeProfile,
-  readProfile,
   updateProfileTemp
 } from "~/utils"
-import { Range } from "~/utils/profile/typings"
 import handleMagicAction from "./magicActionHandler"
 
 export const eventHandlers = eventHandlerController([
@@ -44,51 +41,40 @@ const onButtonClick: EventHandler = async sender => {
   handleMagicAction(type, row)
 }
 
-const onSwitchChange: EventHandler = sender => {
+const onSwitchChange: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("Switch the switch", "event")
   const { name, key, status } = sender.userInfo
-  saveProfile(name, key, status)
   switch (key) {
     case "screenAlwaysOn":
       UIApplication.sharedApplication().idleTimerDisabled = status
       break
   }
+  await saveProfile(name, key, status)
 }
 
 const onSelectChange: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("Change the selection", "event")
   const { name, key, selections } = sender.userInfo
-  if (key == "profile") {
-    const lastProfileNum = self.notebookProfile.addon.profile[0]
-    self.notebookProfile.addon.profile = selections
-    writeProfile({
-      range: Range.Global,
-      profileNO: lastProfileNum
-    })
-    readProfile({
-      range: Range.Global,
-      profileNO: selections[0]
-    })
-  } else {
-    saveProfile(name, key, selections)
-    switch (key) {
-      case "panelPosition":
-      case "panelHeight":
-        layoutViewController()
-        break
-    }
+  switch (key) {
+    case "panelPosition":
+      layoutViewController(undefined, selections[0])
+      break
+    case "panelHeight":
+      layoutViewController(selections[0])
+      break
   }
+  await saveProfile(name, key, selections)
 }
 
-const onInputOver: EventHandler = sender => {
+const onInputOver: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("Input", "event")
   const { name, key, content } = sender.userInfo
-  saveProfile(name, key, content)
   updateProfileTemp(key, content)
   showHUD(content ? lang.input_saved : lang.input_clear)
+  await saveProfile(name, key, content)
 }
 
 const onOCRImageBegin: EventHandler = sender => {

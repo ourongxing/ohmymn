@@ -18,7 +18,7 @@ const zh = {
   label: {
     has_title_then: "如果标题存在",
     quick_switch: "模块快捷开关",
-    profile: "选择配置文件",
+    profile: "选择全局配置",
     remove_excerpt: "转为标题后, 摘录将",
     panel_position: "面板显示位置",
     panel_height: "面板显示高度",

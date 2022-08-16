@@ -7,7 +7,7 @@ import { string2RegArray, ReplaceParam, string2ReplaceParam } from "../input"
 import { getMNLinkValue } from "./utils"
 
 export function updateProfileTemp(key: string, val: string) {
-  const newValue = getMNLinkValue(val)
+  const newValue = key.startsWith("custom") ? getMNLinkValue(val) : val
   if (key in self.tempProfile.regArray) {
     let tmp: RegExp[][] | undefined
     // Avoid the error after modification is not corrected

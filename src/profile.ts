@@ -11,7 +11,8 @@ const globalProfilePreset = {
     panelControl: [],
     panelPosition: [0],
     panelHeight: [1],
-    autoBackup: false
+    autoBackup: false,
+    backupID: ""
   },
   magicaction4card: {
     smartSelection: false,
@@ -141,7 +142,7 @@ const globalProfilePreset = {
     caiyunToLang: [0]
   },
   additional: {
-    backupID: "",
+    // 最好不要多层对象，不允许被修改
     autoocr: {
       lastGetToken: 0,
       baiduToken: ""
