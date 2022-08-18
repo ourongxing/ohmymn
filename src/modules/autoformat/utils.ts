@@ -1,27 +1,38 @@
-import { CJK, notCJK } from "~/utils/text"
+import { CJK, isCJK, notCJK } from "~/utils/text"
 import pangu from "~/utils/third party/pangu"
 import { AutoFormatPreset } from "./typings"
 import { toTitleCase } from "~/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
   return titles.map(title =>
-    /^\w+$/.test(title) ? (toTitleCase(title) as string) : title
+    notCJK(title) ? title : (toTitleCase(title) as string)
   )
 }
 
 export function formatText(text: string): string {
-  if (notCJK(text)) return text
   const { preset } = self.globalProfile.autoformat
   text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
-    notCJK(match) ? `placeholder${match}placeholder` : `占位符${match}占位符`
+    notCJK(match) ? `placehder${match}placehder` : `占啊位符${match}占啊位符`
   )
   for (const set of preset) {
+    if (set !== AutoFormatPreset.Custom && notCJK(text)) continue
     switch (set) {
       case AutoFormatPreset.Custom:
         const { customFormat: params } = self.tempProfile.replaceParam
         if (!params) continue
         params.forEach(param => {
-          text = text.replace(param.regexp, param.newSubStr)
+          const { regexp, newSubStr, fnKey } = param
+          /**
+           * 0 默认，有中文才执行
+           * 1 没有中文才执行
+           * 2 任何情况都执行
+           */
+          if (
+            (fnKey === 0 && isCJK(text)) ||
+            (fnKey === 1 && notCJK(text)) ||
+            fnKey >= 2
+          )
+            text = text.replace(regexp, newSubStr)
         })
         break
       case AutoFormatPreset.RemoveAllSpace:
@@ -44,5 +55,5 @@ export function formatText(text: string): string {
         break
     }
   }
-  return text.replace(/占位符/g, "**").replace(/placeholder/g, "**")
+  return text.replace(/占啊位符/g, "**").replace(/placehder/g, "**")
 }
