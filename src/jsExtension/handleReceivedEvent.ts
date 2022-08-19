@@ -74,6 +74,11 @@ const onInputOver: EventHandler = async sender => {
   const { name, key, content } = sender.userInfo
   updateProfileTemp(key, content)
   showHUD(content ? lang.input_saved : lang.input_clear)
+  switch (key) {
+    case "baiduApiKey":
+    case "baiduSecretKey":
+      self.globalProfile.additional.autoocr.lastGetToken = 0
+  }
   await saveProfile(name, key, content)
 }
 
