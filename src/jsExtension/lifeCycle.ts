@@ -128,8 +128,6 @@ export default {
         docmd5,
         notebookid: self.notebookid
       })
-      UIApplication.sharedApplication().idleTimerDisabled =
-        self.globalProfile.addon.screenAlwaysOn
     }
     self.docmd5 = docmd5
     console.log("Open a document", "lifeCycle")

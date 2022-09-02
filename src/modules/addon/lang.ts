@@ -28,11 +28,11 @@ const zh = {
     auto_backup: "自动备份配置"
   },
   help: {
-    profile: "【当前笔记本】不同场景，不同配置。",
+    profile: "【当前笔记本】不同场景，不同配置",
     auto_backup:
       "MagicAction for Card -> 配置管理 -> 写入配置，写入后才能自动备份。",
     has_title_then:
-      "卡片已有标题，此时拖拽选区合并进该卡片，如果会产生新标题，则"
+      "【AutoTitle、AutoDef、AutoComplete】 \n卡片已有标题，此时拖拽文字合并进该卡片，如果会产生新标题，则"
   }
 }
 

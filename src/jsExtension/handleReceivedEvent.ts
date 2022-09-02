@@ -45,11 +45,6 @@ const onSwitchChange: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("Switch the switch", "event")
   const { name, key, status } = sender.userInfo
-  switch (key) {
-    case "screenAlwaysOn":
-      UIApplication.sharedApplication().idleTimerDisabled = status
-      break
-  }
   await saveProfile(name, key, status)
 }
 

@@ -5,7 +5,6 @@ const globalProfilePreset = {
   addon: {
     quickSwitch: [],
     lockExcerpt: false,
-    screenAlwaysOn: false,
     hasTitleThen: [1],
     removeExcerpt: [1],
     panelControl: [],

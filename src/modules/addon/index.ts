@@ -53,12 +53,8 @@ export default defineConfig({
       type: CellViewType.Select,
       label: label.remove_excerpt,
       option: option.remove_excerpt,
+      help: "接上文",
       bind: ["hasTitleThen", [1, 2]]
-    },
-    {
-      key: "screenAlwaysOn",
-      type: CellViewType.Switch,
-      label: label.screen_always_on
     },
     {
       key: "lockExcerpt",
