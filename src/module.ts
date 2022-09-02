@@ -42,7 +42,7 @@ export const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
-      label: `OhMyMN ${MN.isZH ? "官网：" : "Website: "}ohmymn.vercel.app`,
+      label: `OhMyMN ${MN.isZH ? "官网：" : "Website: "}ohmymn.marginnote.cn`,
       link: "https://ohmymn.vercel.app"
     },
     {

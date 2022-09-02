@@ -28,9 +28,9 @@ export function addLineBreak(text: string): string {
         switch (set) {
           case AutoListPreset.Letter:
             const param: [RegExp, string] = isHalfWidth(text)
-              ? [/\s*([\(（【\[]\s*[A-Za-z]\s*[\)）\]】])/g, "\n$1"]
+              ? [/\s*([(（【\[]\s*[A-Za-z]\s*[)）\]】])/g, "\n$1"]
               : [
-                  /\s*([A-Za-z]\s*[.、，,])|\s*([\(（【\[]\s*[A-Za-z]\s*[\)）\]】])/g,
+                  /\s*([A-Za-z]\s*[.、，,])|\s*([(（【\[]\s*[A-Za-z]\s*[)）\]】])/g,
                   "\n$1$2"
                 ]
             const len = text.match(param[0])?.length
@@ -46,7 +46,7 @@ export function addLineBreak(text: string): string {
                 "\n$1$2"
               ],
               [
-                /\s*([0-9]{1,2}\s*[.、，,]\D)|\s*([\(（【\[]\s*[0-9]{1,2}\s*[\)）\]】])/g,
+                /\s*([0-9]{1,2}\s*[.、，,]\D)|\s*([(（【\[]\s*[0-9]{1,2}\s*[)）\]】])/g,
                 "\n$1$2"
               ]
             ]
