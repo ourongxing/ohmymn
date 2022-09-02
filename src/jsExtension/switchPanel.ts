@@ -10,11 +10,12 @@ export const layoutViewController = (
   positionNum = self.globalProfile.addon.panelPosition[0]
 ) => {
   const studyController = MN.studyController()
+  const readerView = studyController.readerController.view
+  tmp.lastReaderViewWidth = readerView.frame.width
   const frame = studyController.view.bounds
   const width = 300
   const height = [600, 450, 300][heightNum]
   const autoX = () => {
-    const readerView = studyController.readerController.view
     const isHidden = readerView.hidden
     if (studyController.rightMapMode) {
       const x = readerView.frame.width - width - 40
@@ -26,9 +27,12 @@ export const layoutViewController = (
         : x
     }
   }
-  const x = [autoX(), 50, (frame.width - width) / 2, frame.width - width - 50][
-    positionNum
-  ]
+  const x = [
+    autoX,
+    () => 50,
+    () => (frame.width - width) / 2,
+    () => frame.width - width - 50
+  ][positionNum]()
   self.settingViewController.view.frame = {
     x,
     y: 110,
@@ -46,7 +50,8 @@ export const closePanel = () => {
 
 const tmp = {
   lastOpenPanel: 0,
-  lastClickButton: 0
+  lastClickButton: 0,
+  lastReaderViewWidth: 0
 }
 
 export const openPanel = () => {
@@ -77,7 +82,15 @@ const switchPanel = () => {
 const controllerWillLayoutSubviews = (controller: UIViewController) => {
   if (controller != MN.studyController()) return
   if (!self.panelStatus) return
-  if (Date.now() - tmp.lastOpenPanel < 200) layoutViewController()
+  if (
+    Date.now() - tmp.lastOpenPanel < 200 ||
+    (tmp.lastReaderViewWidth !==
+      MN.studyController().readerController.view.frame.width &&
+      self.globalProfile.addon.panelPosition[0] === 0)
+  ) {
+    layoutViewController()
+    console.log("执行了几次")
+  }
 }
 
 const queryAddonCommandStatus = () => {
