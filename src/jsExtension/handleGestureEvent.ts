@@ -12,8 +12,8 @@ import {
   DocMapSplitMode,
   GroupMode
 } from "~/typings/enum"
-import { showHUD, reverseEscape } from "~/utils"
-import { openPanel, closePanel } from "./switchPanel"
+import { showHUD, reverseEscape, alert } from "~/utils"
+import { switchPanel, closePanel } from "./switchPanel"
 import magicActionHandler from "./magicActionHandler"
 
 // Not support Mac
@@ -118,17 +118,26 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
     const { winRect, arrow } = self.textSelectBar
     const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
     /**
-     * 如果是从右往左框选，菜单在上面，(y-140, y-110)
-     * 从左往右框选，菜单在下面， (y-75, y-45)
+     * 脑图
+     * 如果是从右往左框选，菜单在上面，(y-145, y-105)
+     * 从左往右框选，菜单在下面， (y-80, y-40)
+     *
+     * 文档模式下还不太一样
+     * (y-70, y-30)
+     * (y-0, y+40)
      */
-    // alert(`y - ${parseInt(String(y - swipeY))} = swipeY`)
+    // alert(`y: ${parseInt(String(y))}
+    // swipeY: ${parseInt(String(swipeY))}
+    // y - ${parseInt(String(y - swipeY))} = swipeY`)
+
     if (
       isWithinArea(
         { swipeY },
         {
-          // mme 中修改了
-          y: y - (arrow === DirectionOfSelection.toRight ? 75 : 140),
-          // y: y - (arrow === DirectionOfSelection.toRight ? 155 : 220),
+          y:
+            studyController.studyMode === StudyMode.study
+              ? y - (arrow === DirectionOfSelection.toRight ? 80 : 145)
+              : y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
           height: 40
         }
       )
@@ -140,12 +149,11 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   const { mindmapView } = studyController.notebookController
   const { selViewLst } = mindmapView
   if (
-    studyController.studyMode != StudyMode.study ||
     studyController.docMapSplitMode == DocMapSplitMode.allDoc ||
     !selViewLst?.length
   )
     return SwipePosition.None
-  if (selViewLst.length == 1 && self.noteSelectBar?.status) {
+  if (selViewLst.length == 1) {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 
@@ -163,6 +171,9 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
         view.frame,
         studyController.view
       )
+    // alert(`y: ${parseInt(String(cardY))}
+    // swipeY: ${parseInt(String(swipeY))}
+    // y - ${parseInt(String(cardY - swipeY))} = swipeY`)
     const mode = selViewLst[0].note.note.groupMode
     /**
      * Popup menu on mindmap note
@@ -246,7 +257,7 @@ const actionTrigger = async (
   } else return
 
   const { key, module, option, moduleName } = actionInfo
-  if (key == "open_panel") openPanel()
+  if (key == "open_panel") switchPanel()
   else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {

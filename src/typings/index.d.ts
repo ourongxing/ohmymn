@@ -39,14 +39,6 @@ declare global {
       status: "begin" | "end" | "free"
       times: number
     }
-    noteSelectBar?:
-      | {
-          status: true
-          type: "card" | "doc" | "both"
-        }
-      | {
-          status: false
-        }
     textSelectBar?: {
       arrow: DirectionOfSelection
       winRect: string

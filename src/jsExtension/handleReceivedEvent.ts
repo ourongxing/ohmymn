@@ -127,14 +127,6 @@ const onPopupMenuOnNote: EventHandler = async sender => {
   )
   if (success) return
   const note = sender.userInfo.note
-  const { selViewLst } = MN.studyController().notebookController.mindmapView
-  const { focusNote } =
-    MN.studyController().readerController.currentDocumentController
-  self.noteSelectBar = {
-    status: true,
-    type: selViewLst?.length ? (focusNote ? "both" : "card") : "doc"
-  }
-  console.log(`Popup menu on ${self.noteSelectBar.type} note open`, "event")
   // Excerpt text may be empty
   tmp.lastExcerptText = note.excerptText!
 }
@@ -142,9 +134,6 @@ const onPopupMenuOnNote: EventHandler = async sender => {
 const onClosePopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   const note = sender.userInfo.note
-  self.noteSelectBar = {
-    status: false
-  }
   self.OCROnline = {
     times: 0,
     status: "free"

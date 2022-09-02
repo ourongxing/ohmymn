@@ -64,7 +64,7 @@ export const openPanel = () => {
   delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
-const switchPanel = () => {
+export const switchPanel = () => {
   if (self.panelStatus) closePanel()
   else {
     if (
