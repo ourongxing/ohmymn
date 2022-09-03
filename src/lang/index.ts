@@ -1,6 +1,6 @@
 import zh from "./zh"
 import en from "./en"
-import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 export type Dict = typeof zh
-const lang = Addon.isZH ? zh : en
+const lang = MN.isZH ? zh : en
 export default lang

@@ -9,7 +9,7 @@ import {
   IActionMethod4Text,
   IActionMethod4Card
 } from "./typings"
-import { IAllProfile } from "./profile/defaultProfile"
+import { IAllProfile } from "./profile"
 export type ModuleKeyType = Exclude<keyof IAllProfile, "additional"> | "more"
 type AutoModuleKeyType = Include<ModuleKeyType, "auto">
 
@@ -17,7 +17,7 @@ export const autoUtils = (() => {
   try {
     const res = Object.values(modules).reduce((acc, module) => {
       for (const k of module.settings) {
-        if (k.key === "on") {
+        if (k.key === "on" && "auto" in k) {
           Object.entries(k.auto).forEach(([k, v]) => {
             acc[k] = [
               ...(acc[k] ?? []),

@@ -9,7 +9,9 @@ import { unique, escapeURLParam } from "./utils"
  * @returns void
  */
 function undoGrouping(f: () => void) {
-  UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
+  if (self.notebookid) {
+    UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
+  }
 }
 
 /**
@@ -27,10 +29,12 @@ function undoGroupingWithRefresh(f: () => void) {
  * @returns void
  */
 function RefreshAfterDBChange() {
-  MN.db.setNotebookSyncDirty(self.notebookid)
-  postNotification("RefreshAfterDBChange", {
-    topicid: self.notebookid
-  })
+  if (self.notebookid) {
+    MN.db.setNotebookSyncDirty(self.notebookid)
+    postNotification("RefreshAfterDBChange", {
+      topicid: self.notebookid
+    })
+  }
 }
 
 /**

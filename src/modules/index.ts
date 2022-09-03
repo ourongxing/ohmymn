@@ -1,6 +1,5 @@
 import { ISection } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { Addon } from "~/addon"
 import anotherautotitle from ".//anotherautotitle"
 import autocomment from "./autocomment"
 import autocomplete from "./autocomplete"
@@ -17,6 +16,7 @@ import magicaction4card from "./magicaction4card"
 import magicaction4text from "./magicaction4text"
 import addon from "./addon"
 import anotherautodef from "./anotherautodef"
+import { MN } from "~/sdk"
 
 export const modules = {
   gesture,
@@ -42,21 +42,17 @@ export const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
-      label: `OhMyMN ${
-        Addon.isZH ? "官网：" : "Website: "
-      }ohmymn.marginnote.cn`,
+      label: `OhMyMN ${MN.isZH ? "官网：" : "Website: "}ohmymn.marginnote.cn`,
       link: "https://ohmymn.marginnote.cn"
     },
     {
       type: CellViewType.PlainText,
-      label: `${
-        Addon.isZH ? "核心开发团队：" : "Core Team: "
-      }ourongxing，Bryan`,
+      label: `${MN.isZH ? "核心开发团队：" : "Core Team: "}ourongxing，Bryan`,
       link: "https://github.com/marginnoteapp/ohmymn"
     },
     {
       type: CellViewType.PlainText,
-      label: Addon.isZH
+      label: MN.isZH
         ? "OhMyMN 是 MarginNote 插件控制面板及开发框架。OhMyMN 完全开源，官方支持，欢迎参与。"
         : "OhMyMN is MarginNote addon control panel and development framework.OhMyMN is completely open source, officially supported, welcome to join.",
       link: "https://github.com/marginnoteapp/ohmymn"

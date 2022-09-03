@@ -1,9 +1,59 @@
-import { DocumentController, MbBookNote } from ".."
+import {
+  IDocProfile,
+  IGlobalProfile,
+  ITempProfile,
+  INotebookProfile
+} from "~/profile"
+import {
+  DocumentController,
+  MbBookNote,
+  UITableView,
+  UITableViewController,
+  UIView,
+  UIWindow
+} from ".."
 import { DirectionOfSelection } from "../enum"
-import { IRowButton } from "./DataSource"
+import { IRowButton, ISection } from "./DataSource"
 export * from "./module"
 export * from "./DataSource"
 export * from "./AutoUtils"
+
+declare global {
+  const self: {
+    addon?: {
+      key: string
+      title: string
+    }
+    backupWaitTimes: number | undefined
+    webView: UIWebView
+    renderTemplate: string
+    view: UIView
+    enDict: SQLiteDatabase
+    window: UIWindow
+    docmd5: string | undefined
+    noteid: string
+    notebookid: string
+    tableView: UITableView
+    OCROnline: {
+      status: "begin" | "end" | "free"
+      times: number
+    }
+    textSelectBar?: {
+      arrow: DirectionOfSelection
+      winRect: string
+    }
+    isModify: boolean
+    customSelectedNodes: MbBookNote[]
+    panelStatus: boolean
+    docProfile: IDocProfile
+    globalProfile: IGlobalProfile
+    tempProfile: ITempProfile
+    notebookProfile: INotebookProfile
+    dataSource: ISection[]
+    settingViewController: UITableViewController
+    popoverController: UIPopoverController
+  }
+}
 
 export interface EventHandler {
   (sender: {
@@ -31,34 +81,4 @@ export interface EventHandler {
 
 export interface GestureHandler {
   (sender: UIGestureRecognizer): void
-}
-
-export type AutoUtils = {
-  customOCR?: ((
-    imgBase64: string
-  ) => MaybePromise<string | undefined | false>)[]
-  modifyExcerptText?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string | false>)[]
-  generateTitles?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<
-    { title: string[]; text: string; comments?: string[] } | undefined | false
-  >)[]
-  generateTags?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  generateComments?: ((
-    note: MbBookNote,
-    text: string
-  ) => MaybePromise<string[] | false>)[]
-  modifyTitles?: ((titles: string[]) => MaybePromise<string[] | false>)[]
-  modifyStyle?: ((
-    note: MbBookNote
-  ) => MaybePromise<
-    { color: number | undefined; style: number | undefined } | false
-  >)[]
 }

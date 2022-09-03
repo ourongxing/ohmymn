@@ -1,4 +1,4 @@
-import { Addon } from "~/addon"
+import { MN } from "."
 
 const zh = {
   copy_success: "复制成功, 快去粘贴吧!",
@@ -16,4 +16,4 @@ const en = {
   notReceive: "No return value received, please check the network"
 }
 
-export const lang = Addon.isZH ? zh : en
+export const lang = MN.isZH ? zh : en

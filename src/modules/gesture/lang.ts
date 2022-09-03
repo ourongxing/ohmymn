@@ -1,4 +1,4 @@
-import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 
 const zh = {
   intro: "自定义手势触发动作",
@@ -16,4 +16,4 @@ const en: typeof zh = {
   selectionBar: "Text Select Toolbar"
 }
 
-export const lang = Addon.isZH ? zh : en
+export const lang = MN.isZH ? zh : en

@@ -1,4 +1,4 @@
-import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 
 const zh = {
   intro: "将摘录分割为标题和摘录两部分\n定义 = 被定义项 + 定义联项 + 定义项。",
@@ -68,4 +68,4 @@ const en: typeof zh = {
     extract_title: ["Use AutoDef Settings", "Confirm"]
   }
 }
-export const lang = Addon.isZH ? zh : en
+export const lang = MN.isZH ? zh : en

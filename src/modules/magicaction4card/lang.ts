@@ -1,4 +1,4 @@
-import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
@@ -68,4 +68,4 @@ const en: typeof zh = {
   }
 }
 
-export const lang = Addon.isZH ? zh : en
+export const lang = MN.isZH ? zh : en

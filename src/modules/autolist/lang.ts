@@ -1,4 +1,4 @@
-import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 
 const zh = {
   intro:
@@ -35,4 +35,4 @@ const en: typeof zh = {
     list_selected: "Add Line Breaks"
   }
 }
-export const lang = Addon.isZH ? zh : en
+export const lang = MN.isZH ? zh : en
