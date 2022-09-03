@@ -3,6 +3,7 @@
   "author": "MN(ourongxing",
   "title": "OhMyMN",
   "version": "4.0.4",
+  "github": "https://github.com/marginnoteapp/ohmymn",
   "marginnote_version_min": "3.7.18",
   "cert_key": ""
 }

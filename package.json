@@ -1,6 +1,9 @@
 {
   "name": "ohmymn",
   "author": "MarginNote<https://github.com/marginnoteapp>",
+  "contributors": [
+    "ourongxing<https://github.com/ourongxing>"
+  ],
   "version": "4.0.4",
   "license": "MIT",
   "description": "MarginNote Addon Control Panel and Development Framework",
