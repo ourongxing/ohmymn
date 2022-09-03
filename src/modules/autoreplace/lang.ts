@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "自动替换摘录中的某些错误",
@@ -33,4 +33,4 @@ const en: typeof zh = {
     replace_selected: "Replace Excerptions"
   }
 }
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

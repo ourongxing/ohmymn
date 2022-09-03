@@ -5,9 +5,10 @@ import {
   docProfilePreset,
   globalProfilePreset,
   notebookProfilePreset,
-  tempProfilePreset
-} from "~/profile/defaultProfile"
-import { inst } from "~/settingViewController"
+  tempProfilePreset,
+  Range
+} from "~/profile"
+import { settingViewControllerInst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
 import {
   getObjCClassDeclar,
@@ -17,16 +18,10 @@ import {
   popup
 } from "~/sdk"
 import { deepCopy, readProfile, removeProfile } from "~/utils"
-import { Range } from "~/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
-
-const SettingViewController = JSB.defineClass(
-  getObjCClassDeclar("SettingViewController", "UITableViewController"),
-  inst
-)
 
 /**
  * Addon life cycle
@@ -86,13 +81,22 @@ export default {
     _window = self.window
     // Multiple windows will share global variables, so they need to be saved to self.
     self.panelStatus = false
+    self.addon = {
+      key: Addon.key,
+      title: Addon.title
+    }
     self.globalProfile = deepCopy(globalProfilePreset)
     self.docProfile = deepCopy(docProfilePreset)
     self.notebookProfile = deepCopy(notebookProfilePreset)
     self.tempProfile = deepCopy(tempProfilePreset)
     self.dataSource = deepCopy(dataSourcePreset)
+
     self.OCROnline = { times: 0, status: "free" }
     self.customSelectedNodes = []
+    const SettingViewController = JSB.defineClass(
+      getObjCClassDeclar("SettingViewController", "UITableViewController"),
+      settingViewControllerInst
+    )
     self.settingViewController = new SettingViewController()
     self.settingViewController.dataSource = self.dataSource
     self.settingViewController.window = self.window

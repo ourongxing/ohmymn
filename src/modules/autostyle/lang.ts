@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   link: "https://ohmymn.vercel.app/guide/modules/autostyle.html",
@@ -122,4 +122,4 @@ const en: typeof zh = {
   }
 }
 
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

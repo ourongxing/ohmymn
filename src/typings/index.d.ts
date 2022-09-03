@@ -16,6 +16,10 @@ export * from "./UIKit"
 
 declare global {
   const self: {
+    addon?: {
+      key: string
+      title: string
+    }
     backupWaitTimes: number | undefined
     webView: UIWebView
     renderTemplate: string

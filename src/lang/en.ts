@@ -4,8 +4,8 @@ import { Dict } from "."
 const dict: Dict = {
   input_saved: "Input Saved",
   input_clear: "Input Clear",
-  sure: "Confirm",
   none: "None",
+  sure: "Confirm",
   cancel: "Cancel",
   input_number: "Please enter a number",
   input_integer: "Please enter an integer",
@@ -16,19 +16,20 @@ const dict: Dict = {
   disconnect_addon: "Profile has been reset",
   not_select_card: "No card is selected",
   not_select_text: "No text is selected",
+  action_not_work: "Module is not enabled, the action cannot be executed",
   no_text_selection: "Unable to get to the text of the selection",
   copy_success: "Copy successfully, go ahead and paste",
   smart_select: {
     title: `${Addon.title} Smart Selector`,
     option: [
       "Process only selected cards",
-      "Process only child nodes",
-      "Process only all descendant nodes",
-      "Process selected and descendant nodes"
+      "Process only child cards",
+      "Process only all descendant cards",
+      "Process selected and descendant cards"
     ],
-    card_with_children: "Detect only one selected card has child nodes",
+    card_with_children: "Detect only one selected card has child cards",
     cards_with_children:
-      "Detect all selected cards of the same level have child nodes"
+      "Detect all selected cards of the same level have child cards"
   },
   magicaction_from_which_module: (module: string) =>
     `This action comes from ${module} and uses the same settings`,
@@ -42,8 +43,8 @@ const dict: Dict = {
   },
   profile_manage: {
     success: "Read successfully",
-    fail: "Read fail",
-    prohibit: "🚫 禁止直接修改，子卡片的顺序也不能改变。",
+    fail: "Read failed",
+    prohibit: "🚫 Prohibit modify",
     children: "请确保该卡片至少有一张子卡片！多张卡片可以分担所有配置。",
     select: {
       array: [
@@ -53,13 +54,13 @@ const dict: Dict = {
         "全局配置 3",
         "全局配置 4",
         "全局配置 5",
+        "所有全局配置",
         "文档配置",
         "笔记本配置"
       ],
       message: "选择需要导入的配置"
     }
-  },
-  action_not_work: "is not enabled, the action cannot be executed"
+  }
 }
 
 export default dict

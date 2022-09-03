@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   copy_success: "复制成功, 快去粘贴吧!",
@@ -7,7 +7,8 @@ const zh = {
   notJSON: "返回值不是有效的 JSON 格式",
   notReceive: "没有收到返回值，请检查网络"
 }
-const en: typeof zh = {
+
+const en = {
   copy_success: "Copy successfully, go ahead and paste",
   sure: "Confirm",
   cancel: "Cancel",
@@ -15,4 +16,4 @@ const en: typeof zh = {
   notReceive: "No return value received, please check the network"
 }
 
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

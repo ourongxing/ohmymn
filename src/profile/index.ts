@@ -29,6 +29,7 @@ import { checkNewVerProfile } from "./utils"
 export * from "./utils"
 export * from "./updateDataSource"
 export * from "./defaultProfile"
+export * from "./typings"
 
 export function defineConfig<T extends keyof IAllProfile>(options: IConfig<T>) {
   return options

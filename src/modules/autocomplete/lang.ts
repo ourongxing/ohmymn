@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "补全单词词形，只支持动词和名词",
@@ -71,4 +71,4 @@ const en: typeof zh = {
   },
   choose_meaning: "Select the meanings in the text."
 }
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

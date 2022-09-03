@@ -1,13 +1,12 @@
-import { Addon } from "~/addon"
 import { lang } from "./lang"
 
 const console = {
   log(obj: any, suffix = "normal") {
-    JSB.log(`${Addon.key}-${suffix} %@`, obj)
+    JSB.log(`${self.addon?.key ?? "marginnote"}-${suffix} %@`, obj)
   },
   error(obj: any, suffix = "error") {
     JSB.log(
-      `${Addon.key}-${suffix} %@`,
+      `${self.addon?.key ?? "marginnote"}-${suffix} %@`,
       String(obj) === "[object Object]"
         ? JSON.stringify(obj, undefined, 2)
         : String(obj)
@@ -15,7 +14,10 @@ const console = {
   },
   /** Unrelated to the real meaning, used for stringify objects */
   assert(obj: any, suffix = "normal") {
-    JSB.log(`${Addon.key}-${suffix} %@`, JSON.stringify(obj, undefined, 2))
+    JSB.log(
+      `${self.addon?.key ?? "marginnote"}-${suffix} %@`,
+      JSON.stringify(obj, undefined, 2)
+    )
   }
 }
 
@@ -89,7 +91,8 @@ function OCNull2null<T>(k: T) {
 }
 
 function eventHandlerController(
-  handlerList: ({ event: string; handler?: string } | string)[]
+  handlerList: ({ event: string; handler?: string } | string)[],
+  addonKey: string
 ): {
   add: () => void
   remove: () => void
@@ -101,8 +104,8 @@ function eventHandlerController(
         self,
         v.handler
           ? `${v.handler}:`
-          : v.event.includes(Addon.key)
-          ? `on${v.event.replace(Addon.key, "")}:`
+          : v.event.includes(addonKey)
+          ? `on${v.event.replace(addonKey, "")}:`
           : `on${v.event}:`,
         v.event
       )

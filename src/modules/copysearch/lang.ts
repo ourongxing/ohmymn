@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "搜索和复制你想要的",
@@ -93,4 +93,4 @@ const en: typeof zh = {
   choose_you_want: "Choose one you want"
 }
 
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

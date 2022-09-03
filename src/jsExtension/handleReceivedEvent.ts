@@ -16,22 +16,25 @@ import {
 } from "~/sdk"
 import handleMagicAction from "./magicActionHandler"
 
-export const eventHandlers = eventHandlerController([
-  Addon.key + "InputOver",
-  Addon.key + "ButtonClick",
-  Addon.key + "SelectChange",
-  Addon.key + "SwitchChange",
-  "OCRForNote",
-  "OCRImageEnd",
-  "OCRImageBegin",
-  "EndOCRForNote",
-  "PopupMenuOnNote",
-  "ProcessNewExcerpt",
-  "ChangeExcerptRange",
-  "PopupMenuOnSelection",
-  "ClosePopupMenuOnNote",
-  "ClosePopupMenuOnSelection"
-])
+export const eventHandlers = eventHandlerController(
+  [
+    Addon.key + "InputOver",
+    Addon.key + "ButtonClick",
+    Addon.key + "SelectChange",
+    Addon.key + "SwitchChange",
+    "OCRForNote",
+    "OCRImageEnd",
+    "OCRImageBegin",
+    "EndOCRForNote",
+    "PopupMenuOnNote",
+    "ProcessNewExcerpt",
+    "ChangeExcerptRange",
+    "PopupMenuOnSelection",
+    "ClosePopupMenuOnNote",
+    "ClosePopupMenuOnSelection"
+  ],
+  Addon.key
+)
 
 const onButtonClick: EventHandler = async sender => {
   if (!isThisWindow(sender)) return

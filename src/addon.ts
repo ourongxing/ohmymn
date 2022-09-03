@@ -2,6 +2,7 @@ import mnaddon from "../mnaddon.json"
 const key = mnaddon.addonid.split(".")[2]
 export const Addon = {
   path: "",
+  isZH: true,
   title: mnaddon.title,
   author: mnaddon.author,
   version: mnaddon.version,
@@ -12,8 +13,4 @@ export const Addon = {
   textColor: UIColor.blackColor(),
   borderColor: UIColor.colorWithHexString("#8A95A2"),
   buttonColor: UIColor.colorWithHexString("#8A95A2")
-}
-
-export const MN = {
-  isZH: true
 }

@@ -1,11 +1,10 @@
-import { Addon } from "~/addon"
 import { lang } from "./lang"
 import { UIAlertViewStyle } from "~/typings/enum"
-import { byteSlice } from "~/utils"
+import { byteSlice } from "./utils"
 
 export function popup<T>(
   {
-    title = Addon.title,
+    title = self.addon?.title ?? "MarginNote",
     message,
     type = UIAlertViewStyle.Default,
     buttons = [lang.sure],
@@ -62,7 +61,10 @@ export function popup<T>(
   )
 }
 
-export async function confirm(title = Addon.title, message = "") {
+export async function confirm(
+  title = self.addon?.title ?? "MarginNote",
+  message = ""
+) {
   const { option } = await popup(
     {
       title,
@@ -80,7 +82,7 @@ export async function confirm(title = Addon.title, message = "") {
 
 export async function select(
   parts: string[],
-  title = Addon.title,
+  title = self.addon?.title ?? "MarginNote",
   message = "选择你想要的",
   canCancel = false
 ) {
@@ -101,7 +103,7 @@ export async function select(
 
 export async function selectIndex(
   parts: string[],
-  title = Addon.title,
+  title = self.addon?.title ?? "MarginNote",
   message = "选择你想要的",
   canCancel = false
 ) {

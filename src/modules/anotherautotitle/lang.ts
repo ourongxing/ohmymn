@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "什么样的摘录该自动转为标题？",
@@ -49,4 +49,4 @@ const en: typeof zh = {
   }
 }
 
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

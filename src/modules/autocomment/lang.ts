@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "自动添加评论",
@@ -36,4 +36,4 @@ const en: typeof zh = {
   }
 }
 
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

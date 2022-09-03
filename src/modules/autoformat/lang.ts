@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "优化摘录和标题的排版与格式",
@@ -54,4 +54,4 @@ const en: typeof zh = {
     preset: "Select Presets"
   }
 }
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

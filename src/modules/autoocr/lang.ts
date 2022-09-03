@@ -1,4 +1,4 @@
-import { MN } from "~/addon"
+import { Addon } from "~/addon"
 
 const zh = {
   intro: "使用百度 OCR 服务来进行小语种的在线矫正。",
@@ -115,4 +115,4 @@ const en: typeof zh = {
       "The results have been copied to the clipboard, go ahead and paste them!"
   }
 }
-export const lang = MN.isZH ? zh : en
+export const lang = Addon.isZH ? zh : en

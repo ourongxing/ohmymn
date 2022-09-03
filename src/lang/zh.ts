@@ -42,7 +42,7 @@ const dict = {
   profile_manage: {
     success: "读取成功",
     fail: "读取失败",
-    prohibit: "🚫 禁止直接修改",
+    prohibit: "🚫 禁止修改",
     children:
       "请确保该卡片至少有一张子卡片！多张子卡片可以一起分担配置，防止单张卡片字数过多。",
     select: {
