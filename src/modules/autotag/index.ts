@@ -1,17 +1,15 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import {
-  checkReplaceParamFromMNLink,
-  checkReplaceParam
-} from "~/utils/checkInput"
 import { defineConfig } from "~/profile"
 import {
+  checkReplaceParamFromMNLink,
+  checkReplaceParam,
   escapeDoubleQuote,
   extractArray,
   string2ReplaceParam
-} from "~/utils/input"
-import { getAllText, addTags } from "~/utils/note"
+} from "~/utils"
+import { getAllText, addTags } from "~/sdk"
 import { lang } from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 

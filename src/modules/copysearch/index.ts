@@ -1,16 +1,18 @@
 import { IGlobalProfile, IDocProfile } from "~/profile"
 import { ISettingInput } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { checkPlainText } from "~/utils/checkInput"
-import { copy } from "~/utils/common"
+import {
+  getSerialInfo,
+  reverseEscape,
+  escapeDoubleQuote,
+  checkPlainText
+} from "~/utils"
+import { selectIndex, copy } from "~/sdk"
 import { defineConfig } from "~/profile"
-import { reverseEscape, escapeDoubleQuote } from "~/utils/input"
 import { WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
-import { selectIndex } from "~/utils/popup"
 import { Addon } from "~/const"
-import { getSerialInfo } from "~/utils"
 
 const { link, intro, lable, option, help, hud } = lang
 

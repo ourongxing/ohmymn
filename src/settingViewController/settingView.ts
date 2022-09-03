@@ -1,16 +1,11 @@
-import { Addon, MN } from "~/const"
+import { MN, Addon } from "~/const"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
 import { BindType, IRowSelect, UITableView, UIView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/typings/enum"
-import {
-  byteSplitByLen,
-  byteLength,
-  byteSlice,
-  serialSymbols,
-  isOCNull
-} from "~/utils"
+import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
+import { isOCNull } from "~/sdk"
 
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999

@@ -1,10 +1,11 @@
-import { Addon, MN } from "~/const"
+import { MN, Addon } from "~/const"
 import { actionKey4Text, actionKey4Card } from "~/dataSource"
 import lang from "~/lang"
 import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/synthesizer"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { popup, byteLength, openUrl, postNotification } from "~/utils"
+import { popup, openUrl, postNotification } from "~/sdk"
+import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
 const _tag2indexPath = (tag: number): NSIndexPath =>

@@ -16,7 +16,7 @@ import magicaction4card from "./modules/magicaction4card"
 import magicaction4text from "./modules/magicaction4text"
 import addon from "./modules/addon"
 import anotherautodef from "./modules/anotherautodef"
-import { MN } from "./const"
+import { MN } from "~/const"
 
 export const modules = {
   gesture,

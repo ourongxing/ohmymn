@@ -10,15 +10,13 @@ import {
 import { inst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
 import {
-  deepCopy,
   getObjCClassDeclar,
   isfileExists,
   openUrl,
   showHUD,
-  popup,
-  readProfile,
-  removeProfile
-} from "~/utils"
+  popup
+} from "~/sdk"
+import { deepCopy, readProfile, removeProfile } from "~/utils"
 import { Range } from "~/utils/profile/typings"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"

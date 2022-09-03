@@ -1,4 +1,5 @@
 import { NSJSONReadingOptions, NSJSONWritingOptions } from "~/typings/enum"
+import { lang } from "./lang"
 
 class Response {
   data: NSData
@@ -11,7 +12,7 @@ class Response {
       NSJSONReadingOptions.MutableContainers
     )
     if (NSJSONSerialization.isValidJSONObject(res)) return res
-    throw "The return value is not in JSON format"
+    throw lang.notJSON
   }
 }
 
@@ -93,8 +94,7 @@ export function fetch(
         // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         // It's strange, I can't get the res property
         // if (err.localizedDescription) reject(err.localizedDescription)
-        if (data.length() == 0)
-          reject("No return value received, please check the network")
+        if (data.length() == 0) reject(lang.notReceive)
         resolve(new Response(data as NSData))
       }
     )

@@ -1,5 +1,5 @@
-import { Addon, MN } from "~/const"
-
+import { Addon } from "~/const"
+import { MN } from "~/const"
 export default {
   viewDidLoad() {
     self.tableView.allowsSelection = true

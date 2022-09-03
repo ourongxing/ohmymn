@@ -1,7 +1,5 @@
-import { showHUD } from "~/utils/common"
-import { reverseEscape } from "~/utils/input"
-import fetch from "~/utils/network"
-import { countWord, isLanguage, notCJK } from "~/utils/text"
+import { fetch, showHUD } from "~/sdk"
+import { reverseEscape, countWord, isLanguage, notCJK } from "~/utils"
 import MD5 from "~/utils/third party/md5"
 import { TranslateProviders } from "./typings"
 

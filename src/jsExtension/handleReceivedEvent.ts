@@ -6,14 +6,13 @@ import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import { EventHandler } from "~/typings"
 import { StudyMode } from "~/typings/enum"
+import { saveProfile, updateProfileTemp } from "~/utils"
 import {
   eventHandlerController,
   isThisWindow,
   showHUD,
-  delayBreak,
-  saveProfile,
-  updateProfileTemp
-} from "~/utils"
+  delayBreak
+} from "~/sdk"
 import handleMagicAction from "./magicActionHandler"
 
 export const eventHandlers = eventHandlerController([

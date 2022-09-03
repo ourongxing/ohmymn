@@ -1,11 +1,11 @@
 import { CellViewType } from "~/typings/enum"
 import {
+  string2ReplaceParam,
   checkReplaceParamFromMNLink,
   checkReplaceParam
-} from "~/utils/checkInput"
+} from "~/utils"
 import { defineConfig } from "~/profile"
-import { string2ReplaceParam } from "~/utils/input"
-import { getExcerptNotes } from "~/utils/note"
+import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
 import { ListSelected } from "./typings"
 import { addLineBreak, addNumber } from "./utils"

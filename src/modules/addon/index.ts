@@ -1,4 +1,5 @@
-import { Addon, MN } from "~/const"
+import { Addon } from "~/const"
+import { MN } from "~/const"
 import { CellViewType } from "~/typings/enum"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"

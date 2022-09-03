@@ -7,9 +7,10 @@ import {
   getCommentIndex,
   addTags,
   modifyNodeTitle,
-  cacheTransformer,
   appendTextComment
-} from "~/utils"
+} from "~/sdk"
+import { cacheTransformer } from "~/utils"
+
 import {
   customOCR,
   newTitleTextCommentTag,

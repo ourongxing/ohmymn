@@ -1,8 +1,7 @@
 import { MN } from "~/const"
 import { MbBookNote, MNPic, noteComment } from "~/typings"
-import { unique } from "."
 import { postNotification } from "./common"
-import { escapeURLParam } from "~/utils"
+import { unique, escapeURLParam } from "~/utils"
 
 /**
  * Cancellable actions, all actions that modify data should be wrapped in this method.

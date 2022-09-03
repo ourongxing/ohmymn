@@ -1,10 +1,8 @@
 import { Addon } from "~/const"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
-import { openUrl, showHUD } from "~/utils/common"
-import { reverseEscape, escapeDoubleQuote } from "~/utils/input"
-import { getExcerptText } from "~/utils/note"
-import { select } from "~/utils/popup"
+import { select, getExcerptText, openUrl, showHUD } from "~/sdk"
+import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 

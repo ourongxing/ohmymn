@@ -1,19 +1,17 @@
-import { Addon, MN } from "~/const"
+import { MN, Addon } from "~/const"
 import { MbBookNote } from "~/typings"
 import { UIAlertViewStyle } from "~/typings/enum"
+import { escapeDoubleQuote, CJK, reverseEscape, serialSymbols } from "~/utils"
 import {
   CGRectValue2CGRect,
   isfileExists,
   isOCNull,
   showHUD,
-  reverseEscape,
-  escapeDoubleQuote,
   fetch,
-  CJK,
-  serialSymbols,
   popup,
   selectIndex
-} from "~/utils"
+} from "~/sdk"
+
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
 import { TranslateProviders } from "../autotranslate/typings"

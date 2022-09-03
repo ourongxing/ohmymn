@@ -4,12 +4,15 @@ import {
   unique,
   checkPlainText,
   checkRegArray,
-  showHUD,
-  HUDController,
+  getSerialInfo,
   string2RegArray,
   escapeDoubleQuote,
   string2ReplaceParam,
-  reverseEscape,
+  reverseEscape
+} from "~/utils"
+import {
+  showHUD,
+  HUDController,
   getAllTags,
   getExcerptText,
   getAllCommnets,
@@ -18,10 +21,9 @@ import {
   addTags,
   removeHighlight,
   modifyNodeTitle,
-  getSerialInfo,
   removeCommentButLinkTag,
   appendTextComment
-} from "~/utils"
+} from "~/sdk"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"

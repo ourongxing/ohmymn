@@ -1,23 +1,5 @@
-import { OSType } from "~/typings/enum"
 import mnaddon from "../mnaddon.json"
-
-export const MN = {
-  mainPath: "",
-  studyController: () =>
-    Application.sharedInstance().studyController(self.window),
-  isMac: Application.sharedInstance().osType == OSType.macOS,
-  app: Application.sharedInstance(),
-  db: Database.sharedInstance(),
-  // isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh")
-  isZH: true,
-  colors: {
-    Gray: "#414141",
-    Default: "#FFFFFF",
-    Dark: "#000000",
-    Green: "#E9FBC7",
-    Sepia: "#F5EFDC"
-  }
-}
+import { OSType } from "./typings/enum"
 
 export const Addon = {
   title: mnaddon.title,
@@ -30,4 +12,22 @@ export const Addon = {
   textColor: UIColor.blackColor(),
   borderColor: UIColor.colorWithHexString("#8A95A2"),
   buttonColor: UIColor.colorWithHexString("#8A95A2")
+}
+
+export const MN = {
+  mainPath: "",
+  studyController: () =>
+    Application.sharedInstance().studyController(self.window),
+  isMac: Application.sharedInstance().osType == OSType.macOS,
+  app: Application.sharedInstance(),
+  db: Database.sharedInstance(),
+  // isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh"),
+  isZH: true,
+  colors: {
+    Gray: "#414141",
+    Default: "#FFFFFF",
+    Dark: "#000000",
+    Green: "#E9FBC7",
+    Sepia: "#F5EFDC"
+  }
 }

@@ -1,9 +1,10 @@
 import { CellViewType } from "~/typings/enum"
-import { checkPositiveinteger, showHUD } from "~/utils"
+import { checkPositiveinteger } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
+import { showHUD } from "~/sdk"
 
 const { link, label } = lang
 

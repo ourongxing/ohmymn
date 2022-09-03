@@ -1,14 +1,15 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { CellViewType } from "~/typings/enum"
-import { unique } from "~/utils"
+import { defineConfig } from "~/profile"
 import {
   checkReplaceParamFromMNLink,
   checkRegArrayFromMNLink,
-  checkReplaceParam
-} from "~/utils/checkInput"
-import { defineConfig } from "~/profile"
-import { string2ReplaceParam, extractArray } from "~/utils/input"
-import { getAllText, modifyNodeTitle } from "~/utils/note"
+  checkReplaceParam,
+  string2ReplaceParam,
+  extractArray,
+  unique
+} from "~/utils"
+import { getAllText, modifyNodeTitle } from "~/sdk"
 import { lang } from "./lang"
 import { ExtractTitle } from "./typings"
 import { splitExtractTitles } from "./utils"

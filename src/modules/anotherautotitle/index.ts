@@ -1,9 +1,12 @@
 import { CellViewType } from "~/typings/enum"
-import { checkRegArrayFromMNLink } from "~/utils/checkInput"
 import { defineConfig } from "~/profile"
-import { reverseEscape } from "~/utils/input"
-import { removeHighlight } from "~/utils/note"
-import { countWord, notCJK } from "~/utils/text"
+import { removeHighlight } from "~/sdk"
+import {
+  checkRegArrayFromMNLink,
+  reverseEscape,
+  countWord,
+  notCJK
+} from "~/utils"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
 const { option, intro, help, link, label, check } = lang

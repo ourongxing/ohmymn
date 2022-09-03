@@ -1,4 +1,4 @@
-import { Addon, MN } from "~/const"
+import { MN, Addon } from "~/const"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import {
@@ -10,10 +10,14 @@ import {
   notebookProfilePreset
 } from "~/profile"
 import { MbBookNote } from "~/typings"
-import { dateFormat, deepCopy, delay } from ".."
-import { showHUD } from "../common"
-import { undoGroupingWithRefresh } from "../note"
-import { confirm, selectIndex } from "../popup"
+import { dateFormat, deepCopy } from ".."
+import {
+  delay,
+  showHUD,
+  undoGroupingWithRefresh,
+  confirm,
+  selectIndex
+} from "~/sdk"
 import { decode, encode } from "../third party/base64"
 import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"

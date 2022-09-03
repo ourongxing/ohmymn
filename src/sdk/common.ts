@@ -1,5 +1,5 @@
 import { Addon } from "~/const"
-import lang from "~/lang"
+import { lang } from "./lang"
 
 const console = {
   log(obj: any, suffix = "normal") {

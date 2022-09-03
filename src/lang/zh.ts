@@ -4,7 +4,7 @@ const dict = {
   input_saved: "输入已保存",
   input_clear: "输入已清空",
   input_error: "格式错误，请重新输入",
-  open_panel: "打开控制面板",
+  open_panel: "切换控制面板",
   none: "无",
   sure: "确定",
   cancel: "取消",

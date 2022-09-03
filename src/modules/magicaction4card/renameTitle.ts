@@ -1,13 +1,13 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { IActionMethod4Card } from "~/typings"
-import { showHUD } from "~/utils/common"
 import {
+  getSerialByIndex,
+  getSerialInfo,
   reverseEscape,
   escapeDoubleQuote,
   string2ReplaceParam
-} from "~/utils/input"
-import { getNodeTree, modifyNodeTitle } from "~/utils/note"
-import { getSerialByIndex, getSerialInfo } from "~/utils/number"
+} from "~/utils"
+import { showHUD, getNodeTree, modifyNodeTitle } from "~/sdk"
 import { lang } from "./lang"
 
 export const getLayerSerialInfo = (

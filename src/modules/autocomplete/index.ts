@@ -2,12 +2,12 @@ import { MbBookNote } from "~/typings"
 import { CellViewType } from "~/typings/enum"
 import {
   showHUD,
-  checkPlainText,
   modifyNodeTitle,
   undoGroupingWithRefresh,
   removeCommentButLinkTag,
   appendTextComment
-} from "~/utils"
+} from "~/sdk"
+import { checkPlainText } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { completeWord } from "./utils"

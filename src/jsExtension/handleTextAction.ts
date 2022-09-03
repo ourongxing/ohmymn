@@ -1,4 +1,4 @@
-import { Addon, MN } from "~/const"
+import { MN, Addon } from "~/const"
 import { UIAlertViewStyle } from "~/typings/enum"
 import {
   modifyNodeTitle,
@@ -9,7 +9,7 @@ import {
   popup,
   selectIndex,
   appendTextComment
-} from "~/utils"
+} from "~/sdk"
 
 const enum NoteOption {
   Copy,

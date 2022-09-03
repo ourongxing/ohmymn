@@ -5,16 +5,15 @@ import { mainOCR as autoocr } from "~/modules/autoocr/utils"
 import { checkInputCorrect, actions4text, actions4card } from "~/synthesizer"
 import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/typings/enum"
+import { getMNLinkValue, manageProfileAction } from "~/utils"
 import {
   showHUD,
   HUDController,
   getSelectNodes,
   getNodeTree,
   undoGroupingWithRefresh,
-  popup,
-  getMNLinkValue,
-  manageProfileAction
-} from "~/utils"
+  popup
+} from "~/sdk"
 import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
 

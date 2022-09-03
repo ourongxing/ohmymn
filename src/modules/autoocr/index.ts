@@ -1,5 +1,5 @@
 import { CellViewType } from "~/typings/enum"
-import { showHUD } from "~/utils/common"
+import { showHUD } from "~/sdk"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import {
