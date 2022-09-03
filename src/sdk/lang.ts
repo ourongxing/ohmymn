@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/addon"
 
 const zh = {
   copy_success: "复制成功, 快去粘贴吧!",

@@ -3,10 +3,10 @@ import handleGestureEvent from "~/jsExtension/handleGestureEvent"
 import switchPanel from "~/jsExtension/switchPanel"
 import { getObjCClassDeclar } from "~/sdk"
 import lifeCycle, { clsMethons } from "~/jsExtension/lifeCycle"
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 
 JSB.newAddon = mainPath => {
-  MN.mainPath = mainPath
+  Addon.path = mainPath
   return JSB.defineClass(
     getObjCClassDeclar(Addon.title, "JSExtension"),
     {

@@ -1,4 +1,3 @@
-import { MN } from "~/const"
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
@@ -7,6 +6,7 @@ import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/typings/enum"
 import { getMNLinkValue, manageProfileAction } from "~/utils"
 import {
+  MN,
   showHUD,
   HUDController,
   getSelectNodes,

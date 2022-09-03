@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/addon"
 
 const zh = {
   intro: "使用百度 OCR 服务来进行小语种的在线矫正。",

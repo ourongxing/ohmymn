@@ -1,7 +1,7 @@
-import { IAllProfile } from "~/profile"
+import { IAllProfile } from "~/defaultProfile"
 import { ISettingSelect } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { lang } from "./lang"
 
 const { link, intro, singleBar, muiltBar, selectionBar } = lang

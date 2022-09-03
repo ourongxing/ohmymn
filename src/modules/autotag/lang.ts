@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/addon"
 
 const zh = {
   intro: "自动添加标签",

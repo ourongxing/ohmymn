@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/addon"
 
 const zh = {
   intro: "将摘录分割为标题和摘录两部分\n定义 = 被定义项 + 定义联项 + 定义项。",

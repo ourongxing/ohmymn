@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/sdk"
 import lang from "~/lang"
 import {
   escapeDoubleQuote,

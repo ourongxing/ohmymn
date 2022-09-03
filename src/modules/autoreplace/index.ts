@@ -1,7 +1,7 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { escapeDoubleQuote, string2ReplaceParam } from "~/utils"
 import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"

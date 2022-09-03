@@ -1,7 +1,7 @@
-import { Addon } from "~/const"
-import { MN } from "~/const"
+import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { lang } from "./lang"
 
 const { label, help, option } = lang

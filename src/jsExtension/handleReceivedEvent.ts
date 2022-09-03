@@ -1,4 +1,4 @@
-import { Addon, MN } from "~/const"
+import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "~/jsExtension/excerptHandler"
@@ -8,6 +8,7 @@ import { EventHandler } from "~/typings"
 import { StudyMode } from "~/typings/enum"
 import { saveProfile, updateProfileTemp } from "~/utils"
 import {
+  MN,
   eventHandlerController,
   isThisWindow,
   showHUD,

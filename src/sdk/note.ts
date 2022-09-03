@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "."
 import { MbBookNote, MNPic, noteComment } from "~/typings"
 import { postNotification } from "./common"
 import { unique, escapeURLParam } from "~/utils"

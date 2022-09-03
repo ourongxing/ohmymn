@@ -1,6 +1,6 @@
 import { dataSourceIndex } from "~/dataSource"
 import { layoutViewController } from "~/jsExtension/switchPanel"
-import { IGlobalProfile, IDocProfile, INotebookProfile } from "~/profile"
+import { IGlobalProfile, IDocProfile, INotebookProfile } from "~/defaultProfile"
 import { IRowSwitch, IRowInlineInput, IRowInput, IRowSelect } from "~/typings"
 import { deepCopy } from ".."
 import { string2RegArray, ReplaceParam, string2ReplaceParam } from "../input"

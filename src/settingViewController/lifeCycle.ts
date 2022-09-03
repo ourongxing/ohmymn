@@ -1,5 +1,5 @@
-import { Addon } from "~/const"
-import { MN } from "~/const"
+import { Addon } from "~/addon"
+import { MN } from "~/sdk"
 export default {
   viewDidLoad() {
     self.tableView.allowsSelection = true
@@ -10,9 +10,8 @@ export default {
   viewWillAppear() {
     self.tableView.reloadData()
     if (MN.isMac) {
-      self.tableView.backgroundColor = UIColor.colorWithHexString(
-        MN.colors[MN.app.currentTheme!]
-      )
+      self.tableView.backgroundColor =
+        MN.themeColor[Application.sharedInstance().currentTheme!]
       Addon.textColor =
         MN.app.currentTheme == "Gray" || MN.app.currentTheme == "Dark"
           ? UIColor.whiteColor()

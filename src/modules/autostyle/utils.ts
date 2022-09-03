@@ -1,7 +1,6 @@
-import { MN } from "~/const"
 import { MbBookNote } from "~/typings"
 import { reverseEscape, countWord, notCJK } from "~/utils"
-import { removeHighlight, CGSizeValue2CGSize, showHUD } from "~/sdk"
+import { MN, removeHighlight, CGSizeValue2CGSize, showHUD } from "~/sdk"
 import { lang } from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 

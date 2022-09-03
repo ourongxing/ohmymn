@@ -1,4 +1,4 @@
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import {
@@ -8,10 +8,11 @@ import {
   globalProfilePreset,
   INotebookProfile,
   notebookProfilePreset
-} from "~/profile"
+} from "~/defaultProfile"
 import { MbBookNote } from "~/typings"
 import { dateFormat, deepCopy } from ".."
 import {
+  MN,
   delay,
   showHUD,
   undoGroupingWithRefresh,

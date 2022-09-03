@@ -1,4 +1,4 @@
-import { Addon } from "~/const"
+import { Addon } from "~/addon"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
 import { select, getExcerptText, openUrl, showHUD } from "~/sdk"

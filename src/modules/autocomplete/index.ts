@@ -8,7 +8,7 @@ import {
   appendTextComment
 } from "~/sdk"
 import { checkPlainText } from "~/utils"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { lang } from "./lang"
 import { completeWord } from "./utils"
 

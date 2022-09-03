@@ -3,7 +3,7 @@ import {
   IGlobalProfile,
   ITempProfile,
   INotebookProfile
-} from "~/profile"
+} from "~/defaultProfile"
 import { ISection } from "./Addon"
 import { DirectionOfSelection } from "./enum"
 import { MbBookNote, StudyController } from "./MarginNote"
@@ -16,15 +16,6 @@ export * from "./UIKit"
 
 declare global {
   const self: {
-    html: string
-    text: string
-    respath: string
-    retfunc: (r: {
-      html: string
-      text: string
-      dirty: boolean
-      size?: CGSize
-    }) => void
     backupWaitTimes: number | undefined
     webView: UIWebView
     renderTemplate: string

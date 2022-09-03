@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { MN } from "~/addon"
 
 const zh = {
   intro: "什么样的摘录该自动转为标题？",

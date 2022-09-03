@@ -1,7 +1,7 @@
-import { Addon } from "~/const"
+import { Addon } from "~/addon"
 import { lang } from "./lang"
 import { UIAlertViewStyle } from "~/typings/enum"
-import { byteSlice } from "~/utils/text"
+import { byteSlice } from "~/utils"
 
 export function popup<T>(
   {

@@ -1,4 +1,4 @@
-import { IAllProfile } from "~/profile"
+import { IAllProfile } from "~/defaultProfile"
 import { MbBookNote } from "../MarginNote"
 import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
 import { CellViewType } from "./enum"

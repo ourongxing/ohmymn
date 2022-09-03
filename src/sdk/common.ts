@@ -1,4 +1,4 @@
-import { Addon } from "~/const"
+import { Addon } from "~/addon"
 import { lang } from "./lang"
 
 const console = {

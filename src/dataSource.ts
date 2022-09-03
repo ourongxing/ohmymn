@@ -1,6 +1,6 @@
 import lang from "./lang"
-import { more } from "./module"
-import { constModules, modules } from "./module"
+import { more } from "./modules"
+import { constModules, modules } from "./modules"
 import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./typings/enum"

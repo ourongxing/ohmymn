@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { showHUD, MN } from "~/sdk"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
@@ -12,7 +12,6 @@ import {
   DocMapSplitMode,
   GroupMode
 } from "~/typings/enum"
-import { showHUD } from "~/sdk"
 import { reverseEscape } from "~/utils"
 import { switchPanel, closePanel } from "./switchPanel"
 import magicActionHandler from "./magicActionHandler"

@@ -1,9 +1,8 @@
-import { MN } from "~/const"
 import { HasTitleThen } from "~/modules/addon/typings"
 import { autoUtils } from "~/synthesizer"
 import { MbBookNote } from "~/typings"
 import { unique, cacheTransformer } from "~/utils"
-import { removeHighlight } from "~/sdk"
+import { MN, removeHighlight } from "~/sdk"
 
 export const customOCR = async () => {
   const imgBase64 = MN.studyController()

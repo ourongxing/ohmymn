@@ -1,4 +1,4 @@
-import { Addon } from "~/const"
+import { Addon } from "~/addon"
 import { Dict } from "."
 
 const dict: Dict = {

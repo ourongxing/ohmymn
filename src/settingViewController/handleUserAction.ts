@@ -1,10 +1,10 @@
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 import { actionKey4Text, actionKey4Card } from "~/dataSource"
 import lang from "~/lang"
 import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/synthesizer"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
 import { CellViewType } from "~/typings/enum"
-import { popup, openUrl, postNotification } from "~/sdk"
+import { MN, popup, openUrl, postNotification } from "~/sdk"
 import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 

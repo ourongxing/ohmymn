@@ -1,6 +1,6 @@
-import { MN } from "~/const"
 import { MbBookNote } from "~/typings"
 import {
+  MN,
   removeHighlight,
   getAllTags,
   getAllText,

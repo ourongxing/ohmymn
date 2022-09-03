@@ -1,6 +1,6 @@
 import { CellViewType } from "~/typings/enum"
 import { checkReplaceParamFromMNLink } from "~/utils"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { getExcerptNotes, modifyNodeTitle } from "~/sdk"
 import { lang } from "./lang"
 import { Format } from "./typings"

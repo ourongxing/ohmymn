@@ -1,13 +1,15 @@
-import { ICheckMethod, IActionMethod4Text, IActionMethod4Card } from "./typings"
 import lang from "./lang"
 import { showHUD } from "./sdk"
-import { modules, constModules } from "./module"
+import { modules, constModules } from "./modules"
 import {
   AutoUtilType,
   TypeUtilFalseArray,
-  TypeUtilIndexFalseArray
-} from "./typings/Addon"
-import { IAllProfile } from "./profile"
+  TypeUtilIndexFalseArray,
+  ICheckMethod,
+  IActionMethod4Text,
+  IActionMethod4Card
+} from "./typings"
+import { IAllProfile } from "./defaultProfile"
 export type ModuleKeyType = Exclude<keyof IAllProfile, "additional"> | "more"
 type AutoModuleKeyType = Include<ModuleKeyType, "auto">
 

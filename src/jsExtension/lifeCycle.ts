@@ -1,4 +1,4 @@
-import { MN } from "~/const"
+import { Addon } from "~/addon"
 import { dataSourcePreset } from "~/dataSource"
 import lang from "~/lang"
 import {
@@ -6,7 +6,7 @@ import {
   globalProfilePreset,
   notebookProfilePreset,
   tempProfilePreset
-} from "~/profile"
+} from "~/defaultProfile"
 import { inst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
 import {
@@ -70,12 +70,12 @@ export const clsMethons = {
   addonDidConnect() {
     console.log("Addon connected", "lifeCycle")
     if (
-      !isfileExists(`${MN.mainPath}/dict.db`) &&
-      isfileExists(`${MN.mainPath}/dict.zip`)
+      !isfileExists(`${Addon.path}/dict.db`) &&
+      isfileExists(`${Addon.path}/dict.zip`)
     )
       ZipArchive.unzipFileAtPathToDestination(
-        `${MN.mainPath}/dict.zip`,
-        MN.mainPath
+        `${Addon.path}/dict.zip`,
+        Addon.path
       )
   }
 }

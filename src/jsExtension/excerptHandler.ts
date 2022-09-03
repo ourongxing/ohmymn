@@ -1,7 +1,7 @@
-import { MN } from "~/const"
 import { RemoveExcerpt } from "~/modules/addon/typings"
 import { MbBookNote } from "~/typings"
 import {
+  MN,
   delayBreak,
   undoGroupingWithRefresh,
   getCommentIndex,

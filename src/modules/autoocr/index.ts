@@ -1,6 +1,6 @@
 import { CellViewType } from "~/typings/enum"
 import { showHUD } from "~/sdk"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { lang } from "./lang"
 import {
   baiduFormulaOCR,

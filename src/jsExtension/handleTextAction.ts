@@ -1,6 +1,7 @@
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 import { UIAlertViewStyle } from "~/typings/enum"
 import {
+  MN,
   modifyNodeTitle,
   undoGroupingWithRefresh,
   copy,

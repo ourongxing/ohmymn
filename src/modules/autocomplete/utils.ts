@@ -1,4 +1,4 @@
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 import { MbBookNote } from "~/typings"
 import { UIAlertViewStyle } from "~/typings/enum"
 import { escapeDoubleQuote, CJK, reverseEscape, serialSymbols } from "~/utils"
@@ -8,6 +8,7 @@ import {
   isOCNull,
   showHUD,
   fetch,
+  MN,
   popup,
   selectIndex
 } from "~/sdk"
@@ -160,8 +161,8 @@ async function getWordInfo(word: string): Promise<Word> {
     return unifiyData(info[0])
   } else {
     if (!self.enDict) {
-      if (isfileExists(`${MN.mainPath}/dict.db`)) {
-        self.enDict = SQLiteDatabase.databaseWithPath(`${MN.mainPath}/dict.db`)
+      if (isfileExists(`${Addon.path}/dict.db`)) {
+        self.enDict = SQLiteDatabase.databaseWithPath(`${Addon.path}/dict.db`)
         self.enDict.open()
       } else throw "没找到本地数据库"
     }

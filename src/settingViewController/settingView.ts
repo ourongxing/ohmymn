@@ -1,11 +1,11 @@
-import { MN, Addon } from "~/const"
+import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
 import { BindType, IRowSelect, UITableView, UIView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/typings/enum"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
-import { isOCNull } from "~/sdk"
+import { MN, isOCNull } from "~/sdk"
 
 const _indexPath2tag = (indexPath: NSIndexPath): number =>
   indexPath.section * 100 + indexPath.row + 999
@@ -139,7 +139,7 @@ const tableViewCellForRowAtIndexPath = (
       cell.textLabel.text = row.label
       const iconColor = MN.app.currentTheme == "Gray" ? "white" : "black"
       const image = NSData.dataWithContentsOfFile(
-        MN.mainPath + `/icon/${iconColor}/${row.key}.png`
+        Addon.path + `/icon/${iconColor}/${row.key}.png`
       )
       if (!isOCNull(image))
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)

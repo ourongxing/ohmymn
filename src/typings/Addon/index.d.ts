@@ -1,7 +1,7 @@
 import { DocumentController, MbBookNote } from ".."
 import { DirectionOfSelection } from "../enum"
 import { IRowButton } from "./DataSource"
-export * from "./Module"
+export * from "./module"
 export * from "./DataSource"
 export * from "./AutoUtils"
 

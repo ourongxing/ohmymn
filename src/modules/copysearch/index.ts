@@ -1,4 +1,4 @@
-import { IGlobalProfile, IDocProfile } from "~/profile"
+import { IGlobalProfile, IDocProfile } from "~/defaultProfile"
 import { ISettingInput } from "~/typings"
 import { CellViewType } from "~/typings/enum"
 import {
@@ -8,11 +8,11 @@ import {
   checkPlainText
 } from "~/utils"
 import { selectIndex, copy } from "~/sdk"
-import { defineConfig } from "~/profile"
+import { defineConfig } from "~/defaultProfile"
 import { WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
-import { Addon } from "~/const"
+import { Addon } from "~/addon"
 
 const { link, intro, lable, option, help, hud } = lang
 
