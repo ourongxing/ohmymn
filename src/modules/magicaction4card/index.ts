@@ -1,5 +1,5 @@
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/defaultProfile"
+import { defineConfig } from "~/profile"
 import {
   unique,
   checkPlainText,

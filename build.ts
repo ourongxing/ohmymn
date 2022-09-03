@@ -64,12 +64,13 @@ build({
   },
   pure: ["console.log", "console.error", "console.assert", "console.warn"],
   bundle: true,
+  target: "safari13",
   plugins: [
     clear(),
     autoImport({
       imports: [
         {
-          "~/utils/common": [isProd ? "" : "console"]
+          "~/sdk": [isProd ? "" : "console"]
         }
       ],
       dts: false

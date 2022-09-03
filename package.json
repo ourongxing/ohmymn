@@ -1,7 +1,7 @@
 {
   "name": "ohmymn",
   "author": "MarginNote<https://github.com/marginnoteapp>",
-  "version": "4.0.1",
+  "version": "4.0.4",
   "license": "MIT",
   "description": "MarginNote Addon Control Panel and Development Framework",
   "scripts": {

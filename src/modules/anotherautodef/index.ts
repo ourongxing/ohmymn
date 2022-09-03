@@ -1,6 +1,6 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/defaultProfile"
+import { defineConfig } from "~/profile"
 import {
   checkReplaceParamFromMNLink,
   checkRegArrayFromMNLink,

@@ -32,6 +32,14 @@ const HUDController = {
   }
 }
 
+function getLocalDataByKey(key: string) {
+  return NSUserDefaults.standardUserDefaults().objectForKey(key)
+}
+
+function setLocalDataByKey(data: any, key: string) {
+  NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
+}
+
 function alert(message: string) {
   Application.sharedInstance().alert(message)
 }
@@ -134,5 +142,7 @@ export {
   eventHandlerController,
   copy,
   evaluateJavaScript,
-  isfileExists
+  isfileExists,
+  getLocalDataByKey,
+  setLocalDataByKey
 }

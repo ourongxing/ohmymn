@@ -3,7 +3,7 @@ import {
   IGlobalProfile,
   ITempProfile,
   INotebookProfile
-} from "~/defaultProfile"
+} from "~/profile/defaultProfile"
 import { ISection } from "./Addon"
 import { DirectionOfSelection } from "./enum"
 import { MbBookNote, StudyController } from "./MarginNote"

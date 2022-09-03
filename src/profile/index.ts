@@ -7,44 +7,38 @@ import {
   docProfilePreset,
   globalProfilePreset,
   INotebookProfile,
-  notebookProfilePreset
-} from "~/defaultProfile"
-import { MbBookNote } from "~/typings"
-import { dateFormat, deepCopy } from ".."
+  notebookProfilePreset,
+  IAllProfile
+} from "~/profile/defaultProfile"
+import { IConfig, MbBookNote } from "~/typings"
+import { dateFormat, deepCopy } from "../utils"
 import {
   MN,
   delay,
   showHUD,
   undoGroupingWithRefresh,
   confirm,
-  selectIndex
+  selectIndex,
+  getLocalDataByKey,
+  setLocalDataByKey
 } from "~/sdk"
-import { decode, encode } from "../third party/base64"
+import { decode, encode } from "../utils/third party/base64"
 import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile } from "./utils"
 export * from "./utils"
 export * from "./updateDataSource"
+export * from "./defaultProfile"
+
+export function defineConfig<T extends keyof IAllProfile>(options: IConfig<T>) {
+  return options
+}
 
 let allGlobalProfile: IGlobalProfile[]
 let allDocProfile: Record<string, IDocProfile>
 let allNotebookProfile: Record<string, INotebookProfile>
 
 const { globalProfileKey, docProfileKey, notebookProfileKey } = Addon
-
-const getDataByKey = (key: string): any => {
-  return NSUserDefaults.standardUserDefaults().objectForKey(key)
-}
-
-const setDataByKey = (
-  data:
-    | typeof allGlobalProfile
-    | typeof allNotebookProfile
-    | typeof allDocProfile,
-  key: string
-) => {
-  NSUserDefaults.standardUserDefaults().setObjectForKey(data, key)
-}
 
 export const readProfile: ReadPrifile = ({
   range,
@@ -78,12 +72,12 @@ export const readProfile: ReadPrifile = ({
       case Range.All: {
         // Read local data only on first open, then read doc profile and global profile
         const docProfileSaved: Record<string, IDocProfile> =
-          getDataByKey(docProfileKey)
+          getLocalDataByKey(docProfileKey)
         if (!docProfileSaved) console.log("Initialize doc profile", "profile")
         allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
 
         const notebookProfileSaved: Record<string, INotebookProfile> =
-          getDataByKey(notebookProfileKey)
+          getLocalDataByKey(notebookProfileKey)
         if (!notebookProfileKey)
           console.log("Initialize notebook profile", "profile")
         allNotebookProfile = notebookProfileSaved ?? {
@@ -91,7 +85,7 @@ export const readProfile: ReadPrifile = ({
         }
 
         const globalProfileSaved: IGlobalProfile[] =
-          getDataByKey(globalProfileKey)
+          getLocalDataByKey(globalProfileKey)
         if (!globalProfileSaved)
           console.log("Initialize global profile", "profile")
         allGlobalProfile =
@@ -104,7 +98,7 @@ export const readProfile: ReadPrifile = ({
             updateProfileDataSource(globalProfile, allGlobalProfile[index])
             allGlobalProfile[index] = globalProfile
           })
-          setDataByKey(allGlobalProfile, globalProfileKey)
+          setLocalDataByKey(allGlobalProfile, globalProfileKey)
         }
         readNoteBookProfile(notebookid)
         readDocProfile(docmd5)
@@ -149,17 +143,17 @@ export const writeProfile: WritePrifile = ({
 }) => {
   const writeDocProfile = (docmd5: string) => {
     allDocProfile[docmd5] = deepCopy(self.docProfile)
-    setDataByKey(allDocProfile, docProfileKey)
+    setLocalDataByKey(allDocProfile, docProfileKey)
     console.log("Write current doc profile", "profile")
   }
   const writeGlobalProfile = (profileNO: number) => {
     allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
-    setDataByKey(allGlobalProfile, globalProfileKey)
+    setLocalDataByKey(allGlobalProfile, globalProfileKey)
     console.log("Write global profile", "profile")
   }
   const writeNotebookProfile = (notebookid: string) => {
     allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
-    setDataByKey(allNotebookProfile, notebookProfileKey)
+    setLocalDataByKey(allNotebookProfile, notebookProfileKey)
     console.log("Write notebook profile", "profile")
   }
   switch (range) {
@@ -487,9 +481,9 @@ export async function manageProfileAction(node: MbBookNote, option: number) {
           else return
         }
       } else throw ""
-      setDataByKey(allNotebookProfile, notebookProfileKey)
-      setDataByKey(allGlobalProfile, globalProfileKey)
-      setDataByKey(allDocProfile, docProfileKey)
+      setLocalDataByKey(allNotebookProfile, notebookProfileKey)
+      setLocalDataByKey(allGlobalProfile, globalProfileKey)
+      setLocalDataByKey(allDocProfile, docProfileKey)
       readProfile({
         range: Range.All,
         docmd5: self.docmd5!,

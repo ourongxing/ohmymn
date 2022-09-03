@@ -1,5 +1,5 @@
 import { CellViewType } from "~/typings/enum"
-import { defineConfig } from "~/defaultProfile"
+import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "~/sdk"
 import { serialSymbols, reverseEscape } from "~/utils"
 import { lang } from "./lang"

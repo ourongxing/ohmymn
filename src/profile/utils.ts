@@ -1,5 +1,5 @@
 import { MN } from "~/sdk"
-import { IGlobalProfile } from "~/defaultProfile"
+import { IGlobalProfile } from "~/profile/defaultProfile"
 import { noteComment } from "~/typings"
 
 /**

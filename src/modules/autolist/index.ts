@@ -4,7 +4,7 @@ import {
   checkReplaceParamFromMNLink,
   checkReplaceParam
 } from "~/utils"
-import { defineConfig } from "~/defaultProfile"
+import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
 import { ListSelected } from "./typings"

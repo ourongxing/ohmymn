@@ -9,7 +9,7 @@ import {
   IActionMethod4Text,
   IActionMethod4Card
 } from "./typings"
-import { IAllProfile } from "./defaultProfile"
+import { IAllProfile } from "./profile/defaultProfile"
 export type ModuleKeyType = Exclude<keyof IAllProfile, "additional"> | "more"
 type AutoModuleKeyType = Include<ModuleKeyType, "auto">
 

@@ -1,5 +1,5 @@
-import { IConfig } from "./typings"
-import { ReplaceParam } from "./utils"
+import { IConfig } from "../typings"
+import { ReplaceParam } from "../utils"
 
 const globalProfilePreset = {
   addon: {
@@ -223,7 +223,3 @@ export {
   ITempProfile,
   IAllProfile
 }
-
-export const defineConfig = <T extends keyof IAllProfile>(
-  options: IConfig<T>
-) => options
