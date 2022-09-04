@@ -72,9 +72,10 @@ var entityMap = {
 }
 
 function escapeHtml(string) {
-  return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
-    return entityMap[s]
-  })
+  return encodeURIComponent(string)
+  // return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+  //   return entityMap[s]
+  // })
 }
 
 var whiteRe = /\s*/
@@ -201,6 +202,7 @@ function parseTemplate(template, tags) {
       value = scanner.scanUntil(closingCurlyRe)
       scanner.scan(curlyRe)
       scanner.scanUntil(closingTagRe)
+      // 把 {{{ }}} 转换成 {{&}} 也就是转码
       type = "&"
     } else {
       value = scanner.scanUntil(closingTagRe)
@@ -484,7 +486,7 @@ Context.prototype.lookup = function lookup(name) {
 
   if (isFunction(value)) value = value.call(this.view)
 
-  return lookupHit ? value : `{{${name}}}`
+  return lookupHit ? value : ""
 }
 
 /**
@@ -612,10 +614,11 @@ Writer.prototype.renderTokens = function renderTokens(
 
     if (value) {
       if (isArray(value)) {
-        buffer += value.join("; ")
+        value = value.join("; ")
       } else if (typeof value === "object") {
-        buffer += JSON.stringify(value)
-      } else buffer += value
+        value = JSON.stringify(value)
+      }
+      if (value) buffer += value
     }
   }
   return buffer
@@ -755,10 +758,17 @@ Writer.prototype.unescapedValue = function unescapedValue(token, context) {
 Writer.prototype.escapedValue = function escapedValue(token, context, config) {
   var escape = this.getConfigEscape(config) || mustache.escape
   var value = context.lookup(token[1])
-  if (value != null)
-    return typeof value === "number" && escape === mustache.escape
-      ? String(value)
-      : escape(value)
+  if (config?.escape) return value
+  if (value != null) {
+    if (isArray(value)) {
+      value = value.join("; ")
+    } else if (typeof value === "object") {
+      value = JSON.stringify(value)
+    } else if (typeof value === "number") {
+      value = String(value)
+    }
+    if (value) return escape(value)
+  }
 }
 
 Writer.prototype.rawValue = function rawValue(token) {

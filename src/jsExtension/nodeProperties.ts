@@ -23,6 +23,7 @@ const undefine2undefine = (v: any, f: (t: any) => any) => {
 const func: {
   [key: string]: () => (text: string, render: (p: string) => string) => string
 } = {
+  escape: () => (text, render) => encodeURIComponent(render(text)),
   nohl: () => (text, render) => removeHighlight(render(text)),
   blod: () => (text, render) =>
     render(text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"),
