@@ -1,5 +1,5 @@
   <a href="https://github.com/marginnoteapp/ohmymn">
-    <img src="assets/banner.jpg" alt="Logo" >
+    <img src="assets/banner.jepg" alt="Logo" >
   </a>
 
 <p/>
