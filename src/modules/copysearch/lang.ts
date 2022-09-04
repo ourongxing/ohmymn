@@ -6,7 +6,8 @@ const zh = {
   lable: {
     multiple_titles: "如果有多个标题",
     multiple_excerpts: "如果有多个摘录",
-    custom_copy: "自定义搜索或复制的内容，点击查看支持哪些变量。",
+    custom_copy: "自定义复制的内容，点击查看支持哪些变量。",
+    custom_search: "自定义搜索的内容，点击查看支持哪些变量。",
     search_card_info: "搜索卡片内容",
     which_partof_card: "默认搜索卡片内容",
     copy_card_info: "复制卡片内容",
@@ -38,6 +39,7 @@ const zh = {
   },
   choose_you_want: `请选择一个你想要的`
 }
+
 const en: typeof zh = {
   intro: "Copy and search for what you want",
   link: "https://www.notion.so/huangkewei/CopySearch-c824347a82c543569acc3d01053cd227",
@@ -47,7 +49,9 @@ const en: typeof zh = {
     multiple_titles: "If Multiple Titles",
     multiple_excerpts: "If Multiple Excerpts",
     custom_copy:
-      "Customize what you search or copy, click to see which variables are supported",
+      "Customize what you  copy, click to see which variables are supported",
+    custom_search:
+      "Customize what you search, click to see which variables are supported",
     search_card_info: "Search Card Content",
     separator_symbols_multiple_card: "Separator Symbols",
     copy_card_info: "Copy Card Content",

@@ -28,17 +28,22 @@ async function getTitleExcerpt(
   }
 }
 
-function getCustomContent(node: MbBookNote) {
-  const { customContent } = self.globalProfile.copysearch
-  if (!customContent) return undefined
-  const template = reverseEscape(`${escapeDoubleQuote(customContent)}`, true)
+function getCustomContent(node: MbBookNote, type: "copy" | "search") {
+  const { customContent, customSearchContent } = self.globalProfile.copysearch
+  const custom = type === "copy" ? customContent : customSearchContent
+  if (!custom) return undefined
+  const template = reverseEscape(`${escapeDoubleQuote(custom)}`, true)
   return renderTemplateOfNodeProperties(node, template)
 }
 
-export async function getContentofOneCard(node: MbBookNote, option: number) {
+export async function getContentofOneCard(
+  node: MbBookNote,
+  option: number,
+  type: "copy" | "search"
+) {
   const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
   const excerptText = getExcerptText(node, false).ocr
-  const customContent = getCustomContent(node)
+  const customContent = getCustomContent(node, type)
   switch (option) {
     case WhichPartofCard.Title: {
       const res =
@@ -71,7 +76,11 @@ export async function getContentofOneCard(node: MbBookNote, option: number) {
     }
   }
 }
-export function getContentofMuiltCards(nodes: MbBookNote[], option: number) {
+export function getContentofMuiltCards(
+  nodes: MbBookNote[],
+  option: number,
+  type: "copy" | "search"
+) {
   switch (option) {
     case 0: {
       const { multipleTitles } = self.globalProfile.copysearch
@@ -96,7 +105,7 @@ export function getContentofMuiltCards(nodes: MbBookNote[], option: number) {
     }
     default:
       return nodes.reduce((acc, cur) => {
-        const t = getCustomContent(cur)
+        const t = getCustomContent(cur, type)
         t && acc.push(t)
         return acc
       }, [] as string[])

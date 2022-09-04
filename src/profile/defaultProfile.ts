@@ -104,6 +104,7 @@ const globalProfilePreset = {
     multipleTitles: [0],
     multipleExcerpts: [0],
     customContent: "[{{titles.0}}]({{url.pure}})",
+    customSearchContent: "[{{titles.0}}]({{url.pure}})",
     showSearchEngine: false,
     modifySymbols: '%["1"]. $&\\n\\n',
     whichPartofCard: [0],
@@ -120,7 +121,7 @@ const globalProfilePreset = {
     baiduApiKey: "",
     lang: [0],
     formulaOCRProviders: [0],
-    markdown: [0],
+    markdown: [2],
     mathpixAppKey: "",
     showKey: true
   },

@@ -61,6 +61,15 @@ export default defineConfig({
       }
     },
     {
+      help: lable.custom_search,
+      type: CellViewType.Input,
+      key: "customSearchContent",
+      link,
+      check({ input }) {
+        checkPlainText(input)
+      }
+    },
+    {
       label: lable.show_search_engine,
       key: "showSearchEngine",
       type: CellViewType.Switch,
@@ -98,7 +107,8 @@ export default defineConfig({
           const { whichPartofCard } = self.globalProfile.copysearch
           const text = (await getContentofOneCard(
             nodes[0],
-            whichPartofCard[0]
+            whichPartofCard[0],
+            "search"
           )) as string
           text && search(text, option)
         } else {
@@ -116,8 +126,7 @@ export default defineConfig({
               lang.choose_you_want
             )
           } else opt -= 1
-          const contentList = getContentofMuiltCards(nodes, opt)
-
+          const contentList = getContentofMuiltCards(nodes, opt, "search")
           contentList?.length &&
             search(
               ((arr: string[]) => {
@@ -141,7 +150,11 @@ export default defineConfig({
       option: option.which_partof_card,
       async method({ nodes, option }) {
         if (nodes.length == 1) {
-          const text = (await getContentofOneCard(nodes[0], option)) as string
+          const text = (await getContentofOneCard(
+            nodes[0],
+            option,
+            "copy"
+          )) as string
           text && copy(text)
         } else {
           const { modifySymbols } = self.globalProfile.copysearch
@@ -149,7 +162,7 @@ export default defineConfig({
             `${escapeDoubleQuote(modifySymbols)}`,
             true
           ).split("$&")
-          const contentList = getContentofMuiltCards(nodes, option)
+          const contentList = getContentofMuiltCards(nodes, option, "copy")
           contentList?.length &&
             copy(
               ((arr: string[]) => {
