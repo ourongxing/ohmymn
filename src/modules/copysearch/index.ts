@@ -155,7 +155,7 @@ export default defineConfig({
             option,
             "copy"
           )) as string
-          text && copy(text)
+          copy(text)
         } else {
           const { modifySymbols } = self.globalProfile.copysearch
           const [front, behind] = reverseEscape(
@@ -163,18 +163,17 @@ export default defineConfig({
             true
           ).split("$&")
           const contentList = getContentofMuiltCards(nodes, option, "copy")
-          contentList?.length &&
-            copy(
-              ((arr: string[]) => {
-                if (/%\[.+\]/.test(front)) {
-                  const serialArr = getSerialInfo(front, arr.length)
-                  return arr
-                    .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
-                    .join(behind)
-                }
-                return arr.map(k => front + k).join(behind)
-              })(contentList)
-            )
+          copy(
+            ((arr: string[]) => {
+              if (/%\[.+\]/.test(front)) {
+                const serialArr = getSerialInfo(front, arr.length)
+                return arr
+                  .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
+                  .join(behind)
+              }
+              return arr.map(k => front + k).join(behind)
+            })(contentList)
+          )
         }
       }
     }

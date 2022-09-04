@@ -123,8 +123,10 @@ function eventHandlerController(
 }
 
 function copy(text: string, hud = true) {
-  UIPasteboard.generalPasteboard().string = text.trim()
-  hud && showHUD(lang.copy_success)
+  if (text) {
+    UIPasteboard.generalPasteboard().string = text.trim()
+    hud && showHUD(lang.copy_success)
+  } else hud && showHUD(lang.copy_empty)
 }
 
 function isfileExists(path: string) {
