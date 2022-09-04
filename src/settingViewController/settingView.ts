@@ -140,9 +140,8 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.font = UIFont.systemFontOfSize(16)
       if (MN.isMac) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
-      const iconColor = MN.app.currentTheme == "Gray" ? "white" : "black"
       const image = NSData.dataWithContentsOfFile(
-        Addon.path + `/icon/${iconColor}/${row.key}.png`
+        Addon.path + `/icon/${row.key}.png`
       )
       if (!isOCNull(image))
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)
