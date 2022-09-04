@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
-  link: "https://ohmymn.vercel.app/guide/modules/magicaction4card.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html",
   option: {
     filter_cards: ["所有", "标题", "摘录", "评论", "标签"] as Tuple<string, 5>,
     switch_title: ["切换为不存在的", "交换标题和摘录"],

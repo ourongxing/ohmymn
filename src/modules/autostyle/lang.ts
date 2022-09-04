@@ -1,7 +1,7 @@
 import { MN } from "~/sdk"
 
 const zh = {
-  link: "https://ohmymn.vercel.app/guide/modules/autostyle.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autostyle.html",
   intro: "自动修改摘录颜色和样式",
   area: "面积",
   label: {

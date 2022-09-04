@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "补全单词词形，只支持动词和名词",
-  link: "https://ohmymn.vercel.app/guide/modules/autocomplete.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autocomplete.html",
   label: {
     on: "摘录时自动执行",
     fill_word_info: "填充单词信息",
@@ -38,7 +38,7 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Complete word form. Only support verbs and nouns",
-  link: "https://ohmymn.vercel.app/guide/modules/autocomplete.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autocomplete.html",
   label: {
     on: "Auto Executed",
     fill_word_info: "Fill Word Info",

@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "自动添加标签",
-  link: "https://ohmymn.vercel.app/guide/modules/autotag.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autotag.html",
   option: {
     preset: ["自定义"],
     add_tag: ["使用 AutoTag 的配置", "确定"]

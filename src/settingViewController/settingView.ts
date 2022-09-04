@@ -2,27 +2,30 @@ import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
-import { BindType, IRowSelect, UITableView, UIView } from "~/typings"
+import { BindType, IRowSelect, UITableView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/typings/enum"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
 import { MN, isOCNull } from "~/sdk"
 
-const _indexPath2tag = (indexPath: NSIndexPath): number =>
-  indexPath.section * 100 + indexPath.row + 999
+function _indexPath2tag(indexPath: NSIndexPath): number {
+  return indexPath.section * 100 + indexPath.row + 999
+}
 
 // If the module is not enabled, the menu will be hidden
-export const _isModuleOFF = (key: ModuleKeyType): boolean => {
+export function _isModuleOFF(key: ModuleKeyType): boolean {
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeys.indexOf(key)
   return index !== -1 && !quickSwitch.includes(index)
 }
 
-const numberOfSectionsInTableView = () => self.dataSource.length
-const tableViewNumberOfRowsInSection = (
+function numberOfSectionsInTableView() {
+  return self.dataSource.length
+}
+function tableViewNumberOfRowsInSection(
   tableView: UITableView,
   section: number
-) => {
+) {
   const { key } = self.dataSource[section]
   return _isModuleOFF(key) ? 0 : self.dataSource[section].rows.length
 }
@@ -36,7 +39,7 @@ const tableViewTitleForHeaderInSection = (
 }
 
 // If one of the bind objects does not meet the requirements, it will be hidden
-const _isBindOFF = (bindArr: BindType, sectionKey: string) => {
+function _isBindOFF(bindArr: BindType, sectionKey: string) {
   /**
    * const bind = ["key", [1,2]]
    * const bind = [
@@ -82,10 +85,10 @@ const _isBindOFF = (bindArr: BindType, sectionKey: string) => {
   })
 }
 
-const tableViewHeightForRowAtIndexPath = (
+function tableViewHeightForRowAtIndexPath(
   tableView: UITableView,
   indexPath: NSIndexPath
-) => {
+) {
   const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {
@@ -105,10 +108,10 @@ const tableViewHeightForRowAtIndexPath = (
   return 40
 }
 
-const tableViewCellForRowAtIndexPath = (
+function tableViewCellForRowAtIndexPath(
   tableView: UITableView,
   indexPath: NSIndexPath
-) => {
+) {
   const { rows, key } = self.dataSource[indexPath.section]
   const row = rows[indexPath.row]
   switch (row.type) {

@@ -8,16 +8,17 @@ import { MN, popup, openUrl, postNotification } from "~/sdk"
 import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
-const _tag2indexPath = (tag: number): NSIndexPath =>
-  NSIndexPath.indexPathForRowInSection(
+function _tag2indexPath(tag: number): NSIndexPath {
+  return NSIndexPath.indexPathForRowInSection(
     (tag - 999) % 100,
     (tag - 999 - ((tag - 999) % 100)) / 100
   )
+}
 
-const tableViewDidSelectRowAtIndexPath = async (
+async function tableViewDidSelectRowAtIndexPath(
   tableView: UITableView,
   indexPath: NSIndexPath
-) => {
+) {
   tableView.cellForRowAtIndexPath(indexPath).selected = false
   const sec = self.dataSource[indexPath.section]
   const row = sec.rows[indexPath.row]
@@ -40,7 +41,7 @@ const tableViewDidSelectRowAtIndexPath = async (
   }
 }
 
-const textFieldShouldReturn = async (sender: UITextField) => {
+async function textFieldShouldReturn(sender: UITextField) {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
@@ -60,7 +61,7 @@ const textFieldShouldReturn = async (sender: UITextField) => {
   return true
 }
 
-const switchChange = (sender: UISwitch) => {
+function switchChange(sender: UISwitch) {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
@@ -80,11 +81,11 @@ let lastSelectInfo:
       selections: number[]
     }
   | undefined
-const selectAction = async (param: {
+async function selectAction(param: {
   indexPath: NSIndexPath
   selection: number
   menuController: MenuController
-}) => {
+}) {
   const { indexPath, selection, menuController } = param
   const section = self.dataSource[indexPath.section]
   const row = <IRowSelect>section.rows[indexPath.row]
@@ -131,7 +132,6 @@ const selectAction = async (param: {
     const nowSelect = row.selections.includes(selection)
       ? selections.filter(item => item != selection)
       : [selection, ...selections]
-
     ;(<IRowSelect>(
       self.dataSource[indexPath.section].rows[indexPath.row]
     )).selections = nowSelect
@@ -152,7 +152,7 @@ const selectAction = async (param: {
   self.tableView.reloadData()
 }
 
-const clickSelectButton = (sender: UIButton) => {
+function clickSelectButton(sender: UIButton) {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowSelect
@@ -212,7 +212,7 @@ const clickSelectButton = (sender: UIButton) => {
 }
 
 /** Send data when the popup disappears */
-const popoverControllerDidDismissPopover = () => {
+function popoverControllerDidDismissPopover() {
   if (lastSelectInfo) {
     postNotification(Addon.key + "SelectChange", lastSelectInfo)
     lastSelectInfo = undefined

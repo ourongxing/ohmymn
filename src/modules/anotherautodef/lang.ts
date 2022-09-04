@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "将摘录分割为标题和摘录两部分\n定义 = 被定义项 + 定义联项 + 定义项。",
-  link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html",
   label: {
     on: "摘录时自动执行",
     only_desc: "摘录仅保留定义项",

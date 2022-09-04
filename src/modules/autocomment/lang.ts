@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "自动添加评论",
-  link: "https://ohmymn.vercel.app/guide/modules/autocomment.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autocomment.html",
   option: {
     preset: ["自定义", "修改时间"],
     add_comment: ["使用 AutoComment 的配置", "确定"]

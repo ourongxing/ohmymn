@@ -74,6 +74,16 @@ export default defineConfig({
       label: label.preset
     },
     {
+      key: "customBeTitle",
+      type: CellViewType.Input,
+      help: help.custom_be_title,
+      bind: ["preset", 0],
+      link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html#自定义",
+      check({ input }) {
+        checkRegArrayFromMNLink(input)
+      }
+    },
+    {
       key: "wordCount",
       type: CellViewType.Input,
       bind: ["preset", 1],
@@ -84,16 +94,6 @@ export default defineConfig({
         if (input.length !== 2) throw check.input_three_number
         if (input.some(item => !Number.isInteger(item)))
           throw check.enter_positive
-      }
-    },
-    {
-      key: "customBeTitle",
-      type: CellViewType.Input,
-      help: help.custom_be_title,
-      bind: ["preset", 0],
-      link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html#自定义",
-      check({ input }) {
-        checkRegArrayFromMNLink(input)
       }
     },
     {

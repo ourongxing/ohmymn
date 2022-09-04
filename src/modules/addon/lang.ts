@@ -1,7 +1,7 @@
 import { MN } from "~/sdk"
 
 const zh = {
-  link: "https://ohmymn.vercel.app",
+  link: "https://ohmymn.marginnote.cn",
   intro: "当前版本：",
   option: {
     profile: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],

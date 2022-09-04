@@ -52,7 +52,7 @@ function initRequest(
         encodeURI(
           `${url}?${Object.entries(options.search).reduce((acc, cur) => {
             const [key, value] = cur
-            return `${acc ? acc + "&" : ""}${key}=${value}`
+            return `${acc ? acc + "&" : ""}${key}=${encodeURIComponent(value)}`
           }, "")}`
         )
       )
@@ -62,9 +62,7 @@ function initRequest(
       NSData.dataWithStringEncoding(
         Object.entries(options.form).reduce((acc, cur) => {
           const [key, value] = cur
-          return `${acc ? acc + "&" : ""}${encodeURIComponent(
-            key
-          )}=${encodeURIComponent(value)}`
+          return `${acc ? acc + "&" : ""}${key}=${encodeURIComponent(value)}`
         }, ""),
         4
       )

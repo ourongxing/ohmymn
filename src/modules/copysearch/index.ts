@@ -45,7 +45,7 @@ export default defineConfig({
       key: "modifySymbols",
       type: CellViewType.Input,
       help: "选中多张卡片时，为每张卡片的内容添加前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。",
-      link: "https://ohmymn.vercel.app/guide/modules/copysearch.html#%E5%A4%9A%E5%BC%A0%E5%8D%A1%E7%89%87",
+      link: "https://ohmymn.marginnote.cn/guide/modules/copysearch.html#%E5%A4%9A%E5%BC%A0%E5%8D%A1%E7%89%87",
       check({ input }) {
         checkPlainText(input)
         if (!input.includes("$&")) throw "缺少 $&"

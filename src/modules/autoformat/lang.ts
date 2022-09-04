@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "优化摘录和标题的排版与格式",
-  link: "https://ohmymn.vercel.app/guide/modules/autoformat.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autoformat.html",
   option: {
     preset: [
       "自定义",
@@ -28,7 +28,7 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Optimize the typography and formatting of excerpts & titles",
-  link: "https://ohmymn.vercel.app/guide/modules/autoformat.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autoformat.html",
   option: {
     preset: [
       "Custom",

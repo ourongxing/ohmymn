@@ -10,7 +10,11 @@ import { unique, escapeURLParam } from "./utils"
  */
 function undoGrouping(f: () => void) {
   if (self.notebookid) {
-    UndoManager.sharedInstance().undoGrouping("", self.notebookid, f)
+    UndoManager.sharedInstance().undoGrouping(
+      String(Date.now()),
+      self.notebookid,
+      f
+    )
   }
 }
 
@@ -56,29 +60,6 @@ function getSelectNodes(): MbBookNote[] {
  * Get card tree recursively, including all the node's children,grandchildren and grandgrandchildren etc.
  * @param node The card that you want to get its children node information.
  * @returns MbBookNote[] - An array which contains all the children nodes.
- * @example
- * ```
- * const { treeIndex, onlyChildren } = getNodeTree(node)
- * ```
- *  If the node has no child node,
- * return {
-      onlyChildren: [],
-      onlyFirstLevel: [],
-      allNodes: [node],
-      treeIndex: [[]] as number[][]
-    }
-    If the node has child node,
-    return {
-    // only has child node
-    onlyChildren: children,
-    // only has the first level child node
-    onlyFirstLevel: node.childNotes!,
-    // card selected and its children nodes
-    allNodes: [node, ...children],
-    //index of the node in the tree
-    treeIndex
-  }
-    ```
  */
 function getNodeTree(node: MbBookNote) {
   const DFS = (
@@ -161,7 +142,7 @@ function exportPic(pic: MNPic, mdsize = "") {
     ? {
         base64,
         img: `data:image/jpeg;base64,${escapeURLParam(base64)}`,
-        html: `<img src="data:image/jpeg;base64,${base64}"/>`,
+        html: `<img class="mn-img" src="data:image/jpeg;base64,${base64}"/>`,
         md: `![${mdsize}](data:image/jpeg;base64,${escapeURLParam(base64)})`
       }
     : undefined

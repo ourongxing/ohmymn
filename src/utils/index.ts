@@ -1,4 +1,4 @@
-export const deepCopy = (value: any) => JSON.parse(JSON.stringify(value))
+export const deepCopy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
 export function dateFormat(date: Date, fmt = "YYYY-mm-dd HH:MM") {
   let ret
@@ -20,40 +20,6 @@ export function dateFormat(date: Date, fmt = "YYYY-mm-dd HH:MM") {
     }
   })
   return fmt
-}
-
-export function escapeURLParam(param: string) {
-  const replaceParams = [
-    [/%/g, "%25"],
-    [/#/g, "%23"],
-    [/&/g, "%26"],
-    [/;/g, "%3B"],
-    [/\+/g, "%2B"],
-    [/\//g, "%2F"],
-    [/\\/g, "%5C"],
-    [/=/g, "%3D"],
-    [/\?/g, "%3F"],
-    [/\./g, "%2E"],
-    [/\:/g, "%3A"]
-  ] as [RegExp, string][]
-  return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
-}
-
-export function unescapeURLParam(param: string) {
-  const replaceParams = [
-    [/%25/g, "%"],
-    [/%23/g, "#"],
-    [/%26/g, "&"],
-    [/%3B/g, ";"],
-    [/%2B/g, "+"],
-    [/%2F/g, "/"],
-    [/%5C/g, "\\"],
-    [/%3D/g, "="],
-    [/%3F/g, "?"],
-    [/%2E/g, "."],
-    [/%3A/g, ":"]
-  ] as [RegExp, string][]
-  return replaceParams.reduce((acc, cur) => acc.replace(cur[0], cur[1]), param)
 }
 
 export * from "./text"

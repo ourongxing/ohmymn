@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "什么样的摘录该自动转为标题？",
-  link: "https://ohmymn.vercel.app/guide/modules/anotherautotitle.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html",
   option: {
     preset: ["自定义", "根据字数", "不含有点号"]
   },
@@ -14,7 +14,7 @@ const zh = {
   },
   help: {
     custom_be_title: "自定义，点击查看具体格式",
-    change_title_no_limit: "修改标题摘录选区，始终转为标题"
+    change_title_no_limit: "修改已经转为标题的摘录选区，始终转为标题"
   },
   check: {
     enter_positive: "请输入正整数",

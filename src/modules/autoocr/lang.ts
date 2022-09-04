@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "使用百度 OCR 服务来进行小语种的在线矫正。",
-  link: "https://ohmymn.vercel.app/guide/modules/autoocr.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html",
   option: {
     lang: [
       "自动检测",

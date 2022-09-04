@@ -17,7 +17,7 @@
 
 
 ## Document
-[简体中文](https://ohmymn.vercel.app/)
+[简体中文](https://ohmymn.marginnote.cn/)
 
 ## Development
 🚧

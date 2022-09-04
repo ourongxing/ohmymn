@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "搜索和复制你想要的",
-  link: "https://ohmymn.vercel.app/guide/modules/copysearch.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/copysearch.html",
   lable: {
     multiple_titles: "如果有多个标题",
     multiple_excerpts: "如果有多个摘录",

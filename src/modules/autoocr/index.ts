@@ -62,7 +62,7 @@ export default defineConfig({
       key: "baiduApiKey",
       type: CellViewType.Input,
       help: help.baiduApiKey,
-      link: "https://ohmymn.vercel.app/guide/modules/autoocr.html#百度-ocr",
+      link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html#百度-ocr",
       bind: ["showKey", true]
     },
     {
@@ -75,7 +75,7 @@ export default defineConfig({
       key: "mathpixAppKey",
       type: CellViewType.Input,
       help: help.mathpixAppKey,
-      link: "https://ohmymn.vercel.app/guide/modules/autoocr.html#mathpix",
+      link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html#mathpix",
       bind: [
         ["showKey", true],
         ["formulaOCRProviders", 1]

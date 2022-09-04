@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro: "自动替换摘录中的某些错误",
-  link: "https://ohmymn.vercel.app/guide/modules/autotranslate.html",
+  link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html",
   option: {
     preset: ["自定义"],
     replace_selected: ["使用 AutoReplace 的配置", "确定"]
