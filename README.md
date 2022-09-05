@@ -1,6 +1,6 @@
-  <a href="https://github.com/marginnoteapp/ohmymn">
-    <img src="assets/banner.jpeg" alt="Logo" >
-  </a>
+<a href="https://github.com/marginnoteapp/ohmymn">
+  <img src="assets/banner.jpeg" alt="OhMyMN" >
+</a>
 
 <p/>
 
@@ -23,11 +23,12 @@
 🚧
 ## Acknowledgements
 
-- [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop MN plugins.
-- [mn-addon-api](https://github.com/aidenlx/mn-addon-api) Original MN Addon API Declaration Files.
+- [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop mnaddon.
+- [mn-addon-api](https://github.com/aidenlx/mn-addon-api) Original MN addon API declaration files.
 - [pangu.js](https://github.com/vinta/pangu.js) Add spaces between Chinese and English for AutoFormat.
 - [ECDICT](https://github.com/skywind3000/ECDICT) & [API](http://dict.e.opac.vip/dict.php) Provide data support for AutoComplete.
 
 ## License
-
 [MIT](https://github.com/marginnoteapp/ohmymn/blob/main/LICENSE)
+
+<img src="assets/mn.png" alt="MarginNote" width="100">
