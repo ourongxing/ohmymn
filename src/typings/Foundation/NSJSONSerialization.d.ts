@@ -1,4 +1,4 @@
-import { NSJSONReadingOptions, NSJSONWritingOptions } from "./enum"
+import { NSJSONReadingOptions, NSJSONWritingOptions } from "~/enum"
 
 declare global {
   class NSJSONSerialization {

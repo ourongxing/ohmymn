@@ -1,5 +1,5 @@
 import { UIView, UIViewController, UIWindow } from "../UIKit"
-import { DocMapSplitMode, OSType, StudyMode } from "./enum"
+import { DocMapSplitMode, OSType, StudyMode } from "~/enum"
 import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
 

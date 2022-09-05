@@ -1,7 +1,7 @@
 import { IAllProfile } from "~/profile/defaultProfile"
 import { MbBookNote } from "../MarginNote"
 import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
-import { CellViewType } from "./enum"
+import { CellViewType } from "~/enum"
 
 export type IConfig<T extends keyof IAllProfile | null = null> = {
   name: string

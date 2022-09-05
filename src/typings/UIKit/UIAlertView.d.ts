@@ -1,4 +1,4 @@
-import { UIAlertViewStyle } from "./enum"
+import { UIAlertViewStyle } from "~/enum"
 
 declare global {
   class UIAlertView {

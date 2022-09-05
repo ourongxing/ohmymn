@@ -3,7 +3,7 @@ import {
   UITableViewCellAccessoryTypeStyle,
   UITableViewCellSelectionStyle,
   UITableViewCellStyle
-} from "./enum"
+} from "~/enum"
 
 declare global {
   class UITableViewCell {

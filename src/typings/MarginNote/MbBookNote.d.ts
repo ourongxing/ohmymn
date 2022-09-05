@@ -1,4 +1,4 @@
-import { GroupMode } from "./enum"
+import { GroupMode } from "~/enum"
 import { MbBook, MbTopic } from "./NoteDatabase"
 /**
  * @class MbBookNote

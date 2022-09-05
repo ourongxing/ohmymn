@@ -1,4 +1,4 @@
-import { NotebookType } from "./enum"
+import { NotebookType } from "~/enum"
 import { MbBookNote } from "./MbBookNote"
 interface TextContent {
   /** decimal unicode value, you should change to hexadecimal, and append \u */

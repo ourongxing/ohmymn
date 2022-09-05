@@ -1,4 +1,4 @@
-import { OSType } from "~/typings/enum"
+import { OSType } from "~/enum"
 
 export const MN = {
   studyController: () =>

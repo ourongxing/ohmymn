@@ -1,6 +1,6 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
 import {
   checkReplaceParamFromMNLink,

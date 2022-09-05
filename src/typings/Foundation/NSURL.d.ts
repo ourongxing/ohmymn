@@ -3,7 +3,7 @@ import {
   NSURLBookmarkFileCreationOptions,
   NSURLBookmarkCreationOptions,
   NSStringEncoding
-} from "./enum"
+} from "~/enum"
 
 declare global {
   class NSURL {

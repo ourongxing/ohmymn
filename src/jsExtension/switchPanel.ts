@@ -1,6 +1,6 @@
 import { PanelControl } from "~/modules/addon/typings"
 import { UIViewController } from "~/typings"
-import { StudyMode } from "~/typings/enum"
+import { StudyMode } from "~/enum"
 import { MN, delay } from "~/sdk"
 
 // Set the position and size of the panel

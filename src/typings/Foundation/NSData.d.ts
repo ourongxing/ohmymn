@@ -3,7 +3,7 @@ import {
   NSDataReadingOptions,
   NSDataWritingOptions,
   NSDataSearchOptions
-} from "./enum"
+} from "~/enum"
 
 declare global {
   class NSData {

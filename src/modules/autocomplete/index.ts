@@ -1,5 +1,5 @@
 import { MbBookNote } from "~/typings"
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import {
   showHUD,
   modifyNodeTitle,

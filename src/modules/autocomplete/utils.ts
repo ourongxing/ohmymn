@@ -1,6 +1,6 @@
 import { Addon } from "~/addon"
 import { MbBookNote } from "~/typings"
-import { UIAlertViewStyle } from "~/typings/enum"
+import { UIAlertViewStyle } from "~/enum"
 import { escapeDoubleQuote, CJK, reverseEscape, serialSymbols } from "~/utils"
 import {
   CGRectValue2CGRect,

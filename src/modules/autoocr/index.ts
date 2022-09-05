@@ -1,4 +1,4 @@
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import { showHUD } from "~/sdk"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"

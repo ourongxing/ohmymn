@@ -3,7 +3,7 @@ import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
 import { checkInputCorrect, actions4text, actions4card } from "~/synthesizer"
 import { IRowButton, MbBookNote } from "~/typings"
-import { CellViewType, UIAlertViewStyle } from "~/typings/enum"
+import { CellViewType, UIAlertViewStyle } from "~/enum"
 import { getMNLinkValue, manageProfileAction } from "~/utils"
 import {
   MN,

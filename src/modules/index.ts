@@ -1,5 +1,5 @@
 import { ISection } from "~/typings"
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import anotherautotitle from ".//anotherautotitle"
 import autocomment from "./autocomment"
 import autocomplete from "./autocomplete"

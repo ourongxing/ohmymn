@@ -5,7 +5,7 @@ import handleExcerpt, {
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import { EventHandler } from "~/typings"
-import { StudyMode } from "~/typings/enum"
+import { StudyMode } from "~/enum"
 import { saveProfile, updateProfileTemp } from "~/utils"
 import {
   MN,

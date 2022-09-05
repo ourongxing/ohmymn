@@ -1,5 +1,5 @@
 import { UIControl, UIView } from "."
-import { NSTextAlignment } from "./enum"
+import { NSTextAlignment } from "~/enum"
 
 export enum UITextBorderStyle {}
 declare global {

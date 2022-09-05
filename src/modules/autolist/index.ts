@@ -1,4 +1,4 @@
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import {
   string2ReplaceParam,
   checkReplaceParamFromMNLink,

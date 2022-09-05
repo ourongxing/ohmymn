@@ -4,7 +4,7 @@ import {
   UITableViewCellSeparatorStyle,
   UITableViewRowAnimation,
   UITableViewScrollPosition
-} from "./enum"
+} from "~/enum"
 
 export class UITableView extends UIView {
   readonly style: UITableViewStyle

@@ -12,7 +12,7 @@ import {
   UIView,
   UIWindow
 } from ".."
-import { DirectionOfSelection } from "../enum"
+import { DirectionOfSelection } from "~/enum"
 import { IRowButton, ISection } from "./DataSource"
 export * from "./module"
 export * from "./DataSource"

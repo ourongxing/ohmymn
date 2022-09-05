@@ -1,6 +1,6 @@
 import { IGlobalProfile, IDocProfile } from "~/profile/defaultProfile"
 import { ISettingInput } from "~/typings"
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import {
   getSerialInfo,
   reverseEscape,

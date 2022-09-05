@@ -11,7 +11,7 @@ import {
   DirectionOfSelection,
   DocMapSplitMode,
   GroupMode
-} from "~/typings/enum"
+} from "~/enum"
 import { reverseEscape } from "~/utils"
 import { switchPanel, closePanel } from "./switchPanel"
 import magicActionHandler from "./magicActionHandler"

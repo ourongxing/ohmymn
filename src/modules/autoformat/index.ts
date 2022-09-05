@@ -1,4 +1,4 @@
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import { checkReplaceParamFromMNLink } from "~/utils"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes, modifyNodeTitle } from "~/sdk"

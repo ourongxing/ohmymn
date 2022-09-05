@@ -2,7 +2,7 @@ import { UIEvent, UITouch, UIView } from "."
 import {
   UIGestureRecognizerState,
   UISwipeGestureRecognizerDirection
-} from "./enum"
+} from "~/enum"
 declare global {
   class UIGestureRecognizer {
     constructor(target: any, action: string)

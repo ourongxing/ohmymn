@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { UIAlertViewStyle } from "~/typings/enum"
+import { UIAlertViewStyle } from "~/enum"
 import {
   MN,
   modifyNodeTitle,

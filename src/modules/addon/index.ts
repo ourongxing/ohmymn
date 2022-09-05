@@ -1,6 +1,6 @@
 import { Addon } from "~/addon"
 import { MN } from "~/sdk"
-import { CellViewType } from "~/typings/enum"
+import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 

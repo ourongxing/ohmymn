@@ -3,7 +3,7 @@ import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/synthesizer"
 import { BindType, IRowSelect, UITableView } from "~/typings"
-import { CellViewType, NSTextAlignment } from "~/typings/enum"
+import { CellViewType, NSTextAlignment } from "~/enum"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
 import { MN, isOCNull } from "~/sdk"
 

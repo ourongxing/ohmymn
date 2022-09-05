@@ -1,4 +1,4 @@
-import { NSLocaleLanguageDirection } from "./enum"
+import { NSLocaleLanguageDirection } from "~/enum"
 
 declare global {
   class NSLocale {

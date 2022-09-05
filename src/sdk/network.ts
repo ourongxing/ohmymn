@@ -1,4 +1,4 @@
-import { NSJSONReadingOptions, NSJSONWritingOptions } from "~/typings/enum"
+import { NSJSONReadingOptions, NSJSONWritingOptions } from "~/enum"
 import { lang } from "./lang"
 
 class Response {
