@@ -1,7 +1,11 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  ignorePatterns: "*.d.ts",
+  ignorePatterns: [
+    "**/MarginNote/*.d.ts",
+    "**/UIKit/*.d.ts",
+    "**/Foundation/*.d.ts"
+  ],
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
@@ -10,10 +14,10 @@ module.exports = {
     "prettier/prettier": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/naming-convention": [
-      "warn",
+      "error",
       {
         selector: "variable",
-        format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        format: ["camelCase", "PascalCase"],
         leadingUnderscore: "allow",
         trailingUnderscore: "allow"
       },

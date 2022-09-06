@@ -16,6 +16,7 @@ export type IConfig<T extends keyof IAllProfile | null = null> = {
 }
 
 /** Help must be set before using link */
+// eslint-disable-next-line @typescript-eslint/ban-types
 type HelpLink = XOR<{ help: string; link?: string }, {}>
 
 type Bind<T> = {

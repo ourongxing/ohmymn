@@ -58,7 +58,7 @@ const en: typeof zh = {
     merge_cards: "Merge Multiple Cards",
     merge_text: "Merge Text in Cards",
     rename_title: "Rename Titles",
-    manage_profile: "Configuration Management"
+    manage_profile: "Profile Management"
   },
   hud: {
     is_clicked: "The card is selected, please continue",

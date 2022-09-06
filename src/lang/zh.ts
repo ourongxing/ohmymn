@@ -7,9 +7,8 @@ const dict = {
   open_panel: "切换控制面板",
   none: "无",
   sure: "确定",
-  cancel: "取消",
   disconnect_addon: "配置已重置",
-  action_not_work: "未启用，该动作无法执行",
+  action_not_work: "模块未启用，该动作无法执行",
   not_select_card: "未选中任何脑图卡片",
   not_select_text: "没有框选任何文字",
   no_text_selection: "无法得到到选中区域的文字",
@@ -20,7 +19,7 @@ const dict = {
   copy_success: "复制成功, 快去粘贴吧!",
   smart_select: {
     title: `${Addon.title} 智能选择`,
-    option: [
+    $option: [
       "仅处理选中的卡片",
       "仅处理子卡片",
       "仅处理所有后代卡片",
@@ -37,27 +36,6 @@ const dict = {
         "该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
       option: ["不清楚，查看文档", "我已知晓"],
       doc: "https://ohmymn.marginnote.cn/guide/modules/gesture.html"
-    }
-  },
-  profile_manage: {
-    success: "读取成功",
-    fail: "读取失败",
-    prohibit: "🚫 禁止修改",
-    children:
-      "请确保该卡片至少有一张子卡片！多张子卡片可以一起分担配置，防止单张卡片字数过多。",
-    select: {
-      array: [
-        "所有配置",
-        "全局配置 1",
-        "全局配置 2",
-        "全局配置 3",
-        "全局配置 4",
-        "全局配置 5",
-        "所有全局配置",
-        "文档配置",
-        "笔记本配置"
-      ],
-      message: "选择需要导入的配置"
     }
   }
 }
