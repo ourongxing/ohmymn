@@ -6,13 +6,18 @@ const dict: Dict = {
   input_clear: "Input Clear",
   none: "None",
   sure: "Confirm",
+  uninstall: {
+    have_bugs:
+      "have you met a bug? Try reset profile or update to newest version.",
+    profile_reset: "Profile has been reset",
+    $options: ["Reset Profile", "Update/Feedback"]
+  },
   input_number: "Please enter a number",
   input_integer: "Please enter an integer",
   input_positive: "Please enter a positive integer",
   no_profile_in_card: "No profile exists in the card",
   open_panel: "Switch Control Panel",
   input_error: "Input errors, please re-enter",
-  disconnect_addon: "Profile has been reset",
   not_select_card: "No card is selected",
   not_select_text: "No text is selected",
   action_not_work: "Module is not enabled, the action cannot be executed",

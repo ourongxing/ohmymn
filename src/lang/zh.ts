@@ -7,7 +7,11 @@ const dict = {
   open_panel: "切换控制面板",
   none: "无",
   sure: "确定",
-  disconnect_addon: "配置已重置",
+  uninstall: {
+    $options: ["重置配置", "去论坛更新/反馈"],
+    profile_reset: "配置已重置",
+    have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
+  },
   action_not_work: "模块未启用，该动作无法执行",
   not_select_card: "未选中任何脑图卡片",
   not_select_text: "没有框选任何文字",

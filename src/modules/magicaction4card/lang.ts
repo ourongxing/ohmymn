@@ -8,14 +8,14 @@ const zh = {
     switch_title: ["切换为不存在的", "交换标题和摘录"],
     merge_text: ["合并为摘录", "合并为评论"],
     merge_cards: ["同时合并标题", "不合并标题"],
-    manage_profile: ["读取配置", "写入配置"] as Tuple<string, 2>
+    manage_profile: ["读取配置", "写入配置", "重置配置"] as Tuple<string, 3>
   },
   help: {
     merge_text: "输入分隔符",
     switch_title: "当两者都存在时请使用「交换标题和摘录」",
     rename_title: "现在可以分层进行编号",
     manage_profile:
-      "请确保该卡片至少有一张子卡片！多张子卡片可以一起分担配置，防止单张卡片字数过多。"
+      "写入配置时请确保该卡片至少有一张子卡片。多张子卡片可以一起分担配置，防止单张卡片字数过多。"
   },
   label: {
     switch_title: "切换摘录标题",
@@ -42,14 +42,14 @@ const en: typeof zh = {
     filter_cards: ["All", "Title", "Excerpt", "Comment", "Tag"],
     merge_text: ["Merged as Excerpt", "Merged as Comment"],
     merge_cards: ["Merge Title", "Not Merge Titles"],
-    manage_profile: ["Read Profile", "Write Profile"]
+    manage_profile: ["Read Profile", "Write Profile", "Reset Profile"]
   },
   help: {
     switch_title: "Use [Swap Title and Excerpt] when both are present」",
     merge_text: "Input delimiter",
     rename_title: "Now it can be hierarchical numbered",
     manage_profile:
-      "It is forbidden to directly modify the configuration information, and the existing configuration will be overwritten after reading"
+      "Please make sure that the card has at least one child card when writing the profile. Multiple child cards can share the profile together to prevent a single card from having too many words."
   },
   label: {
     smart_selection: "Smart Selector",

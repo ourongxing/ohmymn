@@ -43,8 +43,9 @@ export const clsMethons = {
     console.log("Addon disconected", "lifeCycle")
     const { option } = await popup(
       {
-        message: "遇到 bug 了吗，是否清空配置？",
-        buttons: ["确定", "去论坛更新"]
+        title: Addon.title,
+        message: lang.uninstall.have_bugs,
+        buttons: lang.uninstall.$options
       },
       ({ buttonIndex }) => ({
         option: buttonIndex
@@ -53,12 +54,14 @@ export const clsMethons = {
     switch (option) {
       case 0: {
         removeProfile()
+        // clear to be a new scene
+        self.docmd5 = undefined
         // could not get the value of self.window
-        showHUD(lang.disconnect_addon, 2, _window)
+        showHUD(lang.uninstall.profile_reset, 2, _window)
         break
       }
       case 1: {
-        openUrl("https://bbs.marginnote.cn/t/topic/20501")
+        Addon.url && openUrl(Addon.url)
       }
     }
   },
@@ -80,19 +83,24 @@ export default {
     console.log("Open a new window", "lifeCycle")
     _window = self.window
     // Multiple windows will share global variables, so they need to be saved to self.
-    self.panelStatus = false
+    self.panel = {
+      status: false,
+      lastOpenPanel: 0,
+      lastClickButton: 0,
+      lastReaderViewWidth: 0
+    }
     self.addon = {
       key: Addon.key,
       title: Addon.title
     }
+    self.OCROnline = { times: 0, status: "free" }
+    self.customSelectedNodes = []
     self.globalProfile = deepCopy(globalProfilePreset)
     self.docProfile = deepCopy(docProfilePreset)
     self.notebookProfile = deepCopy(notebookProfilePreset)
     self.tempProfile = deepCopy(tempProfilePreset)
     self.dataSource = deepCopy(dataSourcePreset)
 
-    self.OCROnline = { times: 0, status: "free" }
-    self.customSelectedNodes = []
     const SettingViewController = JSB.defineClass(
       getObjCClassDeclar("SettingViewController", "UITableViewController"),
       settingViewControllerInst
