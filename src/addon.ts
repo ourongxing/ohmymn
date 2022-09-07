@@ -1,15 +1,16 @@
-import mnaddon from "../mnaddon.json"
-const key = mnaddon.addonid.split(".")[2]
+import { mainfest } from "../mainfest"
+import { MN } from "./sdk"
 export const Addon = {
   path: "",
-  title: mnaddon.title,
-  author: mnaddon.author,
-  version: mnaddon.version,
-  key,
-  globalProfileKey: `${key}_profile_global_v4`,
-  docProfileKey: `${key}_profile_doc_v4`,
-  notebookProfileKey: `${key}_profile_notebook_v4`,
+  key: mainfest.key,
+  title: mainfest.title,
+  author: mainfest.author,
+  version: mainfest.version,
+  globalProfileKey: mainfest.profileKey.global,
+  docProfileKey: mainfest.profileKey.doc,
+  notebookProfileKey: mainfest.profileKey.notebook,
   textColor: UIColor.blackColor(),
-  borderColor: UIColor.colorWithHexString("#8A95A2"),
-  buttonColor: UIColor.colorWithHexString("#8A95A2")
+  borderColor: UIColor.colorWithHexString(mainfest.color.border),
+  buttonColor: UIColor.colorWithHexString(mainfest.color.button),
+  url: MN.isZH ? mainfest.bbs : mainfest.forum
 }
