@@ -1,6 +1,6 @@
 import { Addon } from "~/addon"
 import { layoutViewController } from "~/jsExtension/switchPanel"
-import lang from "~/lang"
+import { lang } from "./lang"
 import {
   IGlobalProfile,
   IDocProfile,
@@ -11,7 +11,7 @@ import {
   IAllProfile
 } from "~/profile/defaultProfile"
 import { IConfig, MbBookNote } from "~/typings"
-import { dateFormat, deepCopy } from "../utils"
+import { dateFormat, deepCopy } from "~/utils"
 import {
   MN,
   delay,
@@ -23,9 +23,10 @@ import {
   setLocalDataByKey
 } from "~/sdk"
 import { decode, encode } from "../utils/third party/base64"
-import { ManageProfilePart, Range, ReadPrifile, WritePrifile } from "./typings"
+import { ManageProfileItems, Range, ReadPrifile, WritePrifile } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile } from "./utils"
+import { moduleNameList } from "~/dataSource"
 export * from "./utils"
 export * from "./updateDataSource"
 export * from "./defaultProfile"
@@ -40,6 +41,12 @@ let allDocProfile: Record<string, IDocProfile>
 let allNotebookProfile: Record<string, INotebookProfile>
 
 const { globalProfileKey, docProfileKey, notebookProfileKey } = Addon
+
+export function removeProfile() {
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(globalProfileKey)
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
+  NSUserDefaults.standardUserDefaults().removeObjectForKey(notebookProfileKey)
+}
 
 export const readProfile: ReadPrifile = ({
   range,
@@ -227,7 +234,7 @@ export async function saveProfile(name: string, key: string, value: any) {
         }
       }
     }
-    const timeout = 5
+    const timeout = 3
     if (self.backupWaitTimes === undefined) {
       // console.log("新计时器")
       self.backupWaitTimes = 0
@@ -266,80 +273,99 @@ export async function saveProfile(name: string, key: string, value: any) {
   }
 }
 
-export function removeProfile() {
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(globalProfileKey)
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(docProfileKey)
-  NSUserDefaults.standardUserDefaults().removeObjectForKey(notebookProfileKey)
-  self.docmd5 = undefined
-}
-
 async function writeProfile2Card(node: MbBookNote, full = true) {
   const { childNotes } = node
   if (!childNotes?.length) return
   let data: string
+  let range: string
+  let module: string
   if (full) {
+    range = lang.range.all_profile
     data = encode(
       JSON.stringify({
-        allDocProfileTemp: allDocProfile,
-        allGlobalProfileTemp: allGlobalProfile,
-        allNotebookProfileTemp: allNotebookProfile
+        key: Addon.key,
+        version: Addon.version,
+        profiles: {
+          allDocProfileTemp: allDocProfile,
+          allGlobalProfileTemp: allGlobalProfile,
+          allNotebookProfileTemp: allNotebookProfile
+        }
       })
     )
-    node.noteTitle = `OhMyMN（所有配置）`
   } else {
     const index = await selectIndex(
-      lang.profile_manage.select.array,
-      `${Addon.title} 配置管理`,
-      "想要写入哪部分的配置?",
+      lang.$profile_select_items,
+      lang.profile_management,
+      lang.which_part_profile,
       true
     )
     if (index === -1) return
-    // "所有配置", "全局配置 1", "全局配置 2", "全局配置 3", "全局配置 4", "全局配置 5", "所有全局配置", "文档配置", "笔记本配置"
-    node.noteTitle = `OhMyMN（${lang.profile_manage.select.array[index]}）`
-    data = encode(
-      JSON.stringify(
-        (() => {
-          switch (index) {
-            case 0:
-              return {
-                allDocProfileTemp: allDocProfile,
-                allGlobalProfileTemp: allGlobalProfile,
-                allNotebookProfileTemp: allNotebookProfile
+    const profiles = await (async () => {
+      switch (index) {
+        case ManageProfileItems.All:
+          return {
+            allDocProfileTemp: allDocProfile,
+            allGlobalProfileTemp: allGlobalProfile,
+            allNotebookProfileTemp: allNotebookProfile
+          }
+        case ManageProfileItems.Global1:
+        case ManageProfileItems.Global2:
+        case ManageProfileItems.Global3:
+        case ManageProfileItems.Global4:
+        case ManageProfileItems.Global5: {
+          const items = [lang.all_modules, ...moduleNameList.name]
+          const i = await selectIndex(
+            items,
+            lang.profile_management,
+            lang.which_module_profile_write
+          )
+          module = items[i]
+          if (i === 0) {
+            return {
+              allGlobalProfileTemp: {
+                [index - 1]: allGlobalProfile[index - 1]
               }
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-              return {
-                allGlobalProfileTemp: {
-                  [index - 1]: allGlobalProfile[index - 1]
+            }
+          } else {
+            return {
+              allGlobalProfileTemp: {
+                [index - 1]: {
+                  [moduleNameList.key[i - 1]]:
+                    allGlobalProfile[index - 1][moduleNameList.key[i - 1]]
                 }
               }
-            case 6:
-              return {
-                allGlobalProfileTemp: allGlobalProfile
-              }
-            case 7:
-              return {
-                allDocProfileTemp: allDocProfile
-              }
-            default:
-              return {
-                allNotebookProfileTemp: allNotebookProfile
-              }
+            }
           }
-        })()
-      )
+        }
+        case ManageProfileItems.AllGlobal:
+          return {
+            allGlobalProfileTemp: allGlobalProfile
+          }
+        case ManageProfileItems.Doc:
+          return {
+            allDocProfileTemp: allDocProfile
+          }
+        default:
+          return {
+            allNotebookProfileTemp: allNotebookProfile
+          }
+      }
+    })()
+    range = lang.$profile_select_items[index]
+    data = encode(
+      JSON.stringify({
+        key: Addon.key,
+        version: Addon.version,
+        profiles
+      })
     )
   }
 
   const dataLen = data.length
   const step = Math.ceil(dataLen / childNotes.length)
   undoGroupingWithRefresh(() => {
-    node.excerptText = `${lang.profile_manage.prohibit}\nversion: ${
-      Addon.version
-    }\n${dateFormat(new Date())}`
+    node.noteTitle = lang.note_title
+    node.excerptText = lang.note_content(range, dateFormat(new Date()), module)
     for (let i = 0, j = 0; i < dataLen; i += step, j++) {
       childNotes[j].excerptText = data.slice(i, i + step)
       childNotes[j].noteTitle = String(j + 1)
@@ -347,154 +373,211 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
   })
 }
 
-export async function manageProfileAction(node: MbBookNote, option: number) {
-  // Write
-  if (option === 1) {
-    if (!node.childNotes?.length) showHUD(lang.profile_manage.children)
-    else {
-      writeProfile({
-        range: Range.All,
-        docmd5: self.docmd5!,
-        notebookid: self.notebookid
-      })
-      writeProfile2Card(node, false)
-    }
-    // Read
-  } else {
-    try {
-      if (!node.childNotes?.length) throw ""
-      const tmp = node.childNotes.map(k => ({
-        text: k.excerptText,
-        title: k.noteTitle
-      }))
-
-      const text = tmp
-        .sort((a, b) => Number(a.title) - Number(b.title))
-        .reduce((acc, cur) => {
-          acc += cur.text
-          return acc
-        }, "")
-
-      const data = JSON.parse(decode(text))
-      const keys = Object.keys(data)
-      if (keys.length === 3) {
-        const {
-          allDocProfileTemp,
-          allGlobalProfileTemp,
-          allNotebookProfileTemp
-        }: {
-          allDocProfileTemp: typeof allDocProfile
-          allGlobalProfileTemp: typeof allGlobalProfile
-          allNotebookProfileTemp: typeof allNotebookProfile
-        } = data
+async function readProfilefromCard(node: MbBookNote) {
+  try {
+    if (!node.childNotes?.length) throw lang.no_children
+    async function getGlobalPath(p: any, n?: number) {
+      const ks = moduleNameList.key
+      const pks = Object.keys(p)
+      if (pks.length === 1) {
         const index = await selectIndex(
-          lang.profile_manage.select.array,
-          `${Addon.title} 配置管理`,
-          "检测到所有配置，读取后会覆盖当前配置。",
+          lang.$global_profile_items,
+          lang.profile_management,
+          lang.one_module_global(
+            n!,
+            moduleNameList.name[moduleNameList.key.indexOf(pks[0])]
+          ),
           true
         )
         if (index === -1) return
-        switch (index) {
-          case ManageProfilePart.All:
-            allGlobalProfile = allGlobalProfileTemp
-            allDocProfile = allDocProfileTemp
-            allNotebookProfile = allNotebookProfileTemp
-            break
-          case ManageProfilePart.Doc:
-            allDocProfile = allDocProfileTemp
-            break
-          case ManageProfilePart.Notebook:
-            allNotebookProfile = allNotebookProfileTemp
-            break
-          case ManageProfilePart.Global1:
-          case ManageProfilePart.Global2:
-          case ManageProfilePart.Global3:
-          case ManageProfilePart.Global4:
-          case ManageProfilePart.Global5:
-            const i = await selectIndex(
-              ["1", "2", "3", "4", "5"].map(k => `全局配置 ${k}`),
-              Addon.title + " 配置管理",
-              "请选择写入到哪一套全局配置中？",
-              true
-            )
-            if (i === -1) return
-            allGlobalProfile[i] = allGlobalProfileTemp[index - 1]
-            break
-        }
-      } else if (keys.length === 1) {
-        const key = keys[0]
-        if (key === "allDocProfileTemp") {
-          if (
-            await confirm(
-              Addon.title + " 配置管理",
-              "读取到文档配置，是否覆盖当前文档配置？"
-            )
-          )
-            allDocProfile = data[key]
-          else return
-        } else if (key === "allGlobalProfileTemp") {
-          // 所有全局配置
-          if (data[key].length) {
-            const index = await selectIndex(
-              [
-                "所有全局配置",
-                ...["1", "2", "3", "4", "5"].map(k => `全局配置 ${k}`)
-              ],
-              `${Addon.title} 配置管理`,
-              "检测到所有全局配置，读取后会覆盖当前配置。",
-              true
-            )
-            if (index === -1) return
-            else if (index === 0) allGlobalProfile = data[key]
-            else {
-              const i = await selectIndex(
-                ["1", "2", "3", "4", "5"].map(k => `全局配置 ${k}`),
-                Addon.title + " 配置管理",
-                `请选择写入到哪一套全局配置中？`,
-                true
-              )
-              if (i === -1) return
-              allGlobalProfile[i] = data[key][index - 1]
-            }
+        return {
+          index,
+          profile: {
+            ...allGlobalProfile[index],
+            ...p
           }
-          // 单一全局配置
+        }
+      } else {
+        const j = await selectIndex(
+          [
+            lang.all_modules,
+            ...ks.reduce((acc, k, i) => {
+              if (pks.includes(k)) acc.push(moduleNameList.name[i])
+              return acc
+            }, [] as string[])
+          ],
+          lang.profile_management,
+          lang.detecte_global_profile(n)
+        )
+        const index = await selectIndex(
+          lang.$global_profile_items,
+          lang.profile_management,
+          lang.which_global_profile_read_into,
+          true
+        )
+        if (index === -1) return
+        return {
+          index,
+          profile:
+            j === 0
+              ? p
+              : {
+                  ...allGlobalProfile[index],
+                  [ks[j - 1]]: p[ks[j - 1]]
+                }
+        }
+      }
+    }
+
+    const text = node.childNotes
+      .map(k => ({
+        text: k.excerptText,
+        title: k.noteTitle
+      }))
+      .sort((a, b) => Number(a.title) - Number(b.title))
+      .reduce((acc, cur) => {
+        acc += cur.text
+        return acc
+      }, "")
+    const data = (() => {
+      try {
+        return JSON.parse(decode(text))
+      } catch {
+        throw lang.parse_failed
+      }
+    })()
+    const { key, version, profiles } = data
+    if (key === undefined) throw lang.old_version
+    if (key !== Addon.key) throw lang.not_this_profile
+    const profileKeys = Object.keys(profiles)
+    if (profileKeys.length === 3) {
+      const {
+        allDocProfileTemp,
+        allGlobalProfileTemp,
+        allNotebookProfileTemp
+      }: {
+        allDocProfileTemp: typeof allDocProfile
+        allGlobalProfileTemp: typeof allGlobalProfile
+        allNotebookProfileTemp: typeof allNotebookProfile
+      } = profiles
+      const profileIndex = await selectIndex(
+        lang.$profile_select_items,
+        lang.profile_management,
+        lang.detecte_all_profile,
+        true
+      )
+      if (profileIndex === -1) return
+      switch (profileIndex) {
+        case ManageProfileItems.All:
+          allGlobalProfile = allGlobalProfileTemp
+          allDocProfile = allDocProfileTemp
+          allNotebookProfile = allNotebookProfileTemp
+          break
+        case ManageProfileItems.Global1:
+        case ManageProfileItems.Global2:
+        case ManageProfileItems.Global3:
+        case ManageProfileItems.Global4:
+        case ManageProfileItems.Global5: {
+          const res = await getGlobalPath(
+            allGlobalProfileTemp[profileIndex - 1]
+          )
+          if (res) {
+            allGlobalProfile[res.index] = res.profile
+          } else return
+          break
+        }
+        case ManageProfileItems.AllGlobal:
+          allGlobalProfile = allGlobalProfileTemp
+          break
+        case ManageProfileItems.Doc:
+          allDocProfile = allDocProfileTemp
+          break
+        case ManageProfileItems.Notebook:
+          allNotebookProfile = allNotebookProfileTemp
+          break
+      }
+    } else if (profileKeys.length === 1) {
+      const profileKey = profileKeys[0]
+      if (profileKey === "allDocProfileTemp") {
+        if (await confirm(lang.profile_management, lang.detecte_doc_profile))
+          allDocProfile = profiles[profileKey]
+        else return
+      } else if (profileKey === "allGlobalProfileTemp") {
+        const globalProfile = profiles[profileKey]
+        // 所有全局配置
+        if (Array.isArray(globalProfile)) {
+          const i = await selectIndex(
+            [lang.range.all_global_profile, ...lang.$global_profile_items],
+            lang.profile_management,
+            lang.detecte_all_notebook_profile,
+            true
+          )
+          if (i === -1) return
+          else if (i === 0) allGlobalProfile = globalProfile
           else {
-            const num = Object.keys(data[key])[0]
-            const index = await selectIndex(
-              ["1", "2", "3", "4", "5"].map(k => `全局配置 ${k}`),
-              Addon.title + " 配置管理",
-              `读取到全局配置 ${
-                ["1", "2", "3", "4", "5"][num]
-              }，请选择写入到哪一套全局配置中？`,
-              true
-            )
-            if (index === -1) return
-            allGlobalProfile[index] = data[key][num]
+            const res = await getGlobalPath(globalProfile[i - 1])
+            if (res) {
+              allGlobalProfile[res.index] = res.profile
+            } else return
           }
-        } else if (key === "allNotebookProfileTemp") {
-          if (
-            await confirm(
-              Addon.title + " 配置管理",
-              "读取到笔记本配置，是否覆盖当前笔记本配置？"
-            )
-          )
-            allNotebookProfile = data[key]
-          else return
         }
-      } else throw ""
-      setLocalDataByKey(allNotebookProfile, notebookProfileKey)
-      setLocalDataByKey(allGlobalProfile, globalProfileKey)
-      setLocalDataByKey(allDocProfile, docProfileKey)
+        // 单一全局配置
+        else {
+          const num = Object.keys(globalProfile)[0]
+          const res = await getGlobalPath(globalProfile[0], Number(num) + 1)
+          if (res) {
+            allGlobalProfile[res.index] = res.profile
+          } else return
+        }
+      } else if (profileKey === "allNotebookProfileTemp") {
+        if (
+          await confirm(lang.profile_management, lang.detecte_notebook_profile)
+        )
+          allNotebookProfile = profiles[profileKey]
+        else return
+      }
+    } else throw ""
+    setLocalDataByKey(allNotebookProfile, notebookProfileKey)
+    setLocalDataByKey(allGlobalProfile, globalProfileKey)
+    setLocalDataByKey(allDocProfile, docProfileKey)
+    readProfile({
+      range: Range.All,
+      docmd5: self.docmd5!,
+      notebookid: self.notebookid
+    })
+    layoutViewController()
+    showHUD(lang.success)
+  } catch (err) {
+    console.error(err)
+    showHUD(`${lang.fail}：${err}`)
+  }
+}
+
+export async function manageProfileAction(node: MbBookNote, option: number) {
+  // Write
+  switch (option) {
+    case 0:
+      readProfilefromCard(node)
+      break
+    case 1:
+      if (!node.childNotes?.length) showHUD(lang.no_children)
+      else {
+        writeProfile({
+          range: Range.All,
+          docmd5: self.docmd5!,
+          notebookid: self.notebookid
+        })
+        writeProfile2Card(node, false)
+      }
+      break
+    case 2:
+      removeProfile()
       readProfile({
         range: Range.All,
         docmd5: self.docmd5!,
         notebookid: self.notebookid
       })
-      layoutViewController()
-      showHUD("读取成功")
-    } catch (err) {
-      console.error(err)
-      showHUD(lang.profile_manage.fail)
-    }
+      showHUD(lang.profile_reset)
+      break
   }
 }

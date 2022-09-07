@@ -1,4 +1,3 @@
-import { IConfig } from "../typings"
 import { ReplaceParam } from "../utils"
 
 const globalProfilePreset = {
@@ -188,6 +187,8 @@ const tempProfilePreset = {
     customDefLink: []
   }
 }
+
+const redirectProfile = {}
 
 type UtilTemp<T> = {
   [K in keyof T]: K extends "replaceParam"
