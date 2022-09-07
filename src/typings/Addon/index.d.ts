@@ -44,7 +44,12 @@ declare global {
     }
     isModify: boolean
     customSelectedNodes: MbBookNote[]
-    panelStatus: boolean
+    panel: {
+      status: boolean
+      lastOpenPanel: number
+      lastClickButton: number
+      lastReaderViewWidth: number
+    }
     docProfile: IDocProfile
     globalProfile: IGlobalProfile
     tempProfile: ITempProfile

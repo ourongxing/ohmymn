@@ -4,13 +4,13 @@ import { StudyMode } from "~/enum"
 import { MN, delay } from "~/sdk"
 
 // Set the position and size of the panel
-export const layoutViewController = (
+export function layoutViewController(
   heightNum = self.globalProfile.addon.panelHeight[0],
   positionNum = self.globalProfile.addon.panelPosition[0]
-) => {
+) {
   const studyController = MN.studyController()
   const readerView = studyController.readerController.view
-  tmp.lastReaderViewWidth = readerView.frame.width
+  self.panel.lastReaderViewWidth = readerView.frame.width
   const frame = studyController.view.bounds
   const width = 300
   const height = [600, 450, 300][heightNum]
@@ -40,31 +40,25 @@ export const layoutViewController = (
   }
 }
 
-export const closePanel = () => {
-  if (!self.panelStatus) return
+export function closePanel() {
+  if (!self.panel.status) return
   self.settingViewController.view.removeFromSuperview()
-  self.panelStatus = false
+  self.panel.status = false
   MN.studyController().refreshAddonCommands()
 }
 
-const tmp = {
-  lastOpenPanel: 0,
-  lastClickButton: 0,
-  lastReaderViewWidth: 0
-}
-
-export const openPanel = () => {
-  if (self.panelStatus) return
+export function openPanel() {
+  if (self.panel.status) return
   const studyController = MN.studyController()
   studyController.view.addSubview(self.settingViewController.view)
-  self.panelStatus = true
+  self.panel.status = true
   studyController.refreshAddonCommands()
-  tmp.lastOpenPanel = Date.now()
+  self.panel.lastOpenPanel = Date.now()
   delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
-export const switchPanel = () => {
-  if (self.panelStatus) closePanel()
+export function switchPanel() {
+  if (self.panel.status) closePanel()
   else {
     if (
       self.globalProfile.addon.panelControl.includes(
@@ -72,18 +66,19 @@ export const switchPanel = () => {
       )
     ) {
       const now = Date.now()
-      if (tmp.lastClickButton && now - tmp.lastClickButton < 300) openPanel()
-      else tmp.lastClickButton = now
+      if (self.panel.lastClickButton && now - self.panel.lastClickButton < 300)
+        openPanel()
+      else self.panel.lastClickButton = now
     } else openPanel()
   }
 }
 
-const controllerWillLayoutSubviews = (controller: UIViewController) => {
+function controllerWillLayoutSubviews(controller: UIViewController) {
   if (controller != MN.studyController()) return
-  if (!self.panelStatus) return
+  if (!self.panel.status) return
   if (
-    Date.now() - tmp.lastOpenPanel < 200 ||
-    (tmp.lastReaderViewWidth !==
+    Date.now() - self.panel.lastOpenPanel < 200 ||
+    (self.panel.lastReaderViewWidth !==
       MN.studyController().readerController.view.frame.width &&
       self.globalProfile.addon.panelPosition[0] === 0)
   ) {
@@ -91,13 +86,13 @@ const controllerWillLayoutSubviews = (controller: UIViewController) => {
   }
 }
 
-const queryAddonCommandStatus = () => {
+function queryAddonCommandStatus() {
   return MN.studyController().studyMode !== StudyMode.review
     ? {
         image: "logo.png",
         object: self,
         selector: "switchPanel:",
-        checked: self.panelStatus
+        checked: self.panel.status
       }
     : null
 }

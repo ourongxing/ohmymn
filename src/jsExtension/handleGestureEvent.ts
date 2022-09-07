@@ -108,7 +108,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
   if (swipeY < 100 || swipeX < 70 || swipeX > width - 70)
     return SwipePosition.None
   if (
-    self.panelStatus &&
+    self.panel.status &&
     isWithinArea({ swipeX, swipeY }, self.settingViewController.view.frame)
   )
     return SwipePosition.None

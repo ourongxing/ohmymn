@@ -3,7 +3,7 @@ import { more } from "./modules"
 import { constModules, modules } from "./modules"
 import { ModuleKeyType } from "./synthesizer"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
-import { CellViewType } from "./typings/enum"
+import { CellViewType } from "./enum"
 import { serialSymbols } from "./utils"
 
 const { addon, magicaction4card, magicaction4text } = constModules
@@ -64,9 +64,12 @@ const genDataSource = (
   configs: IConfig[],
   magicaction4card: IConfig,
   magicaction4text: IConfig
-): ISection[] => {
+) => {
   const dataSource: ISection[] = []
-  const moduleNameList: string[] = []
+  const moduleNameList: { key: string[]; name: string[] } = {
+    key: [],
+    name: []
+  }
   const actions4card =
     magicaction4card.actions4card?.map(k => ({
       ...k,
@@ -107,7 +110,10 @@ const genDataSource = (
     }
   })
   dataSource.forEach((sec, index) => {
-    index && moduleNameList.push(sec.header)
+    if (index) {
+      moduleNameList.key.push(sec.key)
+      moduleNameList.name.push(sec.header)
+    }
   })
 
   const Action4CardSection = genSection(magicaction4card)
@@ -119,7 +125,7 @@ const genDataSource = (
   const [AddonSection, GestureSection] = dataSource
   for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
-      row.option = moduleNameList.map(
+      row.option = moduleNameList.name.map(
         (value, index) =>
           serialSymbols.hollow_circle_number[index] + " " + value
       )
@@ -145,7 +151,10 @@ const genDataSource = (
   dataSource.splice(1, 0, Action4CardSection)
   dataSource.splice(2, 0, Action4TextSection)
   dataSource.push(more)
-  return dataSource
+  return {
+    dataSource,
+    moduleNameList
+  }
 }
 
 function genDataSourceIndex(dataSource: ISection[]) {
@@ -208,7 +217,7 @@ const getActionKeyGetureOption = (section: ISection) => {
   return { actionKeys, gestureOption }
 }
 
-export const dataSourcePreset = genDataSource(
+export const { dataSource: dataSourcePreset, moduleNameList } = genDataSource(
   // @ts-ignore
   [addon, ...Object.values(modules)],
   magicaction4card,

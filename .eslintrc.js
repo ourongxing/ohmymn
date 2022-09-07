@@ -1,11 +1,6 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  ignorePatterns: [
-    "**/MarginNote/*.d.ts",
-    "**/UIKit/*.d.ts",
-    "**/Foundation/*.d.ts"
-  ],
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
