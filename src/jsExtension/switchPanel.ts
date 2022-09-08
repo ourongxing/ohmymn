@@ -14,7 +14,7 @@ export function layoutViewController(
   const frame = studyController.view.bounds
   const width = 300
   const height = [600, 450, 300][heightNum]
-  const autoX = () => {
+  const docSide = () => {
     const isHidden = readerView.hidden
     if (studyController.rightMapMode) {
       const x = readerView.frame.width - width - 40
@@ -26,8 +26,46 @@ export function layoutViewController(
         : x
     }
   }
+  const middleDocMap = () => {
+    const isHidden = readerView.hidden
+    if (studyController.rightMapMode) {
+      const x = readerView.frame.width - width / 2
+      return x < 50 || isHidden
+        ? 50
+        : x > frame.width - width - 50
+        ? frame.width - width - 50
+        : x
+    } else {
+      const x = frame.width - readerView.frame.width - width / 2
+      return x > frame.width - width - 50 || isHidden
+        ? frame.width - width - 50
+        : x < 50
+        ? 50
+        : x
+    }
+  }
+  const mapSide = () => {
+    const isHidden = readerView.hidden
+    if (studyController.rightMapMode) {
+      const x = readerView.frame.width + 40
+      return x < 50 || isHidden
+        ? 50
+        : x > frame.width - width - 50
+        ? frame.width - width - 50
+        : x
+    } else {
+      const x = frame.width - readerView.frame.width - width - 40
+      return x > frame.width - width - 50 || isHidden
+        ? frame.width - width - 50
+        : x < 50
+        ? 50
+        : x
+    }
+  }
   const x = [
-    autoX,
+    docSide,
+    middleDocMap,
+    mapSide,
     () => 50,
     () => (frame.width - width) / 2,
     () => frame.width - width - 50
@@ -80,7 +118,7 @@ function controllerWillLayoutSubviews(controller: UIViewController) {
     Date.now() - self.panel.lastOpenPanel < 200 ||
     (self.panel.lastReaderViewWidth !==
       MN.studyController().readerController.view.frame.width &&
-      self.globalProfile.addon.panelPosition[0] === 0)
+      [0, 1, 2].includes(self.globalProfile.addon.panelPosition[0]))
   ) {
     layoutViewController()
   }

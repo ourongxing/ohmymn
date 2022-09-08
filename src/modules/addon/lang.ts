@@ -6,7 +6,14 @@ const zh = {
   option: {
     profile: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
     has_title_then: ["不转为标题", "合并标题", "覆盖标题"],
-    panel_position: ["自动", "靠左", "居中", "靠右"],
+    panel_position: [
+      "文档侧",
+      "文档脑图中间",
+      "脑图侧",
+      "靠左",
+      "居中",
+      "靠右"
+    ],
     panel_height: ["高点", "标准", "矮点"],
     remove_excerpt: ["立即删除", "等会删除", "不删除"],
     panle_control: [
@@ -43,7 +50,14 @@ const en: typeof zh = {
     profile: ["Profile 1", "Profile 2", "Profile 3", "Profile 4", "Initialize"],
     remove_excerpt: ["Remove Now", "Remove Later", "Not Remove"],
     has_title_then: ["Keep Intact", "Merge", "Override"],
-    panel_position: ["Auto", "Left", "Center", "Right"],
+    panel_position: [
+      "Doc Side",
+      "Middle of Doc and Mindmap",
+      "MindMap Side",
+      "Left",
+      "Center",
+      "Right"
+    ],
     panel_height: ["Higher", "Standard", "Lower"],
     panle_control: [
       "Double Click Logo to Open",
