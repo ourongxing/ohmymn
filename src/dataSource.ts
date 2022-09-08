@@ -1,7 +1,7 @@
 import lang from "./lang"
 import { more } from "./modules"
 import { constModules, modules } from "./modules"
-import { ModuleKeyType } from "./synthesizer"
+import { ModuleKeyType } from "./mergeMethod"
 import { ISection, IConfig, IRow, IRowButton } from "./typings"
 import { CellViewType } from "./enum"
 import { serialSymbols } from "./utils"

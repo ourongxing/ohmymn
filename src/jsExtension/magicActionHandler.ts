@@ -1,7 +1,7 @@
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
-import { checkInputCorrect, actions4text, actions4card } from "~/synthesizer"
+import { checkInputCorrect, actions4text, actions4card } from "~/mergeMethod"
 import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/enum"
 import { getMNLinkValue, manageProfileAction } from "~/utils"
@@ -101,11 +101,9 @@ const handleMagicAction = async ({
         return
       }
       const text = self.docProfile.magicaction4text.preOCR
-        ? (await autoocr(imageFromSelection)) ??
-          currentDocumentController.selectionText ??
-          ""
-        : currentDocumentController.selectionText ?? ""
-
+        ? await autoocr(imageFromSelection)
+        : currentDocumentController.selectionText
+      if (!text) return
       const res: string | undefined = await actions4text[key]({
         text,
         imgBase64: imageFromSelection,

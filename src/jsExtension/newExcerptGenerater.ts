@@ -1,5 +1,5 @@
 import { HasTitleThen } from "~/modules/addon/typings"
-import { autoUtils } from "~/synthesizer"
+import { autoUtils } from "~/mergeMethod"
 import { MbBookNote } from "~/typings"
 import { unique, cacheTransformer } from "~/utils"
 import { MN, removeHighlight } from "~/sdk"

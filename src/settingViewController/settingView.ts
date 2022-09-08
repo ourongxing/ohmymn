@@ -1,7 +1,7 @@
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
-import { ModuleKeyType, moduleKeys } from "~/synthesizer"
+import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
 import { BindType, IRowSelect, UITableView } from "~/typings"
 import { CellViewType, NSTextAlignment } from "~/enum"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"

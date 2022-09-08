@@ -1,4 +1,4 @@
-import { ModuleKeyType } from "~/synthesizer"
+import { ModuleKeyType } from "~/mergeMethod"
 import { CellViewType } from "~/enum"
 
 export type ISection = {

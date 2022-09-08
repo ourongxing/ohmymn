@@ -1,7 +1,7 @@
 import { Addon } from "~/addon"
 import { actionKey4Text, actionKey4Card } from "~/dataSource"
 import lang from "~/lang"
-import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/synthesizer"
+import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/mergeMethod"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
 import { CellViewType } from "~/enum"
 import { MN, popup, openUrl, postNotification } from "~/sdk"

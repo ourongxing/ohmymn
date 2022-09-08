@@ -3,7 +3,7 @@ import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
 import { gestureHandlerController, initGesture } from "~/modules/gesture/utils"
-import { moduleKeys, isModuleON } from "~/synthesizer"
+import { moduleKeys, isModuleON } from "~/mergeMethod"
 import { IRowButton, GestureHandler } from "~/typings"
 import {
   UISwipeGestureRecognizerDirection,
