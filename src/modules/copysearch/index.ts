@@ -187,6 +187,14 @@ export default defineConfig({
       method({ text, option }) {
         text && search(text, option)
       }
+    },
+    {
+      type: CellViewType.Button,
+      key: "copyText",
+      label: lable.copy_text,
+      method({ text }) {
+        return text
+      }
     }
   ]
 })

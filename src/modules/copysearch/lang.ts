@@ -13,7 +13,8 @@ const zh = {
     copy_card_info: "复制卡片内容",
     separator_symbols_multiple_card: "分隔符",
     show_search_engine: "显示/隐藏搜索 URL",
-    search_text: "搜索选中文字"
+    search_text: "搜索选中文字",
+    copy_text: "复制选中文字"
   },
   option: {
     which_partof_card: ["动态选择", "优先标题", "优先摘录", "自定义"],
@@ -44,7 +45,6 @@ const en: typeof zh = {
   intro: "Copy and search for what you want",
   link: "https://www.notion.so/huangkewei/CopySearch-c824347a82c543569acc3d01053cd227",
   lable: {
-    search_text: "Search for Selected Text",
     which_partof_card: "Default Part of Card",
     multiple_titles: "If Multiple Titles",
     multiple_excerpts: "If Multiple Excerpts",
@@ -55,7 +55,9 @@ const en: typeof zh = {
     search_card_info: "Search Card Content",
     separator_symbols_multiple_card: "Separator Symbols",
     copy_card_info: "Copy Card Content",
-    show_search_engine: "Show/Hide Search URL"
+    show_search_engine: "Show/Hide Search URL",
+    search_text: "Search for Selected Text",
+    copy_text: "Copy Selected Text"
   },
   option: {
     which_partof_card: [
