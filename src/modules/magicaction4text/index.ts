@@ -14,6 +14,12 @@ export default defineConfig({
       help: lang.help.preOCR
     },
     {
+      key: "preSimplify",
+      type: CellViewType.Switch,
+      label: "预先转为简体中文",
+      help: "【当前文档】使用 AutoSimplify 进行繁简转换"
+    },
+    {
       key: "noteOptions",
       type: CellViewType.MuiltSelect,
       option: [

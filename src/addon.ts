@@ -1,3 +1,4 @@
+import { OpenCC } from "~/modules/autosimplify/opencc"
 import { mainfest } from "../mainfest"
 import { MN } from "./sdk"
 export const Addon = {
@@ -12,5 +13,7 @@ export const Addon = {
   textColor: UIColor.blackColor(),
   borderColor: UIColor.colorWithHexString(mainfest.color.border),
   buttonColor: UIColor.colorWithHexString(mainfest.color.button),
-  url: MN.isZH ? mainfest.bbs : mainfest.forum
+  url: MN.isZH ? mainfest.bbs : mainfest.forum,
+  enDict: undefined as SQLiteDatabase | undefined,
+  OpenCC: undefined as OpenCC | undefined
 }

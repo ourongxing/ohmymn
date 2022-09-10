@@ -1,3 +1,4 @@
+import { Addon } from "~/addon"
 import { ReplaceParam } from "../utils"
 
 const globalProfilePreset = {
@@ -79,6 +80,11 @@ const globalProfilePreset = {
     preset: [],
     customReplace: ""
   },
+  autosimplify: {
+    variant: [0],
+    taiwanIdiom: true,
+    customSimplify: `(/壹/g, "一"); (/妳/g, "你")`
+  },
   autotag: {
     on: false,
     preset: [],
@@ -141,6 +147,7 @@ const globalProfilePreset = {
     caiyunToLang: [0]
   },
   additional: {
+    lastVision: Addon.version,
     // 最好不要多层对象，不允许被修改
     autoocr: {
       lastGetToken: 0,
@@ -152,11 +159,15 @@ const globalProfilePreset = {
 // Each document has a independent profile
 const docProfilePreset = {
   magicaction4text: {
-    preOCR: false
+    preOCR: false,
+    preSimplify: false
   },
   autoocr: {
     on: false,
     lang: [0]
+  },
+  autosimplify: {
+    on: false
   }
 }
 
@@ -179,6 +190,7 @@ const tempProfilePreset = {
     customList: [],
     customReplace: [],
     customExtractTitle: [],
+    customSimplify: [],
     customFormat: []
   },
   regArray: {
@@ -188,7 +200,24 @@ const tempProfilePreset = {
   }
 }
 
-const redirectProfile = {}
+export const customKey = [
+  ...Object.keys(tempProfilePreset.regArray),
+  ...Object.keys(tempProfilePreset.replaceParam)
+]
+
+const rewriteSelection = [
+  {
+    version: {
+      old: "4.0.0",
+      new: "4.0.5"
+    },
+    global: {
+      panelPosition: (old: number[]) => [old[0] >= 1 ? old[0] + 2 : old[0]],
+      cardActionGesture: (old: number[]) => [old[0] >= 5 ? old[0] + 1 : old[0]],
+      textActionGesture: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
+    }
+  }
+]
 
 type UtilTemp<T> = {
   [K in keyof T]: K extends "replaceParam"

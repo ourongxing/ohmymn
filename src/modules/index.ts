@@ -16,6 +16,7 @@ import magicaction4card from "./magicaction4card"
 import magicaction4text from "./magicaction4text"
 import addon from "./addon"
 import anotherautodef from "./anotherautodef"
+import autosimplify from "./autosimplify"
 import { MN } from "~/sdk"
 
 export const modules = {
@@ -31,7 +32,8 @@ export const modules = {
   copysearch,
   autoocr,
   autotranslate,
-  autocomment
+  autocomment,
+  autosimplify
 }
 
 export const constModules = { addon, magicaction4card, magicaction4text }
