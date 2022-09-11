@@ -88,17 +88,13 @@ const plugins: Plugin[] = [
       dts: false
     }),
   genMainfest(),
-  copy({
-    copy: [
-      "assets/logo.png",
-      "assets/icon"
-      // "assets/dict.db",
-      // "assets/dict.zip"
-    ].map(k => ({
-      from: k,
-      to: outDir
-    }))
-  }),
+  mainfest.files?.length &&
+    copy({
+      copy: mainfest.files.map(k => ({
+        from: k,
+        to: outDir
+      }))
+    }),
   isProd && zip()
 ].filter(k => k)
 

@@ -4,7 +4,7 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.0.4",
+  "version": "4.0.5",
   "license": "MIT",
   "description": "MarginNote Addon Control Panel and Development Framework",
   "scripts": {
@@ -29,22 +29,27 @@
     "typescript"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^17.0.3",
-    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@ourongxing/estrella": "^1.4.1",
-    "@types/node": "^18.6.1",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "esbuild": "^0.14.50",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.7.16",
+    "@types/semver": "^7.3.12",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "esbuild": "^0.15.7",
     "esbuild-plugin-mxn-copy": "^1.0.1",
-    "eslint": "^8.20.0",
+    "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "tsx": "^3.8.0",
-    "typescript": "^4.7.4",
-    "unplugin-auto-import": "^0.10.1"
+    "tsx": "^3.9.0",
+    "typescript": "^4.8.3",
+    "unplugin-auto-import": "^0.11.2"
+  },
+  "dependencies": {
+    "semver": "^7.3.7"
   }
 }

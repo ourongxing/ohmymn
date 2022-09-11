@@ -9,4 +9,4 @@ test*
 .pnpm*
 .DS_Store
 .local_history
-assets/dict*
+endict*

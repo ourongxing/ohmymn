@@ -160,13 +160,15 @@ async function getWordInfo(word: string): Promise<Word> {
     if (!info.length) throw ""
     return unifiyData(info[0])
   } else {
-    if (!self.enDict) {
-      if (isfileExists(`${Addon.path}/dict.db`)) {
-        self.enDict = SQLiteDatabase.databaseWithPath(`${Addon.path}/dict.db`)
-        self.enDict.open()
+    if (!Addon.enDict) {
+      if (isfileExists(`${Addon.path}/endict.db`)) {
+        Addon.enDict = SQLiteDatabase.databaseWithPath(
+          `${Addon.path}/endict.db`
+        )
+        Addon.enDict.open()
       } else throw "没找到本地数据库"
     }
-    const query = self.enDict.executeQueryWithArgumentsInArray(
+    const query = Addon.enDict.executeQueryWithArgumentsInArray(
       `SELECT * FROM stardict WHERE word = '${word}'`,
       []
     )
@@ -319,6 +321,7 @@ function resolveExchange(ex: string): Exchange {
   return ret
 }
 
+// TODO improve context recognition
 function getContext(note: MbBookNote, text: string) {
   try {
     const data = MN.db

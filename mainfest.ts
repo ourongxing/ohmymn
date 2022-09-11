@@ -18,6 +18,7 @@ interface Mainfest {
   bbs?: string
   /** English forum url */
   forum?: string
+  files?: string[]
 }
 
 export const mainfest: Mainfest = {
@@ -36,5 +37,12 @@ export const mainfest: Mainfest = {
     button: "#8A95A2"
   },
   github: "https://github.com/marginnoteapp/ohmymn",
-  bbs: "https://bbs.marginnote.cn/t/topic/20501"
+  bbs: "https://bbs.marginnote.cn/t/topic/20501",
+  files: [
+    "assets/logo.png",
+    "assets/icon",
+    "assets/simplified.json"
+    // "assets/endict.db"
+    // "assets/endict.zip"
+  ]
 }

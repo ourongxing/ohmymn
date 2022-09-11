@@ -68,11 +68,11 @@ export const clsMethons = {
   addonDidConnect() {
     console.log("Addon connected", "lifeCycle")
     if (
-      !isfileExists(`${Addon.path}/dict.db`) &&
-      isfileExists(`${Addon.path}/dict.zip`)
+      !isfileExists(`${Addon.path}/endict.db`) &&
+      isfileExists(`${Addon.path}/endict.zip`)
     )
       ZipArchive.unzipFileAtPathToDestination(
-        `${Addon.path}/dict.zip`,
+        `${Addon.path}/endict.zip`,
         Addon.path
       )
   }
