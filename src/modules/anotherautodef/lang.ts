@@ -40,7 +40,7 @@ const en: typeof zh = {
   label: {
     on: "Auto Executed",
     only_desc: "Only Keep Definiens",
-    to_title_link: "Convert Alias To Title Link",
+    to_title_link: "Convert Alias To Muilt Titles",
     title_link_split: "Select Alias Participle",
     preset: "Select Presets",
     extract_title: "Extract Title"

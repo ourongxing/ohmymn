@@ -1,36 +1,46 @@
 import { MN } from "~/sdk"
 
 const zh = {
-  intro: "自动替换摘录中的某些错误",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autoreplace.html",
-  option: {
-    preset: ["自定义"],
-    replace_selected: ["使用 AutoReplace 的配置", "确定"]
+  intro: "自动转换为简体中文",
+  on: {
+    label: "摘录时自动执行",
+    help: "【当前文档】"
   },
-  help: {
-    custom_replace: "自定义，点击查看具体格式"
+  variant: {
+    label: "异体字转换",
+    $option: ["中国大陆", "中国台湾", "中国香港"]
   },
-  label: {
-    on: "摘录时自动执行",
-    preset: "选择需要的预设",
-    replace_selected: "替换摘录文字"
+  taiwan_idiom: {
+    label: "台湾特殊用词转换"
+  },
+  custom_simplify: {
+    help: "自定义转换，点击查看自定义方法"
+  },
+  simplify_card: {
+    label: "转换为简体中文",
+    $option: ["摘录和标题", "仅摘录", "仅标题"]
   }
 }
 
 const en: typeof zh = {
-  intro: "Automatically replace errors in excerpts",
-  link: "https://www.notion.so/huangkewei/AutoReplace-1cf1399ed90e4fc7a3e16843d37f2a56", //Todo:修改英文版Notion
-  option: {
-    preset: ["Custom"],
-    replace_selected: ["Use AutoReplace Settings", "Confirm"]
+  intro: "Auto convert to simplified Chinese",
+  on: {
+    label: "Auto Execute when Excerpting",
+    help: "【Current Document】"
   },
-  help: {
-    custom_replace: "Customize. Click for specific formats"
+  variant: {
+    label: "Variant Conversion",
+    $option: ["Mainland China", "Taiwan China", "Hong Kong China"]
   },
-  label: {
-    on: "Auto Executed",
-    preset: "Select Presets",
-    replace_selected: "Replace Excerptions"
+  taiwan_idiom: {
+    label: "Taiwan Special Word Conversion"
+  },
+  custom_simplify: {
+    help: "Custom conversion, click to get how to customize"
+  },
+  simplify_card: {
+    label: "Convert to Simplified Chinese",
+    $option: ["Excerpt and Title", "Only Excerpt", "Only Title"]
   }
 }
 export const lang = MN.isZH ? zh : en

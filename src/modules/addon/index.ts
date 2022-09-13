@@ -4,22 +4,21 @@ import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 
-const { label, help, option } = lang
 export default defineConfig({
   name: Addon.title,
   key: "addon",
   link: lang.link,
-  intro: lang.intro + Addon.version,
+  intro: lang.intro,
   settings: [
     {
-      help: help.profile,
+      help: lang.profile.help,
       key: "profile",
       type: CellViewType.Select,
-      option: option.profile,
-      label: label.profile
+      option: lang.profile.$option,
+      label: lang.profile.label
     },
     {
-      label: label.quick_switch,
+      label: lang.quick_switch.label,
       key: "quickSwitch",
       type: CellViewType.MuiltSelect,
       option: []
@@ -27,57 +26,57 @@ export default defineConfig({
     {
       key: "panelPosition",
       type: CellViewType.Select,
-      option: option.panel_position,
-      label: label.panel_position
+      option: lang.panel_position.$option,
+      label: lang.panel_position.label
     },
     {
       key: "panelHeight",
       type: CellViewType.Select,
-      option: option.panel_height,
-      label: label.panel_height
+      option: lang.panel_height.$option,
+      label: lang.panel_height.label
     },
     {
       key: "panelControl",
       type: CellViewType.MuiltSelect,
-      option: option.panle_control,
-      label: label.panle_control
+      option: lang.panle_control.$option,
+      label: lang.panle_control.label
     },
     {
       key: "hasTitleThen",
       type: CellViewType.Select,
-      label: label.has_title_then,
-      help: help.has_title_then,
-      option: option.has_title_then
+      label: lang.has_title_then.label,
+      help: lang.has_title_then.help,
+      option: lang.has_title_then.$option
     },
     {
       key: "removeExcerpt",
       type: CellViewType.Select,
-      label: label.remove_excerpt,
-      option: option.remove_excerpt,
-      help: "接上文",
+      label: lang.remove_excerpt.label,
+      option: lang.remove_excerpt.$option,
+      help: lang.remove_excerpt.help,
       bind: ["hasTitleThen", [1, 2]]
     },
     {
       key: "lockExcerpt",
       type: CellViewType.Switch,
-      label: label.lock_excerpt
+      label: lang.lock_excerpt.label
     },
     {
       key: "autoBackup",
       type: CellViewType.Switch,
-      label: label.auto_backup
+      label: lang.auto_backup.label
     },
     {
       key: "backupID",
       type: CellViewType.Input,
-      help: "输入备份卡片链接，请确保该卡片有子卡片，否则无法写入。子卡片越多越好。",
+      help: lang.backup_ID.help,
       bind: ["autoBackup", true],
       check: ({ input }) => {
         const noteid = input.replace("marginnote3app://note/", "")
-        if (noteid === input) throw "不是卡片链接"
+        if (noteid === input) throw lang.backup_ID.not_link
         const node = MN.db.getNoteById(noteid)
-        if (!node) throw "卡片不存在"
-        if (!node.childNotes?.length) throw "卡片没有子卡片"
+        if (!node) throw lang.backup_ID.not_exit
+        if (!node.childNotes?.length) throw lang.backup_ID.no_child
       }
     }
   ]
