@@ -554,10 +554,10 @@ export class MbBookNote {
   readonly annotation?: boolean
   /**
    *
-   *
+   * Whether the image has been OCR to text
    * @type {boolean}
    */
-  readonly textFirst?: boolean
+  readonly textFirst: boolean
   /**
    * int
    * @type {GroupMode}

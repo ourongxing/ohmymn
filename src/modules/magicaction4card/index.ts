@@ -22,29 +22,29 @@ import {
   removeHighlight,
   modifyNodeTitle,
   removeCommentButLinkTag,
-  appendTextComment
+  appendTextComment,
+  MN,
+  selectIndex
 } from "~/sdk"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
 
-const { help, option, intro, label, link, hud } = lang
-
 export default defineConfig({
   name: "MagicAction for Card",
   key: "magicaction4card",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "smartSelection",
       type: CellViewType.Switch,
-      label: label.smart_selection
+      label: lang.smart_selection
     },
     {
       key: "defaultMergeText",
       type: CellViewType.Input,
-      help: "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
+      help: lang.default_merge_text,
       link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97",
       check({ input }) {
         checkPlainText(input)
@@ -56,21 +56,21 @@ export default defineConfig({
     {
       key: "manageProfile",
       type: CellViewType.Button,
-      label: label.manage_profile,
-      option: option.manage_profile,
-      help: help.manage_profile,
+      label: lang.manage_profile.label,
+      option: lang.manage_profile.$option3,
+      help: lang.manage_profile.help,
       method: () => {
         console.log()
       }
     },
     {
       type: CellViewType.ButtonWithInput,
-      label: label.filter_cards,
-      option: option.filter_cards,
+      label: lang.filter_cards.label,
+      option: lang.filter_cards.$option5,
       key: "filterCards",
       method({ nodes, content, option }) {
         if (!content) {
-          showHUD(hud.none_card)
+          showHUD(lang.none_card)
           return []
         }
         const regGroup = string2RegArray(content)
@@ -83,7 +83,7 @@ export default defineConfig({
               case FilterCards.Tag:
                 return getAllTags(node).join(" ")
               case FilterCards.Excerpt:
-                return getExcerptText(node).ocr.join("\n")
+                return getExcerptText(node).text.join("\n")
               case FilterCards.Comment:
                 return getAllCommnets(node).nopic.join("\n")
               default:
@@ -95,10 +95,10 @@ export default defineConfig({
           )
         })
         if (customSelectedNodes.length) {
-          HUDController.show(hud.is_clicked)
+          HUDController.show(lang.is_selected)
           return customSelectedNodes
         } else {
-          showHUD(hud.none_card)
+          showHUD(lang.none_card)
           return []
         }
       },
@@ -108,9 +108,9 @@ export default defineConfig({
     },
     {
       type: CellViewType.Button,
-      label: label.merge_cards,
+      label: lang.merge_cards.label,
       key: "mergeCards",
-      option: option.merge_cards,
+      option: lang.merge_cards.$option2,
       method({ option, nodes }) {
         if (nodes.length == 1) return
         const { node } = nodes.slice(1).reduce(
@@ -150,9 +150,9 @@ export default defineConfig({
     },
     {
       type: CellViewType.ButtonWithInput,
-      label: label.rename_title,
+      label: lang.rename_title.label,
       key: "renameTitle",
-      help: help.rename_title,
+      help: lang.rename_title.help,
       method: renameTitle,
       check({ input }) {
         input = /^\(.+\)$/.test(input)
@@ -167,10 +167,10 @@ export default defineConfig({
     },
     {
       type: CellViewType.Button,
-      label: label.merge_text,
+      label: lang.merge_text.label,
       key: "mergeText",
-      option: option.merge_text,
-      help: "仅支持合并文字摘录和文字评论，框选摘录会自动 OCR。",
+      option: lang.merge_text.$option2,
+      help: lang.merge_text.help,
       method: ({ option, nodes }) => {
         const { defaultMergeText } = self.globalProfile.magicaction4card
         const [front, behind] = reverseEscape(
@@ -179,7 +179,7 @@ export default defineConfig({
         ).split("$&")
         for (const node of nodes) {
           const dataArr = [
-            ...getExcerptText(node, true).ocr,
+            ...getExcerptText(node, true).text,
             ...getAllCommnets(node).nopic
           ]
           const allText = ((arr: string[]) => {
@@ -193,14 +193,30 @@ export default defineConfig({
           })(dataArr)
           removeCommentButLinkTag(
             node,
-            k => k.type === "PaintNote" || k.type === "HtmlNote",
-            k => {
+            k =>
+              k.type === "PaintNote" ||
+              k.type === "HtmlNote" ||
+              (!node.textFirst &&
+              k.type === "LinkNote" &&
+              MN.db.getNoteById(k.noteid!)?.excerptPic
+                ? true
+                : false),
+            async k => {
               switch (option) {
                 case MergeText.ToExpertText:
-                  k.excerptText = allText
+                  if (k.excerptPic) {
+                    const index = await selectIndex(
+                      lang.merge_text.$excerpt_pic_option2,
+                      lang.merge_text.label,
+                      lang.merge_text.is_excerpt_pic
+                    )
+                    if (index) {
+                      appendTextComment(k, removeHighlight(allText))
+                    } else k.excerptText = allText
+                  }
                   break
                 case MergeText.ToComment:
-                  k.excerptText = ""
+                  if (!k.excerptPic) k.excerptText = ""
                   appendTextComment(k, removeHighlight(allText))
               }
             }
@@ -211,9 +227,9 @@ export default defineConfig({
     {
       key: "switchTitle",
       type: CellViewType.Button,
-      label: label.switch_title,
-      option: option.switch_title,
-      help: help.switch_title,
+      label: lang.switch_title.label,
+      option: lang.switch_title.$option2,
+      help: lang.switch_title.help,
       method: ({ nodes, option }) => {
         for (const note of nodes) {
           const title = note.noteTitle ?? ""

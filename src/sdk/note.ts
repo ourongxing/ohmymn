@@ -157,6 +157,7 @@ function exportPic(pic: MNPic, mdsize = "") {
  */
 function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
   const res = {
+    text: [] as string[],
     ocr: [] as string[],
     base64: [] as string[],
     img: [] as string[],
@@ -164,18 +165,23 @@ function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
     md: [] as string[]
   }
   return getExcerptNotes(node).reduce((acc, cur) => {
-    const text = cur.excerptText?.trim() ?? ""
+    const text = cur.excerptText?.trim()
     if (cur.excerptPic) {
       const imgs = exportPic(cur.excerptPic, mdsize)
       if (imgs)
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
         })
-      text && acc.ocr.push(text)
-    } else if (text) {
-      Object.values(acc).forEach(k =>
-        k.push(highlight ? text : removeHighlight(text))
-      )
+      if (text) {
+        acc.ocr.push(text)
+        if (node.textFirst) acc.text.push(text)
+      }
+    } else {
+      if (text) {
+        Object.values(acc).forEach(k =>
+          k.push(highlight ? text : removeHighlight(text))
+        )
+      }
     }
     return acc
   }, res)
@@ -199,11 +205,11 @@ function getCommentIndex(note: MbBookNote, comment: MbBookNote | string) {
   return -1
 }
 
-function removeCommentButLinkTag(
+async function removeCommentButLinkTag(
   node: MbBookNote,
   // 不删除
   filter: (comment: noteComment) => boolean,
-  f?: (node: MbBookNote) => void
+  f?: (node: MbBookNote) => MaybePromise<void>
 ) {
   const reservedComments = [] as string[]
   const len = node.comments.length
@@ -216,7 +222,7 @@ function removeCommentButLinkTag(
       node.removeCommentByIndex(len - i - 1)
     } else if (!filter(k)) node.removeCommentByIndex(len - i - 1)
   })
-  f && f(node)
+  f && (await f(node))
   appendTextComment(node, ...reservedComments)
 }
 
@@ -234,7 +240,7 @@ function getAllText(
   mdsize = ""
 ) {
   return [
-    ...getExcerptText(node, highlight, mdsize).ocr,
+    ...getExcerptText(node, highlight, mdsize).text,
     ...getAllCommnets(node, mdsize).nopic,
     getAllTags(node).join(" ")
   ].join(separator)

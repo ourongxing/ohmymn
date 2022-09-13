@@ -42,7 +42,7 @@ export async function getContentofOneCard(
   type: "copy" | "search"
 ) {
   const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
-  const excerptText = getExcerptText(node, false).ocr
+  const excerptText = getExcerptText(node, false).text
   const customContent = getCustomContent(node, type)
   switch (option) {
     case WhichPartofCard.Title: {
@@ -96,7 +96,7 @@ export function getContentofMuiltCards(
     case 1: {
       const { multipleTitles } = self.globalProfile.copysearch
       return nodes.reduce((acc, cur) => {
-        const l = getExcerptText(cur, false).ocr
+        const l = getExcerptText(cur, false).text
         if (!l.length) return acc
         if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(l[0])
         else acc.push(l.join("\n"))
