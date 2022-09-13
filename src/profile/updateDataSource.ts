@@ -6,7 +6,7 @@ import {
   INotebookProfile
 } from "~/profile/defaultProfile"
 import { IRowSwitch, IRowInlineInput, IRowInput, IRowSelect } from "~/typings"
-import { deepCopy } from "../utils"
+import { customKey, deepCopy } from "../utils"
 import {
   string2RegArray,
   ReplaceParam,
@@ -15,7 +15,7 @@ import {
 import { getMNLinkValue } from "./utils"
 
 export function updateProfileTemp(key: string, val: string) {
-  const newValue = key.startsWith("custom") ? getMNLinkValue(val) : val
+  const newValue = customKey.includes(key) ? getMNLinkValue(val) : val
   if (key in self.tempProfile.regArray) {
     let tmp: RegExp[][] | undefined
     // Avoid the error after modification is not corrected

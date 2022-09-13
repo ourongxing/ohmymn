@@ -10,8 +10,7 @@ export default {
   viewWillAppear() {
     self.tableView.reloadData()
     if (MN.isMac) {
-      self.tableView.backgroundColor =
-        MN.themeColor[Application.sharedInstance().currentTheme!]
+      self.tableView.backgroundColor = MN.currentTheme()
       Addon.textColor =
         MN.app.currentTheme == "Gray" || MN.app.currentTheme == "Dark"
           ? UIColor.whiteColor()
