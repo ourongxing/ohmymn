@@ -37,4 +37,8 @@ declare global {
     width: number
     height: number
   }
+  class UIDevice {
+    static currentDevice(): UIDevice
+    systemVersion: string
+  }
 }

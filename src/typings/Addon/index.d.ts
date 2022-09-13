@@ -1,64 +1,9 @@
-import {
-  IDocProfile,
-  IGlobalProfile,
-  ITempProfile,
-  INotebookProfile
-} from "~/profile"
-import {
-  DocumentController,
-  MbBookNote,
-  UITableView,
-  UITableViewController,
-  UIView,
-  UIWindow
-} from ".."
+import { DocumentController, MbBookNote } from ".."
 import { DirectionOfSelection } from "~/enum"
-import { IRowButton, ISection } from "./DataSource"
-export * from "./module"
+import { IRowButton } from "./DataSource"
+export * from "./Module"
 export * from "./DataSource"
 export * from "./AutoUtils"
-
-declare global {
-  const self: {
-    addon?: {
-      key: string
-      title: string
-    }
-    backupWaitTimes: number | undefined
-    webView: UIWebView
-    renderTemplate: string
-    view: UIView
-    enDict: SQLiteDatabase
-    window: UIWindow
-    docmd5: string | undefined
-    noteid: string
-    notebookid: string
-    tableView: UITableView
-    OCROnline: {
-      status: "begin" | "end" | "free"
-      times: number
-    }
-    textSelectBar?: {
-      arrow: DirectionOfSelection
-      winRect: string
-    }
-    isModify: boolean
-    customSelectedNodes: MbBookNote[]
-    panel: {
-      status: boolean
-      lastOpenPanel: number
-      lastClickButton: number
-      lastReaderViewWidth: number
-    }
-    docProfile: IDocProfile
-    globalProfile: IGlobalProfile
-    tempProfile: ITempProfile
-    notebookProfile: INotebookProfile
-    dataSource: ISection[]
-    settingViewController: UITableViewController
-    popoverController: UIPopoverController
-  }
-}
 
 export interface EventHandler {
   (sender: {

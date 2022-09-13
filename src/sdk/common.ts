@@ -1,4 +1,5 @@
 import { lang } from "./lang"
+import { MN } from "./mn"
 
 const console = {
   log(obj: any, suffix = "normal") {
@@ -22,15 +23,15 @@ const console = {
 }
 
 function showHUD(message: string, duration = 2, window = self.window) {
-  Application.sharedInstance().showHUD(message, window, duration)
+  MN.app.showHUD(message, window, duration)
 }
 
 const HUDController = {
   show(message: string, window = self.window) {
-    Application.sharedInstance().waitHUDOnView(message, window)
+    MN.app.waitHUDOnView(message, window)
   },
   hidden(window = self.window) {
-    Application.sharedInstance().stopWaitHUDOnView(window)
+    MN.app.stopWaitHUDOnView(window)
   }
 }
 
@@ -43,21 +44,11 @@ function setLocalDataByKey(data: any, key: string) {
 }
 
 function alert(message: string) {
-  Application.sharedInstance().alert(message)
+  MN.app.alert(message)
 }
 
-function getObjCClassDeclar(
-  name: string,
-  type: string,
-  delegate: Array<string> = []
-) {
-  let str = `${name} : ${type}`
-  if (delegate.length) {
-    delegate.forEach(value => {
-      str = `${str} ${value}Delegate`
-    })
-  }
-  return str
+function getObjCClassDeclar(name: string, type: string) {
+  return `${name} : ${type}`
 }
 
 function evaluateJavaScript(webView: UIWebView, script: string) {
@@ -67,7 +58,7 @@ function evaluateJavaScript(webView: UIWebView, script: string) {
 }
 
 function openUrl(url: string) {
-  Application.sharedInstance().openURL(NSURL.URLWithString(encodeURI(url)))
+  MN.app.openURL(NSURL.URLWithString(encodeURI(url)))
 }
 
 function postNotification(key: string, userInfo: any) {
@@ -79,7 +70,7 @@ function postNotification(key: string, userInfo: any) {
 }
 
 function isThisWindow(sender: any, window = self.window) {
-  return Application.sharedInstance().checkNotifySenderInWindow(sender, window)
+  return MN.app.checkNotifySenderInWindow(sender, window)
 }
 
 function isOCNull(obj: any): obj is OCNull {
@@ -129,10 +120,6 @@ function copy(text: string, hud = true) {
   } else hud && showHUD(lang.copy_empty)
 }
 
-function isfileExists(path: string) {
-  return NSFileManager.defaultManager().fileExistsAtPath(path)
-}
-
 export {
   console,
   showHUD,
@@ -147,7 +134,6 @@ export {
   eventHandlerController,
   copy,
   evaluateJavaScript,
-  isfileExists,
   getLocalDataByKey,
   setLocalDataByKey
 }

@@ -152,7 +152,7 @@ function exportPic(pic: MNPic, mdsize = "") {
  * Get all excerpt text in a card.
  * @param node The card that you want to get its excerpt text.
  * @param highlight Highlighted by default.
- * @param pic Text after OCR by default.
+ * @param mdsize Text after OCR by default.
  * @returns Dict of excerpt text.
  */
 function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
@@ -183,7 +183,7 @@ function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
 
 /**
  * Get index of comments.
- * @param node The card that you want to get its comments' index.
+ * @param note The card that you want to get its comments' index.
  * @param comment The comment that you want to get its index.
  * @returns Number The index of the comment.
  */

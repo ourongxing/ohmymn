@@ -24,7 +24,9 @@ declare global {
     section: number
   }
 
+  /** all of NSString methods are not supported  */
   class NSString {
     static stringWithContentsOfFile(path: string): string
+    static initWithDataEncoding(data: NSData, encoding: number): string
   }
 }
