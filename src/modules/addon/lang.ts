@@ -5,7 +5,7 @@ const zh = {
   link: "https://ohmymn.marginnote.cn",
   intro: `当前版本：${Addon.version}`,
   profile: {
-    $option: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
+    $option5: ["配置 1", "配置 2", "配置 3", "配置 4", "初始化"],
     label: "选择全局配置",
     help: "【当前笔记本】不同场景，不同配置"
   },
@@ -13,24 +13,24 @@ const zh = {
     label: "模块快捷开关"
   },
   panel_position: {
-    $option: ["文档侧", "文档脑图中间", "脑图侧", "靠左", "居中", "靠右"],
+    $option6: ["文档侧", "文档脑图中间", "脑图侧", "靠左", "居中", "靠右"],
     label: "面板显示位置"
   },
   panel_height: {
-    $option: ["高点", "标准", "矮点"],
+    $option3: ["高点", "标准", "矮点"],
     label: "面板显示高度"
   },
   panle_control: {
-    $option: ["双击图标打开面板", "双击面板关闭面板", "动作执行完关闭面板"],
+    $option3: ["双击图标打开面板", "双击面板关闭面板", "动作执行完关闭面板"],
     label: "面板显示控制"
   },
   has_title_then: {
-    $option: ["不转为标题", "合并标题", "覆盖标题"],
+    $option3: ["不转为标题", "合并标题", "覆盖标题"],
     label: "如果标题存在",
     help: "【AutoTitle、AutoDef、AutoComplete】 \n卡片已有标题，此时拖拽文字合并进该卡片，如果会产生新标题，则"
   },
   remove_excerpt: {
-    $option: ["立即删除", "等会删除", "不删除"],
+    $option3: ["立即删除", "等会删除", "不删除"],
     label: "转为标题后, 摘录将",
     help: "接上文"
   },
@@ -53,7 +53,13 @@ const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
   intro: `Current Version: ${Addon.version}`,
   profile: {
-    $option: ["Profile 1", "Profile 2", "Profile 3", "Profile 4", "Initialize"],
+    $option5: [
+      "Profile 1",
+      "Profile 2",
+      "Profile 3",
+      "Profile 4",
+      "Initialize"
+    ],
     label: "Select Global Profile",
     help: "[Current Notebook] Different scenes, different profile"
   },
@@ -61,7 +67,7 @@ const en: typeof zh = {
     label: "Module Quick Switch"
   },
   panel_position: {
-    $option: [
+    $option6: [
       "Document Side",
       "Document Mind Map Center",
       "Mind Map Side",
@@ -72,11 +78,11 @@ const en: typeof zh = {
     label: "Panel Position"
   },
   panel_height: {
-    $option: ["Tall", "Standard", "Short"],
+    $option3: ["Tall", "Standard", "Short"],
     label: "Panel Height"
   },
   panle_control: {
-    $option: [
+    $option3: [
       "Double Click Icon to Open Panel",
       "Double Click Panel to Close Panel",
       "Close Panel After Action"
@@ -84,12 +90,12 @@ const en: typeof zh = {
     label: "Panel Control"
   },
   has_title_then: {
-    $option: ["Not Convert to Title", "Merge Title", "Override Title"],
+    $option3: ["Not Convert to Title", "Merge Title", "Override Title"],
     label: "If Card Has Title",
     help: "[AutoTitle、AutoDef、AutoComplete] \nIf the card already has a title, drag the text to merge into the card. If a new title will be generated, then"
   },
   remove_excerpt: {
-    $option: ["Remove Immediately", "Remove Later", "Not Remove"],
+    $option3: ["Remove Immediately", "Remove Later", "Not Remove"],
     help: "Follow above",
     label: "After Convert to Title, Excerpt Will"
   },

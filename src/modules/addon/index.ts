@@ -14,7 +14,7 @@ export default defineConfig({
       help: lang.profile.help,
       key: "profile",
       type: CellViewType.Select,
-      option: lang.profile.$option,
+      option: lang.profile.$option5,
       label: lang.profile.label
     },
     {
@@ -26,19 +26,19 @@ export default defineConfig({
     {
       key: "panelPosition",
       type: CellViewType.Select,
-      option: lang.panel_position.$option,
+      option: lang.panel_position.$option6,
       label: lang.panel_position.label
     },
     {
       key: "panelHeight",
       type: CellViewType.Select,
-      option: lang.panel_height.$option,
+      option: lang.panel_height.$option3,
       label: lang.panel_height.label
     },
     {
       key: "panelControl",
       type: CellViewType.MuiltSelect,
-      option: lang.panle_control.$option,
+      option: lang.panle_control.$option3,
       label: lang.panle_control.label
     },
     {
@@ -46,13 +46,13 @@ export default defineConfig({
       type: CellViewType.Select,
       label: lang.has_title_then.label,
       help: lang.has_title_then.help,
-      option: lang.has_title_then.$option
+      option: lang.has_title_then.$option3
     },
     {
       key: "removeExcerpt",
       type: CellViewType.Select,
       label: lang.remove_excerpt.label,
-      option: lang.remove_excerpt.$option,
+      option: lang.remove_excerpt.$option3,
       help: lang.remove_excerpt.help,
       bind: ["hasTitleThen", [1, 2]]
     },

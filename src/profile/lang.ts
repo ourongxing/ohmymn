@@ -37,7 +37,7 @@ const zh = {
     doc_profile: "文档配置",
     notebook_profile: "笔记本配置"
   },
-  $profile_select_items: [
+  $profile_select_items9: [
     "所有配置",
     "全局配置 1",
     "全局配置 2",
@@ -48,7 +48,7 @@ const zh = {
     "文档配置",
     "笔记本配置"
   ],
-  $global_profile_items: [
+  $global_profile_items5: [
     "全局配置 1",
     "全局配置 2",
     "全局配置 3",
@@ -97,7 +97,7 @@ const en: typeof zh = {
     doc_profile: "Doc Profile",
     notebook_profile: "Notebook Profile"
   },
-  $profile_select_items: [
+  $profile_select_items9: [
     "All Profile",
     "Global Profile 1",
     "Global Profile 2",
@@ -108,7 +108,7 @@ const en: typeof zh = {
     "Doc Profile",
     "Notebook Profile"
   ],
-  $global_profile_items: [
+  $global_profile_items5: [
     "Global Profile 1",
     "Global Profile 2",
     "Global Profile 3",

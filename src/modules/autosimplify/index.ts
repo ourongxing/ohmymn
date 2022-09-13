@@ -59,7 +59,7 @@ export default defineConfig({
       key: "variant",
       type: CellViewType.Select,
       label: lang.variant.label,
-      option: lang.variant.$option
+      option: lang.variant.$option3
     },
     {
       key: "taiwanIdiom",
@@ -78,7 +78,7 @@ export default defineConfig({
       type: CellViewType.ButtonWithInput,
       label: lang.simplify_card.label,
       key: "simplifyCard",
-      option: lang.simplify_card.$option,
+      option: lang.simplify_card.$option3,
       method: ({ nodes, option }) => {
         nodes.forEach(node => {
           if (option == 0 || option == 1) {

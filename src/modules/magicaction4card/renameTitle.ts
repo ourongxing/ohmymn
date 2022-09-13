@@ -88,7 +88,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
         })
       })
     } else {
-      showHUD(lang.hud.hierarchical_numbering, 2)
+      showHUD(lang.hierarchical_numbering, 2)
       return
     }
   }

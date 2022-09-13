@@ -45,7 +45,7 @@ export const clsMethons = {
       {
         title: Addon.title,
         message: lang.uninstall.have_bugs,
-        buttons: lang.uninstall.$options
+        buttons: lang.uninstall.$options2
       },
       ({ buttonIndex }) => ({
         option: buttonIndex

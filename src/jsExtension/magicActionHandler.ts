@@ -155,7 +155,7 @@ const handleMagicAction = async ({
                   ? lang.smart_select.cards_with_children
                   : lang.smart_select.card_with_children,
               type: UIAlertViewStyle.Default,
-              buttons: lang.smart_select.$option,
+              buttons: lang.smart_select.$option4,
               canCancel: false
             },
             ({ buttonIndex }) => ({

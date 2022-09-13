@@ -10,7 +10,7 @@ const dict: Dict = {
     have_bugs:
       "have you met a bug? Try reset profile or update to newest version.",
     profile_reset: "Profile has been reset",
-    $options: ["Reset Profile", "Update/Feedback"]
+    $options2: ["Reset Profile", "Update/Feedback"]
   },
   input_number: "Please enter a number",
   input_integer: "Please enter an integer",
@@ -25,7 +25,7 @@ const dict: Dict = {
   copy_success: "Copy successfully, go ahead and paste",
   smart_select: {
     title: `${Addon.title} Smart Selector`,
-    $option: [
+    $option4: [
       "Process only selected cards",
       "Process only child cards",
       "Process only all descendant cards",

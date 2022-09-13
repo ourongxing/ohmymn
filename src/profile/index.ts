@@ -99,6 +99,12 @@ export const readProfile: ReadPrifile = ({
         allGlobalProfile =
           globalProfileSaved ?? Array(5).fill(globalProfilePreset)
 
+        // if (!allGlobalProfile[0].additional.lastVision) {
+        //   allGlobalProfile.forEach(k => {
+        //     k.additional.lastVision = "4.0.0"
+        //   })
+        // }
+
         // Initialize all profile when new version release
         if (checkNewVerProfile(globalProfilePreset, allGlobalProfile[0])) {
           allGlobalProfile.forEach((_, index) => {
@@ -108,6 +114,7 @@ export const readProfile: ReadPrifile = ({
           })
           setLocalDataByKey(allGlobalProfile, globalProfileKey)
         }
+
         readNoteBookProfile(notebookid)
         readDocProfile(docmd5)
         readGlobalProfile(self.notebookProfile.addon.profile[0])
@@ -294,7 +301,7 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
     )
   } else {
     const index = await selectIndex(
-      lang.$profile_select_items,
+      lang.$profile_select_items9,
       lang.profile_management,
       lang.which_part_profile,
       true
@@ -351,7 +358,7 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
           }
       }
     })()
-    range = lang.$profile_select_items[index]
+    range = lang.$profile_select_items9[index]
     data = encode(
       JSON.stringify({
         key: Addon.key,
@@ -381,7 +388,7 @@ async function readProfilefromCard(node: MbBookNote) {
       const pks = Object.keys(p)
       if (pks.length === 1) {
         const index = await selectIndex(
-          lang.$global_profile_items,
+          lang.$global_profile_items5,
           lang.profile_management,
           lang.one_module_global(
             n!,
@@ -410,7 +417,7 @@ async function readProfilefromCard(node: MbBookNote) {
           lang.detecte_global_profile(n)
         )
         const index = await selectIndex(
-          lang.$global_profile_items,
+          lang.$global_profile_items5,
           lang.profile_management,
           lang.which_global_profile_read_into,
           true
@@ -461,7 +468,7 @@ async function readProfilefromCard(node: MbBookNote) {
         allNotebookProfileTemp: typeof allNotebookProfile
       } = profiles
       const profileIndex = await selectIndex(
-        lang.$profile_select_items,
+        lang.$profile_select_items9,
         lang.profile_management,
         lang.detecte_all_profile,
         true
@@ -507,7 +514,7 @@ async function readProfilefromCard(node: MbBookNote) {
         // 所有全局配置
         if (Array.isArray(globalProfile)) {
           const i = await selectIndex(
-            [lang.range.all_global_profile, ...lang.$global_profile_items],
+            [lang.range.all_global_profile, ...lang.$global_profile_items5],
             lang.profile_management,
             lang.detecte_all_notebook_profile,
             true

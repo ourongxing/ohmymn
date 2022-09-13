@@ -8,7 +8,7 @@ const zh = {
   },
   variant: {
     label: "异体字转换",
-    $option: ["中国大陆", "中国台湾", "中国香港"]
+    $option3: ["中国大陆", "中国台湾", "中国香港"]
   },
   taiwan_idiom: {
     label: "台湾特殊用词转换"
@@ -18,7 +18,7 @@ const zh = {
   },
   simplify_card: {
     label: "转换为简体中文",
-    $option: ["摘录和标题", "仅摘录", "仅标题"]
+    $option3: ["摘录和标题", "仅摘录", "仅标题"]
   }
 }
 
@@ -30,7 +30,7 @@ const en: typeof zh = {
   },
   variant: {
     label: "Variant Conversion",
-    $option: ["Mainland China", "Taiwan China", "Hong Kong China"]
+    $option3: ["Mainland China", "Taiwan China", "Hong Kong China"]
   },
   taiwan_idiom: {
     label: "Taiwan Special Word Conversion"
@@ -40,7 +40,7 @@ const en: typeof zh = {
   },
   simplify_card: {
     label: "Convert to Simplified Chinese",
-    $option: ["Excerpt and Title", "Only Excerpt", "Only Title"]
+    $option3: ["Excerpt and Title", "Only Excerpt", "Only Title"]
   }
 }
 export const lang = MN.isZH ? zh : en

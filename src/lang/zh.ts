@@ -8,7 +8,7 @@ const dict = {
   none: "无",
   sure: "确定",
   uninstall: {
-    $options: ["重置配置", "去论坛更新/反馈"],
+    $options2: ["重置配置", "去论坛更新/反馈"],
     profile_reset: "配置已重置",
     have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
   },
@@ -23,7 +23,7 @@ const dict = {
   copy_success: "复制成功, 快去粘贴吧!",
   smart_select: {
     title: `${Addon.title} 智能选择`,
-    $option: [
+    $option4: [
       "仅处理选中的卡片",
       "仅处理子卡片",
       "仅处理所有后代卡片",
