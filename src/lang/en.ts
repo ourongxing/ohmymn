@@ -44,6 +44,12 @@ const dict: Dict = {
       option: ["Not sure, check the doc", "Sure, I know"],
       doc: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73"
     }
+  },
+  more: {
+    website: "OhMyMN Website: ohmymn.marginnote.cn",
+    core_team: "Core Team: ourongxing，Bryan",
+    intro:
+      "OhMyMN is the MarginNote addon control panel and development framework. OhMyMN is completely open source, officially supported, welcome to join."
   }
 }
 

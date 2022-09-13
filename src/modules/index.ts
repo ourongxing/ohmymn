@@ -1,6 +1,11 @@
 import { ISection } from "~/typings"
 import { CellViewType } from "~/enum"
-import anotherautotitle from ".//anotherautotitle"
+import addon from "./addon"
+import gesture from "./gesture"
+import magicaction4card from "./magicaction4card"
+import magicaction4text from "./magicaction4text"
+import anotherautodef from "./anotherautodef"
+import anotherautotitle from "./anotherautotitle"
 import autocomment from "./autocomment"
 import autocomplete from "./autocomplete"
 import autolist from "./autolist"
@@ -11,13 +16,8 @@ import autostyle from "./autostyle"
 import autotag from "./autotag"
 import autotranslate from "./autotranslate"
 import copysearch from "./copysearch"
-import gesture from "./gesture"
-import magicaction4card from "./magicaction4card"
-import magicaction4text from "./magicaction4text"
-import addon from "./addon"
-import anotherautodef from "./anotherautodef"
 import autosimplify from "./autosimplify"
-import { MN } from "~/sdk"
+import lang from "~/lang"
 
 export const modules = {
   gesture,
@@ -44,19 +44,17 @@ export const more: ISection = {
   rows: [
     {
       type: CellViewType.PlainText,
-      label: `OhMyMN ${MN.isZH ? "官网：" : "Website: "}ohmymn.marginnote.cn`,
+      label: lang.more.website,
       link: "https://ohmymn.marginnote.cn"
     },
     {
       type: CellViewType.PlainText,
-      label: `${MN.isZH ? "核心开发团队：" : "Core Team: "}ourongxing，Bryan`,
+      label: lang.more.core_team,
       link: "https://github.com/marginnoteapp/ohmymn"
     },
     {
       type: CellViewType.PlainText,
-      label: MN.isZH
-        ? "OhMyMN 是 MarginNote 插件控制面板及开发框架。OhMyMN 完全开源，官方支持，欢迎参与。"
-        : "OhMyMN is MarginNote addon control panel and development framework.OhMyMN is completely open source, officially supported, welcome to join.",
+      label: lang.more.intro,
       link: "https://github.com/marginnoteapp/ohmymn"
     },
     {

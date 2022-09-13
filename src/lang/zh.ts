@@ -41,6 +41,12 @@ const dict = {
       option: ["不清楚，查看文档", "我已知晓"],
       doc: "https://ohmymn.marginnote.cn/guide/modules/gesture.html"
     }
+  },
+  more: {
+    website: "OhMyMN 官网：ohmymn.marginnote.cn",
+    core_team: "核心开发团队：ourongxing，Bryan",
+    intro:
+      "OhMyMN 是 MarginNote 插件控制面板及开发框架。OhMyMN 完全开源，官方支持，欢迎参与。"
   }
 }
 
