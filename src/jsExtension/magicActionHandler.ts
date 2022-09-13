@@ -1,6 +1,7 @@
 import lang from "~/lang"
 import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
+import { simplifyText } from "~/modules/autosimplify"
 import { checkInputCorrect, actions4text, actions4card } from "~/mergeMethod"
 import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/enum"
@@ -105,7 +106,9 @@ const handleMagicAction = async ({
         : currentDocumentController.selectionText
       if (!text) return
       const res: string | undefined = await actions4text[key]({
-        text,
+        text: self.docProfile.magicaction4text.preSimplify
+          ? simplifyText(text)
+          : text,
         imgBase64: imageFromSelection,
         option
       })
