@@ -7,11 +7,11 @@ const zh = {
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
-    $option4: ["自定义", "ABCD...", "一二三四...", "1234..."]
+    $option4: ["自定义", "ABCD...", "一二三四...", "1234..."] as TupleString<4>
   },
   list_selected: {
     label: "序列摘录换行",
-    $option2: ["使用 AutoList 的设置", "确定"]
+    $option2: ["使用 AutoList 的设置", "确定"] as TupleString<2>
   },
   custom_list: "自定义，点击查看具体格式"
 }

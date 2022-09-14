@@ -40,6 +40,8 @@ type Tuple<T, N extends number, R extends T[] = []> = R["length"] extends N
   ? R
   : Tuple<T, N, [T, ...R]>
 
+type TupleString<N extends number = 2> = Tuple<string, N>
+
 // type Test2<T> = T extends Record<string, any>
 //   ? {
 //       [K in keyof T]: T[K] extends any & { length: number }

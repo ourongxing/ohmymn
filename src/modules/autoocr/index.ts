@@ -34,7 +34,7 @@ export default defineConfig({
       key: "lang",
       label: lang.lang.label,
       type: CellViewType.Select,
-      option: lang.lang.$option20,
+      option: lang.lang.$option21,
       help: lang.lang.help
     },
     {

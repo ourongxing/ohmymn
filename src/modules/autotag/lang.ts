@@ -6,11 +6,11 @@ const zh = {
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
-    $option1: ["自定义"]
+    $option1: ["自定义"] as TupleString<1>
   },
   add_tag: {
     label: "添加标签",
-    $option2: ["使用 AutoTag 的设置", "确定"]
+    $option2: ["使用 AutoTag 的设置", "确定"] as TupleString<2>
   },
   custom_tag: {
     link: "",

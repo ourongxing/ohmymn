@@ -6,20 +6,20 @@ const zh = {
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
-    $option1: ["自定义"]
+    $option1: ["自定义"] as TupleString<1>
   },
   word_count: "[类中文字数，类英文单词数]，超过才会翻译。",
   translate_providers: {
-    $option2: ["百度翻译", "彩云小译"],
+    $option2: ["百度翻译", "彩云小译"] as TupleString<2>,
     label: "翻译提供商"
   },
   caiyun_from_lang: {
     label: "输入语言",
-    $option4: ["自动检测", "中文", "英文", "日文"]
+    $option4: ["自动检测", "中文", "英文", "日文"] as TupleString<4>
   },
   caiyun_to_lang: {
     label: "输出语言",
-    $option3: ["中文", "英文", "日文"]
+    $option3: ["中文", "英文", "日文"] as TupleString<3>
   },
   baidu_from_lang: {
     label: "输入语言",
@@ -53,7 +53,7 @@ const zh = {
       "匈牙利语",
       "繁体中文",
       "越南语"
-    ]
+    ] as TupleString<29>
   },
   baidu_to_lang: {
     label: "输出语言",
@@ -86,7 +86,7 @@ const zh = {
       "匈牙利语",
       "繁体中文",
       "越南语"
-    ]
+    ] as TupleString<28>
   },
   baidu_thesaurus: {
     label: "自定义术语库",

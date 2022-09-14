@@ -47,14 +47,14 @@ const zh = {
     "所有全局配置",
     "文档配置",
     "笔记本配置"
-  ],
+  ] as TupleString<9>,
   $global_profile_items5: [
     "全局配置 1",
     "全局配置 2",
     "全局配置 3",
     "全局配置 4",
     "全局配置 5"
-  ]
+  ] as TupleString<5>
 }
 
 const en: typeof zh = {

@@ -14,11 +14,11 @@ const zh = {
       "中英文加空格",
       "去除中文间空格",
       "去除重复空格"
-    ]
+    ] as TupleString<6>
   },
   format_selected: {
     label: "优化排版格式",
-    $option3: ["标题和摘录", "仅标题", "仅摘录"]
+    $option3: ["标题和摘录", "仅标题", "仅摘录"] as TupleString<3>
   },
   format_title: {
     help: "涉及到首字母大写，点击查看具体规范",
