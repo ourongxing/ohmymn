@@ -4,8 +4,11 @@ import { MN } from "~/sdk"
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
   link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html",
-  default_merge_text:
-    "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
+  default_merge_text: {
+    help: "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
+    error: "缺少 $&",
+    link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97"
+  },
   rename_title: {
     label: "重命名标题",
     help: "现在可以分层进行编号"
@@ -22,7 +25,7 @@ const zh = {
   },
   merge_text: {
     label: "合并卡片内文字",
-    help: "仅支持合并文字摘录和文字评论，不合并标题和链接，其余内容会在合并后置顶",
+    help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶",
     is_excerpt_pic:
       "检测到当前摘录为图片，合并为摘录后仍旧是图片，是否继续合并为摘录？",
     $excerpt_pic_option2: ["继续", "合并为评论"],
@@ -47,8 +50,11 @@ const en: typeof zh = {
     "All actions need to select the card first. Click for the specific useage",
   link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734",
   smart_selection: `${Addon.title} Smart Selector`,
-  default_merge_text:
-    "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
+  default_merge_text: {
+    help: "The default prefix and suffix of the merged text. Click to see the custom method.                 ",
+    error: "Missing $&",
+    link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97"
+  },
   switch_title: {
     label: "Use [Swap Title and Excerpt] when both are present」",
     help: "Switch Excerption or Title",
@@ -60,10 +66,9 @@ const en: typeof zh = {
   },
   merge_text: {
     label: "Input delimiter",
-    help: "仅支持合并文字摘录和文字评论，不合并标题和链接，其余内容会在合并后置顶",
-    $excerpt_pic_option2: ["继续", "合并为评论"],
-    is_excerpt_pic:
-      "检测到当前摘录为图片，合并为摘录后仍旧是图片，是否继续合并为摘录？",
+    help: "Only support merging text excerpt and text comment, not merging tags and link, other content will be pinned after merging",
+    $excerpt_pic_option2: ["Continue", "Merge as Comment"],
+    is_excerpt_pic: "The excerpt is a picture, continue to merge as excerpt?",
     $option2: ["Merged as Excerpt", "Merged as Comment"]
   },
   merge_cards: {

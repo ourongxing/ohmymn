@@ -10,28 +10,21 @@ export default defineConfig({
     {
       key: "preOCR",
       type: CellViewType.Switch,
-      label: lang.label.preOCR,
-      help: lang.help.preOCR
+      label: lang.pre_OCR.label,
+      help: lang.pre_OCR.help
     },
     {
       key: "preSimplify",
       type: CellViewType.Switch,
-      label: "预先转为简体中文",
-      help: "【当前文档】使用 AutoSimplify 进行繁简转换"
+      label: lang.pre_simplify.label,
+      help: lang.pre_simplify.help
     },
     {
       key: "noteOptions",
       type: CellViewType.MuiltSelect,
-      option: [
-        "复制",
-        "设置为标题",
-        "合并标题",
-        "合并到摘录",
-        "设置为摘录",
-        "设置为评论"
-      ],
-      label: "弹出更多选项",
-      help: "如果选中这段文字或区域之前，你已经选中了一段摘录的笔记。此时复制到剪贴板的动作会弹出更多选项，方便直接写入卡片中。"
+      label: lang.note_options.label,
+      help: lang.note_options.help,
+      option: lang.note_options.$option6
     }
   ]
 })

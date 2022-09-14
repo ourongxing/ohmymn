@@ -15,7 +15,6 @@ import {
 import { appendTextComment, getAllText } from "~/sdk"
 import { lang } from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
-const { intro, option, label, link, help } = lang
 
 function generateComments(note: MbBookNote, text: string) {
   const { customComment } = self.tempProfile.replaceParam
@@ -57,13 +56,13 @@ function generateComments(note: MbBookNote, text: string) {
 export default defineConfig({
   name: "AutoComment",
   key: "autocomment",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         generateComments({ note, text }) {
           return generateComments(note, text)
@@ -73,15 +72,15 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option2,
+      label: lang.preset.label
     },
     {
       key: "customComment",
       type: CellViewType.Input,
-      help: help.custom_comment,
+      help: lang.custom_comment.help,
       bind: ["preset", 0],
-      link,
+      link: lang.custom_comment.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -90,9 +89,9 @@ export default defineConfig({
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.add_comment,
+      label: lang.add_comment.label,
       key: "addComment",
-      option: option.add_comment,
+      option: lang.add_comment.$option2,
       method({ nodes, option, content }) {
         if (option == AddComment.UseAutoComment) {
           nodes.forEach(node => {

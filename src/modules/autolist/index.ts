@@ -10,17 +10,16 @@ import { lang } from "./lang"
 import { ListSelected } from "./typings"
 import { addLineBreak, addNumber } from "./utils"
 
-const { intro, option, label, link, help } = lang
 export default defineConfig({
   name: "AutoList",
   key: "autolist",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         modifyExcerptText({ text }) {
           return addLineBreak(text)
@@ -30,15 +29,15 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option4,
+      label: lang.preset.label
     },
     {
       key: "customList",
       type: CellViewType.Input,
-      help: help.custom_list,
+      help: lang.custom_list,
       bind: ["preset", 0],
-      link,
+      link: lang.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -47,9 +46,9 @@ export default defineConfig({
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.list_selected,
+      label: lang.list_selected.label,
       key: "listSelected",
-      option: option.list_selected,
+      option: lang.list_selected.$option2,
       method({ nodes, content, option }) {
         if (option == ListSelected.UseAutoList) {
           nodes.forEach(node => {

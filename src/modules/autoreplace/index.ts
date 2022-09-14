@@ -7,8 +7,6 @@ import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
 import { ReplaceSelected, AutoReplacePreset } from "./typings"
 
-const { intro, link, label, option, help } = lang
-
 function replaceText(note: MbBookNote, text: string) {
   const { preset } = self.globalProfile.autoreplace
   for (const set of preset) {
@@ -32,13 +30,13 @@ function replaceText(note: MbBookNote, text: string) {
 export default defineConfig({
   name: "AutoReplace",
   key: "autoreplace",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         modifyExcerptText: {
           index: 999,
@@ -51,23 +49,23 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option1,
+      label: lang.preset.label
     },
     {
       key: "customReplace",
       type: CellViewType.Input,
-      help: help.custom_replace,
+      help: lang.custom_replace.help,
       bind: ["preset", 0],
-      link
+      link: lang.custom_replace.link
     }
   ],
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.replace_selected,
+      label: lang.replace_selected.label,
       key: "replaceSelected",
-      option: option.replace_selected,
+      option: lang.replace_selected.$option2,
       method: ({ content, nodes, option }) => {
         if (option == ReplaceSelected.UseAutoReplace) {
           nodes.forEach(node => {

@@ -13,8 +13,6 @@ import { getAllText, addTags } from "~/sdk"
 import { lang } from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 
-const { intro, option, label, link, help } = lang
-
 function generateTags(note: MbBookNote, text: string) {
   const { customTag: params } = self.tempProfile.replaceParam
   const { preset } = self.globalProfile.autotag
@@ -31,13 +29,13 @@ function generateTags(note: MbBookNote, text: string) {
 export default defineConfig({
   name: "AutoTag",
   key: "autotag",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         generateTags({ note, text }) {
           return generateTags(note, text)
@@ -47,15 +45,15 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option1,
+      label: lang.preset.label
     },
     {
       key: "customTag",
       type: CellViewType.Input,
-      help: help.custom_tag,
+      help: lang.custom_tag.help,
       bind: ["preset", 0],
-      link,
+      link: lang.custom_tag.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -64,9 +62,9 @@ export default defineConfig({
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.add_tag,
+      label: lang.add_tag.label,
       key: "addTag",
-      option: option.add_tag,
+      option: lang.add_tag.$option2,
       method({ nodes, option, content }) {
         if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {

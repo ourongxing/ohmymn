@@ -44,11 +44,11 @@ export default defineConfig({
     {
       key: "defaultMergeText",
       type: CellViewType.Input,
-      help: lang.default_merge_text,
-      link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97",
+      help: lang.default_merge_text.help,
+      link: lang.default_merge_text.link,
       check({ input }) {
         checkPlainText(input)
-        if (!input.includes("$&")) throw "缺少 $&"
+        if (!input.includes("$&")) throw lang.default_merge_text.error
       }
     }
   ],

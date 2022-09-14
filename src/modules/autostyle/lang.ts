@@ -4,122 +4,115 @@ const zh = {
   link: "https://ohmymn.marginnote.cn/guide/modules/autostyle.html",
   intro: "自动修改摘录颜色和样式",
   area: "面积",
-  label: {
-    on: "摘录时自动执行",
-    preset: "选择需要的预设",
-    change_style: "修改摘录样式",
-    change_color: "修改摘录颜色",
-    show_area: "显示摘录面积",
-    default_text_excerpt_color: "文本摘录默认颜色",
-    default_pic_excerpt_color: "选区摘录默认颜色",
-    default_text_excerpt_style: "文本摘录默认样式",
-    default_pic_excerpt_style: "选区摘录默认样式",
-    word_count_area:
-      "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认"
+  on: "摘录时自动执行",
+  change_style: {
+    lable: "修改摘录样式",
+    $option4: ["使用 AutoStyle 的设置", "线框+填充", "填充", "线框"]
   },
-  help: {
-    change_color: "输入颜色索引，也就是顺序，1 到 16"
+  change_color: {
+    label: "修改摘录颜色",
+    help: "输入颜色索引，也就是顺序，1 到 16",
+    out_of_range: "不再范围内（1,16）",
+    $option2: ["使用 AutoStyle 的设置", "确定"]
   },
-  option: {
-    change_style: ["使用 AutoStyle 的配置", "线框+填充", "填充", "线框"],
-    change_color: ["使用 AutoStyle 的配置", "确定"],
-    preset: [
+  preset: {
+    label: "选择需要的预设",
+    $option4: [
       "样式由字数或面积决定",
       "颜色跟随卡片",
       "颜色跟随第一个兄弟卡片",
       "颜色跟随父卡片"
-    ],
-    style: ["无", "线框+填充", "填充", "线框"],
-    color: [
-      "无",
-      "浅黄",
-      "浅绿",
-      "浅蓝",
-      "浅红",
-      "黄",
-      "绿",
-      "蓝",
-      "红",
-      "橘",
-      "深绿",
-      "深蓝",
-      "深红",
-      "白",
-      "浅灰",
-      "深灰",
-      "紫"
     ]
   },
-  check: {
-    enter_positive: "请输入正整数",
-    out_of_range: "不再范围内（1,16）",
+  $style4: ["无", "线框+填充", "填充", "线框"],
+  $color17: [
+    "无",
+    "浅黄",
+    "浅绿",
+    "浅蓝",
+    "浅红",
+    "黄",
+    "绿",
+    "蓝",
+    "红",
+    "橘",
+    "深绿",
+    "深蓝",
+    "深红",
+    "白",
+    "浅灰",
+    "深灰",
+    "紫"
+  ],
+  word_count_area: {
+    help: "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认",
     input_array: "请输入数组，比如 [10,5,100]",
     input_three_number: "数组内必须有三个数字，比如 [10,5,100]"
-  }
+  },
+  show_area: "显示摘录面积",
+  default_text_excerpt_color: "文本摘录默认颜色",
+  default_pic_excerpt_color: "选区摘录默认颜色",
+  default_text_excerpt_style: "文本摘录默认样式",
+  default_pic_excerpt_style: "选区摘录默认样式",
+  enter_positive: "请输入正整数"
 }
 
 const en: typeof zh = {
   link: "https://www.notion.so/huangkewei/AutoStyle-16971d7c0fb048bd828d97373a035bc2",
   intro: "Auto modify excerpt colors and styles",
+  on: "Auto Executed",
   area: "Aera",
-  label: {
-    on: "Auto Executed",
-    preset: "Select Presets",
-    change_style: "Modify Excerpt Style",
-    change_color: "Modify Excerpt Color",
-    show_area: "Show Excerpt Area",
-    default_text_excerpt_color: "Default Text Excerpt Color",
-    default_pic_excerpt_color: "Default Pic Excerpt Color",
-    default_text_excerpt_style: "Default Text Excerpt Style",
-    default_pic_excerpt_style: "Default Pic Excerpt Style",
-    word_count_area:
-      "[Chinese words, English words, Selected area size], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n"
+  change_style: {
+    lable: "Modify Excerpt Style",
+    $option4: ["使用 AutoStyle 的设置", "线框+填充", "填充", "线框"]
   },
-  help: {
-    change_color: "Enter the color index, 1 to 16"
+  change_color: {
+    label: "Modify Excerpt Color",
+    help: "Enter the color index, 1 to 16",
+    $option2: ["Use AutoStyle Settings", "Confirm"],
+    out_of_range: "Out of range（1,16）"
   },
-  option: {
-    change_style: [
-      "Use AutoStyle Settings",
-      "Wireframe+Fill",
-      "Fill",
-      "Wireframe"
-    ],
-    change_color: ["Use AutoStyle Settings", "Confirm"],
-    preset: [
+  preset: {
+    label: "Select Presets",
+    $option4: [
       "Style is determined by word count or area",
       "Color follow card",
       "Color follows frist child node",
       "Color follows parent node"
-    ],
-    style: ["None", "Wireframe+Fill", "Fill", "Wireframe"],
-    color: [
-      "None",
-      "Light Yellow",
-      "Light Green",
-      "Light Blue",
-      "light red",
-      "Yellow",
-      "Green",
-      "Blue",
-      "Red",
-      "Orange",
-      "Dark Green",
-      "Dark Blue",
-      "Dark Red",
-      "White",
-      "Light Grey",
-      "Dark Grey",
-      "Purple"
     ]
   },
-  check: {
-    enter_positive: "Please enter a positive integer",
-    out_of_range: "Out of range（1,16）",
+  $style4: ["None", "Wireframe+Fill", "Fill", "Wireframe"],
+  $color17: [
+    "None",
+    "Light Yellow",
+    "Light Green",
+    "Light Blue",
+    "light red",
+    "Yellow",
+    "Green",
+    "Blue",
+    "Red",
+    "Orange",
+    "Dark Green",
+    "Dark Blue",
+    "Dark Red",
+    "White",
+    "Light Grey",
+    "Dark Grey",
+    "Purple"
+  ],
+  word_count_area: {
+    help: "[Chinese words, English words, Selected area size], if it exceeds, set the excerpt style to wireframe, otherwise the default.\n",
     input_array: "Please enter an array, for example [10,5,100]",
     input_three_number:
       "There must be three numbers in the array，for example [10,5,100]"
-  }
+  },
+  enter_positive: "Please enter a positive integer",
+  show_area: "Show Excerpt Area",
+  default_text_excerpt_color: "Default Text Excerpt Color",
+  default_pic_excerpt_color: "Default Pic Excerpt Color",
+  default_text_excerpt_style: "Default Text Excerpt Style",
+  default_pic_excerpt_style: "Default Pic Excerpt Style"
 }
 
 export const lang = MN.isZH ? zh : en

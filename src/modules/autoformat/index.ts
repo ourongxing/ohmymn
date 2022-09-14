@@ -6,17 +6,16 @@ import { lang } from "./lang"
 import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
 
-const { help, intro, option, label, link } = lang
 export default defineConfig({
   name: "AutoFormat",
   key: "autoformat",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         modifyExcerptText: {
           index: -1,
@@ -34,15 +33,15 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option6,
+      label: lang.preset.label
     },
     {
       key: "customFormat",
       type: CellViewType.Input,
-      help: help.custom_format,
+      help: lang.custom_format,
       bind: ["preset", 0],
-      link,
+      link: lang.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -50,17 +49,17 @@ export default defineConfig({
     {
       key: "formatTitle",
       type: CellViewType.Switch,
-      label: label.format_title,
-      help: help.format_title,
-      link
+      label: lang.format_title.label,
+      help: lang.format_title.help,
+      link: lang.link
     }
   ],
   actions4card: [
     {
       key: "formatSelected",
       type: CellViewType.Button,
-      label: label.format_selected,
-      option: option.format_selected,
+      label: lang.format_selected.label,
+      option: lang.format_selected.$option3,
       method: ({ nodes, option }) => {
         nodes.forEach(node => {
           const title = node.noteTitle

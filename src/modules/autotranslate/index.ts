@@ -6,18 +6,16 @@ import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
 import { showHUD } from "~/sdk"
 
-const { link, label } = lang
-
 export default defineConfig({
   name: "AutoTranslate",
   key: "autotranslate",
-  intro: "摘录时自动附加上翻译结果",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html",
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         generateComments: {
           index: -1,
@@ -30,114 +28,55 @@ export default defineConfig({
     {
       key: "wordCount",
       type: CellViewType.Input,
-      help: "[类中文字数，类英文单词数]，超过才会翻译。"
+      help: lang.word_count
     },
     {
       key: "translateProviders",
       type: CellViewType.Select,
-      option: ["百度翻译", "彩云小译"],
-      label: "翻译提供商"
+      option: lang.translate_providers.$option2,
+      label: lang.translate_providers.label
     },
     {
       key: "caiyunFromLang",
-      label: "输入语言",
       type: CellViewType.Select,
-      option: ["自动检测", "中文", "英文", "日文"],
+      label: lang.caiyun_from_lang.label,
+      option: lang.caiyun_from_lang.$option4,
       bind: ["translateProviders", 1]
     },
     {
       key: "caiyunToLang",
-      label: "输出语言",
       type: CellViewType.Select,
-      option: ["中文", "英文", "日文"],
+      label: lang.caiyun_to_lang.label,
+      option: lang.caiyun_to_lang.$option3,
       bind: ["translateProviders", 1]
     },
     {
       key: "baiduFromLang",
-      label: "输入语言",
       type: CellViewType.Select,
-      option: [
-        "自动检测",
-        "中文",
-        "英语",
-        "粤语",
-        "文言文",
-        "日语",
-        "韩语",
-        "法语",
-        "西班牙语",
-        "泰语",
-        "阿拉伯语",
-        "俄语",
-        "葡萄牙语",
-        "德语",
-        "意大利语",
-        "希腊语",
-        "荷兰语",
-        "波兰语",
-        "保加利亚语",
-        "爱沙尼亚语",
-        "丹麦语",
-        "芬兰语",
-        "捷克语",
-        "罗马尼亚语",
-        "斯洛文尼亚语",
-        "瑞典语",
-        "匈牙利语",
-        "繁体中文",
-        "越南语"
-      ],
+      label: lang.baidu_from_lang.label,
+      option: lang.baidu_from_lang.$option29,
       bind: ["translateProviders", 0]
     },
     {
       key: "baiduToLang",
-      label: "输出语言",
       type: CellViewType.Select,
-      option: [
-        "中文",
-        "英语",
-        "粤语",
-        "文言文",
-        "日语",
-        "韩语",
-        "法语",
-        "西班牙语",
-        "泰语",
-        "阿拉伯语",
-        "俄语",
-        "葡萄牙语",
-        "德语",
-        "意大利语",
-        "希腊语",
-        "荷兰语",
-        "波兰语",
-        "保加利亚语",
-        "爱沙尼亚语",
-        "丹麦语",
-        "芬兰语",
-        "捷克语",
-        "罗马尼亚语",
-        "斯洛文尼亚语",
-        "瑞典语",
-        "匈牙利语",
-        "繁体中文",
-        "越南语"
-      ],
+      label: lang.baidu_to_lang.label,
+      option: lang.baidu_to_lang.$option28,
       bind: ["translateProviders", 0]
     },
     {
       key: "baiduThesaurus",
       type: CellViewType.Switch,
-      label: "自定义术语库",
-      help: "百度翻译高级版可用，仅支持中英互译，点击新建自定义术语。",
-      link: "https://fanyi-api.baidu.com/manage/term",
+      label: lang.baidu_thesaurus.label,
+      help: lang.baidu_thesaurus.help,
+      link: lang.baidu_thesaurus.link,
       bind: ["translateProviders", 0]
     },
     {
       key: "hudTime",
       type: CellViewType.InlineInput,
-      label: "翻译弹窗显示时间",
-      help: "MagicAction for Text —— 翻译选中文字",
+      label: lang.hud_time.label,
+      help: lang.hud_time.help,
       check({ input }) {
         checkPositiveinteger(Number(input))
       }
@@ -145,13 +84,13 @@ export default defineConfig({
     {
       key: "showKey",
       type: CellViewType.Switch,
-      label: "显示/隐藏 Key"
+      label: lang.show_key
     },
     {
       key: "baiduAppID",
       type: CellViewType.Input,
-      help: "百度 App ID，点击查看如何获取。",
-      link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#百度翻译",
+      help: lang.baidu_app_id.help,
+      link: lang.baidu_app_id.link,
       bind: [
         ["showKey", true],
         ["translateProviders", 0]
@@ -160,7 +99,7 @@ export default defineConfig({
     {
       key: "baiduSecretKey",
       type: CellViewType.Input,
-      help: "百度密钥",
+      help: lang.baidu_secret_key,
       bind: [
         ["showKey", true],
         ["translateProviders", 0]
@@ -169,8 +108,8 @@ export default defineConfig({
     {
       key: "caiyunToken",
       type: CellViewType.Input,
-      help: "彩云小译 Token，点击查看如何获取。",
-      link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#彩云小译",
+      help: lang.caiyun_token.help,
+      link: lang.caiyun_token.link,
       bind: [
         ["showKey", true],
         ["translateProviders", 1]
@@ -181,13 +120,9 @@ export default defineConfig({
     {
       key: "translateText",
       type: CellViewType.Button,
-      label: "翻译选中文字",
+      label: lang.translate_text,
       method: async ({ text }) => {
         try {
-          if (!text) {
-            showHUD("无法获取到选中的文字")
-            return
-          }
           const {
             translateProviders,
             baiduFromLang,

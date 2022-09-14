@@ -3,34 +3,37 @@ import { MN } from "~/sdk"
 const zh = {
   intro: "自动替换摘录中的某些错误",
   link: "https://ohmymn.marginnote.cn/guide/modules/autoreplace.html",
-  option: {
-    preset: ["自定义"],
-    replace_selected: ["使用 AutoReplace 的配置", "确定"]
+  on: "摘录时自动执行",
+  preset: {
+    label: "选择需要的预设",
+    $option1: ["自定义"]
   },
-  help: {
-    custom_replace: "自定义，点击查看具体格式"
+  replace_selected: {
+    label: "替换摘录文字",
+    $option2: ["使用 AutoReplace 的设置", "确定"]
   },
-  label: {
-    on: "摘录时自动执行",
-    preset: "选择需要的预设",
-    replace_selected: "替换摘录文字"
+  custom_replace: {
+    link: "",
+    help: "自定义，点击查看具体格式"
   }
 }
 
 const en: typeof zh = {
   intro: "Automatically replace errors in excerpts",
-  link: "https://www.notion.so/huangkewei/AutoReplace-1cf1399ed90e4fc7a3e16843d37f2a56", //Todo:修改英文版Notion
-  option: {
-    preset: ["Custom"],
-    replace_selected: ["Use AutoReplace Settings", "Confirm"]
+  link: "https://ohmymn.marginnote.cn/guide/modules/autoreplace.html",
+  on: "Auto Executed",
+  preset: {
+    label: "Select Presets",
+    $option1: ["Custom"]
   },
-  help: {
-    custom_replace: "Customize. Click for specific formats"
+  replace_selected: {
+    $option2: ["Use AutoReplace Settings", "Confirm"],
+    label: "Replace Excerptions"
   },
-  label: {
-    on: "Auto Executed",
-    preset: "Select Presets",
-    replace_selected: "Replace Excerptions"
+  custom_replace: {
+    link: "",
+    help: "Customize. Click for specific formats"
   }
 }
+
 export const lang = MN.isZH ? zh : en

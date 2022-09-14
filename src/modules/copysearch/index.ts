@@ -14,32 +14,30 @@ import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
 import { Addon } from "~/addon"
 
-const { link, intro, lable, option, help, hud } = lang
-
 export default defineConfig({
   name: "CopySearch",
   key: "copysearch",
-  intro,
-  link,
+  intro: lang.intro,
+  link: lang.link,
   settings: [
     {
-      label: lable.which_partof_card,
+      label: lang.which_partof_card.label,
       key: "whichPartofCard",
       type: CellViewType.Select,
-      option: option.which_partof_card,
-      help: help.which_partof_card
+      option: lang.which_partof_card.$option4,
+      help: lang.which_partof_card.help
     },
     {
-      label: lable.multiple_titles,
+      label: lang.multiple_titles.label,
       key: "multipleTitles",
       type: CellViewType.Select,
-      option: option.multiple_titles
+      option: lang.multiple_titles.$option3
     },
     {
-      label: lable.multiple_excerpts,
+      label: lang.multiple_excerpts.label,
       key: "multipleExcerpts",
       type: CellViewType.Select,
-      option: option.multiple_excerpts
+      option: lang.multiple_excerpts.$option3
     },
     {
       key: "modifySymbols",
@@ -52,29 +50,29 @@ export default defineConfig({
       }
     },
     {
-      help: lable.custom_copy,
+      help: lang.custom_copy.help,
       type: CellViewType.Input,
       key: "customContent",
-      link,
+      link: lang.custom_copy.link,
       check({ input }) {
         checkPlainText(input)
       }
     },
     {
-      help: lable.custom_search,
+      help: lang.custom_search.help,
       type: CellViewType.Input,
       key: "customSearchContent",
-      link,
+      link: lang.custom_search.link,
       check({ input }) {
         checkPlainText(input)
       }
     },
     {
-      label: lable.show_search_engine,
+      label: lang.show_search_engine.label,
       key: "showSearchEngine",
       type: CellViewType.Switch,
-      link,
-      help: help.show_search_engine
+      link: lang.show_search_engine.link,
+      help: lang.show_search_engine.help
     },
     ...([
       "searchChineseText",
@@ -87,11 +85,11 @@ export default defineConfig({
     ].map((k, i) => {
       return {
         type: CellViewType.Input,
-        help: option.search_engine[i],
+        help: lang.$search_engine7[i],
         key: k,
         bind: ["showSearchEngine", true],
         check({ input }) {
-          if (!input.includes("{{keyword}}")) throw hud.no_keyword
+          if (!input.includes("{{keyword}}")) throw lang.no_keyword
         }
       }
     }) as ISettingInput<(IGlobalProfile & IDocProfile)["copysearch"]>[])
@@ -100,8 +98,8 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       key: "searchCardInfo",
-      label: lable.search_card_info,
-      option: option.search_engine,
+      label: lang.search_card_info,
+      option: lang.$search_engine7,
       async method({ nodes, option }) {
         if (nodes.length == 1) {
           const { whichPartofCard } = self.globalProfile.copysearch
@@ -121,7 +119,7 @@ export default defineConfig({
           ).split("$&")
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
             opt = await selectIndex(
-              lang.option.muiltple_cards,
+              lang.muiltple_cards.$option3,
               Addon.title,
               lang.choose_you_want
             )
@@ -146,8 +144,8 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       key: "copyCardInfo",
-      label: lable.copy_card_info,
-      option: option.which_partof_card,
+      label: lang.copy_card_info,
+      option: lang.which_partof_card.$option4,
       async method({ nodes, option }) {
         if (nodes.length == 1) {
           const text = (await getContentofOneCard(
@@ -182,8 +180,8 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       key: "searchText",
-      label: lable.search_text,
-      option: option.search_engine,
+      label: lang.search_text,
+      option: lang.$search_engine7,
       method({ text, option }) {
         text && search(text, option)
       }
@@ -191,7 +189,7 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       key: "copyText",
-      label: lable.copy_text,
+      label: lang.copy_text,
       method({ text }) {
         return text
       }

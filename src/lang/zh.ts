@@ -33,7 +33,7 @@ const dict = {
     cards_with_children: "检测到您选中的多张同层级卡片均有子卡片"
   },
   magicaction_from_which_module: (module: string) =>
-    `该动作来自于 ${module}，与其使用相同的配置`,
+    `该动作来自于 ${module}，与其使用相同的设置`,
   handle_user_action: {
     gesture: {
       alert:

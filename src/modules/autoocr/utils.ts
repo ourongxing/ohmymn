@@ -6,12 +6,12 @@ export async function getBaiduToken() {
   const { lastGetToken, baiduToken } = self.globalProfile.additional.autoocr
   const { baiduApiKey, baiduSecretKey } = self.globalProfile.autoocr
   if (baiduToken && Date.now() - lastGetToken < 2592000000) return baiduToken
-  if (!baiduApiKey) throw "没有设置百度 OCR 的 Api Key"
-  if (!baiduSecretKey) throw "没有设置百度 OCR 的 Secret Key"
+  if (!baiduApiKey) throw lang.no_baidu_api_key
+  if (!baiduSecretKey) throw lang.no_baidu_secret_key
   const res = (await fetch(
     `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${baiduApiKey}&client_secret=${baiduSecretKey}`
   ).then(res => res.json())) as { access_token: string }
-  if (!res.access_token) throw lang.other.baidu_token_error
+  if (!res.access_token) throw lang.baidu_token_error
   self.globalProfile.additional.autoocr = {
     lastGetToken: Date.now(),
     baiduToken: res.access_token
@@ -20,7 +20,7 @@ export async function getBaiduToken() {
 }
 export async function mathpixOCR(imgBase64: string) {
   const { mathpixAppKey } = self.globalProfile.autoocr
-  if (!mathpixAppKey) throw lang.other.no_mathpix_key
+  if (!mathpixAppKey) throw lang.no_mathpix_key
   const res = (await fetch("https://api.mathpix.com/v3/latex", {
     method: "POST",
     headers: {
@@ -151,6 +151,5 @@ export async function mainOCR(imgBase64: string) {
       .join("")
   } catch (err) {
     showHUD(String(err))
-    return undefined
   }
 }

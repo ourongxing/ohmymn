@@ -131,5 +131,5 @@ export async function search(text: string, option: number) {
     searchOtherText
   ][option]
   if (searchEngine) openUrl(searchEngine.replace("{{keyword}}", text))
-  else showHUD(lang.hud.no_search_engine_url, 2)
+  else showHUD(lang.no_search_engine_url, 2)
 }
