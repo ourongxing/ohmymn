@@ -16,28 +16,28 @@ const zh = {
   smart_selection: `${Addon.title} 智能选择`,
   filter_cards: {
     label: "筛选卡片",
-    $option5: ["所有", "标题", "摘录", "评论", "标签"] as TupleString<5>
+    $option5: ["所有", "标题", "摘录", "评论", "标签"] as StringTuple<5>
   },
   switch_title: {
     label: "切换摘录标题",
     help: "当两者都存在时请使用「交换标题和摘录」",
-    $option2: ["切换为不存在的", "交换标题和摘录"] as TupleString<2>
+    $option2: ["切换为不存在的", "交换标题和摘录"] as StringTuple<2>
   },
   merge_text: {
     label: "合并卡片内文字",
     help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶",
     is_excerpt_pic:
       "检测到当前摘录为图片，合并为摘录后仍旧是图片，是否继续合并为摘录？",
-    $excerpt_pic_option2: ["继续", "合并为评论"] as TupleString<2>,
-    $option2: ["合并为摘录", "合并为评论"] as TupleString<2>
+    $excerpt_pic_option2: ["继续", "合并为评论"] as StringTuple<2>,
+    $option2: ["合并为摘录", "合并为评论"] as StringTuple<2>
   },
   merge_cards: {
     label: "合并卡片",
-    $option2: ["同时合并标题", "不合并标题"] as TupleString<2>
+    $option2: ["同时合并标题", "不合并标题"] as StringTuple<2>
   },
   manage_profile: {
     label: "配置管理",
-    $option3: ["读取配置", "写入配置", "重置配置"] as TupleString<3>,
+    $option3: ["读取配置", "写入配置", "重置配置"] as StringTuple<3>,
     help: "写入配置时请确保该卡片至少有一张子卡片。多张子卡片可以一起分担配置，防止单张卡片字数过多。"
   },
   is_selected: "您需要的卡片已选中，请继续操作",

@@ -8,7 +8,7 @@ const zh = {
   },
   variant: {
     label: "异体字转换",
-    $option3: ["中国大陆", "中国台湾", "中国香港"] as TupleString<3>
+    $option3: ["中国大陆", "中国台湾", "中国香港"] as StringTuple<3>
   },
   taiwan_idiom: {
     label: "台湾特殊用词转换"
@@ -18,7 +18,7 @@ const zh = {
   },
   simplify_card: {
     label: "转换为简体中文",
-    $option3: ["摘录和标题", "仅摘录", "仅标题"] as TupleString<3>
+    $option3: ["摘录和标题", "仅摘录", "仅标题"] as StringTuple<3>
   }
 }
 

@@ -7,12 +7,12 @@ const zh = {
   complete_selected: "补全单词词形",
   select_meaning: {
     label: "动态选择释义",
-    $option2: ["中文", "英文"] as TupleString<2>
+    $option2: ["中文", "英文"] as StringTuple<2>
   },
   select_lemma: "动态选择单词原形",
   complete_word: {
     label: "英文单词制卡",
-    $option2: ["追加", "替换"] as TupleString<2>
+    $option2: ["追加", "替换"] as StringTuple<2>
   },
   custom_fill: "自定义单词填充信息（二）",
   custom_fill_front: {
@@ -34,11 +34,11 @@ const zh = {
   },
   fill_word_info: {
     label: "填充单词信息",
-    $option3: ["不填充", "自定义", "中文释义"] as TupleString<3>
+    $option3: ["不填充", "自定义", "中文释义"] as StringTuple<3>
   },
   data_source: {
     label: "数据来源",
-    $option2: ["在线 API", "本地数据库"] as TupleString<2>,
+    $option2: ["在线 API", "本地数据库"] as StringTuple<2>,
     help: "本地数据库体积较大，但更快，质量更高，需要下载本地数据库版本。"
   },
   not_find_word: "查询不到该单词",

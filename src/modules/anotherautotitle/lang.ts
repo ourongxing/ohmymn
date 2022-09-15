@@ -6,7 +6,7 @@ const zh = {
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
-    $option3: ["自定义", "根据字数", "不含有点号"] as TupleString<3>
+    $option3: ["自定义", "根据字数", "不含有点号"] as StringTuple<3>
   },
   word_count: {
     help: "[类中文字数, 类英文单词数]，没超过就自动设置为标题",

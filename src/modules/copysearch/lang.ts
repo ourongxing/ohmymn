@@ -5,19 +5,19 @@ const zh = {
   link: "https://ohmymn.marginnote.cn/guide/modules/copysearch.html",
   which_partof_card: {
     label: "默认搜索卡片内容",
-    $option4: ["动态选择", "优先标题", "优先摘录", "自定义"] as TupleString<4>,
+    $option4: ["动态选择", "优先标题", "优先摘录", "自定义"] as StringTuple<4>,
     help: "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"
   },
   multiple_titles: {
     label: "如果有多个标题",
-    $option3: ["动态选择", "所有标题", "第一个"] as TupleString<3>
+    $option3: ["动态选择", "所有标题", "第一个"] as StringTuple<3>
   },
   multiple_excerpts: {
     label: "如果有多个摘录",
-    $option3: ["动态选择", "所有摘录", "第一个"] as TupleString<3>
+    $option3: ["动态选择", "所有摘录", "第一个"] as StringTuple<3>
   },
   muiltple_cards: {
-    $option3: ["标题", "摘录", "自定义"] as TupleString<3>
+    $option3: ["标题", "摘录", "自定义"] as StringTuple<3>
   },
   show_search_engine: {
     help: "点击查看如何自定义 URL。",
@@ -32,7 +32,7 @@ const zh = {
     "学术",
     "问题",
     "其他"
-  ] as TupleString<7>,
+  ] as StringTuple<7>,
   separator_symbols_multiple_card: {
     label: "分隔符",
     link: "",

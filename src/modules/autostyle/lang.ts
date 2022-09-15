@@ -12,13 +12,13 @@ const zh = {
       "线框+填充",
       "填充",
       "线框"
-    ] as TupleString<4>
+    ] as StringTuple<4>
   },
   change_color: {
     label: "修改摘录颜色",
     help: "输入颜色索引，也就是顺序，1 到 16",
     out_of_range: "不再范围内（1,16）",
-    $option2: ["使用 AutoStyle 的设置", "确定"] as TupleString<2>
+    $option2: ["使用 AutoStyle 的设置", "确定"] as StringTuple<2>
   },
   preset: {
     label: "选择需要的预设",
@@ -27,9 +27,9 @@ const zh = {
       "颜色跟随卡片",
       "颜色跟随第一个兄弟卡片",
       "颜色跟随父卡片"
-    ] as TupleString<4>
+    ] as StringTuple<4>
   },
-  $style4: ["无", "线框+填充", "填充", "线框"] as TupleString<4>,
+  $style4: ["无", "线框+填充", "填充", "线框"] as StringTuple<4>,
   $color17: [
     "无",
     "浅黄",
@@ -48,7 +48,7 @@ const zh = {
     "浅灰",
     "深灰",
     "紫"
-  ] as TupleString<17>,
+  ] as StringTuple<17>,
   word_count_area: {
     help: "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认",
     input_array: "请输入数组，比如 [10,5,100]",

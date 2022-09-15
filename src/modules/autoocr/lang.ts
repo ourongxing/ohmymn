@@ -30,24 +30,24 @@ const zh = {
       "土耳其语",
       "希腊语",
       "匈牙利语"
-    ] as TupleString<21>,
+    ] as StringTuple<21>,
     help: "【当前文档】",
     label: "识别语言"
   },
   formula_ocr: {
     label: "公式识别",
-    $option3: ["Pure Latex", "$ Latex $", "$$ Latex $$"] as TupleString<3>,
+    $option3: ["Pure Latex", "$ Latex $", "$$ Latex $$"] as StringTuple<3>,
     help: `"Markdown" 插件请选择 Pure Latex`
   },
   formula_ocr_providers: {
     label: "公式识别提供商",
-    $option2: ["百度", "Mathpix"] as TupleString<2>,
+    $option2: ["百度", "Mathpix"] as StringTuple<2>,
     help: "公式识别不支持摘录时自动识别，只能在 MagicAtion for Text 中手动进行公式识别。"
   },
   markdown: {
     label: "使用的 Markdown 插件",
     help: "用于显示公式，推荐使用 Milkdown",
-    $option3: ["Markdown", "myMarkDown", "Milkdown"] as TupleString<3>
+    $option3: ["Markdown", "myMarkDown", "Milkdown"] as StringTuple<3>
   },
   baidu_api_key: {
     help: "百度 Api Key，点击查看如何获取。",

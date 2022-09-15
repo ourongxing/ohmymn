@@ -8,7 +8,7 @@ const dict = {
   none: "无",
   sure: "确定",
   uninstall: {
-    $options2: ["重置配置", "去论坛更新/反馈"] as TupleString<2>,
+    $options2: ["重置配置", "去论坛更新/反馈"] as StringTuple<2>,
     profile_reset: "配置已重置",
     have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
   },

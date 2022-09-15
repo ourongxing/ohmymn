@@ -11,7 +11,7 @@ const zh = {
       "配置 3",
       "配置 4",
       "初始化"
-    ] as TupleString<5>,
+    ] as StringTuple<5>,
     label: "选择全局配置",
     help: "【当前笔记本】不同场景，不同配置"
   },
@@ -26,11 +26,11 @@ const zh = {
       "靠左",
       "居中",
       "靠右"
-    ] as TupleString<6>,
+    ] as StringTuple<6>,
     label: "面板显示位置"
   },
   panel_height: {
-    $option3: ["高点", "标准", "矮点"] as TupleString<3>,
+    $option3: ["高点", "标准", "矮点"] as StringTuple<3>,
     label: "面板显示高度"
   },
   panle_control: {
@@ -38,16 +38,16 @@ const zh = {
       "双击图标打开面板",
       "双击面板关闭面板",
       "动作执行完关闭面板"
-    ] as TupleString<3>,
+    ] as StringTuple<3>,
     label: "面板显示控制"
   },
   has_title_then: {
-    $option3: ["不转为标题", "合并标题", "覆盖标题"] as TupleString<3>,
+    $option3: ["不转为标题", "合并标题", "覆盖标题"] as StringTuple<3>,
     label: "如果标题存在",
     help: "【AutoTitle、AutoDef、AutoComplete】 \n卡片已有标题，此时拖拽文字合并进该卡片，如果会产生新标题，则"
   },
   remove_excerpt: {
-    $option3: ["立即删除", "等会删除", "不删除"] as TupleString<3>,
+    $option3: ["立即删除", "等会删除", "不删除"] as StringTuple<3>,
     label: "转为标题后, 摘录将",
     help: "接上文"
   },
