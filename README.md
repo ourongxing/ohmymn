@@ -1,6 +1,5 @@
-<a href="https://github.com/marginnoteapp/ohmymn">
-  <img src="assets/banner.jpg" alt="OhMyMN" >
-</a>
+![OhMyMN](assets/banner1.png#gh-dark-mode-only)
+![OhMyMN](assets/banner2.png#gh-light-mode-only)
 
 <p/>
 
