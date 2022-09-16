@@ -1,8 +1,6 @@
 ![OhMyMN](assets/banner1.png#gh-dark-mode-only)
 ![OhMyMN](assets/banner2.png#gh-light-mode-only)
 
-<p/>
-
 <p align="center">
   <b>MarginNote Addon Control Panel and Development Framework</b>
 </p>
