@@ -1,5 +1,5 @@
-![OhMyMN](assets/banner1.png#gh-dark-mode-only)
-![OhMyMN](assets/banner2.png#gh-light-mode-only)
+![OhMyMN](assets/banner1.png#gh-light-mode-only)
+![OhMyMN](assets/banner2.png#gh-dark-mode-only)
 
 <p align="center">
   <a href="https://github.com/marginnoteapp/ohmymn/network/members"><img src="https://img.shields.io/github/forks/marginnoteapp/ohmymn.svg?style=flat" alt="forks"></a>
