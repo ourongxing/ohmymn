@@ -8,7 +8,8 @@ import {
   string2RegArray,
   escapeDoubleQuote,
   string2ReplaceParam,
-  reverseEscape
+  reverseEscape,
+  doc
 } from "~/utils"
 import {
   showHUD,
@@ -34,12 +35,13 @@ export default defineConfig({
   name: "MagicAction for Card",
   key: "magicaction4card",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("magicaction4card"),
   settings: [
     {
       key: "smartSelection",
       type: CellViewType.Switch,
-      label: lang.smart_selection
+      label: lang.smart_selection.label,
+      help: lang.smart_selection.help
     },
     {
       key: "defaultMergeText",

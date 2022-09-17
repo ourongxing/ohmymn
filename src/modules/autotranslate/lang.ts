@@ -1,8 +1,8 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "摘录时自动附加上翻译结果",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html",
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
@@ -100,12 +100,12 @@ const zh = {
   show_key: "显示/隐藏 Key",
   baidu_app_id: {
     help: "百度 App ID，点击查看如何获取。",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#百度翻译"
+    link: doc("autotranslate", "百度翻译")
   },
   baidu_secret_key: "百度密钥",
   caiyun_token: {
     help: "彩云小译 Token，点击查看如何获取。",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#彩云小译"
+    link: doc("autotranslate", "彩云小译")
   },
   translate_text: "翻译选中文字",
   no_baidu_app_id: "没有设置百度翻译的 App ID",
@@ -115,7 +115,6 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Automatically add translation results when quoting",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html",
   on: "Auto Executed",
   preset: {
     label: "Select the preset",
@@ -213,12 +212,12 @@ const en: typeof zh = {
   show_key: "Show/Hide Key",
   baidu_app_id: {
     help: "Baidu Fanyi App ID, click to view how to get it.",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#百度翻译"
+    link: doc("autotranslate", "百度翻译")
   },
   baidu_secret_key: "Baidu Fanyi Secret Key",
   caiyun_token: {
     help: "Caiyun Translate Token, click to view how to get it.",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autotranslate.html#彩云小译"
+    link: doc("autotranslate", "彩云小译")
   },
   translate_text: "Translate Selected Text",
   no_baidu_app_id: "No Baidu Fanyi App ID",

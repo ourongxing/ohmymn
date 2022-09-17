@@ -38,8 +38,7 @@ const dict = {
     gesture: {
       alert:
         "该功能由 OhMyMN 提供，与 MarginNote 无关。请问您是否详细阅读使用文档，并知晓具体手势监测区域和相关使用风险",
-      option: ["不清楚，查看文档", "我已知晓"],
-      doc: "https://ohmymn.marginnote.cn/guide/modules/gesture.html"
+      option: ["不清楚，查看文档", "我已知晓"]
     }
   },
   more: {

@@ -1,19 +1,21 @@
-import { Addon } from "~/addon"
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
-  link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html",
   default_merge_text: {
     help: "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
     error: "缺少 $&",
-    link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97"
+    link: doc("magicaction4card", "合并卡片内文字")
   },
   rename_title: {
     label: "重命名标题",
     help: "现在可以分层进行编号"
   },
-  smart_selection: `${Addon.title} 智能选择`,
+  smart_selection: {
+    label: "智能选择",
+    help: "帮助你快速选中子卡片，后代卡片"
+  },
   filter_cards: {
     label: "筛选卡片",
     $option5: ["所有", "标题", "摘录", "评论", "标签"] as StringTuple<5>
@@ -48,12 +50,14 @@ const zh = {
 const en: typeof zh = {
   intro:
     "All actions need to select the card first. Click for the specific useage",
-  link: "https://www.notion.so/huangkewei/MagicAction-79afa352bad141f58075841614ded734",
-  smart_selection: `${Addon.title} Smart Selector`,
+  smart_selection: {
+    label: "Smart Selector",
+    help: "Help you quickly select the child card and descendant card"
+  },
   default_merge_text: {
     help: "The default prefix and suffix of the merged text. Click to see the custom method.                 ",
     error: "Missing $&",
-    link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4card.html#%E5%90%88%E5%B9%B6%E5%8D%A1%E7%89%87%E5%86%85%E6%96%87%E5%AD%97"
+    link: doc("magicaction4card", "合并卡片内文字")
   },
   switch_title: {
     label: "Use [Swap Title and Excerpt] when both are present」",

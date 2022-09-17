@@ -1,7 +1,7 @@
 import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "~/sdk"
-import { serialSymbols, reverseEscape } from "~/utils"
+import { serialSymbols, reverseEscape, doc } from "~/utils"
 import { lang } from "./lang"
 import { ChangeStyle } from "./typings"
 import { modifyStyle } from "./utils"
@@ -14,7 +14,7 @@ export default defineConfig({
   name: "AutoStyle",
   key: "autostyle",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autostyle"),
   settings: [
     {
       key: "on",

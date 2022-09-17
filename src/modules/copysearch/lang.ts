@@ -1,8 +1,8 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "搜索和复制你想要的",
-  link: "https://ohmymn.marginnote.cn/guide/modules/copysearch.html",
   which_partof_card: {
     label: "默认搜索卡片内容",
     $option4: ["动态选择", "优先标题", "优先摘录", "自定义"] as StringTuple<4>,
@@ -22,7 +22,11 @@ const zh = {
   show_search_engine: {
     help: "点击查看如何自定义 URL。",
     label: "显示/隐藏搜索 URL",
-    link: ""
+    link: doc("copysearch", "搜索-url")
+  },
+  modify_symbols: {
+    help: "选中多张卡片时，为每张卡片的内容添加前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。",
+    link: doc("copysearch", "多张卡片")
   },
   $search_engine7: [
     "中文",
@@ -33,17 +37,12 @@ const zh = {
     "问题",
     "其他"
   ] as StringTuple<7>,
-  separator_symbols_multiple_card: {
-    label: "分隔符",
-    link: "",
-    help: "选中多张卡片时，用来隔开每张卡片的内容"
-  },
   custom_copy: {
-    link: "",
+    link: doc("copysearch", "自定义"),
     help: "自定义复制的内容，点击查看支持哪些变量。"
   },
   custom_search: {
-    link: "",
+    link: doc("copysearch", "自定义"),
     help: "自定义搜索的内容，点击查看支持哪些变量。"
   },
   search_card_info: "搜索卡片内容",
@@ -62,7 +61,6 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Copy and search for what you want",
-  link: "https://ohmymn.marginnote.cn/guide/modules/copysearch.html",
   which_partof_card: {
     label: "Default Part of Card",
     $option4: [
@@ -99,13 +97,12 @@ const en: typeof zh = {
   ],
   show_search_engine: {
     help: "Click to see how to customize the URL",
-    link: "",
-    label: "Show/Hide Search URL"
+    label: "Show/Hide Search URL",
+    link: doc("copysearch", "搜索-url")
   },
-  separator_symbols_multiple_card: {
-    label: "Separator Symbols",
-    link: "",
-    help: "When multiple cards are selected, it is used to separate the contents of each card"
+  modify_symbols: {
+    help: "Add prefix and suffix to the content of each card when multiple cards are selected, and add a number and a newline by default ($& represents each paragraph). Click to see how to customize it.",
+    link: doc("copysearch", "多张卡片")
   },
   custom_copy: {
     link: "",

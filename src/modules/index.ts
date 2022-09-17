@@ -1,5 +1,7 @@
 import { ISection } from "~/typings"
 import { CellViewType } from "~/enum"
+import lang from "~/lang"
+import { Addon } from "~/addon"
 import addon from "./addon"
 import gesture from "./gesture"
 import magicaction4card from "./magicaction4card"
@@ -17,7 +19,6 @@ import autotag from "./autotag"
 import autotranslate from "./autotranslate"
 import copysearch from "./copysearch"
 import autosimplify from "./autosimplify"
-import lang from "~/lang"
 
 export const modules = {
   gesture,
@@ -45,17 +46,17 @@ export const more: ISection = {
     {
       type: CellViewType.PlainText,
       label: lang.more.website,
-      link: "https://ohmymn.marginnote.cn"
+      link: Addon.doc
     },
     {
       type: CellViewType.PlainText,
       label: lang.more.core_team,
-      link: "https://github.com/marginnoteapp/ohmymn"
+      link: Addon.github
     },
     {
       type: CellViewType.PlainText,
       label: lang.more.intro,
-      link: "https://github.com/marginnoteapp/ohmymn"
+      link: Addon.github
     },
     {
       type: CellViewType.PlainText,

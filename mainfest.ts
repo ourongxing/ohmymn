@@ -15,9 +15,10 @@ interface Mainfest {
     button: string
   }
   /** Chinese forum url */
-  bbs?: string
-  /** English forum url */
+  forumZH?: string
   forum?: string
+  docZH?: string
+  doc?: string
   files?: string[]
 }
 
@@ -37,7 +38,9 @@ export const mainfest: Mainfest = {
     button: "#8A95A2"
   },
   github: "https://github.com/marginnoteapp/ohmymn",
-  bbs: "https://bbs.marginnote.cn/t/topic/20501",
+  forumZH: "https://bbs.marginnote.cn/t/topic/20501",
+  docZH: "https://ohmymn.marginnote.cn",
+  doc: "https://ohmymn.marginnote.com",
   files: [
     "assets/logo.png",
     "assets/icon",

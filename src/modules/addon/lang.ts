@@ -2,7 +2,6 @@ import { Addon } from "~/addon"
 import { MN } from "~/sdk"
 
 const zh = {
-  link: "https://ohmymn.marginnote.cn",
   intro: `当前版本：${Addon.version}`,
   profile: {
     $option5: [
@@ -67,7 +66,6 @@ const zh = {
 }
 
 const en: typeof zh = {
-  link: "https://www.notion.so/huangkewei/ohmymn-wiki-faea66243fb54149b9e7067f61142a9d",
   intro: `Current Version: ${Addon.version}`,
   profile: {
     $option5: [

@@ -41,8 +41,7 @@ const dict: Dict = {
     gesture: {
       alert:
         "This feature is provided by OhMyMN and not related to MarginNote. Have you read the doc and are aware of the specific gesture monitoring areas and the risks associated with their use?",
-      option: ["Not sure, check the doc", "Sure, I know"],
-      doc: "https://www.notion.so/huangkewei/Gesture-2d43552645f3433da3c9beece0990f73"
+      option: ["Not sure, check the doc", "Sure, I know"]
     }
   },
   more: {

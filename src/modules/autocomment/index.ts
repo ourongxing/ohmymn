@@ -10,7 +10,8 @@ import {
   string2ReplaceParam,
   extractArray,
   regFlag,
-  ReplaceParam
+  ReplaceParam,
+  doc
 } from "~/utils"
 import { appendTextComment, getAllText } from "~/sdk"
 import { lang } from "./lang"
@@ -57,7 +58,7 @@ export default defineConfig({
   name: "AutoComment",
   key: "autocomment",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autocomment"),
   settings: [
     {
       key: "on",

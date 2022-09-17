@@ -1,8 +1,8 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "使用百度 OCR 服务来进行小语种的在线矫正。",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html",
   on: {
     label: "摘录时自动执行",
     help: "【当前文档】"
@@ -51,12 +51,12 @@ const zh = {
   },
   baidu_api_key: {
     help: "百度 Api Key，点击查看如何获取。",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html#百度-ocr"
+    link: doc("autoocr", "百度-ocr")
   },
   baidu_secret_key: "百度 Secret Key",
   mathpix_app_key: {
     help: "Mathpix App Key，点击查看如何获取。",
-    link: "https://ohmymn.marginnote.cn/guide/modules/autoocr.html#mathpix"
+    link: doc("autoocr", "mathpix")
   },
   show_key: "显示/隐藏 Key",
   text_ocr: "文字识别",
@@ -76,7 +76,6 @@ const zh = {
 const en: typeof zh = {
   intro:
     "Using Baidu OCR API, it can be used without activating OCR Pro and supports several small languages.",
-  link: "https://busiyi.notion.site/AutoReplace-23df00035c97436e88a863925a08e57f",
   on: {
     label: "Auto Executed",
     help: "[Current Document]"
@@ -124,12 +123,12 @@ const en: typeof zh = {
     $option3: ["Pure Latex", "$ Latex $", "$$ Latex $$"]
   },
   baidu_api_key: {
-    link: "",
+    link: doc("autoocr", "百度-ocr"),
     help: "Baidu Api Key, click to see how to get it."
   },
   baidu_secret_key: "Baidu Secret Key",
   mathpix_app_key: {
-    link: "",
+    link: doc("autoocr", "mathpix"),
     help: "Mathpix App Key, click to see how to get it."
   },
   show_key: "Show / Hidden Key",

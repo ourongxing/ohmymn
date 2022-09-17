@@ -1,8 +1,8 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "自动添加评论",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autocomment.html",
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
@@ -14,13 +14,12 @@ const zh = {
   },
   custom_comment: {
     help: "自定义，点击查看具体格式",
-    link: ""
+    link: doc("autocomment")
   }
 }
 
 const en: typeof zh = {
   intro: "Auto Add Comments",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autocomment.html",
   on: "Auto Executed",
   preset: {
     label: "Select Presets",
@@ -32,7 +31,7 @@ const en: typeof zh = {
   },
   custom_comment: {
     help: "Customize. Click for specific formats",
-    link: ""
+    link: doc("autocomment")
   }
 }
 

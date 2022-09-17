@@ -1,10 +1,13 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "优化摘录和标题的排版与格式",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autoformat.html",
   on: "摘录时自动执行",
-  custom_format: "自定义，点击查看具体格式",
+  custom_format: {
+    help: "自定义，点击查看具体格式",
+    link: doc("autoformat")
+  },
   preset: {
     label: "选择需要的预设",
     $option6: [
@@ -22,15 +25,18 @@ const zh = {
   },
   format_title: {
     help: "涉及到首字母大写，点击查看具体规范",
-    label: "英文标题规范化"
+    label: "英文标题规范化",
+    link: doc("autoformat")
   }
 }
 
 const en: typeof zh = {
   intro: "Optimize the typography and formatting of excerpts & titles",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autoformat.html",
   on: "Auto Executed",
-  custom_format: "Customize. Click for specific formats",
+  custom_format: {
+    help: "Customize. Click for specific formats",
+    link: doc("autoformat")
+  },
   preset: {
     label: "Select Presets",
     $option6: [
@@ -52,6 +58,7 @@ const en: typeof zh = {
   },
   format_title: {
     label: " Normalize English Title",
+    link: doc("autoformat"),
     help: "Click for  specific specifications"
   }
 }

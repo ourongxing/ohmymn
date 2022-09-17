@@ -1,8 +1,8 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "补全单词词形，只支持动词和名词",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autocomplete.html",
   on: "摘录时自动执行",
   complete_selected: "补全单词词形",
   select_meaning: {
@@ -17,6 +17,7 @@ const zh = {
   custom_fill: "自定义单词填充信息（二）",
   custom_fill_front: {
     help: "自定义单词填充信息（一），点击查看支持变量，当前输入栏不允许使用 {{zh}} 和 {{en}}。",
+    link: doc("autocomplete"),
     error: "当前输入栏不允许使用 {{zh}} 或 {{en}}"
   },
   auto_context: {
@@ -49,12 +50,12 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Complete word form. Only support verbs and nouns",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autocomplete.html",
   on: "Auto Executed",
   custom_fill:
     "Custom excerption filling template, click for support variables",
   custom_fill_front: {
     help: "Custom excerption filling template, click for support variables",
+    link: doc("autocomplete"),
     error: "The input bar is not allowed to use {{zh}} or {{en}}"
   },
   complete_selected: "Complete Word Form",

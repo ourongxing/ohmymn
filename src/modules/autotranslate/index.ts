@@ -1,5 +1,5 @@
 import { CellViewType } from "~/enum"
-import { checkPositiveinteger } from "~/utils"
+import { checkPositiveinteger, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
@@ -10,7 +10,7 @@ export default defineConfig({
   name: "AutoTranslate",
   key: "autotranslate",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autotranslate"),
   settings: [
     {
       key: "on",

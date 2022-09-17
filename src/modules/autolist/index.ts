@@ -2,7 +2,8 @@ import { CellViewType } from "~/enum"
 import {
   string2ReplaceParam,
   checkReplaceParamFromMNLink,
-  checkReplaceParam
+  checkReplaceParam,
+  doc
 } from "~/utils"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "~/sdk"
@@ -14,7 +15,7 @@ export default defineConfig({
   name: "AutoList",
   key: "autolist",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autolist"),
   settings: [
     {
       key: "on",
@@ -35,9 +36,9 @@ export default defineConfig({
     {
       key: "customList",
       type: CellViewType.Input,
-      help: lang.custom_list,
+      help: lang.custom_list.help,
       bind: ["preset", 0],
-      link: lang.link,
+      link: lang.custom_list.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }

@@ -1,5 +1,5 @@
 import { CellViewType } from "~/enum"
-import { checkReplaceParamFromMNLink } from "~/utils"
+import { checkReplaceParamFromMNLink, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes, modifyNodeTitle } from "~/sdk"
 import { lang } from "./lang"
@@ -10,7 +10,7 @@ export default defineConfig({
   name: "AutoFormat",
   key: "autoformat",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autoformat"),
   settings: [
     {
       key: "on",
@@ -39,9 +39,9 @@ export default defineConfig({
     {
       key: "customFormat",
       type: CellViewType.Input,
-      help: lang.custom_format,
+      help: lang.custom_format.help,
       bind: ["preset", 0],
-      link: lang.link,
+      link: lang.custom_format.link,
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -51,7 +51,7 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.format_title.label,
       help: lang.format_title.help,
-      link: lang.link
+      link: lang.format_title.link
     }
   ],
   actions4card: [

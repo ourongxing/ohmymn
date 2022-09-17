@@ -2,7 +2,7 @@ import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
 import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
-import { escapeDoubleQuote, string2ReplaceParam } from "~/utils"
+import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
 import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
 import { ReplaceSelected, AutoReplacePreset } from "./typings"
@@ -31,7 +31,7 @@ export default defineConfig({
   name: "AutoReplace",
   key: "autoreplace",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autoreplace"),
   settings: [
     {
       key: "on",

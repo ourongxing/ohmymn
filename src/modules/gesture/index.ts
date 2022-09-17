@@ -3,17 +3,17 @@ import { ISettingSelect } from "~/typings"
 import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
+import { doc } from "~/utils"
 
-const { link, intro, singleBar, muiltBar, selectionBar } = lang
 export default defineConfig({
   name: "Gesture",
   key: "gesture",
-  intro,
-  link,
+  intro: lang.intro,
+  link: doc("gesture"),
   settings: [
-    [singleBar, "single"],
-    [muiltBar, "muilt"],
-    [selectionBar, "selection"]
+    [lang.singleBar, "single"],
+    [lang.muiltBar, "muilt"],
+    [lang.selectionBar, "selection"]
   ]
     .map(q => {
       return [

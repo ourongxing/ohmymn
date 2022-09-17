@@ -1,10 +1,12 @@
 import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"
+import { doc } from "~/utils"
 import { lang } from "./lang"
 
 export default defineConfig({
   name: "MagicAction for Text",
   key: "magicaction4text",
+  link: doc("magicaction4text"),
   intro: lang.intro,
   settings: [
     {

@@ -5,7 +5,8 @@ import {
   checkRegArrayFromMNLink,
   reverseEscape,
   countWord,
-  notCJK
+  notCJK,
+  doc
 } from "~/utils"
 import { lang } from "./lang"
 import { AutoTitlePreset } from "./typings"
@@ -51,7 +52,7 @@ export default defineConfig({
   name: "Another AutoTitle",
   key: "anotherautotitle",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("anotherautotitle"),
   settings: [
     {
       key: "on",

@@ -1,12 +1,12 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "什么样的摘录该自动转为标题？",
-  link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html",
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
-    $option3: ["自定义", "根据字数", "不含有点号"] as StringTuple<3>
+    $option3: ["自定义", "字数", "不含有点号"] as StringTuple<3>
   },
   word_count: {
     help: "[类中文字数, 类英文单词数]，没超过就自动设置为标题",
@@ -16,7 +16,7 @@ const zh = {
   },
   custom_be_title: {
     help: "自定义，点击查看具体格式",
-    link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html#自定义"
+    link: doc("anotherautotitle", "自定义")
   },
   change_title_no_limit: {
     label: "标题摘录始终为标题",
@@ -26,15 +26,14 @@ const zh = {
 
 const en: typeof zh = {
   intro: "What kind of excerpts should be automatically converted to titles?",
-  link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html",
   on: "Auto Executed",
   preset: {
     label: "Select Presets",
-    $option3: ["Custom", "Word Count", "Not Contain Dots"]
+    $option3: ["Custom", "Word Count", "Not Contain Dot Symbols"]
   },
   change_title_no_limit: {
     label: "Title Always Be Title",
-    help: "Change the title excerpt selection, always turn to the title"
+    help: "Change the excerpt selection that has been converted to a title to always be a title"
   },
   word_count: {
     help: "[Chinese words, English words], if not exceeded, then set the excerpt text as the title",
@@ -45,7 +44,7 @@ const en: typeof zh = {
   },
   custom_be_title: {
     help: "Customize. Click for specific formats",
-    link: "https://ohmymn.marginnote.cn/guide/modules/anotherautotitle.html#自定义"
+    link: doc("anotherautotitle", "自定义")
   }
 }
 

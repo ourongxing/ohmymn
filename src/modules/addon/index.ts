@@ -7,7 +7,7 @@ import { lang } from "./lang"
 export default defineConfig({
   name: Addon.title,
   key: "addon",
-  link: lang.link,
+  link: Addon.forum,
   intro: lang.intro,
   settings: [
     {

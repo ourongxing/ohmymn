@@ -7,7 +7,7 @@ import {
   removeCommentButLinkTag,
   appendTextComment
 } from "~/sdk"
-import { checkPlainText } from "~/utils"
+import { checkPlainText, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { completeWord } from "./utils"
@@ -16,7 +16,7 @@ export default defineConfig({
   name: "AutoComplete",
   key: "autocomplete",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autocomplete"),
   settings: [
     {
       key: "on",
@@ -56,7 +56,7 @@ export default defineConfig({
       type: CellViewType.Input,
       help: lang.custom_fill_front.help,
       bind: ["fillWordInfo", 1],
-      link: lang.link,
+      link: lang.custom_fill_front.link,
       check({ input }) {
         checkPlainText(input)
         if (/{{\s*(?:zh|en)\s*}}/.test(input))
@@ -68,7 +68,6 @@ export default defineConfig({
       type: CellViewType.Input,
       help: lang.custom_fill,
       bind: ["fillWordInfo", 1],
-      link: lang.link,
       check({ input }) {
         checkPlainText(input)
       }

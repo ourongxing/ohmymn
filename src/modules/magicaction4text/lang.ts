@@ -3,7 +3,6 @@ import { MN } from "~/sdk"
 const zh = {
   intro:
     "所有动作均需要在文档中选中文字或框选选区。点击查看具体的使用方法和注意事项。",
-  link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4text.html",
   pre_OCR: {
     label: "预先 OCR",
     help: "【当前文档】使用 AutoOCR 进行转文字和矫正，请确保你已经填入 OCR 密钥。"
@@ -29,7 +28,6 @@ const zh = {
 const en: typeof zh = {
   intro:
     "All actions need to select text or area fisrt in the document. Click for the specific useage.",
-  link: "https://ohmymn.marginnote.cn/guide/modules/magicaction4text.html",
   pre_OCR: {
     label: "Pre OCR",
     help: "[Current Document] Use AutoOCR to OCR. Please make sure you have filled in the OCR key."

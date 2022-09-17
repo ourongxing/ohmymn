@@ -5,7 +5,7 @@ import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/mergeMethod"
 import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
 import { CellViewType } from "~/enum"
 import { MN, popup, openUrl, postNotification } from "~/sdk"
-import { byteLength } from "~/utils"
+import { byteLength, doc } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
 function _tag2indexPath(tag: number): NSIndexPath {
@@ -124,7 +124,7 @@ async function selectAction(param: {
         })
       )
       if (option === 0) {
-        openUrl(gesture.doc)
+        openUrl(doc("gesture"))
         return
       } else if (option === -1) return
     }

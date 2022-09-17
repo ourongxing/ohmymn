@@ -13,7 +13,9 @@ export const Addon = {
   textColor: UIColor.blackColor(),
   borderColor: UIColor.colorWithHexString(mainfest.color.border),
   buttonColor: UIColor.colorWithHexString(mainfest.color.button),
-  url: MN.isZH ? mainfest.bbs : mainfest.forum,
+  github: mainfest.github,
+  forum: MN.isZH ? mainfest.forumZH : mainfest.forum,
+  doc: MN.isZH ? mainfest.docZH : mainfest.doc,
   enDict: undefined as SQLiteDatabase | undefined,
   OpenCC: undefined as OpenCC | undefined
 }

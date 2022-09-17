@@ -9,12 +9,13 @@ import {
   mathpixOCR,
   QRCodeOCR
 } from "./utils"
+import { doc } from "~/utils"
 
 export default defineConfig({
   name: "AutoOCR",
   key: "autoocr",
   intro: lang.intro,
-  link: lang.link,
+  link: doc("autoocr"),
   settings: [
     {
       key: "on",

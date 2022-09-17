@@ -61,7 +61,7 @@ export const clsMethons = {
         break
       }
       case 1: {
-        Addon.url && openUrl(Addon.url)
+        Addon.forum && openUrl(Addon.forum)
       }
     }
   },

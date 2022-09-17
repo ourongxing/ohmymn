@@ -1,8 +1,9 @@
 import { MN } from "~/sdk"
+import { doc } from "~/utils"
 
 const zh = {
   intro: "自动添加标签",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autotag.html",
+  link: doc("autotag"),
   on: "摘录时自动执行",
   preset: {
     label: "选择需要的预设",
@@ -20,7 +21,7 @@ const zh = {
 
 const en: typeof zh = {
   intro: "Auto Add Tags",
-  link: "https://ohmymn.marginnote.cn/guide/modules/autotag.html",
+  link: doc("autotag"),
   on: "Auto Executed",
   preset: {
     label: "Select Presets",

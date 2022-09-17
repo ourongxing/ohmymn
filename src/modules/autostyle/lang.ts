@@ -1,7 +1,6 @@
 import { MN } from "~/sdk"
 
 const zh = {
-  link: "https://ohmymn.marginnote.cn/guide/modules/autostyle.html",
   intro: "自动修改摘录颜色和样式",
   area: "面积",
   on: "摘录时自动执行",
@@ -63,7 +62,6 @@ const zh = {
 }
 
 const en: typeof zh = {
-  link: "https://www.notion.so/huangkewei/AutoStyle-16971d7c0fb048bd828d97373a035bc2",
   intro: "Auto modify excerpt colors and styles",
   on: "Auto Executed",
   area: "Aera",

@@ -4,6 +4,7 @@ import { Addon } from "~/addon"
 import { getExcerptNotes, isfileExists, readJSON } from "~/sdk"
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import { lang } from "./lang"
+import { doc } from "~/utils"
 
 export function simplifyText(text: string) {
   try {
@@ -40,6 +41,7 @@ export default defineConfig({
   name: "AutoSimplify",
   key: "autosimplify",
   intro: lang.intro,
+  link: doc("autosimplify"),
   settings: [
     {
       key: "on",
