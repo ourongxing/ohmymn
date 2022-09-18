@@ -18,6 +18,7 @@ export interface EventHandler {
       status: boolean
       note: MbBookNote
       selections: number[]
+      message: string
       noteid: string
       arrow: DirectionOfSelection
       /**

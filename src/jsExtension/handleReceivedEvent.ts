@@ -26,6 +26,7 @@ export const eventHandlers = eventHandlerController(
     "OCRImageEnd",
     "OCRImageBegin",
     "EndOCRForNote",
+    "AddonBroadcast",
     "PopupMenuOnNote",
     "ProcessNewExcerpt",
     "ChangeExcerptRange",
@@ -167,13 +168,20 @@ const onProcessNewExcerpt: EventHandler = sender => {
   handleExcerpt(note)
 }
 
+const onAddonBroadcast: EventHandler = sender => {
+  if (!isThisWindow(sender)) return
+  console.log("Addon broadcast", "event")
+  console.log(sender.userInfo.message)
+}
+
 export default {
   onInputOver,
-  onOCRImageBegin,
   onOCRImageEnd,
   onButtonClick,
   onSelectChange,
   onSwitchChange,
+  onOCRImageBegin,
+  onAddonBroadcast,
   onPopupMenuOnNote,
   onProcessNewExcerpt,
   onChangeExcerptRange,

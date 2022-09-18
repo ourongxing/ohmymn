@@ -43,6 +43,10 @@ declare global {
      */
     readonly paused: boolean
     /**
+     * when speak text
+     */
+    readonly sysSpeaking: boolean
+    /**
      * Scene window
      */
     sceneWindow?: UIWindow
