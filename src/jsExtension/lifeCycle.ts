@@ -6,7 +6,9 @@ import {
   globalProfilePreset,
   notebookProfilePreset,
   tempProfilePreset,
-  Range
+  Range,
+  readProfile,
+  removeProfile
 } from "~/profile"
 import { settingViewControllerInst } from "~/settingViewController"
 import { UIWindow } from "~/typings"
@@ -17,7 +19,7 @@ import {
   showHUD,
   popup
 } from "~/sdk"
-import { deepCopy, readProfile, removeProfile } from "~/utils"
+import { deepCopy } from "~/utils"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"

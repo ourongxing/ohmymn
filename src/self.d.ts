@@ -12,7 +12,7 @@ import {
   IGlobalProfile,
   ITempProfile,
   INotebookProfile
-} from "~/utils"
+} from "~/profile"
 
 declare global {
   const self: {

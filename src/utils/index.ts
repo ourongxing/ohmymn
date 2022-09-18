@@ -32,5 +32,4 @@ export function doc(module: ModuleKeyType, hash?: string) {
 export * from "./text"
 export * from "./number"
 export * from "./input"
-export * from "../profile"
 export * from "./checkInput"

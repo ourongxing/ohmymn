@@ -9,8 +9,7 @@ import {
   modifyNodeTitle,
   appendTextComment
 } from "~/sdk"
-import { cacheTransformer } from "~/utils"
-
+import { cacheTransformer } from "~/profile"
 import {
   customOCR,
   newTitleTextCommentTag,

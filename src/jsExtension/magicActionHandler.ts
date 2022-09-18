@@ -5,7 +5,7 @@ import { simplifyText } from "~/modules/autosimplify"
 import { checkInputCorrect, actions4text, actions4card } from "~/mergeMethod"
 import { IRowButton, MbBookNote } from "~/typings"
 import { CellViewType, UIAlertViewStyle } from "~/enum"
-import { getMNLinkValue, manageProfileAction } from "~/utils"
+import { getMNLinkValue, manageProfileAction } from "~/profile"
 import {
   MN,
   showHUD,

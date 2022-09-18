@@ -6,7 +6,7 @@ import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import { EventHandler } from "~/typings"
 import { StudyMode } from "~/enum"
-import { saveProfile, updateProfileTemp } from "~/utils"
+import { saveProfile, updateProfileTemp } from "~/profile"
 import {
   MN,
   eventHandlerController,

@@ -1,7 +1,8 @@
 import { HasTitleThen } from "~/modules/addon/typings"
 import { autoUtils } from "~/mergeMethod"
 import { MbBookNote } from "~/typings"
-import { unique, cacheTransformer } from "~/utils"
+import { unique } from "~/utils"
+import { cacheTransformer } from "~/profile"
 import { MN, removeHighlight } from "~/sdk"
 
 export const customOCR = async () => {
