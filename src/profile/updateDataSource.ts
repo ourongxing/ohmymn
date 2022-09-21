@@ -1,17 +1,18 @@
 import { dataSourceIndex } from "~/dataSource"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import {
+  customKey,
   IGlobalProfile,
   IDocProfile,
   INotebookProfile
-} from "~/profile/defaultProfile"
+} from "~/profile"
 import { IRowSwitch, IRowInlineInput, IRowInput, IRowSelect } from "~/typings"
-import { customKey, deepCopy } from "../utils"
 import {
+  deepCopy,
   string2RegArray,
   ReplaceParam,
   string2ReplaceParam
-} from "../utils/input"
+} from "~/utils"
 import { getMNLinkValue } from "./utils"
 
 export function updateProfileTemp(key: string, val: string) {

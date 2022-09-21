@@ -43,12 +43,12 @@ const zh = {
   has_title_then: {
     $option3: ["不转为标题", "合并标题", "覆盖标题"] as StringTuple<3>,
     label: "如果标题存在",
-    help: "【AutoTitle、AutoDef、AutoComplete】 \n卡片已有标题，此时拖拽文字合并进该卡片，如果会产生新标题，则"
+    help: "【AutoTitle、AutoDef、AutoComplete】 \n如果卡片已有标题，此时通过手型工具拖拽文字合并进该卡片，如果这段文字也会产生新标题，则                                "
   },
   remove_excerpt: {
     $option3: ["立即删除", "等会删除", "不删除"] as StringTuple<3>,
-    label: "转为标题后, 摘录将",
-    help: "接上文"
+    label: "转为标题后, 原摘录将",
+    help: "接上文，拖拽文字并合并进卡片会变为摘录，然后转为标题，选择「等会删除」可以给你一个修改这段摘录的机会，并且会在下次摘录时自动删除。                              "
   },
   lock_excerpt: {
     label: "锁定摘录文字"
@@ -107,12 +107,12 @@ const en: typeof zh = {
   has_title_then: {
     $option3: ["Not Convert to Title", "Merge Title", "Override Title"],
     label: "If Card Has Title",
-    help: "[AutoTitle、AutoDef、AutoComplete] \nIf the card already has a title, drag the text to merge into the card. If a new title will be generated, then"
+    help: "[AutoTitle, AutoDef, AutoComplete] \nIf the card already has a title, and you drag the text to merge into the card, and this text will also generate a new title, then"
   },
   remove_excerpt: {
     $option3: ["Remove Immediately", "Remove Later", "Not Remove"],
-    help: "Follow above",
-    label: "After Convert to Title, Excerpt Will"
+    label: "After Convert to Title, Excerpt Will",
+    help: 'As above, the text draged to merge into a card will become an excerpt, and then convert to title. Selecting "Remove Later" will give you a chance to edit this excerpt, and it will be automatically deleted next time you excerpt.'
   },
   lock_excerpt: {
     label: "Lock Excerpt Text"

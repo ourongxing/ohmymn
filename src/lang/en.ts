@@ -45,10 +45,10 @@ const dict: Dict = {
     }
   },
   more: {
-    website: "OhMyMN Website: ohmymn.marginnote.cn",
+    website: "OhMyMN Website: ohmymn.marginnote.con",
     core_team: "Core Team: ourongxing，Bryan",
     intro:
-      "OhMyMN is the MarginNote addon control panel and development framework. OhMyMN is completely open source, officially supported, welcome to join."
+      "OhMyMN is a powerful addon that can process excerpts automatically and also is MarginNote addon development framework. OhMyMN is completely open source, officially supported, and welcome to join us."
   }
 }
 

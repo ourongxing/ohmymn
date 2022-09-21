@@ -46,7 +46,8 @@ export default defineConfig({
       type: CellViewType.Select,
       label: lang.has_title_then.label,
       help: lang.has_title_then.help,
-      option: lang.has_title_then.$option3
+      option: lang.has_title_then.$option3,
+      bind: ["quickSwitch", [1, 2, 4]]
     },
     {
       key: "removeExcerpt",
@@ -54,7 +55,10 @@ export default defineConfig({
       label: lang.remove_excerpt.label,
       option: lang.remove_excerpt.$option3,
       help: lang.remove_excerpt.help,
-      bind: ["hasTitleThen", [1, 2]]
+      bind: [
+        ["quickSwitch", [1, 2, 4]],
+        ["hasTitleThen", [1, 2]]
+      ]
     },
     {
       key: "lockExcerpt",

@@ -118,7 +118,7 @@ function isModuleAutoON(key: AutoModuleKeyType) {
     //@ts-ignore
     (self.globalProfile[key]?.on ??
       self.docProfile[key]?.on ??
-      self.notebookProfile[key] ??
+      self.notebookProfile[key]?.on ??
       false)
   )
 }
