@@ -4,9 +4,9 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.0.5",
+  "version": "4.0.4",
   "license": "MIT",
-  "description": "MarginNote Addon Control Panel and Development Framework",
+  "description": "MarginNote Addon Development Framework",
   "scripts": {
     "dev": "tsx ./build.ts",
     "build": "NODE_ENV=production pnpm dev",
