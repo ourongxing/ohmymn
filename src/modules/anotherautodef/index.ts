@@ -6,44 +6,47 @@ import {
   checkRegArrayFromMNLink,
   checkReplaceParam,
   string2ReplaceParam,
-  extractArray,
-  unique
+  doc,
+  unique,
+  ReplaceParam,
+  string2RegArray
 } from "~/utils"
-import { getAllText, modifyNodeTitle } from "~/sdk"
+import { getExcerptNotes, modifyNodeTitle } from "~/sdk"
 import { lang } from "./lang"
-import { ExtractTitle } from "./typings"
-import { splitExtractTitles } from "./utils"
-
-const { label, option, intro, link, help } = lang
+import { ExtractTitle, SplitExcerpt } from "./typings"
+import { extractTitle, splitExcerptTitles } from "./utils"
 
 export default defineConfig({
   name: "Another AutoDef",
   key: "anotherautodef",
-  intro,
-  link,
+  intro: lang.intro,
+  link: doc("anotherautotitle"),
   settings: [
     {
       key: "on",
       type: CellViewType.Switch,
-      label: label.on,
+      label: lang.on,
       auto: {
         generateTitles({ note, text }) {
-          return splitExtractTitles(note, text)
+          const r = extractTitle(note, text)
+          if (r?.title.length) return r
+          const e = splitExcerptTitles(text)
+          if (e?.title.length) return e
         }
       }
     },
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: option.preset,
-      label: label.preset
+      option: lang.preset.$option9,
+      label: lang.preset.label
     },
     {
       key: "customExtractTitle",
       type: CellViewType.Input,
+      help: lang.custom_extract_title.help,
+      link: lang.custom_extract_title.link,
       bind: ["preset", 0],
-      help: help.custom_extract_title,
-      link: "https://ohmymn.marginnote.cn/guide/modules/anotherautodef.html#自定义提取标题",
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
@@ -51,38 +54,38 @@ export default defineConfig({
     {
       key: "customDefLink",
       type: CellViewType.Input,
+      help: lang.custom_def_link.help,
+      link: lang.custom_def_link.link,
       bind: ["preset", 1],
-      help: help.custom_def_link,
-      link: "https://ohmymn.marginnote.cn/guide/modules/anotherautodef.html#自定义定义联项",
       check({ input }) {
         checkRegArrayFromMNLink(input)
       }
     },
     {
-      key: "onlyDesc",
-      type: CellViewType.Switch,
-      label: label.only_desc
-    },
-    {
       key: "toTitleLink",
       type: CellViewType.Switch,
-      label: label.to_title_link
+      label: lang.to_title_link,
+      bind: ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
     },
     {
       type: CellViewType.MuiltSelect,
       key: "titleLinkSplit",
-      label: label.title_link_split,
-      option: option.title_link_split,
-      bind: ["toTitleLink", true]
+      label: lang.title_link_split.label,
+      option: lang.title_link_split.$option3,
+      bind: [
+        ["toTitleLink", true],
+        ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
+      ]
     },
     {
       key: "customTitleSplit",
       type: CellViewType.Input,
-      help: help.custom_title_split,
-      link: "https://ohmymn.marginnote.cn/guide/modules/anotherautodef.html#自定义别名分词",
+      help: lang.custom_title_split.help,
+      link: lang.custom_title_split.link,
       bind: [
         ["toTitleLink", true],
-        ["titleLinkSplit", 0]
+        ["titleLinkSplit", 0],
+        ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
       ],
       check({ input }) {
         checkRegArrayFromMNLink(input)
@@ -92,49 +95,61 @@ export default defineConfig({
   actions4card: [
     {
       type: CellViewType.ButtonWithInput,
-      label: label.extract_title,
-      option: option.extract_title,
+      label: lang.extract_title.label,
+      option: lang.extract_title.$option2,
       key: "extractTitle",
       method: ({ nodes, content, option }) => {
+        let params: ReplaceParam[] | undefined = undefined
         if (option == ExtractTitle.UseAutoDef) {
-          const { customExtractTitle } = self.globalProfile.anotherautodef
-          const params = customExtractTitle
-            ? string2ReplaceParam(customExtractTitle)
-            : false
-          nodes.forEach(node => {
-            const allTitles: string[] = []
-            if (params) {
-              const text = getAllText(node)
-              allTitles.push(
-                ...extractArray(
-                  text,
-                  params.map(k => ({
-                    ...k,
-                    newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-                  }))
-                )
-              )
-            }
-            if (allTitles.length)
-              modifyNodeTitle(node, unique(allTitles).join("; "))
-          })
         } else if (content) {
-          const params = string2ReplaceParam(content)
-          nodes.forEach(node => {
-            const text = getAllText(node)
-            const allTitles = extractArray(
-              text,
-              params.map(k => ({
-                ...k,
-                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-              }))
-            )
-            if (allTitles.length) modifyNodeTitle(node, allTitles)
-          })
-        }
+          params = string2ReplaceParam(content)
+        } else return
+        nodes.forEach(node => {
+          if (!node.excerptPic || (node.excerptPic && node.textFirst)) {
+            const allTitles = [] as string[]
+            getExcerptNotes(node).forEach(k => {
+              const text = k.excerptText
+              if (text) {
+                const ret = extractTitle(node, text, params)
+                ret?.title.length && allTitles.push(...ret.title)
+              }
+            })
+            if (allTitles.length) modifyNodeTitle(node, allTitles, true)
+          }
+        })
       },
       check({ input }) {
         checkReplaceParam(input)
+      }
+    },
+    {
+      type: CellViewType.ButtonWithInput,
+      label: lang.split_excerpt.label,
+      key: "splitExcerpt",
+      option: lang.split_excerpt.$option2,
+      help: lang.split_excerpt.help,
+      method: ({ nodes, content, option }) => {
+        let regGloups: RegExp[][] | undefined = undefined
+        if (option == SplitExcerpt.UseAutoDef) {
+        } else if (content) {
+          regGloups = string2RegArray(content)
+        } else return
+        nodes.forEach(node => {
+          if (!node.excerptPic || (node.excerptPic && node.textFirst)) {
+            const allTitles = [] as string[]
+            getExcerptNotes(node).forEach(k => {
+              const text = k.excerptText
+              if (text) {
+                const ret = splitExcerptTitles(text, regGloups)
+                if (ret?.title.length) {
+                  allTitles.push(...ret.title)
+                  node.excerptText = ret.text
+                }
+              }
+            })
+            if (allTitles.length) modifyNodeTitle(node, allTitles, true)
+          }
+        })
       }
     }
   ]

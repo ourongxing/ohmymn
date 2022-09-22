@@ -12,3 +12,7 @@ export const enum TitleLinkSplit {
 export const enum ExtractTitle {
   UseAutoDef
 }
+
+export const enum SplitExcerpt {
+  UseAutoDef
+}

@@ -1,90 +1,112 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
 import { MbBookNote } from "~/typings"
 import { unique } from "~/utils"
-import { regFlag } from "~/utils/input"
+import { regFlag, ReplaceParam } from "~/utils/input"
 import { TitleLinkSplit, AutoDefPreset } from "./typings"
 
-export function toTitleLink(text: string) {
+function split2MuiltTitles(text: string) {
   if (!self.globalProfile.anotherautodef.toTitleLink) return [text]
-  const regs: RegExp[] = []
+  const regGroups: RegExp[][] = []
   const { titleLinkSplit } = self.globalProfile.anotherautodef
   const { customTitleSplit } = self.tempProfile.regArray
   if (titleLinkSplit.includes(TitleLinkSplit.Custom) && customTitleSplit)
-    regs.push(...customTitleSplit[0])
+    regGroups.push(...customTitleSplit)
   if (titleLinkSplit.includes(TitleLinkSplit.Default))
-    regs.push(/或者?|[简又]?称(?:之?为)?/g)
+    regGroups.push([/或者?|[简又]?称(?:之?为)?/g])
   if (titleLinkSplit.includes(TitleLinkSplit.Punctuation)) {
-    regs.push(/[、。,，‘’“”"『』()（）【】「」《》«»\/\[\]]/g)
+    regGroups.push([/[、。,，‘’“”"『』()（）【】「」《》«»\/\[\]]/g])
   }
 
-  const defs = regs
-    .reduce((acc, reg) => acc.replace(regFlag.add(reg, "g"), "😎"), text)
+  const defs = regGroups
+    .reduce((acc, regGroup) => {
+      if (!regGroup.length) return acc
+      const mainReg = regGroup.shift()!
+      const matched = text.match(mainReg)
+      if (matched && regGroup.every(k => k.test(matched[0]))) {
+        return acc.replace(regFlag.add(mainReg, "g"), "😎")
+      } else return acc
+    }, text)
     .split("😎")
     .reduce((acc, k) => {
       k = k.trim()
       if (k) acc.push(k)
       return acc
     }, [] as string[])
-  return defs.length > 1 ? unique<string>(defs) : [text]
+  return defs.length > 1 ? unique(defs) : [text]
 }
 
-export function splitExtractTitles(note: MbBookNote, text: string) {
-  const { preset, onlyDesc } = self.globalProfile.anotherautodef
-  for (const set of preset)
-    switch (set) {
-      case AutoDefPreset.CustomExtract: {
-        const { customExtractTitle: params } = self.tempProfile.replaceParam
-        if (!params) continue
-        let flag = 0
-        const allTitles = unique(
-          params.reduce((acc, cur) => {
-            const { newSubStr, fnKey } = cur
-            let { regexp } = cur
-            if (flag === 0) flag = fnKey
-            regexp = regFlag.add(regexp, "g")
-            if (regexp.test(text)) {
-              acc.push(
-                ...text
-                  .match(regexp)!
-                  .map(k =>
-                    k.replace(
-                      regexp,
-                      renderTemplateOfNodeProperties(note, newSubStr)
-                    )
-                  )
-              )
-            }
-            return acc
-          }, [] as string[])
-        )
-        if (allTitles.length)
-          return {
-            title: allTitles,
-            text: flag ? "" : text
-          }
-        break
+export function extractTitle(
+  note: MbBookNote,
+  text: string,
+  params?: ReplaceParam[]
+) {
+  if (!text) return
+  const { preset } = self.globalProfile.anotherautodef
+  if (params === undefined && preset.includes(AutoDefPreset.CustomExtract)) {
+    params = self.tempProfile.replaceParam.customExtractTitle
+  }
+  if (!params?.length) return
+  let flag = 0
+  const allTitles = params.reduce((acc, cur) => {
+    const { newSubStr, fnKey } = cur
+    let { regexp } = cur
+    regexp = regFlag.add(regexp, "g")
+    if (regexp.test(text)) {
+      if (flag === 0) flag = fnKey
+      acc.push(
+        ...text
+          .match(regexp)!
+          .map(k =>
+            k.replace(regexp, renderTemplateOfNodeProperties(note, newSubStr))
+          )
+      )
+    }
+    return acc
+  }, [] as string[])
+  if (allTitles.length)
+    return {
+      title: unique(allTitles),
+      text: flag ? "" : text
+    }
+}
+
+export function customSplit(text: string, regGloups?: RegExp[][]) {
+  if (!text) return
+  if (regGloups === undefined) {
+    const { customDefLink } = self.tempProfile.regArray
+    regGloups = customDefLink
+  }
+  if (!regGloups?.length) return
+  for (const regGroup of regGloups) {
+    if (!regGroup.length) continue
+    let isReverse = false
+    let mainReg = regGroup.shift()!
+    // 使用 y 来表示定义项在后面的情况，则 y 失效，应该很少人会用到 y
+    if (mainReg.sticky) {
+      mainReg = regFlag.remove(mainReg, "y")
+      isReverse = true
+    }
+    const matched = text.match(mainReg)
+    if (matched && regGroup.every(k => k.test(matched[0]))) {
+      let [def, desc] = text.split(mainReg).filter(k => k)
+      // 交换顺序
+      if (isReverse) [def, desc] = [desc, def]
+      return {
+        title: split2MuiltTitles(def),
+        text: desc
       }
+    }
+  }
+}
+
+export function splitExcerptTitles(text: string, regGloups?: RegExp[][]) {
+  if (!text) return
+  const { preset } = self.globalProfile.anotherautodef
+  for (const set of preset) {
+    switch (set) {
       case AutoDefPreset.CustomTitleSplit: {
-        const { customDefLink } = self.tempProfile.regArray
-        if (!customDefLink) continue
-        const regs = customDefLink.flat()
-        for (let reg of regs) {
-          let isReverse = false
-          // 使用 y 来表示定义项在后面的情况，则 y 失效，应该很少人会用到 y
-          if (reg.sticky) {
-            reg = regFlag.remove(reg, "y")
-            isReverse = true
-          }
-          if (reg.test(text)) {
-            let [def, desc] = text.split(reg).filter(k => k)
-            // 交换顺序
-            if (isReverse) [def, desc] = [desc, def]
-            return {
-              title: toTitleLink(def),
-              text: onlyDesc ? desc : text
-            }
-          }
-        }
+        const ret = customSplit(text, regGloups)
+        if (ret) return ret
         break
       }
       case 2:
@@ -102,8 +124,8 @@ export function splitExtractTitles(note: MbBookNote, text: string) {
         if (reg.test(text)) {
           const [def, desc] = text.split(reg)
           return {
-            title: toTitleLink(def),
-            text: onlyDesc ? desc : text
+            title: split2MuiltTitles(def),
+            text: desc
           }
         }
         break
@@ -115,11 +137,12 @@ export function splitExtractTitles(note: MbBookNote, text: string) {
         if (reg.test(text)) {
           const [desc, def] = text.split(reg)
           return {
-            title: toTitleLink(def),
-            text: onlyDesc ? desc : text
+            title: split2MuiltTitles(def),
+            text: desc
           }
         }
         break
       }
     }
+  }
 }

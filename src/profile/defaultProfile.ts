@@ -63,7 +63,6 @@ const globalProfilePreset = {
   anotherautodef: {
     on: false,
     preset: [],
-    onlyDesc: true,
     toTitleLink: false,
     titleLinkSplit: [1],
     customTitleSplit: "",
