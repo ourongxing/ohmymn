@@ -19,8 +19,10 @@ import autotag from "./autotag"
 import autotranslate from "./autotranslate"
 import copysearch from "./copysearch"
 import autosimplify from "./autosimplify"
+import shortcut from "./shortcut"
 
 export const modules = {
+  shortcut,
   gesture,
   anotherautotitle,
   anotherautodef,

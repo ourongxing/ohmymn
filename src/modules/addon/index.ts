@@ -47,7 +47,7 @@ export default defineConfig({
       label: lang.has_title_then.label,
       help: lang.has_title_then.help,
       option: lang.has_title_then.$option3,
-      bind: ["quickSwitch", [1, 2, 4]]
+      bind: ["quickSwitch", [2, 3, 4]]
     },
     {
       key: "removeExcerpt",
@@ -56,7 +56,7 @@ export default defineConfig({
       option: lang.remove_excerpt.$option3,
       help: lang.remove_excerpt.help,
       bind: [
-        ["quickSwitch", [1, 2, 4]],
+        ["quickSwitch", [2, 3, 4]],
         ["hasTitleThen", [1, 2]]
       ]
     },

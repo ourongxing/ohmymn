@@ -34,6 +34,21 @@ const globalProfilePreset = {
     selectionBarSwipeRight: [0],
     selectionBarSwipeLeft: [0]
   },
+  shortcut: {
+    shortcutPro: false,
+    cardShortcut0: [0],
+    cardShortcut1: [0],
+    cardShortcut2: [0],
+    cardShortcut3: [0],
+    cardShortcut4: [0],
+    cardShortcut5: [0],
+    cardShortcut6: [0],
+    cardShortcut7: [0],
+    textShortcut0: [0],
+    textShortcut1: [0],
+    textShortcut2: [0],
+    textShortcut3: [0]
+  },
   autocomplete: {
     on: false,
     fillWordInfo: [0],

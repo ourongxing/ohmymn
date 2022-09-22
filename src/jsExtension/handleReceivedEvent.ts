@@ -15,6 +15,7 @@ import {
   delayBreak
 } from "~/sdk"
 import handleMagicAction from "./magicActionHandler"
+import { handleURLScheme } from "~/modules/shortcut/utils"
 
 export const eventHandlers = eventHandlerController(
   [
@@ -168,10 +169,14 @@ const onProcessNewExcerpt: EventHandler = sender => {
   handleExcerpt(note)
 }
 
-const onAddonBroadcast: EventHandler = sender => {
+const onAddonBroadcast: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
   console.log("Addon broadcast", "event")
-  console.log(sender.userInfo.message)
+  const { message } = sender.userInfo
+  const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
+  if (message !== params) {
+    await handleURLScheme(params)
+  }
 }
 
 export default {

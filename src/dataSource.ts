@@ -121,7 +121,7 @@ const genDataSource = (
   Action4TextSection.rows.push(...actions4text)
 
   // 更新 quickSwitch 为 moduleList
-  const [AddonSection, GestureSection] = dataSource
+  const [AddonSection, ShortcutSection, GestureSection] = dataSource
   for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.name.map(
@@ -141,6 +141,14 @@ const genDataSource = (
   GestureSection.rows = GestureSection.rows.map(row => {
     if (row.type == CellViewType.Select) {
       if (row.key.includes("selectionBar"))
+        row.option = [lang.none, ...gestureOption4Text]
+      else row.option = [lang.none, ...gestureOption4Card]
+    }
+    return row
+  })
+  ShortcutSection.rows = ShortcutSection.rows.map(row => {
+    if (row.type == CellViewType.Select) {
+      if (row.key.includes("text"))
         row.option = [lang.none, ...gestureOption4Text]
       else row.option = [lang.none, ...gestureOption4Card]
     }

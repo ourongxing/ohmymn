@@ -21,11 +21,24 @@ import { closePanel } from "./switchPanel"
 export default async (
   type: "card" | "text",
   row: IRowButton,
-  option?: number
+  option?: number,
+  content?: string
 ) => {
-  if (option !== undefined)
+  if (option !== undefined && content !== undefined) {
+    const text = content ? getMNLinkValue(content) : ""
+    // Allowed to be empty
+    if (text === "" || (text && (await checkInputCorrect(text, row.key)))) {
+      await handleMagicAction({
+        type,
+        key: row.key,
+        option,
+        content: text
+      })
+      return
+    }
+  } else if (option !== undefined) {
     await handleMagicAction({ type, key: row.key, option })
-  else
+  } else
     switch (row.type) {
       case CellViewType.ButtonWithInput:
         while (1) {

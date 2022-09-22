@@ -107,28 +107,6 @@ async function selectAction(param: {
   } else {
     const selections = row.selections
 
-    if (
-      row.key == "quickSwitch" &&
-      !selections.includes(moduleKeys.indexOf("gesture")) &&
-      selection == moduleKeys.indexOf("gesture")
-    ) {
-      const { gesture } = lang.handle_user_action
-      const { option } = await popup(
-        {
-          title: Addon.title,
-          message: gesture.alert,
-          buttons: gesture.option
-        },
-        ({ buttonIndex }) => ({
-          option: buttonIndex
-        })
-      )
-      if (option === 0) {
-        openUrl(doc("gesture"))
-        return
-      } else if (option === -1) return
-    }
-
     const nowSelect = row.selections.includes(selection)
       ? selections.filter(item => item != selection)
       : [selection, ...selections]
@@ -161,8 +139,8 @@ function clickSelectButton(sender: UIButton) {
   const zero = 0.00001
   const cacheModuleOFF: Partial<Record<ModuleKeyType, boolean>> = {}
   const isHidden = (sectionKey: string, rowKey: string, index: number) => {
-    if (sectionKey === "gesture") {
-      try {
+    try {
+      if (sectionKey === "gesture") {
         const { module } = rowKey.includes("selectionBar")
           ? actionKey4Text[index]
           : actionKey4Card[index]
@@ -175,10 +153,23 @@ function clickSelectButton(sender: UIButton) {
           cacheModuleOFF[module] = status
           return status
         }
-      } catch {
-        return true
-      }
-    } else return false
+      } else if (sectionKey === "shortcut") {
+        const { module } = rowKey.includes("text")
+          ? actionKey4Text[index]
+          : actionKey4Card[index]
+        if (!module) return false
+        const status = cacheModuleOFF[module]
+        if (status !== undefined) {
+          return status
+        } else {
+          const status = _isModuleOFF(module)
+          cacheModuleOFF[module] = status
+          return status
+        }
+      } else return false
+    } catch {
+      return true
+    }
   }
 
   menuController.commandTable = row.option.map((item, index) => ({
