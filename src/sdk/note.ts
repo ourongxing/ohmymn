@@ -337,15 +337,20 @@ function addTags(node: MbBookNote, tags: string[], force = false) {
   return tagLine
 }
 
-function modifyNodeTitle(node: MbBookNote, title: string | string[]) {
+function modifyNodeTitle(
+  node: MbBookNote,
+  titles: string | string[],
+  merge = false
+) {
   node = node.groupNoteId ? MN.db.getNoteById(node.groupNoteId)! : node
-  if (typeof title !== "string") title = title.join("; ")
-  title = removeHighlight(title)
+  const oldTitle = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
+  if (typeof titles === "string") titles = [titles]
+  const newTitle = unique(merge ? [...oldTitle, ...titles] : titles).join("; ")
   if (node.excerptText === node.noteTitle) {
-    node.noteTitle = title
-    node.excerptText = title
+    node.noteTitle = newTitle
+    node.excerptText = newTitle
   } else {
-    node.noteTitle = title
+    node.noteTitle = newTitle
   }
 }
 

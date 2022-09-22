@@ -22,6 +22,7 @@ const dict: Dict = {
   not_select_text: "No text is selected",
   action_not_work: "Module is not enabled, the action cannot be executed",
   no_text_selection: "Unable to get to the text of the selection",
+  parse_error: "String parsing error, please note character escape problems",
   copy_success: "Copy successfully, go ahead and paste",
   smart_select: {
     title: `${Addon.title} Smart Selector`,

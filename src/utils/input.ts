@@ -1,55 +1,21 @@
+import lang from "~/lang"
 import { unique } from "."
 
-/**
- *  Reverse escape string in order to process user input
- * @param str : The string to be processed
- * @param quote : Boolean. If quote is true, the output string will be surrounded by double quotes
- * @returns The string after reverse escape
- *
- * @example
- * ```
- * // Output string with double quotes surrounded
- * const myReverseEscape = reverseEscape(123,true)
- * // output: "123"
- * ```
- */
 function reverseEscape(str: string, quote = false) {
-  return JSON.parse(quote ? `"${str}"` : str)
+  try {
+    return JSON.parse(quote ? `"${str}"` : str)
+  } catch (e) {
+    console.error(e)
+    throw lang.parse_error
+  }
 }
 
-/**
- *  Escape double quotes of the string. We often use backslash(`\`) to escape double quote in order to prevent Typescript from interpreting the quote as the end of the string
- * @param str : The string to be processed
- * @returns A string after processing
- * @example
- * ```
- * const Myquote = escapeDoubleQuote("\"file\"-123")
- * // output: \\\"file\\\"-123
- * ```
- */
 function escapeDoubleQuote(str: string) {
   return str.replace(/"/g, `\\"`)
 }
-/**
- *  Detect if the string is a number
- * @param text : The string to be processed
- * @returns Boolean, true if the input is a number
- **/
-
 const isIntegerString = (text: string) => /^[0-9]+$/.test(text)
 const isNumberString = (text: string) => /^[0-9]+\.?[0-9]*$/.test(text)
 
-/**
- *  process user input and return a dict which contains Regexp ,string want to be replaced and fnkey.
- * @param str : string, the format is `(regexp,string,fnkey:optional);(regexp,string,fnkey:optional);...`
- * @returns list like `[{regexp:RegExp;newSubStr:any;fnkey:number},{regexp:RegExp;newSubStr:any;fnkey:number},...]`
- * @example
- * ```
- * const myReplaceParam = replaceParam("(/sd/g,"");(/tt/g,)"")
- * //output
- * [{regexp: /sd/g, newSubStr: "", fnkey: 0}, {regexp: /tt/g, newSubStr: "", fnkey: 0}]
- * ```
- */
 function string2ReplaceParam(str: string): ReplaceParam[] {
   const brackets = str.split(/\s*;\s*(?=\()/)
   const params = []
@@ -73,12 +39,6 @@ function string2ReplaceParam(str: string): ReplaceParam[] {
   return params
 }
 
-/**
- * @internal
- *  A function to return RegExp used by string2RegArray
- * @param str : The string to be processed like `/[/xxx/, /yyy/]; [/xxx/]/`
- * @returns RegExp
- */
 function string2Reg(str: string) {
   str = str.trim()
   if (!str.startsWith("/")) return new RegExp(escapeStringRegexp(str))
@@ -87,21 +47,10 @@ function string2Reg(str: string) {
   return new RegExp(regParts[1], regParts[2])
 }
 
-/**
- * @internal
- *  A function to escape string for RegExp, used by string2RegArray
- * @param str : The string to be processed
- * @returns string
- */
 function escapeStringRegexp(str: string) {
   return str.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")
 }
 
-/**
- *  Procecss user input and return
- * @param str : The string to be processed, input like `[/sd/,/sd/];[/sd/,/sd/]` => output like [[/sd/]]
- * @returns List of RegExp
- */
 function string2RegArray(str: string): RegExp[][] {
   if (/^\(.*\)$/.test(str)) throw ""
   const brackets = str.split(/\s*;\s*(?=(?:\[\s*\/|\/\s*[^\]gimsuy,]))/)
@@ -113,11 +62,6 @@ function string2RegArray(str: string): RegExp[][] {
   })
 }
 
-/**
- * @descrption Add or remove flags to RegExp
- * @method add Add flags to RegExp
- * @method remove Remove flags from RegExp
- */
 const regFlag = {
   add(reg: RegExp, flag: "g" | "i" | "m" | "s" | "y" | "u") {
     return reg.flags.includes(flag)
@@ -137,10 +81,6 @@ export interface ReplaceParam {
   fnKey: number
 }
 
-/**
- * @param text The string to be processed
- * @param params The Array of {@link ReplaceParam}
- */
 function extractArray(text: string, params: ReplaceParam[]) {
   return unique(
     params.reduce((acc, cur) => {

@@ -126,6 +126,6 @@ build({
   },
   pure: ["console.log", "console.error", "console.assert", "console.warn"],
   bundle: true,
-  target: "safari10",
+  target: "safari13",
   plugins
 })
