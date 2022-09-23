@@ -36,10 +36,6 @@ export function defineConfig<T extends keyof IAllProfile>(options: IConfig<T>) {
   return options
 }
 
-let allGlobalProfile: IGlobalProfile[]
-let allDocProfile: Record<string, IDocProfile>
-let allNotebookProfile: Record<string, INotebookProfile>
-
 const { globalProfileKey, docProfileKey, notebookProfileKey } = Addon
 
 export function removeProfile() {
@@ -56,14 +52,17 @@ export const readProfile: ReadPrifile = ({
 }) => {
   try {
     const readGlobalProfile = (profileNO: number) => {
-      updateProfileDataSource(self.globalProfile, allGlobalProfile[profileNO])
+      updateProfileDataSource(
+        self.globalProfile,
+        self.allGlobalProfile[profileNO]
+      )
       console.log("Read current global profile", "profile")
     }
 
     const readNoteBookProfile = (notebookid: string) => {
       updateProfileDataSource(
         self.notebookProfile,
-        allNotebookProfile?.[notebookid] ?? notebookProfilePreset
+        self.allNotebookProfile?.[notebookid] ?? notebookProfilePreset
       )
       console.log("Read currect notebook profile", "profile")
     }
@@ -71,7 +70,7 @@ export const readProfile: ReadPrifile = ({
     const readDocProfile = (docmd5: string) => {
       updateProfileDataSource(
         self.docProfile,
-        allDocProfile?.[docmd5] ?? docProfilePreset
+        self.allDocProfile?.[docmd5] ?? docProfilePreset
       )
       console.log("Read currect doc profile", "profile")
     }
@@ -82,13 +81,13 @@ export const readProfile: ReadPrifile = ({
         const docProfileSaved: Record<string, IDocProfile> =
           getLocalDataByKey(docProfileKey)
         if (!docProfileSaved) console.log("Initialize doc profile", "profile")
-        allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
+        self.allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
 
         const notebookProfileSaved: Record<string, INotebookProfile> =
           getLocalDataByKey(notebookProfileKey)
         if (!notebookProfileKey)
           console.log("Initialize notebook profile", "profile")
-        allNotebookProfile = notebookProfileSaved ?? {
+        self.allNotebookProfile = notebookProfileSaved ?? {
           [notebookid]: notebookProfilePreset
         }
 
@@ -96,23 +95,23 @@ export const readProfile: ReadPrifile = ({
           getLocalDataByKey(globalProfileKey)
         if (!globalProfileSaved)
           console.log("Initialize global profile", "profile")
-        allGlobalProfile =
+        self.allGlobalProfile =
           globalProfileSaved ?? Array(5).fill(globalProfilePreset)
 
-        // if (!allGlobalProfile[0].additional.lastVision) {
-        //   allGlobalProfile.forEach(k => {
+        // if (!self.allGlobalProfile[0].additional.lastVision) {
+        //   self.allGlobalProfile.forEach(k => {
         //     k.additional.lastVision = "4.0.0"
         //   })
         // }
 
         // Initialize all profile when new version release
-        if (checkNewVerProfile(globalProfilePreset, allGlobalProfile[0])) {
-          allGlobalProfile.forEach((_, index) => {
+        if (checkNewVerProfile(globalProfilePreset, self.allGlobalProfile[0])) {
+          self.allGlobalProfile.forEach((_, index) => {
             const globalProfile = deepCopy(globalProfilePreset)
-            updateProfileDataSource(globalProfile, allGlobalProfile[index])
-            allGlobalProfile[index] = globalProfile
+            updateProfileDataSource(globalProfile, self.allGlobalProfile[index])
+            self.allGlobalProfile[index] = globalProfile
           })
-          setLocalDataByKey(allGlobalProfile, globalProfileKey)
+          setLocalDataByKey(self.allGlobalProfile, globalProfileKey)
         }
 
         readNoteBookProfile(notebookid)
@@ -157,18 +156,18 @@ export const writeProfile: WritePrifile = ({
   profileNO
 }) => {
   const writeDocProfile = (docmd5: string) => {
-    allDocProfile[docmd5] = deepCopy(self.docProfile)
-    setLocalDataByKey(allDocProfile, docProfileKey)
+    self.allDocProfile[docmd5] = deepCopy(self.docProfile)
+    setLocalDataByKey(self.allDocProfile, docProfileKey)
     console.log("Write current doc profile", "profile")
   }
   const writeGlobalProfile = (profileNO: number) => {
-    allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
-    setLocalDataByKey(allGlobalProfile, globalProfileKey)
+    self.allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
+    setLocalDataByKey(self.allGlobalProfile, globalProfileKey)
     console.log("Write global profile", "profile")
   }
   const writeNotebookProfile = (notebookid: string) => {
-    allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
-    setLocalDataByKey(allNotebookProfile, notebookProfileKey)
+    self.allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
+    setLocalDataByKey(self.allNotebookProfile, notebookProfileKey)
     console.log("Write notebook profile", "profile")
   }
   switch (range) {
@@ -217,25 +216,25 @@ export async function saveProfile(name: string, key: string, value: any) {
         if (self.globalProfile?.[name]?.[key] !== undefined) {
           self.globalProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
-            Object.entries(allGlobalProfile).forEach(([m, p]) => {
+            Object.entries(self.allGlobalProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined)
-                allGlobalProfile[m][name][key] = value
+                self.allGlobalProfile[m][name][key] = value
             })
           }
         } else if (self.notebookProfile?.[name]?.[key] !== undefined) {
           self.notebookProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
-            Object.entries(allNotebookProfile).forEach(([m, p]) => {
+            Object.entries(self.allNotebookProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined)
-                allNotebookProfile[m][name][key] = value
+                self.allNotebookProfile[m][name][key] = value
             })
           }
         } else {
           self.docProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
-            Object.entries(allDocProfile).forEach(([m, p]) => {
+            Object.entries(self.allDocProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined)
-                allDocProfile[m][name][key] = value
+                self.allDocProfile[m][name][key] = value
             })
           }
         }
@@ -293,9 +292,9 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
         key: Addon.key,
         version: Addon.version,
         profiles: {
-          allDocProfileTemp: allDocProfile,
-          allGlobalProfileTemp: allGlobalProfile,
-          allNotebookProfileTemp: allNotebookProfile
+          allDocProfileTemp: self.allDocProfile,
+          allGlobalProfileTemp: self.allGlobalProfile,
+          allNotebookProfileTemp: self.allNotebookProfile
         }
       })
     )
@@ -311,9 +310,9 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
       switch (index) {
         case ManageProfileItems.All:
           return {
-            allDocProfileTemp: allDocProfile,
-            allGlobalProfileTemp: allGlobalProfile,
-            allNotebookProfileTemp: allNotebookProfile
+            allDocProfileTemp: self.allDocProfile,
+            allGlobalProfileTemp: self.allGlobalProfile,
+            allNotebookProfileTemp: self.allNotebookProfile
           }
         case ManageProfileItems.Global1:
         case ManageProfileItems.Global2:
@@ -330,7 +329,7 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
           if (i === 0) {
             return {
               allGlobalProfileTemp: {
-                [index - 1]: allGlobalProfile[index - 1]
+                [index - 1]: self.allGlobalProfile[index - 1]
               }
             }
           } else {
@@ -338,7 +337,7 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
               allGlobalProfileTemp: {
                 [index - 1]: {
                   [moduleNameList.key[i - 1]]:
-                    allGlobalProfile[index - 1][moduleNameList.key[i - 1]]
+                    self.allGlobalProfile[index - 1][moduleNameList.key[i - 1]]
                 }
               }
             }
@@ -346,15 +345,15 @@ async function writeProfile2Card(node: MbBookNote, full = true) {
         }
         case ManageProfileItems.AllGlobal:
           return {
-            allGlobalProfileTemp: allGlobalProfile
+            allGlobalProfileTemp: self.allGlobalProfile
           }
         case ManageProfileItems.Doc:
           return {
-            allDocProfileTemp: allDocProfile
+            allDocProfileTemp: self.allDocProfile
           }
         default:
           return {
-            allNotebookProfileTemp: allNotebookProfile
+            allNotebookProfileTemp: self.allNotebookProfile
           }
       }
     })()
@@ -400,7 +399,7 @@ async function readProfilefromCard(node: MbBookNote) {
         return {
           index,
           profile: {
-            ...allGlobalProfile[index],
+            ...self.allGlobalProfile[index],
             ...p
           }
         }
@@ -429,7 +428,7 @@ async function readProfilefromCard(node: MbBookNote) {
             j === 0
               ? p
               : {
-                  ...allGlobalProfile[index],
+                  ...self.allGlobalProfile[index],
                   [ks[j - 1]]: p[ks[j - 1]]
                 }
         }
@@ -463,9 +462,9 @@ async function readProfilefromCard(node: MbBookNote) {
         allGlobalProfileTemp,
         allNotebookProfileTemp
       }: {
-        allDocProfileTemp: typeof allDocProfile
-        allGlobalProfileTemp: typeof allGlobalProfile
-        allNotebookProfileTemp: typeof allNotebookProfile
+        allDocProfileTemp: typeof self.allDocProfile
+        allGlobalProfileTemp: typeof self.allGlobalProfile
+        allNotebookProfileTemp: typeof self.allNotebookProfile
       } = profiles
       const profileIndex = await selectIndex(
         lang.$profile_select_items9,
@@ -476,9 +475,9 @@ async function readProfilefromCard(node: MbBookNote) {
       if (profileIndex === -1) return
       switch (profileIndex) {
         case ManageProfileItems.All:
-          allGlobalProfile = allGlobalProfileTemp
-          allDocProfile = allDocProfileTemp
-          allNotebookProfile = allNotebookProfileTemp
+          self.allGlobalProfile = allGlobalProfileTemp
+          self.allDocProfile = allDocProfileTemp
+          self.allNotebookProfile = allNotebookProfileTemp
           break
         case ManageProfileItems.Global1:
         case ManageProfileItems.Global2:
@@ -489,25 +488,25 @@ async function readProfilefromCard(node: MbBookNote) {
             allGlobalProfileTemp[profileIndex - 1]
           )
           if (res) {
-            allGlobalProfile[res.index] = res.profile
+            self.allGlobalProfile[res.index] = res.profile
           } else return
           break
         }
         case ManageProfileItems.AllGlobal:
-          allGlobalProfile = allGlobalProfileTemp
+          self.allGlobalProfile = allGlobalProfileTemp
           break
         case ManageProfileItems.Doc:
-          allDocProfile = allDocProfileTemp
+          self.allDocProfile = allDocProfileTemp
           break
         case ManageProfileItems.Notebook:
-          allNotebookProfile = allNotebookProfileTemp
+          self.allNotebookProfile = allNotebookProfileTemp
           break
       }
     } else if (profileKeys.length === 1) {
       const profileKey = profileKeys[0]
       if (profileKey === "allDocProfileTemp") {
         if (await confirm(lang.profile_management, lang.detecte_doc_profile))
-          allDocProfile = profiles[profileKey]
+          self.allDocProfile = profiles[profileKey]
         else return
       } else if (profileKey === "allGlobalProfileTemp") {
         const globalProfile = profiles[profileKey]
@@ -520,11 +519,11 @@ async function readProfilefromCard(node: MbBookNote) {
             true
           )
           if (i === -1) return
-          else if (i === 0) allGlobalProfile = globalProfile
+          else if (i === 0) self.allGlobalProfile = globalProfile
           else {
             const res = await getGlobalPath(globalProfile[i - 1])
             if (res) {
-              allGlobalProfile[res.index] = res.profile
+              self.allGlobalProfile[res.index] = res.profile
             } else return
           }
         }
@@ -533,20 +532,20 @@ async function readProfilefromCard(node: MbBookNote) {
           const num = Object.keys(globalProfile)[0]
           const res = await getGlobalPath(globalProfile[0], Number(num) + 1)
           if (res) {
-            allGlobalProfile[res.index] = res.profile
+            self.allGlobalProfile[res.index] = res.profile
           } else return
         }
       } else if (profileKey === "allNotebookProfileTemp") {
         if (
           await confirm(lang.profile_management, lang.detecte_notebook_profile)
         )
-          allNotebookProfile = profiles[profileKey]
+          self.allNotebookProfile = profiles[profileKey]
         else return
       }
     } else throw ""
-    setLocalDataByKey(allNotebookProfile, notebookProfileKey)
-    setLocalDataByKey(allGlobalProfile, globalProfileKey)
-    setLocalDataByKey(allDocProfile, docProfileKey)
+    setLocalDataByKey(self.allNotebookProfile, notebookProfileKey)
+    setLocalDataByKey(self.allGlobalProfile, globalProfileKey)
+    setLocalDataByKey(self.allDocProfile, docProfileKey)
     readProfile({
       range: Range.All,
       docmd5: self.docmd5!,

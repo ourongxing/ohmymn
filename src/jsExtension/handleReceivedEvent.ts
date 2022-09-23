@@ -84,14 +84,14 @@ const onInputOver: EventHandler = async sender => {
 
 const onOCRImageBegin: EventHandler = sender => {
   if (!isThisWindow(sender)) return
-  self.OCROnline.status = "begin"
+  self.excerptStatus.OCROnline.status = "begin"
   console.log("OCR begin", "ocr")
 }
 
 const onOCRImageEnd: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  self.OCROnline.status = "end"
-  self.OCROnline.times = 1
+  self.excerptStatus.OCROnline.status = "end"
+  self.excerptStatus.OCROnline.times = 1
   console.log("OCR end", "ocr")
 }
 
@@ -107,7 +107,7 @@ const onPopupMenuOnSelection: EventHandler = sender => {
 const onClosePopupMenuOnSelection: EventHandler = sender => {
   if (!isThisWindow(sender)) return
   self.textSelectBar = undefined
-  self.OCROnline = {
+  self.excerptStatus.OCROnline = {
     times: 0,
     status: "free"
   }
@@ -115,31 +115,26 @@ const onClosePopupMenuOnSelection: EventHandler = sender => {
   console.log("Popup menu on selection close", "event")
 }
 
-const tmp = {
-  isProcessNewExcerpt: false,
-  isChangeExcerptRange: false,
-  lastExcerptText: "😎"
-}
-
 const onPopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  tmp.isChangeExcerptRange = false
-  tmp.isProcessNewExcerpt = false
+  self.excerptStatus.isChangeExcerptRange = false
+  self.excerptStatus.isProcessNewExcerpt = false
   const success = await delayBreak(
     20,
     0.05,
-    () => tmp.isChangeExcerptRange || tmp.isProcessNewExcerpt
+    () =>
+      self.excerptStatus.isChangeExcerptRange ||
+      self.excerptStatus.isProcessNewExcerpt
   )
   if (success) return
   const note = sender.userInfo.note
   // Excerpt text may be empty
-  tmp.lastExcerptText = note.excerptText!
+  self.excerptStatus.lastExcerptText = note.excerptText!
 }
 
 const onClosePopupMenuOnNote: EventHandler = async sender => {
   if (!isThisWindow(sender)) return
-  const note = sender.userInfo.note
-  self.OCROnline = {
+  self.excerptStatus.OCROnline = {
     times: 0,
     status: "free"
   }
@@ -153,8 +148,8 @@ const onChangeExcerptRange: EventHandler = sender => {
   console.log("Change excerpt range", "event")
   self.noteid = sender.userInfo.noteid
   const note = MN.db.getNoteById(self.noteid)!
-  tmp.isChangeExcerptRange = true
-  handleExcerpt(note, tmp.lastExcerptText)
+  self.excerptStatus.isChangeExcerptRange = true
+  handleExcerpt(note, self.excerptStatus.lastExcerptText)
 }
 
 const onProcessNewExcerpt: EventHandler = sender => {
@@ -163,8 +158,9 @@ const onProcessNewExcerpt: EventHandler = sender => {
   console.log("Process new excerpt", "event")
   self.noteid = sender.userInfo.noteid
   const note = MN.db.getNoteById(self.noteid)!
-  tmp.isProcessNewExcerpt = true
-  if (self.globalProfile.addon.lockExcerpt) tmp.lastExcerptText = "😎"
+  self.excerptStatus.isProcessNewExcerpt = true
+  if (self.globalProfile.addon.lockExcerpt)
+    self.excerptStatus.lastExcerptText = "😎"
   removeLastCommentCacheTitle()
   handleExcerpt(note)
 }

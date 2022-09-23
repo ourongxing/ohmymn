@@ -20,13 +20,6 @@ let note: MbBookNote
 let nodeNote: MbBookNote
 let isOCR = false
 let isComment = false
-let lastRemovedComment:
-  | {
-      nodeNote: MbBookNote
-      note: MbBookNote
-      index: number
-    }
-  | undefined = undefined
 
 export default async (_note: MbBookNote, lastExcerptText?: string) => {
   console.log("Processing Excerpt", "excerpt")
@@ -35,10 +28,10 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   isOCR = false
   nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
   isComment = nodeNote !== note
-  self.isModify = lastExcerptText !== undefined
+  self.excerptStatus.isModify = lastExcerptText !== undefined
   if (
     self.globalProfile.addon.lockExcerpt &&
-    self.isModify &&
+    self.excerptStatus.isModify &&
     lastExcerptText !== "😎"
   ) {
     processExcerpt({ text: lastExcerptText! })
@@ -65,7 +58,10 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
       if (success) {
         console.log("Image to text success", "ocr")
         // If the PDF itself is pure text, is not the need for OCR. But other cases will call the online OCR to convert text,
-        console.log(self.OCROnline.times === 1 ? "OCR" : "not OCR", "ocr")
+        console.log(
+          self.excerptStatus.OCROnline.times === 1 ? "OCR" : "not OCR",
+          "ocr"
+        )
         isOCR = true
       } else {
         decorateExecrpt()
@@ -81,22 +77,26 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   }
 
   // Indicates that the preceding rectangular excerpt to text does not use online OCR
-  if (self.OCROnline.times === 0) {
-    self.isModify &&
-      (await delayBreak(30, 0.01, () => self.OCROnline.status === "begin"))
-    if (self.OCROnline.status === "begin") {
+  if (self.excerptStatus.OCROnline.times === 0) {
+    self.excerptStatus.isModify &&
+      (await delayBreak(
+        30,
+        0.01,
+        () => self.excerptStatus.OCROnline.status === "begin"
+      ))
+    if (self.excerptStatus.OCROnline.status === "begin") {
       console.log("Online Correcting", "ocr")
       const success = await delayBreak(
         30,
         0.1,
-        () => self.OCROnline.status === "end"
+        () => self.excerptStatus.OCROnline.status === "end"
       )
       if (success) console.log("Correct success", "ocr")
       else console.log("Correct fail", "ocr")
     }
   }
 
-  self.OCROnline = {
+  self.excerptStatus.OCROnline = {
     times: 0,
     status: "free"
   }
@@ -137,7 +137,8 @@ const processExcerpt = ({
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text
-      if (lastRemovedComment?.note === note) lastRemovedComment = undefined
+      if (self.excerptStatus.lastRemovedComment?.note === note)
+        self.excerptStatus.lastRemovedComment = undefined
     } else {
       // as comment
       if (isComment) {
@@ -146,10 +147,10 @@ const processExcerpt = ({
           const { removeExcerpt } = self.globalProfile.addon
           switch (removeExcerpt[0]) {
             case RemoveExcerpt.Later:
-              lastRemovedComment = { nodeNote, index, note }
+              self.excerptStatus.lastRemovedComment = { nodeNote, index, note }
               break
             case RemoveExcerpt.Now:
-              lastRemovedComment = { nodeNote, index, note }
+              self.excerptStatus.lastRemovedComment = { nodeNote, index, note }
               removeLastCommentCacheTitle()
               break
           }
@@ -205,12 +206,12 @@ const decorateExecrpt = async () => {
 }
 
 export const removeLastCommentCacheTitle = () => {
-  if (!lastRemovedComment) return
-  const { nodeNote, index, note } = lastRemovedComment
+  if (!self.excerptStatus.lastRemovedComment) return
+  const { nodeNote, index, note } = self.excerptStatus.lastRemovedComment
   undoGroupingWithRefresh(() => {
     if (note?.excerptText) nodeNote.removeCommentByIndex(index)
   })
-  lastRemovedComment = undefined
+  self.excerptStatus.lastRemovedComment = undefined
   const noteid = note.noteId!
   const { cacheTitle, cacheComment } = self.notebookProfile.additional
   if (cacheTitle[noteid]) delete cacheTitle[noteid]

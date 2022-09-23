@@ -15,8 +15,12 @@ function turn2Title(text: string) {
   const { preset, wordCount, changeTitleNoLimit } =
     self.globalProfile.anotherautotitle
   const { cacheTitle } = self.notebookProfile.additional
-  if (self.isModify) text = removeHighlight(text)
-  if (changeTitleNoLimit && self.isModify && cacheTitle[self.noteid])
+  if (self.excerptStatus.isModify) text = removeHighlight(text)
+  if (
+    changeTitleNoLimit &&
+    self.excerptStatus.isModify &&
+    cacheTitle[self.noteid]
+  )
     return {
       title: [text],
       text: ""

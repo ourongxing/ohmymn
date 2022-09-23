@@ -73,7 +73,8 @@ export const newTitleTextCommentTag = async (param: {
   if (!res) return defaultRet
 
   res.title = await (async titles => {
-    if (self.isModify) titles = titles.map(k => removeHighlight(k))
+    if (self.excerptStatus.isModify)
+      titles = titles.map(k => removeHighlight(k))
     if (autoUtils.modifyTitles)
       for (const util of autoUtils.modifyTitles) {
         const res = await util({ titles })
@@ -84,7 +85,7 @@ export const newTitleTextCommentTag = async (param: {
 
   if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
     const newTitles = (() => {
-      if (self.isModify && cacheTitle[self.noteid]) {
+      if (self.excerptStatus.isModify && cacheTitle[self.noteid]) {
         const cached = cacheTitle[self.noteid]
         // 记录当前笔记产生的所有旧标题的索引
         const index = nodeTitle.reduce((acc, k, i) => {

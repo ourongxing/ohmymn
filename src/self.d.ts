@@ -20,36 +20,50 @@ declare global {
       key: string
       title: string
     }
-    backupWaitTimes: number | undefined
-    webView: UIWebView
-    renderTemplate: string
-    view: UIView
-    window: UIWindow
-    docmd5: string | undefined
-    noteid: string
-    notebookid: string
-    tableView: UITableView
-    OCROnline: {
-      status: "begin" | "end" | "free"
-      times: number
-    }
-    textSelectBar?: {
-      arrow: DirectionOfSelection
-      winRect: string
-    }
-    isModify: boolean
-    customSelectedNodes: MbBookNote[]
     panel: {
       status: boolean
       lastOpenPanel: number
       lastClickButton: number
       lastReaderViewWidth: number
     }
+    excerptStatus: {
+      isProcessNewExcerpt: boolean
+      isChangeExcerptRange: boolean
+      lastExcerptText: string
+      isModify: boolean
+      OCROnline: {
+        status: "begin" | "end" | "free"
+        times: number
+      }
+      lastRemovedComment:
+        | {
+            nodeNote: MbBookNote
+            note: MbBookNote
+            index: number
+          }
+        | undefined
+    }
+    backupWaitTimes: number | undefined
+    webView: UIWebView
+    view: UIView
+    window: UIWindow
+    docmd5: string | undefined
+    noteid: string
+    notebookid: string
+    tableView: UITableView
+    textSelectBar?: {
+      arrow: DirectionOfSelection
+      winRect: string
+    }
+    customSelectedNodes: MbBookNote[]
     docProfile: IDocProfile
     globalProfile: IGlobalProfile
     tempProfile: ITempProfile
     notebookProfile: INotebookProfile
     dataSource: ISection[]
+    allGlobalProfile: IGlobalProfile[]
+    allDocProfile: Record<string, IDocProfile>
+    allNotebookProfile: Record<string, INotebookProfile>
     settingViewController: UITableViewController
     popoverController: UIPopoverController
   }
