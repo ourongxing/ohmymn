@@ -28,6 +28,7 @@ const zh = {
   success: "读取成功",
   fail: "读取失败",
   profile_reset: "配置已重置",
+  profile_sync: "配置已同步",
   old_version: "旧版本配置，请退回到 v4.0.0 - v4.0.4 再导入",
   not_this_profile: `不是 ${Addon.title} 的配置`,
   range: {
@@ -66,6 +67,7 @@ const en: typeof zh = {
   one_module_global: (n: number, module: string) =>
     `Global profile ${n} was detected, including module ${module} only, and which global profile was written to?`,
   profile_management: `${Addon.title} Profile Management`,
+  profile_sync: "Profile has been synced",
   which_part_profile: "Which part of the profile do you want to write?",
   which_global_profile_read_into:
     "Which global profile do you want to read into?",

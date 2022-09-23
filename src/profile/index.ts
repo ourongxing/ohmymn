@@ -585,5 +585,13 @@ export async function manageProfileAction(node: MbBookNote, option: number) {
       })
       showHUD(lang.profile_reset)
       break
+    case 3:
+      readProfile({
+        range: Range.All,
+        docmd5: self.docmd5!,
+        notebookid: self.notebookid
+      })
+      showHUD(lang.profile_sync)
+      break
   }
 }

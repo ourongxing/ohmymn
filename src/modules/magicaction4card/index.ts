@@ -59,7 +59,7 @@ export default defineConfig({
       key: "manageProfile",
       type: CellViewType.Button,
       label: lang.manage_profile.label,
-      option: lang.manage_profile.$option3,
+      option: lang.manage_profile.$option4,
       help: lang.manage_profile.help,
       method: () => {
         console.log()
