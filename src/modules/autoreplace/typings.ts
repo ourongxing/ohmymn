@@ -1,10 +1,6 @@
 export const enum AutoReplacePreset {
   Custom
 }
-export const enum ReplaceSelected {
+export const enum ReplaceCard {
   UseAutoReplace
-}
-
-export enum ActionKey {
-  replaceSelected
 }

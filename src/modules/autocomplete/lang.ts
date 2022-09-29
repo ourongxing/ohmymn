@@ -65,7 +65,7 @@ const en: typeof zh = {
     $option2: ["Chinese", "English"]
   },
   complete_word: {
-    label: "English Word Card",
+    label: "Generate Word Card",
     $option2: ["Append", "Replace"]
   },
   translate_context: {

@@ -1,4 +1,4 @@
-export const enum ListSelected {
+export const enum ListCard {
   UseAutoList
 }
 export const enum AutoListPreset {

@@ -78,10 +78,10 @@ const en: typeof zh = {
     "Using Baidu OCR API, it can be used without activating OCR Pro and supports several small languages.",
   on: {
     label: "Auto Executed",
-    help: "[Current Document]"
+    help: "[Only Current Document]"
   },
   lang: {
-    help: "[Current Document]",
+    help: "[Only Current Document]",
     label: "Language",
     $option21: [
       "Auto",

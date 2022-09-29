@@ -49,12 +49,8 @@ const en: typeof zh = {
     ]
   },
   format_selected: {
-    label: "Optimize Typography",
-    $option3: [
-      "Optimize All",
-      "Only Optimize Title",
-      "Only Optimize Excerption"
-    ]
+    label: "Format Excerpt Text",
+    $option3: ["All", "Only Title", "Only Excerpt Text"]
   },
   format_title: {
     label: " Normalize English Title",

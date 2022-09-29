@@ -69,7 +69,7 @@ export default defineConfig({
       type: CellViewType.ButtonWithInput,
       label: lang.filter_cards.label,
       option: lang.filter_cards.$option5,
-      key: "filterCards",
+      key: "filterCard",
       method({ nodes, content, option }) {
         if (!content) {
           showHUD(lang.none_card)
@@ -111,7 +111,7 @@ export default defineConfig({
     {
       type: CellViewType.Button,
       label: lang.merge_cards.label,
-      key: "mergeCards",
+      key: "mergeCard",
       option: lang.merge_cards.$option2,
       method({ option, nodes }) {
         if (nodes.length == 1) return

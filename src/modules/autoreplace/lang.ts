@@ -27,7 +27,7 @@ const en: typeof zh = {
   },
   replace_selected: {
     $option2: ["Use AutoReplace Settings", "Confirm"],
-    label: "Replace Excerptions"
+    label: "Replace Excerpt Text"
   },
   custom_replace: {
     link: doc("autoreplace"),

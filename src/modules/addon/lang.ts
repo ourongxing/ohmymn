@@ -19,9 +19,9 @@ const zh = {
   },
   panel_position: {
     $option6: [
-      "文档侧",
+      "文档靠内",
       "文档脑图中间",
-      "脑图侧",
+      "脑图靠内",
       "靠左",
       "居中",
       "靠右"
@@ -76,16 +76,16 @@ const en: typeof zh = {
       "Initialize"
     ],
     label: "Select Global Profile",
-    help: "[Current Notebook] Different scenes, different profile"
+    help: "[Only Current Notebook] Different scenes, different profile"
   },
   quick_switch: {
     label: "Module Quick Switch"
   },
   panel_position: {
     $option6: [
-      "Document Side",
-      "Document Mind Map Center",
-      "Mind Map Side",
+      "Document Inner Side",
+      "Document MindMap Middle",
+      "MindMap Inner Side",
       "Left",
       "Center",
       "Right"
@@ -93,7 +93,7 @@ const en: typeof zh = {
     label: "Panel Position"
   },
   panel_height: {
-    $option3: ["Tall", "Standard", "Short"],
+    $option3: ["Taller", "Standard", "Shorter"],
     label: "Panel Height"
   },
   panle_control: {
@@ -105,7 +105,7 @@ const en: typeof zh = {
     label: "Panel Control"
   },
   has_title_then: {
-    $option3: ["Not Convert to Title", "Merge Title", "Override Title"],
+    $option3: ["Not Turn to Title", "Merge Title", "Override Title"],
     label: "If Card Has Title",
     help: "[AutoTitle, AutoDef, AutoComplete] \nIf the card already has a title, and you drag the text to merge into the card, and this text will also generate a new title, then"
   },

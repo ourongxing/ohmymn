@@ -84,7 +84,7 @@ const en: typeof zh = {
   },
   search_card_info: "Search Card Content",
   copy_card_info: "Copy Card Content",
-  search_text: "Search for Selected Text",
+  search_text: "Search Selected Text",
   copy_text: "Copy Selected Text",
   $search_engine7: [
     "Chinese",

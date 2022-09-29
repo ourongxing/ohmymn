@@ -8,7 +8,7 @@ import {
 import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
-import { ListSelected } from "./typings"
+import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"
 
 export default defineConfig({
@@ -48,10 +48,10 @@ export default defineConfig({
     {
       type: CellViewType.ButtonWithInput,
       label: lang.list_selected.label,
-      key: "listSelected",
+      key: "listCard",
       option: lang.list_selected.$option2,
       method({ nodes, content, option }) {
-        if (option == ListSelected.UseAutoList) {
+        if (option == ListCard.UseAutoList) {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText

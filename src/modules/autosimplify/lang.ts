@@ -19,7 +19,8 @@ const zh = {
   simplify_card: {
     label: "转换为简体中文",
     $option3: ["摘录和标题", "仅摘录", "仅标题"] as StringTuple<3>
-  }
+  },
+  simplify_text: "转换为简体中文"
 }
 
 const en: typeof zh = {
@@ -41,6 +42,7 @@ const en: typeof zh = {
   simplify_card: {
     label: "Convert to Simplified Chinese",
     $option3: ["Excerpt and Title", "Only Excerpt", "Only Title"]
-  }
+  },
+  simplify_text: "Convert to Simplified Chinese"
 }
 export const lang = MN.isZH ? zh : en

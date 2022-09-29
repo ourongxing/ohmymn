@@ -11,8 +11,8 @@ export const MN = {
   studyController: () =>
     Application.sharedInstance().studyController(self.window),
   isMac: Application.sharedInstance().osType == OSType.macOS,
-  // isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh"),
-  isZH: true,
+  isZH: NSLocale.preferredLanguages()?.[0].startsWith("zh"),
+  // isZH: true,
   app: Application.sharedInstance(),
   db: Database.sharedInstance(),
   themeColor,

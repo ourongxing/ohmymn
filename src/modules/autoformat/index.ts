@@ -56,7 +56,7 @@ export default defineConfig({
   ],
   actions4card: [
     {
-      key: "formatSelected",
+      key: "formatCard",
       type: CellViewType.Button,
       label: lang.format_selected.label,
       option: lang.format_selected.$option3,

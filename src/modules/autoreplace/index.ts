@@ -5,7 +5,7 @@ import { defineConfig } from "~/profile"
 import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
 import { getExcerptNotes } from "~/sdk"
 import { lang } from "./lang"
-import { ReplaceSelected, AutoReplacePreset } from "./typings"
+import { ReplaceCard, AutoReplacePreset } from "./typings"
 
 function replaceText(note: MbBookNote, text: string) {
   const { preset } = self.globalProfile.autoreplace
@@ -64,10 +64,10 @@ export default defineConfig({
     {
       type: CellViewType.ButtonWithInput,
       label: lang.replace_selected.label,
-      key: "replaceSelected",
+      key: "replaceCard",
       option: lang.replace_selected.$option2,
       method: ({ content, nodes, option }) => {
-        if (option == ReplaceSelected.UseAutoReplace) {
+        if (option == ReplaceCard.UseAutoReplace) {
           nodes.forEach(node => {
             getExcerptNotes(node).forEach(note => {
               const text = note.excerptText

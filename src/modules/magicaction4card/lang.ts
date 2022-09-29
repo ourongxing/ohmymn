@@ -65,16 +65,16 @@ const en: typeof zh = {
     link: doc("magicaction4card", "合并卡片内文字")
   },
   switch_title: {
-    label: "Use [Swap Title and Excerpt] when both are present」",
-    help: "Switch Excerption or Title",
-    $option2: ["Switch to Another", "Swap Title and Excerpt"]
+    help: "Use [Swap Title and Excerpt] when both are present」",
+    label: "Switch Excerption or Title",
+    $option2: ["Switch to Non-Existent", "Swap Title and Excerpt"]
   },
   filter_cards: {
     label: "Filter Cards",
     $option5: ["All", "Title", "Excerpt", "Comment", "Tag"]
   },
   merge_text: {
-    label: "Input delimiter",
+    label: "Merge Text",
     help: "Only support merging text excerpt and text comment, not merging tags and link, other content will be pinned after merging",
     $excerpt_pic_option2: ["Continue", "Merge as Comment"],
     is_excerpt_pic: "The excerpt is a picture, continue to merge as excerpt?",
@@ -85,7 +85,7 @@ const en: typeof zh = {
     $option2: ["Merge Title", "Not Merge Titles"]
   },
   manage_profile: {
-    label: "Profile Management",
+    label: "Manage Profile",
     $option4: [
       "Read Profile",
       "Write Profile",

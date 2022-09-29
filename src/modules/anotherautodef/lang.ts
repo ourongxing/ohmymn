@@ -85,7 +85,7 @@ const en: typeof zh = {
     $option2: ["Use AutoDef Settings", "Confirm"]
   },
   split_excerpt: {
-    label: "Split Definition",
+    label: "Split Excerpt Text",
     $option2: ["Use AutoDef Settings", "Confirm"],
     help: "Split the excerpt into title (defined) and excerpt (definiens) parts."
   },

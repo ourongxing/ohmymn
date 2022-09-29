@@ -128,7 +128,7 @@ const handleMagicAction = async ({
       res && (await handleTextAction(res, key))
     } else if (type === "card") {
       let nodes: MbBookNote[] = []
-      key != "filterCards" &&
+      key != "filterCard" &&
         self.globalProfile.addon.panelControl.includes(
           PanelControl.CompleteClose
         ) &&
@@ -204,8 +204,8 @@ const handleMagicAction = async ({
         }
       }
       switch (key) {
-        case "filterCards":
-          self.customSelectedNodes = actions4card.filterCards!({
+        case "filterCard":
+          self.customSelectedNodes = actions4card.filterCard!({
             content,
             nodes,
             option

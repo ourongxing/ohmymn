@@ -95,5 +95,16 @@ export default defineConfig({
         })
       }
     }
+  ],
+  actions4text: [
+    {
+      type: CellViewType.ButtonWithInput,
+      label: lang.simplify_card.label,
+      key: "simplifyText",
+      option: lang.simplify_card.$option3,
+      method: ({ text }) => {
+        return simplifyText(text)
+      }
+    }
   ]
 })

@@ -21,7 +21,7 @@ const zh = {
       "设置为评论"
     ] as StringTuple<6>,
     label: "弹出更多选项",
-    help: "如果选中这段文字或区域之前，你已经选中了一段摘录的笔记。此时复制到剪贴板的动作会弹出更多选项，方便直接写入卡片中。"
+    help: "如果选中这段文字之前，你已经选中了一个摘录。此时执行某些会将结果复制到剪贴板的动作会弹出更多选项，方便直接写入卡片中。"
   }
 }
 
@@ -30,11 +30,11 @@ const en: typeof zh = {
     "All actions need to select text or area fisrt in the document. Click for the specific useage.",
   pre_OCR: {
     label: "Pre OCR",
-    help: "[Current Document] Use AutoOCR to OCR. Please make sure you have filled in the OCR key."
+    help: "[Only Current Document] Use AutoOCR to OCR. Please make sure you have filled in the OCR key."
   },
   pre_simplify: {
     label: "Pre Simplify",
-    help: "[Current Document] Use AutoSimplify to convert to Simplified Chinese."
+    help: "[Only Current Document] Use AutoSimplify to convert to Simplified Chinese."
   },
   note_options: {
     $option6: [
