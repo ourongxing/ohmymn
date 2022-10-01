@@ -41,11 +41,3 @@ type Tuple<T, N extends number, R extends T[] = []> = R["length"] extends N
   : Tuple<T, N, [T, ...R]>
 
 type StringTuple<N extends number = 2> = Tuple<string, N>
-
-// type Test2<T> = T extends Record<string, any>
-//   ? {
-//       [K in keyof T]: T[K] extends any & { length: number }
-//         ? T[K]
-//         : Tuple<string, T[K]["length"]>
-//     }
-//   : T

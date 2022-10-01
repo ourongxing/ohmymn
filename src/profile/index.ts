@@ -4,11 +4,12 @@ import { lang } from "./lang"
 import {
   IGlobalProfile,
   IDocProfile,
-  docProfilePreset,
-  globalProfilePreset,
+  defaultDocProfile,
+  defaultGlobalProfile,
   INotebookProfile,
-  notebookProfilePreset,
-  IAllProfile
+  defaultNotebookProfile,
+  IAllProfile,
+  rewriteSelection
 } from "~/profile/defaultProfile"
 import { IConfig, MbBookNote } from "~/typings"
 import { dateFormat, deepCopy } from "~/utils"
@@ -62,7 +63,7 @@ export const readProfile: ReadPrifile = ({
     const readNoteBookProfile = (notebookid: string) => {
       updateProfileDataSource(
         self.notebookProfile,
-        self.allNotebookProfile?.[notebookid] ?? notebookProfilePreset
+        self.allNotebookProfile?.[notebookid] ?? defaultNotebookProfile
       )
       console.log("Read currect notebook profile", "profile")
     }
@@ -70,7 +71,7 @@ export const readProfile: ReadPrifile = ({
     const readDocProfile = (docmd5: string) => {
       updateProfileDataSource(
         self.docProfile,
-        self.allDocProfile?.[docmd5] ?? docProfilePreset
+        self.allDocProfile?.[docmd5] ?? defaultDocProfile
       )
       console.log("Read currect doc profile", "profile")
     }
@@ -81,14 +82,14 @@ export const readProfile: ReadPrifile = ({
         const docProfileSaved: Record<string, IDocProfile> =
           getLocalDataByKey(docProfileKey)
         if (!docProfileSaved) console.log("Initialize doc profile", "profile")
-        self.allDocProfile = docProfileSaved ?? { [docmd5]: docProfilePreset }
+        self.allDocProfile = docProfileSaved ?? { [docmd5]: defaultDocProfile }
 
         const notebookProfileSaved: Record<string, INotebookProfile> =
           getLocalDataByKey(notebookProfileKey)
         if (!notebookProfileKey)
           console.log("Initialize notebook profile", "profile")
         self.allNotebookProfile = notebookProfileSaved ?? {
-          [notebookid]: notebookProfilePreset
+          [notebookid]: defaultNotebookProfile
         }
 
         const globalProfileSaved: IGlobalProfile[] =
@@ -96,7 +97,7 @@ export const readProfile: ReadPrifile = ({
         if (!globalProfileSaved)
           console.log("Initialize global profile", "profile")
         self.allGlobalProfile =
-          globalProfileSaved ?? Array(5).fill(globalProfilePreset)
+          globalProfileSaved ?? Array(5).fill(defaultGlobalProfile)
 
         // if (!self.allGlobalProfile[0].additional.lastVision) {
         //   self.allGlobalProfile.forEach(k => {
@@ -105,9 +106,11 @@ export const readProfile: ReadPrifile = ({
         // }
 
         // Initialize all profile when new version release
-        if (checkNewVerProfile(globalProfilePreset, self.allGlobalProfile[0])) {
+        if (
+          checkNewVerProfile(defaultGlobalProfile, self.allGlobalProfile[0])
+        ) {
           self.allGlobalProfile.forEach((_, index) => {
-            const globalProfile = deepCopy(globalProfilePreset)
+            const globalProfile = deepCopy(defaultGlobalProfile)
             updateProfileDataSource(globalProfile, self.allGlobalProfile[index])
             self.allGlobalProfile[index] = globalProfile
           })
@@ -595,3 +598,7 @@ export async function manageProfileAction(node: MbBookNote, option: number) {
       break
   }
 }
+
+// function rewriteProfile(version: string, range: Range) {
+//   rewriteSelection
+// }

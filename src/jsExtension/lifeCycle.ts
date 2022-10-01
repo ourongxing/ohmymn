@@ -2,10 +2,10 @@ import { Addon } from "~/addon"
 import { dataSourcePreset } from "~/dataSource"
 import lang from "~/lang"
 import {
-  docProfilePreset,
-  globalProfilePreset,
-  notebookProfilePreset,
-  tempProfilePreset,
+  defaultDocProfile,
+  defaultGlobalProfile,
+  defaultNotebookProfile,
+  defaultTempProfile,
   Range,
   readProfile,
   removeProfile
@@ -104,10 +104,10 @@ export default {
       lastRemovedComment: undefined
     }
     self.customSelectedNodes = []
-    self.globalProfile = deepCopy(globalProfilePreset)
-    self.docProfile = deepCopy(docProfilePreset)
-    self.notebookProfile = deepCopy(notebookProfilePreset)
-    self.tempProfile = deepCopy(tempProfilePreset)
+    self.globalProfile = deepCopy(defaultGlobalProfile)
+    self.docProfile = deepCopy(defaultDocProfile)
+    self.notebookProfile = deepCopy(defaultNotebookProfile)
+    self.tempProfile = deepCopy(defaultTempProfile)
     self.dataSource = deepCopy(dataSourcePreset)
 
     const SettingViewController = JSB.defineClass(

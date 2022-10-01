@@ -1,7 +1,7 @@
 import { Addon } from "~/addon"
 import { ReplaceParam } from "../utils"
 
-const globalProfilePreset = {
+const defaultGlobalProfile = {
   addon: {
     quickSwitch: [],
     lockExcerpt: false,
@@ -171,7 +171,7 @@ const globalProfilePreset = {
 }
 
 // Each document has a independent profile
-const docProfilePreset = {
+const defaultDocProfile = {
   magicaction4text: {
     preOCR: false,
     preSimplify: false
@@ -185,7 +185,7 @@ const docProfilePreset = {
   }
 }
 
-const notebookProfilePreset = {
+const defaultNotebookProfile = {
   addon: {
     profile: [0]
   },
@@ -197,7 +197,7 @@ const notebookProfilePreset = {
 }
 
 // Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
-const tempProfilePreset = {
+const defaultTempProfile = {
   replaceParam: {
     customTag: [],
     customComment: [],
@@ -215,23 +215,72 @@ const tempProfilePreset = {
 }
 
 export const customKey = [
-  ...Object.keys(tempProfilePreset.regArray),
-  ...Object.keys(tempProfilePreset.replaceParam)
+  ...Object.keys(defaultTempProfile.regArray),
+  ...Object.keys(defaultTempProfile.replaceParam)
 ]
 
-const rewriteSelection = [
+export const rewriteSelection: RewriteCase[] = [
   {
     version: {
-      old: "4.0.0",
-      new: "4.0.5"
+      from: "4.0.0",
+      to: "4.0.5"
     },
     global: {
-      panelPosition: (old: number[]) => [old[0] >= 1 ? old[0] + 2 : old[0]],
-      cardActionGesture: (old: number[]) => [old[0] >= 5 ? old[0] + 1 : old[0]],
-      textActionGesture: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
+      addon: {
+        quickSwitch: (old: number[]) => old.map(k => k + 1),
+        panelPosition: (old: number[]) => [old[0] >= 1 ? old[0] + 2 : old[0]]
+      },
+      gesture: {
+        cardActionGesture: (old: number[]) => {
+          const t = old[0]
+          let n = t
+          if (t >= 5) n += 2
+          if (t >= 18) n += 2
+          return [n]
+        },
+        textActionGesture: (old: number[]) => [
+          old[0] >= 10 ? old[0] + 1 : old[0]
+        ]
+      }
     }
   }
 ]
+
+export interface RewriteCase {
+  version: {
+    from: string
+    to: string
+  }
+  global?: {
+    [key in keyof IGlobalProfile]?: Partial<
+      Record<
+        key extends "gesture"
+          ?
+              | "cardActionGesture"
+              | "textActionGesture"
+              | PickKeyByValue<IGlobalProfile[key], number[]>
+          : PickKeyByValue<IGlobalProfile[key], number[]>,
+        (old: number[]) => number[]
+      >
+    >
+  }
+  doc?: {
+    [key in keyof IDocProfile]?: Partial<
+      Record<
+        PickKeyByValue<IDocProfile[key], number[]>,
+        (old: number[]) => number[]
+      >
+    >
+  }
+  notebook?: {
+    [key in keyof IDocProfile]?: Partial<
+      Record<
+        PickKeyByValue<IDocProfile[key], number[]>,
+        (old: number[]) => number[]
+      >
+    >
+  }
+}
 
 type UtilTemp<T> = {
   [K in keyof T]: K extends "replaceParam"
@@ -251,17 +300,17 @@ type UtilProfile<T> = {
       }
 }
 
-type ITempProfile = UtilTemp<typeof tempProfilePreset>
-type IGlobalProfile = UtilProfile<typeof globalProfilePreset>
-type IDocProfile = UtilProfile<typeof docProfilePreset>
-type INotebookProfile = UtilProfile<typeof notebookProfilePreset>
+type ITempProfile = UtilTemp<typeof defaultTempProfile>
+type IGlobalProfile = UtilProfile<typeof defaultGlobalProfile>
+type IDocProfile = UtilProfile<typeof defaultDocProfile>
+type INotebookProfile = UtilProfile<typeof defaultNotebookProfile>
 type IAllProfile = IGlobalProfile & IDocProfile & INotebookProfile
 
 export {
-  globalProfilePreset,
-  docProfilePreset,
-  tempProfilePreset,
-  notebookProfilePreset,
+  defaultGlobalProfile,
+  defaultDocProfile,
+  defaultTempProfile,
+  defaultNotebookProfile,
   IGlobalProfile,
   IDocProfile,
   INotebookProfile,
