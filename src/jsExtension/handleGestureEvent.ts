@@ -134,10 +134,7 @@ const checkSwipePosition = (sender: UIGestureRecognizer): SwipePosition => {
       isWithinArea(
         { swipeY },
         {
-          y:
-            studyController.studyMode === StudyMode.study
-              ? y - (arrow === DirectionOfSelection.toRight ? 80 : 145)
-              : y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
+          y: y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
           height: 40
         }
       )
