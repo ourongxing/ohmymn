@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 
 const zh = {
   intro:
-    "通过 URL Scheme 来触发 MagicAction 中的动作，在 Mac 上可以设置快捷键打开 URL。该功能完全由 OhMyMN 提供，与 MN 无关。点击查看设置方法及注意事项。",
+    "【3.7.19】通过 URL Scheme 来触发 MagicAction 中的动作，你可以设置快捷键来打开 URL。该功能完全由 OhMyMN 提供，与 MN 无关。点击查看设置方法及注意事项。",
   shortcut_pro: {
     help: "直接通过 URL Scheme 设置动作的参数，而不需要输入框。可以设置无限多个捷径。",
     label: "捷径 Pro"
@@ -18,7 +18,7 @@ const zh = {
 
 const en: typeof zh = {
   intro:
-    "Trigger MagicAction by URL Scheme. On Mac, you can set a shortcut to open the URL. This feature is provided by OhMyMN, not MarginNote. Click to view the setup method and precautions.",
+    "[3.7.19] Trigger the action in MagicAction through URL Scheme, you can set the shortcut to open the URL. This function is provided by OhMyMN, and has nothing to do with MN. Click to view the setting method and precautions.",
   shortcut_pro: {
     help: "Set the parameters of the action directly through the URL Scheme, without the need for an input box. You can set an unlimited number of shortcuts.",
     label: "Shortcut Pro"

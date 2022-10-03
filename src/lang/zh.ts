@@ -15,7 +15,7 @@ const dict = {
   not_select_card: "未选中任何脑图卡片",
   not_select_text: "没有框选任何文字",
   no_text_selection: "无法得到到选中区域的文字",
-  no_profile_in_card: "卡片中不存在配置信息",
+  no_profile_in_card: "找不到自定义内容",
   input_number: "请输入数字",
   input_integer: "请输入整数",
   input_positive: "请输入正整数",

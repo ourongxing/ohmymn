@@ -1,5 +1,9 @@
 import { OSType } from "~/enum"
 
+function getVersion() {
+  return "3.7.19"
+}
+
 const themeColor = {
   Gray: UIColor.colorWithHexString("#414141"),
   Default: UIColor.colorWithHexString("#FFFFFF"),
@@ -15,6 +19,7 @@ export const MN = {
   // isZH: true,
   app: Application.sharedInstance(),
   db: Database.sharedInstance(),
+  version: getVersion(),
   themeColor,
   currentTheme: () => themeColor[Application.sharedInstance().currentTheme!]
 }

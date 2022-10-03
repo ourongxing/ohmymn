@@ -97,7 +97,6 @@ const plugins: Plugin[] = [
       ],
       dts: false
     }),
-  genMainfest(),
   mainfest.files?.length &&
     copy({
       copy: mainfest.files.map(k => ({
@@ -105,6 +104,7 @@ const plugins: Plugin[] = [
         to: outDir
       }))
     }),
+  genMainfest(),
   isProd && zip()
 ].filter(k => k)
 

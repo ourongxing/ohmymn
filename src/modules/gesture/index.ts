@@ -1,4 +1,4 @@
-import { IAllProfile } from "~/profile/defaultProfile"
+import { IAllProfile } from "~/profile"
 import { ISettingSelect } from "~/typings"
 import { CellViewType } from "~/enum"
 import { defineConfig } from "~/profile"

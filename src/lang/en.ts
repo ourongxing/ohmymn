@@ -15,7 +15,7 @@ const dict: Dict = {
   input_number: "Please enter a number",
   input_integer: "Please enter an integer",
   input_positive: "Please enter a positive integer",
-  no_profile_in_card: "No profile exists in the card",
+  no_profile_in_card: "No custom content found",
   open_panel: "Switch Control Panel",
   input_error: "Input errors, please re-enter",
   not_select_card: "No card is selected",

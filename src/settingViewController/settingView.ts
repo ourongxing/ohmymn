@@ -215,8 +215,8 @@ function tableViewCellForRowAtIndexPath(
       cell.selectionStyle = 0
       const view = initCellView.select(
         row.type == CellViewType.Select
-          ? row.option[row?.selections?.[0] ?? 0]
-          : row?.selections?.length
+          ? row.option[row.selections[0]]
+          : row.selections.length
           ? `${row.selections.length} ✓`
           : lang.none
       )
