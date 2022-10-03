@@ -1,15 +1,15 @@
 import { MN } from "~/sdk"
-import { rewriteSelection } from "./defaultProfile"
 import { IConfig, noteComment } from "~/typings"
 import {
-  Range,
   IAllProfile,
-  IGlobalProfile,
   IDocProfile,
-  INotebookProfile
+  IGlobalProfile,
+  INotebookProfile,
+  RewriteRange
 } from "./typings"
 import semver from "semver"
 import { Addon } from "~/addon"
+import { rewriteSelection } from "./defaultProfile"
 
 /**
  * @param link Card link
@@ -63,7 +63,45 @@ export function defineConfig<T extends keyof IAllProfile>(options: IConfig<T>) {
   return options
 }
 
-export function rewriteProfile<T>(range: Range, profile: T): T {
+export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
+  function resloveGlobal(
+    p: IGlobalProfile,
+    module: string,
+    key: string,
+    f: (old: number[]) => number[]
+  ) {
+    if (p[module]?.[key] !== undefined) {
+      p[module][key] = f(p[module][key])
+    } else if (key === "cardAction") {
+      if (p.gesture) {
+        ;["single", "muilt"].forEach(k =>
+          ["Up", "Down", "Left", "Right"].forEach(j => {
+            p.gesture[`${k}BarSwipe${j}`] = f(p.gesture[`${k}BarSwipe${j}`])
+          })
+        )
+      }
+      if (p.shortcut) {
+        Array.from({ length: 8 }).forEach((_, k) => {
+          p.shortcut[`cardShortcut${k}`] = f(p.shortcut[`cardShortcut${k}`])
+        })
+      }
+    } else if (key === "textAction") {
+      if (p.gesture) {
+        ;["Up", "Down", "Left", "Right"].forEach(j => {
+          p.gesture[`selectionBarSwipe${j}`] = f(
+            p.gesture[`selectionBarSwipe${j}`]
+          )
+        })
+      }
+      if (p.shortcut) {
+        Array.from({ length: 4 }).forEach((_, k) => {
+          p.shortcut[`textShortcut${k}`] = f(p.shortcut[`textShortcut${k}`])
+        })
+      }
+    } else return false
+    return true
+  }
+
   let { lastVersion } = Addon
   rewriteSelection.forEach(k => {
     ;(function () {
@@ -74,7 +112,7 @@ export function rewriteProfile<T>(range: Range, profile: T): T {
       ) {
         lastVersion = semver.minVersion(k.version.to)!.version
         switch (range) {
-          case Range.Doc:
+          case RewriteRange.Doc:
             if (doc) {
               const docProfileList = Object.values(
                 profile as Record<string, IDocProfile>
@@ -88,48 +126,25 @@ export function rewriteProfile<T>(range: Range, profile: T): T {
                   }
             }
             break
-          case Range.Global:
+          case RewriteRange.AllGlobal:
             if (global) {
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
                   for (const p of profile as IGlobalProfile[]) {
-                    if (p[module]?.[key] !== undefined) {
-                      p[module][key] = f(p[module][key])
-                    } else if (key === "cardAction") {
-                      ;["single", "muilt"].forEach(k =>
-                        ["Up", "Down", "Left", "Right"].forEach(
-                          j =>
-                            (p.gesture[`${k}BarSwipe${j}`] = f(
-                              p.gesture[`${k}BarSwipe${j}`]
-                            ))
-                        )
-                      )
-                      if (p.shortcut) {
-                        Array.from({ length: 8 }).forEach((_, k) => {
-                          p.shortcut[`cardShortcut${k}`] = f(
-                            p.shortcut[`cardShortcut${k}`]
-                          )
-                        })
-                      }
-                    } else if (key === "textAction") {
-                      ;["Up", "Down", "Left", "Right"].forEach(
-                        j =>
-                          (p.gesture[`selectionBarSwipe${j}`] = f(
-                            p.gesture[`selectionBarSwipe${j}`]
-                          ))
-                      )
-                      if (p.shortcut) {
-                        Array.from({ length: 4 }).forEach((_, k) => {
-                          p.shortcut[`textShortcut${k}`] = f(
-                            p.shortcut[`textShortcut${k}`]
-                          )
-                        })
-                      }
-                    } else return
+                    if (!resloveGlobal(p, module, key, f)) return
                   }
             }
             break
-          case Range.Notebook:
+          case RewriteRange.SingleGlobal:
+            if (global) {
+              console.assert(profile)
+              for (const [module, _] of Object.entries(global))
+                for (const [key, f] of Object.entries(_))
+                  if (!resloveGlobal(profile as IGlobalProfile, module, key, f))
+                    return
+            }
+            break
+          case RewriteRange.Notebook:
             if (notebook) {
               const notebookProfileList = Object.values(
                 profile as Record<string, INotebookProfile>

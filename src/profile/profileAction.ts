@@ -11,9 +11,9 @@ import {
 } from "~/sdk"
 import { MbBookNote } from "~/typings"
 import { dateFormat } from "~/utils"
-import { readProfile, writeProfile } from "."
+import { readProfile, rewriteProfile, writeProfile } from "."
 import { lang } from "./lang"
-import { Range, ManageProfileItems } from "./typings"
+import { Range, ManageProfileItems, RewriteRange } from "./typings"
 import semver from "semver"
 
 export function removeProfile() {
@@ -129,16 +129,21 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
 export async function readProfilefromCard(node: MbBookNote) {
   try {
     if (!node.childNotes?.length) throw lang.no_children
+    // 传入单一全局配置
     async function getGlobalPath(p: any, n?: number) {
-      const ks = moduleNameList.key
-      const pks = Object.keys(p)
-      if (pks.length === 1) {
+      const pKeys = Object.keys(p)
+      const pModuleKeys = moduleNameList.key.filter(k => pKeys.includes(k))
+      const pModuleNames = pModuleKeys.map(
+        k => moduleNameList.name[moduleNameList.key.indexOf(k)]
+      )
+
+      if (pModuleKeys.length === 1) {
         const index = await selectIndex(
           lang.$global_profile_items5,
           lang.profile_management,
           lang.one_module_global(
             n!,
-            moduleNameList.name[moduleNameList.key.indexOf(pks[0])]
+            moduleNameList.name[moduleNameList.key.indexOf(pModuleKeys[0])]
           ),
           true
         )
@@ -147,18 +152,12 @@ export async function readProfilefromCard(node: MbBookNote) {
           index,
           profile: {
             ...self.allGlobalProfile[index],
-            ...p
+            ...rewriteProfile(RewriteRange.SingleGlobal, p)
           }
         }
       } else {
         const j = await selectIndex(
-          [
-            lang.all_modules,
-            ...ks.reduce((acc, k, i) => {
-              if (pks.includes(k)) acc.push(moduleNameList.name[i])
-              return acc
-            }, [] as string[])
-          ],
+          [lang.all_modules, ...pModuleNames],
           lang.profile_management,
           lang.detecte_global_profile(n)
         )
@@ -173,10 +172,12 @@ export async function readProfilefromCard(node: MbBookNote) {
           index,
           profile:
             j === 0
-              ? p
+              ? rewriteProfile(RewriteRange.SingleGlobal, p)
               : {
                   ...self.allGlobalProfile[index],
-                  [ks[j - 1]]: p[ks[j - 1]]
+                  ...rewriteProfile(RewriteRange.SingleGlobal, {
+                    [pModuleKeys[j - 1]]: p[pModuleKeys[j - 1]]
+                  })
                 }
         }
       }
@@ -200,8 +201,8 @@ export async function readProfilefromCard(node: MbBookNote) {
       }
     })()
     const profiles = data.profiles ?? data
-    const version = data.version ?? "4.0.0"
-    if (semver.gt(version, Addon.version)) {
+    Addon.lastVersion = data.version ?? "4.0.0"
+    if (semver.gt(Addon.lastVersion, Addon.version)) {
       showHUD(lang.old_version)
     }
     if (data.key !== undefined && data.key !== Addon.key)
@@ -226,9 +227,18 @@ export async function readProfilefromCard(node: MbBookNote) {
       if (profileIndex === -1) return
       switch (profileIndex) {
         case ManageProfileItems.All:
-          self.allGlobalProfile = allGlobalProfileTemp
-          self.allDocProfile = allDocProfileTemp
-          self.allNotebookProfile = allNotebookProfileTemp
+          self.allGlobalProfile = rewriteProfile(
+            RewriteRange.AllGlobal,
+            allGlobalProfileTemp
+          )
+          self.allDocProfile = rewriteProfile(
+            RewriteRange.Doc,
+            allDocProfileTemp
+          )
+          self.allNotebookProfile = rewriteProfile(
+            RewriteRange.Notebook,
+            allNotebookProfileTemp
+          )
           break
         case ManageProfileItems.Global1:
         case ManageProfileItems.Global2:
@@ -244,20 +254,32 @@ export async function readProfilefromCard(node: MbBookNote) {
           break
         }
         case ManageProfileItems.AllGlobal:
-          self.allGlobalProfile = allGlobalProfileTemp
+          self.allGlobalProfile = rewriteProfile(
+            RewriteRange.AllGlobal,
+            allGlobalProfileTemp
+          )
           break
         case ManageProfileItems.Doc:
-          self.allDocProfile = allDocProfileTemp
+          self.allDocProfile = rewriteProfile(
+            RewriteRange.Doc,
+            allDocProfileTemp
+          )
           break
         case ManageProfileItems.Notebook:
-          self.allNotebookProfile = allNotebookProfileTemp
+          self.allNotebookProfile = rewriteProfile(
+            RewriteRange.Notebook,
+            allNotebookProfileTemp
+          )
           break
       }
     } else if (profileKeys.length === 1) {
       const profileKey = profileKeys[0]
       if (profileKey === "allDocProfileTemp") {
         if (await confirm(lang.profile_management, lang.detecte_doc_profile))
-          self.allDocProfile = profiles[profileKey]
+          self.allDocProfile = rewriteProfile(
+            RewriteRange.Doc,
+            profiles[profileKey]
+          )
         else return
       } else if (profileKey === "allGlobalProfileTemp") {
         const globalProfile = profiles[profileKey]
@@ -270,7 +292,11 @@ export async function readProfilefromCard(node: MbBookNote) {
             true
           )
           if (i === -1) return
-          else if (i === 0) self.allGlobalProfile = globalProfile
+          else if (i === 0)
+            self.allGlobalProfile = rewriteProfile(
+              RewriteRange.AllGlobal,
+              globalProfile
+            )
           else {
             const res = await getGlobalPath(globalProfile[i - 1])
             if (res) {
@@ -290,21 +316,26 @@ export async function readProfilefromCard(node: MbBookNote) {
         if (
           await confirm(lang.profile_management, lang.detecte_notebook_profile)
         )
-          self.allNotebookProfile = profiles[profileKey]
+          self.allNotebookProfile = rewriteProfile(
+            RewriteRange.Notebook,
+            profiles[profileKey]
+          )
         else return
       }
     } else throw ""
+
+    // keep last version to current version
+    self.allGlobalProfile.forEach(k => {
+      k.additional.lastVision = Addon.version
+    })
     setLocalDataByKey(self.allNotebookProfile, Addon.notebookProfileKey)
     setLocalDataByKey(self.allGlobalProfile, Addon.globalProfileKey)
     setLocalDataByKey(self.allDocProfile, Addon.docProfileKey)
-    readProfile(
-      {
-        range: Range.All,
-        docmd5: self.docmd5!,
-        notebookid: self.notebookid
-      },
-      version
-    )
+    readProfile({
+      range: Range.All,
+      docmd5: self.docmd5!,
+      notebookid: self.notebookid
+    })
     layoutViewController()
     showHUD(lang.success)
   } catch (err) {

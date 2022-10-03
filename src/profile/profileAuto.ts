@@ -13,15 +13,18 @@ import {
   IGlobalProfile,
   Range,
   ReadPrifile,
+  RewriteRange,
   WritePrifile
 } from "./typings"
 import { updateProfileDataSource, refreshPanel } from "./updateDataSource"
 import { checkNewVerProfile, rewriteProfile } from "./utils"
 
-export const readProfile: ReadPrifile = (
-  { range, notebookid, docmd5, profileNO },
-  lastVersion
-) => {
+export const readProfile: ReadPrifile = ({
+  range,
+  notebookid,
+  docmd5,
+  profileNO
+}) => {
   try {
     const readGlobalProfile = (profileNO: number) => {
       updateProfileDataSource(
@@ -60,11 +63,9 @@ export const readProfile: ReadPrifile = (
 
         if (globalProfileLocal) {
           Addon.lastVersion =
-            lastVersion ??
-            globalProfileLocal[0].additional.lastVision ??
-            "4.0.0"
+            globalProfileLocal[0].additional.lastVision ?? "4.0.0"
           self.allGlobalProfile = rewriteProfile(
-            Range.Global,
+            RewriteRange.AllGlobal,
             globalProfileLocal
           )
           if (
@@ -86,7 +87,7 @@ export const readProfile: ReadPrifile = (
         }
 
         if (docProfileLocal) {
-          self.allDocProfile = rewriteProfile(Range.Doc, docProfileLocal)
+          self.allDocProfile = rewriteProfile(RewriteRange.Doc, docProfileLocal)
           // Initialize all profile when new version release
         } else {
           console.log("Initialize doc profile", "profile")
@@ -97,7 +98,7 @@ export const readProfile: ReadPrifile = (
 
         if (notebookProfileLocal) {
           self.allNotebookProfile = rewriteProfile(
-            Range.Notebook,
+            RewriteRange.Notebook,
             notebookProfileLocal
           )
         } else {
