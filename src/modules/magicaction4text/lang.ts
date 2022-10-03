@@ -5,11 +5,15 @@ const zh = {
     "所有动作均需要在文档中选中文字或框选选区。点击查看具体的使用方法和注意事项。",
   pre_OCR: {
     label: "预先 OCR",
-    help: "【当前文档】使用 AutoOCR 进行转文字和矫正，请确保你已经填入 OCR 密钥。"
+    help: "【仅当前文档】使用 AutoOCR 进行转文字或矫正，请确保你已经填入 OCR 密钥。"
   },
   pre_simplify: {
     label: "预先转为简体中文",
-    help: "【当前文档】使用 AutoSimplify 进行繁简转换"
+    help: "【仅当前文档】使用 AutoSimplify 进行繁简转换。"
+  },
+  pre_format: {
+    label: "预先格式化",
+    help: "【仅当前文档】使用 AutoFormat 进行格式化排版。"
   },
   note_options: {
     $option6: [
@@ -35,6 +39,10 @@ const en: typeof zh = {
   pre_simplify: {
     label: "Pre Simplify",
     help: "[Only Current Document] Use AutoSimplify to convert to Simplified Chinese."
+  },
+  pre_format: {
+    label: "Pre Format",
+    help: "[Only Current Document] Use AutoFormat to format the text."
   },
   note_options: {
     $option6: [

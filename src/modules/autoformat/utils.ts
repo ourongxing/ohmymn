@@ -11,9 +11,11 @@ export function titleCase(titles: string[]) {
 
 export function formatText(text: string): string {
   const { preset } = self.globalProfile.autoformat
+  const { removeSpace } = self.docProfile.autoformat
   text = text.replace(/\*\*(.+?)\*\*/g, (_, match) =>
     notCJK(match) ? `placehder${match}placehder` : `占啊位符${match}占啊位符`
   )
+  if (removeSpace) text = text.replace(/\x20/g, "")
   for (const set of preset) {
     if (set !== AutoFormatPreset.Custom && notCJK(text)) continue
     switch (set) {
@@ -34,9 +36,6 @@ export function formatText(text: string): string {
           )
             text = text.replace(regexp, newSubStr)
         })
-        break
-      case AutoFormatPreset.RemoveAllSpace:
-        text = text.replace(/\x20/g, "")
         break
       case AutoFormatPreset.HalfToFull:
         text = pangu.toFullwidth(text)

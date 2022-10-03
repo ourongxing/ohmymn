@@ -5,7 +5,6 @@ export const enum Format {
 }
 export const enum AutoFormatPreset {
   Custom,
-  RemoveAllSpace,
   HalfToFull,
   AddSpace,
   RemoveCHSpace,

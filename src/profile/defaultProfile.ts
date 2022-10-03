@@ -174,11 +174,15 @@ export const defaultGlobalProfile = {
 export const defaultDocProfile = {
   magicaction4text: {
     preOCR: false,
-    preSimplify: false
+    preSimplify: false,
+    preFormat: false
   },
   autoocr: {
     on: false,
     lang: [0]
+  },
+  autoformat: {
+    removeSpace: false
   },
   autosimplify: {
     on: false
@@ -237,6 +241,9 @@ export const rewriteSelection: RewriteCase[] = [
           return [n]
         },
         textAction: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
+      },
+      autoformat: {
+        preset: (old: number[]) => old.map(k => (k > 1 ? k - 1 : k))
       }
     }
   }

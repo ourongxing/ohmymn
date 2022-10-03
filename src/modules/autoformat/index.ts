@@ -18,7 +18,7 @@ export default defineConfig({
       label: lang.on,
       auto: {
         modifyExcerptText: {
-          index: -1,
+          index: 1,
           method({ text }) {
             return formatText(text)
           }
@@ -33,7 +33,7 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: lang.preset.$option6,
+      option: lang.preset.$option5,
       label: lang.preset.label
     },
     {
@@ -45,6 +45,12 @@ export default defineConfig({
       check({ input }) {
         checkReplaceParamFromMNLink(input)
       }
+    },
+    {
+      key: "removeSpace",
+      type: CellViewType.Switch,
+      label: lang.remove_space.label,
+      help: lang.remove_space.help
     },
     {
       key: "formatTitle",

@@ -22,6 +22,12 @@ export default defineConfig({
       help: lang.pre_simplify.help
     },
     {
+      key: "preFormat",
+      type: CellViewType.Switch,
+      label: lang.pre_format.label,
+      help: lang.pre_format.help
+    },
+    {
       key: "noteOptions",
       type: CellViewType.MuiltSelect,
       label: lang.note_options.label,

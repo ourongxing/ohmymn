@@ -17,6 +17,7 @@ import {
 } from "~/sdk"
 import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
+import { formatText } from "~/modules/autoformat/utils"
 
 export default async (
   type: "card" | "text",
@@ -114,14 +115,16 @@ const handleMagicAction = async ({
         showHUD(lang.not_select_text, 2)
         return
       }
-      const text = self.docProfile.magicaction4text.preOCR
+      const { preFormat, preOCR, preSimplify } =
+        self.docProfile.magicaction4text
+      let text = preOCR
         ? await autoocr(imageFromSelection)
         : currentDocumentController.selectionText
       if (!text) return
+      if (preSimplify) text = simplifyText(text)
+      if (preFormat) text = formatText(text)
       const res: string | undefined = await actions4text[key]({
-        text: self.docProfile.magicaction4text.preSimplify
-          ? simplifyText(text)
-          : text,
+        text,
         imgBase64: imageFromSelection,
         option
       })
