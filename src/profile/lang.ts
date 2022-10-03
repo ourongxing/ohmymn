@@ -29,7 +29,8 @@ const zh = {
   fail: "读取失败",
   profile_reset: "配置已重置",
   profile_sync: "配置已同步",
-  old_version: "旧版本配置，请退回到 v4.0.0 - v4.0.4 再导入",
+  old_version:
+    "警告：导入的配置版本比当前插件版本新，可能会出现问题，请谨慎导入",
   not_this_profile: `不是 ${Addon.title} 的配置`,
   range: {
     all_profile: "所有配置",
@@ -86,7 +87,7 @@ const en: typeof zh = {
   profile_reset: "Profile has been reset",
   fail: "Read failed",
   old_version:
-    "Old version profile, please return to v4.0.0 - v4.0.4 and import again",
+    "Warning: The imported profile version is newer than the current plugin version, which may cause problems. Please import it with caution.",
   not_this_profile: `Not ${Addon.title}'s profile`,
   detecte_global_profile: (n?: number) =>
     n

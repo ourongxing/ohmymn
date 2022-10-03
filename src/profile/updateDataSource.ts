@@ -39,19 +39,19 @@ export function updateProfileTemp(key: string, val: string) {
 
 export function updateProfileDataSource(
   profile: IGlobalProfile | IDocProfile | INotebookProfile,
-  profileSaved: any
+  profileLocal: any
 ) {
   // Update DateSouce and profile
   for (const [name, _] of Object.entries(profile)) {
     if (name === "additional") {
       for (const [key, val] of Object.entries(_)) {
-        _[key] = deepCopy(profileSaved?.[name]?.[key] ?? val)
+        _[key] = deepCopy(profileLocal?.[name]?.[key] ?? val)
       }
     } else {
       for (const [key, val] of Object.entries(_)) {
         if (!dataSourceIndex?.[name]?.[key]) continue
         const [section, row] = dataSourceIndex[name][key]
-        const newValue = profileSaved?.[name]?.[key] ?? val
+        const newValue = profileLocal?.[name]?.[key] ?? val
         switch (typeof newValue) {
           case "boolean":
             ;(self.dataSource[section].rows[row] as IRowSwitch).status =

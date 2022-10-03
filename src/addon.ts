@@ -19,6 +19,7 @@ class MNADDON {
   doc = MN.isZH ? mainfest.docZH : mainfest.doc
   enDict?: SQLiteDatabase
   OpenCC?: OpenCC
+  lastVersion!: string
 }
 
 export const Addon = new MNADDON()

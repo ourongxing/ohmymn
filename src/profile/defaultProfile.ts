@@ -1,7 +1,7 @@
 import { Addon } from "~/addon"
-import { ReplaceParam } from "../utils"
+import { RewriteCase } from "./typings"
 
-const defaultGlobalProfile = {
+export const defaultGlobalProfile = {
   addon: {
     quickSwitch: [],
     lockExcerpt: false,
@@ -171,7 +171,7 @@ const defaultGlobalProfile = {
 }
 
 // Each document has a independent profile
-const defaultDocProfile = {
+export const defaultDocProfile = {
   magicaction4text: {
     preOCR: false,
     preSimplify: false
@@ -185,7 +185,7 @@ const defaultDocProfile = {
   }
 }
 
-const defaultNotebookProfile = {
+export const defaultNotebookProfile = {
   addon: {
     profile: [0]
   },
@@ -197,7 +197,7 @@ const defaultNotebookProfile = {
 }
 
 // Cache Regex like [//,//];[//,//] 和 (//,"",0);(//,"",0);
-const defaultTempProfile = {
+export const defaultTempProfile = {
   replaceParam: {
     customTag: [],
     customComment: [],
@@ -223,97 +223,32 @@ export const rewriteSelection: RewriteCase[] = [
   {
     version: {
       from: "4.0.0",
-      to: "4.0.5"
+      to: ">=4.0.6"
     },
     global: {
       addon: {
         quickSwitch: (old: number[]) => old.map(k => k + 1),
-        panelPosition: (old: number[]) => [old[0] >= 1 ? old[0] + 2 : old[0]]
-      },
-      gesture: {
-        cardActionGesture: (old: number[]) => {
+        panelPosition: (old: number[]) => [old[0] >= 1 ? old[0] + 2 : old[0]],
+        cardAction: (old: number[]) => {
           const t = old[0]
           let n = t
           if (t >= 5) n += 2
           if (t >= 18) n += 2
           return [n]
         },
-        textActionGesture: (old: number[]) => [
-          old[0] >= 10 ? old[0] + 1 : old[0]
-        ]
+        textAction: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
       }
     }
   }
+  // {
+  //   version: {
+  //     from: "4.0.7",
+  //     to: ">=4.0.8"
+  //   },
+  //   global: {
+  //     addon: {
+  //       textAction: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
+  //     }
+  //   }
+  // }
 ]
-
-export interface RewriteCase {
-  version: {
-    from: string
-    to: string
-  }
-  global?: {
-    [key in keyof IGlobalProfile]?: Partial<
-      Record<
-        key extends "gesture"
-          ?
-              | "cardActionGesture"
-              | "textActionGesture"
-              | PickKeyByValue<IGlobalProfile[key], number[]>
-          : PickKeyByValue<IGlobalProfile[key], number[]>,
-        (old: number[]) => number[]
-      >
-    >
-  }
-  doc?: {
-    [key in keyof IDocProfile]?: Partial<
-      Record<
-        PickKeyByValue<IDocProfile[key], number[]>,
-        (old: number[]) => number[]
-      >
-    >
-  }
-  notebook?: {
-    [key in keyof IDocProfile]?: Partial<
-      Record<
-        PickKeyByValue<IDocProfile[key], number[]>,
-        (old: number[]) => number[]
-      >
-    >
-  }
-}
-
-type UtilTemp<T> = {
-  [K in keyof T]: K extends "replaceParam"
-    ? {
-        [M in keyof T[K]]: ReplaceParam[] | undefined
-      }
-    : {
-        [M in keyof T[K]]: RegExp[][] | undefined
-      }
-}
-
-type UtilProfile<T> = {
-  [K in keyof T]: K extends "additional"
-    ? T[K]
-    : {
-        [M in keyof T[K]]: T[K][M] extends any[] ? number[] : T[K][M]
-      }
-}
-
-type ITempProfile = UtilTemp<typeof defaultTempProfile>
-type IGlobalProfile = UtilProfile<typeof defaultGlobalProfile>
-type IDocProfile = UtilProfile<typeof defaultDocProfile>
-type INotebookProfile = UtilProfile<typeof defaultNotebookProfile>
-type IAllProfile = IGlobalProfile & IDocProfile & INotebookProfile
-
-export {
-  defaultGlobalProfile,
-  defaultDocProfile,
-  defaultTempProfile,
-  defaultNotebookProfile,
-  IGlobalProfile,
-  IDocProfile,
-  INotebookProfile,
-  ITempProfile,
-  IAllProfile
-}

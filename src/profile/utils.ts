@@ -1,9 +1,18 @@
 import { MN } from "~/sdk"
-import { IGlobalProfile } from "~/profile/defaultProfile"
-import { noteComment } from "~/typings"
+import { rewriteSelection } from "./defaultProfile"
+import { IConfig, noteComment } from "~/typings"
+import {
+  Range,
+  IAllProfile,
+  IGlobalProfile,
+  IDocProfile,
+  INotebookProfile
+} from "./typings"
+import semver from "semver"
+import { Addon } from "~/addon"
 
 /**
- * @param link Card link (UUID)
+ * @param link Card link
  * @returns ID of note or the linked card value
  */
 export function getMNLinkValue(link: string) {
@@ -33,6 +42,7 @@ export function checkNewVerProfile(profile: IGlobalProfile, profileSaved: any) {
       }
     }
   }
+  return false
 }
 
 export const cacheTransformer = {
@@ -47,4 +57,95 @@ export const cacheTransformer = {
       str[str.length - 1] === end
     )
   }
+}
+
+export function defineConfig<T extends keyof IAllProfile>(options: IConfig<T>) {
+  return options
+}
+
+export function rewriteProfile<T>(range: Range, profile: T): T {
+  let { lastVersion } = Addon
+  rewriteSelection.forEach(k => {
+    ;(function () {
+      const { version, global, doc, notebook } = k
+      if (
+        semver.satisfies(lastVersion, version.from) &&
+        semver.satisfies(Addon.version, version.to)
+      ) {
+        lastVersion = semver.minVersion(k.version.to)!.version
+        switch (range) {
+          case Range.Doc:
+            if (doc) {
+              const docProfileList = Object.values(
+                profile as Record<string, IDocProfile>
+              )
+              for (const [module, _] of Object.entries(doc))
+                for (const [key, f] of Object.entries(_))
+                  for (const p of docProfileList) {
+                    if (p[module]?.[key] !== undefined) {
+                      p[module][key] = f(p[module][key])
+                    } else return
+                  }
+            }
+            break
+          case Range.Global:
+            if (global) {
+              for (const [module, _] of Object.entries(global))
+                for (const [key, f] of Object.entries(_))
+                  for (const p of profile as IGlobalProfile[]) {
+                    if (p[module]?.[key] !== undefined) {
+                      p[module][key] = f(p[module][key])
+                    } else if (key === "cardAction") {
+                      ;["single", "muilt"].forEach(k =>
+                        ["Up", "Down", "Left", "Right"].forEach(
+                          j =>
+                            (p.gesture[`${k}BarSwipe${j}`] = f(
+                              p.gesture[`${k}BarSwipe${j}`]
+                            ))
+                        )
+                      )
+                      if (p.shortcut) {
+                        Array.from({ length: 8 }).forEach((_, k) => {
+                          p.shortcut[`cardShortcut${k}`] = f(
+                            p.shortcut[`cardShortcut${k}`]
+                          )
+                        })
+                      }
+                    } else if (key === "textAction") {
+                      ;["Up", "Down", "Left", "Right"].forEach(
+                        j =>
+                          (p.gesture[`selectionBarSwipe${j}`] = f(
+                            p.gesture[`selectionBarSwipe${j}`]
+                          ))
+                      )
+                      if (p.shortcut) {
+                        Array.from({ length: 4 }).forEach((_, k) => {
+                          p.shortcut[`textShortcut${k}`] = f(
+                            p.shortcut[`textShortcut${k}`]
+                          )
+                        })
+                      }
+                    } else return
+                  }
+            }
+            break
+          case Range.Notebook:
+            if (notebook) {
+              const notebookProfileList = Object.values(
+                profile as Record<string, INotebookProfile>
+              )
+              for (const [module, _] of Object.entries(notebook))
+                for (const [key, f] of Object.entries(_))
+                  for (const p of notebookProfileList) {
+                    if (p[module]?.[key] !== undefined) {
+                      p[module][key] = f(p[module][key])
+                    } else return
+                  }
+            }
+            break
+        }
+      }
+    })()
+  })
+  return profile
 }
