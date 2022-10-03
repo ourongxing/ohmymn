@@ -50,7 +50,7 @@ export default defineConfig({
       help: lang.on.help,
       auto: {
         modifyExcerptText: {
-          index: 20,
+          index: 0,
           method({ text }) {
             return simplifyText(text)
           }

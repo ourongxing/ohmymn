@@ -5,7 +5,7 @@ const zh = {
   intro: "使用百度 OCR 服务来进行小语种的在线矫正。",
   on: {
     label: "摘录时自动执行",
-    help: "【当前文档】"
+    help: "【仅当前文档】"
   },
   lang: {
     $option21: [
@@ -31,7 +31,7 @@ const zh = {
       "希腊语",
       "匈牙利语"
     ] as StringTuple<21>,
-    help: "【当前文档】",
+    help: "【仅当前文档】",
     label: "识别语言"
   },
   formula_ocr: {

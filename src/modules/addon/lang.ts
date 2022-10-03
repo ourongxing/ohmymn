@@ -12,7 +12,7 @@ const zh = {
       "初始化"
     ] as StringTuple<5>,
     label: "选择全局配置",
-    help: "【当前笔记本】不同场景，不同配置"
+    help: "【仅当前笔记本】不同场景，不同配置"
   },
   quick_switch: {
     label: "模块快捷开关"

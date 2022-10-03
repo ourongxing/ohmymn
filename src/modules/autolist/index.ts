@@ -22,8 +22,11 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.on,
       auto: {
-        modifyExcerptText({ text }) {
-          return addLineBreak(text)
+        modifyExcerptText: {
+          index: 2,
+          method({ text }) {
+            return addLineBreak(text)
+          }
         }
       }
     },

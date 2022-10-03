@@ -4,7 +4,7 @@ const zh = {
   intro: "自动转换为简体中文",
   on: {
     label: "摘录时自动执行",
-    help: "【当前文档】"
+    help: "【仅当前文档】"
   },
   variant: {
     label: "异体字转换",
