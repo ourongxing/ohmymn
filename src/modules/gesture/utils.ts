@@ -130,9 +130,9 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
         { swipeY },
         {
           y:
-            studyController.studyMode === StudyMode.study
-              ? y - (arrow === DirectionOfSelection.toRight ? 80 : 145)
-              : y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
+            // studyController.studyMode === StudyMode.study
+            // ? y - (arrow === DirectionOfSelection.toRight ? 80 : 145)
+            y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
           height: 40
         }
       )
