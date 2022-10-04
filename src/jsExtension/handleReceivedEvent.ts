@@ -16,6 +16,7 @@ import {
 } from "~/sdk"
 import handleMagicAction from "./magicActionHandler"
 import { handleURLScheme } from "~/modules/shortcut/utils"
+import { moduleKeys } from "~/mergeMethod"
 
 export const eventHandlers = eventHandlerController(
   [
@@ -166,7 +167,13 @@ const onProcessNewExcerpt: EventHandler = sender => {
 }
 
 const onAddonBroadcast: EventHandler = async sender => {
-  if (!isThisWindow(sender)) return
+  // if (!isThisWindow(sender)) return
+  if (
+    !self.globalProfile.addon.quickSwitch.includes(
+      moduleKeys.indexOf("shortcut")
+    )
+  )
+    return
   console.log("Addon broadcast", "event")
   const { message } = sender.userInfo
   const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")

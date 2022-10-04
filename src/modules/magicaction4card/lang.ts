@@ -10,7 +10,7 @@ const zh = {
   },
   rename_title: {
     label: "重命名标题",
-    help: "现在可以分层进行编号"
+    help: `$& 指代原标题。输入 "%['1'] $&" 可快速为选中卡片标题编号。`
   },
   smart_selection: {
     label: "智能选择",
@@ -95,7 +95,7 @@ const en: typeof zh = {
     help: "Please make sure that the card has at least one child card when writing the profile. Multiple child cards can share the profile together to prevent a single card from having too many words."
   },
   rename_title: {
-    help: "Now it can be hierarchical numbered",
+    help: `$& refers to the original title. Enter "%['1'] $&" to Quickly number the selected card title.`,
     label: "Rename Titles"
   },
   is_selected: "The card is selected, please continue",
