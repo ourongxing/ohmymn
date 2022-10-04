@@ -319,7 +319,6 @@ declare global {
 
     /**
      * register a html comment editor(For note card editor), click link below to see an example
-     * @link https://github.com/MarginNote/CKEditor
      * @returns void
      * @param commentTag NSString*, usually is the markdown editor name
      */
