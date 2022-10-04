@@ -20,9 +20,9 @@ function split2MuiltTitles(text: string) {
   const defs = regGroups
     .reduce((acc, regGroup) => {
       if (!regGroup.length) return acc
-      const mainReg = regGroup.shift()!
+      const mainReg = regGroup[0]
       const matched = text.match(mainReg)
-      if (matched && regGroup.every(k => k.test(matched[0]))) {
+      if (matched && regGroup.slice(1).every(k => k.test(matched[0]))) {
         return acc.replace(regFlag.add(mainReg, "g"), "😎")
       } else return acc
     }, text)
@@ -80,14 +80,15 @@ export function customSplit(text: string, regGloups?: RegExp[][]) {
   for (const regGroup of regGloups) {
     if (!regGroup.length) continue
     let isReverse = false
-    let mainReg = regGroup.shift()!
+    // 下次执行正则就没了
+    let mainReg = regGroup[0]
     // 使用 y 来表示定义项在后面的情况，则 y 失效，应该很少人会用到 y
     if (mainReg.sticky) {
       mainReg = regFlag.remove(mainReg, "y")
       isReverse = true
     }
     const matched = text.match(mainReg)
-    if (matched && regGroup.every(k => k.test(matched[0]))) {
+    if (matched && regGroup.slice(1).every(k => k.test(matched[0]))) {
       let [def, desc] = text.split(mainReg).filter(k => k)
       // 交换顺序
       if (isReverse) [def, desc] = [desc, def]
