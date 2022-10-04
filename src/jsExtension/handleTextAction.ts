@@ -1,5 +1,6 @@
 import { Addon } from "~/addon"
 import { UIAlertViewStyle } from "~/enum"
+import lang from "~/lang"
 import {
   MN,
   modifyNodeTitle,
@@ -59,16 +60,11 @@ export default async function (res: string, key: string) {
     let option = noteOptions[0]
     if (noteOptions.length > 1) {
       const index = await selectIndex(
-        [
-          "复制",
-          "设置为标题",
-          "合并标题",
-          "合并到摘录",
-          "设置为摘录",
-          "设置为评论"
-        ].filter((k, i) => noteOptions.includes(i)),
+        lang.text_more_option.$options6.filter((k, i) =>
+          noteOptions.includes(i)
+        ),
         Addon.title,
-        "检测到您之前选中了一条摘录"
+        lang.text_more_option.selected_excerpt
       )
       option = noteOptions[index]
     }
