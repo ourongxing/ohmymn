@@ -253,7 +253,7 @@ export async function actionTrigger(
 
   const { key, module, option, moduleName } = actionInfo
   if (key === "none") return
-  else if (key == "open_panel") switchPanel()
+  else if (key == "switchPanel") switchPanel()
   else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {

@@ -200,13 +200,13 @@ export async function readProfilefromCard(node: MbBookNote) {
         throw lang.parse_failed
       }
     })()
+    if (data.key !== undefined && data.key !== Addon.key)
+      throw lang.not_this_profile
     const profiles = data.profiles ?? data
     Addon.lastVersion = data.version ?? "4.0.0"
     if (semver.gt(Addon.lastVersion, Addon.version)) {
       showHUD(lang.old_version)
     }
-    if (data.key !== undefined && data.key !== Addon.key)
-      throw lang.not_this_profile
     const profileKeys = Object.keys(profiles)
     if (profileKeys.length === 3) {
       const {

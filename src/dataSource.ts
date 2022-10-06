@@ -12,10 +12,10 @@ export const actionKey4Card: {
   option?: number
   module?: ModuleKeyType
   moduleName?: string
-}[] = [{ key: "none" }, { key: "open_panel" }]
+}[] = [{ key: "none" }, { key: "switchPanel" }]
 export const actionKey4Text: typeof actionKey4Card = [
   { key: "none" },
-  { key: "open_panel" }
+  { key: "switchPanel" }
 ]
 
 const genSection = (config: IConfig): ISection => {

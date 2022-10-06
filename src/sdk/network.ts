@@ -52,7 +52,7 @@ function initRequest(
         encodeURI(
           `${url}?${Object.entries(options.search).reduce((acc, cur) => {
             const [key, value] = cur
-            return `${acc ? acc + "&" : ""}${key}=${encodeURIComponent(value)}`
+            return `${acc ? acc + "&" : ""}${key}=${value}`
           }, "")}`
         )
       )

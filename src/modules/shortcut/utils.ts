@@ -30,7 +30,7 @@ export async function handleURLScheme(params: string) {
         const { key, module, option, moduleName } =
           type === "card" ? actionKey4Card[opt[0]] : actionKey4Text[opt[0]]
         if (key === "none") return
-        else if (key == "open_panel") switchPanel()
+        else if (key == "switchPanel") switchPanel()
         else if (module && !isModuleON(module))
           showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
         else {
