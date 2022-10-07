@@ -2,6 +2,7 @@ import { MN } from "."
 import { MbBookNote, MNPic, noteComment } from "~/typings"
 import { postNotification } from "./common"
 import { unique, escapeURLParam } from "./utils"
+import { StudyMode } from "~/enum"
 
 /**
  * Cancellable actions, all actions that modify data should be wrapped in this method.
@@ -241,7 +242,7 @@ function getAllText(
 ) {
   return [
     ...getExcerptText(node, highlight, mdsize).text,
-    ...getAllCommnets(node, mdsize).nopic,
+    ...getAllCommnets(node, mdsize).text,
     getAllTags(node).join(" ")
   ].join(separator)
 }
@@ -278,7 +279,7 @@ function getAllTags(node: MbBookNote, hash = true) {
  */
 function getAllCommnets(node: MbBookNote, mdsize = "") {
   const res = {
-    nopic: [] as string[],
+    text: [] as string[],
     base64: [] as string[],
     img: [] as string[],
     html: [] as string[],
@@ -359,6 +360,26 @@ function appendTextComment(node: MbBookNote, ...comments: string[]) {
     comments.forEach(comment => {
       comment && node.appendTextComment(comment)
     })
+}
+
+export function getDocURL() {
+  if (MN.studyController().studyMode !== StudyMode.study) return
+  const notebook = MN.db.getNotebookById(self.notebookid)!
+  const note =
+    MN.studyController().notebookController.mindmapView.mindmapNodes?.reduce(
+      (acc, k) => {
+        if (k.note.docMd5 === self.docmd5 && k.note.modifiedDate) {
+          if (acc?.modifiedDate) {
+            if (acc.modifiedDate < k.note.modifiedDate) return k.note
+          } else return k.note
+        }
+        return acc
+      },
+      undefined as undefined | MbBookNote
+    )
+  return note?.noteId
+    ? `marginnote3app://note/${note.noteId}`
+    : `marginnote3app://notebook/${notebook.topicId}`
 }
 
 export {

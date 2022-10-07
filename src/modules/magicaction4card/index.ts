@@ -87,7 +87,7 @@ export default defineConfig({
               case FilterCards.Excerpt:
                 return getExcerptText(node).text.join("\n")
               case FilterCards.Comment:
-                return getAllCommnets(node).nopic.join("\n")
+                return getAllCommnets(node).text.join("\n")
               default:
                 return `${title}\n${getAllText(node)}`
             }
@@ -182,7 +182,7 @@ export default defineConfig({
         for (const node of nodes) {
           const dataArr = [
             ...getExcerptText(node, true).text,
-            ...getAllCommnets(node).nopic
+            ...getAllCommnets(node).text
           ]
           const allText = ((arr: string[]) => {
             if (/%\[.+\]/.test(front)) {

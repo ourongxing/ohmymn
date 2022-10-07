@@ -112,7 +112,6 @@ build({
   entry: "src/main.ts",
   tslint: !isProd,
   outfile: outDir + "main.js",
-  format: "esm",
   splitting: false,
   sourcemap: false,
   clear: true,
