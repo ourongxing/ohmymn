@@ -44,6 +44,17 @@ declare global {
         | undefined
     }
     backupWaitTimes: number | undefined
+    metadata: {
+      data:
+        | {
+            pageOffset: string
+            citeKey: string
+            reference: string
+            metadata: any
+          }
+        | undefined
+      lastFetch: number
+    }
     webView: UIWebView
     view: UIView
     window: UIWindow

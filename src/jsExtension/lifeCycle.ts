@@ -95,6 +95,10 @@ export default {
       key: Addon.key,
       title: Addon.title
     }
+    self.metadata = {
+      data: undefined,
+      lastFetch: 0
+    }
     self.excerptStatus = {
       isProcessNewExcerpt: false,
       isChangeExcerptRange: false,
