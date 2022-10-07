@@ -100,7 +100,18 @@ export const getNodeProperties = (node: MbBookNote, template: string) => {
     },
     page: isRequire("page.") && {
       start: node.startPage,
-      end: node.endPage === node.startPage ? undefined : node.endPage
+      end: node.endPage === node.startPage ? undefined : node.endPage,
+      real: isRequire("page.") && {
+        start: undefine2undefine(
+          node.startPage,
+          k => k - Number(fetchDataFromMetadata()?.pageOffset ?? 0)
+        ),
+        end: undefine2undefine(node.endPage, k =>
+          k === node.startPage
+            ? undefined
+            : k - Number(fetchDataFromMetadata()?.pageOffset ?? 0)
+        )
+      }
     },
     tags: isRequire("tags") && getAllTags(node, false),
     allText: isRequire("allText") && getAllText(node),
