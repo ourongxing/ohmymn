@@ -25,10 +25,7 @@ export class DocumentController {
   readonly selectionText?: string
   /**
    * Image from selection, usually converted to base64 to use.
-   * @example
-   * ```
-   * imgBase64 = documentController.imageFromSelection().base64Encoding()
-   * ```
+
    */
   imageFromSelection(): NSData
   /**
@@ -90,7 +87,6 @@ export class NotebookController {
   readonly outlineView: OutlineView
   /**
    * MindMap view
-   *
    */
   readonly mindmapView: MindMapView
   /**
@@ -120,7 +116,6 @@ export class OutlineView {
 export class ReaderController {
   /**
    * Current document controller
-   *
    * inherit from {@link DocumentController}
    */
   readonly currentDocumentController: DocumentController
@@ -130,7 +125,6 @@ export class ReaderController {
   readonly documentControllers?: NSMutableArray
   /**
    * view of ReaderController
-   *
    * {@link UIView}
    */
   view: UIView
@@ -138,19 +132,13 @@ export class ReaderController {
 
 /**
  * Study Controller, inherit from UIViewController
- *
  * inherit from {@link UIViewController}
  */
 export class StudyController extends UIViewController {
   /**
    * View of the study controller
-   *
    * {@link UIView}
-   * @example
-   * ```
-   * // add sub UIview to study controller
-   * const studyController = Application.sharedInstance().studyController(self.window)
-   * studyController.view.addSubview(UIView())
+
    */
   view: UIView
   /**
@@ -163,7 +151,6 @@ export class StudyController extends UIViewController {
   readonly narrowMode: boolean //when narrowmode, book split mode 1 is disabled
   /**
    * DocMap Split Mode
-   *
    * {@link DocMapSplitMode}
    */
   docMapSplitMode: DocMapSplitMode
@@ -197,10 +184,7 @@ declare global {
   class Application {
     /**
      * Create an Application object
-     * @example
-     * ```
-     * const app = Application.sharedInstance()
-     * ```
+
      */
     static sharedInstance(): Application
     /**

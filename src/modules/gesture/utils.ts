@@ -117,7 +117,6 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
      * 脑图
      * 如果是从右往左框选，菜单在上面，(y-145, y-105)
      * 从左往右框选，菜单在下面， (y-80, y-40)
-     *
      * 文档模式下还不太一样
      * (y-70, y-30)
      * (y-0, y+40)

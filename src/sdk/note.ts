@@ -45,11 +45,7 @@ function RefreshAfterDBChange() {
 /**
  * Get infomation of the selected nodes.
  * @returns Array which contains the infomation of the selected nodes.
- * @example
- * ```
- * //get the infomation of the first selected node
- * const mySelection = getSelection()[0]
- * ```
+
  */
 function getSelectNodes(): MbBookNote[] {
   const MindMapNodes: any[] | undefined =
@@ -105,7 +101,6 @@ function getNodeTree(node: MbBookNote) {
  * Get ancester nodes recursively, including all the node's parent, grandparent and grandgrandparent etc.
  * @param node The card that you want to get its ancestor nodes information.
  * @returns MbBookNote[] - An array which contains all the ancestor nodes.
- *
  */
 function getAncestorNodes(node: MbBookNote): MbBookNote[] {
   const up = (node: MbBookNote, ancestorNodes: MbBookNote[]) => {

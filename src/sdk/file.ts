@@ -28,7 +28,6 @@ export function writeJSON(path: string, data: any) {
 }
 
 /**
- *
  * @param file file path
  * @param UTI https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259-SW1
  */

@@ -11,7 +11,6 @@ declare class JSExtension {
   [k: string]: any
   /**
    *
-   * @type {UIWindow}
    */
   readonly window?: UIWindow
   /**
@@ -55,41 +54,23 @@ declare class JSExtension {
   /**
    * Query Addon Status, usally used for checking if activate the addon
    * @returns NSDictionary*
-   * @example
-   * ```
-   * const queryAddonCommandStatus = () => {
-   * // appear when in studycontroller
-   * return MN.studyController().studyMode == studyMode.study
-   * ? {
-   *     image: "logo.png", // logo size:44x44 px
-   *     object: self,
-   *     selector: "switchPanel:", // selector of the function
-   *     checked: self.panelStatus // checked status
-   *   }
-   * : null
-   * }
-   * ```
    */
   queryAddonCommandStatus(): {
     /**
      * path to icon file
-     * @type {string}
      * image size must be 44x44 px
      */
     image: string
     /**
      * object of the function, usually self
-     * @type {JSExtension}
      */
     object: any
     /**
      * selector of the function, for another word, when you click(tap) on the icon, what function will be executed
-     * @type {string}
      */
     selector: string
     /**
      * checked status
-     * @type {boolean}
      */
     checked: boolean
   } | null

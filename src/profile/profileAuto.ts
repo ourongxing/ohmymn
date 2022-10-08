@@ -143,11 +143,9 @@ export const readProfile: ReadPrifile = ({
 }
 
 /**
- *
  *  Saving the doc profile must save the global profile.
  *  Switching profile only save the global profile.
  *  Switching doc will be saved to the previous doc profile.
- *
  */
 export const writeProfile: WritePrifile = ({
   range,

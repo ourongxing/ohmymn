@@ -51,24 +51,14 @@ export class MbTopic {
 
 export class MbModelTool {
   /**
-   * not accessible as a static function in global scope, use {@link Database} instead
-   * @returns MbModelTool*
-   */
-  // static sharedInstance(): MbModelTool;
-  /**
    * get Notebook by ID
    * @param topicid NSString*
    * @returns MbTopic*
-   * @example
-   * ```
-   * Database.sharedInstance().getNotebookById(node.notebookId)
-   * ```
    */
   getNotebookById(topicid: string): MbTopic | undefined
   /**
    * @returns NSData*
    * @param hash NSString*
-   *
    */
   getMediaByHash(hash: string): NSData | undefined
   /**
@@ -90,7 +80,6 @@ export class MbModelTool {
   /**
    * @returns NSArray*
    * @param noteid NSString*
-   *
    */
   getFlashcardsByNoteId(noteid: string): Array<MbBookNote> | undefined
   /**

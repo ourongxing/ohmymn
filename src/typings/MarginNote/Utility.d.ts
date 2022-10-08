@@ -91,15 +91,6 @@ declare global {
 
   /**
    * zip & unzip tools
-   * @function unzipFileAtPathToDestination
-   * @function unzipFileAtPathToDestinationOverwritePassword
-   * @function createZipFileAtPathWithFilesAtPaths
-   * @function createZipFileAtPathWithContentsOfDirectory
-   * @function initWithPath
-   * @function open
-   * @function writeFile
-   * @function writeDataFilename
-   * @function close
    */
   class ZipArchive {
     /**
