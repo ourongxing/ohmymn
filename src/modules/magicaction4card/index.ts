@@ -198,15 +198,15 @@ export default defineConfig({
             k =>
               k.type === "PaintNote" ||
               k.type === "HtmlNote" ||
-              (!node.textFirst &&
-              k.type === "LinkNote" &&
+              (k.type === "LinkNote" &&
+              !node.textFirst &&
               MN.db.getNoteById(k.noteid!)?.excerptPic
                 ? true
                 : false),
             async k => {
               switch (option) {
                 case MergeText.ToExpertText:
-                  if (k.excerptPic) {
+                  if (k.excerptPic && !k.textFirst) {
                     const index = await selectIndex(
                       lang.merge_text.$excerpt_pic_option2,
                       lang.merge_text.label,
@@ -214,10 +214,23 @@ export default defineConfig({
                     )
                     if (index) {
                       appendTextComment(k, removeHighlight(allText))
-                    } else k.excerptText = allText
+                      return
+                    }
                   }
+                  k.excerptText = allText
                   break
                 case MergeText.ToComment:
+                  if (k.excerptPic && k.textFirst && k.excerptText) {
+                    const index = await selectIndex(
+                      lang.merge_text.$excerpt_pic_text_option2,
+                      lang.merge_text.label,
+                      lang.merge_text.is_excerpt_pic_text
+                    )
+                    if (index) {
+                      k.excerptText = allText
+                      return
+                    }
+                  }
                   if (!k.excerptPic) k.excerptText = ""
                   appendTextComment(k, removeHighlight(allText))
               }

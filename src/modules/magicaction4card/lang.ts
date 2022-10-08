@@ -28,6 +28,9 @@ const zh = {
   merge_text: {
     label: "合并卡片内文字",
     help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶",
+    is_excerpt_pic_text:
+      "检测到当前摘录为图片 OCR 的文字，合并为评论无法删除该摘录，是否继续合并为评论？",
+    $excerpt_pic_text_option2: ["继续", "合并为评论"] as StringTuple<2>,
     is_excerpt_pic:
       "检测到当前摘录为图片，合并为摘录后仍旧是图片，是否继续合并为摘录？",
     $excerpt_pic_option2: ["继续", "合并为评论"] as StringTuple<2>,
@@ -75,6 +78,9 @@ const en: typeof zh = {
   },
   merge_text: {
     label: "Merge Text",
+    is_excerpt_pic_text:
+      "The current excerpt is a picture OCR text. If you merge it as a comment, you cannot delete the excerpt. Do you want to continue to merge it as a comment?",
+    $excerpt_pic_text_option2: ["Continue", "Merge as Comment"],
     help: "Only support merging text excerpt and text comment, not merging tags and link, other content will be pinned after merging",
     $excerpt_pic_option2: ["Continue", "Merge as Comment"],
     is_excerpt_pic: "The excerpt is a picture, continue to merge as excerpt?",

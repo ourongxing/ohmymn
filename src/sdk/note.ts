@@ -137,14 +137,14 @@ function getExcerptNotes(node: MbBookNote): MbBookNote[] {
  * @param pic {@link MNPic}
  * @returns Base64 code of the picture.
  */
-function exportPic(pic: MNPic, mdsize = "") {
+function exportPic(pic: MNPic) {
   const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
   return base64
     ? {
         base64,
         img: `data:image/jpeg;base64,${escapeURLParam(base64)}`,
-        html: `<img class="mn-img" src="data:image/jpeg;base64,${base64}"/>`,
-        md: `![${mdsize}](data:image/jpeg;base64,${escapeURLParam(base64)})`
+        html: `<img class="MNImg" src="data:image/jpeg;base64,${base64}"/>`,
+        md: `![](data:image/jpeg;base64,${escapeURLParam(base64)})`
       }
     : undefined
 }
@@ -156,7 +156,7 @@ function exportPic(pic: MNPic, mdsize = "") {
  * @param mdsize Text after OCR by default.
  * @returns Dict of excerpt text.
  */
-function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
+function getExcerptText(node: MbBookNote, highlight = true) {
   const res = {
     text: [] as string[],
     ocr: [] as string[],
@@ -168,7 +168,7 @@ function getExcerptText(node: MbBookNote, highlight = true, mdsize = "") {
   return getExcerptNotes(node).reduce((acc, cur) => {
     const text = cur.excerptText?.trim()
     if (cur.excerptPic) {
-      const imgs = exportPic(cur.excerptPic, mdsize)
+      const imgs = exportPic(cur.excerptPic)
       if (imgs)
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
@@ -234,15 +234,10 @@ async function removeCommentButLinkTag(
  * @param highlight default true, will retention highlight symbol, **.
  * @returns string
  */
-function getAllText(
-  node: MbBookNote,
-  separator = "\n",
-  highlight = true,
-  mdsize = ""
-) {
+function getAllText(node: MbBookNote, separator = "\n", highlight = true) {
   return [
-    ...getExcerptText(node, highlight, mdsize).text,
-    ...getAllCommnets(node, mdsize).text,
+    ...getExcerptText(node, highlight).text,
+    ...getAllCommnets(node).text,
     getAllTags(node).join(" ")
   ].join(separator)
 }
@@ -277,7 +272,7 @@ function getAllTags(node: MbBookNote, hash = true) {
  * @param node The card that you want to get all kind of its comments.
  * @returns Resource dict.
  */
-function getAllCommnets(node: MbBookNote, mdsize = "") {
+function getAllCommnets(node: MbBookNote) {
   const res = {
     text: [] as string[],
     base64: [] as string[],
@@ -287,7 +282,7 @@ function getAllCommnets(node: MbBookNote, mdsize = "") {
   }
   return node.comments.reduce((acc, cur) => {
     if (cur.type === "PaintNote") {
-      const imgs = exportPic(cur, mdsize)
+      const imgs = exportPic(cur)
       if (imgs)
         Object.entries(imgs).forEach(([k, v]) => {
           if (k in acc) acc[k].push(v)
