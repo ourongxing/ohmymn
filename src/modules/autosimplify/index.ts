@@ -8,21 +8,24 @@ import { doc } from "~/utils"
 
 export function simplifyText(text: string) {
   try {
-    if (!Addon.OpenCC) {
-      if (!isfileExists(Addon.path + "/simplified.json")) {
-        throw "simplified.json not found"
+    if (!Addon.dataAutoSimplify) {
+      if (!isfileExists(Addon.path + "/AutoSimplifyData.json")) {
+        throw "AutoSimplifyData.json not found"
       }
-      Addon.OpenCC = new OpenCC(readJSON(Addon.path + "/simplified.json"))
+      Addon.dataAutoSimplify = new OpenCC(
+        readJSON(Addon.path + "/AutoSimplifyData.json")
+      )
     }
     // 大陆台湾香港
     const { taiwanIdiom, variant } = self.globalProfile.autosimplify
     const ret = (() => {
       if (variant[0] === 1) {
-        if (taiwanIdiom) return Addon.OpenCC.taiwanToSimplifiedWithPhrases(text)
-        else return Addon.OpenCC.taiwanToSimplified(text)
+        if (taiwanIdiom)
+          return Addon.dataAutoSimplify.taiwanToSimplifiedWithPhrases(text)
+        else return Addon.dataAutoSimplify.taiwanToSimplified(text)
       } else if (variant[0] === 2)
-        return Addon.OpenCC.hongKongToSimplified(text)
-      else return Addon.OpenCC.traditionalToSimplified(text)
+        return Addon.dataAutoSimplify.hongKongToSimplified(text)
+      else return Addon.dataAutoSimplify.traditionalToSimplified(text)
     })()
     const { customSimplify: params } = self.tempProfile.replaceParam
     return (

@@ -20,9 +20,9 @@ export const mainfest: Mainfest = {
   files: [
     "assets/logo.png",
     "assets/icon",
-    "assets/simplified.json"
-    // "assets/endict.db"
-    // "assets/endict.zip"
+    "assets/AutoSimplifyData.json"
+    // "assets/AutoCompleteData.db"
+    // "assets/AutoCompleteData.zip"
   ]
 }
 

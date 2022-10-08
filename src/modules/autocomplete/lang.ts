@@ -2,7 +2,7 @@ import { MN } from "~/sdk"
 import { doc } from "~/utils"
 
 const zh = {
-  intro: "补全单词词形，只支持动词和名词",
+  intro: "补全单词词形，只支持动词和名词。顺便提供词义补充和上下文摘录。",
   on: "摘录时自动执行",
   complete_selected: "补全单词词形",
   select_meaning: {
@@ -40,7 +40,7 @@ const zh = {
   data_source: {
     label: "数据来源",
     $option2: ["在线 API", "本地数据库"] as StringTuple<2>,
-    help: "本地数据库体积较大，但更快，质量更高，需要下载本地数据库版本。"
+    help: "在国外的用户请选择本地数据库。可以在 OhMyMN 的 QQ 频道中下载。"
   },
   not_find_word: "查询不到该单词",
   forbid:

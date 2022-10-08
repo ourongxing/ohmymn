@@ -70,13 +70,14 @@ export const clsMethons = {
   addonDidConnect() {
     console.log("Addon connected", "lifeCycle")
     if (
-      !isfileExists(`${Addon.path}/endict.db`) &&
-      isfileExists(`${Addon.path}/endict.zip`)
-    )
+      !isfileExists(`${Addon.path}/AutoCompleteData.db`) &&
+      isfileExists(`${Addon.path}/AutoCompleteData.zip`)
+    ) {
       ZipArchive.unzipFileAtPathToDestination(
-        `${Addon.path}/endict.zip`,
+        `${Addon.path}/AutoCompleteData.zip`,
         Addon.path
       )
+    }
   }
 }
 

@@ -17,8 +17,8 @@ class MNADDON {
   github = mainfest.github
   forum = MN.isZH ? mainfest.forumZH : mainfest.forum
   doc = MN.isZH ? mainfest.docZH : mainfest.doc
-  enDict?: SQLiteDatabase
-  OpenCC?: OpenCC
+  dataAutoComplete?: SQLiteDatabase
+  dataAutoSimplify?: OpenCC
   lastVersion!: string
 }
 

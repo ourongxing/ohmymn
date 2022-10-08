@@ -298,7 +298,7 @@ declare global {
     openFileWithUTIs(
       types: Array<string>,
       controller: UIViewController,
-      block: JSValue
+      callback: (file: string) => void
     ): void
 
     /**

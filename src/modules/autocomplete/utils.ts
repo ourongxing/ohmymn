@@ -160,15 +160,15 @@ async function getWordInfo(word: string): Promise<Word> {
     if (!info.length) throw ""
     return unifiyData(info[0])
   } else {
-    if (!Addon.enDict) {
-      if (isfileExists(`${Addon.path}/endict.db`)) {
-        Addon.enDict = SQLiteDatabase.databaseWithPath(
-          `${Addon.path}/endict.db`
+    if (!Addon.dataAutoComplete) {
+      if (isfileExists(`${Addon.path}/AutoCompleteData.db`)) {
+        Addon.dataAutoComplete = SQLiteDatabase.databaseWithPath(
+          `${Addon.path}/AutoCompleteData.db`
         )
-        Addon.enDict.open()
-      } else throw "没找到本地数据库"
+        Addon.dataAutoComplete.open()
+      } else throw "没有本地数据库"
     }
-    const query = Addon.enDict.executeQueryWithArgumentsInArray(
+    const query = Addon.dataAutoComplete.executeQueryWithArgumentsInArray(
       `SELECT * FROM stardict WHERE word = '${word}'`,
       []
     )
@@ -464,10 +464,16 @@ export async function completeWord(text: string, note: MbBookNote) {
         res.context = getContext(note, pureText) ?? ""
         if (res.context && translateContext) {
           const { translateProviders } = self.globalProfile.autotranslate
-          res.translation =
-            translateProviders[0] === TranslateProviders.Baidu
-              ? await baiduTranslate(res.context, 2, 0)
-              : await caiyunTranslate(res.context, 2, 0)
+          res.translation = await (async () => {
+            try {
+              return translateProviders[0] === TranslateProviders.Baidu
+                ? await baiduTranslate(res.context, 2, 0)
+                : await caiyunTranslate(res.context, 2, 0)
+            } catch {
+              showHUD("上下文翻译失败，请检查 AutoTranslate 是否工作正常。")
+              return ""
+            }
+          })()
         }
       }
       return res
