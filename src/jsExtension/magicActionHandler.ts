@@ -215,22 +215,13 @@ const handleMagicAction = async ({
           })
           break
         default:
-          // Promise can not be placed in undoGroupingWithRefresh()
-          if (actions4card[key] instanceof Promise)
+          undoGroupingWithRefresh(() => {
             actions4card[key]({
               content,
               nodes,
               option
             })
-          else
-            undoGroupingWithRefresh(
-              () =>
-                void actions4card[key]({
-                  content,
-                  nodes,
-                  option
-                })
-            )
+          })
       }
     }
   } catch (err) {
