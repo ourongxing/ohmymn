@@ -1,17 +1,17 @@
-import { Addon } from "~/addon"
-import lang from "~/lang"
-import { UIAlertViewStyle } from "marginnote"
 import {
+  appendTextComment,
+  copy,
   MN,
   modifyNodeTitle,
-  undoGroupingWithRefresh,
-  copy,
   openUrl,
-  showHUD,
   popup,
   selectIndex,
-  appendTextComment
+  showHUD,
+  UIAlertViewStyle,
+  undoGroupingWithRefresh
 } from "marginnote"
+import { Addon } from "~/addon"
+import lang from "~/lang"
 
 const enum NoteOption {
   Copy,

@@ -1,17 +1,17 @@
-import { StudyMode } from "marginnote"
+import {
+  delayBreak,
+  eventHandlerController,
+  isThisWindow,
+  MN,
+  showHUD,
+  StudyMode
+} from "marginnote"
 import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "~/jsExtension/excerptHandler"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
-import {
-  delayBreak,
-  eventHandlerController,
-  isThisWindow,
-  MN,
-  showHUD
-} from "marginnote"
 import { moduleKeys } from "~/mergeMethod"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"

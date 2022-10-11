@@ -1,23 +1,24 @@
+import {
+  getNodeTree,
+  getSelectNodes,
+  HUDController,
+  MbBookNote,
+  MN,
+  popup,
+  showHUD,
+  UIAlertViewStyle,
+  undoGroupingWithRefresh
+} from "marginnote"
 import lang from "~/lang"
+import { actions4card, actions4text, checkInputCorrect } from "~/mergeMethod"
 import { PanelControl } from "~/modules/addon/typings"
+import { formatText } from "~/modules/autoformat/utils"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
 import { simplifyText } from "~/modules/autosimplify"
-import { checkInputCorrect, actions4text, actions4card } from "~/mergeMethod"
 import { getMNLinkValue, manageProfileAction } from "~/profile"
-import {
-  MN,
-  showHUD,
-  HUDController,
-  getSelectNodes,
-  getNodeTree,
-  undoGroupingWithRefresh,
-  popup
-} from "marginnote"
+import { CellViewType, IRowButton } from "~/typings"
 import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
-import { formatText } from "~/modules/autoformat/utils"
-import { UIAlertViewStyle, MbBookNote } from "marginnote"
-import { IRowButton, CellViewType } from "~/typings"
 
 export default async (
   type: "card" | "text",

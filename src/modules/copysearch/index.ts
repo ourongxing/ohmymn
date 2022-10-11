@@ -1,18 +1,17 @@
-import { defineConfig, IGlobalProfile, IDocProfile } from "~/profile"
-import { ISettingInput } from "~/typings"
-import { CellViewType } from "~/typings"
-import {
-  getSerialInfo,
-  reverseEscape,
-  escapeDoubleQuote,
-  checkPlainText,
-  doc
-} from "~/utils"
-import { selectIndex, copy } from "marginnote"
-import { WhichPartofCard } from "./typings"
-import { lang } from "./lang"
-import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"
+import { copy, selectIndex } from "marginnote"
 import { Addon } from "~/addon"
+import { defineConfig, IDocProfile, IGlobalProfile } from "~/profile"
+import { CellViewType, ISettingInput } from "~/typings"
+import {
+  checkPlainText,
+  doc,
+  escapeDoubleQuote,
+  getSerialInfo,
+  reverseEscape
+} from "~/utils"
+import { lang } from "./lang"
+import { WhichPartofCard } from "./typings"
+import { getContentofMuiltCards, getContentofOneCard, search } from "./utils"
 
 export default defineConfig({
   name: "CopySearch",

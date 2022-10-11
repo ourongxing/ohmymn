@@ -1,15 +1,14 @@
+import { addTags, getAllText, MbBookNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "marginnote"
-import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
+import { CellViewType } from "~/typings"
 import {
-  checkReplaceParamFromMNLink,
   checkReplaceParam,
+  checkReplaceParamFromMNLink,
   escapeDoubleQuote,
   extractArray,
   string2ReplaceParam
 } from "~/utils"
-import { getAllText, addTags } from "marginnote"
 import { lang } from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 

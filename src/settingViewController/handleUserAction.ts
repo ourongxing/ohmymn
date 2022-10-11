@@ -1,9 +1,9 @@
-import { openUrl, postNotification, MN } from "marginnote"
-import type { UITableView, NSIndexPath } from "marginnote"
+import type { NSIndexPath, UITableView } from "marginnote"
+import { MN, openUrl, postNotification } from "marginnote"
 import { Addon } from "~/addon"
-import { actionKey4Text, actionKey4Card } from "~/dataSource"
+import { actionKey4Card, actionKey4Text } from "~/dataSource"
 import { checkInputCorrect, ModuleKeyType } from "~/mergeMethod"
-import { CellViewType, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
+import { CellViewType, IRowInput, IRowSelect, IRowSwitch } from "~/typings"
 import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 

@@ -1,22 +1,22 @@
+import { delay, getLocalDataByKey, MN, setLocalDataByKey } from "marginnote"
 import { Addon } from "~/addon"
-import { getLocalDataByKey, setLocalDataByKey, delay, MN } from "marginnote"
 import { deepCopy } from "~/utils"
 import {
-  defaultNotebookProfile,
   defaultDocProfile,
-  defaultGlobalProfile
+  defaultGlobalProfile,
+  defaultNotebookProfile
 } from "./defaultProfile"
 import { writeProfile2Card } from "./profileAction"
 import {
   IDocProfile,
-  INotebookProfile,
   IGlobalProfile,
+  INotebookProfile,
   Range,
   ReadPrifile,
   RewriteRange,
   WritePrifile
 } from "./typings"
-import { updateProfileDataSource, refreshPanel } from "./updateDataSource"
+import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile, rewriteProfile } from "./utils"
 
 export const readProfile: ReadPrifile = ({

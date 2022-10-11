@@ -1,4 +1,8 @@
-import { MN } from "marginnote"
+import { MN, noteComment } from "marginnote"
+import semver from "semver"
+import { Addon } from "~/addon"
+import { IConfig } from "~/typings"
+import { rewriteSelection } from "./defaultProfile"
 import {
   IAllProfile,
   IDocProfile,
@@ -6,11 +10,6 @@ import {
   INotebookProfile,
   RewriteRange
 } from "./typings"
-import semver from "semver"
-import { Addon } from "~/addon"
-import { rewriteSelection } from "./defaultProfile"
-import { noteComment } from "marginnote"
-import { IConfig } from "~/typings"
 
 /**
  * @param link Card link

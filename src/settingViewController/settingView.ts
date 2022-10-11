@@ -1,11 +1,16 @@
+import {
+  isNSNull,
+  MN,
+  NSIndexPath,
+  NSTextAlignment,
+  UITableView
+} from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
-import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
-import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
-import { IRowSelect, BindType, CellViewType } from "~/typings"
-import { NSIndexPath, UITableView, NSTextAlignment } from "marginnote"
-import { MN, isNSNull } from "marginnote"
+import { moduleKeys, ModuleKeyType } from "~/mergeMethod"
+import { BindType, CellViewType, IRowSelect } from "~/typings"
+import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 
 function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999

@@ -1,19 +1,18 @@
+import { appendTextComment, getAllText, MbBookNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "marginnote"
-import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
+import { CellViewType } from "~/typings"
 import {
-  unique,
-  checkReplaceParamFromMNLink,
   checkReplaceParam,
+  checkReplaceParamFromMNLink,
+  doc,
   escapeDoubleQuote,
-  string2ReplaceParam,
   extractArray,
   regFlag,
   ReplaceParam,
-  doc
+  string2ReplaceParam,
+  unique
 } from "~/utils"
-import { appendTextComment, getAllText } from "marginnote"
 import { lang } from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 

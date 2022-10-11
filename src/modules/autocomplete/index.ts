@@ -1,14 +1,14 @@
-import { MbBookNote } from "marginnote"
-import { CellViewType } from "~/typings"
 import {
-  showHUD,
+  appendTextComment,
+  MbBookNote,
   modifyNodeTitle,
-  undoGroupingWithRefresh,
   removeCommentButLinkTag,
-  appendTextComment
+  showHUD,
+  undoGroupingWithRefresh
 } from "marginnote"
-import { checkPlainText, doc } from "~/utils"
 import { defineConfig } from "~/profile"
+import { CellViewType } from "~/typings"
+import { checkPlainText, doc } from "~/utils"
 import { lang } from "./lang"
 import { completeWord } from "./utils"
 

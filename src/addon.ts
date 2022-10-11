@@ -1,7 +1,6 @@
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import { mainfest } from "../mainfest"
-import { MN } from "marginnote"
-import { SQLiteDatabase } from "marginnote"
+import { MN, SQLiteDatabase } from "marginnote"
 
 class MNADDON {
   path!: string

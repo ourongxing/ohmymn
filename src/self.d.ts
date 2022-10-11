@@ -1,17 +1,17 @@
-import {
+import type {
   IDocProfile,
   IGlobalProfile,
   ITempProfile,
   INotebookProfile
 } from "~/profile"
-import {
+import type {
   MbBookNote,
   UIWindow,
   UITableView,
   UITableViewController,
   DirectionOfSelection
 } from "marginnote"
-import { ISection } from "./typings"
+import type { ISection } from "./typings"
 
 declare global {
   const self: {

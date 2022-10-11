@@ -1,34 +1,34 @@
-import { CellViewType } from "~/typings"
-import { defineConfig } from "~/profile"
 import {
-  unique,
-  checkPlainText,
-  checkRegArray,
-  getSerialInfo,
-  string2RegArray,
-  escapeDoubleQuote,
-  string2ReplaceParam,
-  reverseEscape,
-  doc
-} from "~/utils"
-import {
-  showHUD,
-  HUDController,
-  getAllTags,
-  getExcerptText,
+  addTags,
+  appendTextComment,
   getAllCommnets,
+  getAllTags,
   getAllText,
   getAncestorNodes,
-  addTags,
-  removeHighlight,
+  getExcerptText,
+  HUDController,
+  MN,
   modifyNodeTitle,
   removeCommentButLinkTag,
-  appendTextComment,
-  MN,
-  selectIndex
+  removeHighlight,
+  selectIndex,
+  showHUD
 } from "marginnote"
+import { defineConfig } from "~/profile"
+import { CellViewType } from "~/typings"
+import {
+  checkPlainText,
+  checkRegArray,
+  doc,
+  escapeDoubleQuote,
+  getSerialInfo,
+  reverseEscape,
+  string2RegArray,
+  string2ReplaceParam,
+  unique
+} from "~/utils"
 import { lang } from "./lang"
-import { renameTitle, getLayerSerialInfo } from "./renameTitle"
+import { getLayerSerialInfo, renameTitle } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
 
 export default defineConfig({

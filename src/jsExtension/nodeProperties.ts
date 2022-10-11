@@ -1,13 +1,13 @@
-import { MbBookNote } from "marginnote"
 import {
-  MN,
-  removeHighlight,
+  getAllCommnets,
   getAllTags,
   getAllText,
+  getDocURL,
   getExcerptText,
-  getAllCommnets,
   getLocalDataByKey,
-  getDocURL
+  MbBookNote,
+  MN,
+  removeHighlight
 } from "marginnote"
 import { dateFormat, getSerialInfo } from "~/utils"
 import { render } from "~/utils/third party/mustache"

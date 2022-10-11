@@ -1,19 +1,19 @@
-import { RemoveExcerpt } from "~/modules/addon/typings"
-import { MbBookNote } from "marginnote"
 import {
-  MN,
-  delayBreak,
-  undoGroupingWithRefresh,
-  getCommentIndex,
   addTags,
+  appendTextComment,
+  delayBreak,
+  getCommentIndex,
+  MbBookNote,
+  MN,
   modifyNodeTitle,
-  appendTextComment
+  undoGroupingWithRefresh
 } from "marginnote"
+import { RemoveExcerpt } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
 import {
   customOCR,
-  newTitleTextCommentTag,
-  newColorStyle
+  newColorStyle,
+  newTitleTextCommentTag
 } from "./newExcerptGenerater"
 
 let note: MbBookNote

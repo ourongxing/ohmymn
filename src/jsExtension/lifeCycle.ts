@@ -1,3 +1,11 @@
+import {
+  getObjCClassDeclar,
+  isfileExists,
+  openUrl,
+  popup,
+  showHUD,
+  UIWindow
+} from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourcePreset } from "~/dataSource"
 import lang from "~/lang"
@@ -11,19 +19,11 @@ import {
   removeProfile
 } from "~/profile"
 import { settingViewControllerInst } from "~/settingViewController"
-import {
-  getObjCClassDeclar,
-  isfileExists,
-  openUrl,
-  showHUD,
-  popup
-} from "marginnote"
 import { deepCopy } from "~/utils"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { UIWindow } from "marginnote"
 
 /**
  * Addon life cycle

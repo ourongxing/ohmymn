@@ -1,11 +1,10 @@
+import { getExcerptNotes, MbBookNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "marginnote"
-import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
+import { CellViewType } from "~/typings"
 import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
-import { getExcerptNotes } from "marginnote"
 import { lang } from "./lang"
-import { ReplaceCard, AutoReplacePreset } from "./typings"
+import { AutoReplacePreset, ReplaceCard } from "./typings"
 
 function replaceText(note: MbBookNote, text: string) {
   const { preset } = self.globalProfile.autoreplace

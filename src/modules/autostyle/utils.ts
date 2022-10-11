@@ -1,6 +1,11 @@
-import { MbBookNote } from "marginnote"
-import { reverseEscape, countWord, notCJK } from "~/utils"
-import { MN, removeHighlight, CGSizeValue2CGSize, showHUD } from "marginnote"
+import {
+  CGSizeValue2CGSize,
+  MbBookNote,
+  MN,
+  removeHighlight,
+  showHUD
+} from "marginnote"
+import { countWord, notCJK, reverseEscape } from "~/utils"
 import { lang } from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 
