@@ -1,0 +1,3 @@
+[submodule "src/marginnote-api"]
+	path = src/marginnote-api
+	url = git@github.com:marginnoteapp/marginnote-api.git
