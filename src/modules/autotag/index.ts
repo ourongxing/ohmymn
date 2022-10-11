@@ -1,5 +1,5 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "~/marginnote/api"
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import {
@@ -9,7 +9,7 @@ import {
   extractArray,
   string2ReplaceParam
 } from "~/utils"
-import { getAllText, addTags } from "~/marginnote-api/sdk"
+import { getAllText, addTags } from "~/marginnote/sdk"
 import { lang } from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 

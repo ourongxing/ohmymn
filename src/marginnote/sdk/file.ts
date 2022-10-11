@@ -1,4 +1,4 @@
-import { NSJSONReadingOptions } from "../enum"
+import { NSJSONReadingOptions } from "marginnote/api"
 import { MN } from "./mn"
 
 export function isfileExists(path: string) {

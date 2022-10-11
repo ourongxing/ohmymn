@@ -1,4 +1,4 @@
-import { MN } from "~/marginnote-api/sdk"
+import { MN } from "~/marginnote/sdk"
 
 const zh = {
   intro: "自动修改摘录颜色和样式",

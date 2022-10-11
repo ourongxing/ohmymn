@@ -26,7 +26,7 @@ import {
   appendTextComment,
   MN,
   selectIndex
-} from "~/marginnote-api/sdk"
+} from "~/marginnote/sdk"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"

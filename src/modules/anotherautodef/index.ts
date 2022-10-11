@@ -11,7 +11,7 @@ import {
   ReplaceParam,
   string2RegArray
 } from "~/utils"
-import { getExcerptNotes, modifyNodeTitle } from "~/marginnote-api/sdk"
+import { getExcerptNotes, modifyNodeTitle } from "~/marginnote/sdk"
 import { lang } from "./lang"
 import { ExtractTitle, SplitExcerpt } from "./typings"
 import { extractTitle, splitExcerptTitles } from "./utils"

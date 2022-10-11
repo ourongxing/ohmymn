@@ -1,4 +1,5 @@
-import { UIAlertViewStyle } from ".."
+import type { UIAlertView } from "marginnote/api"
+import { UIAlertViewStyle } from "marginnote/api"
 import { lang } from "./lang"
 import { byteSlice } from "./utils"
 

@@ -15,8 +15,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "marginnote": ["src/marginnote-api"],
-      "marginnote/*": ["src/marginnote-api/*"],
+      "marginnote/*": ["src/marginnote/*"],
       "~/*": ["src/*"]
     },
     "lib": ["ES2020"]

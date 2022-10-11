@@ -3,10 +3,9 @@ import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
-import { MN, isNSNull } from "~/marginnote-api/sdk"
-import { UITableView } from "~/marginnote-api/api"
 import { IRowSelect, BindType, CellViewType } from "~/typings"
-import { NSTextAlignment } from "marginnote/enum"
+import { NSIndexPath, UITableView, NSTextAlignment } from "~/marginnote/api"
+import { MN, isNSNull } from "marginnote/sdk"
 
 function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999

@@ -1,6 +1,6 @@
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes } from "~/marginnote-api/sdk"
+import { getExcerptNotes } from "~/marginnote/sdk"
 import { serialSymbols, reverseEscape, doc } from "~/utils"
 import { lang } from "./lang"
 import { ChangeStyle } from "./typings"

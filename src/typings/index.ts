@@ -1,5 +1,8 @@
-import { DirectionOfSelection } from "marginnote/enum"
-import { MbBookNote, DocumentController } from "~/marginnote-api/api"
+import {
+  MbBookNote,
+  DocumentController,
+  DirectionOfSelection
+} from "~/marginnote/api"
 import { IRowButton } from "./DataSource"
 export * from "./Module"
 export * from "./DataSource"

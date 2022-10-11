@@ -1,4 +1,10 @@
-import { NSJSONReadingOptions, NSJSONWritingOptions } from "marginnote"
+import type {
+  NSMutableURLRequest,
+  NSData,
+  NSHTTPURLResponse,
+  NSError
+} from "marginnote/api"
+import { NSJSONWritingOptions, NSJSONReadingOptions } from "marginnote/api"
 import { lang } from "./lang"
 
 class Response {

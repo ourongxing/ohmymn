@@ -1,5 +1,5 @@
 import { CellViewType } from "~/typings"
-import { showHUD } from "~/marginnote-api/sdk"
+import { showHUD } from "~/marginnote/sdk"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import {

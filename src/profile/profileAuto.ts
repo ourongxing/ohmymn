@@ -4,7 +4,7 @@ import {
   setLocalDataByKey,
   delay,
   MN
-} from "~/marginnote-api/sdk"
+} from "~/marginnote/sdk"
 import { deepCopy } from "~/utils"
 import {
   defaultNotebookProfile,

@@ -1,4 +1,4 @@
-import { MN } from "~/marginnote-api/sdk"
+import { MN } from "~/marginnote/sdk"
 import { PanelControl } from "~/modules/addon/typings"
 import {
   actionTrigger,
@@ -6,7 +6,7 @@ import {
   initGesture
 } from "~/modules/gesture/utils"
 import { GestureHandler } from "~/typings"
-import { UISwipeGestureRecognizerDirection } from "marginnote"
+import { UISwipeGestureRecognizerDirection } from "marginnote/api"
 import { closePanel } from "./switchPanel"
 
 // Not support Mac

@@ -1,9 +1,9 @@
 import { HasTitleThen } from "~/modules/addon/typings"
 import { autoUtils } from "~/mergeMethod"
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "~/marginnote/api"
 import { unique } from "~/utils"
 import { cacheTransformer } from "~/profile"
-import { MN, removeHighlight } from "~/marginnote-api/sdk"
+import { MN, removeHighlight } from "~/marginnote/sdk"
 
 export const customOCR = async () => {
   const imgBase64 = MN.studyController()

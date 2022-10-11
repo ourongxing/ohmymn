@@ -1,4 +1,4 @@
-import { OSType } from "marginnote"
+import { OSType } from "marginnote/api"
 
 function getVersion() {
   return "3.7.19"

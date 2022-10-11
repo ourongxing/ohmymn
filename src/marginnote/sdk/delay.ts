@@ -1,5 +1,4 @@
-import { Timer } from "marginnote/api"
-
+import type { Timer, NSTimer } from "~/marginnote/api"
 export function delay(sec: number) {
   return new Promise<NSTimer>(resolve =>
     NSTimer.scheduledTimerWithTimeInterval(sec, false, resolve)

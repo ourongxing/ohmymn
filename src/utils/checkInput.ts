@@ -1,4 +1,4 @@
-import { MN } from "~/marginnote-api/sdk"
+import { MN } from "~/marginnote/sdk"
 import lang from "~/lang"
 import {
   escapeDoubleQuote,

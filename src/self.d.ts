@@ -6,12 +6,11 @@ import {
 } from "~/profile"
 import {
   MbBookNote,
-  UIView,
   UIWindow,
   UITableView,
-  UITableViewController
-} from "./marginnote-api/api"
-import { DirectionOfSelection } from "./marginnote-api/enum"
+  UITableViewController,
+  DirectionOfSelection
+} from "./marginnote/api"
 import { ISection } from "./typings"
 
 declare global {

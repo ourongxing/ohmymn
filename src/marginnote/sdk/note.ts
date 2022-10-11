@@ -1,6 +1,5 @@
-import { MbBookNote, MNPic, noteComment } from "marginnote/api"
+import { MbBookNote, MNPic, noteComment, StudyMode } from "~/marginnote/api"
 import { MN, postNotification } from "."
-import { StudyMode } from ".."
 import { escapeURLParam, unique } from "./utils"
 
 /**

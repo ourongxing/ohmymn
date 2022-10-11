@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { MN } from "~/marginnote-api/sdk"
+import { MN } from "~/marginnote/sdk"
 
 const zh = {
   input_saved: "输入已保存",

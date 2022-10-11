@@ -1,3 +1,5 @@
+import { NSValue, CGRect, CGSize } from "marginnote/api"
+
 export function NSValue2String(v: NSValue) {
   return Database.transArrayToJSCompatible([v])[0] as string
 }

@@ -1,5 +1,5 @@
 import { lang } from "./lang"
-import { fetch, showHUD } from "~/marginnote-api/sdk"
+import { fetch, showHUD } from "~/marginnote/sdk"
 import { reverseEscape, countWord, isLanguage, notCJK } from "~/utils"
 import MD5 from "~/utils/third party/md5"
 import { TranslateProviders } from "./typings"

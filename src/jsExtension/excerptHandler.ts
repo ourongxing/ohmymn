@@ -1,5 +1,5 @@
 import { RemoveExcerpt } from "~/modules/addon/typings"
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "~/marginnote/api"
 import {
   MN,
   delayBreak,
@@ -8,7 +8,7 @@ import {
   addTags,
   modifyNodeTitle,
   appendTextComment
-} from "~/marginnote-api/sdk"
+} from "~/marginnote/sdk"
 import { cacheTransformer } from "~/profile"
 import {
   customOCR,

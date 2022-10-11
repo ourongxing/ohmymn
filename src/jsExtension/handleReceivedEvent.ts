@@ -1,22 +1,22 @@
+import { StudyMode } from "marginnote/api"
 import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "~/jsExtension/excerptHandler"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
-import { EventHandler } from "~/typings"
-import { StudyMode } from "marginnote"
-import { saveProfile, updateProfileTemp } from "~/profile"
 import {
-  MN,
+  delayBreak,
   eventHandlerController,
   isThisWindow,
-  showHUD,
-  delayBreak
-} from "~/marginnote-api/sdk"
-import handleMagicAction from "./magicActionHandler"
-import { handleURLScheme } from "~/modules/shortcut/utils"
+  MN,
+  showHUD
+} from "~/marginnote/sdk"
 import { moduleKeys } from "~/mergeMethod"
+import { handleURLScheme } from "~/modules/shortcut/utils"
+import { saveProfile, updateProfileTemp } from "~/profile"
+import { EventHandler } from "~/typings"
+import handleMagicAction from "./magicActionHandler"
 
 export const eventHandlers = eventHandlerController(
   [
