@@ -1,7 +1,7 @@
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import { Addon } from "~/addon"
-import { getExcerptNotes, isfileExists, readJSON } from "~/marginnote/sdk"
+import { getExcerptNotes, isfileExists, readJSON } from "marginnote/sdk"
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import { lang } from "./lang"
 import { doc } from "~/utils"

@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { MN } from "~/marginnote/sdk"
+import { MN } from "marginnote/sdk"
 export default {
   viewDidLoad() {
     self.tableView.allowsSelection = true

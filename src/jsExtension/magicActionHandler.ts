@@ -12,11 +12,11 @@ import {
   getNodeTree,
   undoGroupingWithRefresh,
   popup
-} from "~/marginnote/sdk"
+} from "marginnote/sdk"
 import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
 import { formatText } from "~/modules/autoformat/utils"
-import { UIAlertViewStyle, MbBookNote } from "~/marginnote/api"
+import { UIAlertViewStyle, MbBookNote } from "marginnote/api"
 import { IRowButton, CellViewType } from "~/typings"
 
 export default async (

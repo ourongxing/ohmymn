@@ -6,7 +6,7 @@ import {
   doc
 } from "~/utils"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes } from "~/marginnote/sdk"
+import { getExcerptNotes } from "marginnote/sdk"
 import { lang } from "./lang"
 import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"

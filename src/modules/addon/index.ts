@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { MN } from "~/marginnote/sdk"
+import { MN } from "marginnote/sdk"
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"

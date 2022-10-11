@@ -10,7 +10,7 @@ import {
   UITableView,
   UITableViewController,
   DirectionOfSelection
-} from "./marginnote/api"
+} from "./marginnote-api/api"
 import { ISection } from "./typings"
 
 declare global {

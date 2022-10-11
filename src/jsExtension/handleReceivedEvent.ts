@@ -11,7 +11,7 @@ import {
   isThisWindow,
   MN,
   showHUD
-} from "~/marginnote/sdk"
+} from "marginnote/sdk"
 import { moduleKeys } from "~/mergeMethod"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"

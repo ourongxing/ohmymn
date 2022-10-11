@@ -12,3 +12,172 @@ test*
 endict*
 assets/AutoCompleteData.db
 assets/AutoCompleteData.zip
+src/marginnote/index.ts
+src/marginnote/LICENSE
+src/marginnote/README.md
+src/marginnote/Objective-C-API/JSBJSExtension.h
+src/marginnote/Objective-C-API/Foundation/JSBNSArray.h
+src/marginnote/Objective-C-API/Foundation/JSBNSAttributedString.h
+src/marginnote/Objective-C-API/Foundation/JSBNSCharacterSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSCountedSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSData.h
+src/marginnote/Objective-C-API/Foundation/JSBNSDate.h
+src/marginnote/Objective-C-API/Foundation/JSBNSDateComponents.h
+src/marginnote/Objective-C-API/Foundation/JSBNSDateFormatter.h
+src/marginnote/Objective-C-API/Foundation/JSBNSDecimalNumber.h
+src/marginnote/Objective-C-API/Foundation/JSBNSDictionary.h
+src/marginnote/Objective-C-API/Foundation/JSBNSEnumerator.h
+src/marginnote/Objective-C-API/Foundation/JSBNSError.h
+src/marginnote/Objective-C-API/Foundation/JSBNSFileHandle.h
+src/marginnote/Objective-C-API/Foundation/JSBNSFileManager.h
+src/marginnote/Objective-C-API/Foundation/JSBNSFormatter.h
+src/marginnote/Objective-C-API/Foundation/JSBNSHashTable.h
+src/marginnote/Objective-C-API/Foundation/JSBNSHTTPURLResponse.h
+src/marginnote/Objective-C-API/Foundation/JSBNSIndexPath.h
+src/marginnote/Objective-C-API/Foundation/JSBNSIndexSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSJSONSerialization.h
+src/marginnote/Objective-C-API/Foundation/JSBNSKeyedArchiver.h
+src/marginnote/Objective-C-API/Foundation/JSBNSKeyedUnarchiver.h
+src/marginnote/Objective-C-API/Foundation/JSBNSLocale.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMapTable.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableArray.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableAttributedString.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableCharacterSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableData.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableDictionary.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableIndexSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableOrderedSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableString.h
+src/marginnote/Objective-C-API/Foundation/JSBNSMutableURLRequest.h
+src/marginnote/Objective-C-API/Foundation/JSBNSNotification.h
+src/marginnote/Objective-C-API/Foundation/JSBNSNotificationCenter.h
+src/marginnote/Objective-C-API/Foundation/JSBNSNull.h
+src/marginnote/Objective-C-API/Foundation/JSBNSNumber.h
+src/marginnote/Objective-C-API/Foundation/JSBNSNumberFormatter.h
+src/marginnote/Objective-C-API/Foundation/JSBNSOperation.h
+src/marginnote/Objective-C-API/Foundation/JSBNSOperationQueue.h
+src/marginnote/Objective-C-API/Foundation/JSBNSOrderedSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSPointerArray.h
+src/marginnote/Objective-C-API/Foundation/JSBNSPredicate.h
+src/marginnote/Objective-C-API/Foundation/JSBNSProxy.h
+src/marginnote/Objective-C-API/Foundation/JSBNSScanner.h
+src/marginnote/Objective-C-API/Foundation/JSBNSSet.h
+src/marginnote/Objective-C-API/Foundation/JSBNSSimpleCString.h
+src/marginnote/Objective-C-API/Foundation/JSBNSTimer.h
+src/marginnote/Objective-C-API/Foundation/JSBNSTimeZone.h
+src/marginnote/Objective-C-API/Foundation/JSBNSURL.h
+src/marginnote/Objective-C-API/Foundation/JSBNSURLComponents.h
+src/marginnote/Objective-C-API/Foundation/JSBNSURLConnection.h
+src/marginnote/Objective-C-API/Foundation/JSBNSURLRequest.h
+src/marginnote/Objective-C-API/Foundation/JSBNSURLResponse.h
+src/marginnote/Objective-C-API/Foundation/JSBNSUserDefaults.h
+src/marginnote/Objective-C-API/Foundation/JSBNSUUID.h
+src/marginnote/Objective-C-API/Foundation/JSBNSValue.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBApplication.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBDocumentController.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBMindMapNode.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBMindMapView.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBNotebookController.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBOutlineView.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBReaderController.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Application/JSBStudyController.h
+src/marginnote/Objective-C-API/MarginNote(old version)/NoteDatabase/JSBMbBook.h
+src/marginnote/Objective-C-API/MarginNote(old version)/NoteDatabase/JSBMbBookNote.h
+src/marginnote/Objective-C-API/MarginNote(old version)/NoteDatabase/JSBMbModelTool.h
+src/marginnote/Objective-C-API/MarginNote(old version)/NoteDatabase/JSBMbTopic.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Utility/JSBMenuController.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Utility/JSBSpeechManager.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Utility/JSBSQLite.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Utility/JSBUndoManager.h
+src/marginnote/Objective-C-API/MarginNote(old version)/Utility/JSBZipArchive.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAAnimation.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAAnimationGroup.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCABasicAnimation.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAGradientLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAKeyframeAnimation.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCALayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAMediaTimingFunction.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAPropertyAnimation.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAReplicatorLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAScrollLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAShapeLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCATextLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCATiledLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCATransaction.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCATransformLayer.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCATransition.h
+src/marginnote/Objective-C-API/QuartzCore/JSBCAValueFunction.h
+src/marginnote/Objective-C-API/UIKit/JSBNSMutableParagraphStyle.h
+src/marginnote/Objective-C-API/UIKit/JSBNSParagraphStyle.h
+src/marginnote/Objective-C-API/UIKit/JSBNSTextStorage.h
+src/marginnote/Objective-C-API/UIKit/JSBUIActivityIndicatorView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIAlertView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIApplication.h
+src/marginnote/Objective-C-API/UIKit/JSBUIBarButtonItem.h
+src/marginnote/Objective-C-API/UIKit/JSBUIBarItem.h
+src/marginnote/Objective-C-API/UIKit/JSBUIBezierPath.h
+src/marginnote/Objective-C-API/UIKit/JSBUIButton.h
+src/marginnote/Objective-C-API/UIKit/JSBUICollectionView.h
+src/marginnote/Objective-C-API/UIKit/JSBUICollectionViewCell.h
+src/marginnote/Objective-C-API/UIKit/JSBUICollectionViewController.h
+src/marginnote/Objective-C-API/UIKit/JSBUICollectionViewLayout.h
+src/marginnote/Objective-C-API/UIKit/JSBUICollectionViewLayoutAttributes.h
+src/marginnote/Objective-C-API/UIKit/JSBUIColor.h
+src/marginnote/Objective-C-API/UIKit/JSBUIControl.h
+src/marginnote/Objective-C-API/UIKit/JSBUIDatePicker.h
+src/marginnote/Objective-C-API/UIKit/JSBUIDevice.h
+src/marginnote/Objective-C-API/UIKit/JSBUIEvent.h
+src/marginnote/Objective-C-API/UIKit/JSBUIFont.h
+src/marginnote/Objective-C-API/UIKit/JSBUIGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUIImage.h
+src/marginnote/Objective-C-API/UIKit/JSBUIImagePickerController.h
+src/marginnote/Objective-C-API/UIKit/JSBUIImageView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIKeyCommand.h
+src/marginnote/Objective-C-API/UIKit/JSBUILabel.h
+src/marginnote/Objective-C-API/UIKit/JSBUILocalNotification.h
+src/marginnote/Objective-C-API/UIKit/JSBUILongPressGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUINavigationBar.h
+src/marginnote/Objective-C-API/UIKit/JSBUINavigationController.h
+src/marginnote/Objective-C-API/UIKit/JSBUINavigationItem.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPageControl.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPageViewController.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPanGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPasteboard.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPickerView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPinchGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUIPopoverController.h
+src/marginnote/Objective-C-API/UIKit/JSBUIResponder.h
+src/marginnote/Objective-C-API/UIKit/JSBUIRotationGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUIScreen.h
+src/marginnote/Objective-C-API/UIKit/JSBUIScreenMode.h
+src/marginnote/Objective-C-API/UIKit/JSBUIScrollView.h
+src/marginnote/Objective-C-API/UIKit/JSBUISearchBar.h
+src/marginnote/Objective-C-API/UIKit/JSBUISegmentedControl.h
+src/marginnote/Objective-C-API/UIKit/JSBUISlider.h
+src/marginnote/Objective-C-API/UIKit/JSBUISwipeGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUISwitch.h
+src/marginnote/Objective-C-API/UIKit/JSBUITabBar.h
+src/marginnote/Objective-C-API/UIKit/JSBUITabBarController.h
+src/marginnote/Objective-C-API/UIKit/JSBUITabBarItem.h
+src/marginnote/Objective-C-API/UIKit/JSBUITableView.h
+src/marginnote/Objective-C-API/UIKit/JSBUITableViewCell.h
+src/marginnote/Objective-C-API/UIKit/JSBUITableViewController.h
+src/marginnote/Objective-C-API/UIKit/JSBUITapGestureRecognizer.h
+src/marginnote/Objective-C-API/UIKit/JSBUITextField.h
+src/marginnote/Objective-C-API/UIKit/JSBUITextInputMode.h
+src/marginnote/Objective-C-API/UIKit/JSBUITextPosition.h
+src/marginnote/Objective-C-API/UIKit/JSBUITextRange.h
+src/marginnote/Objective-C-API/UIKit/JSBUITextView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIToolbar.h
+src/marginnote/Objective-C-API/UIKit/JSBUITouch.h
+src/marginnote/Objective-C-API/UIKit/JSBUIView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIViewController.h
+src/marginnote/Objective-C-API/UIKit/JSBUIWebView.h
+src/marginnote/Objective-C-API/UIKit/JSBUIWindow.h
+src/marginnote/sdk/file.ts
+src/marginnote/sdk/mn.ts
+src/marginnote/sdk/network.ts
+src/marginnote/sdk/note.ts
+src/marginnote/sdk/nsvalue.ts
+src/marginnote/sdk/popup.ts

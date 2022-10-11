@@ -1,5 +1,5 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "~/marginnote/api"
+import { MbBookNote } from "marginnote/api"
 import { unique } from "~/utils"
 import { regFlag, ReplaceParam } from "~/utils/input"
 import { TitleLinkSplit, AutoDefPreset } from "./typings"

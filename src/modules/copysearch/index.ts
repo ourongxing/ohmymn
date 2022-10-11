@@ -8,7 +8,7 @@ import {
   checkPlainText,
   doc
 } from "~/utils"
-import { selectIndex, copy } from "~/marginnote/sdk"
+import { selectIndex, copy } from "marginnote/sdk"
 import { WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"

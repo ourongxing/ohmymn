@@ -11,7 +11,7 @@ import {
   popup,
   selectIndex,
   appendTextComment
-} from "~/marginnote/sdk"
+} from "marginnote/sdk"
 
 const enum NoteOption {
   Copy,

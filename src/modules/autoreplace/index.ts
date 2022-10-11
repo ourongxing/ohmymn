@@ -1,9 +1,9 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "~/marginnote/api"
+import { MbBookNote } from "marginnote/api"
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
-import { getExcerptNotes } from "~/marginnote/sdk"
+import { getExcerptNotes } from "marginnote/sdk"
 import { lang } from "./lang"
 import { ReplaceCard, AutoReplacePreset } from "./typings"
 

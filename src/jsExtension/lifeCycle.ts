@@ -17,13 +17,13 @@ import {
   openUrl,
   showHUD,
   popup
-} from "~/marginnote/sdk"
+} from "marginnote/sdk"
 import { deepCopy } from "~/utils"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { UIWindow } from "~/marginnote/api"
+import { UIWindow } from "marginnote/api"
 
 /**
  * Addon life cycle

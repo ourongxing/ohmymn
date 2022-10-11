@@ -1,4 +1,4 @@
-import { MN } from "~/marginnote/sdk"
+import { MN } from "marginnote/sdk"
 
 const zh = {
   intro: "自动转换为简体中文",

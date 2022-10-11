@@ -4,7 +4,7 @@ import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
-import { showHUD } from "~/marginnote/sdk"
+import { showHUD } from "marginnote/sdk"
 
 export default defineConfig({
   name: "AutoTranslate",

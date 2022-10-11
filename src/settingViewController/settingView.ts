@@ -4,7 +4,7 @@ import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
 import { IRowSelect, BindType, CellViewType } from "~/typings"
-import { NSIndexPath, UITableView, NSTextAlignment } from "~/marginnote/api"
+import { NSIndexPath, UITableView, NSTextAlignment } from "marginnote/api"
 import { MN, isNSNull } from "marginnote/sdk"
 
 function _indexPath2tag(indexPath: NSIndexPath): number {

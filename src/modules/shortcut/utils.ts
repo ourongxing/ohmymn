@@ -4,7 +4,7 @@ import magicActionHandler from "~/jsExtension/magicActionHandler"
 import { switchPanel } from "~/jsExtension/switchPanel"
 import { lang } from "./lang"
 import { isModuleON } from "~/mergeMethod"
-import { showHUD } from "~/marginnote/sdk"
+import { showHUD } from "marginnote/sdk"
 import { IRowButton } from "~/typings"
 
 export async function handleURLScheme(params: string) {
