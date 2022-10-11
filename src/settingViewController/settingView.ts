@@ -273,7 +273,7 @@ const initCellView = {
     if (MN.isMac) view.textColor = Addon.textColor
     view.delegate = self
     view.text = text
-    view.placeholder = "enter"
+    view.placeholder = "Enter"
     view.autoresizingMask = (1 << 1) | (1 << 5)
     return view
   },
@@ -283,7 +283,7 @@ const initCellView = {
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
     if (MN.isMac) view.textColor = Addon.textColor
-    view.placeholder = "enter"
+    view.placeholder = lang.input_over
     view.delegate = self
     view.autoresizingMask = (1 << 1) | (1 << 5)
     view.text = text

@@ -6,6 +6,7 @@ const zh = {
   input_clear: "输入已清空",
   input_error: "格式错误，请重新输入",
   open_panel: "切换控制面板",
+  input_over: "输入完按回车（Enter）保存",
   none: "无",
   sure: "确定",
   uninstall: {
@@ -77,6 +78,7 @@ const en: typeof zh = {
   input_positive: "Please enter a positive integer",
   no_profile_in_card: "No custom content found",
   open_panel: "Switch Control Panel",
+  input_over: "Press Enter to save",
   input_error: "Input errors, please re-enter",
   not_select_card: "No card is selected",
   not_select_text: "No text is selected",
