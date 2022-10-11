@@ -3,7 +3,7 @@ import { escapeDoubleQuote, CJK, reverseEscape, serialSymbols } from "~/utils"
 import {
   CGRectValue2CGRect,
   isfileExists,
-  isOCNull,
+  isNSNull,
   showHUD,
   fetch,
   MN,
@@ -146,7 +146,7 @@ async function getWordInfo(word: string): Promise<Word> {
   function unifiyData(obj: any) {
     const newObj = {} as Word
     Object.entries(obj).forEach(([k, v]) => {
-      if (isOCNull(v) || !v) newObj[k] = undefined
+      if (isNSNull(v) || !v) newObj[k] = undefined
       else if (!Number.isNaN(Number(v))) newObj[k] = Number(v)
       else newObj[k] = v
     })

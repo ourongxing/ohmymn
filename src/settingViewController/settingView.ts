@@ -3,7 +3,7 @@ import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
-import { MN, isOCNull } from "~/marginnote-api/sdk"
+import { MN, isNSNull } from "~/marginnote-api/sdk"
 import { UITableView } from "~/marginnote-api/api"
 import { IRowSelect, BindType, CellViewType } from "~/typings"
 import { NSTextAlignment } from "marginnote/enum"
@@ -144,7 +144,7 @@ function tableViewCellForRowAtIndexPath(
       const image = NSData.dataWithContentsOfFile(
         Addon.path + `/icon/${row.key}.png`
       )
-      if (!isOCNull(image))
+      if (!isNSNull(image))
         cell.imageView.image = UIImage.imageWithDataScale(image, 2)
       return cell
     }

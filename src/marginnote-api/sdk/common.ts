@@ -73,12 +73,12 @@ function isThisWindow(sender: any, window = self.window) {
   return MN.app.checkNotifySenderInWindow(sender, window)
 }
 
-function isOCNull(obj: any): obj is OCNull {
+function isNSNull(obj: any): obj is NSNull {
   return obj === NSNull.new()
 }
 
-function OCNull2null<T>(k: T) {
-  return isOCNull(k) ? null : (k as Exclude<T, OCNull>)
+function NSNull2Null<T>(k: T) {
+  return isNSNull(k) ? null : (k as Exclude<T, NSNull>)
 }
 
 function eventHandlerController(
@@ -129,8 +129,8 @@ export {
   openUrl,
   postNotification,
   isThisWindow,
-  isOCNull,
-  OCNull2null,
+  isNSNull,
+  NSNull2Null,
   eventHandlerController,
   copy,
   evaluateJavaScript,
