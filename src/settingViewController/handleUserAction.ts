@@ -1,5 +1,5 @@
-import { openUrl, postNotification, MN } from "marginnote/sdk"
-import type { UITableView, NSIndexPath } from "marginnote/api"
+import { openUrl, postNotification, MN } from "marginnote"
+import type { UITableView, NSIndexPath } from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Text, actionKey4Card } from "~/dataSource"
 import { checkInputCorrect, ModuleKeyType } from "~/mergeMethod"

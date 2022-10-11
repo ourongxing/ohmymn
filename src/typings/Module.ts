@@ -1,6 +1,6 @@
 import { IAllProfile } from "~/profile"
 import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "marginnote"
 import { CellViewType } from "."
 
 export type IConfig<T extends keyof IAllProfile | null = null> = {

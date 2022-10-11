@@ -8,13 +8,13 @@ import {
   confirm,
   setLocalDataByKey,
   showHUD
-} from "marginnote/sdk"
+} from "marginnote"
 import { dateFormat } from "~/utils"
 import { readProfile, rewriteProfile, writeProfile } from "."
 import { lang } from "./lang"
 import { Range, ManageProfileItems, RewriteRange } from "./typings"
 import semver from "semver"
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "marginnote"
 
 export function removeProfile() {
   NSUserDefaults.standardUserDefaults().removeObjectForKey(

@@ -16,6 +16,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   husky: ^8.0.1
   lint-staged: ^13.0.3
+  marginnote: ^0.9.7
   prettier: ^2.7.1
   query-string: ^7.1.1
   semver: ^7.3.7
@@ -24,6 +25,7 @@ specifiers:
   unplugin-auto-import: ^0.11.2
 
 dependencies:
+  marginnote: 0.9.7
   query-string: 7.1.1
   semver: 7.3.7
 
@@ -2130,6 +2132,10 @@ packages:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
     engines: {node: '>=8'}
     dev: true
+
+  /marginnote/0.9.7:
+    resolution: {integrity: sha512-R5oqdoqXV8+XbdOUBZnfaitW1Z8dp5frE68mG55p9r5+AKA2Aopi3vtXTanP+TgNGVaZlP0Oc2nIxm7ivNkO1w==}
+    dev: false
 
   /meow/8.1.2:
     resolution: {integrity: sha512-r85E3NdZ+mpYk1C6RjPFEMSE+s1iZMuHtsHAqY0DT3jZczl0diWUZ8g6oU7h0M9cD2EL+PzaYghhCLzR0ZNn5Q==}

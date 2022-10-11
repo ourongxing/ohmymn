@@ -1,6 +1,6 @@
 import { PanelControl } from "~/modules/addon/typings"
-import { MN, delay } from "marginnote/sdk"
-import { StudyMode, UIViewController } from "marginnote/api"
+import { MN, delay } from "marginnote"
+import { StudyMode, UIViewController } from "marginnote"
 
 // Set the position and size of the panel
 export function layoutViewController(

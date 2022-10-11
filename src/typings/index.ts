@@ -2,7 +2,7 @@ import type {
   MbBookNote,
   DocumentController,
   DirectionOfSelection
-} from "marginnote/api"
+} from "marginnote"
 import { IRowButton } from "./DataSource"
 export * from "./Module"
 export * from "./DataSource"

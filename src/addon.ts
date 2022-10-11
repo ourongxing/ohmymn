@@ -1,7 +1,7 @@
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import { mainfest } from "../mainfest"
-import { MN } from "./marginnote-api/sdk"
-import { SQLiteDatabase } from "marginnote/api"
+import { MN } from "marginnote"
+import { SQLiteDatabase } from "marginnote"
 
 class MNADDON {
   path!: string

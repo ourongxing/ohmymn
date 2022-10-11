@@ -1,4 +1,4 @@
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "marginnote"
 
 export type AutoUtilType = {
   customOCR: ({ imgBase64 }: { imgBase64: string }) => string

@@ -1,4 +1,4 @@
-import { MN } from "marginnote/sdk"
+import { MN } from "marginnote"
 import {
   IAllProfile,
   IDocProfile,
@@ -9,7 +9,7 @@ import {
 import semver from "semver"
 import { Addon } from "~/addon"
 import { rewriteSelection } from "./defaultProfile"
-import { noteComment } from "marginnote/api"
+import { noteComment } from "marginnote"
 import { IConfig } from "~/typings"
 
 /**

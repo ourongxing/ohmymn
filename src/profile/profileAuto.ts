@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { getLocalDataByKey, setLocalDataByKey, delay, MN } from "marginnote/sdk"
+import { getLocalDataByKey, setLocalDataByKey, delay, MN } from "marginnote"
 import { deepCopy } from "~/utils"
 import {
   defaultNotebookProfile,

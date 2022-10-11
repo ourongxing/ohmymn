@@ -1,5 +1,5 @@
 import lang from "./lang"
-import { showHUD } from "./marginnote-api/sdk"
+import { showHUD } from "marginnote"
 import { modules, constModules } from "./modules"
 import {
   AutoUtilType,

@@ -1,4 +1,4 @@
-import { StudyMode } from "marginnote/api"
+import { StudyMode } from "marginnote"
 import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
@@ -11,7 +11,7 @@ import {
   isThisWindow,
   MN,
   showHUD
-} from "marginnote/sdk"
+} from "marginnote"
 import { moduleKeys } from "~/mergeMethod"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"

@@ -1,4 +1,4 @@
-import { MbBookNote } from "marginnote/api"
+import { MbBookNote } from "marginnote"
 import { CellViewType } from "~/typings"
 import {
   showHUD,
@@ -6,7 +6,7 @@ import {
   undoGroupingWithRefresh,
   removeCommentButLinkTag,
   appendTextComment
-} from "marginnote/sdk"
+} from "marginnote"
 import { checkPlainText, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"

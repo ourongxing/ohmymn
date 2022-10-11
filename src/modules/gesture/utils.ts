@@ -3,12 +3,12 @@ import {
   GroupMode,
   StudyMode,
   UISwipeGestureRecognizerDirection
-} from "marginnote/api"
-import { DirectionOfSelection } from "marginnote/api"
+} from "marginnote"
+import { DirectionOfSelection } from "marginnote"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import magicActionHandler from "~/jsExtension/magicActionHandler"
 import { switchPanel } from "~/jsExtension/switchPanel"
-import { MN, showHUD } from "marginnote/sdk"
+import { MN, showHUD } from "marginnote"
 import { isModuleON, moduleKeys } from "~/mergeMethod"
 import { IRowButton } from "~/typings"
 import { reverseEscape } from "~/utils"

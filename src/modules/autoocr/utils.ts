@@ -1,4 +1,4 @@
-import { fetch, showHUD } from "marginnote/sdk"
+import { fetch, showHUD } from "marginnote"
 import { lang } from "./lang"
 import { BaiduOCRError } from "./typings"
 
