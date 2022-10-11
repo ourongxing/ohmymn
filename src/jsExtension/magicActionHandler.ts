@@ -3,8 +3,6 @@ import { PanelControl } from "~/modules/addon/typings"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"
 import { simplifyText } from "~/modules/autosimplify"
 import { checkInputCorrect, actions4text, actions4card } from "~/mergeMethod"
-import { IRowButton, MbBookNote } from "~/typings"
-import { CellViewType, UIAlertViewStyle } from "~/enum"
 import { getMNLinkValue, manageProfileAction } from "~/profile"
 import {
   MN,
@@ -14,10 +12,13 @@ import {
   getNodeTree,
   undoGroupingWithRefresh,
   popup
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import handleTextAction from "./handleTextAction"
 import { closePanel } from "./switchPanel"
 import { formatText } from "~/modules/autoformat/utils"
+import { UIAlertViewStyle } from "marginnote"
+import { MbBookNote } from "marginnote/api"
+import { IRowButton, CellViewType } from "~/typings"
 
 export default async (
   type: "card" | "text",

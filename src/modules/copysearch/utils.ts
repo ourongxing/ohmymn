@@ -1,10 +1,10 @@
 import { Addon } from "~/addon"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { MbBookNote } from "~/typings"
-import { select, getExcerptText, openUrl, showHUD } from "~/sdk"
+import { select, getExcerptText, openUrl, showHUD } from "~/marginnote-api/sdk"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import { lang } from "./lang"
+import { MbBookNote } from "~/marginnote-api/api"
 
 async function getTitleExcerpt(
   k: string[],

@@ -11,19 +11,19 @@ import {
   removeProfile
 } from "~/profile"
 import { settingViewControllerInst } from "~/settingViewController"
-import { UIWindow } from "~/typings"
 import {
   getObjCClassDeclar,
   isfileExists,
   openUrl,
   showHUD,
   popup
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import { deepCopy } from "~/utils"
 import { removeLastCommentCacheTitle } from "./excerptHandler"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
+import { UIWindow } from "marginnote/api"
 
 /**
  * Addon life cycle

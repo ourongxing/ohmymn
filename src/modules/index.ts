@@ -1,5 +1,5 @@
 import { ISection } from "~/typings"
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import lang from "~/lang"
 import { Addon } from "~/addon"
 import addon from "./addon"

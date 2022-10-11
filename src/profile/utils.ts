@@ -1,5 +1,4 @@
-import { MN } from "~/sdk"
-import { IConfig, noteComment } from "~/typings"
+import { MN } from "~/marginnote-api/sdk"
 import {
   IAllProfile,
   IDocProfile,
@@ -10,6 +9,8 @@ import {
 import semver from "semver"
 import { Addon } from "~/addon"
 import { rewriteSelection } from "./defaultProfile"
+import { noteComment } from "~/marginnote-api/api"
+import { IConfig } from "~/typings"
 
 /**
  * @param link Card link

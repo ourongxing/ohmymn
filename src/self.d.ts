@@ -1,18 +1,18 @@
-import { DirectionOfSelection } from "~/enum"
-import {
-  UIView,
-  UIWindow,
-  UITableView,
-  MbBookNote,
-  ISection,
-  UITableViewController
-} from "~/typings"
 import {
   IDocProfile,
   IGlobalProfile,
   ITempProfile,
   INotebookProfile
 } from "~/profile"
+import {
+  MbBookNote,
+  UIView,
+  UIWindow,
+  UITableView,
+  UITableViewController
+} from "./marginnote-api/api"
+import { DirectionOfSelection } from "./marginnote-api/enum"
+import { ISection } from "./typings"
 
 declare global {
   const self: {

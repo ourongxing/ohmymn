@@ -2,10 +2,11 @@ import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "~/lang"
 import { ModuleKeyType, moduleKeys } from "~/mergeMethod"
-import { BindType, IRowSelect, UITableView } from "~/typings"
-import { CellViewType, NSTextAlignment } from "~/enum"
 import { byteSplitByLen, byteLength, byteSlice, serialSymbols } from "~/utils"
-import { MN, isOCNull } from "~/sdk"
+import { MN, isOCNull } from "~/marginnote-api/sdk"
+import { UITableView } from "~/marginnote-api/api"
+import { IRowSelect, BindType, CellViewType } from "~/typings"
+import { NSTextAlignment } from "marginnote/enum"
 
 function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999

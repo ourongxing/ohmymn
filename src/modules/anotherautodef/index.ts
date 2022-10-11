@@ -1,5 +1,5 @@
 import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import {
   checkReplaceParamFromMNLink,
@@ -11,7 +11,7 @@ import {
   ReplaceParam,
   string2RegArray
 } from "~/utils"
-import { getExcerptNotes, modifyNodeTitle } from "~/sdk"
+import { getExcerptNotes, modifyNodeTitle } from "~/marginnote-api/sdk"
 import { lang } from "./lang"
 import { ExtractTitle, SplitExcerpt } from "./typings"
 import { extractTitle, splitExcerptTitles } from "./utils"

@@ -1,6 +1,6 @@
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
-import { removeHighlight } from "~/sdk"
+import { removeHighlight } from "~/marginnote-api/sdk"
 import {
   checkRegArrayFromMNLink,
   reverseEscape,

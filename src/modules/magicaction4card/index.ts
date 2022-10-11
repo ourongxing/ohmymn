@@ -1,4 +1,4 @@
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import {
   unique,
@@ -26,7 +26,7 @@ import {
   appendTextComment,
   MN,
   selectIndex
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import { lang } from "./lang"
 import { renameTitle, getLayerSerialInfo } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"

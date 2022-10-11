@@ -1,12 +1,12 @@
-import { MbBookNote } from "~/typings"
-import { CellViewType } from "~/enum"
+import { MbBookNote } from "marginnote/api"
+import { CellViewType } from "~/typings"
 import {
   showHUD,
   modifyNodeTitle,
   undoGroupingWithRefresh,
   removeCommentButLinkTag,
   appendTextComment
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import { checkPlainText, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"

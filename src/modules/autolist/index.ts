@@ -1,4 +1,4 @@
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import {
   string2ReplaceParam,
   checkReplaceParamFromMNLink,
@@ -6,7 +6,7 @@ import {
   doc
 } from "~/utils"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes } from "~/sdk"
+import { getExcerptNotes } from "~/marginnote-api/sdk"
 import { lang } from "./lang"
 import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"

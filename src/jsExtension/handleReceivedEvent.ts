@@ -5,7 +5,7 @@ import handleExcerpt, {
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import lang from "~/lang"
 import { EventHandler } from "~/typings"
-import { StudyMode } from "~/enum"
+import { StudyMode } from "marginnote"
 import { saveProfile, updateProfileTemp } from "~/profile"
 import {
   MN,
@@ -13,7 +13,7 @@ import {
   isThisWindow,
   showHUD,
   delayBreak
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import handleMagicAction from "./magicActionHandler"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { moduleKeys } from "~/mergeMethod"

@@ -1,6 +1,4 @@
 import { Addon } from "~/addon"
-import { MbBookNote } from "~/typings"
-import { UIAlertViewStyle } from "~/enum"
 import { escapeDoubleQuote, CJK, reverseEscape, serialSymbols } from "~/utils"
 import {
   CGRectValue2CGRect,
@@ -11,7 +9,7 @@ import {
   MN,
   popup,
   selectIndex
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
@@ -19,6 +17,8 @@ import { TranslateProviders } from "../autotranslate/typings"
 import { baiduTranslate, caiyunTranslate } from "../autotranslate/utils"
 import { lang } from "./lang"
 import { Word, FillWordInfo, Exchange } from "./typings"
+import { MbBookNote } from "~/marginnote-api/api"
+import { UIAlertViewStyle } from "marginnote/enum"
 
 async function selectParaphrase(
   obj: Record<string, string[]>,

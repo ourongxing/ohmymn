@@ -1,4 +1,4 @@
-import { MbBookNote } from "~/typings"
+import { MbBookNote } from "marginnote/api"
 import {
   MN,
   removeHighlight,
@@ -8,7 +8,7 @@ import {
   getAllCommnets,
   getLocalDataByKey,
   getDocURL
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 import { dateFormat, getSerialInfo } from "~/utils"
 import { render } from "~/utils/third party/mustache"
 

@@ -1,18 +1,19 @@
-import { IRowButton, UIView } from "~/typings"
+import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
+import magicActionHandler from "~/jsExtension/magicActionHandler"
+import { switchPanel } from "~/jsExtension/switchPanel"
+import { moduleKeys, isModuleON } from "~/mergeMethod"
+import { MN, showHUD } from "~/marginnote-api/sdk"
+import { reverseEscape } from "~/utils"
+import { lang } from "./lang"
+import { UIView } from "~/marginnote-api/api"
+import { IRowButton } from "~/typings"
 import {
   DirectionOfSelection,
   DocMapSplitMode,
   GroupMode,
   StudyMode,
   UISwipeGestureRecognizerDirection
-} from "~/enum"
-import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
-import magicActionHandler from "~/jsExtension/magicActionHandler"
-import { switchPanel } from "~/jsExtension/switchPanel"
-import { moduleKeys, isModuleON } from "~/mergeMethod"
-import { MN, showHUD } from "~/sdk"
-import { reverseEscape } from "~/utils"
-import { lang } from "./lang"
+} from "marginnote/enum"
 
 export const initGesture = {
   swipe(

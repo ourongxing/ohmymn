@@ -1,6 +1,6 @@
 import { defineConfig, IGlobalProfile, IDocProfile } from "~/profile"
 import { ISettingInput } from "~/typings"
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import {
   getSerialInfo,
   reverseEscape,
@@ -8,7 +8,7 @@ import {
   checkPlainText,
   doc
 } from "~/utils"
-import { selectIndex, copy } from "~/sdk"
+import { selectIndex, copy } from "~/marginnote-api/sdk"
 import { WhichPartofCard } from "./typings"
 import { lang } from "./lang"
 import { getContentofOneCard, search, getContentofMuiltCards } from "./utils"

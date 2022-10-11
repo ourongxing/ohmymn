@@ -1,6 +1,5 @@
 import { IAllProfile } from "~/profile"
-import { ISettingSelect } from "~/typings"
-import { CellViewType } from "~/enum"
+import { CellViewType, ISettingSelect } from "~/typings"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { doc, serialSymbols } from "~/utils"

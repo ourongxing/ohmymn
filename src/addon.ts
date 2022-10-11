@@ -1,6 +1,6 @@
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import { mainfest } from "../mainfest"
-import { MN } from "./sdk"
+import { MN } from "./marginnote-api/sdk"
 
 class MNADDON {
   path!: string

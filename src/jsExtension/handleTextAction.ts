@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { UIAlertViewStyle } from "~/enum"
+import { UIAlertViewStyle } from "marginnote"
 import lang from "~/lang"
 import {
   MN,
@@ -11,7 +11,7 @@ import {
   popup,
   selectIndex,
   appendTextComment
-} from "~/sdk"
+} from "~/marginnote-api/sdk"
 
 const enum NoteOption {
   Copy,

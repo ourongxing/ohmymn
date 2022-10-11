@@ -1,11 +1,10 @@
+import { openUrl, postNotification, MN } from "marginnote/sdk"
 import { Addon } from "~/addon"
 import { actionKey4Text, actionKey4Card } from "~/dataSource"
-import lang from "~/lang"
-import { checkInputCorrect, moduleKeys, ModuleKeyType } from "~/mergeMethod"
-import { UITableView, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
-import { CellViewType } from "~/enum"
-import { MN, popup, openUrl, postNotification } from "~/sdk"
-import { byteLength, doc } from "~/utils"
+import { UITableView } from "~/marginnote-api/api"
+import { checkInputCorrect, ModuleKeyType } from "~/mergeMethod"
+import { CellViewType, IRowInput, IRowSwitch, IRowSelect } from "~/typings"
+import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
 function _tag2indexPath(tag: number): NSIndexPath {

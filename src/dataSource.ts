@@ -1,8 +1,7 @@
 import lang from "./lang"
 import { more, constModules, modules } from "./modules"
 import { ModuleKeyType } from "./mergeMethod"
-import { ISection, IConfig, IRow, IRowButton } from "./typings"
-import { CellViewType } from "./enum"
+import { ISection, IConfig, IRow, IRowButton, CellViewType } from "./typings"
 import { serialSymbols } from "./utils"
 
 const { addon, magicaction4card, magicaction4text } = constModules

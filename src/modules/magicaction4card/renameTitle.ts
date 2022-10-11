@@ -7,7 +7,7 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam
 } from "~/utils"
-import { showHUD, getNodeTree, modifyNodeTitle } from "~/sdk"
+import { showHUD, getNodeTree, modifyNodeTitle } from "~/marginnote-api/sdk"
 import { lang } from "./lang"
 
 export const getLayerSerialInfo = (

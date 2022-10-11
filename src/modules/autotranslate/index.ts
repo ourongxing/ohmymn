@@ -1,10 +1,10 @@
-import { CellViewType } from "~/enum"
+import { CellViewType } from "~/typings"
 import { checkPositiveinteger, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { lang } from "./lang"
 import { TranslateProviders } from "./typings"
 import { baiduTranslate, caiyunTranslate, translateText } from "./utils"
-import { showHUD } from "~/sdk"
+import { showHUD } from "~/marginnote-api/sdk"
 
 export default defineConfig({
   name: "AutoTranslate",

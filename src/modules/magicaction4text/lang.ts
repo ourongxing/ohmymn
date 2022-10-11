@@ -1,4 +1,4 @@
-import { MN } from "~/sdk"
+import { MN } from "~/marginnote-api/sdk"
 
 const zh = {
   intro:
