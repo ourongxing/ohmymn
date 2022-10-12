@@ -181,3 +181,8 @@ src/marginnote/sdk/network.ts
 src/marginnote/sdk/note.ts
 src/marginnote/sdk/nsvalue.ts
 src/marginnote/sdk/popup.ts
+.yalc/marginnote/LICENSE
+.yalc/marginnote/package.json
+.yalc/marginnote/README.md
+.yalc/marginnote/yalc.sig
+yalc.lock

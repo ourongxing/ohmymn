@@ -1,11 +1,12 @@
-import { MN, UISwipeGestureRecognizerDirection } from "marginnote"
-import { PanelControl } from "~/modules/addon/typings"
 import {
-  actionTrigger,
+  defineGestureHandlers,
   gestureHandlerController,
-  initGesture
-} from "~/modules/gesture/utils"
-import { GestureHandler } from "~/typings"
+  initGesture,
+  MN,
+  UISwipeGestureRecognizerDirection
+} from "marginnote"
+import { PanelControl } from "~/modules/addon/typings"
+import { actionTrigger } from "~/modules/gesture/utils"
 import { closePanel } from "./switchPanel"
 
 // Not support Mac
@@ -50,56 +51,49 @@ export const gestureHandlers = () =>
     }
   ])
 
-const onSwipeUpOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeUp, muiltBarSwipeUp, selectionBarSwipeUp } =
-    self.globalProfile.gesture
-  actionTrigger(
-    singleBarSwipeUp[0],
-    muiltBarSwipeUp[0],
-    selectionBarSwipeUp[0],
-    sender
-  )
-}
-const onSwipeDownOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeDown, muiltBarSwipeDown, selectionBarSwipeDown } =
-    self.globalProfile.gesture
-  actionTrigger(
-    singleBarSwipeDown[0],
-    muiltBarSwipeDown[0],
-    selectionBarSwipeDown[0],
-    sender
-  )
-}
-const onSwipeLeftOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeLeft, muiltBarSwipeLeft, selectionBarSwipeLeft } =
-    self.globalProfile.gesture
-  actionTrigger(
-    singleBarSwipeLeft[0],
-    muiltBarSwipeLeft[0],
-    selectionBarSwipeLeft[0],
-    sender
-  )
-}
-const onSwipeRightOnMindMapView: GestureHandler = sender => {
-  const { singleBarSwipeRight, muiltBarSwipeRight, selectionBarSwipeRight } =
-    self.globalProfile.gesture
-  actionTrigger(
-    singleBarSwipeRight[0],
-    muiltBarSwipeRight[0],
-    selectionBarSwipeRight[0],
-    sender
-  )
-}
-
-const onDoubleClickOnTableView: GestureHandler = () => {
-  const { panelControl } = self.globalProfile.addon
-  if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
-}
-
-export default {
-  onSwipeUpOnMindMapView,
-  onSwipeDownOnMindMapView,
-  onSwipeLeftOnMindMapView,
-  onSwipeRightOnMindMapView,
-  onDoubleClickOnTableView
-}
+export default defineGestureHandlers({
+  onSwipeUpOnMindMapView(sender) {
+    const { singleBarSwipeUp, muiltBarSwipeUp, selectionBarSwipeUp } =
+      self.globalProfile.gesture
+    actionTrigger(
+      singleBarSwipeUp[0],
+      muiltBarSwipeUp[0],
+      selectionBarSwipeUp[0],
+      sender
+    )
+  },
+  onSwipeDownOnMindMapView(sender) {
+    const { singleBarSwipeDown, muiltBarSwipeDown, selectionBarSwipeDown } =
+      self.globalProfile.gesture
+    actionTrigger(
+      singleBarSwipeDown[0],
+      muiltBarSwipeDown[0],
+      selectionBarSwipeDown[0],
+      sender
+    )
+  },
+  onSwipeLeftOnMindMapView(sender) {
+    const { singleBarSwipeLeft, muiltBarSwipeLeft, selectionBarSwipeLeft } =
+      self.globalProfile.gesture
+    actionTrigger(
+      singleBarSwipeLeft[0],
+      muiltBarSwipeLeft[0],
+      selectionBarSwipeLeft[0],
+      sender
+    )
+  },
+  onSwipeRightOnMindMapView(sender) {
+    const { singleBarSwipeRight, muiltBarSwipeRight, selectionBarSwipeRight } =
+      self.globalProfile.gesture
+    actionTrigger(
+      singleBarSwipeRight[0],
+      muiltBarSwipeRight[0],
+      selectionBarSwipeRight[0],
+      sender
+    )
+  },
+  onDoubleClickOnTableView() {
+    const { panelControl } = self.globalProfile.addon
+    if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
+  }
+})
