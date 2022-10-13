@@ -1,5 +1,5 @@
 import { appendTextComment, getAllText, MbBookNote } from "marginnote"
-import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {

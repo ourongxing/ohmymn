@@ -1,5 +1,5 @@
 import { dataSourceIndex } from "~/dataSource"
-import { layoutViewController } from "~/jsExtension/switchPanel"
+import { layoutViewController } from "~/JSExtension/switchPanel"
 import {
   customKey,
   IGlobalProfile,

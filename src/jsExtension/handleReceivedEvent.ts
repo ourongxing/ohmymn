@@ -10,8 +10,8 @@ import {
 import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
-} from "~/jsExtension/excerptHandler"
-import { layoutViewController } from "~/jsExtension/switchPanel"
+} from "~/JSExtension/excerptHandler"
+import { layoutViewController } from "~/JSExtension/switchPanel"
 import lang from "~/lang"
 import { moduleKeys } from "~/mergeMethod"
 import { handleURLScheme } from "~/modules/shortcut/utils"

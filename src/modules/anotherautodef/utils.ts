@@ -1,4 +1,4 @@
-import { renderTemplateOfNodeProperties } from "~/jsExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
 import { MbBookNote } from "marginnote"
 import { unique } from "~/utils"
 import { regFlag, ReplaceParam } from "~/utils/input"

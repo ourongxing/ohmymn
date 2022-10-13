@@ -1,20 +1,7 @@
-import { getObjCClassDeclar } from "marginnote"
-import handleReceivedEvent from "~/jsExtension/handleReceivedEvent"
-import handleGestureEvent from "~/jsExtension/handleGestureEvent"
-import switchPanel from "~/jsExtension/switchPanel"
-import lifeCycle from "~/jsExtension/lifeCycle"
 import { Addon } from "~/addon"
+import JSExtension from "./JSExtension"
 
-JSB.newAddon = mainPath => {
-  Addon.path = mainPath
-  return JSB.defineClass(
-    getObjCClassDeclar(Addon.title, "JSExtension"),
-    {
-      ...lifeCycle.instanceMethods,
-      ...switchPanel,
-      ...handleGestureEvent,
-      ...handleReceivedEvent
-    },
-    lifeCycle.classMethods
-  )
+JSB.newAddon = path => {
+  Addon.path = path
+  return JSExtension
 }

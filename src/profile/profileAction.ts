@@ -9,7 +9,7 @@ import {
 import semver from "semver"
 import { Addon } from "~/addon"
 import { moduleNameList } from "~/dataSource"
-import { layoutViewController } from "~/jsExtension/switchPanel"
+import { layoutViewController } from "~/JSExtension/switchPanel"
 import { dateFormat } from "~/utils"
 import { decode, encode } from "~/utils/third party/base64"
 import { readProfile, rewriteProfile, writeProfile } from "."
