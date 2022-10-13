@@ -1,7 +1,7 @@
 import { IAllProfile } from "~/profile"
 import { CellViewType, ISettingSelect } from "~/typings"
 import { defineConfig } from "~/profile"
-import { lang } from "./lang"
+import lang from "./lang"
 import { doc, serialSymbols } from "~/utils"
 
 export default defineConfig({

@@ -9,7 +9,7 @@ import {
   getSerialInfo,
   reverseEscape
 } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { WhichPartofCard } from "./typings"
 import { getContentofMuiltCards, getContentofOneCard, search } from "./utils"
 

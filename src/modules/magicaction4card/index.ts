@@ -27,7 +27,7 @@ import {
   string2ReplaceParam,
   unique
 } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { getLayerSerialInfo, renameTitle } from "./renameTitle"
 import { FilterCards, MergeCards, MergeText, SwitchTitle } from "./typings"
 

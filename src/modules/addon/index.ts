@@ -2,7 +2,7 @@ import { Addon } from "~/addon"
 import { MN } from "marginnote"
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
-import { lang } from "./lang"
+import lang from "./lang"
 
 export default defineConfig({
   name: Addon.title,

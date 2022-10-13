@@ -13,7 +13,7 @@ import { layoutViewController } from "~/JSExtension/switchPanel"
 import { dateFormat } from "~/utils"
 import { decode, encode } from "~/utils/third party/base64"
 import { readProfile, rewriteProfile, writeProfile } from "."
-import { lang } from "./lang"
+import lang from "./lang"
 import { ManageProfileItems, Range, RewriteRange } from "./typings"
 
 export function removeProfile() {

@@ -2,7 +2,7 @@ import { CellViewType } from "~/typings"
 import { checkReplaceParamFromMNLink, doc } from "~/utils"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes, modifyNodeTitle } from "marginnote"
-import { lang } from "./lang"
+import lang from "./lang"
 import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
 

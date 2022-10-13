@@ -1,7 +1,7 @@
 import { defineConfig, IAllProfile } from "~/profile"
 import { CellViewType, ISettingSelect } from "~/typings"
 import { doc } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 
 export default defineConfig({
   name: "Gesture",

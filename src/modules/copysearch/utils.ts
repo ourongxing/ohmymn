@@ -3,7 +3,7 @@ import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
 import { select, getExcerptText, openUrl, showHUD } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
-import { lang } from "./lang"
+import lang from "./lang"
 import { MbBookNote } from "marginnote"
 
 async function getTitleExcerpt(

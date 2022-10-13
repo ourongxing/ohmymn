@@ -12,8 +12,8 @@ import handleExcerpt, {
   removeLastCommentCacheTitle
 } from "~/JSExtension/excerptHandler"
 import { layoutViewController } from "~/JSExtension/switchPanel"
-import lang from "~/lang"
-import { moduleKeys } from "~/mergeMethod"
+import lang from "./lang"
+import { isModuleON } from "~/merged"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"
 import handleMagicAction from "./magicActionHandler"
@@ -159,12 +159,7 @@ export default defineEventHandlers<
   },
   async onAddonBroadcast(sender) {
     // if (!isThisWindow(sender)) return
-    if (
-      !self.globalProfile.addon.quickSwitch.includes(
-        moduleKeys.indexOf("shortcut")
-      )
-    )
-      return
+    if (!isModuleON("shortcut")) return
     console.log("Addon broadcast", "event")
     const { message } = sender.userInfo
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")

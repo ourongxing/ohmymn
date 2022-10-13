@@ -1,5 +1,5 @@
 import { fetch, showHUD } from "marginnote"
-import { lang } from "./lang"
+import lang from "./lang"
 import { BaiduOCRError } from "./typings"
 
 export async function getBaiduToken() {

@@ -1,7 +1,6 @@
-import lang from "./lang"
-import { showHUD } from "marginnote"
-import { modules, constModules } from "./modules"
-import {
+import { MN, showHUD } from "marginnote"
+import { optionalModules, requiredModules } from "./modules"
+import type {
   AutoUtilType,
   TypeUtilFalseArray,
   TypeUtilIndexFalseArray,
@@ -9,13 +8,15 @@ import {
   IActionMethod4Text,
   IActionMethod4Card
 } from "./typings"
-import { IAllProfile } from "./profile"
-export type ModuleKeyType = Exclude<keyof IAllProfile, "additional"> | "more"
+import type { IAllProfile } from "./profile"
+
+export type ModuleKeyType = Exclude<keyof IAllProfile, "additional">
+export type DataSourceSection = ModuleKeyType | "more"
 type AutoModuleKeyType = Include<ModuleKeyType, "auto">
 
 export const autoUtils = (() => {
   try {
-    const res = Object.values(modules).reduce((acc, module) => {
+    const res = Object.values(optionalModules).reduce((acc, module) => {
       for (const k of module.settings) {
         if (k.key === "on" && "auto" in k) {
           Object.entries(k.auto).forEach(([k, v]) => {
@@ -53,8 +54,8 @@ export const autoUtils = (() => {
 })()
 
 export const { actions4card, actions4text, checkers } = Object.values({
-  ...constModules,
-  ...modules
+  ...requiredModules,
+  ...optionalModules
 }).reduce(
   (acc, module) => {
     module.settings.length &&
@@ -85,7 +86,8 @@ export const { actions4card, actions4text, checkers } = Object.values({
     checkers: {} as Record<string, ICheckMethod>
   }
 )
-export const moduleKeys = Object.values(modules).reduce((acc, cur) => {
+
+export const moduleKeys = Object.values(optionalModules).reduce((acc, cur) => {
   acc.push(cur.key)
   return acc
 }, [] as ModuleKeyType[])
@@ -105,7 +107,14 @@ export async function checkInputCorrect(
       await checkers[key]({ input })
     }
   } catch (err) {
-    showHUD(err ? String(err) : lang.input_error, 3)
+    showHUD(
+      err
+        ? String(err)
+        : MN.isZH
+        ? "格式错误，请重新输入"
+        : "Input errors, please re-enter",
+      3
+    )
     return false
   }
   return true

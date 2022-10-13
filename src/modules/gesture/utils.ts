@@ -4,10 +4,10 @@ import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import magicActionHandler from "~/JSExtension/magicActionHandler"
 import { switchPanel } from "~/JSExtension/switchPanel"
 import { MN, showHUD } from "marginnote"
-import { isModuleON, moduleKeys } from "~/mergeMethod"
+import { isModuleON, moduleKeys } from "~/merged"
 import { IRowButton } from "~/typings"
 import { reverseEscape } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 
 export const enum SwipePosition {
   None = 0,
@@ -181,12 +181,7 @@ export async function actionTrigger(
   selectionBarOption: number,
   sender: UIGestureRecognizer
 ) {
-  if (
-    !self.globalProfile.addon.quickSwitch.includes(
-      moduleKeys.indexOf("gesture")
-    )
-  )
-    return
+  if (!isModuleON("gesture")) return
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
 

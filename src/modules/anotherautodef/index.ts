@@ -10,7 +10,7 @@ import {
   string2RegArray
 } from "~/utils"
 import { getExcerptNotes, modifyNodeTitle } from "marginnote"
-import { lang } from "./lang"
+import lang from "./lang"
 import { ExtractTitle, SplitExcerpt } from "./typings"
 import { extractTitle, splitExcerptTitles } from "./utils"
 

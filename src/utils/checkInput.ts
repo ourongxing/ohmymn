@@ -1,5 +1,5 @@
 import { MN } from "marginnote"
-import lang from "~/lang"
+import lang from "./lang"
 import {
   escapeDoubleQuote,
   reverseEscape,

@@ -11,7 +11,7 @@ import {
   undoGroupingWithRefresh
 } from "marginnote"
 import { Addon } from "~/addon"
-import lang from "~/lang"
+import lang from "./lang"
 
 const enum NoteOption {
   Copy,

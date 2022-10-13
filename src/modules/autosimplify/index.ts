@@ -3,7 +3,7 @@ import { defineConfig } from "~/profile"
 import { Addon } from "~/addon"
 import { getExcerptNotes, isfileExists, readJSON } from "marginnote"
 import { OpenCC } from "~/modules/autosimplify/opencc"
-import { lang } from "./lang"
+import lang from "./lang"
 import { doc } from "~/utils"
 
 export function simplifyText(text: string) {

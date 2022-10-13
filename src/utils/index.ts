@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { ModuleKeyType } from "~/mergeMethod"
+import { ModuleKeyType } from "~/merged"
 
 export const deepCopy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))

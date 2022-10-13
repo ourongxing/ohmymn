@@ -1,23 +1,12 @@
+import { requiredModules, optionalModules } from "../modules"
+import { ModuleKeyType } from "../merged"
+import type { ISection, IConfig, IRow, IRowButton } from "~/typings"
+import { CellViewType } from "~/typings"
+import { serialSymbols } from "../utils"
+import { more } from "./more"
 import lang from "./lang"
-import { more, constModules, modules } from "./modules"
-import { ModuleKeyType } from "./mergeMethod"
-import { ISection, IConfig, IRow, IRowButton, CellViewType } from "./typings"
-import { serialSymbols } from "./utils"
 
-const { addon, magicaction4card, magicaction4text } = constModules
-
-export const actionKey4Card: {
-  key: string
-  option?: number
-  module?: ModuleKeyType
-  moduleName?: string
-}[] = [{ key: "none" }, { key: "switchPanel" }]
-export const actionKey4Text: typeof actionKey4Card = [
-  { key: "none" },
-  { key: "switchPanel" }
-]
-
-const genSection = (config: IConfig): ISection => {
+function genSection(config: IConfig<ModuleKeyType>): ISection {
   const rows: IRow[] = [
     {
       type: CellViewType.PlainText,
@@ -58,11 +47,11 @@ const genSection = (config: IConfig): ISection => {
   }
 }
 
-const genDataSource = (
-  configs: IConfig[],
-  magicaction4card: IConfig,
-  magicaction4text: IConfig
-) => {
+function genDataSource(
+  configs: IConfig<ModuleKeyType>[],
+  magicaction4card: IConfig<"magicaction4card">,
+  magicaction4text: IConfig<"magicaction4text">
+) {
   const dataSource: ISection[] = []
   const moduleNameList: { key: string[]; name: string[] } = {
     key: [],
@@ -114,9 +103,13 @@ const genDataSource = (
     }
   })
 
-  const Action4CardSection = genSection(magicaction4card)
+  const Action4CardSection = genSection(
+    magicaction4card as IConfig<ModuleKeyType>
+  )
   Action4CardSection.rows.push(...actions4card)
-  const Action4TextSection = genSection(magicaction4text)
+  const Action4TextSection = genSection(
+    magicaction4text as IConfig<ModuleKeyType>
+  )
   Action4TextSection.rows.push(...actions4text)
 
   // 更新 quickSwitch 为 moduleList
@@ -175,7 +168,7 @@ function genDataSourceIndex(dataSource: ISection[]) {
   }, {} as Record<ModuleKeyType, Record<string, [number, number]>>)
 }
 
-const getActionKeyGetureOption = (section: ISection) => {
+function getActionKeyGetureOption(section: ISection) {
   const gestureOption = [lang.open_panel]
   const actionKeys = []
   for (const _row of section.rows) {
@@ -189,14 +182,14 @@ const getActionKeyGetureOption = (section: ISection) => {
     if (!row.option?.length)
       actionKeys.push({
         key: row.key,
-        module: row.module,
+        module: row.module as ModuleKeyType,
         moduleName: row.moduleName,
         option: row.type === CellViewType.ButtonWithInput ? undefined : 0
       })
     else {
       actionKeys.push({
         key: row.key,
-        module: row.module,
+        module: row.module as ModuleKeyType,
         moduleName: row.moduleName
       })
       if (row.type == CellViewType.Button) {
@@ -205,7 +198,7 @@ const getActionKeyGetureOption = (section: ISection) => {
           actionKeys.push({
             key: row.key,
             option: index,
-            module: row.module,
+            module: row.module as ModuleKeyType,
             moduleName: row.moduleName
           })
         })
@@ -214,7 +207,7 @@ const getActionKeyGetureOption = (section: ISection) => {
         actionKeys.push({
           key: row.key,
           option: 0,
-          module: row.module,
+          module: row.module as ModuleKeyType,
           moduleName: row.moduleName
         })
       }
@@ -223,10 +216,24 @@ const getActionKeyGetureOption = (section: ISection) => {
   return { actionKeys, gestureOption }
 }
 
-export const { dataSource: dataSourcePreset, moduleNameList } = genDataSource(
-  // @ts-ignore
-  [addon, ...Object.values(modules)],
+export const actionKey4Card: {
+  key: string
+  option?: number
+  module?: ModuleKeyType
+  moduleName?: string
+}[] = [{ key: "none" }, { key: "switchPanel" }]
+
+export const actionKey4Text: typeof actionKey4Card = [
+  { key: "none" },
+  { key: "switchPanel" }
+]
+
+const { addon, magicaction4card, magicaction4text } = requiredModules
+
+export const { dataSource: defaultDataSource, moduleNameList } = genDataSource(
+  [addon, ...Object.values(optionalModules)] as IConfig<ModuleKeyType>[],
   magicaction4card,
   magicaction4text
 )
-export const dataSourceIndex = genDataSourceIndex(dataSourcePreset)
+
+export const dataSourceIndex = genDataSourceIndex(defaultDataSource)

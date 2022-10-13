@@ -8,7 +8,7 @@ import {
   notCJK,
   doc
 } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { AutoTitlePreset } from "./typings"
 
 function turn2Title(text: string) {

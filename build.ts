@@ -1,5 +1,5 @@
 import { build } from "@ourongxing/estrella"
-import { Plugin } from "esbuild"
+import type { Plugin } from "esbuild"
 import { mainfest } from "./mainfest"
 import copy from "esbuild-plugin-mxn-copy"
 import autoImport from "unplugin-auto-import/esbuild"
@@ -18,6 +18,7 @@ Copyright (c) 2022 MarginNote
 
 If you want to view the source code, please visit the github repository.
 Github: ${mainfest.github}
+
 Welcome to contribute to this project!
 */
 
@@ -26,9 +27,10 @@ try {
 
 const footerText = `
 } catch (e) {
-  JSB.log("${mainfest.key}-error %@", String(e))
+  Application.sharedInstance().alert(String(e))
 }
 `
+
 const outDir = isProd
   ? "./dist/"
   : homedir() +

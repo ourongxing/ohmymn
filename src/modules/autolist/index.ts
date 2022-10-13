@@ -7,7 +7,7 @@ import {
 } from "~/utils"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "marginnote"
-import { lang } from "./lang"
+import lang from "./lang"
 import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"
 

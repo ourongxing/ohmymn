@@ -9,8 +9,8 @@ import {
   UIAlertViewStyle,
   undoGroupingWithRefresh
 } from "marginnote"
-import lang from "~/lang"
-import { actions4card, actions4text, checkInputCorrect } from "~/mergeMethod"
+import lang from "./lang"
+import { actions4card, actions4text, checkInputCorrect } from "~/merged"
 import { PanelControl } from "~/modules/addon/typings"
 import { formatText } from "~/modules/autoformat/utils"
 import { mainOCR as autoocr } from "~/modules/autoocr/utils"

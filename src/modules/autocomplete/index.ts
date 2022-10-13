@@ -9,7 +9,7 @@ import {
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { checkPlainText, doc } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { completeWord } from "./utils"
 
 export default defineConfig({

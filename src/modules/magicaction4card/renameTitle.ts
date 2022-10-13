@@ -8,7 +8,7 @@ import {
   string2ReplaceParam
 } from "~/utils"
 import { showHUD, getNodeTree, modifyNodeTitle } from "marginnote"
-import { lang } from "./lang"
+import lang from "./lang"
 
 export const getLayerSerialInfo = (
   newSubStr: string,

@@ -3,7 +3,7 @@ import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { AutoReplacePreset, ReplaceCard } from "./typings"
 
 function replaceText(note: MbBookNote, text: string) {

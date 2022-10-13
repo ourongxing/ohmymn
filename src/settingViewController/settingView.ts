@@ -7,8 +7,8 @@ import {
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
-import lang from "~/lang"
-import { moduleKeys, ModuleKeyType } from "~/mergeMethod"
+import lang from "./lang"
+import { DataSourceSection, moduleKeys, ModuleKeyType } from "~/merged"
 import { BindType, CellViewType, IRowSelect } from "~/typings"
 import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 
@@ -17,7 +17,8 @@ function _indexPath2tag(indexPath: NSIndexPath): number {
 }
 
 // If the module is not enabled, the menu will be hidden
-export function _isModuleOFF(key: ModuleKeyType): boolean {
+export function _isModuleOFF(key: DataSourceSection): boolean {
+  if (key === "more") return false
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeys.indexOf(key)
@@ -288,7 +289,7 @@ const initCellView = {
     const view = new UITextField(frame)
     view.font = UIFont.systemFontOfSize(15)
     if (MN.isMac) view.textColor = Addon.textColor
-    view.placeholder = lang.input_over
+    view.placeholder = lang.input_enter
     view.delegate = self
     view.autoresizingMask = (1 << 1) | (1 << 5)
     view.text = text

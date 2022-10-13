@@ -1,8 +1,8 @@
-import { ModuleKeyType } from "~/mergeMethod"
+import { ModuleKeyType, DataSourceSection } from "~/merged"
 import { CellViewType } from "."
 
 export type ISection = {
-  key: ModuleKeyType
+  key: DataSourceSection
   header: string
   rows: IRow[]
 }
@@ -47,7 +47,7 @@ export type IRowInlineInput = {
 
 export type IRowButton = {
   type: CellViewType.Button | CellViewType.ButtonWithInput
-  module: ModuleKeyType
+  module: DataSourceSection
   moduleName: string
   option?: string[]
   help?: string

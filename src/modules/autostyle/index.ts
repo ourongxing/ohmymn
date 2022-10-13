@@ -2,7 +2,7 @@ import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import { getExcerptNotes } from "marginnote"
 import { serialSymbols, reverseEscape, doc } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { ChangeStyle } from "./typings"
 import { modifyStyle } from "./utils"
 

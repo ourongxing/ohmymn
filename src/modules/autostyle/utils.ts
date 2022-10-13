@@ -6,7 +6,7 @@ import {
   showHUD
 } from "marginnote"
 import { countWord, notCJK, reverseEscape } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { AutoStylePreset, Style } from "./typings"
 
 export function getExcerptArea(note: MbBookNote) {

@@ -13,7 +13,7 @@ import {
   string2ReplaceParam,
   unique
 } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 
 function generateComments(note: MbBookNote, text: string) {

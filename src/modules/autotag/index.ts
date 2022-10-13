@@ -9,7 +9,7 @@ import {
   extractArray,
   string2ReplaceParam
 } from "~/utils"
-import { lang } from "./lang"
+import lang from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 
 function generateTags(note: MbBookNote, text: string) {

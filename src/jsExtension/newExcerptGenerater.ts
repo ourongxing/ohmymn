@@ -1,5 +1,5 @@
 import { MbBookNote, MN, removeHighlight } from "marginnote"
-import { autoUtils } from "~/mergeMethod"
+import { autoUtils } from "~/merged"
 import { HasTitleThen } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
 import { unique } from "~/utils"
