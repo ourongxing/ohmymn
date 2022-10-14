@@ -5,7 +5,8 @@ import {
   MN,
   openUrl,
   popup,
-  showHUD
+  showHUD,
+  StudyMode
 } from "marginnote"
 import { Addon } from "~/addon"
 import { defaultDataSource } from "~/dataSource"
@@ -81,6 +82,11 @@ export default defineLifeCycelHandler({
       self.settingViewController.notebookProfile = self.notebookProfile
     },
     notebookWillOpen(notebookid: string) {
+      if (MN.studyController.studyMode === StudyMode.review) return
+      if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
+        alert(lang.no_doc)
+        return
+      }
       console.log("Open a notebook", "lifeCycle")
       if (!self.isFirstOpenDoc)
         readProfile({
@@ -92,6 +98,7 @@ export default defineLifeCycelHandler({
       gestureHandlers().add()
     },
     documentDidOpen(docmd5: string) {
+      if (MN.studyController.studyMode === StudyMode.review) return
       // Switch document, read doc profile
       if (self.isFirstOpenDoc) {
         console.log("First open a document", "lifeCycle")
@@ -110,6 +117,8 @@ export default defineLifeCycelHandler({
       console.log("Open a document", "lifeCycle")
     },
     notebookWillClose(notebookid: string) {
+      if (MN.studyController.studyMode === StudyMode.review) return
+      if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) return
       console.log("Close a notebook", "lifeCycle")
       removeLastCommentCacheTitle()
       closePanel()
@@ -117,7 +126,8 @@ export default defineLifeCycelHandler({
       eventHandlers.remove()
       gestureHandlers().remove()
     },
-    documentWillClose(docmd5: string) {
+    documentWillClose() {
+      if (MN.studyController.studyMode === StudyMode.review) return
       console.log("Close a document", "lifeCycle")
     },
     // Not triggered on ipad
@@ -131,7 +141,7 @@ export default defineLifeCycelHandler({
       // !MN.isMac && closePanel()
     },
     sceneDidBecomeActive() {
-      layoutViewController()
+      !MN.isMac && layoutViewController()
       // or go to the foreground
       console.log("Window is activated", "lifeCycle")
     }

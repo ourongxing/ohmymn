@@ -12,6 +12,7 @@ export default i18n({
       profile_reset: "配置已重置",
       have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
     },
+    no_doc: `当前笔记本没有文档，${Addon.title}无法正常工作。如果你正要打算添加文档，请在添加完成后重新打开笔记本。`,
     not_select_card: "未选中任何脑图卡片",
     not_select_text: "没有框选任何文字",
     no_text_selection: "无法得到到选中区域的文字",
@@ -49,6 +50,7 @@ export default i18n({
   en: {
     input_saved: "Input Saved",
     input_clear: "Input Clear",
+    no_doc: `There is no document in the notebook, ${Addon.title} cannot work properly. If you are about to add documents, please reopen the notebook after adding.`,
     none: "None",
     sure: "Confirm",
     uninstall: {

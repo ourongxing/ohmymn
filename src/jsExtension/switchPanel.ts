@@ -123,7 +123,9 @@ function controllerWillLayoutSubviews(controller: UIViewController) {
 }
 
 function queryAddonCommandStatus() {
-  return MN.studyController.studyMode !== StudyMode.review
+  return MN.studyController.studyMode !== StudyMode.review &&
+    MN.currnetNotebookid &&
+    (MN.db.getNotebookById(MN.currnetNotebookid)?.documents?.length ?? 0)
     ? {
         image: "logo.png",
         object: self,
