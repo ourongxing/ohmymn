@@ -55,6 +55,7 @@ declare global {
       lastFetch: number
     }
     isFirstOpenDoc: boolean
+    window: UIWindow
     webView: UIWebView
     view: UIView
     noteid: string

@@ -13,19 +13,22 @@ export default defineConfig({
       key: "preOCR",
       type: CellViewType.Switch,
       label: lang.pre_OCR.label,
-      help: lang.pre_OCR.help
+      help: lang.pre_OCR.help,
+      bind: ["quickSwitch", 11]
     },
     {
       key: "preSimplify",
       type: CellViewType.Switch,
       label: lang.pre_simplify.label,
-      help: lang.pre_simplify.help
+      help: lang.pre_simplify.help,
+      bind: ["quickSwitch", 14]
     },
     {
       key: "preFormat",
       type: CellViewType.Switch,
       label: lang.pre_format.label,
-      help: lang.pre_format.help
+      help: lang.pre_format.help,
+      bind: ["quickSwitch", 4]
     },
     {
       key: "noteOptions",

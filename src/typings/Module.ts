@@ -25,6 +25,7 @@ type Bind<T> = {
     MaybeArray<
       | [PickKeyByValue<T, number[]>, number | number[]]
       | [PickKeyByValue<T, boolean>, boolean]
+      | ["quickSwitch", number | number[]]
     >
   >
 }

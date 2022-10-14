@@ -16,7 +16,7 @@ function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999
 }
 
-// If the module is not enabled, the menu will be hidden
+/** If the module is not enabled, the menu will be hidden */
 export function _isModuleOFF(key: DataSourceSection): boolean {
   if (key === "more") return false
   const [sec, row] = dataSourceIndex.addon.quickSwitch
@@ -60,35 +60,43 @@ function _isBindOFF(bindArr: BindType, sectionKey: string) {
    *  ]
    * ]
    */
-  const bindItems = Array.isArray(bindArr[0])
-    ? (bindArr as Array<MaybeArray<[string, number | number[] | boolean]>>)
-    : ([bindArr] as Array<MaybeArray<[string, number | number[] | boolean]>>)
-  return !bindItems.every(bind => {
-    const binds = Array.isArray(bind[0])
-      ? (bind as [string, number | number[] | boolean][])
-      : ([bind] as [string, number | number[] | boolean][])
-    return binds.some(bind => {
-      const [key, v] = bind
-      const [secIndex, rowIndex] = dataSourceIndex?.[sectionKey]?.[key]
-      if (secIndex === undefined) {
-        console.error(`bind key does not exist：${key}`)
-        return true
-      }
-      const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-      if (row.type === CellViewType.Switch && typeof v === "boolean")
-        return row.status === v
-      else if (
-        row.type === CellViewType.Select ||
-        row.type === CellViewType.MuiltSelect
-      ) {
-        if (typeof v === "number") return row.selections.includes(v)
-        else if (Array.isArray(v)) {
-          return v.some(h => row.selections.includes(h))
+  try {
+    const bindItems = Array.isArray(bindArr[0])
+      ? (bindArr as Array<MaybeArray<[string, number | number[] | boolean]>>)
+      : ([bindArr] as Array<MaybeArray<[string, number | number[] | boolean]>>)
+    return !bindItems.every(bind => {
+      const binds = Array.isArray(bind[0])
+        ? (bind as [string, number | number[] | boolean][])
+        : ([bind] as [string, number | number[] | boolean][])
+      return binds.some(bind => {
+        const [key, v] = bind
+        const [secIndex, rowIndex] =
+          key === "quickSwitch"
+            ? dataSourceIndex.addon.quickSwitch
+            : dataSourceIndex?.[sectionKey]?.[key]
+        if (secIndex === undefined) {
+          throw `bind key does not exist：${key}`
+          return true
         }
-      }
-      return false
+        const row = self.dataSource?.[secIndex].rows?.[rowIndex]
+        if (row.type === CellViewType.Switch && typeof v === "boolean")
+          return row.status === v
+        else if (
+          row.type === CellViewType.Select ||
+          row.type === CellViewType.MuiltSelect
+        ) {
+          if (typeof v === "number") return row.selections.includes(v)
+          else if (Array.isArray(v)) {
+            return v.some(h => row.selections.includes(h))
+          }
+        }
+        return false
+      })
     })
-  })
+  } catch (e) {
+    console.error(String(e))
+    return e
+  }
 }
 
 function tableViewHeightForRowAtIndexPath(

@@ -10,10 +10,15 @@ import {
   undoGroupingWithRefresh
 } from "marginnote"
 import lang from "./lang"
-import { actions4card, actions4text, checkInputCorrect } from "~/merged"
+import {
+  actions4card,
+  actions4text,
+  checkInputCorrect,
+  isModuleON
+} from "~/merged"
 import { PanelControl } from "~/modules/addon/typings"
 import { formatText } from "~/modules/autoformat/utils"
-import { mainOCR as autoocr } from "~/modules/autoocr/utils"
+import { mainOCR as ocrSelection } from "~/modules/autoocr/utils"
 import { simplifyText } from "~/modules/autosimplify"
 import { getMNLinkValue, manageProfileAction } from "~/profile"
 import { CellViewType, IRowButton } from "~/typings"
@@ -116,12 +121,13 @@ const handleMagicAction = async ({
       }
       const { preFormat, preOCR, preSimplify } =
         self.docProfile.magicaction4text
-      let text = preOCR
-        ? await autoocr(imageFromSelection)
-        : MN.currentDocumentController.selectionText
+      let text =
+        preOCR && isModuleON("autoocr")
+          ? await ocrSelection(imageFromSelection)
+          : MN.currentDocumentController.selectionText
       if (!text) return
-      if (preSimplify) text = simplifyText(text)
-      if (preFormat) text = formatText(text)
+      if (preSimplify && isModuleON("autosimplify")) text = simplifyText(text)
+      if (preFormat && isModuleON("autoformat")) text = formatText(text)
       const res: string | undefined = await actions4text[key]({
         text,
         imgBase64: imageFromSelection,
