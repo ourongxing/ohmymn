@@ -54,12 +54,10 @@ declare global {
         | undefined
       lastFetch: number
     }
+    isFirstOpenDoc: boolean
     webView: UIWebView
     view: UIView
-    window: UIWindow
-    docmd5: string | undefined
     noteid: string
-    notebookid: string
     tableView: UITableView
     textSelectBar?: {
       arrow: DirectionOfSelection

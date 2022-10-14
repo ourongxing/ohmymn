@@ -1,4 +1,5 @@
 import { reverseEscape } from "./input"
+import lang from "./lang"
 
 // 序号 https://www.qqxiuzi.cn/wz/zixun/1704.htm
 export const serialSymbols = {
@@ -46,8 +47,7 @@ export function getSerialInfo(newSubStr: string, length: number, symbol = "%") {
       .replace(/'/g, '"')
   ) as any[]
   const len = serialArr.length
-  if (len == 0 || typeof serialArr[0] !== "string")
-    throw "数组内必须有元素，并且第一个元素必须是字符"
+  if (len == 0 || typeof serialArr[0] !== "string") throw lang.no_item
   if (len == 1 || (len == 2 && typeof serialArr[1] == "number")) {
     const step = len == 1 ? 1 : (serialArr[1] as number)
     const startValue = serialArr[0]
@@ -57,11 +57,11 @@ export function getSerialInfo(newSubStr: string, length: number, symbol = "%") {
     // 如果是其他字符，一个字节
     else if (startValue.length === 1)
       return genCharArray(startValue, length, step)
-    else throw "必须输入数字和单个字符"
+    else throw lang.require_number
   } // 自定义替换字符，数组元素长度大于 1，如果长度为 2，则第二个为字符串
   else if (len > 1 && serialArr.every(k => typeof k == "string"))
     return serialArr as string[]
-  else throw "不符合输入格式要求"
+  else throw lang.not_support_format
 }
 
 export function getSerialByIndex(startValue: string, index: number) {
@@ -70,7 +70,7 @@ export function getSerialByIndex(startValue: string, index: number) {
   const serialSymbol = Object.values(serialSymbols).filter(k =>
     k.includes(startValue)
   )[0]
-  if (!serialSymbol) throw "不支持该符号"
+  if (!serialSymbol) throw lang.not_support_symbol
   const len = serialSymbol.length
   const startIndex = serialSymbol.search(startValue)
   return serialSymbol[(startIndex + index) % len]

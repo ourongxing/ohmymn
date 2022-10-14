@@ -6,7 +6,7 @@ export function layoutViewController(
   heightNum = self.globalProfile.addon.panelHeight[0],
   positionNum = self.globalProfile.addon.panelPosition[0]
 ) {
-  const studyController = MN.studyController()
+  const { studyController } = MN
   const readerView = studyController.readerController.view
   self.panel.lastReaderViewWidth = readerView.frame.width
   const frame = studyController.view.bounds
@@ -80,12 +80,12 @@ export function closePanel() {
   if (!self.panel.status) return
   self.settingViewController.view.removeFromSuperview()
   self.panel.status = false
-  MN.studyController().refreshAddonCommands()
+  MN.studyController.refreshAddonCommands()
 }
 
 export function openPanel() {
   if (self.panel.status) return
-  const studyController = MN.studyController()
+  const { studyController } = MN
   studyController.view.addSubview(self.settingViewController.view)
   self.panel.status = true
   studyController.refreshAddonCommands()
@@ -110,12 +110,12 @@ export function switchPanel() {
 }
 
 function controllerWillLayoutSubviews(controller: UIViewController) {
-  if (controller != MN.studyController()) return
+  if (controller != MN.studyController) return
   if (!self.panel.status) return
   if (
     Date.now() - self.panel.lastOpenPanel < 200 ||
     (self.panel.lastReaderViewWidth !==
-      MN.studyController().readerController.view.frame.width &&
+      MN.studyController.readerController.view.frame.width &&
       [0, 1, 2].includes(self.globalProfile.addon.panelPosition[0]))
   ) {
     layoutViewController()
@@ -123,7 +123,7 @@ function controllerWillLayoutSubviews(controller: UIViewController) {
 }
 
 function queryAddonCommandStatus() {
-  return MN.studyController().studyMode !== StudyMode.review
+  return MN.studyController.studyMode !== StudyMode.review
     ? {
         image: "logo.png",
         object: self,

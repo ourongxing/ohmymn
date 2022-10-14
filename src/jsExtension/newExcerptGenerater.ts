@@ -5,8 +5,8 @@ import { cacheTransformer } from "~/profile"
 import { unique } from "~/utils"
 
 export const customOCR = async () => {
-  const imgBase64 = MN.studyController()
-    .readerController.currentDocumentController.imageFromFocusNote()
+  const imgBase64 = MN.currentDocumentController
+    .imageFromFocusNote()
     .base64Encoding()
   if (autoUtils.customOCR)
     for (const util of autoUtils.customOCR) {

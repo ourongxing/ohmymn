@@ -1,10 +1,11 @@
 import {
+  alert,
   defineLifeCycelHandler,
   isfileExists,
+  MN,
   openUrl,
   popup,
-  showHUD,
-  UIWindow
+  showHUD
 } from "marginnote"
 import { Addon } from "~/addon"
 import { defaultDataSource } from "~/dataSource"
@@ -37,14 +38,10 @@ import { closePanel, layoutViewController } from "./switchPanel"
  * 7. Close a window
  */
 
-/** Cache window */
-let _window: UIWindow
-
 export default defineLifeCycelHandler({
   instanceMethods: {
     sceneWillConnect() {
       console.log("Open a new window", "lifeCycle")
-      _window = self.window
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
         status: false,
@@ -68,6 +65,7 @@ export default defineLifeCycelHandler({
         isModify: false,
         lastRemovedComment: undefined
       }
+      self.isFirstOpenDoc = true
       self.customSelectedNodes = []
       self.globalProfile = deepCopy(defaultGlobalProfile)
       self.docProfile = deepCopy(defaultDocProfile)
@@ -78,15 +76,13 @@ export default defineLifeCycelHandler({
       self.settingViewController = SettingViewController.new()
       self.settingViewController.addon = self.addon
       self.settingViewController.dataSource = self.dataSource
-      self.settingViewController.window = self.window
       self.settingViewController.profile = self.globalProfile
       self.settingViewController.docProfile = self.docProfile
       self.settingViewController.notebookProfile = self.notebookProfile
     },
     notebookWillOpen(notebookid: string) {
       console.log("Open a notebook", "lifeCycle")
-      self.notebookid = notebookid
-      if (self.docmd5)
+      if (!self.isFirstOpenDoc)
         readProfile({
           range: Range.Notebook,
           notebookid
@@ -97,20 +93,20 @@ export default defineLifeCycelHandler({
     },
     documentDidOpen(docmd5: string) {
       // Switch document, read doc profile
-      if (self.docmd5)
+      if (self.isFirstOpenDoc) {
+        console.log("First open a document", "lifeCycle")
+        self.isFirstOpenDoc = false
+        readProfile({
+          range: Range.All,
+          docmd5,
+          notebookid: MN.currnetNotebookid!
+        })
+      } else {
         readProfile({
           range: Range.Doc,
           docmd5
         })
-      else {
-        // First open a document, init all profile
-        readProfile({
-          range: Range.All,
-          docmd5,
-          notebookid: self.notebookid
-        })
       }
-      self.docmd5 = docmd5
       console.log("Open a document", "lifeCycle")
     },
     notebookWillClose(notebookid: string) {
@@ -135,7 +131,6 @@ export default defineLifeCycelHandler({
       // !MN.isMac && closePanel()
     },
     sceneDidBecomeActive() {
-      _window = self.window
       layoutViewController()
       // or go to the foreground
       console.log("Window is activated", "lifeCycle")
@@ -158,9 +153,9 @@ export default defineLifeCycelHandler({
         case 0: {
           removeProfile()
           // clear to be a new scene
-          self.docmd5 = undefined
+          self.isFirstOpenDoc = true
           // could not get the value of self.window
-          showHUD(lang.uninstall.profile_reset, 2, _window)
+          showHUD(lang.uninstall.profile_reset, 2)
           break
         }
         case 1: {

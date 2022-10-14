@@ -14,7 +14,7 @@ import { closePanel } from "./switchPanel"
 export const gestureHandlers = () =>
   gestureHandlerController([
     {
-      view: MN.studyController().view,
+      view: MN.studyController.view,
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
@@ -22,7 +22,7 @@ export const gestureHandlers = () =>
       )
     },
     {
-      view: MN.studyController().view,
+      view: MN.studyController.view,
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
@@ -30,7 +30,7 @@ export const gestureHandlers = () =>
       )
     },
     {
-      view: MN.studyController().view,
+      view: MN.studyController.view,
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
@@ -38,7 +38,7 @@ export const gestureHandlers = () =>
       )
     },
     {
-      view: MN.studyController().view,
+      view: MN.studyController.view,
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,

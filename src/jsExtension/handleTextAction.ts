@@ -47,8 +47,7 @@ export default async function (res: string, key: string) {
       return
     }
   }
-  const { lastFocusNote } =
-    MN.studyController().readerController.currentDocumentController
+  const { lastFocusNote } = MN.currentDocumentController
   const { noteOptions } = self.globalProfile.magicaction4text
   if (!lastFocusNote || noteOptions.length === 0) {
     if (key === "translateText") {

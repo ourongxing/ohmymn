@@ -58,7 +58,7 @@ const fetchDataFromMetadata = () => {
     self.metadata.lastFetch = Date.now()
   } else {
     self.metadata.lastFetch = Date.now()
-    const data = getLocalDataByKey("metadata_profile_doc")?.[self.docmd5!]
+    const data = getLocalDataByKey("metadata_profile_doc")?.[MN.currentDocmd5!]
     if (data === undefined) {
       self.metadata.data = undefined
     } else {

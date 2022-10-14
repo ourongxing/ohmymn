@@ -190,7 +190,7 @@ function clickSelectButton(sender: UIButton) {
       height * menuController.commandTable.filter(k => k.height !== zero).length
   }
 
-  const studyControllerView = MN.studyController().view
+  const studyControllerView = MN.studyController.view
   self.popoverController = new UIPopoverController(menuController)
   self.popoverController.presentPopoverFromRect(
     sender.convertRectToView(sender.bounds, studyControllerView),

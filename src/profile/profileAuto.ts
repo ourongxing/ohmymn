@@ -6,6 +6,7 @@ import {
   defaultGlobalProfile,
   defaultNotebookProfile
 } from "./defaultProfile"
+import lang from "./lang"
 import { writeProfile2Card } from "./profileAction"
 import {
   IDocProfile,
@@ -193,6 +194,7 @@ export const writeProfile: WritePrifile = ({
 
 export async function saveProfile(name: string, key: string, value: any) {
   try {
+    if (!MN.currentDocmd5 || !MN.currnetNotebookid) return
     switch (key) {
       // 这个选项不参与初始化
       case "quickSwitch":
@@ -240,7 +242,7 @@ export async function saveProfile(name: string, key: string, value: any) {
     }
     const timeout = 3
     if (self.backupWaitTimes === undefined) {
-      // console.log("新计时器")
+      console.log("Save profile: start new timer", "profile")
       self.backupWaitTimes = 0
       let i = timeout
       while (i) {
@@ -248,18 +250,16 @@ export async function saveProfile(name: string, key: string, value: any) {
           i = self.backupWaitTimes
           self.backupWaitTimes = 0
         } else i--
-        // console.log(i)
+        console.log(i, "profile")
         await delay(1)
       }
       self.backupWaitTimes = undefined
-      // console.log("计时结束")
-      self.docmd5 &&
-        self.notebookid &&
-        writeProfile({
-          range: Range.All,
-          docmd5: self.docmd5,
-          notebookid: self.notebookid
-        })
+      console.log("Save profile completed", "profile")
+      writeProfile({
+        range: Range.All,
+        docmd5: MN.currentDocmd5,
+        notebookid: MN.currnetNotebookid
+      })
       const { backupID, autoBackup } = self.globalProfile.addon
       if (backupID && autoBackup) {
         console.log("Auto backup to card", "profile")
@@ -269,8 +269,7 @@ export async function saveProfile(name: string, key: string, value: any) {
         node && writeProfile2Card(node)
       }
     } else {
-      // console.log("被打断")
-      self.backupWaitTimes = timeout
+      self.backupWaitTimes = self.backupWaitTimes + 1
     }
   } catch (err) {
     console.error(String(err))

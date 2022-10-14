@@ -79,7 +79,7 @@ function genDataSource(
           module: config.key as ModuleKeyType,
           help:
             lang.magicaction_from_which_module(config.name) +
-            (k.help ? "\n" + k.help : "")
+            (k.help ? k.help : "")
         }))
       )
     if (config.actions4text?.length) {
@@ -91,7 +91,7 @@ function genDataSource(
             config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
           help:
             lang.magicaction_from_which_module(config.name) +
-            (k.help ? "\n" + k.help : "")
+            (k.help ? k.help : "")
         }))
       )
     }

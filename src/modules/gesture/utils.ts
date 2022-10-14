@@ -52,7 +52,7 @@ export function isWithinArea(
 }
 
 export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
-  const studyController = MN.studyController()
+  const { studyController } = MN
   const { x: swipeX, y: swipeY } = sender.locationInView(studyController.view)
   const { width, height } = studyController.view.bounds
   // Block some UI that can be touched by mistake

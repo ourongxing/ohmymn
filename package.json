@@ -50,7 +50,7 @@
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
-    "marginnote": "^0.9.8",
+    "marginnote": "^0.9.11",
     "query-string": "^7.1.1",
     "semver": "^7.3.7"
   }

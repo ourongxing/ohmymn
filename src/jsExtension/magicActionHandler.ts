@@ -107,9 +107,7 @@ const handleMagicAction = async ({
 }) => {
   try {
     if (type === "text") {
-      const { currentDocumentController } =
-        MN.studyController().readerController
-      const imageFromSelection = currentDocumentController
+      const imageFromSelection = MN.currentDocumentController
         .imageFromSelection()
         ?.base64Encoding()
       if (!imageFromSelection) {
@@ -120,7 +118,7 @@ const handleMagicAction = async ({
         self.docProfile.magicaction4text
       let text = preOCR
         ? await autoocr(imageFromSelection)
-        : currentDocumentController.selectionText
+        : MN.currentDocumentController.selectionText
       if (!text) return
       if (preSimplify) text = simplifyText(text)
       if (preFormat) text = formatText(text)

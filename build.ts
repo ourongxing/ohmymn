@@ -27,7 +27,7 @@ try {
 
 const footerText = `
 } catch (e) {
-  Application.sharedInstance().alert(String(e))
+  Application.sharedInstance().alert("${mainfest.title}-"+String(e))
 }
 `
 
@@ -94,7 +94,7 @@ const plugins: Plugin[] = [
     autoImport({
       imports: [
         {
-          "~/sdk": ["marginnote"]
+          marginnote: ["console"]
         }
       ],
       dts: false

@@ -138,7 +138,7 @@ export default defineEventHandlers<
   },
   onChangeExcerptRange(sender) {
     if (!isThisWindow(sender)) return
-    if (MN.studyController().studyMode !== StudyMode.study) return
+    if (MN.studyController.studyMode !== StudyMode.study) return
     console.log("Change excerpt range", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
@@ -147,7 +147,7 @@ export default defineEventHandlers<
   },
   onProcessNewExcerpt(sender) {
     if (!isThisWindow(sender)) return
-    if (MN.studyController().studyMode !== StudyMode.study) return
+    if (MN.studyController.studyMode !== StudyMode.study) return
     console.log("Process new excerpt", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
