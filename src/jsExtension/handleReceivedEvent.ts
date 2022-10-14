@@ -2,7 +2,6 @@ import {
   defineEventHandlers,
   delayBreak,
   eventHandlerController,
-  isThisWindow,
   MN,
   showHUD,
   StudyMode
@@ -43,20 +42,20 @@ export default defineEventHandlers<
   typeof events[number] | typeof panelEvents[number]["handler"]
 >({
   async onButtonClick(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     // For magicaction
     console.log("Click a button", "event")
     const { row, type } = sender.userInfo
     await handleMagicAction(type, row)
   },
   async onSwitchChange(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     console.log("Switch the switch", "event")
     const { name, key, status } = sender.userInfo
     await saveProfile(name, key, status)
   },
   async onSelectChange(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     console.log("Change the selection", "event")
     const { name, key, selections } = sender.userInfo
     switch (key) {
@@ -70,7 +69,7 @@ export default defineEventHandlers<
     await saveProfile(name, key, selections)
   },
   async onInputOver(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     console.log("Input", "event")
     const { name, key, content } = sender.userInfo
     updateProfileTemp(key, content)
@@ -83,18 +82,18 @@ export default defineEventHandlers<
     await saveProfile(name, key, content)
   },
   onOCRImageBegin(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnline.status = "begin"
     console.log("OCR begin", "ocr")
   },
   async onOCRImageEnd(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnline.status = "end"
     self.excerptStatus.OCROnline.times = 1
     console.log("OCR end", "ocr")
   },
   onPopupMenuOnSelection(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.textSelectBar = {
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
@@ -102,7 +101,7 @@ export default defineEventHandlers<
     console.log("Popup menu on selection open", "event")
   },
   onClosePopupMenuOnSelection(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.textSelectBar = undefined
     self.excerptStatus.OCROnline = {
       times: 0,
@@ -112,7 +111,7 @@ export default defineEventHandlers<
     console.log("Popup menu on selection close", "event")
   },
   async onPopupMenuOnNote(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.excerptStatus.isChangeExcerptRange = false
     self.excerptStatus.isProcessNewExcerpt = false
     const success = await delayBreak(
@@ -128,7 +127,7 @@ export default defineEventHandlers<
     self.excerptStatus.lastExcerptText = note.excerptText!
   },
   async onClosePopupMenuOnNote(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnline = {
       times: 0,
       status: "free"
@@ -137,7 +136,7 @@ export default defineEventHandlers<
     console.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
     console.log("Change excerpt range", "event")
     self.noteid = sender.userInfo.noteid
@@ -146,7 +145,7 @@ export default defineEventHandlers<
     handleExcerpt(note, self.excerptStatus.lastExcerptText)
   },
   onProcessNewExcerpt(sender) {
-    if (!isThisWindow(sender)) return
+    if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
     console.log("Process new excerpt", "event")
     self.noteid = sender.userInfo.noteid
@@ -158,8 +157,10 @@ export default defineEventHandlers<
     handleExcerpt(note)
   },
   async onAddonBroadcast(sender) {
-    // if (!isThisWindow(sender)) return
+    // 需要点击卡片才能锁定到当前窗口
+    if (self.window !== MN.currentWindow) return
     if (!isModuleON("shortcut")) return
+    if (MN.studyController.studyMode === StudyMode.review) return
     console.log("Addon broadcast", "event")
     const { message } = sender.userInfo
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
