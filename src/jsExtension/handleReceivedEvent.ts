@@ -9,13 +9,13 @@ import {
 import { Addon } from "~/addon"
 import handleExcerpt, {
   removeLastCommentCacheTitle
-} from "~/JSExtension/excerptHandler"
+} from "~/JSExtension/handleExcerpt"
 import { layoutViewController } from "~/JSExtension/switchPanel"
 import lang from "./lang"
 import { isModuleON } from "~/merged"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"
-import handleMagicAction from "./magicActionHandler"
+import handleMagicAction from "./handleMagicAction"
 
 const panelEvents = [
   { event: Addon.key + "InputOver", handler: "onInputOver" },

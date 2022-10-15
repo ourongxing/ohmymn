@@ -75,7 +75,7 @@ const fetchDataFromMetadata = () => {
   return self.metadata.data
 }
 
-export const getNodeProperties = (node: MbBookNote, template: string) => {
+export const fetchNodeProperties = (node: MbBookNote, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
   return {
@@ -199,14 +199,16 @@ export const renderTemplateOfNodeProperties = (
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {
-      ...getNodeProperties(node, template),
+      ...fetchNodeProperties(node, template),
       parent:
         isRequire("parent.") &&
-        undefine2undefine(node.parentNote, t => getNodeProperties(t, template)),
+        undefine2undefine(node.parentNote, t =>
+          fetchNodeProperties(t, template)
+        ),
       children:
         isRequire("children") &&
         undefine2undefine(node.childNotes, k =>
-          k.map((k: MbBookNote) => getNodeProperties(k, template))
+          k.map((k: MbBookNote) => fetchNodeProperties(k, template))
         )
     }).trim()
   } catch (err) {

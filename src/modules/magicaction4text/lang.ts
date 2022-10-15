@@ -3,7 +3,7 @@ import { i18n } from "marginnote"
 export default i18n({
   zh: {
     intro:
-      "所有动作均需要在文档中选中文字或框选选区。点击查看具体的使用方法和注意事项。",
+      "所有动作均需要在文档中选中文字或框选选区。动作来自于各个模块，需要启用对应的模块。点击查看具体的使用方法和注意事项。",
     pre_OCR: {
       label: "预先 OCR",
       help: "【仅当前文档】使用 AutoOCR 进行转文字或矫正，请确保你已经填入 OCR 密钥。"
@@ -31,7 +31,7 @@ export default i18n({
   },
   en: {
     intro:
-      "All actions need to select text or area fisrt in the document. Click for the specific useage.",
+      "All actions require text selection or box selection. Actions come from various modules, and the corresponding modules need to be enabled. Click to view specific usage and precautions.",
     pre_OCR: {
       label: "Pre OCR",
       help: "[Only Current Document] Use AutoOCR to OCR. Please make sure you have filled in the OCR key."

@@ -1,6 +1,6 @@
 import queryString from "query-string"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
-import magicActionHandler from "~/JSExtension/magicActionHandler"
+import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
 import lang from "./lang"
 import { isModuleON } from "~/merged"
@@ -38,7 +38,7 @@ export async function handleURLScheme(params: string) {
             dataSourceIndex[
               type === "card" ? "magicaction4card" : "magicaction4text"
             ][key]
-          await magicActionHandler(
+          await handleMagicAction(
             type,
             self.dataSource[sec].rows[row] as IRowButton,
             option
@@ -76,7 +76,7 @@ export async function handleURLScheme(params: string) {
           if (option !== null && !Number.isInteger(Number(option)))
             throw lang.option_interger
           const opt = option === null ? undefined : Number(option)
-          await magicActionHandler(
+          await handleMagicAction(
             type,
             self.dataSource[sec].rows[row] as IRowButton,
             opt,

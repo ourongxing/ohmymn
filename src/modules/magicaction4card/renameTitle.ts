@@ -1,4 +1,4 @@
-import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { IActionMethod4Card } from "~/typings"
 import {
   getSerialByIndex,

@@ -22,7 +22,7 @@ import {
 } from "~/profile"
 import SettingViewController from "~/SettingViewController"
 import { deepCopy } from "~/utils"
-import { removeLastCommentCacheTitle } from "./excerptHandler"
+import { removeLastCommentCacheTitle } from "./handleExcerpt"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"

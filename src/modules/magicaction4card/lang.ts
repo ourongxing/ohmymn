@@ -3,7 +3,8 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "所有动作均需要先选中卡片。点击查看具体的使用方法和注意事项。",
+    intro:
+      "所有动作均需要先选中卡片。动作来自于各个模块，需要启用对应的模块。点击查看具体的使用方法和注意事项。",
     default_merge_text: {
       help: "合并卡片内文字时的前后修饰，默认添加序号和换行（$&代表每一段），点击查看自定义方法。                 ",
       error: "缺少 $&",
@@ -57,7 +58,7 @@ export default i18n({
   },
   en: {
     intro:
-      "All actions require you to select a card first. Click to see the specific usage and precautions.",
+      "All actions require the card to be selected first. The actions come from various modules and require the corresponding modules to be enabled. Click to view the specific usage method and precautions.",
     smart_selection: {
       label: "Smart Selector",
       help: "Help you quickly select the child card and descendant card"

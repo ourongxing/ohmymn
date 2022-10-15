@@ -14,7 +14,7 @@ import {
   customOCR,
   newColorStyle,
   newTitleTextCommentTag
-} from "./newExcerptGenerater"
+} from "./genNewExcerpt"
 
 let note: MbBookNote
 let nodeNote: MbBookNote

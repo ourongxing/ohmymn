@@ -1,7 +1,7 @@
 import { DocMapSplitMode, GroupMode, StudyMode } from "marginnote"
 import { DirectionOfSelection } from "marginnote"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
-import magicActionHandler from "~/JSExtension/magicActionHandler"
+import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
 import { MN, showHUD } from "marginnote"
 import { isModuleON, moduleKeys } from "~/merged"
@@ -210,7 +210,7 @@ export async function actionTrigger(
       dataSourceIndex[
         type === "card" ? "magicaction4card" : "magicaction4text"
       ][key]
-    await magicActionHandler(
+    await handleMagicAction(
       type,
       self.dataSource[sec].rows[row] as IRowButton,
       option

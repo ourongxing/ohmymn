@@ -1,5 +1,5 @@
 import { getExcerptNotes, MbBookNote } from "marginnote"
-import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"

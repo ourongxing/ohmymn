@@ -25,6 +25,17 @@ export function dateFormat(date: Date, fmt = "YYYY-mm-dd HH:MM") {
   return fmt
 }
 
+export function isURL(url: string, include = false) {
+  if (include)
+    return /\w+:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(
+      url
+    )
+  else
+    return /^\w+:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/.test(
+      url
+    )
+}
+
 export function doc(module: ModuleKeyType, hash?: string) {
   return `${Addon.doc}/guide/modules/${module}.html${hash ? "#" + hash : ""}`
 }

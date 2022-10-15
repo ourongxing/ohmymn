@@ -12,9 +12,10 @@ export default i18n({
       profile_reset: "配置已重置",
       have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
     },
+    detect_link: "检测到链接，是否直接打开？",
     no_doc: `当前笔记本没有文档，${Addon.title}无法正常工作。如果你正要打算添加文档，请在添加完成后重新打开笔记本。`,
     not_select_card: "未选中任何脑图卡片",
-    not_select_text: "没有框选任何文字",
+    not_select_area: "没有选中任何区域",
     no_text_selection: "无法得到到选中区域的文字",
     text_more_option: {
       $options6: [
@@ -50,6 +51,7 @@ export default i18n({
   en: {
     input_saved: "Input Saved",
     input_clear: "Input Clear",
+    detect_link: "Detect link, open it directly?",
     no_doc: `There is no document in the notebook, ${Addon.title} cannot work properly. If you are about to add documents, please reopen the notebook after adding.`,
     none: "None",
     sure: "Confirm",
@@ -60,7 +62,7 @@ export default i18n({
       $options2: ["Reset Profile", "Update/Feedback"]
     },
     not_select_card: "No card is selected",
-    not_select_text: "No text is selected",
+    not_select_area: "No area is selected",
     no_text_selection: "Unable to get to the text of the selection",
     copy_success: "Copy successfully, go ahead and paste",
     text_more_option: {

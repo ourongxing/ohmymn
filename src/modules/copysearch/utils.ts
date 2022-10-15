@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { renderTemplateOfNodeProperties } from "~/JSExtension/nodeProperties"
+import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { select, getExcerptText, openUrl, showHUD } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
