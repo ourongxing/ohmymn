@@ -8,7 +8,7 @@ import {
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "./lang"
-import { DataSourceSection, moduleKeys, ModuleKeyType } from "~/merged"
+import { DataSourceSection, moduleKeys } from "~/merged"
 import { BindType, CellViewType, IRowSelect } from "~/typings"
 import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 
@@ -229,7 +229,7 @@ function tableViewCellForRowAtIndexPath(
       cell.selectionStyle = 0
       const view = initCellView.select(
         row.type == CellViewType.Select
-          ? row.option[row.selections[0]]
+          ? row.option[row.selections[0]] ?? row.option[0]
           : row.selections.length
           ? `${row.selections.length} ✓`
           : lang.none

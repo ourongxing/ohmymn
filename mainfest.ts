@@ -1,8 +1,9 @@
+import { author, version } from "package.json"
 export const mainfest: Mainfest = {
-  author: "MarginNote(ourongxing)",
+  author,
+  version,
   key: "ohmymn",
   title: "OhMyMN",
-  version: "4.0.9",
   minMarginNoteVersion: "3.7.18",
   profileKey: {
     global: "ohmymn_profile_global_v4",
