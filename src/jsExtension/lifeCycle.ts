@@ -18,11 +18,13 @@ import {
   defaultTempProfile,
   Range,
   readProfile,
-  removeProfile
+  removeProfile,
+  removeUndefinedCache,
+  writeProfile
 } from "~/profile"
 import SettingViewController from "~/SettingViewController"
 import { deepCopy } from "~/utils"
-import { removeLastCommentCacheTitle } from "./handleExcerpt"
+import { removeLastComment } from "./handleExcerpt"
 import { gestureHandlers } from "./handleGestureEvent"
 import { eventHandlers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
@@ -88,11 +90,12 @@ export default defineLifeCycelHandler({
         return
       }
       console.log("Open a notebook", "lifeCycle")
-      if (!self.isFirstOpenDoc)
+      if (!self.isFirstOpenDoc) {
         readProfile({
           range: Range.Notebook,
           notebookid
         })
+      }
       // Add hooks, aka observers
       eventHandlers.add()
       gestureHandlers().add()
@@ -120,25 +123,50 @@ export default defineLifeCycelHandler({
       if (MN.studyController.studyMode === StudyMode.review) return
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) return
       console.log("Close a notebook", "lifeCycle")
-      removeLastCommentCacheTitle()
+      removeLastComment()
+      removeUndefinedCache()
+      writeProfile({
+        range: Range.Notebook,
+        notebookid
+      })
       closePanel()
       // Remove hooks, aka observers
       eventHandlers.remove()
       gestureHandlers().remove()
     },
-    documentWillClose() {
+    documentWillClose(docmd5: string) {
       if (MN.studyController.studyMode === StudyMode.review) return
+      writeProfile({
+        range: Range.Doc,
+        docmd5
+      })
       console.log("Close a document", "lifeCycle")
     },
     // Not triggered on ipad
     sceneDidDisconnect() {
       console.log("Close a window", "lifeCycle")
+      removeLastComment()
+      if (MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
+        removeUndefinedCache()
+        writeProfile({
+          range: Range.All,
+          docmd5: MN.currentDocmd5,
+          notebookid: MN.currnetNotebookid
+        })
+      }
     },
     sceneWillResignActive() {
       // or go to the background
       console.log("Window is inactivation", "lifeCycle")
-      removeLastCommentCacheTitle()
-      // !MN.isMac && closePanel()
+      removeLastComment()
+      if (!MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
+        removeUndefinedCache()
+        writeProfile({
+          range: Range.All,
+          docmd5: MN.currentDocmd5,
+          notebookid: MN.currnetNotebookid
+        })
+      }
     },
     sceneDidBecomeActive() {
       !MN.isMac && layoutViewController()

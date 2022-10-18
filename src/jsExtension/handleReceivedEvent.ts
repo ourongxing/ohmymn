@@ -7,15 +7,13 @@ import {
   StudyMode
 } from "marginnote"
 import { Addon } from "~/addon"
-import handleExcerpt, {
-  removeLastCommentCacheTitle
-} from "~/JSExtension/handleExcerpt"
+import handleExcerpt, { removeLastComment } from "~/JSExtension/handleExcerpt"
 import { layoutViewController } from "~/JSExtension/switchPanel"
-import lang from "./lang"
 import { isModuleON } from "~/merged"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"
 import handleMagicAction from "./handleMagicAction"
+import lang from "./lang"
 
 const panelEvents = [
   { event: Addon.key + "InputOver", handler: "onInputOver" },
@@ -142,7 +140,7 @@ export default defineEventHandlers<
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isChangeExcerptRange = true
-    handleExcerpt(note, self.excerptStatus.lastExcerptText)
+    handleExcerpt(note, true, self.excerptStatus.lastExcerptText)
   },
   onProcessNewExcerpt(sender) {
     if (self.window !== MN.currentWindow) return
@@ -153,8 +151,8 @@ export default defineEventHandlers<
     self.excerptStatus.isProcessNewExcerpt = true
     if (self.globalProfile.addon.lockExcerpt)
       self.excerptStatus.lastExcerptText = "😎"
-    removeLastCommentCacheTitle()
-    handleExcerpt(note)
+    removeLastComment()
+    handleExcerpt(note, false)
   },
   async onAddonBroadcast(sender) {
     // 需要点击卡片才能锁定到当前窗口

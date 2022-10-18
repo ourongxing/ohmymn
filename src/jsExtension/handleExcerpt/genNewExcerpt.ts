@@ -1,10 +1,9 @@
 import { MbBookNote, MN, removeHighlight } from "marginnote"
 import { autoUtils } from "~/merged"
-import { HasTitleThen } from "~/modules/addon/typings"
+import { DragMerge, HasTitleThen } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
-import { unique } from "~/utils"
 
-export const customOCR = async () => {
+export async function customOCR() {
   const imgBase64 = MN.currentDocumentController
     .imageFromFocusNote()
     .base64Encoding()
@@ -15,109 +14,129 @@ export const customOCR = async () => {
     }
 }
 
-export const newTitleTextCommentTag = async (param: {
-  note: MbBookNote
-  text: string
-  nodeTitle: string[] | undefined
-  isComment: boolean
-}) => {
-  const { note, text, nodeTitle, isComment } = param
-  const { hasTitleThen } = self.globalProfile.addon
-  const { cacheTitle } = self.notebookProfile.additional
-  const comments: string[] = []
-  const tags: string[] = []
-
-  const newText = await (async text => {
-    if (autoUtils.modifyExcerptText)
-      for (const util of autoUtils.modifyExcerptText) {
-        const res = await util({ note, text })
-        if (res) text = res
-      }
-    return text
-  })(text)
-
-  if (autoUtils.generateComments)
-    for (const util of autoUtils.generateComments) {
-      const res = await util({ note, text })
-      if (res) comments.push(...res)
+async function generateTitles(note: MbBookNote, text: string) {
+  if (autoUtils.generateTitles) {
+    for (const util of autoUtils.generateTitles) {
+      const r = await util({ note, text })
+      if (r) return r
     }
-
-  if (autoUtils.generateTags)
-    for (const util of autoUtils.generateTags) {
-      const res = await util({ note, text })
-      if (res) tags.push(...res)
-    }
-
-  const defaultRet = { text: newText, title: [] as string[], comments, tags }
-
-  if (
-    isComment &&
-    nodeTitle?.length &&
-    hasTitleThen[0] === HasTitleThen.NoChange
-  )
-    return defaultRet
-
-  const res = await (async text => {
-    if (autoUtils.generateTitles)
-      for (const util of autoUtils.generateTitles) {
-        const res = await util({ note, text })
-        if (res)
-          return {
-            ...res,
-            comments: res.comments ? res.comments.filter(k => k) : []
-          }
-      }
-  })(newText)
-
-  if (!res) return defaultRet
-
-  res.title = await (async titles => {
-    if (self.excerptStatus.isModify)
-      titles = titles.map(k => removeHighlight(k))
-    if (autoUtils.modifyTitles)
-      for (const util of autoUtils.modifyTitles) {
-        const res = await util({ titles })
-        if (res) titles = res
-      }
-    return titles
-  })(res.title)
-
-  if (nodeTitle?.length && hasTitleThen[0] === HasTitleThen.TitleLink) {
-    const newTitles = (() => {
-      if (self.excerptStatus.isModify && cacheTitle[self.noteid]) {
-        const cached = cacheTitle[self.noteid]
-        // 记录当前笔记产生的所有旧标题的索引
-        const index = nodeTitle.reduce((acc, k, i) => {
-          cached?.some(h => cacheTransformer.tell(h, k)) && acc.unshift(i)
-          return acc
-        }, [] as number[])
-        index.forEach((k, i) => {
-          if (i === index.length - 1) {
-            nodeTitle.splice(k, 1, ...res.title)
-          } else nodeTitle.splice(k, 1)
-        })
-        return nodeTitle
-      } else return [...nodeTitle, ...res.title]
-    })()
-    cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
-    return {
-      text: res.text,
-      title: unique(newTitles),
-      comments: res.comments?.length
-        ? [...res.comments, ...comments]
-        : comments,
-      tags
-    }
-  }
-  cacheTitle[self.noteid] = res.title.map(k => cacheTransformer.to(k))
-  return {
-    ...res,
-    comments: res.comments?.length ? [...res.comments, ...comments] : comments,
-    tags
   }
 }
 
-export const newColorStyle = async (note: MbBookNote) => {
+export async function newTitleTextCommentTag(param: {
+  note: MbBookNote
+  text: string
+  nodeNote: MbBookNote
+  isComment: boolean
+}) {
+  const { note, text, nodeNote, isComment } = param
+  const nodeTitle = nodeNote.noteTitle?.split(/\s*[;；]\s*/) ?? []
+  const { hasTitleThen, dragMerge } = self.globalProfile.addon
+  const { cacheTitle } = self.notebookProfile.additional
+  let generatedTitles: string[] | undefined = undefined
+  let insertIndex: undefined | number = undefined
+
+  const retVal = {
+    text,
+    title: [] as string[],
+    comments: [] as string[],
+    tags: [] as string[]
+  }
+
+  if (autoUtils.modifyExcerptText) {
+    for (const util of autoUtils.modifyExcerptText) {
+      const res = await util({ note, text: retVal.text })
+      if (res) retVal.text = res
+    }
+  }
+
+  if (
+    isComment &&
+    (dragMerge[0] === DragMerge.NotGenTitle ||
+      (dragMerge[0] !== DragMerge.NotGenTitle &&
+        nodeTitle.length !== 0 &&
+        hasTitleThen[0] === HasTitleThen.NotTurnTitle))
+  ) {
+  } else {
+    let res = await generateTitles(note, retVal.text)
+    if (!res && isComment && dragMerge[0] === DragMerge.AlwaysTurnTitle) {
+      res = {
+        title: [retVal.text],
+        text: ""
+      }
+    }
+    if (res?.title.length) {
+      generatedTitles = res.title
+      retVal.text = res.text
+      retVal.comments = [...(res?.comments ?? []), ...retVal.comments]
+      const cache = cacheTitle[self.noteid]
+      if (self.excerptStatus.isModify && nodeTitle.length && cache?.length) {
+        // 记录当前笔记产生的所有旧标题的索引
+        const indexList = nodeTitle.reduce((acc, k, i) => {
+          // 加到数组头部，因为后面删除时索引会变
+          cache.some(h => cacheTransformer.tell(h, k)) && acc.unshift(i)
+          return acc
+        }, [] as number[])
+        if (indexList.length) {
+          insertIndex = indexList[indexList.length - 1]
+          indexList.forEach(k => {
+            nodeTitle.splice(k, 1)
+          })
+        }
+      }
+    }
+    if (generatedTitles?.length) {
+      cacheTitle[self.noteid] = generatedTitles.map(k => cacheTransformer.to(k))
+      if (isComment) {
+        if (hasTitleThen[0] === HasTitleThen.MergeTitle) {
+          if (insertIndex !== undefined) {
+            retVal.title = [...nodeTitle]
+            retVal.title.splice(insertIndex, 0, ...generatedTitles)
+          } else {
+            retVal.title = [...nodeTitle, ...generatedTitles]
+          }
+        } else if (hasTitleThen[0] === HasTitleThen.OverrideTitle) {
+          retVal.title = [...generatedTitles]
+        }
+      } else {
+        if (insertIndex !== undefined) {
+          retVal.title = [...nodeTitle]
+          retVal.title.splice(insertIndex, 0, ...generatedTitles)
+        } else {
+          retVal.title = [...nodeTitle, ...generatedTitles]
+        }
+      }
+    }
+  }
+
+  if (autoUtils.generateComments) {
+    for (const util of autoUtils.generateComments) {
+      const res = await util({ note, text: retVal.text })
+      if (res) retVal.comments.push(...res)
+    }
+  }
+
+  if (autoUtils.generateTags) {
+    for (const util of autoUtils.generateTags) {
+      const res = await util({ note, text: retVal.text })
+      if (res) retVal.tags.push(...res)
+    }
+  }
+
+  return retVal
+}
+
+export async function modifyTitles(titles: string[]) {
+  if (self.excerptStatus.isModify) titles = titles.map(k => removeHighlight(k))
+  if (autoUtils.modifyTitles)
+    for (const util of autoUtils.modifyTitles) {
+      const res = await util({ titles })
+      if (res) titles = res
+    }
+  return titles
+}
+
+export async function newColorStyle(note: MbBookNote) {
   if (autoUtils.modifyStyle)
     for (const util of autoUtils.modifyStyle) {
       const res = await util({ note })

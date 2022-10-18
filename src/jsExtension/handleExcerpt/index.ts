@@ -8,10 +8,12 @@ import {
   modifyNodeTitle,
   undoGroupingWithRefresh
 } from "marginnote"
-import { RemoveExcerpt } from "~/modules/addon/typings"
-import { cacheTransformer } from "~/profile"
+import { DragMerge, HasTitleThen, RemoveExcerpt } from "~/modules/addon/typings"
+import { cacheTransformer, Range, writeProfile } from "~/profile"
+import { unique } from "~/utils"
 import {
   customOCR,
+  modifyTitles,
   newColorStyle,
   newTitleTextCommentTag
 } from "./genNewExcerpt"
@@ -21,24 +23,28 @@ let nodeNote: MbBookNote
 let isOCR = false
 let isComment = false
 
-export default async (_note: MbBookNote, lastExcerptText?: string) => {
+export default async (
+  n: MbBookNote,
+  isModify: boolean,
+  lastExcerptText?: string
+) => {
   console.log("Processing Excerpt", "excerpt")
   // Initialize global variables
-  note = _note
+  note = n
   isOCR = false
   nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
   isComment = nodeNote !== note
-  self.excerptStatus.isModify = lastExcerptText !== undefined
+  isComment && console.log("The Excerpt is a comment", "excerpt")
+  self.excerptStatus.isModify = isModify
+
   if (
     self.globalProfile.addon.lockExcerpt &&
     self.excerptStatus.isModify &&
+    lastExcerptText &&
     lastExcerptText !== "😎"
   ) {
-    processExcerpt({ text: lastExcerptText! })
-    return console.log(
-      "Locked excerpt option is detected, restore excerpt",
-      "excerpt"
-    )
+    processExcerpt({ text: lastExcerptText })
+    return console.log("Locking excerpt is ON, restore excerpt", "excerpt")
   }
 
   /**
@@ -111,19 +117,20 @@ export default async (_note: MbBookNote, lastExcerptText?: string) => {
   if (!excerptText) return
   const { title, text, comments, tags } = await newTitleTextCommentTag({
     note,
+    nodeNote,
     text: excerptText,
-    nodeTitle: nodeNote.noteTitle?.split(/\s*[;；]\s*/),
     isComment
   })
+
   processExcerpt({
     text,
-    title: title.join("; "),
+    title: (await modifyTitles(unique(title))).join("; "),
     comments,
     tags
   })
 }
 
-const processExcerpt = ({
+function processExcerpt({
   text,
   title,
   tags,
@@ -133,7 +140,7 @@ const processExcerpt = ({
   title?: string
   tags?: string[]
   comments?: string[]
-}) => {
+}) {
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text
@@ -145,29 +152,32 @@ const processExcerpt = ({
         const index = getCommentIndex(nodeNote, note)
         if (index != -1) {
           const { removeExcerpt } = self.globalProfile.addon
-          switch (removeExcerpt[0]) {
-            case RemoveExcerpt.Later:
-              self.excerptStatus.lastRemovedComment = { nodeNote, index, note }
-              break
-            case RemoveExcerpt.Now:
-              self.excerptStatus.lastRemovedComment = { nodeNote, index, note }
-              removeLastCommentCacheTitle()
-              break
+          self.excerptStatus.lastRemovedComment = {
+            nodeNote,
+            index,
+            note
+          }
+          if (removeExcerpt[0] === RemoveExcerpt.Now) {
+            removeLastComment()
           }
         }
         if (
           isOCR &&
           nodeNote.excerptText?.trim() === nodeNote.noteTitle?.trim()
-        )
+        ) {
           nodeNote.excerptText = title
+        }
       }
+
       // Excerpts can't be cleared after being OCR, otherwise the image will be displayed,
       // and must be set to the same title to not display
       else if (isOCR) note.excerptText = title
       else note.excerptText = ""
     }
+
     if (title) modifyNodeTitle(nodeNote, title)
     if (comments?.length) {
+      comments = unique(comments)
       const { cacheComment } = self.notebookProfile.additional
       const oldComments = cacheComment[note.noteId!]
       if (oldComments) {
@@ -189,11 +199,13 @@ const processExcerpt = ({
       }, [] as [string, string, string][])
       appendTextComment(nodeNote, ...comments)
     }
-    if (tags?.length) addTags(nodeNote, tags)
+    if (tags?.length) {
+      addTags(nodeNote, tags)
+    }
   })
 }
 
-const decorateExecrpt = async () => {
+async function decorateExecrpt() {
   const res = await newColorStyle(note)
   if (!res) return
   const { color, style } = res
@@ -205,7 +217,7 @@ const decorateExecrpt = async () => {
   })
 }
 
-export const removeLastCommentCacheTitle = () => {
+export function removeLastComment() {
   if (!self.excerptStatus.lastRemovedComment) return
   const { nodeNote, index, note } = self.excerptStatus.lastRemovedComment
   undoGroupingWithRefresh(() => {
@@ -213,7 +225,8 @@ export const removeLastCommentCacheTitle = () => {
   })
   self.excerptStatus.lastRemovedComment = undefined
   const noteid = note.noteId!
-  const { cacheTitle, cacheComment } = self.notebookProfile.additional
-  if (cacheTitle[noteid]) delete cacheTitle[noteid]
-  if (cacheComment[noteid]) delete cacheComment[noteid]
+  const { cacheTitle, cacheComment, cacheTag } = self.notebookProfile.additional
+  if (cacheTitle[noteid]) cacheTitle[noteid] = undefined
+  if (cacheComment[noteid]) cacheTitle[noteid] = undefined
+  if (cacheTag[noteid]) cacheTitle[noteid] = undefined
 }
