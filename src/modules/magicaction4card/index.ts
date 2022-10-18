@@ -12,7 +12,8 @@ import {
   removeCommentButLinkTag,
   removeHighlight,
   selectIndex,
-  showHUD
+  showHUD,
+  undoGroupingWithRefresh
 } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -245,50 +246,67 @@ export default defineConfig({
       label: lang.switch_title.label,
       option: lang.switch_title.$option2,
       help: lang.switch_title.help,
-      method: ({ nodes, option }) => {
+      method: async ({ nodes, option }) => {
         for (const note of nodes) {
           const title = note.noteTitle ?? ""
           const text = note.excerptText ? removeHighlight(note.excerptText) : ""
           switch (option) {
             case SwitchTitle.ToNonexistent:
               /**
-               * 只有标题说明
-               * 1. 摘录和标题相同。此时摘录也有可能是图片转文字。
-               * 2. 摘录为空
-               * 而只有摘录，此时摘录也有可能由图片转文字。
-               * 既然想转标题，自然已经是文字了
+               * 只有标题
+               * 1. 摘录和标题相同：删除标题
+               * 2. 摘录为空：删除标题，设置摘录
+               * 只有摘录：删除摘录（是文字），设置标题
                */
-              if (note.excerptPic?.paint) {
-                if (text && !title) {
-                  note.noteTitle = text
-                  note.excerptText = text
-                } else {
-                  // 只有标题只能说明摘录和标题相同
-                  note.noteTitle = ""
-                }
-              } else {
-                if ((!text && title) || (text && !title)) {
-                  note.noteTitle = text
-                  note.excerptText = title
-                } else if (title == text) note.noteTitle = ""
+              if (note.excerptPic?.paint && !note.textFirst) break
+              else if (text === title) note.noteTitle = ""
+              else if (title && !text) {
+                note.noteTitle = ""
+                note.excerptText = title
+              } else if (text && !title) {
+                note.noteTitle = text
+                // 有可能有重点
+                if (note.excerptPic?.paint) note.excerptText = text
+                else note.excerptText = ""
               }
               break
             case SwitchTitle.Exchange:
-              if (note.excerptPic?.paint) {
-                if (text && title && text != title) {
-                  note.excerptText = title
-                  note.noteTitle = text
-                } else {
-                  if (text && !title) {
-                    note.noteTitle = text
-                    note.excerptText = text
-                  } else {
-                    note.noteTitle = ""
-                  }
-                }
-              } else {
-                note.noteTitle = text
+              if (note.excerptPic?.paint && !note.textFirst) break
+              else if (text === title) note.noteTitle = ""
+              else if (title && !text) {
+                note.noteTitle = ""
                 note.excerptText = title
+              } else if (text && !title) {
+                note.noteTitle = text
+                if (note.excerptPic?.paint) note.excerptText = text
+                else note.excerptText = ""
+              } else {
+                /**
+                 * 标题和摘录都存在
+                 * 1. 交换：标题和摘录交换
+                 * 2. 摘录强制转为标题：删除摘录（是文字），设置标题
+                 * 3. 标题强制转为摘录：删除标题，设置摘录
+                 */
+                const option = await selectIndex(
+                  ["摘录 ⇄ 标题", "摘录 → 标题", "摘录 ← 标题"],
+                  "交换标题和摘录",
+                  "检测到标题和摘录同时存在，请选择交换方式"
+                )
+                undoGroupingWithRefresh(() => {
+                  switch (option) {
+                    case 0:
+                      note.noteTitle = text
+                      note.excerptText = title
+                      break
+                    case 1:
+                      note.noteTitle = text
+                      if (!note.excerptPic?.paint) note.excerptText = ""
+                      break
+                    case 2:
+                      note.noteTitle = ""
+                      note.excerptText = title
+                  }
+                })
               }
               break
           }
