@@ -19,6 +19,7 @@ export const defaultGlobalProfile = {
     defaultMergeText: `%["1"]. $&\\n\\n`
   },
   magicaction4text: {
+    showCopyContent: false,
     noteOptions: []
   },
   gesture: {

@@ -31,6 +31,11 @@ export default defineConfig({
       bind: ["quickSwitch", 4]
     },
     {
+      key: "showCopyContent",
+      type: CellViewType.Switch,
+      label: lang.show_copy_content.label
+    },
+    {
       key: "noteOptions",
       type: CellViewType.MuiltSelect,
       label: lang.note_options.label,

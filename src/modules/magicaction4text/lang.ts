@@ -16,6 +16,9 @@ export default i18n({
       label: "预先格式化",
       help: "【仅当前文档】使用 AutoFormat 进行格式化排版。"
     },
+    show_copy_content: {
+      label: "显示复制的内容"
+    },
     note_options: {
       $option6: [
         "复制",
@@ -43,6 +46,9 @@ export default i18n({
     pre_format: {
       label: "Pre Format",
       help: "[Only Current Document] Use AutoFormat to format the text."
+    },
+    show_copy_content: {
+      label: "Show Content of Copied"
     },
     note_options: {
       $option6: [

@@ -81,9 +81,14 @@ export default async function (key: string, option: number, content: string) {
       }
     }
     const { lastFocusNote } = MN.currentDocumentController
-    const { noteOptions } = self.globalProfile.magicaction4text
+    const { noteOptions, showCopyContent } = self.globalProfile.magicaction4text
     if (!lastFocusNote || noteOptions.length === 0) {
-      copy(res)
+      if (showCopyContent) {
+        copy(res, false)
+        showHUD(res, 3)
+      } else {
+        copy(res)
+      }
     } else {
       let option = noteOptions[0]
       if (noteOptions.length > 1) {
@@ -100,7 +105,12 @@ export default async function (key: string, option: number, content: string) {
         if (res)
           switch (option) {
             case NoteOption.Copy:
-              copy(res)
+              if (showCopyContent) {
+                copy(res, false)
+                showHUD(res, 3)
+              } else {
+                copy(res)
+              }
               break
             case NoteOption.Title:
               modifyNodeTitle(lastFocusNote, res)
