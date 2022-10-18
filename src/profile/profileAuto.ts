@@ -6,7 +6,6 @@ import {
   defaultGlobalProfile,
   defaultNotebookProfile
 } from "./defaultProfile"
-import lang from "./lang"
 import { writeProfile2Card } from "./profileAction"
 import {
   IDocProfile,
@@ -274,4 +273,31 @@ export async function saveProfile(name: string, key: string, value: any) {
   } catch (err) {
     console.error(String(err))
   }
+}
+
+export function removeUndefinedCache() {
+  const { cacheTitle, cacheComment, cacheTag } = self.notebookProfile.additional
+  const temp = {
+    cacheTitle: {} as Record<string, [string, string, string][]>,
+    cacheComment: {} as Record<string, [string, string, string][]>,
+    cacheTag: {} as Record<string, [string, string, string][]>
+  }
+  Object.entries(cacheTitle).forEach(([k, v]) => {
+    if (MN.db.getNoteById(k) && v !== undefined) {
+      temp.cacheTitle[k] = v
+    }
+  })
+  Object.entries(cacheComment).forEach(([k, v]) => {
+    if (MN.db.getNoteById(k) && v !== undefined) {
+      temp.cacheComment[k] = v
+    }
+  })
+  Object.entries(cacheTag).forEach(([k, v]) => {
+    if (MN.db.getNoteById(k) && v !== undefined) {
+      temp.cacheTag[k] = v
+    }
+  })
+  self.notebookProfile.additional.cacheComment = temp.cacheComment
+  self.notebookProfile.additional.cacheTag = temp.cacheTag
+  self.notebookProfile.additional.cacheTitle = temp.cacheTitle
 }

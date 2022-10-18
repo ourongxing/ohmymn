@@ -41,15 +41,22 @@ export default i18n({
       ] as StringTuple<3>,
       label: "面板显示控制"
     },
+    drag_merge: {
+      label: "拖拽合并生成标题",
+      help: "【AutoTitle、AutoDef、AutoComplete】如果卡片中有摘录，使用手型工具拖拽选区合并到该卡片中。",
+      $option2: [
+        "始终不生成标题",
+        "满足条件时生成标题",
+        "始终转标题"
+      ] as StringTuple<3>
+    },
     has_title_then: {
-      $option3: ["不转为标题", "合并标题", "覆盖标题"] as StringTuple<3>,
-      label: "如果标题存在",
-      help: "【AutoTitle、AutoDef、AutoComplete】 \n如果卡片已有标题，此时通过手型工具拖拽文字合并进该卡片，如果这段文字也会产生新标题，则                                "
+      $option3: ["不转标题", "合并标题", "覆盖标题"] as StringTuple<3>,
+      label: "> 已经有标题"
     },
     remove_excerpt: {
-      $option3: ["立即删除", "等会删除", "不删除"] as StringTuple<3>,
-      label: "转为标题后, 原摘录将",
-      help: "拖拽文字并合并进卡片会变为摘录，然后转为标题，选择「等会删除」可以给你一个修改这段摘录的机会，并且会在下次摘录时自动删除。                              "
+      $option2: ["立即删除", "等会删除"] as StringTuple<2>,
+      label: "> 拖入的摘录将"
     },
     lock_excerpt: {
       label: "锁定摘录文字"
@@ -105,15 +112,22 @@ export default i18n({
       ],
       label: "Panel Control"
     },
+    drag_merge: {
+      label: "Drag Merge to Generate Title",
+      help: "[AutoTitle、AutoDef、AutoComplete] If there is an excerpt in the card, use the hand tool to drag the selection area to merge into the card.",
+      $option2: [
+        "Never Generate Title",
+        "Always Generate Title",
+        "Generate Title When Conditions Are Met"
+      ]
+    },
     has_title_then: {
       $option3: ["Not Turn to Title", "Merge Title", "Override Title"],
-      label: "If Card Has Title",
-      help: "[AutoTitle, AutoDef, AutoComplete] \nIf the card already has a title, and you drag the text to merge into the card, and this text will also generate a new title, then"
+      label: "If Card Has Title"
     },
     remove_excerpt: {
-      $option3: ["Remove Immediately", "Remove Later", "Not Remove"],
-      label: "After Convert to Title, Excerpt Will",
-      help: 'As above, the text draged to merge into a card will become an excerpt, and then convert to title. Selecting "Remove Later" will give you a chance to edit this excerpt, and it will be automatically deleted next time you excerpt.'
+      $option2: ["Remove Immediately", "Remove Later"],
+      label: "After Convert to Title, Excerpt Will"
     },
     lock_excerpt: {
       label: "Lock Excerpt Text"

@@ -12,19 +12,8 @@ import lang from "./lang"
 import { AutoTitlePreset } from "./typings"
 
 function turn2Title(text: string) {
-  const { preset, wordCount, changeTitleNoLimit } =
-    self.globalProfile.anotherautotitle
-  const { cacheTitle } = self.notebookProfile.additional
+  const { preset, wordCount } = self.globalProfile.anotherautotitle
   if (self.excerptStatus.isModify) text = removeHighlight(text)
-  if (
-    changeTitleNoLimit &&
-    self.excerptStatus.isModify &&
-    cacheTitle[self.noteid]
-  )
-    return {
-      title: [text],
-      text: ""
-    }
   const newTitle = (() => {
     for (const set of preset) {
       switch (set) {
@@ -99,12 +88,6 @@ export default defineConfig({
         if (input.some(item => !Number.isInteger(item)))
           throw lang.word_count.enter_positive
       }
-    },
-    {
-      key: "changeTitleNoLimit",
-      type: CellViewType.Switch,
-      label: lang.change_title_no_limit.label,
-      help: lang.change_title_no_limit.help
     }
   ]
 })

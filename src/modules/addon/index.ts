@@ -42,22 +42,31 @@ export default defineConfig({
       label: lang.panle_control.label
     },
     {
+      key: "dragMerge",
+      type: CellViewType.Select,
+      label: lang.drag_merge.label,
+      option: lang.drag_merge.$option2,
+      help: lang.drag_merge.help,
+      bind: ["quickSwitch", [2, 3, 4]]
+    },
+    {
       key: "hasTitleThen",
       type: CellViewType.Select,
       label: lang.has_title_then.label,
-      help: lang.has_title_then.help,
       option: lang.has_title_then.$option3,
-      bind: ["quickSwitch", [2, 3, 4]]
+      bind: [
+        ["quickSwitch", [2, 3, 4]],
+        ["dragMerge", [1, 2]]
+      ]
     },
     {
       key: "removeExcerpt",
       type: CellViewType.Select,
       label: lang.remove_excerpt.label,
-      option: lang.remove_excerpt.$option3,
-      help: lang.remove_excerpt.help,
+      option: lang.remove_excerpt.$option2,
       bind: [
         ["quickSwitch", [2, 3, 4]],
-        ["hasTitleThen", [1, 2]]
+        ["dragMerge", [1, 2]]
       ]
     },
     {

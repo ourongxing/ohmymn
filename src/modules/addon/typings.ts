@@ -17,14 +17,19 @@ export const enum PanelControl {
   CompleteClose
 }
 
+export const enum DragMerge {
+  NotGenTitle,
+  Conditions,
+  AlwaysTurnTitle
+}
+
 export const enum HasTitleThen {
-  NoChange,
-  TitleLink,
+  NotTurnTitle,
+  MergeTitle,
   OverrideTitle
 }
 
 export const enum RemoveExcerpt {
   Now,
-  Later,
-  NO
+  Later
 }

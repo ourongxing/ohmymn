@@ -5,8 +5,9 @@ export const defaultGlobalProfile = {
   addon: {
     quickSwitch: [],
     lockExcerpt: false,
+    dragMerge: [1],
     hasTitleThen: [1],
-    removeExcerpt: [1],
+    removeExcerpt: [0],
     panelControl: [],
     panelPosition: [0],
     panelHeight: [1],
@@ -71,7 +72,6 @@ export const defaultGlobalProfile = {
   anotherautotitle: {
     on: false,
     preset: [],
-    changeTitleNoLimit: false,
     wordCount: "[10, 5]",
     customBeTitle: ""
   },
@@ -154,7 +154,6 @@ export const defaultGlobalProfile = {
     translateProviders: [0],
     caiyunToken: "",
     showKey: true,
-    hudTime: "3",
     baiduFromLang: [0],
     caiyunFromLang: [0],
     baiduToLang: [0],
@@ -195,8 +194,9 @@ export const defaultNotebookProfile = {
   },
   // Information not displayed on the UI
   additional: {
-    cacheTitle: {} as Record<string, [string, string, string][]>,
-    cacheComment: {} as Record<string, [string, string, string][]>
+    cacheTitle: {} as Record<string, [string, string, string][] | undefined>,
+    cacheComment: {} as Record<string, [string, string, string][] | undefined>,
+    cacheTag: {} as Record<string, [string, string, string][] | undefined>
   }
 }
 
@@ -246,16 +246,17 @@ export const rewriteSelection: RewriteCase[] = [
         preset: (old: number[]) => old.map(k => (k > 1 ? k - 1 : k))
       }
     }
+  },
+  {
+    version: {
+      // 空格
+      from: "4.0.6 - 4.0.9",
+      to: ">=4.0.10"
+    },
+    global: {
+      addon: {
+        removeExcerpt: (old: number[]) => [old[0] === 2 ? 0 : old[0]]
+      }
+    }
   }
-  // {
-  //   version: {
-  //     from: "4.0.7",
-  //     to: ">=4.0.8"
-  //   },
-  //   global: {
-  //     addon: {
-  //       textAction: (old: number[]) => [old[0] >= 10 ? old[0] + 1 : old[0]]
-  //     }
-  //   }
-  // }
 ]
