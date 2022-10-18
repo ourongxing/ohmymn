@@ -445,7 +445,7 @@ export async function completeWord(text: string, note: MbBookNote) {
     if (!/^\w[a-z]+$/.test(pureText)) return undefined
     const word = pureText.toLowerCase()
     const info = await getLemmaInfo(word)
-    const { collins } = self.globalProfile.autocomplete
+    const { collins, autoContext } = self.globalProfile.autocomplete
     if (
       (info.collins && !collins.includes(Number(info.collins))) ||
       (!info.collins && !collins.includes(0))
@@ -453,34 +453,11 @@ export async function completeWord(text: string, note: MbBookNote) {
       return undefined
     }
     const title = getWordEx(info.word, info.exchange)
-    const { context, translation } = await (async () => {
-      const { autoContext, translateContext } = self.globalProfile.autocomplete
-      const res = {
-        context: "",
-        translation: ""
-      }
-      if (autoContext) {
-        res.context = getContext(note, pureText) ?? ""
-        if (res.context && translateContext) {
-          const { translateProviders } = self.globalProfile.autotranslate
-          res.translation = await (async () => {
-            try {
-              return translateProviders[0] === TranslateProviders.Baidu
-                ? await baiduTranslate(res.context, 2, 0)
-                : await caiyunTranslate(res.context, 2, 0)
-            } catch {
-              showHUD("上下文翻译失败，请检查 AutoTranslate 是否工作正常。")
-              return ""
-            }
-          })()
-        }
-      }
-      return res
-    })()
+    const context = autoContext ? getContext(note, pureText) ?? "" : ""
     return {
       title,
-      comments: [...(await getFillInfo(info)), context, translation],
-      text: ""
+      comments: [...(await getFillInfo(info))],
+      text: context
     }
   } catch (error) {
     console.error(error)

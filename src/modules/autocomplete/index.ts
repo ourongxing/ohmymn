@@ -94,13 +94,6 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.auto_context.label,
       help: lang.auto_context.help
-    },
-    {
-      key: "translateContext",
-      type: CellViewType.Switch,
-      label: lang.translate_context.label,
-      help: lang.translate_context.help,
-      bind: ["autoContext", true]
     }
   ],
   actions4card: [

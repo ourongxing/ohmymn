@@ -73,15 +73,6 @@ export default defineConfig({
       bind: ["translateProviders", 0]
     },
     {
-      key: "hudTime",
-      type: CellViewType.InlineInput,
-      label: lang.hud_time.label,
-      help: lang.hud_time.help,
-      check({ input }) {
-        checkPositiveinteger(Number(input))
-      }
-    },
-    {
       key: "showKey",
       type: CellViewType.Switch,
       label: lang.show_key
