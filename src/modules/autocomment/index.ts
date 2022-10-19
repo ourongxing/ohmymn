@@ -1,46 +1,29 @@
-import { appendTextComment, getAllText, MbBookNote } from "marginnote"
+import { appendTextComment, getExcerptText, MbBookNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {
+  checkPlainText,
   checkReplaceParam,
   checkReplaceParamFromMNLink,
   doc,
-  escapeDoubleQuote,
   extractArray,
   regFlag,
-  ReplaceParam,
-  string2ReplaceParam,
-  unique
+  string2ReplaceParam
 } from "~/utils"
 import lang from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 
 function generateComments(note: MbBookNote, text: string) {
-  const { customComment } = self.tempProfile.replaceParam
+  if (!text) return
   const { preset } = self.globalProfile.autocomment
-  const params = preset.reduce((acc, k) => {
-    if (k === AutoCommentPreset.Custom && customComment) {
-      acc.push(...customComment)
-    }
-    if (k === AutoCommentPreset.Time) {
-      acc.push({
-        fnKey: 1,
-        regexp: /^.*$/gs,
-        newSubStr: renderTemplateOfNodeProperties(note, "{{time.now}}")
-      })
-    }
-    return acc
-  }, [] as ReplaceParam[])
-  const isComment = note.groupNoteId && note.groupNoteId !== note.noteId
-  return unique(
-    params.reduce((acc, cur) => {
-      const { newSubStr, fnKey } = cur
-      if (fnKey === 1 && isComment) return acc
-      let { regexp } = cur
+  const { customComment: params } = self.tempProfile.replaceParam
+  const comments = [] as string[]
+  if (preset.includes(AutoCommentPreset.Custom) && params?.length) {
+    params.forEach(({ newSubStr, regexp }) => {
       regexp = regFlag.add(regexp, "g")
       if (regexp.test(text)) {
-        acc.push(
+        comments.push(
           ...text
             .match(regexp)!
             .map(k =>
@@ -48,9 +31,12 @@ function generateComments(note: MbBookNote, text: string) {
             )
         )
       }
-      return acc
-    }, [] as string[])
-  )
+    })
+  }
+  if (preset.includes(AutoCommentPreset.Time)) {
+    comments.push(renderTemplateOfNodeProperties(note, "{{time.now}}"))
+  }
+  return comments
 }
 
 export default defineConfig({
@@ -95,33 +81,39 @@ export default defineConfig({
       method({ nodes, option, content }) {
         if (option == AddComment.UseAutoComment) {
           nodes.forEach(node => {
-            const text = getAllText(node)
+            let text = getExcerptText(node).text.join("\n")
+            if (!text && node.excerptText) text = "@picture"
             const comments = generateComments(node, text)
-            appendTextComment(node, ...comments)
+            if (comments?.length) appendTextComment(node, ...comments)
           })
         } else if (content) {
-          content = /^\(.*\)$/.test(content)
-            ? content
-            : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
-          const params = string2ReplaceParam(content)
-          nodes.forEach(node => {
-            const text = getAllText(node)
-            const comments = extractArray(
-              text,
-              params.map(k => ({
-                ...k,
-                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-              }))
-            )
-            appendTextComment(node, ...comments)
-          })
+          if (/^\(.+\)$/.test(content)) {
+            const params = string2ReplaceParam(content)
+            nodes.forEach(node => {
+              let text = getExcerptText(node).text.join("\n")
+              if (!text && node.excerptText) text = "@picture"
+              const comments = extractArray(
+                text,
+                params.map(k => ({
+                  ...k,
+                  newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+                }))
+              )
+              appendTextComment(node, ...comments)
+            })
+          } else {
+            nodes.forEach(node => {
+              appendTextComment(
+                node,
+                renderTemplateOfNodeProperties(node, content)
+              )
+            })
+          }
         }
       },
       check({ input }) {
-        input = /^\(.*\)$/.test(input)
-          ? input
-          : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
-        checkReplaceParam(input)
+        if (/^\(.+\)$/.test(input)) checkReplaceParam(input)
+        else checkPlainText(input)
       }
     }
   ]

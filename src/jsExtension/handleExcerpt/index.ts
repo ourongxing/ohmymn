@@ -8,20 +8,24 @@ import {
   modifyNodeTitle,
   undoGroupingWithRefresh
 } from "marginnote"
-import { DragMerge, HasTitleThen, RemoveExcerpt } from "~/modules/addon/typings"
-import { cacheTransformer, Range, writeProfile } from "~/profile"
+
+import { RemoveExcerpt } from "~/modules/addon/typings"
+import { cacheTransformer } from "~/profile"
 import { unique } from "~/utils"
 import {
   customOCR,
+  genCommentTag,
   modifyTitles,
-  newColorStyle,
-  newTitleTextCommentTag
+  genColorStyle,
+  genTitleTextCommentTag
 } from "./genNewExcerpt"
 
+// 记得初始化
 let note: MbBookNote
 let nodeNote: MbBookNote
 let isOCR = false
 let isComment = false
+let isPic = false
 
 export default async (
   n: MbBookNote,
@@ -32,6 +36,7 @@ export default async (
   // Initialize global variables
   note = n
   isOCR = false
+  isPic = false
   nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
   isComment = nodeNote !== note
   isComment && console.log("The Excerpt is a comment", "excerpt")
@@ -43,7 +48,7 @@ export default async (
     lastExcerptText &&
     lastExcerptText !== "😎"
   ) {
-    processExcerpt({ text: lastExcerptText })
+    addTitleExcerpt({ text: lastExcerptText })
     return console.log("Locking excerpt is ON, restore excerpt", "excerpt")
   }
 
@@ -70,77 +75,73 @@ export default async (
         )
         isOCR = true
       } else {
-        decorateExecrpt()
-        return console.log("Image to text fail, no text", "ocr")
+        isPic = true
+        console.log("Image to text fail, no text", "ocr")
       }
     } else {
-      decorateExecrpt()
-      return console.log(
-        "No auto-to-text option on, no image processing",
-        "ocr"
-      )
+      isPic = true
+      console.log("No auto-to-text option on, no image processing", "ocr")
     }
   }
-
-  // Indicates that the preceding rectangular excerpt to text does not use online OCR
-  if (self.excerptStatus.OCROnline.times === 0) {
-    self.excerptStatus.isModify &&
-      (await delayBreak(
-        30,
-        0.01,
-        () => self.excerptStatus.OCROnline.status === "begin"
-      ))
-    if (self.excerptStatus.OCROnline.status === "begin") {
-      console.log("Online Correcting", "ocr")
-      const success = await delayBreak(
-        30,
-        0.1,
-        () => self.excerptStatus.OCROnline.status === "end"
-      )
-      if (success) console.log("Correct success", "ocr")
-      else console.log("Correct fail", "ocr")
-    }
-  }
-
-  self.excerptStatus.OCROnline = {
-    times: 0,
-    status: "free"
-  }
-  console.log("Rest OCR status", "ocr")
-
-  const OCRContent = await customOCR()
-  console.log("Custom OCR over", "ocr")
-  if (OCRContent) note.excerptText = OCRContent
 
   decorateExecrpt()
-  const excerptText = note.excerptText?.trim()
-  if (!excerptText) return
-  const { title, text, comments, tags } = await newTitleTextCommentTag({
-    note,
-    nodeNote,
-    text: excerptText,
-    isComment
-  })
 
-  processExcerpt({
-    text,
-    title: (await modifyTitles(unique(title))).join("; "),
-    comments,
-    tags
-  })
+  if (isPic) {
+    const { tags, comments } = await genCommentTag(note, "@picture")
+    addCommentTag({
+      comments,
+      tags
+    })
+  } else {
+    // Indicates that the preceding rectangular excerpt to text does not use online OCR
+    if (self.excerptStatus.OCROnline.times === 0) {
+      self.excerptStatus.isModify &&
+        (await delayBreak(
+          30,
+          0.01,
+          () => self.excerptStatus.OCROnline.status === "begin"
+        ))
+      if (self.excerptStatus.OCROnline.status === "begin") {
+        console.log("Online Correcting", "ocr")
+        const success = await delayBreak(
+          30,
+          0.1,
+          () => self.excerptStatus.OCROnline.status === "end"
+        )
+        if (success) console.log("Correct success", "ocr")
+        else console.log("Correct fail", "ocr")
+      }
+    }
+
+    self.excerptStatus.OCROnline = {
+      times: 0,
+      status: "free"
+    }
+    console.log("Rest OCR status", "ocr")
+
+    const OCRContent = await customOCR()
+    console.log("Custom OCR over", "ocr")
+    if (OCRContent) note.excerptText = OCRContent
+    const excerptText = note.excerptText?.trim()
+    if (!excerptText) return
+    const { title, text, comments, tags } = await genTitleTextCommentTag({
+      note,
+      nodeNote,
+      text: excerptText,
+      isComment
+    })
+    addTitleExcerpt({
+      text,
+      title: (await modifyTitles(unique(title))).join("; ")
+    })
+    addCommentTag({
+      comments,
+      tags
+    })
+  }
 }
 
-function processExcerpt({
-  text,
-  title,
-  tags,
-  comments
-}: {
-  text: string
-  title?: string
-  tags?: string[]
-  comments?: string[]
-}) {
+function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text
@@ -176,6 +177,17 @@ function processExcerpt({
     }
 
     if (title) modifyNodeTitle(nodeNote, title)
+  })
+}
+
+function addCommentTag({
+  tags,
+  comments
+}: {
+  tags: string[]
+  comments: string[]
+}) {
+  undoGroupingWithRefresh(() => {
     if (comments?.length) {
       comments = unique(comments)
       const { cacheComment } = self.notebookProfile.additional
@@ -206,7 +218,7 @@ function processExcerpt({
 }
 
 async function decorateExecrpt() {
-  const res = await newColorStyle(note)
+  const res = await genColorStyle(note)
   if (!res) return
   const { color, style } = res
   if (color === undefined && style == undefined) return

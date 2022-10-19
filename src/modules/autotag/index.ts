@@ -1,11 +1,11 @@
-import { addTags, getAllText, MbBookNote } from "marginnote"
+import { addTags, getExcerptText, MbBookNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {
+  checkPlainText,
   checkReplaceParam,
   checkReplaceParamFromMNLink,
-  escapeDoubleQuote,
   extractArray,
   string2ReplaceParam
 } from "~/utils"
@@ -13,6 +13,7 @@ import lang from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 
 function generateTags(note: MbBookNote, text: string) {
+  if (!text) return
   const { customTag: params } = self.tempProfile.replaceParam
   const { preset } = self.globalProfile.autotag
   if (preset.includes(AutoTagPreset.Custom) && params)
@@ -67,33 +68,36 @@ export default defineConfig({
       method({ nodes, option, content }) {
         if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {
-            const text = getAllText(node)
+            let text = getExcerptText(node).text.join("\n")
+            if (!text && node.excerptText) text = "@picture"
             const tags = generateTags(node, text)
             if (tags?.length) addTags(node, tags)
           })
         } else if (content) {
-          content = /^\(.*\)$/.test(content)
-            ? content
-            : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
-          const params = string2ReplaceParam(content)
-          nodes.forEach(node => {
-            const text = getAllText(node)
-            const allTags = extractArray(
-              text,
-              params.map(k => ({
-                ...k,
-                newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-              }))
-            )
-            if (allTags.length) addTags(node, allTags)
-          })
+          if (/^\(.+\)$/.test(content)) {
+            const params = string2ReplaceParam(content)
+            nodes.forEach(node => {
+              let text = getExcerptText(node).text.join("\n")
+              if (!text && node.excerptText) text = "@picture"
+              const tags = extractArray(
+                text,
+                params.map(k => ({
+                  ...k,
+                  newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+                }))
+              )
+              addTags(node, tags)
+            })
+          } else {
+            nodes.forEach(node => {
+              addTags(node, [renderTemplateOfNodeProperties(node, content)])
+            })
+          }
         }
       },
       check({ input }) {
-        input = /^\(.*\)$/.test(input)
-          ? input
-          : `(/^.*$/gs, "${escapeDoubleQuote(input)}")`
-        checkReplaceParam(input)
+        if (/^\(.+\)$/.test(input)) checkReplaceParam(input)
+        else checkPlainText(input)
       }
     }
   ]
