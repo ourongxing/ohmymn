@@ -10,6 +10,8 @@ export default i18n({
     not_support_symbol: "不支持该符号",
     no_item: "数组内必须有元素，并且第一个元素必须是字符",
     require_number: "必须输入数字和单个字符",
+    ban_1: `禁止使用 "//"`,
+    ban_2: `禁止使用 "/./" ，请使用 "/^.+$/gs" 来进行任意非空匹配`,
     not_support_format: "不符合输入格式要求"
   },
   en: {
@@ -19,6 +21,8 @@ export default i18n({
     input_integer: "Please enter an integer",
     input_positive: "Please enter a positive integer",
     not_support_symbol: "Symbol not supported",
+    ban_1: `Do not use "//"`,
+    ban_2: `Do not use "/./" , please use "/^.+$/gs" to match any non-empty`,
     no_item:
       "There must be elements in the array, and the first element must be a character",
     require_number: "You must enter a number and a single character",

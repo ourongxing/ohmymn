@@ -41,8 +41,10 @@ function string2ReplaceParam(str: string): ReplaceParam[] {
 
 function string2Reg(str: string) {
   str = str.trim()
+  if (str.startsWith("//")) throw lang.ban_1
+  if (str.startsWith("/./")) throw lang.ban_2
   if (!str.startsWith("/")) return new RegExp(escapeStringRegexp(str))
-  const regParts = str.match(/^\/(.*?)\/([gimsuy]*)$/)
+  const regParts = str.match(/^\/(.+?)\/([gimsuy]*)$/)
   if (!regParts) throw ""
   return new RegExp(regParts[1], regParts[2])
 }
@@ -52,11 +54,11 @@ function escapeStringRegexp(str: string) {
 }
 
 function string2RegArray(str: string): RegExp[][] {
-  if (/^\(.*\)$/.test(str)) throw ""
+  if (/^\(.+\)$/.test(str)) throw ""
   const brackets = str.split(/\s*;\s*(?=(?:\[\s*\/|\/\s*[^\]gimsuy,]))/)
   return brackets.map(bracket => {
     return bracket
-      .replace(/^\s*\[(.*?)\]\s*$/, "$1")
+      .replace(/^\s*\[(.+?)\]\s*$/, "$1")
       .split(/\s*,\s*(?=\/[^\s,gimsuy]+)/)
       .map(str => string2Reg(str))
   })
@@ -83,9 +85,7 @@ export interface ReplaceParam {
 
 function extractArray(text: string, params: ReplaceParam[]) {
   return unique(
-    params.reduce((acc, cur) => {
-      const { newSubStr } = cur
-      let { regexp } = cur
+    params.reduce((acc, { newSubStr, regexp }) => {
       regexp = regFlag.add(regexp, "g")
       if (regexp.test(text)) {
         acc.push(...text.match(regexp)!.map(k => k.replace(regexp, newSubStr)))
