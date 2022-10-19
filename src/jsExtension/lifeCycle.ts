@@ -1,6 +1,6 @@
 import {
   alert,
-  defineLifeCycelHandler,
+  defineLifeCycleHandler,
   isfileExists,
   MN,
   openUrl,
@@ -41,7 +41,7 @@ import { closePanel, layoutViewController } from "./switchPanel"
  * 7. Close a window
  */
 
-export default defineLifeCycelHandler({
+export default defineLifeCycleHandler({
   instanceMethods: {
     sceneWillConnect() {
       console.log("Open a new window", "lifeCycle")

@@ -1,7 +1,7 @@
 import {
   MbBookNote,
   HUDController,
-  getSelectNodes,
+  getSelectedNodes,
   showHUD,
   popup,
   UIAlertViewStyle,
@@ -27,7 +27,7 @@ export default async function (key: string, option: number, content: string) {
     self.customSelectedNodes = []
     HUDController.hidden()
   } else {
-    nodes = getSelectNodes()
+    nodes = getSelectedNodes()
     if (key === "manageProfile") {
       if (option > 1) await manageProfileAction(nodes[0], option)
       else {
