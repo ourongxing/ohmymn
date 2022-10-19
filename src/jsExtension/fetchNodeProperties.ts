@@ -192,10 +192,11 @@ export const fetchNodeProperties = (node: MbBookNote, template: string) => {
 }
 
 export const renderTemplateOfNodeProperties = (
-  node: MbBookNote,
+  note: MbBookNote,
   template: string
 ) => {
   if (!/{{.+}}/.test(template)) return template
+  const node = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {
