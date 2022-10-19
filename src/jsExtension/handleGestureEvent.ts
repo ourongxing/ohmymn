@@ -11,45 +11,54 @@ import { closePanel } from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
-export const gestureHandlers = () =>
-  gestureHandlerController([
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Up,
-        "SwipeUpOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Down,
-        "SwipeDownOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Left,
-        "SwipeLeftOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Right,
-        "SwipeRightOnMindMapView"
-      )
-    },
-    {
-      view: self.settingViewController.tableView!,
-      gesture: initGesture.tap(1, 2, "DoubleClickOnTableView")
-    }
-  ])
+export const gestureHandlers = () => {
+  if (MN.isMac) {
+    return gestureHandlerController([
+      {
+        view: self.settingViewController.tableView!,
+        gesture: initGesture.tap(1, 2, "DoubleClickOnTableView")
+      }
+    ])
+  } else
+    return gestureHandlerController([
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Up,
+          "SwipeUpOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Down,
+          "SwipeDownOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Left,
+          "SwipeLeftOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Right,
+          "SwipeRightOnMindMapView"
+        )
+      },
+      {
+        view: self.settingViewController.tableView!,
+        gesture: initGesture.tap(1, 2, "DoubleClickOnTableView")
+      }
+    ])
+}
 
 export default defineGestureHandlers({
   onSwipeUpOnMindMapView(sender) {
