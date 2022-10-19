@@ -14,7 +14,7 @@ export async function customOCR() {
     }
 }
 
-async function generateTitles(note: MbBookNote, text: string) {
+async function genTitles(note: MbBookNote, text: string) {
   if (autoUtils.generateTitles) {
     for (const util of autoUtils.generateTitles) {
       const r = await util({ note, text })
@@ -23,7 +23,27 @@ async function generateTitles(note: MbBookNote, text: string) {
   }
 }
 
-export async function newTitleTextCommentTag(param: {
+export async function genCommentTag(note: MbBookNote, text: string) {
+  const retVal = {
+    comments: [] as string[],
+    tags: [] as string[]
+  }
+  if (autoUtils.generateComments) {
+    for (const util of autoUtils.generateComments) {
+      const res = await util({ note, text })
+      if (res) retVal.comments.push(...res)
+    }
+  }
+  if (autoUtils.generateTags) {
+    for (const util of autoUtils.generateTags) {
+      const res = await util({ note, text })
+      if (res) retVal.tags.push(...res)
+    }
+  }
+  return retVal
+}
+
+export async function genTitleTextCommentTag(param: {
   note: MbBookNote
   text: string
   nodeNote: MbBookNote
@@ -34,6 +54,7 @@ export async function newTitleTextCommentTag(param: {
   const { hasTitleThen, dragMerge } = self.globalProfile.addon
   const { cacheTitle } = self.notebookProfile.additional
   let generatedTitles: string[] | undefined = undefined
+  let modifiedText: string | undefined = undefined
   let insertIndex: undefined | number = undefined
 
   const retVal = {
@@ -48,6 +69,7 @@ export async function newTitleTextCommentTag(param: {
       const res = await util({ note, text: retVal.text })
       if (res) retVal.text = res
     }
+    modifiedText = retVal.text
   }
 
   if (
@@ -58,7 +80,7 @@ export async function newTitleTextCommentTag(param: {
         hasTitleThen[0] === HasTitleThen.NotTurnTitle))
   ) {
   } else {
-    let res = await generateTitles(note, retVal.text)
+    let res = await genTitles(note, retVal.text)
     if (!res && isComment && dragMerge[0] === DragMerge.AlwaysTurnTitle) {
       res = {
         title: [retVal.text],
@@ -109,18 +131,12 @@ export async function newTitleTextCommentTag(param: {
     }
   }
 
-  if (autoUtils.generateComments) {
-    for (const util of autoUtils.generateComments) {
-      const res = await util({ note, text: retVal.text })
-      if (res) retVal.comments.push(...res)
-    }
-  }
-
-  if (autoUtils.generateTags) {
-    for (const util of autoUtils.generateTags) {
-      const res = await util({ note, text: retVal.text })
-      if (res) retVal.tags.push(...res)
-    }
+  if (retVal.text || modifiedText) {
+    let temp = retVal.text
+    if (!temp && modifiedText) temp = modifiedText
+    const { tags, comments } = await genCommentTag(note, temp)
+    retVal.tags.push(...tags)
+    retVal.comments.push(...comments)
   }
 
   return retVal
@@ -136,7 +152,7 @@ export async function modifyTitles(titles: string[]) {
   return titles
 }
 
-export async function newColorStyle(note: MbBookNote) {
+export async function genColorStyle(note: MbBookNote) {
   if (autoUtils.modifyStyle)
     for (const util of autoUtils.modifyStyle) {
       const res = await util({ note })
