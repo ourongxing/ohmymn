@@ -12,6 +12,7 @@ export default i18n({
       profile_reset: "配置已重置",
       have_bugs: "遇到 Bug 了吗？可以尝试重置配置或者更新到最新版本。"
     },
+    read_failed: "自定义内容读取失败",
     detect_link: "检测到链接，是否直接打开？",
     no_doc: `当前笔记本没有文档，${Addon.title}无法正常工作。如果你正要打算添加文档，请在添加完成后重新打开笔记本。`,
     not_select_card: "未选中任何脑图卡片",
@@ -55,6 +56,7 @@ export default i18n({
     no_doc: `There is no document in the notebook, ${Addon.title} cannot work properly. If you are about to add documents, please reopen the notebook after adding.`,
     none: "None",
     sure: "Confirm",
+    read_failed: "Custom content read failed",
     uninstall: {
       have_bugs:
         "have you met a bug? Try reset profile or update to newest version.",

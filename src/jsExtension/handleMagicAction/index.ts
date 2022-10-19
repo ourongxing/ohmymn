@@ -2,6 +2,7 @@ import {
   DocMapSplitMode,
   MN,
   popup,
+  showHUD,
   StudyMode,
   UIAlertViewStyle
 } from "marginnote"
@@ -57,9 +58,12 @@ export default async (
             })
           )
           if (option === -1) return
-          const text = content ? getMNLinkValue(content) : ""
+          const text = content ? getMNLinkValue(content)?.trim() : ""
+          if (text === undefined) {
+            showHUD(lang.read_failed)
+          }
           // Allowed to be empty
-          if (
+          else if (
             text === "" ||
             (text && (await checkInputCorrect(text, row.key)))
           ) {
