@@ -1,12 +1,9 @@
 import {
-  getAllCommnets,
-  getAllTags,
-  getAllText,
   getDocURL,
-  getExcerptText,
   getLocalDataByKey,
   MbBookNote,
   MN,
+  NodeNote,
   removeHighlight
 } from "marginnote"
 import { dateFormat, getSerialInfo } from "~/utils"
@@ -75,67 +72,74 @@ const fetchDataFromMetadata = () => {
   return self.metadata.data
 }
 
-export const fetchNodeProperties = (node: MbBookNote, template: string) => {
+export const fetchNodeProperties = (node: NodeNote, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
+  const nodeNote = node.note
   return {
     ...func,
     titles:
       isRequire("titles") &&
-      undefine2undefine(node.noteTitle, t => t.split(/\s*[;；]\s*/)),
-    id: isRequire("id") && node.noteId,
+      undefine2undefine(nodeNote.noteTitle, t => t.split(/\s*[;；]\s*/)),
+    id: isRequire("id") && nodeNote.noteId,
     url: isRequire("url") && {
-      pure: undefine2undefine(node.noteId, t => "marginnote3app://note/" + t),
+      pure: undefine2undefine(
+        nodeNote.noteId,
+        t => "marginnote3app://note/" + t
+      ),
       md: undefine2undefine(
-        node.noteId,
-        t => `[${node.noteTitle ?? "MarginNote"}](marginnote3app://note/${t}`
+        nodeNote.noteId,
+        t =>
+          `[${nodeNote.noteTitle ?? "MarginNote"}](marginnote3app://note/${t}`
       ),
       html: undefine2undefine(
-        node.noteId,
+        nodeNote.noteId,
         t =>
           `<a href="marginnote3app://note/${t}" class="MNLink">${
-            node.noteTitle ?? "MarginNote"
+            nodeNote.noteTitle ?? "MarginNote"
           }</a>`
       )
     },
     page: isRequire("page.") && {
-      start: node.startPage,
-      end: node.endPage === node.startPage ? undefined : node.endPage,
+      start: nodeNote.startPage,
+      end:
+        nodeNote.endPage === nodeNote.startPage ? undefined : nodeNote.endPage,
       real: isRequire("page.") && {
         start: undefine2undefine(
-          node.startPage,
+          nodeNote.startPage,
           k => k - Number(fetchDataFromMetadata()?.pageOffset ?? 0)
         ),
-        end: undefine2undefine(node.endPage, k =>
-          k === node.startPage
+        end: undefine2undefine(nodeNote.endPage, k =>
+          k === nodeNote.startPage
             ? undefined
             : k - Number(fetchDataFromMetadata()?.pageOffset ?? 0)
         )
       }
     },
-    tags: isRequire("tags") && getAllTags(node, false),
-    allText: isRequire("allText") && getAllText(node),
-    excerpts: isRequire("excerpts.") && getExcerptText(node),
-    comments: isRequire("comments.") && getAllCommnets(node),
+    tags: isRequire("tags") && node.tags,
+    allTextPic: isRequire("allTextPic") && node.allTextPic,
+    excerpts: isRequire("excerpts.") && node.excerptsTextPic,
+    comments: isRequire("comments.") && node.commnetsTextPic,
     time: isRequire("time.") && {
-      creat: undefine2undefine(node.createDate, dateFormat),
-      modify: undefine2undefine(node.modifiedDate, dateFormat),
+      creat: undefine2undefine(nodeNote.createDate, dateFormat),
+      modify: undefine2undefine(nodeNote.modifiedDate, dateFormat),
       now: dateFormat(new Date())
     },
     doc: isRequire("doc.") && {
-      md5: node.docMd5,
+      md5: nodeNote.docMd5,
       title: undefine2undefine(
-        node.docMd5,
+        nodeNote.docMd5,
         t => MN.db.getDocumentById(t)?.docTitle
       ),
-      url: {
+      url: isRequire("url.") && {
         pure: undefine2undefine(getDocURL(), t => t),
         md: undefine2undefine(
           getDocURL(),
           t =>
             `[${
-              node.docMd5
-                ? MN.db.getDocumentById(node.docMd5)?.docTitle ?? "MarginNote"
+              nodeNote.docMd5
+                ? MN.db.getDocumentById(nodeNote.docMd5)?.docTitle ??
+                  "MarginNote"
                 : "MarginNote"
             }](marginnote3app://note/${t}`
         ),
@@ -143,45 +147,46 @@ export const fetchNodeProperties = (node: MbBookNote, template: string) => {
           getDocURL(),
           t =>
             `<a href="marginnote3app://note/${t}" class="MNDoc">${
-              node.docMd5
-                ? MN.db.getDocumentById(node.docMd5)?.docTitle ?? "MarginNote"
+              nodeNote.docMd5
+                ? MN.db.getDocumentById(nodeNote.docMd5)?.docTitle ??
+                  "MarginNote"
                 : "MarginNote"
             }</a>`
         )
       },
       path: undefine2undefine(
-        node.docMd5,
+        nodeNote.docMd5,
         t => MN.db.getDocumentById(t)?.pathFile
       ),
       ...(fetchDataFromMetadata() ?? {})
     },
     notebook: isRequire("notebook.") && {
       title: undefine2undefine(
-        node.notebookId,
+        nodeNote.notebookId,
         t => MN.db.getNotebookById(t)?.title
       ),
-      id: node.notebookId,
+      id: nodeNote.notebookId,
       url: isRequire("url.") && {
         pure: undefine2undefine(
-          node.notebookId,
+          nodeNote.notebookId,
           t => "marginnote3app://notebook/" + t
         ),
         md: undefine2undefine(
-          node.notebookId,
+          nodeNote.notebookId,
           t =>
             `[${
               undefine2undefine(
-                node.notebookId,
+                nodeNote.notebookId,
                 t => MN.db.getNotebookById(t)?.title
               ) ?? "MarginNote"
             }](marginnote3app://notebook/${t}`
         ),
         html: undefine2undefine(
-          node.notebookId,
+          nodeNote.notebookId,
           t =>
             `<a href="marginnote3app://notebook/${t}" class="MNNotebookUrl">${
               undefine2undefine(
-                node.notebookId,
+                nodeNote.notebookId,
                 t => MN.db.getNotebookById(t)?.title
               ) ?? "MarginNote"
             }</a>`
@@ -196,20 +201,22 @@ export const renderTemplateOfNodeProperties = (
   template: string
 ) => {
   if (!/{{.+}}/.test(template)) return template
-  const node = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
+  const node = new NodeNote(note)
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {
       ...fetchNodeProperties(node, template),
       parent:
         isRequire("parent.") &&
-        undefine2undefine(node.parentNote, t =>
-          fetchNodeProperties(t, template)
+        undefine2undefine(node.note.parentNote, t =>
+          fetchNodeProperties(new NodeNote(t), template)
         ),
       children:
         isRequire("children") &&
-        undefine2undefine(node.childNotes, k =>
-          k.map((k: MbBookNote) => fetchNodeProperties(k, template))
+        undefine2undefine(node.note.childNotes, k =>
+          k.map((k: MbBookNote) =>
+            fetchNodeProperties(new NodeNote(k), template)
+          )
         )
     }).trim()
   } catch (err) {
