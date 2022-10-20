@@ -1,12 +1,10 @@
 import {
-  MbBookNote,
   HUDController,
-  getSelectedNodes,
   showHUD,
   popup,
   UIAlertViewStyle,
-  getNodeTree,
-  undoGroupingWithRefresh
+  undoGroupingWithRefresh,
+  NodeNote
 } from "marginnote"
 import { actions4card } from "~/merged"
 import { PanelControl } from "~/modules/addon/typings"
@@ -15,7 +13,7 @@ import lang from "../lang"
 import { closePanel } from "../switchPanel"
 
 export default async function (key: string, option: number, content: string) {
-  let nodes: MbBookNote[] = []
+  let nodes: NodeNote[] = []
   if (
     key != "filterCard" &&
     self.globalProfile.addon.panelControl.includes(PanelControl.CompleteClose)
@@ -27,7 +25,7 @@ export default async function (key: string, option: number, content: string) {
     self.customSelectedNodes = []
     HUDController.hidden()
   } else {
-    nodes = getSelectedNodes()
+    nodes = NodeNote.getSelectedNodes()
     if (key === "manageProfile") {
       if (option > 1) await manageProfileAction(nodes[0], option)
       else {
@@ -47,16 +45,17 @@ export default async function (key: string, option: number, content: string) {
       // which leads to duplicate processing.
       const isHavingChildren = nodes.every(
         node =>
-          nodes[0].parentNote === node.parentNote && node?.childNotes?.length
+          nodes[0].parentNode?.nodeid === node.note.parentNote?.noteId &&
+          node.childNodes.length
       )
 
-      const noNeedSmartSelection =
+      const notNeedSmartSelection =
         key === "renameTitle" && /#\[(.+)\]/.test(content)
 
       if (
         self.globalProfile.magicaction4card.smartSelection &&
         isHavingChildren &&
-        !noNeedSmartSelection
+        !notNeedSmartSelection
       ) {
         const { option } = await popup(
           {
@@ -75,17 +74,21 @@ export default async function (key: string, option: number, content: string) {
         )
 
         if (option !== 0) {
-          const { onlyChildren, onlyFirstLevel, allNodes } = nodes
-            .slice(1)
-            .reduce((acc, node) => {
-              const { onlyChildren, onlyFirstLevel, allNodes } =
-                getNodeTree(node)
-              acc.allNodes.push(...allNodes)
-              acc.onlyChildren.push(...onlyChildren)
-              acc.onlyFirstLevel.push(...onlyFirstLevel)
+          const { children, descendant, all } = nodes.reduce(
+            (acc, node) => {
+              const { descendant } = node.descendantNodes
+              acc.descendant.push(...descendant)
+              acc.children.push(...node.childNodes)
+              acc.all.push(node, ...descendant)
               return acc
-            }, getNodeTree(nodes[0]))
-          nodes = [onlyFirstLevel, onlyChildren, allNodes][option - 1]
+            },
+            {
+              children: [] as NodeNote[],
+              descendant: [] as NodeNote[],
+              all: [] as NodeNote[]
+            }
+          )
+          nodes = [children, descendant, all][option - 1]
         }
       }
     }

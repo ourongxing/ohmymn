@@ -1,25 +1,45 @@
-import { MbBookNote } from "marginnote"
+import { MbBookNote, NodeNote } from "marginnote"
 
 export type AutoUtilType = {
   customOCR: ({ imgBase64 }: { imgBase64: string }) => string
   modifyExcerptText: ({
+    node,
     note,
     text
   }: {
+    node: NodeNote
     note: MbBookNote
     text: string
   }) => string
-  generateTitles: ({ note, text }: { note: MbBookNote; text: string }) => {
+  generateTitles: ({
+    node,
+    text,
+    note
+  }: {
+    node: NodeNote
+    note: MbBookNote
+    text: string
+  }) => {
     title: string[]
     text: string
     comments?: string[]
   }
-  generateTags: ({ note, text }: { note: MbBookNote; text: string }) => string[]
+  generateTags: ({
+    note,
+    node,
+    text
+  }: {
+    note: MbBookNote
+    node: NodeNote
+    text: string
+  }) => string[]
   generateComments: ({
+    node,
     note,
     text
   }: {
     note: MbBookNote
+    node: NodeNote
     text: string
   }) => string[]
   modifyTitles: ({ titles }: { titles: string[] }) => string[]

@@ -1,5 +1,5 @@
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { MbBookNote } from "marginnote"
+import { NodeNote } from "marginnote"
 import { unique } from "~/utils"
 import { regFlag, ReplaceParam } from "~/utils/input"
 import { TitleLinkSplit, AutoDefPreset } from "./typings"
@@ -36,7 +36,7 @@ function split2MuiltTitles(text: string) {
 }
 
 export function extractTitle(
-  note: MbBookNote,
+  node: NodeNote,
   text: string,
   params?: ReplaceParam[]
 ) {
@@ -57,7 +57,7 @@ export function extractTitle(
         ...text
           .match(regexp)!
           .map(k =>
-            k.replace(regexp, renderTemplateOfNodeProperties(note, newSubStr))
+            k.replace(regexp, renderTemplateOfNodeProperties(node, newSubStr))
           )
       )
     }

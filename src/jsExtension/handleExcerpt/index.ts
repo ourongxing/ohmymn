@@ -1,10 +1,8 @@
 import {
   delayBreak,
-  getCommentIndex,
   isNoteExist,
   MbBookNote,
   MN,
-  modifyNodeTitle,
   NodeNote,
   undoGroupingWithRefresh
 } from "marginnote"
@@ -87,7 +85,7 @@ export default async (
   }
 
   if (isPic) {
-    const { tags, comments } = await genCommentTag(note, "@picture")
+    const { tags, comments } = await genCommentTag(note, node, "@picture")
     addCommentTag({
       comments,
       tags
@@ -126,7 +124,7 @@ export default async (
     if (!excerptText) return
     const { title, text, comments, tags } = await genTitleTextCommentTag({
       note,
-      nodeNote,
+      node,
       text: excerptText,
       isComment
     })
@@ -152,7 +150,7 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
     } else {
       // as comment
       if (isComment) {
-        const index = getCommentIndex(nodeNote, note)
+        const index = node.getCommentIndex(note)
         if (index != -1) {
           const { removeExcerpt } = self.globalProfile.addon
           self.excerptStatus.lastRemovedComment = {
@@ -178,7 +176,7 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
       else note.excerptText = ""
     }
 
-    if (title) modifyNodeTitle(nodeNote, title)
+    if (title) node.title = title
   })
 }
 
@@ -200,11 +198,14 @@ function addCommentTag({
       const { cacheComment } = self.notebookProfile.additional
       const cachedComments = cacheComment[note.noteId!]
       if (cachedComments) {
-        const existComments = node.textComments
+        const existComments = node.note.comments
         const indexList: number[] = []
-        existComments.forEach(({ text, index }) => {
-          if (cachedComments.some(k => cacheTransformer.tell(k, text)))
-            indexList.unshift(index)
+        existComments.forEach((h, i) => {
+          if (
+            h.type === "TextNote" &&
+            cachedComments.some(k => cacheTransformer.tell(k, h.text))
+          )
+            indexList.unshift(i)
         })
         indexList.forEach(i => {
           nodeNote.removeCommentByIndex(i)

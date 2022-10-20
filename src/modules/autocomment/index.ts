@@ -1,4 +1,4 @@
-import { appendTextComment, getExcerptText, MbBookNote } from "marginnote"
+import { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -14,7 +14,7 @@ import {
 import lang from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 
-function generateComments(note: MbBookNote, text: string) {
+function generateComments(node: NodeNote, text: string) {
   if (!text) return
   const { preset } = self.globalProfile.autocomment
   const { customComment: params } = self.tempProfile.replaceParam
@@ -27,7 +27,7 @@ function generateComments(note: MbBookNote, text: string) {
           ...text
             .match(regexp)!
             .map(k =>
-              k.replace(regexp, renderTemplateOfNodeProperties(note, newSubStr))
+              k.replace(regexp, renderTemplateOfNodeProperties(node, newSubStr))
             )
         )
       }
@@ -47,8 +47,8 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.on,
       auto: {
-        generateComments({ note, text }) {
-          return generateComments(note, text)
+        generateComments({ node, text }) {
+          return generateComments(node, text)
         }
       }
     },
@@ -78,17 +78,19 @@ export default defineConfig({
       method({ nodes, option, content }) {
         if (option == AddComment.UseAutoComment) {
           nodes.forEach(node => {
-            let text = getExcerptText(node).text.join("\n")
-            if (!text && node.excerptText) text = "@picture"
+            let text = node.excerptsText.join("\n")
+            if (node.note.excerptPic?.paint && node.isOCR === false)
+              text = "@picture"
             const comments = generateComments(node, text)
-            if (comments?.length) appendTextComment(node, ...comments)
+            if (comments?.length) node.appendTextComments(...comments)
           })
         } else if (content) {
           if (/^\(.+\)$/.test(content)) {
             const params = string2ReplaceParam(content)
             nodes.forEach(node => {
-              let text = getExcerptText(node).text.join("\n")
-              if (!text && node.excerptText) text = "@picture"
+              let text = node.excerptsText.join("\n")
+              if (node.note.excerptPic?.paint && node.isOCR === false)
+                text = "@picture"
               const comments = extractArray(
                 text,
                 params.map(k => ({
@@ -96,12 +98,11 @@ export default defineConfig({
                   newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
                 }))
               )
-              appendTextComment(node, ...comments)
+              node.appendTextComments(...comments)
             })
           } else {
             nodes.forEach(node => {
-              appendTextComment(
-                node,
+              node.appendTextComments(
                 renderTemplateOfNodeProperties(node, content)
               )
             })

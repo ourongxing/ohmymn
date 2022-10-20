@@ -9,7 +9,6 @@ import {
   ReplaceParam,
   string2RegArray
 } from "~/utils"
-import { getExcerptNotes, modifyNodeTitle } from "marginnote"
 import lang from "./lang"
 import { ExtractTitle, SplitExcerpt } from "./typings"
 import { extractTitle, splitExcerptTitles } from "./utils"
@@ -25,8 +24,8 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.on,
       auto: {
-        generateTitles({ note, text }) {
-          const r = extractTitle(note, text)
+        generateTitles({ node, text }) {
+          const r = extractTitle(node, text)
           if (r?.title.length) return r
           const e = splitExcerptTitles(text)
           if (e?.title.length) return e
@@ -103,16 +102,16 @@ export default defineConfig({
           params = string2ReplaceParam(content)
         } else return
         nodes.forEach(node => {
-          if (!node.excerptPic || (node.excerptPic && node.textFirst)) {
+          if (!node.note.excerptPic || node.isOCR) {
             const allTitles = [] as string[]
-            getExcerptNotes(node).forEach(k => {
+            node.notes.forEach(k => {
               const text = k.excerptText
               if (text) {
                 const ret = extractTitle(node, text, params)
                 ret?.title.length && allTitles.push(...ret.title)
               }
             })
-            if (allTitles.length) modifyNodeTitle(node, allTitles, true)
+            node.appendTitles(...allTitles)
           }
         })
       },
@@ -133,19 +132,19 @@ export default defineConfig({
           regGloups = string2RegArray(content)
         } else return
         nodes.forEach(node => {
-          if (!node.excerptPic || (node.excerptPic && node.textFirst)) {
+          if (!node.note.excerptPic?.paint || node.isOCR) {
             const allTitles = [] as string[]
-            getExcerptNotes(node).forEach(k => {
+            node.notes.forEach(k => {
               const text = k.excerptText
               if (text) {
                 const ret = splitExcerptTitles(text, regGloups)
                 if (ret?.title.length) {
                   allTitles.push(...ret.title)
-                  node.excerptText = ret.text
+                  node.mainExcerptText = ret.text
                 }
               }
             })
-            if (allTitles.length) modifyNodeTitle(node, allTitles, true)
+            node.titles = allTitles
           }
         })
       }

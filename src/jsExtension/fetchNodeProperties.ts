@@ -117,9 +117,18 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
       }
     },
     tags: isRequire("tags") && node.tags,
-    allTextPic: isRequire("allTextPic") && node.allTextPic,
-    excerpts: isRequire("excerpts.") && node.excerptsTextPic,
-    comments: isRequire("comments.") && node.commnetsTextPic,
+    allTextPic: isRequire("allTextPic") && {
+      ...node.allTextPic,
+      text: node.allText
+    },
+    excerpts: isRequire("excerpts.") && {
+      ...node.excerptsTextPic,
+      text: node.excerptsText
+    },
+    comments: isRequire("comments.") && {
+      ...node.commentsTextPic,
+      text: node.commentsText
+    },
     time: isRequire("time.") && {
       creat: undefine2undefine(nodeNote.createDate, dateFormat),
       modify: undefine2undefine(nodeNote.modifiedDate, dateFormat),
@@ -197,11 +206,10 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
 }
 
 export const renderTemplateOfNodeProperties = (
-  note: MbBookNote,
+  node: NodeNote,
   template: string
 ) => {
   if (!/{{.+}}/.test(template)) return template
-  const node = new NodeNote(note)
   const isRequire = (key: string) => template.includes(key)
   try {
     return render(template, {

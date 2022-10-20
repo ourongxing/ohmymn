@@ -2,6 +2,7 @@ import {
   confirm,
   MbBookNote,
   MN,
+  NodeNote,
   selectIndex,
   setLocalDataByKey,
   showHUD,
@@ -346,22 +347,22 @@ export async function readProfilefromCard(node: MbBookNote) {
   }
 }
 
-export async function manageProfileAction(node: MbBookNote, option: number) {
+export async function manageProfileAction(node: NodeNote, option: number) {
   if (!MN.currentDocmd5 || !MN.currnetNotebookid) return
   // Write
   switch (option) {
     case 0:
-      readProfilefromCard(node)
+      readProfilefromCard(node.note)
       break
     case 1:
-      if (!node.childNotes?.length) showHUD(lang.no_children)
+      if (!node.childNodes.length) showHUD(lang.no_children)
       else {
         writeProfile({
           range: Range.All,
           docmd5: MN.currentDocmd5,
           notebookid: MN.currnetNotebookid
         })
-        writeProfile2Card(node, false)
+        writeProfile2Card(node.note, false)
       }
       break
     case 2:

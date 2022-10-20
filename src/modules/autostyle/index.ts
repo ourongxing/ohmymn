@@ -1,6 +1,5 @@
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes } from "marginnote"
 import { serialSymbols, reverseEscape, doc } from "~/utils"
 import lang from "./lang"
 import { ChangeStyle } from "./typings"
@@ -86,7 +85,7 @@ export default defineConfig({
       method({ content, nodes, option }) {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const { color } = modifyStyle(note)
               if (color !== undefined)
                 note.colorIndex = color !== -1 ? color : 12
@@ -95,7 +94,7 @@ export default defineConfig({
         } else if (content) {
           const color = Number(content) - 1
           for (const node of nodes) {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               note.colorIndex = color
             })
           }
@@ -115,7 +114,7 @@ export default defineConfig({
       method({ option, nodes }) {
         if (option === ChangeStyle.UseAutoStyle) {
           for (const node of nodes) {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const { style } = modifyStyle(note)
               if (style !== undefined) note.fillIndex = style
             })
@@ -123,7 +122,7 @@ export default defineConfig({
         } else {
           const style = option - 1
           for (const node of nodes) {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               note.fillIndex = style
             })
           }

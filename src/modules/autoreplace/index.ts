@@ -1,4 +1,4 @@
-import { getExcerptNotes, MbBookNote } from "marginnote"
+import { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -6,7 +6,7 @@ import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
 import lang from "./lang"
 import { AutoReplacePreset, ReplaceCard } from "./typings"
 
-function replaceText(note: MbBookNote, text: string) {
+function replaceText(node: NodeNote, text: string) {
   const { preset } = self.globalProfile.autoreplace
   for (const set of preset) {
     switch (set) {
@@ -17,7 +17,7 @@ function replaceText(note: MbBookNote, text: string) {
           (acc, param) =>
             acc.replace(
               param.regexp,
-              renderTemplateOfNodeProperties(note, param.newSubStr)
+              renderTemplateOfNodeProperties(node, param.newSubStr)
             ),
           text
         )
@@ -39,8 +39,8 @@ export default defineConfig({
       auto: {
         modifyExcerptText: {
           index: 999,
-          method({ note, text }) {
-            return replaceText(note, text)
+          method({ node, text }) {
+            return replaceText(node, text)
           }
         }
       }
@@ -68,7 +68,7 @@ export default defineConfig({
       method: ({ content, nodes, option }) => {
         if (option == ReplaceCard.UseAutoReplace) {
           nodes.forEach(node => {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const text = note.excerptText
               if (text) note.excerptText = replaceText(node, text)
             })
@@ -79,7 +79,7 @@ export default defineConfig({
             : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
           const params = string2ReplaceParam(content)
           nodes.forEach(node => {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const text = note.excerptText
               if (text) {
                 note.excerptText = params.reduce((acc, params) => {

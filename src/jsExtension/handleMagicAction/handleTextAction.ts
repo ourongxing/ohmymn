@@ -1,8 +1,7 @@
 import {
-  appendTextComment,
   copy,
   MN,
-  modifyNodeTitle,
+  NodeNote,
   openUrl,
   popup,
   selectIndex,
@@ -101,6 +100,7 @@ export default async function (key: string, option: number, content: string) {
         )
         option = noteOptions[index]
       }
+      const lastFocusNode = new NodeNote(lastFocusNote)
       undoGroupingWithRefresh(() => {
         if (res)
           switch (option) {
@@ -113,20 +113,17 @@ export default async function (key: string, option: number, content: string) {
               }
               break
             case NoteOption.Title:
-              modifyNodeTitle(lastFocusNote, res)
+              lastFocusNode.title = res
               break
             case NoteOption.MergeTitle:
-              modifyNodeTitle(
-                lastFocusNote,
-                lastFocusNote.noteTitle + "; " + res
-              )
+              lastFocusNode.appendTitles(res)
               break
             case NoteOption.Excerpt:
-              lastFocusNote.excerptText = res
+              lastFocusNode.mainExcerptText = res
               break
             case NoteOption.MergeExcerpt:
-              const { excerptText } = lastFocusNote
-              lastFocusNote.excerptText = excerptText ?? "" + res
+              lastFocusNode.mainExcerptText =
+                lastFocusNode.mainExcerptText + res
               break
             case NoteOption.Comment:
               if (key === "formulaOCR") {
@@ -160,7 +157,7 @@ export default async function (key: string, option: number, content: string) {
                     )
                     break
                 }
-              } else appendTextComment(lastFocusNote, res)
+              } else lastFocusNode.appendTextComments(res)
           }
       })
     }

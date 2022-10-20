@@ -259,5 +259,16 @@ export const rewriteSelection: RewriteCase[] = [
         removeExcerpt: (old: number[]) => [old[0] === 2 ? 0 : old[0]]
       }
     }
+  },
+  {
+    version: {
+      from: "4.0.10",
+      to: ">=4.0.11"
+    },
+    global: {
+      autocomment: {
+        preset: (old: number[]) => old.filter(k => k !== 1)
+      }
+    }
   }
 ]

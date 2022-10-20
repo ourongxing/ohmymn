@@ -9,7 +9,8 @@ import type {
   UIWindow,
   UITableView,
   UITableViewController,
-  DirectionOfSelection
+  DirectionOfSelection,
+  NodeNote
 } from "marginnote"
 import type { ISection } from "./typings"
 
@@ -64,7 +65,7 @@ declare global {
       arrow: DirectionOfSelection
       winRect: string
     }
-    customSelectedNodes: MbBookNote[]
+    customSelectedNodes: NodeNote[]
     docProfile: IDocProfile
     globalProfile: IGlobalProfile
     tempProfile: ITempProfile

@@ -1,4 +1,4 @@
-import { addTags, getExcerptText, MbBookNote } from "marginnote"
+import { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -12,7 +12,7 @@ import {
 import lang from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 
-function generateTags(note: MbBookNote, text: string) {
+function generateTags(node: NodeNote, text: string) {
   if (!text) return
   const { customTag: params } = self.tempProfile.replaceParam
   const { preset } = self.globalProfile.autotag
@@ -21,7 +21,7 @@ function generateTags(note: MbBookNote, text: string) {
       text,
       params.map(k => ({
         ...k,
-        newSubStr: renderTemplateOfNodeProperties(note, k.newSubStr)
+        newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
       }))
     )
 }
@@ -37,8 +37,8 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.on,
       auto: {
-        generateTags({ note, text }) {
-          return generateTags(note, text)
+        generateTags({ node, text }) {
+          return generateTags(node, text)
         }
       }
     },
@@ -68,17 +68,20 @@ export default defineConfig({
       method({ nodes, option, content }) {
         if (option == AddTag.UseAutoTag) {
           nodes.forEach(node => {
-            let text = getExcerptText(node).text.join("\n")
-            if (!text && node.excerptText) text = "@picture"
+            let text = node.excerptsText.join("\n")
+            if (node.note.excerptPic?.paint && node.isOCR === false)
+              text = "@picture"
+            // TODO: all excerpt need
             const tags = generateTags(node, text)
-            if (tags?.length) addTags(node, tags)
+            if (tags?.length) node.appendTags(...tags)
           })
         } else if (content) {
           if (/^\(.+\)$/.test(content)) {
             const params = string2ReplaceParam(content)
             nodes.forEach(node => {
-              let text = getExcerptText(node).text.join("\n")
-              if (!text && node.excerptText) text = "@picture"
+              let text = node.excerptsText.join("\n")
+              if (node.note.excerptPic?.paint && node.isOCR === false)
+                text = "@picture"
               const tags = extractArray(
                 text,
                 params.map(k => ({
@@ -86,11 +89,11 @@ export default defineConfig({
                   newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
                 }))
               )
-              addTags(node, tags)
+              node.appendTags(...tags)
             })
           } else {
             nodes.forEach(node => {
-              addTags(node, [renderTemplateOfNodeProperties(node, content)])
+              node.appendTags(renderTemplateOfNodeProperties(node, content))
             })
           }
         }

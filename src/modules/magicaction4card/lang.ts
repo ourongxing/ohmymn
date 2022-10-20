@@ -32,7 +32,7 @@ export default i18n({
       help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶",
       is_excerpt_pic_text:
         "检测到当前摘录为图片 OCR 的文字，合并为评论无法删除该摘录，是否继续合并为评论？",
-      $excerpt_pic_text_option2: ["继续", "合并为评论"] as StringTuple<2>,
+      $excerpt_pic_text_option2: ["继续", "合并为摘录"] as StringTuple<2>,
       is_excerpt_pic:
         "检测到当前摘录为图片，合并为摘录后仍旧是图片，是否继续合并为摘录？",
       $excerpt_pic_option2: ["继续", "合并为评论"] as StringTuple<2>,

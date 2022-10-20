@@ -1,11 +1,4 @@
-import {
-  appendTextComment,
-  MbBookNote,
-  modifyNodeTitle,
-  removeCommentButLinkTag,
-  showHUD,
-  undoGroupingWithRefresh
-} from "marginnote"
+import { NodeNote, showHUD, undoGroupingWithRefresh } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { checkPlainText, doc } from "~/utils"
@@ -111,9 +104,9 @@ export default defineConfig({
             nodes = nodes.slice(0, 5)
           }
         }
-        const getCompletedWord = (node: MbBookNote) => {
-          const text = node?.noteTitle?.split(/\s*[;；]\s*/)[0]
-          return text ? completeWord(text, node) : undefined
+        const getCompletedWord = (node: NodeNote) => {
+          const text = node.titles[0]
+          return text ? completeWord(text, node.note) : undefined
         }
 
         const allInfo = await Promise.all(
@@ -124,15 +117,14 @@ export default defineConfig({
             const info = allInfo?.[index]
             if (info) {
               const { title, comments } = info
-              modifyNodeTitle(node, title)
-              removeCommentButLinkTag(
-                node,
+              node.titles = title
+              node.removeCommentButLinkTag(
                 k =>
                   k.type === "PaintNote" ||
                   option !== 1 ||
                   k.type === "HtmlNote",
                 n => {
-                  appendTextComment(n, ...comments)
+                  n.appendTextComments(...comments)
                 }
               )
             }

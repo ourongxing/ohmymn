@@ -1,10 +1,9 @@
 import { Addon } from "~/addon"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { select, getExcerptText, openUrl, showHUD } from "marginnote"
+import { select, openUrl, showHUD, NodeNote, removeHighlight } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import lang from "./lang"
-import { MbBookNote } from "marginnote"
 
 async function getTitleExcerpt(
   k: string[],
@@ -28,7 +27,7 @@ async function getTitleExcerpt(
   }
 }
 
-function getCustomContent(node: MbBookNote, type: "copy" | "search") {
+function getCustomContent(node: NodeNote, type: "copy" | "search") {
   const { customContent, customSearchContent } = self.globalProfile.copysearch
   const custom = type === "copy" ? customContent : customSearchContent
   if (!custom) return undefined
@@ -37,12 +36,12 @@ function getCustomContent(node: MbBookNote, type: "copy" | "search") {
 }
 
 export async function getContentofOneCard(
-  node: MbBookNote,
+  node: NodeNote,
   option: number,
   type: "copy" | "search"
 ) {
-  const titles = node.noteTitle?.split(/\s*[;；]\s*/) ?? []
-  const excerptText = getExcerptText(node, false).text
+  const titles = node.titles
+  const excerptText = node.excerptsText.map(k => removeHighlight(k))
   const customContent = getCustomContent(node, type)
   switch (option) {
     case WhichPartofCard.Title: {
@@ -77,7 +76,7 @@ export async function getContentofOneCard(
   }
 }
 export function getContentofMuiltCards(
-  nodes: MbBookNote[],
+  nodes: NodeNote[],
   option: number,
   type: "copy" | "search"
 ) {
@@ -85,18 +84,17 @@ export function getContentofMuiltCards(
     case 0: {
       const { multipleTitles } = self.globalProfile.copysearch
       return nodes.reduce((acc, cur) => {
-        const t = cur.noteTitle
-        if (!t) return acc
-        if (multipleTitles[0] === MultipleTitlesExcerpt.First)
-          acc.push(t.split(/\s*[;；]\s*/)[0])
-        else acc.push(t)
+        const t = cur.titles
+        if (!t.length) return acc
+        if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(...t)
+        else acc.push(...t)
         return acc
       }, [] as string[])
     }
     case 1: {
       const { multipleTitles } = self.globalProfile.copysearch
       return nodes.reduce((acc, cur) => {
-        const l = getExcerptText(cur, false).text
+        const l = cur.excerptsText.map(k => removeHighlight(k))
         if (!l.length) return acc
         if (multipleTitles[0] === MultipleTitlesExcerpt.First) acc.push(l[0])
         else acc.push(l.join("\n"))

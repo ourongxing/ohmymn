@@ -7,7 +7,7 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam
 } from "~/utils"
-import { showHUD, getNodeTree, modifyNodeTitle } from "marginnote"
+import { showHUD } from "marginnote"
 import lang from "./lang"
 
 export const getLayerSerialInfo = (
@@ -66,25 +66,23 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
   if (/#\[(.+)\]/.test(newSubStr)) {
     const isHavingChildren = nodes.every(
       node =>
-        nodes[0].parentNote === node.parentNote && node?.childNotes?.length
+        nodes[0].parentNode?.nodeid === node.parentNode?.nodeid &&
+        node?.childNodes?.length
     )
     if (isHavingChildren) {
       nodes.forEach(node => {
-        // 只处理子节点
-        const { treeIndex, onlyChildren } = getNodeTree(node)
+        const { treeIndex, descendant } = node.descendantNodes
         const newTitles = getLayerSerialInfo(newSubStr, treeIndex).map(k =>
           newSubStr.replace(/#\[(.+)\]/, k)
         )
-        onlyChildren.forEach((node, index) => {
-          const title = node.noteTitle ?? ""
-          if (newTitles[index])
-            modifyNodeTitle(
-              node,
-              title.replace(
-                regexp,
-                renderTemplateOfNodeProperties(node, newTitles[index])
-              )
+        descendant.forEach((node, index) => {
+          const title = node.note.noteTitle ?? ""
+          if (newTitles[index]) {
+            node.title = title.replace(
+              regexp,
+              renderTemplateOfNodeProperties(node, newTitles[index])
             )
+          }
         })
       })
     } else {
@@ -98,24 +96,21 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
       newSubStr.replace(/%\[(.+)\]/, k)
     )
     nodes.forEach((node, index) => {
-      const title = node.noteTitle ?? ""
+      const title = node.note.noteTitle ?? ""
       if (newTitles[index])
-        modifyNodeTitle(
-          node,
-          title.replace(
-            regexp,
-            renderTemplateOfNodeProperties(node, newTitles[index])
-          )
+        node.title = title.replace(
+          regexp,
+          renderTemplateOfNodeProperties(node, newTitles[index])
         )
     })
   }
   // 或者直接替换
   else {
     nodes.forEach(node => {
-      const title = node.noteTitle ?? ""
-      modifyNodeTitle(
-        node,
-        title.replace(regexp, renderTemplateOfNodeProperties(node, newSubStr))
+      const title = node.note.noteTitle ?? ""
+      node.title = title.replace(
+        regexp,
+        renderTemplateOfNodeProperties(node, newSubStr)
       )
     })
   }

@@ -1,6 +1,6 @@
 import { IAllProfile } from "~/profile"
 import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
-import { MbBookNote } from "marginnote"
+import { NodeNote } from "marginnote"
 import { CellViewType } from "."
 import { ModuleKeyType } from "~/merged"
 
@@ -96,7 +96,7 @@ export type IActionMethod4Card = ({
   option
 }: {
   content: string
-  nodes: MbBookNote[]
+  nodes: NodeNote[]
   option: number
 }) => any
 

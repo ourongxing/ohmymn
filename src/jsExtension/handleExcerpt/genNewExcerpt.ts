@@ -1,4 +1,4 @@
-import { MbBookNote, MN, removeHighlight } from "marginnote"
+import { MbBookNote, MN, NodeNote, removeHighlight } from "marginnote"
 import { autoUtils } from "~/merged"
 import { DragMerge, HasTitleThen } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
@@ -14,29 +14,33 @@ export async function customOCR() {
     }
 }
 
-async function genTitles(note: MbBookNote, text: string) {
+async function genTitles(note: MbBookNote, node: NodeNote, text: string) {
   if (autoUtils.generateTitles) {
     for (const util of autoUtils.generateTitles) {
-      const r = await util({ note, text })
+      const r = await util({ note, node, text })
       if (r) return r
     }
   }
 }
 
-export async function genCommentTag(note: MbBookNote, text: string) {
+export async function genCommentTag(
+  note: MbBookNote,
+  node: NodeNote,
+  text: string
+) {
   const retVal = {
     comments: [] as string[],
     tags: [] as string[]
   }
   if (autoUtils.generateComments) {
     for (const util of autoUtils.generateComments) {
-      const res = await util({ note, text })
+      const res = await util({ note, node, text })
       if (res) retVal.comments.push(...res)
     }
   }
   if (autoUtils.generateTags) {
     for (const util of autoUtils.generateTags) {
-      const res = await util({ note, text })
+      const res = await util({ note, node, text })
       if (res) retVal.tags.push(...res)
     }
   }
@@ -46,11 +50,11 @@ export async function genCommentTag(note: MbBookNote, text: string) {
 export async function genTitleTextCommentTag(param: {
   note: MbBookNote
   text: string
-  nodeNote: MbBookNote
+  node: NodeNote
   isComment: boolean
 }) {
-  const { note, text, nodeNote, isComment } = param
-  const nodeTitle = nodeNote.noteTitle?.split(/\s*[;；]\s*/) ?? []
+  const { note, text, node, isComment } = param
+  const nodeTitle = node.titles
   const { hasTitleThen, dragMerge } = self.globalProfile.addon
   const { cacheTitle } = self.notebookProfile.additional
   let generatedTitles: string[] | undefined = undefined
@@ -66,7 +70,7 @@ export async function genTitleTextCommentTag(param: {
 
   if (autoUtils.modifyExcerptText) {
     for (const util of autoUtils.modifyExcerptText) {
-      const res = await util({ note, text: retVal.text })
+      const res = await util({ node, note, text: retVal.text })
       if (res) retVal.text = res
     }
     modifiedText = retVal.text
@@ -80,7 +84,7 @@ export async function genTitleTextCommentTag(param: {
         hasTitleThen[0] === HasTitleThen.NotTurnTitle))
   ) {
   } else {
-    let res = await genTitles(note, retVal.text)
+    let res = await genTitles(note, node, retVal.text)
     if (!res && isComment && dragMerge[0] === DragMerge.AlwaysTurnTitle) {
       res = {
         title: [retVal.text],
@@ -134,7 +138,7 @@ export async function genTitleTextCommentTag(param: {
   if (retVal.text || modifiedText) {
     let temp = retVal.text
     if (!temp && modifiedText) temp = modifiedText
-    const { tags, comments } = await genCommentTag(note, temp)
+    const { tags, comments } = await genCommentTag(note, node, temp)
     retVal.tags.push(...tags)
     retVal.comments.push(...comments)
   }

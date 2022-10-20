@@ -1,7 +1,6 @@
 import { CellViewType } from "~/typings"
 import { checkReplaceParamFromMNLink, doc } from "~/utils"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes, modifyNodeTitle } from "marginnote"
 import lang from "./lang"
 import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
@@ -68,7 +67,7 @@ export default defineConfig({
       option: lang.format_selected.$option3,
       method: ({ nodes, option }) => {
         nodes.forEach(node => {
-          const title = node.noteTitle
+          const title = node.title
           if (
             title &&
             (option === Format.Title || option === Format.TitlenExcerpt)
@@ -76,10 +75,10 @@ export default defineConfig({
             let newTitle = formatText(title)
             if (self.globalProfile.autoformat.formatTitle)
               newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("; ")
-            modifyNodeTitle(node, newTitle)
+            node.title = newTitle
           }
           if (option === Format.Excerpt || option === Format.TitlenExcerpt) {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const text = note.excerptText
               if (text) note.excerptText = formatText(text)
             })

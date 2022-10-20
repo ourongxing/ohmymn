@@ -2,7 +2,10 @@ import { Addon } from "~/addon"
 import { ModuleKeyType } from "~/merged"
 
 export const deepCopy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
-export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr))
+export const unique = <T>(arr: T[]): T[] => {
+  if (arr.length <= 1) return arr
+  else return Array.from(new Set(arr))
+}
 export function dateFormat(date: Date, fmt = "YYYY-mm-dd HH:MM") {
   let ret
   const opt = {

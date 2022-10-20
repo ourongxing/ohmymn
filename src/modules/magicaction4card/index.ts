@@ -1,15 +1,6 @@
 import {
-  addTags,
-  appendTextComment,
-  getAllCommnets,
-  getAllTags,
-  getAllText,
-  getAncestorNodes,
-  getExcerptText,
   HUDController,
   MN,
-  modifyNodeTitle,
-  removeCommentButLinkTag,
   removeHighlight,
   selectIndex,
   showHUD,
@@ -25,8 +16,7 @@ import {
   getSerialInfo,
   reverseEscape,
   string2RegArray,
-  string2ReplaceParam,
-  unique
+  string2ReplaceParam
 } from "~/utils"
 import lang from "./lang"
 import { getLayerSerialInfo, renameTitle } from "./renameTitle"
@@ -78,19 +68,19 @@ export default defineConfig({
         }
         const regGroup = string2RegArray(content)
         const customSelectedNodes = nodes.filter(node => {
-          const title = node.noteTitle ?? ""
+          const title = node.title ?? ""
           const searchContent = (() => {
             switch (option) {
               case FilterCards.Title:
                 return title
               case FilterCards.Tag:
-                return getAllTags(node).join(" ")
+                return node.tags.join(" ")
               case FilterCards.Excerpt:
-                return getExcerptText(node).text.join("\n")
+                return node.excerptsText.join("\n\n")
               case FilterCards.Comment:
-                return getAllCommnets(node).text.join("\n")
+                return node.commentsText.join("\n\n")
               default:
-                return `${title}\n${getAllText(node)}`
+                return `${title}\n${node.allText}`
             }
           })()
           return regGroup.some(regs =>
@@ -118,7 +108,7 @@ export default defineConfig({
         if (nodes.length == 1) return
         const { node } = nodes.slice(1).reduce(
           (acc, cur) => {
-            const level = getAncestorNodes(cur).length
+            const level = cur.ancestorNodes.length
             if (level < acc.level)
               return {
                 level,
@@ -127,28 +117,27 @@ export default defineConfig({
             else return acc
           },
           {
-            level: getAncestorNodes(nodes[0]).length,
+            level: nodes[0].ancestorNodes.length,
             node: nodes[0]
           }
         )
-        const titles = node.noteTitle ? [node.noteTitle] : []
+        const titles = node.titles
         for (const n of nodes) {
           if (n === node) continue
-          const title = n.noteTitle
-          title && titles.push(title)
-          node.merge(n)
+          titles.push(...n.titles)
+          node.note.merge(n.note)
         }
-        const len = node.comments.length
+        const len = node.note.comments.length
         // 从后往前删，索引不会乱
-        node.comments.reverse().forEach((comment, index) => {
+        node.note.comments.reverse().forEach((comment, index) => {
           comment.type == "TextNote" &&
             titles.includes(comment.text) &&
-            node.removeCommentByIndex(len - index - 1)
+            node.note.removeCommentByIndex(len - index - 1)
         })
-        if (option == MergeCards.MergeTitle)
-          modifyNodeTitle(node, unique(titles))
-        // 合并标签
-        addTags(node, [], true)
+        if (option == MergeCards.MergeTitle) {
+          node.titles = titles
+        }
+        node.tidyupTags()
       }
     },
     {
@@ -181,10 +170,6 @@ export default defineConfig({
           true
         ).split("$&")
         for (const node of nodes) {
-          const dataArr = [
-            ...getExcerptText(node, true).text,
-            ...getAllCommnets(node).text
-          ]
           const allText = ((arr: string[]) => {
             if (/%\[.+\]/.test(front)) {
               const serialArr = getSerialInfo(front, arr.length)
@@ -193,47 +178,47 @@ export default defineConfig({
                 .join(behind)
             }
             return arr.map(k => front + k).join(behind)
-          })(dataArr)
-          removeCommentButLinkTag(
-            node,
+          })(node.excerptsCommentsText)
+
+          node.removeCommentButLinkTag(
             k =>
               k.type === "PaintNote" ||
               k.type === "HtmlNote" ||
               (k.type === "LinkNote" &&
-              !node.textFirst &&
-              MN.db.getNoteById(k.noteid!)?.excerptPic
+              !node.isOCR &&
+              MN.db.getNoteById(k.noteid!)?.excerptPic?.paint
                 ? true
                 : false),
-            async k => {
+            async node => {
               switch (option) {
                 case MergeText.ToExpertText:
-                  if (k.excerptPic && !k.textFirst) {
+                  if (node.note.excerptPic?.paint && node.isOCR === false) {
                     const index = await selectIndex(
                       lang.merge_text.$excerpt_pic_option2,
                       lang.merge_text.label,
                       lang.merge_text.is_excerpt_pic
                     )
                     if (index) {
-                      appendTextComment(k, removeHighlight(allText))
+                      node.appendTextComments(removeHighlight(allText))
                       return
                     }
                   }
-                  k.excerptText = allText
+                  node.mainExcerptText = allText
                   break
                 case MergeText.ToComment:
-                  if (k.excerptPic && k.textFirst && k.excerptText) {
+                  if (node.isOCR && node.mainExcerptText) {
                     const index = await selectIndex(
                       lang.merge_text.$excerpt_pic_text_option2,
                       lang.merge_text.label,
                       lang.merge_text.is_excerpt_pic_text
                     )
                     if (index) {
-                      k.excerptText = allText
+                      node.mainExcerptText = allText
                       return
                     }
                   }
-                  if (!k.excerptPic) k.excerptText = ""
-                  appendTextComment(k, removeHighlight(allText))
+                  if (!node.note.excerptPic?.paint) node.mainExcerptText = ""
+                  node.appendTextComments(removeHighlight(allText))
               }
             }
           )
@@ -247,9 +232,11 @@ export default defineConfig({
       option: lang.switch_title.$option2,
       help: lang.switch_title.help,
       method: async ({ nodes, option }) => {
-        for (const note of nodes) {
-          const title = note.noteTitle ?? ""
-          const text = note.excerptText ? removeHighlight(note.excerptText) : ""
+        for (const node of nodes) {
+          const title = node.title
+          const text = node.mainExcerptText
+            ? removeHighlight(node.mainExcerptText)
+            : ""
           switch (option) {
             case SwitchTitle.ToNonexistent:
               /**
@@ -258,28 +245,28 @@ export default defineConfig({
                * 2. 摘录为空：删除标题，设置摘录
                * 只有摘录：删除摘录（是文字），设置标题
                */
-              if (note.excerptPic?.paint && !note.textFirst) break
-              else if (text === title) note.noteTitle = ""
+              if (node.note.excerptPic?.paint && !node.note.textFirst) break
+              else if (text === title) node.title = ""
               else if (title && !text) {
-                note.noteTitle = ""
-                note.excerptText = title
+                node.title = ""
+                node.mainExcerptText = title
               } else if (text && !title) {
-                note.noteTitle = text
+                node.title = text
                 // 有可能有重点
-                if (note.excerptPic?.paint) note.excerptText = text
-                else note.excerptText = ""
+                if (node.note.excerptPic?.paint) node.mainExcerptText = text
+                else node.mainExcerptText = ""
               }
               break
             case SwitchTitle.Exchange:
-              if (note.excerptPic?.paint && !note.textFirst) break
-              else if (text === title) note.noteTitle = ""
+              if (node.note.excerptPic?.paint && !node.note.textFirst) break
+              else if (text === title) node.title = ""
               else if (title && !text) {
-                note.noteTitle = ""
-                note.excerptText = title
+                node.title = ""
+                node.mainExcerptText = title
               } else if (text && !title) {
-                note.noteTitle = text
-                if (note.excerptPic?.paint) note.excerptText = text
-                else note.excerptText = ""
+                node.title = text
+                if (node.note.excerptPic?.paint) node.mainExcerptText = text
+                else node.mainExcerptText = ""
               } else {
                 /**
                  * 标题和摘录都存在
@@ -295,16 +282,17 @@ export default defineConfig({
                 undoGroupingWithRefresh(() => {
                   switch (option) {
                     case 0:
-                      note.noteTitle = text
-                      note.excerptText = title
+                      node.title = text
+                      node.mainExcerptText = title
                       break
                     case 1:
-                      note.noteTitle = text
-                      if (!note.excerptPic?.paint) note.excerptText = ""
+                      node.title = text
+                      if (!node.note.excerptPic?.paint)
+                        node.mainExcerptText = ""
                       break
                     case 2:
-                      note.noteTitle = ""
-                      note.excerptText = title
+                      node.title = ""
+                      node.mainExcerptText = title
                   }
                 })
               }

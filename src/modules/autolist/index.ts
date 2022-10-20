@@ -6,7 +6,6 @@ import {
   doc
 } from "~/utils"
 import { defineConfig } from "~/profile"
-import { getExcerptNotes } from "marginnote"
 import lang from "./lang"
 import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"
@@ -56,7 +55,7 @@ export default defineConfig({
       method({ nodes, content, option }) {
         if (option == ListCard.UseAutoList) {
           nodes.forEach(node => {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const text = note.excerptText
               if (text) note.excerptText = addLineBreak(text)
             })
@@ -65,7 +64,7 @@ export default defineConfig({
           const params = string2ReplaceParam(content)
           const { regexp, fnKey, newSubStr } = params[0]
           nodes.forEach(node => {
-            getExcerptNotes(node).forEach(note => {
+            node.notes.forEach(note => {
               const text = note.excerptText
               if (text)
                 note.excerptText = addNumber(
