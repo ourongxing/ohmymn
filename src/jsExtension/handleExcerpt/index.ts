@@ -1,11 +1,11 @@
 import {
-  addTags,
-  appendTextComment,
   delayBreak,
   getCommentIndex,
+  isNoteExist,
   MbBookNote,
   MN,
   modifyNodeTitle,
+  NodeNote,
   undoGroupingWithRefresh
 } from "marginnote"
 
@@ -22,6 +22,7 @@ import {
 
 // 记得初始化
 let note: MbBookNote
+let node: NodeNote
 let nodeNote: MbBookNote
 let isOCR = false
 let isComment = false
@@ -37,7 +38,8 @@ export default async (
   note = n
   isOCR = false
   isPic = false
-  nodeNote = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
+  node = new NodeNote(note)
+  nodeNote = node.note
   isComment = nodeNote !== note
   isComment && console.log("The Excerpt is a comment", "excerpt")
   self.excerptStatus.isModify = isModify
@@ -83,8 +85,6 @@ export default async (
       console.log("No auto-to-text option on, no image processing", "ocr")
     }
   }
-
-  decorateExecrpt()
 
   if (isPic) {
     const { tags, comments } = await genCommentTag(note, "@picture")
@@ -139,6 +139,8 @@ export default async (
       tags
     })
   }
+
+  decorateExecrpt()
 }
 
 function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
@@ -187,21 +189,24 @@ function addCommentTag({
   tags: string[]
   comments: string[]
 }) {
+  if (
+    self.excerptStatus.lastRemovedComment?.note === note ||
+    !isNoteExist(note)
+  )
+    return
   undoGroupingWithRefresh(() => {
     if (comments?.length) {
       comments = unique(comments)
       const { cacheComment } = self.notebookProfile.additional
-      const oldComments = cacheComment[note.noteId!]
-      if (oldComments) {
-        const existComments = nodeNote.comments
-        const index: number[] = []
-        oldComments.forEach(h => {
-          existComments.forEach((k, i) => {
-            if (k.type === "TextNote" && cacheTransformer.tell(h, k.text))
-              index.unshift(i)
-          })
+      const cachedComments = cacheComment[note.noteId!]
+      if (cachedComments) {
+        const existComments = node.textComments
+        const indexList: number[] = []
+        existComments.forEach(({ text, index }) => {
+          if (cachedComments.some(k => cacheTransformer.tell(k, text)))
+            indexList.unshift(index)
         })
-        index.forEach(i => {
+        indexList.forEach(i => {
           nodeNote.removeCommentByIndex(i)
         })
       }
@@ -209,15 +214,32 @@ function addCommentTag({
         k && acc.push(cacheTransformer.to(k))
         return acc
       }, [] as [string, string, string][])
-      appendTextComment(nodeNote, ...comments)
+      node.appendTextComments(...comments)
     }
     if (tags?.length) {
-      addTags(nodeNote, tags)
+      tags = unique(tags)
+      const { cacheTag } = self.notebookProfile.additional
+      const cachedTags = cacheTag[note.noteId!]
+      const existTags = node.tags.filter(k =>
+        cachedTags?.length
+          ? !cachedTags.some(h => cacheTransformer.tell(h, k))
+          : true
+      )
+      cacheTag[note.noteId!] = tags.reduce((acc, k) => {
+        k && acc.push(cacheTransformer.to(k))
+        return acc
+      }, [] as [string, string, string][])
+      node.tags = [...existTags, ...tags]
     }
   })
 }
 
 async function decorateExecrpt() {
+  if (
+    self.excerptStatus.lastRemovedComment?.note === note ||
+    !isNoteExist(note)
+  )
+    return
   const res = await genColorStyle(note)
   if (!res) return
   const { color, style } = res
@@ -232,9 +254,11 @@ async function decorateExecrpt() {
 export function removeLastComment() {
   if (!self.excerptStatus.lastRemovedComment) return
   const { nodeNote, index, note } = self.excerptStatus.lastRemovedComment
-  undoGroupingWithRefresh(() => {
-    if (note?.excerptText) nodeNote.removeCommentByIndex(index)
-  })
+  if (isNoteExist(note) && isNoteExist(nodeNote)) {
+    undoGroupingWithRefresh(() => {
+      nodeNote.removeCommentByIndex(index)
+    })
+  }
   self.excerptStatus.lastRemovedComment = undefined
   const noteid = note.noteId!
   const { cacheTitle, cacheComment, cacheTag } = self.notebookProfile.additional
