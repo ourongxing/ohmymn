@@ -3,11 +3,11 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "自动添加评论",
+    intro: "自动从摘录中提取评论或者在特定时候自动添加评论",
     on: "摘录时自动执行",
     preset: {
       label: "选择需要的预设",
-      $option2: ["自定义", "修改时间"] as StringTuple
+      $option: ["自定义"] as StringTuple<1>
     },
     add_comment: {
       label: "添加评论",
@@ -19,11 +19,12 @@ export default i18n({
     }
   },
   en: {
-    intro: "Auto Add Comments",
+    intro:
+      "Extract comments from excerpts or add comments at specific times Automatically",
     on: "Auto Executed",
     preset: {
       label: "Select Presets",
-      $option2: ["Custom", "Modified Time"]
+      $option: ["Custom"]
     },
     add_comment: {
       $option2: ["Use AutoComment Settings", "Confirm"],

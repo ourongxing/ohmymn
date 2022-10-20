@@ -33,9 +33,6 @@ function generateComments(note: MbBookNote, text: string) {
       }
     })
   }
-  if (preset.includes(AutoCommentPreset.Time)) {
-    comments.push(renderTemplateOfNodeProperties(note, "{{time.now}}"))
-  }
   return comments
 }
 
@@ -58,7 +55,7 @@ export default defineConfig({
     {
       key: "preset",
       type: CellViewType.MuiltSelect,
-      option: lang.preset.$option2,
+      option: lang.preset.$option,
       label: lang.preset.label
     },
     {
