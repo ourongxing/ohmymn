@@ -130,10 +130,11 @@ export default defineConfig({
         const len = node.note.comments.length
         // 从后往前删，索引不会乱
         node.note.comments.reverse().forEach((comment, index) => {
-          comment.type == "TextNote" &&
-            titles.includes(comment.text) &&
+          if (comment.type == "TextNote" && titles.includes(comment.text)) {
             node.note.removeCommentByIndex(len - index - 1)
+          }
         })
+
         if (option == MergeCards.MergeTitle) {
           node.titles = titles
         }

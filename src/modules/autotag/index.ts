@@ -71,7 +71,6 @@ export default defineConfig({
             let text = node.excerptsText.join("\n")
             if (node.note.excerptPic?.paint && node.isOCR === false)
               text = "@picture"
-            // TODO: all excerpt need
             const tags = generateTags(node, text)
             if (tags?.length) node.appendTags(...tags)
           })
