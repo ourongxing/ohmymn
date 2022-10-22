@@ -18,25 +18,27 @@ function genSection(config: IConfig<AllModuleKeyUnion>): ISection {
   if (config.key !== "addon")
     rows.push({
       type: CellViewType.PlainText,
-      label: "▶ 点击展开所有选项"
+      label: lang.expand
     })
 
   for (const setting of config.settings) {
     //@ts-ignore magic hack
     rows.push(setting)
-    if (setting.help) {
-      switch (setting.type) {
-        case CellViewType.MuiltSelect:
-        case CellViewType.Select:
-        case CellViewType.Switch:
-        case CellViewType.InlineInput:
-        case CellViewType.Input: {
-          rows.push({
-            type: CellViewType.PlainText,
-            label: setting.help,
-            link: setting.link,
-            bind: setting.bind
-          })
+    if (setting.type !== CellViewType.Expland) {
+      if (setting.help) {
+        switch (setting.type) {
+          case CellViewType.MuiltSelect:
+          case CellViewType.Select:
+          case CellViewType.Switch:
+          case CellViewType.InlineInput:
+          case CellViewType.Input: {
+            rows.push({
+              type: CellViewType.PlainText,
+              label: setting.help,
+              link: setting.link,
+              bind: setting.bind
+            })
+          }
         }
       }
     }

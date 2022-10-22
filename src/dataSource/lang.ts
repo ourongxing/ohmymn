@@ -6,6 +6,7 @@ export default i18n({
       `该动作来自于 ${module}，与其使用相同的设置。`,
     open_panel: "切换控制面板",
     none: "无",
+    expand: "▶ 点击展开所有选项",
     website: "OhMyMN 官网：ohmymn.marginnote.cn",
     core_team: "核心开发团队：ourongxing，Bryan",
     intro:
@@ -16,6 +17,7 @@ export default i18n({
       `This action comes from ${module} and uses the same settings. `,
     open_panel: "Switch Control Panel",
     none: "None",
+    expand: "▶ Click to expand all options",
     website: "OhMyMN Website: ohmymn.marginnote.con",
     core_team: "Core Team: ourongxing，Bryan",
     intro:

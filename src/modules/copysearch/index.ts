@@ -67,11 +67,9 @@ export default defineConfig({
       }
     },
     {
-      label: lang.show_search_engine.label,
+      label: lang.show_search_engine.$label2,
       key: "showSearchEngine",
-      type: CellViewType.Switch,
-      link: lang.show_search_engine.link,
-      help: lang.show_search_engine.help
+      type: CellViewType.Expland
     },
     ...([
       "searchChineseText",

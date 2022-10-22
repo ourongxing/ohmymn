@@ -59,7 +59,10 @@ export default i18n({
       help: "Mathpix App Key，点击查看如何获取。",
       link: doc("autoocr", "mathpix")
     },
-    show_key: "显示/隐藏 Key",
+    $show_key2: [
+      "点击查看密钥，不要让其他人看到",
+      "点击隐藏密钥，不要让其他人看到"
+    ] as StringTuple<2>,
     text_ocr: "文字识别",
     hand_writting_ocr: "手写识别",
     qr_code_ocr: "二维码识别",
@@ -131,7 +134,10 @@ export default i18n({
       link: doc("autoocr", "mathpix"),
       help: "Mathpix App Key, click to see how to get it."
     },
-    show_key: "Show / Hidden Key",
+    $show_key2: [
+      "Click View Key, don't let others see",
+      "Click Hide Key, don't let others see"
+    ],
     text_ocr: "Text OCR",
     hand_writting_ocr: "Handwritting OCR",
     qr_code_ocr: "QRCode OCR",

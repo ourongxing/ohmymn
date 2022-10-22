@@ -27,7 +27,10 @@ export default i18n({
     },
     show_search_engine: {
       help: "点击查看如何自定义 URL。",
-      label: "显示/隐藏搜索 URL",
+      $label2: [
+        "点击展开所有搜索引擎",
+        "点击收起所有搜索引擎"
+      ] as StringTuple<2>,
       link: doc("copysearch", "搜索-url")
     },
     modify_symbols: {
@@ -102,7 +105,7 @@ export default i18n({
     ],
     show_search_engine: {
       help: "Click to see how to customize the URL",
-      label: "Show/Hide Search URL",
+      $label2: ["Show All Search Engines", "Hide All Search Engines"],
       link: doc("copysearch", "搜索-url")
     },
     modify_symbols: {

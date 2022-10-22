@@ -10,5 +10,6 @@ export const enum CellViewType {
   Input = 4,
   InlineInput = 5,
   Select = 6,
-  MuiltSelect = 7
+  MuiltSelect = 7,
+  Expland = 8
 }

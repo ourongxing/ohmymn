@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "优化摘录和标题的排版与格式",
+    intro: "优化摘录和标题的排版与格式。",
     on: "摘录时自动执行",
     custom_format: {
       help: "自定义，点击查看具体格式",
@@ -34,7 +34,7 @@ export default i18n({
     }
   },
   en: {
-    intro: "Optimize the typography and formatting of excerpts & titles",
+    intro: "Optimize the typography and formatting of excerpts & titles.",
     on: "Auto Executed",
     remove_space: {
       label: "Remove All Spaces",

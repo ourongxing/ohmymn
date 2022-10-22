@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "摘录时自动附加上翻译结果",
+    intro: "摘录时自动翻译，作为评论添加进去。",
     on: "摘录时自动执行",
     preset: {
       label: "选择需要的预设",
@@ -94,11 +94,10 @@ export default i18n({
       help: "百度翻译高级版可用，仅支持中英互译，点击新建自定义术语。",
       link: "https://fanyi-api.baidu.com/manage/term"
     },
-    hud_time: {
-      label: "翻译弹窗显示时间",
-      help: "MagicAction for Text —— 翻译选中文字"
-    },
-    show_key: "显示/隐藏 Key",
+    $show_key2: [
+      "点击查看密钥，不要让其他人看到",
+      "点击隐藏密钥，不要让其他人看到"
+    ] as StringTuple<2>,
     baidu_app_id: {
       help: "百度 App ID，点击查看如何获取。",
       link: doc("autotranslate", "百度翻译")
@@ -114,7 +113,7 @@ export default i18n({
     no_caiyun_token: "没有设置彩云小译的 Token"
   },
   en: {
-    intro: "Automatically add translation results when quoting",
+    intro: "The excerpts are automatically translated and added as comments.",
     on: "Auto Executed",
     preset: {
       label: "Select the preset",
@@ -205,11 +204,10 @@ export default i18n({
       help: "Only available in Baidu Translate Pro, only supports Chinese-English translation, click to create a custom thesaurus.",
       link: "https://fanyi-api.baidu.com/manage/term"
     },
-    hud_time: {
-      label: "Translation popup display time",
-      help: "MagicAction for Text —— Translate Selected Text"
-    },
-    show_key: "Show/Hide Key",
+    $show_key2: [
+      "Click to view the key, don't let others see it",
+      "Click to hide the key, don't let others see it"
+    ],
     baidu_app_id: {
       help: "Baidu Fanyi App ID, click to view how to get it.",
       link: doc("autotranslate", "百度翻译")

@@ -54,8 +54,8 @@ export default defineConfig({
     },
     {
       key: "showKey",
-      type: CellViewType.Switch,
-      label: lang.show_key
+      type: CellViewType.Expland,
+      label: lang.$show_key2
     },
     {
       key: "baiduApiKey",

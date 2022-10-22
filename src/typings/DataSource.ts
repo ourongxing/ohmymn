@@ -45,6 +45,14 @@ export type IRowInlineInput = {
   content: string
 } & KeyLabelBind
 
+export type IRowExpland = {
+  type: CellViewType.Expland
+  label: [string, string]
+  key: string
+  status: boolean
+  bind?: BindType
+}
+
 export type IRowButton = {
   type: CellViewType.Button | CellViewType.ButtonWithInput
   module: DataSourceSectionKeyUnion
@@ -60,3 +68,4 @@ export type IRow =
   | IRowInput
   | IRowSelect
   | IRowSwitch
+  | IRowExpland

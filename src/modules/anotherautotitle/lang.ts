@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "什么样的摘录该自动转为标题？",
+    intro: "自动将摘录转为标题。",
     on: "摘录时自动执行",
     preset: {
       label: "选择需要的预设",
@@ -25,7 +25,7 @@ export default i18n({
     }
   },
   en: {
-    intro: "What kind of excerpts should be automatically converted to titles?",
+    intro: "Automatically convert the excerpt to the title.",
     on: "Auto Executed",
     preset: {
       label: "Select Presets",

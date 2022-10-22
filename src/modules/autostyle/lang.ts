@@ -2,7 +2,7 @@ import { i18n } from "marginnote"
 
 export default i18n({
   zh: {
-    intro: "自动修改摘录颜色和样式",
+    intro: "自动修改摘录颜色和样式。",
     area: "面积",
     on: "摘录时自动执行",
     change_style: {
@@ -62,7 +62,7 @@ export default i18n({
     enter_positive: "请输入正整数"
   },
   en: {
-    intro: "Auto modify excerpt colors and styles",
+    intro: "Auto modify excerpt colors and styles.",
     on: "Auto Executed",
     area: "Aera",
     change_style: {

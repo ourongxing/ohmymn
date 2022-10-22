@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "自动从摘录中提取标签或者在特定时候自动添加标签",
+    intro: "自动从摘录中提取标签或者在特定时候自动添加标签。",
     link: doc("autotag"),
     on: "摘录时自动执行",
     preset: {
@@ -21,7 +21,7 @@ export default i18n({
   },
   en: {
     intro:
-      "Extract tags from excerpts or add tags at specific times Automatically",
+      "Extract tags from excerpts or add tags at specific times Automatically.",
     link: doc("autotag"),
     on: "Auto Executed",
     preset: {

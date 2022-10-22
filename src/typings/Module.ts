@@ -63,6 +63,12 @@ export type ISettingSwitch<T> = (
   HelpLinkLabel &
   Bind<T>
 
+export type ISettingExpland<T> = {
+  key: PickKeyByValue<T, boolean>
+  type: CellViewType.Expland
+  label: [string, string]
+} & Bind<T>
+
 export type ISettingSelect<T> = {
   key: PickKeyByValue<T, number[]>
   type: CellViewType.Select | CellViewType.MuiltSelect
@@ -75,6 +81,7 @@ export type ISetting<T> =
   | ISettingSelect<T>
   | ISettingSwitch<T>
   | ISettingInlineInput<T>
+  | ISettingExpland<T>
 
 export type IAction<T extends IActionMethod4Card | IActionMethod4Text> = {
   key: string

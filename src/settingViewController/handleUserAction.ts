@@ -15,6 +15,7 @@ import {
   type IRowSwitch
 } from "~/typings"
 import { byteLength } from "~/utils"
+import lang from "./lang"
 import { _isModuleOFF } from "./settingView"
 
 function _tag2indexPath(tag: number): NSIndexPath {
@@ -33,30 +34,44 @@ async function tableViewDidSelectRowAtIndexPath(
   const row = sec.rows[indexPath.row]
   switch (row.type) {
     case CellViewType.PlainText:
-      if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
-        row.link && openUrl(row.link)
-      } else if (self.expandSections.has(sec.key)) {
-        row.label = "▶ 点击展开所有选项"
-        self.expandSections.delete(sec.key as OptionalModuleKeyUnion)
-        self.tableView.reloadData()
-      } else {
-        row.label = "▼ 点击收起所有选项"
-        self.expandSections.add(sec.key as OptionalModuleKeyUnion)
-        self.tableView.reloadData()
+      {
+        if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
+          row.link && openUrl(row.link)
+        } else if (self.expandSections.has(sec.key)) {
+          row.label = lang.expand
+          self.expandSections.delete(sec.key as OptionalModuleKeyUnion)
+          self.tableView.reloadData()
+        } else {
+          row.label = lang.collapse
+          self.expandSections.add(sec.key as OptionalModuleKeyUnion)
+          self.tableView.reloadData()
+        }
       }
       break
     case CellViewType.ButtonWithInput:
     case CellViewType.Button:
-      if (sec.key === "magicaction4card")
-        postNotification(Addon.key + "ButtonClick", {
-          row,
-          type: "card"
-        })
-      else if (sec.key === "magicaction4text")
-        postNotification(Addon.key + "ButtonClick", {
-          row,
-          type: "text"
-        })
+      {
+        if (sec.key === "magicaction4card")
+          postNotification(Addon.key + "ButtonClick", {
+            row,
+            type: "card"
+          })
+        else if (sec.key === "magicaction4text")
+          postNotification(Addon.key + "ButtonClick", {
+            row,
+            type: "text"
+          })
+      }
+      break
+    case CellViewType.Expland: {
+      row.status = !row.status
+      self.tableView.reloadData()
+      postNotification(Addon.key + "SwitchChange", {
+        name: sec.key,
+        key: row.key,
+        status: row.status
+      })
+    }
   }
 }
 
@@ -84,12 +99,12 @@ function switchChange(sender: UISwitch) {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = <IRowSwitch>section.rows[indexPath.row]
-  row.status = sender.on ? true : false
+  row.status = !row.status
   self.tableView.reloadData()
   postNotification(Addon.key + "SwitchChange", {
     name: section.key,
     key: row.key,
-    status: sender.on ? true : false
+    status: row.status
   })
 }
 

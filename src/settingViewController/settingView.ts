@@ -88,10 +88,13 @@ function _isBindOFF(bindArr: BindType, sectionKey: string) {
             : dataSourceIndex?.[sectionKey]?.[key]
         if (secIndex === undefined) {
           throw `bind key does not exist：${key}`
-          return true
         }
         const row = self.dataSource?.[secIndex].rows?.[rowIndex]
-        if (row.type === CellViewType.Switch && typeof v === "boolean")
+        if (
+          (row.type === CellViewType.Switch ||
+            row.type === CellViewType.Expland) &&
+          typeof v === "boolean"
+        )
           return row.status === v
         else if (
           row.type === CellViewType.Select ||
@@ -122,6 +125,10 @@ function tableViewHeightForRowAtIndexPath(
     case CellViewType.ButtonWithInput:
       if (row.module && _isModuleOFF(row.module)) return 0
       break
+    case CellViewType.Expland: {
+      if (row.bind && _isBindOFF(row.bind, key)) return 0
+      else return 30
+    }
     case CellViewType.PlainText: {
       if (row.bind && _isBindOFF(row.bind, key)) return 0
       const lines = byteSplitByLen(row.label, 45).length - 1
@@ -156,6 +163,23 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.font = UIFont.systemFontOfSize(12)
       if (row.link) cell.textLabel.text = `⎋ ${row.label}`
       else cell.textLabel.text = row.label
+      return cell
+    }
+    case CellViewType.Expland: {
+      const cell = UITableViewCell.makeWithStyleReuseIdentifier(
+        0,
+        "ExplandCellID"
+      )
+      if (!MN.isMac && row.bind && _isBindOFF(row.bind, key)) cell.hidden = true
+      cell.selectionStyle = 0
+      cell.textLabel.opaque = false
+      cell.textLabel.textAlignment = 0
+      cell.textLabel.lineBreakMode = 0
+      cell.textLabel.numberOfLines = 0
+      cell.textLabel.textColor = UIColor.grayColor()
+      cell.textLabel.font = UIFont.systemFontOfSize(12)
+      if (row.status) cell.textLabel.text = `▼ ${row.label[1]}`
+      else cell.textLabel.text = `▶ ${row.label[0]}`
       return cell
     }
     case CellViewType.Button:
