@@ -53,7 +53,7 @@ function tableViewTitleForHeaderInSection(
   section: number
 ) {
   const { key, header } = self.dataSource[section]
-  return _isModuleOFF(key) ? new NSNull() : header
+  return _isModuleOFF(key) ? undefined : header
 }
 
 // If one of the bind objects does not meet the requirements, it will be hidden
