@@ -1,9 +1,20 @@
-import type { NSIndexPath, UITableView } from "marginnote"
-import { MN, openUrl, postNotification } from "marginnote"
+import {
+  type NSIndexPath,
+  type UITableView,
+  UITableViewScrollPosition,
+  MN,
+  openUrl,
+  postNotification
+} from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Card, actionKey4Text } from "~/dataSource"
-import { checkInputCorrect, ModuleKeyType } from "~/merged"
-import { CellViewType, IRowInput, IRowSelect, IRowSwitch } from "~/typings"
+import { checkInputCorrect, type OptionalModuleKeyUnion } from "~/merged"
+import {
+  CellViewType,
+  type IRowInput,
+  type IRowSelect,
+  type IRowSwitch
+} from "~/typings"
 import { byteLength } from "~/utils"
 import { _isModuleOFF } from "./settingView"
 
@@ -23,7 +34,25 @@ async function tableViewDidSelectRowAtIndexPath(
   const row = sec.rows[indexPath.row]
   switch (row.type) {
     case CellViewType.PlainText:
-      if (row.link) openUrl(row.link)
+      if (indexPath.row !== 0 || sec.key === "more" || sec.key === "addon") {
+        row.link && openUrl(row.link)
+      } else if (self.expandSections.has(sec.key)) {
+        row.link && openUrl(row.link)
+      } else {
+        self.expandSections.add(sec.key as OptionalModuleKeyUnion)
+        self.tableView.reloadData()
+        // if (MN.isMac) {
+        //   self.tableView.setContentOffsetAnimated(
+        //     self.tableView.rectForHeaderInSection(indexPath.section),
+        //     true
+        //   )
+        // } else
+        self.tableView.scrollToRowAtIndexPathAtScrollPositionAnimated(
+          indexPath,
+          UITableViewScrollPosition.None,
+          false
+        )
+      }
       break
     case CellViewType.ButtonWithInput:
     case CellViewType.Button:
@@ -130,75 +159,80 @@ async function selectAction(param: {
 }
 
 function clickSelectButton(sender: UIButton) {
-  const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
-  const section = self.dataSource[indexPath.section]
-  const row = section.rows[indexPath.row] as IRowSelect
-  const menuController = MenuController.new()
-  const height = 44
-  const zero = 0.00001
-  const cacheModuleOFF: Partial<Record<ModuleKeyType, boolean>> = {}
-  const isHidden = (sectionKey: string, rowKey: string, index: number) => {
-    try {
-      if (sectionKey === "gesture") {
-        const { module } = rowKey.includes("selectionBar")
-          ? actionKey4Text[index]
-          : actionKey4Card[index]
-        if (!module) return false
-        const status = cacheModuleOFF[module]
-        if (status !== undefined) {
-          return status
-        } else {
-          const status = _isModuleOFF(module)
-          cacheModuleOFF[module] = status
-          return status
-        }
-      } else if (sectionKey === "shortcut") {
-        const { module } = rowKey.includes("text")
-          ? actionKey4Text[index]
-          : actionKey4Card[index]
-        if (!module) return false
-        const status = cacheModuleOFF[module]
-        if (status !== undefined) {
-          return status
-        } else {
-          const status = _isModuleOFF(module)
-          cacheModuleOFF[module] = status
-          return status
-        }
-      } else return false
-    } catch {
-      return true
+  try {
+    const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
+    const section = self.dataSource[indexPath.section]
+    const row = section.rows[indexPath.row] as IRowSelect
+    const menuController = MenuController.new()
+    const height = 44
+    const zero = 0.00001
+    const cacheModuleOFF: Partial<Record<OptionalModuleKeyUnion, boolean>> = {}
+    const isHidden = (sectionKey: string, rowKey: string, index: number) => {
+      try {
+        if (sectionKey === "gesture") {
+          const { module } = rowKey.includes("selectionBar")
+            ? actionKey4Text[index]
+            : actionKey4Card[index]
+          if (!module) return false
+          const status = cacheModuleOFF[module]
+          if (status !== undefined) {
+            return status
+          } else {
+            const status = _isModuleOFF(module)
+            cacheModuleOFF[module] = status
+            return status
+          }
+        } else if (sectionKey === "shortcut") {
+          const { module } = rowKey.includes("text")
+            ? actionKey4Text[index]
+            : actionKey4Card[index]
+          if (!module) return false
+          const status = cacheModuleOFF[module]
+          if (status !== undefined) {
+            return status
+          } else {
+            const status = _isModuleOFF(module)
+            cacheModuleOFF[module] = status
+            return status
+          }
+        } else return false
+      } catch {
+        return true
+      }
     }
-  }
 
-  menuController.commandTable = row.option.map((item, index) => ({
-    title: item,
-    object: self,
-    selector: "selectAction:",
-    height: isHidden(section.key, row.key, index) ? zero : height,
-    param: {
-      indexPath,
-      menuController,
-      selection: index
-    },
-    checked: row.selections.includes(index)
-  }))
-  const width = Math.max(...row.option.map(k => byteLength(k))) * 10 + 80
-  menuController.preferredContentSize = {
-    width: width > 300 ? 300 : width,
-    height:
-      height * menuController.commandTable.filter(k => k.height !== zero).length
-  }
+    menuController.commandTable = row.option.map((item, index) => ({
+      title: item,
+      object: self,
+      selector: "selectAction:",
+      height: isHidden(section.key, row.key, index) ? zero : height,
+      param: {
+        indexPath,
+        menuController,
+        selection: index
+      },
+      checked: row.selections.includes(index)
+    }))
+    const width = Math.max(...row.option.map(k => byteLength(k))) * 10 + 80
+    menuController.preferredContentSize = {
+      width: width > 300 ? 300 : width,
+      height:
+        height *
+        menuController.commandTable.filter(k => k.height !== zero).length
+    }
 
-  const studyControllerView = MN.studyController.view
-  self.popoverController = new UIPopoverController(menuController)
-  self.popoverController.presentPopoverFromRect(
-    sender.convertRectToView(sender.bounds, studyControllerView),
-    studyControllerView,
-    1 << 3,
-    true
-  )
-  self.popoverController.delegate = self
+    const studyControllerView = MN.studyController.view
+    self.popoverController = new UIPopoverController(menuController)
+    self.popoverController.presentPopoverFromRect(
+      sender.convertRectToView(sender.bounds, studyControllerView),
+      studyControllerView,
+      1 << 3,
+      true
+    )
+    self.popoverController.delegate = self
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 /** Send data when the popup disappears */

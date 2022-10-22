@@ -1,15 +1,15 @@
 import {
   isNSNull,
   MN,
-  NSIndexPath,
+  type NSIndexPath,
   NSTextAlignment,
-  UITableView
+  type UITableView
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import lang from "./lang"
-import { DataSourceSection, moduleKeys } from "~/merged"
-import { BindType, CellViewType, IRowSelect } from "~/typings"
+import { DataSourceSectionKeyUnion, moduleKeys } from "~/merged"
+import { type BindType, CellViewType, type IRowSelect } from "~/typings"
 import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 
 function _indexPath2tag(indexPath: NSIndexPath): number {
@@ -17,12 +17,19 @@ function _indexPath2tag(indexPath: NSIndexPath): number {
 }
 
 /** If the module is not enabled, the menu will be hidden */
-export function _isModuleOFF(key: DataSourceSection): boolean {
-  if (key === "more") return false
+export function _isModuleOFF(key: DataSourceSectionKeyUnion) {
+  if (
+    key === "more" ||
+    key === "addon" ||
+    key === "magicaction4card" ||
+    key === "magicaction4text"
+  )
+    return undefined
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeys.indexOf(key)
-  return index !== -1 && !quickSwitch.includes(index)
+  if (index === -1) return undefined
+  else return !quickSwitch.includes(index)
 }
 
 function numberOfSectionsInTableView() {
@@ -33,13 +40,17 @@ function tableViewNumberOfRowsInSection(
   section: number
 ) {
   const { key } = self.dataSource[section]
-  return _isModuleOFF(key) ? 0 : self.dataSource[section].rows.length
+  if (key === "addon" || key === "more")
+    return self.dataSource[section].rows.length
+  else if (_isModuleOFF(key)) return 0
+  else if (!self.expandSections.has(key)) return 1
+  else return self.dataSource[section].rows.length
 }
 
-const tableViewTitleForHeaderInSection = (
+function tableViewTitleForHeaderInSection(
   tableView: UITableView,
   section: number
-) => {
+) {
   const { key, header } = self.dataSource[section]
   return _isModuleOFF(key) ? new NSNull() : header
 }

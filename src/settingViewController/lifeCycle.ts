@@ -8,6 +8,7 @@ export default {
   },
   //Execute when each time it is opened
   viewWillAppear() {
+    self.expandSections = new Set()
     self.tableView.reloadData()
     if (MN.isMac) {
       self.tableView.backgroundColor = MN.currentThemeColor
@@ -17,5 +18,8 @@ export default {
           : UIColor.blackColor()
     }
     self.view.layer.borderColor = Addon.buttonColor
+  },
+  viewWillDisappear() {
+    self.tableView.setContentOffsetAnimated({ x: 0, y: 0 }, false)
   }
 }
