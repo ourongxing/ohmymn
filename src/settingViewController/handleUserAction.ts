@@ -33,11 +33,14 @@ async function tableViewDidSelectRowAtIndexPath(
   const row = sec.rows[indexPath.row]
   switch (row.type) {
     case CellViewType.PlainText:
-      if (indexPath.row !== 0 || sec.key === "more" || sec.key === "addon") {
+      if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
         row.link && openUrl(row.link)
       } else if (self.expandSections.has(sec.key)) {
-        row.link && openUrl(row.link)
+        row.label = "▶ 点击展开所有选项"
+        self.expandSections.delete(sec.key as OptionalModuleKeyUnion)
+        self.tableView.reloadData()
       } else {
+        row.label = "▼ 点击收起所有选项"
         self.expandSections.add(sec.key as OptionalModuleKeyUnion)
         self.tableView.reloadData()
       }

@@ -35,6 +35,7 @@ export function _isModuleOFF(key: DataSourceSectionKeyUnion) {
 function numberOfSectionsInTableView() {
   return self.dataSource.length
 }
+
 function tableViewNumberOfRowsInSection(
   tableView: UITableView,
   section: number
@@ -43,7 +44,7 @@ function tableViewNumberOfRowsInSection(
   if (key === "addon" || key === "more")
     return self.dataSource[section].rows.length
   else if (_isModuleOFF(key)) return 0
-  else if (!self.expandSections.has(key)) return 1
+  else if (!self.expandSections.has(key)) return 2
   else return self.dataSource[section].rows.length
 }
 
@@ -153,7 +154,8 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.numberOfLines = 0
       cell.textLabel.textColor = UIColor.grayColor()
       cell.textLabel.font = UIFont.systemFontOfSize(12)
-      cell.textLabel.text = row.label
+      if (row.link) cell.textLabel.text = `⎋ ${row.label}`
+      else cell.textLabel.text = row.label
       return cell
     }
     case CellViewType.Button:

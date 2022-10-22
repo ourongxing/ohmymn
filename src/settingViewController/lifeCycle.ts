@@ -5,10 +5,10 @@ export default {
     self.tableView.allowsSelection = true
     self.view.layer.cornerRadius = 10
     self.view.layer.borderWidth = 2
+    self.expandSections = new Set()
   },
   //Execute when each time it is opened
   viewWillAppear() {
-    self.expandSections = new Set()
     self.tableView.reloadData()
     if (MN.isMac) {
       self.tableView.backgroundColor = MN.currentThemeColor
@@ -18,8 +18,12 @@ export default {
           : UIColor.blackColor()
     }
     self.view.layer.borderColor = Addon.buttonColor
-  },
-  viewWillDisappear() {
-    self.tableView.setContentOffsetAnimated({ x: 0, y: 0 }, false)
   }
+  // viewWillDisappear() {
+  // self.tableView.setContentOffsetAnimated({ x: 0, y: 0 }, false)
+  // self.expandSections.forEach(k => {
+  //   const t = self.dataSource.find(h => h.key === k)?.rows[0]
+  //   if (t?.type === CellViewType.PlainText) t.label = "▶ 点击展开所有选项"
+  // })
+  // }
 }
