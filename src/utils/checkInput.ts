@@ -46,6 +46,6 @@ export function checkPositiveinteger(input: number) {
 
 export function checkMNLink(input: string) {
   const noteid = input.replace("marginnote3app://note/", "")
-  if (noteid === input) throw "不是卡片链接"
-  if (!MN.db.getNoteById(noteid)) throw "卡片不存在"
+  if (noteid === input) throw lang.not_mnlink
+  if (!MN.db.getNoteById(noteid)) throw lang.not_exist
 }

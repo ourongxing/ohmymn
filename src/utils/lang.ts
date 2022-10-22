@@ -12,7 +12,9 @@ export default i18n({
     require_number: "必须输入数字和单个字符",
     ban_1: `禁止使用 "//"`,
     ban_2: `禁止使用 "/./" ，请使用 "/^.+$/gs" 来进行任意非空匹配`,
-    not_support_format: "不符合输入格式要求"
+    not_support_format: "不符合输入格式要求",
+    not_mnlink: "不是 MN 的卡片链接",
+    not_exist: "卡片不存在"
   },
   en: {
     no_profile_in_card: "Failed to read custom content",
@@ -26,6 +28,8 @@ export default i18n({
     no_item:
       "There must be elements in the array, and the first element must be a character",
     require_number: "You must enter a number and a single character",
-    not_support_format: "Does not meet the input format requirements"
+    not_support_format: "Does not meet the input format requirements",
+    not_mnlink: "Not a MN card link",
+    not_exist: "Card does not exist"
   }
 })
