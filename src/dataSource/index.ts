@@ -1,12 +1,12 @@
 import { requiredModules, optionalModules } from "../modules"
-import { ModuleKeyType } from "../merged"
+import { AllModuleKeyUnion, OptionalModuleKeyUnion } from "../merged"
 import type { ISection, IConfig, IRow, IRowButton } from "~/typings"
 import { CellViewType } from "~/typings"
 import { serialSymbols } from "../utils"
 import { more } from "./more"
 import lang from "./lang"
 
-function genSection(config: IConfig<ModuleKeyType>): ISection {
+function genSection(config: IConfig<AllModuleKeyUnion>): ISection {
   const rows: IRow[] = [
     {
       type: CellViewType.PlainText,
@@ -42,13 +42,13 @@ function genSection(config: IConfig<ModuleKeyType>): ISection {
   }
   return {
     header: config.name,
-    key: config.key as ModuleKeyType,
+    key: config.key as AllModuleKeyUnion,
     rows
   }
 }
 
 function genDataSource(
-  configs: IConfig<ModuleKeyType>[],
+  configs: IConfig<AllModuleKeyUnion>[],
   magicaction4card: IConfig<"magicaction4card">,
   magicaction4text: IConfig<"magicaction4text">
 ) {
@@ -60,13 +60,13 @@ function genDataSource(
   const actions4card =
     magicaction4card.actions4card?.map(k => ({
       ...k,
-      module: "magicaction4card" as ModuleKeyType,
+      module: "magicaction4card" as AllModuleKeyUnion,
       moduleName: "MagicAction For Card"
     })) ?? []
   const actions4text =
     magicaction4text.actions4text?.map(k => ({
       ...k,
-      module: "magicaction4text" as ModuleKeyType,
+      module: "magicaction4text" as AllModuleKeyUnion,
       moduleName: "MagicAction For Text"
     })) ?? []
   configs.forEach(config => {
@@ -76,7 +76,7 @@ function genDataSource(
         ...config.actions4card.map(k => ({
           ...k,
           moduleName: config.name,
-          module: config.key as ModuleKeyType,
+          module: config.key as AllModuleKeyUnion,
           help:
             lang.magicaction_from_which_module(config.name) +
             (k.help ? k.help : "")
@@ -88,7 +88,9 @@ function genDataSource(
           ...k,
           moduleName: config.name,
           module: (config.key ??
-            config.name.replace(/\x20/g, "").toLowerCase()) as ModuleKeyType,
+            config.name
+              .replace(/\x20/g, "")
+              .toLowerCase()) as AllModuleKeyUnion,
           help:
             lang.magicaction_from_which_module(config.name) +
             (k.help ? k.help : "")
@@ -104,11 +106,11 @@ function genDataSource(
   })
 
   const Action4CardSection = genSection(
-    magicaction4card as IConfig<ModuleKeyType>
+    magicaction4card as IConfig<AllModuleKeyUnion>
   )
   Action4CardSection.rows.push(...actions4card)
   const Action4TextSection = genSection(
-    magicaction4text as IConfig<ModuleKeyType>
+    magicaction4text as IConfig<AllModuleKeyUnion>
   )
   Action4TextSection.rows.push(...actions4text)
 
@@ -165,7 +167,7 @@ function genDataSourceIndex(dataSource: ISection[]) {
       return acc
     }, {} as Record<string, [number, number]>)
     return acc
-  }, {} as Record<ModuleKeyType, Record<string, [number, number]>>)
+  }, {} as Record<AllModuleKeyUnion, Record<string, [number, number]>>)
 }
 
 function getActionKeyGetureOption(section: ISection) {
@@ -182,14 +184,14 @@ function getActionKeyGetureOption(section: ISection) {
     if (!row.option?.length)
       actionKeys.push({
         key: row.key,
-        module: row.module as ModuleKeyType,
+        module: row.module as OptionalModuleKeyUnion,
         moduleName: row.moduleName,
         option: row.type === CellViewType.ButtonWithInput ? undefined : 0
       })
     else {
       actionKeys.push({
         key: row.key,
-        module: row.module as ModuleKeyType,
+        module: row.module as OptionalModuleKeyUnion,
         moduleName: row.moduleName
       })
       if (row.type == CellViewType.Button) {
@@ -198,7 +200,7 @@ function getActionKeyGetureOption(section: ISection) {
           actionKeys.push({
             key: row.key,
             option: index,
-            module: row.module as ModuleKeyType,
+            module: row.module as OptionalModuleKeyUnion,
             moduleName: row.moduleName
           })
         })
@@ -207,7 +209,7 @@ function getActionKeyGetureOption(section: ISection) {
         actionKeys.push({
           key: row.key,
           option: 0,
-          module: row.module as ModuleKeyType,
+          module: row.module as OptionalModuleKeyUnion,
           moduleName: row.moduleName
         })
       }
@@ -219,7 +221,7 @@ function getActionKeyGetureOption(section: ISection) {
 export const actionKey4Card: {
   key: string
   option?: number
-  module?: ModuleKeyType
+  module?: OptionalModuleKeyUnion
   moduleName?: string
 }[] = [{ key: "none" }, { key: "switchPanel" }]
 
@@ -231,7 +233,7 @@ export const actionKey4Text: typeof actionKey4Card = [
 const { addon, magicaction4card, magicaction4text } = requiredModules
 
 export const { dataSource: defaultDataSource, moduleNameList } = genDataSource(
-  [addon, ...Object.values(optionalModules)] as IConfig<ModuleKeyType>[],
+  [addon, ...Object.values(optionalModules)] as IConfig<AllModuleKeyUnion>[],
   magicaction4card,
   magicaction4text
 )

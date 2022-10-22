@@ -79,7 +79,7 @@ export default defineLifeCycleHandler({
       self.settingViewController = SettingViewController.new()
       self.settingViewController.addon = self.addon
       self.settingViewController.dataSource = self.dataSource
-      self.settingViewController.profile = self.globalProfile
+      self.settingViewController.globalProfile = self.globalProfile
       self.settingViewController.docProfile = self.docProfile
       self.settingViewController.notebookProfile = self.notebookProfile
     },

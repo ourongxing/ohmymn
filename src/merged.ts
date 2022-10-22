@@ -10,9 +10,13 @@ import type {
 } from "./typings"
 import type { IAllProfile } from "./profile"
 
-export type ModuleKeyType = Exclude<keyof IAllProfile, "additional">
-export type DataSourceSection = ModuleKeyType | "more"
-type AutoModuleKeyType = Include<ModuleKeyType, "auto">
+export type AllModuleKeyUnion = Exclude<keyof IAllProfile, "additional">
+export type DataSourceSectionKeyUnion = AllModuleKeyUnion | "more"
+export type OptionalModuleKeyUnion = Exclude<
+  AllModuleKeyUnion,
+  "addon" | "magicaction4card" | "magicaction4text"
+>
+type AutoModuleKeyUnion = Include<AllModuleKeyUnion, "auto">
 
 export const autoUtils = (() => {
   try {
@@ -90,9 +94,9 @@ export const { actions4card, actions4text, checkers } = Object.values({
 export const moduleKeys = Object.values(optionalModules).reduce((acc, cur) => {
   acc.push(cur.key)
   return acc
-}, [] as ModuleKeyType[])
+}, [] as OptionalModuleKeyUnion[])
 
-export function isModuleON(key: ModuleKeyType) {
+export function isModuleON(key: OptionalModuleKeyUnion) {
   const { quickSwitch } = self.globalProfile.addon
   const index = moduleKeys.indexOf(key)
   return index === -1 || quickSwitch.includes(index)
@@ -120,7 +124,7 @@ export async function checkInputCorrect(
   return true
 }
 
-function isModuleAutoON(key: AutoModuleKeyType) {
+function isModuleAutoON(key: AutoModuleKeyUnion) {
   const { quickSwitch } = self.globalProfile.addon
   return (
     quickSwitch.includes(moduleKeys.indexOf(key)) &&

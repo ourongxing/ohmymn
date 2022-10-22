@@ -1,9 +1,9 @@
 import { MN, NoteComment } from "marginnote"
 import semver from "semver"
 import { Addon } from "~/addon"
-import { ModuleKeyType } from "~/merged"
+import { AllModuleKeyUnion } from "~/merged"
 import { IConfig } from "~/typings"
-import { customKey, rewriteSelection } from "./defaultProfile"
+import { rewriteSelection } from "./defaultProfile"
 import {
   IDocProfile,
   IGlobalProfile,
@@ -66,7 +66,7 @@ export const cacheTransformer = {
   }
 }
 
-export function defineConfig<T extends ModuleKeyType>(options: IConfig<T>) {
+export function defineConfig<T extends AllModuleKeyUnion>(options: IConfig<T>) {
   return options
 }
 
