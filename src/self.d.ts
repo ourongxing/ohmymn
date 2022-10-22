@@ -13,6 +13,7 @@ import type {
   NodeNote
 } from "marginnote"
 import type { ISection } from "./typings"
+import { AllModuleKeyUnion } from "./merged"
 
 declare global {
   const self: {
@@ -43,6 +44,7 @@ declare global {
           }
         | undefined
     }
+    expandSections: Set<Exclude<AllModuleKeyUnion, "addon">>
     backupWaitTimes: number | undefined
     metadata: {
       data:

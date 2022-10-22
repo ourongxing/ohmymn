@@ -1,7 +1,6 @@
 import {
   type NSIndexPath,
   type UITableView,
-  UITableViewScrollPosition,
   MN,
   openUrl,
   postNotification
@@ -41,17 +40,6 @@ async function tableViewDidSelectRowAtIndexPath(
       } else {
         self.expandSections.add(sec.key as OptionalModuleKeyUnion)
         self.tableView.reloadData()
-        // if (MN.isMac) {
-        //   self.tableView.setContentOffsetAnimated(
-        //     self.tableView.rectForHeaderInSection(indexPath.section),
-        //     true
-        //   )
-        // } else
-        self.tableView.scrollToRowAtIndexPathAtScrollPositionAnimated(
-          indexPath,
-          UITableViewScrollPosition.None,
-          false
-        )
       }
       break
     case CellViewType.ButtonWithInput:
