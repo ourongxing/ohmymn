@@ -8,6 +8,7 @@ module.exports = {
         "feat", // 新功能
         "improve", // 改进
         "style", // 格式（不影响代码运行的变动）
+        "break", // 重大变动
         "refactor", // 重构（即不是新增功能，也不是修改 bug 的代码变动）
         "perf", // 提高性能
         "fix", // 修补 bug

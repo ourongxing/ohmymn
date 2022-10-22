@@ -1,6 +1,6 @@
 import { build } from "@ourongxing/estrella"
 import type { Plugin } from "esbuild"
-import { mainfest } from "./mainfest"
+import mainfest from "./mainfest"
 import copy from "esbuild-plugin-mxn-copy"
 import autoImport from "unplugin-auto-import/esbuild"
 import { homedir } from "os"
