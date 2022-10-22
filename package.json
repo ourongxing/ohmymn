@@ -4,7 +4,7 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.0.12",
+  "version": "4.0.13",
   "license": "MIT",
   "description": "MarginNote Addon Development Framework",
   "scripts": {
