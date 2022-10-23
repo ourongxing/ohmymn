@@ -51,25 +51,32 @@ const func: {
 }
 
 const fetchDataFromMetadata = () => {
-  if (self.metadata.lastFetch && Date.now() - self.metadata.lastFetch < 100) {
-    self.metadata.lastFetch = Date.now()
-  } else {
-    self.metadata.lastFetch = Date.now()
-    const data = getLocalDataByKey("metadata_profile_doc")?.[MN.currentDocmd5!]
-    if (data === undefined) {
-      self.metadata.data = undefined
+  try {
+    if (self.metadata.lastFetch && Date.now() - self.metadata.lastFetch < 100) {
+      self.metadata.lastFetch = Date.now()
     } else {
-      const { pageOffset, citeKey, reference } = data.addon
-      const metadata = JSON.parse(data.additional.data)
-      self.metadata.data = {
-        pageOffset,
-        citeKey,
-        reference,
-        metadata
+      self.metadata.lastFetch = Date.now()
+      const data = getLocalDataByKey("metadata_profile_doc")?.[
+        MN.currentDocmd5!
+      ]
+      if (data === undefined) {
+        self.metadata.data = undefined
+      } else {
+        const { pageOffset, citeKey, reference } = data.addon
+        const metadata = JSON.parse(data.additional.data || "{}")
+        self.metadata.data = {
+          pageOffset,
+          citeKey,
+          reference,
+          metadata
+        }
       }
     }
+  } catch (e) {
+    dev.error(e)
+  } finally {
+    return self.metadata.data
   }
-  return self.metadata.data
 }
 
 export const fetchNodeProperties = (node: NodeNote, template: string) => {
@@ -228,7 +235,7 @@ export const renderTemplateOfNodeProperties = (
         )
     }).trim()
   } catch (err) {
-    console.error(err)
+    dev.error(err)
     return template
   }
 }
