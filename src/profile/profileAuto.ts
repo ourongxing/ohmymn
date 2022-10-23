@@ -31,7 +31,7 @@ export const readProfile: ReadPrifile = ({
         self.globalProfile,
         self.allGlobalProfile[profileNO]
       )
-      console.log("Read current global profile", "profile")
+      dev.log("Read current global profile", "profile")
     }
 
     const readNoteBookProfile = (notebookid: string) => {
@@ -39,7 +39,7 @@ export const readProfile: ReadPrifile = ({
         self.notebookProfile,
         self.allNotebookProfile?.[notebookid] ?? defaultNotebookProfile
       )
-      console.log("Read currect notebook profile", "profile")
+      dev.log("Read currect notebook profile", "profile")
     }
 
     const readDocProfile = (docmd5: string) => {
@@ -47,7 +47,7 @@ export const readProfile: ReadPrifile = ({
         self.docProfile,
         self.allDocProfile?.[docmd5] ?? defaultDocProfile
       )
-      console.log("Read currect doc profile", "profile")
+      dev.log("Read currect doc profile", "profile")
     }
 
     switch (range) {
@@ -82,7 +82,7 @@ export const readProfile: ReadPrifile = ({
             setLocalDataByKey(self.allGlobalProfile, Addon.globalProfileKey)
           }
         } else {
-          console.log("Initialize global profile", "profile")
+          dev.log("Initialize global profile", "profile")
           self.allGlobalProfile = Array(5).fill(defaultGlobalProfile)
         }
 
@@ -90,7 +90,7 @@ export const readProfile: ReadPrifile = ({
           self.allDocProfile = rewriteProfile(RewriteRange.Doc, docProfileLocal)
           // Initialize all profile when new version release
         } else {
-          console.log("Initialize doc profile", "profile")
+          dev.log("Initialize doc profile", "profile")
           self.allDocProfile = {
             [docmd5]: defaultDocProfile
           }
@@ -102,7 +102,7 @@ export const readProfile: ReadPrifile = ({
             notebookProfileLocal
           )
         } else {
-          console.log("Initialize notebook profile", "profile")
+          dev.log("Initialize notebook profile", "profile")
           self.allNotebookProfile = {
             [notebookid]: defaultNotebookProfile
           }
@@ -138,7 +138,7 @@ export const readProfile: ReadPrifile = ({
     }
     refreshPanel()
   } catch (err) {
-    console.error(err)
+    dev.error(err)
   }
 }
 
@@ -156,17 +156,17 @@ export const writeProfile: WritePrifile = ({
   const writeDocProfile = (docmd5: string) => {
     self.allDocProfile[docmd5] = deepCopy(self.docProfile)
     setLocalDataByKey(self.allDocProfile, Addon.docProfileKey)
-    console.log("Write current doc profile", "profile")
+    dev.log("Write current doc profile", "profile")
   }
   const writeGlobalProfile = (profileNO: number) => {
     self.allGlobalProfile[profileNO] = deepCopy(self.globalProfile)
     setLocalDataByKey(self.allGlobalProfile, Addon.globalProfileKey)
-    console.log("Write global profile", "profile")
+    dev.log("Write global profile", "profile")
   }
   const writeNotebookProfile = (notebookid: string) => {
     self.allNotebookProfile[notebookid] = deepCopy(self.notebookProfile)
     setLocalDataByKey(self.allNotebookProfile, Addon.notebookProfileKey)
-    console.log("Write notebook profile", "profile")
+    dev.log("Write notebook profile", "profile")
   }
   switch (range) {
     case Range.All: {
@@ -241,7 +241,7 @@ export async function saveProfile(name: string, key: string, value: any) {
     }
     const timeout = 3
     if (self.backupWaitTimes === undefined) {
-      console.log("Save profile: start new timer", "profile")
+      dev.log("Save profile: start new timer", "profile")
       self.backupWaitTimes = 0
       let i = timeout
       while (i) {
@@ -249,11 +249,11 @@ export async function saveProfile(name: string, key: string, value: any) {
           i = self.backupWaitTimes
           self.backupWaitTimes = 0
         } else i--
-        console.log(i, "profile")
+        dev.log(i, "profile")
         await delay(1)
       }
       self.backupWaitTimes = undefined
-      console.log("Save profile completed", "profile")
+      dev.log("Save profile completed", "profile")
       writeProfile({
         range: Range.All,
         docmd5: MN.currentDocmd5,
@@ -261,7 +261,7 @@ export async function saveProfile(name: string, key: string, value: any) {
       })
       const { backupID, autoBackup } = self.globalProfile.addon
       if (backupID && autoBackup) {
-        console.log("Auto backup to card", "profile")
+        dev.log("Auto backup to card", "profile")
         const node = MN.db.getNoteById(
           backupID.replace("marginnote3app://note/", "")
         )
@@ -271,7 +271,7 @@ export async function saveProfile(name: string, key: string, value: any) {
       self.backupWaitTimes = self.backupWaitTimes + 1
     }
   } catch (err) {
-    console.error(String(err))
+    dev.error(String(err))
   }
 }
 

@@ -31,7 +31,7 @@ export default async (
   isModify: boolean,
   lastExcerptText?: string
 ) => {
-  console.log("Processing Excerpt", "excerpt")
+  dev.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
   isOCR = false
@@ -39,7 +39,7 @@ export default async (
   node = new NodeNote(note)
   nodeNote = node.note
   isComment = nodeNote !== note
-  isComment && console.log("The Excerpt is a comment", "excerpt")
+  isComment && dev.log("The Excerpt is a comment", "excerpt")
   self.excerptStatus.isModify = isModify
 
   if (
@@ -49,7 +49,7 @@ export default async (
     lastExcerptText !== "😎"
   ) {
     addTitleExcerpt({ text: lastExcerptText })
-    return console.log("Locking excerpt is ON, restore excerpt", "excerpt")
+    return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")
   }
 
   /**
@@ -61,26 +61,26 @@ export default async (
   if (note.excerptPic) {
     const autoOCR =
       MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
-    console.log("The excerpt is image", "ocr")
+    dev.log("The excerpt is image", "ocr")
     if (autoOCR) {
       const success = await delayBreak(30, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
-        console.log("Image to text success", "ocr")
+        dev.log("Image to text success", "ocr")
         // If the PDF itself is pure text, is not the need for OCR. But other cases will call the online OCR to convert text,
-        console.log(
+        dev.log(
           self.excerptStatus.OCROnline.times === 1 ? "OCR" : "not OCR",
           "ocr"
         )
         isOCR = true
       } else {
         isPic = true
-        console.log("Image to text fail, no text", "ocr")
+        dev.log("Image to text fail, no text", "ocr")
       }
     } else {
       isPic = true
-      console.log("No auto-to-text option on, no image processing", "ocr")
+      dev.log("No auto-to-text option on, no image processing", "ocr")
     }
   }
 
@@ -100,14 +100,14 @@ export default async (
           () => self.excerptStatus.OCROnline.status === "begin"
         ))
       if (self.excerptStatus.OCROnline.status === "begin") {
-        console.log("Online Correcting", "ocr")
+        dev.log("Online Correcting", "ocr")
         const success = await delayBreak(
           30,
           0.1,
           () => self.excerptStatus.OCROnline.status === "end"
         )
-        if (success) console.log("Correct success", "ocr")
-        else console.log("Correct fail", "ocr")
+        if (success) dev.log("Correct success", "ocr")
+        else dev.log("Correct fail", "ocr")
       }
     }
 
@@ -115,10 +115,10 @@ export default async (
       times: 0,
       status: "free"
     }
-    console.log("Rest OCR status", "ocr")
+    dev.log("Rest OCR status", "ocr")
 
     const OCRContent = await customOCR()
-    console.log("Custom OCR over", "ocr")
+    dev.log("Custom OCR over", "ocr")
     if (OCRContent) note.excerptText = OCRContent
     const excerptText = note.excerptText?.trim()
     if (!excerptText) return

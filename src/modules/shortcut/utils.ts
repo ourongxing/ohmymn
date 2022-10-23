@@ -87,6 +87,6 @@ export async function handleURLScheme(params: string) {
     }
   } catch (e) {
     showHUD(String(e), 2)
-    console.error(e)
+    dev.error(e)
   }
 }

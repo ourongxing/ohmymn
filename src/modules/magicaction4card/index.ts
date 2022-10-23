@@ -53,7 +53,7 @@ export default defineConfig({
       option: lang.manage_profile.$option4,
       help: lang.manage_profile.help,
       method: () => {
-        console.log()
+        //
       }
     },
     {

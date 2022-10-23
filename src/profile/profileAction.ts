@@ -342,7 +342,7 @@ export async function readProfilefromCard(node: MbBookNote) {
     layoutViewController()
     showHUD(lang.success)
   } catch (err) {
-    console.error(err)
+    dev.error(err)
     showHUD(`${lang.fail}：${err}`)
   }
 }

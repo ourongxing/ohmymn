@@ -115,6 +115,6 @@ async function handler({
       await handleCardAction(key, option, content ?? "")
     }
   } catch (err) {
-    console.error(String(err))
+    dev.error(String(err))
   }
 }

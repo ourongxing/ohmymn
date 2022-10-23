@@ -42,19 +42,19 @@ export default defineEventHandlers<
   async onButtonClick(sender) {
     if (self.window !== MN.currentWindow) return
     // For magicaction
-    console.log("Click a button", "event")
+    dev.log("Click a button", "event")
     const { row, type } = sender.userInfo
     await handleMagicAction(type, row)
   },
   async onSwitchChange(sender) {
     if (self.window !== MN.currentWindow) return
-    console.log("Switch the switch", "event")
+    dev.log("Switch the switch", "event")
     const { name, key, status } = sender.userInfo
     await saveProfile(name, key, status)
   },
   async onSelectChange(sender) {
     if (self.window !== MN.currentWindow) return
-    console.log("Change the selection", "event")
+    dev.log("Change the selection", "event")
     const { name, key, selections } = sender.userInfo
     switch (key) {
       case "panelPosition":
@@ -68,7 +68,7 @@ export default defineEventHandlers<
   },
   async onInputOver(sender) {
     if (self.window !== MN.currentWindow) return
-    console.log("Input", "event")
+    dev.log("Input", "event")
     const { name, key, content } = sender.userInfo
     updateProfileTemp(key, content)
     showHUD(content ? lang.input_saved : lang.input_clear)
@@ -82,13 +82,13 @@ export default defineEventHandlers<
   onOCRImageBegin(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnline.status = "begin"
-    console.log("OCR begin", "ocr")
+    dev.log("OCR begin", "ocr")
   },
   async onOCRImageEnd(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnline.status = "end"
     self.excerptStatus.OCROnline.times = 1
-    console.log("OCR end", "ocr")
+    dev.log("OCR end", "ocr")
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
@@ -96,7 +96,7 @@ export default defineEventHandlers<
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
     }
-    console.log("Popup menu on selection open", "event")
+    dev.log("Popup menu on selection open", "event")
   },
   onClosePopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
@@ -105,8 +105,8 @@ export default defineEventHandlers<
       times: 0,
       status: "free"
     }
-    console.log("Reset OCR status", "ocr")
-    console.log("Popup menu on selection close", "event")
+    dev.log("Reset OCR status", "ocr")
+    dev.log("Popup menu on selection close", "event")
   },
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
@@ -130,13 +130,13 @@ export default defineEventHandlers<
       times: 0,
       status: "free"
     }
-    console.log("Reset OCR status", "ocr")
-    console.log("Popup menu on note close", "event")
+    dev.log("Reset OCR status", "ocr")
+    dev.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    console.log("Change excerpt range", "event")
+    dev.log("Change excerpt range", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isChangeExcerptRange = true
@@ -145,7 +145,7 @@ export default defineEventHandlers<
   onProcessNewExcerpt(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    console.log("Process new excerpt", "event")
+    dev.log("Process new excerpt", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
@@ -159,7 +159,7 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     if (!isModuleON("shortcut")) return
     if (MN.studyController.studyMode === StudyMode.review) return
-    console.log("Addon broadcast", "event")
+    dev.log("Addon broadcast", "event")
     const { message } = sender.userInfo
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
     if (message !== params) {

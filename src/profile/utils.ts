@@ -36,7 +36,7 @@ export function getMNLinkValue(link: string) {
       if (x.length) return x.join(";")
     }
   } catch (e) {
-    console.error(e)
+    dev.error(e)
     return undefined
   }
 }
@@ -144,7 +144,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
             break
           case RewriteRange.SingleGlobal:
             if (global) {
-              console.assert(profile)
+              dev.assert(profile)
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
                   if (!resloveGlobal(profile as IGlobalProfile, module, key, f))

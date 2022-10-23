@@ -5,7 +5,7 @@ function reverseEscape(str: string, quote = false) {
   try {
     return JSON.parse(quote ? `"${str}"` : str)
   } catch (e) {
-    console.error(e)
+    dev.error(e)
     throw lang.parse_error
   }
 }

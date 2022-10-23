@@ -52,7 +52,7 @@ export const autoUtils = (() => {
       return acc
     }, {} as TypeUtilFalseArray<AutoUtilType>)
   } catch (err) {
-    console.error(err)
+    dev.error(err)
     return {}
   }
 })()

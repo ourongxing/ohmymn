@@ -109,7 +109,7 @@ function _isBindOFF(bindArr: BindType, sectionKey: string) {
       })
     })
   } catch (e) {
-    console.error(String(e))
+    dev.error(String(e))
     return e
   }
 }

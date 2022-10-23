@@ -237,7 +237,7 @@ function clickSelectButton(sender: UIButton) {
     )
     self.popoverController.delegate = self
   } catch (e) {
-    console.error(e)
+    dev.error(e)
   }
 }
 

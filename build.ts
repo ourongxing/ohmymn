@@ -33,8 +33,10 @@ const footerText = `
 
 const outDir = isProd
   ? "./dist/"
-  : homedir() +
-    `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+  : // : homedir() +
+    //   `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+    homedir() +
+    `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
 
 function clear(): Plugin {
   return {
@@ -90,15 +92,14 @@ function genMainfest(): Plugin {
 
 const plugins: Plugin[] = [
   clear(),
-  !isProd &&
-    autoImport({
-      imports: [
-        {
-          marginnote: ["console"]
-        }
-      ],
-      dts: false
-    }),
+  autoImport({
+    imports: [
+      {
+        marginnote: ["dev"]
+      }
+    ],
+    dts: false
+  }),
   mainfest.files?.length &&
     copy({
       copy: mainfest.files.map(k => ({
@@ -125,7 +126,7 @@ build({
   footer: {
     js: footerText
   },
-  pure: ["console.log", "console.error", "console.assert", "console.warn"],
+  pure: ["dev.log", "dev.error", "dev.assert"],
   bundle: true,
   target: "safari13",
   plugins

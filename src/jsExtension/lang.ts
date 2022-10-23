@@ -14,7 +14,7 @@ export default i18n({
     },
     read_failed: "自定义内容读取失败",
     detect_link: "检测到链接，是否直接打开？",
-    no_doc: `当前笔记本没有文档，${Addon.title}无法正常工作。如果你正要打算添加文档，请在添加完成后重新打开笔记本。`,
+    no_doc: `当前笔记本没有文档，${Addon.title} 无法正常工作。如果你正要打算添加文档，请在添加完成后重新打开笔记本。`,
     not_select_card: "未选中任何脑图卡片",
     not_select_area: "没有选中任何区域",
     no_text_selection: "无法得到到选中区域的文字",
