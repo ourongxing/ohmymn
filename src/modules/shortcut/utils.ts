@@ -12,51 +12,66 @@ export async function handleURLScheme(params: string) {
     // marginnote3app://addon/ohmymn?type=card&shortcut=1
     // marginnote3app://addon/ohmymn?type=text&shortcut=1
     // marginnote3app://addon/ohmymn?custom=true&type=card&action=renameTitle&option=1&content=1
-    const { custom, type, shortcut, action, option, content } =
-      queryString.parse(params)
-    if (custom) {
-      const { shortcutPro } = self.globalProfile.shortcut
-      if (!shortcutPro) return
-      if (!action) throw lang.no_action
-      const ret = (() => {
-        if (type === "card") {
-          const r = actionKey4Card.find(k => k.key === action)
-          if (r)
-            return {
-              ...r,
-              type: "card" as "card" | "text"
-            }
-        } else if (type === "text") {
-          const k = actionKey4Text.find(k => k.key === action)
-          if (k)
-            return {
-              ...k,
-              type: "text" as "card" | "text"
-            }
-        } else {
-          throw lang.type_not_exist
-        }
-      })()
-      if (!ret) throw lang.action_not_exist
-      const { key, module, moduleName, type: _type } = ret
-      if (module && !isModuleON(module))
-        throw `${moduleName ?? module} ${lang.action_not_work}`
-      else {
-        const [sec, row] =
-          dataSourceIndex[
-            _type === "card" ? "magicaction4card" : "magicaction4text"
-          ][key]
-        if (option !== null && !Number.isInteger(Number(option)))
-          throw lang.option_interger
-        const opt = option === null ? undefined : Number(option)
-        await handleMagicAction(
-          _type,
-          self.dataSource[sec].rows[row] as IRowButton,
-          opt,
-          content === null ? undefined : String(content)
-        )
+    const query = queryString.parse(params)
+    if (query.custom) {
+      if (!self.globalProfile.shortcut.shortcutPro) return
+      const { info } = query
+      let shortcuts: {
+        action: string
+        type: "text" | "card"
+        option: string
+        content?: string
+      }[] = []
+      try {
+        shortcuts = JSON.parse(info as string)
+        if (!shortcuts.length) throw ""
+      } catch (error) {
+        throw "错误的 Info 参数"
       }
+      shortcuts.forEach(async k => {
+        const { type, action, option, content } = k
+        if (!action) throw lang.no_action
+        const ret = (() => {
+          if (type === "card") {
+            const r = actionKey4Card.find(k => k.key === action)
+            if (r)
+              return {
+                ...r,
+                type: "card" as "card" | "text"
+              }
+          } else if (type === "text") {
+            const k = actionKey4Text.find(k => k.key === action)
+            if (k)
+              return {
+                ...k,
+                type: "text" as "card" | "text"
+              }
+          } else {
+            throw lang.type_not_exist
+          }
+        })()
+        if (!ret) throw lang.action_not_exist
+        const { key, module, moduleName, type: _type } = ret
+        if (module && !isModuleON(module))
+          throw `${moduleName ?? module} ${lang.action_not_work}`
+        else {
+          const [sec, row] =
+            dataSourceIndex[
+              _type === "card" ? "magicaction4card" : "magicaction4text"
+            ][key]
+          if (option !== null && !Number.isInteger(Number(option)))
+            throw lang.option_interger
+          const opt = option === null ? undefined : Number(option)
+          await handleMagicAction(
+            _type,
+            self.dataSource[sec].rows[row] as IRowButton,
+            opt,
+            content === null ? undefined : String(content)
+          )
+        }
+      })
     } else {
+      const { type, shortcut } = query
       switch (type) {
         case "card":
         case "text": {
