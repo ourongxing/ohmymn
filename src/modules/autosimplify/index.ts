@@ -80,7 +80,7 @@ export default defineConfig({
   ],
   actions4card: [
     {
-      type: CellViewType.ButtonWithInput,
+      type: CellViewType.Button,
       label: lang.simplify_card.label,
       key: "simplifyCard",
       option: lang.simplify_card.$option3,

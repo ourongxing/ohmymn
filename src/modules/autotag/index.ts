@@ -6,7 +6,9 @@ import {
   checkPlainText,
   checkReplaceParam,
   checkReplaceParamFromMNLink,
+  escapeDoubleQuote,
   extractArray,
+  reverseEscape,
   string2ReplaceParam
 } from "~/utils"
 import lang from "./lang"
@@ -92,7 +94,12 @@ export default defineConfig({
             })
           } else {
             nodes.forEach(node => {
-              node.appendTags(renderTemplateOfNodeProperties(node, content))
+              node.appendTags(
+                renderTemplateOfNodeProperties(
+                  node,
+                  reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                )
+              )
             })
           }
         }

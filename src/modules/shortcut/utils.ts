@@ -23,7 +23,7 @@ export async function handleURLScheme(params: string) {
           (type === "card" && (num < 1 || num > 8)) ||
           (type === "text" && (num < 1 || num > 4))
         )
-          throw lang.shortcut_pro
+          throw lang.shortcut_range
         const opt = self.globalProfile.shortcut[
           `${type}Shortcut${Number(shortcut) - 1}`
         ] as [number]

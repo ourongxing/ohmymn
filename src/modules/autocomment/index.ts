@@ -7,8 +7,10 @@ import {
   checkReplaceParam,
   checkReplaceParamFromMNLink,
   doc,
+  escapeDoubleQuote,
   extractArray,
   regFlag,
+  reverseEscape,
   string2ReplaceParam
 } from "~/utils"
 import lang from "./lang"
@@ -103,7 +105,10 @@ export default defineConfig({
           } else {
             nodes.forEach(node => {
               node.appendTextComments(
-                renderTemplateOfNodeProperties(node, content)
+                renderTemplateOfNodeProperties(
+                  node,
+                  reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                )
               )
             })
           }

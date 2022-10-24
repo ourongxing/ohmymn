@@ -74,7 +74,7 @@ function genDataSource(
     })) ?? []
   configs.forEach(config => {
     dataSource.push(genSection(config))
-    if (config.actions4card?.length)
+    if (config.actions4card?.length) {
       actions4card.push(
         ...config.actions4card.map(k => ({
           ...k,
@@ -85,6 +85,7 @@ function genDataSource(
             (k.help ? k.help : "")
         }))
       )
+    }
     if (config.actions4text?.length) {
       actions4text.push(
         ...config.actions4text.map(k => ({
@@ -242,3 +243,27 @@ export const { dataSource: defaultDataSource, moduleNameList } = genDataSource(
 )
 
 export const dataSourceIndex = genDataSourceIndex(defaultDataSource)
+
+// defaultDataSource.forEach(sec => {
+//   const cardaction: any[] = []
+//   const textaction: any[] = []
+//   if (sec.key === "magicaction4card") {
+//     cardaction.push(
+//       ...sec.rows.filter(
+//         k =>
+//           k.type === CellViewType.Button ||
+//           k.type === CellViewType.ButtonWithInput
+//       )
+//     )
+//   } else if (sec.key === "magicaction4text") {
+//     textaction.push(
+//       ...sec.rows.filter(
+//         k =>
+//           k.type === CellViewType.Button ||
+//           k.type === CellViewType.ButtonWithInput
+//       )
+//     )
+//   }
+//   console.log(cardaction)
+//   console.log(textaction)
+// })
