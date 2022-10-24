@@ -8,7 +8,8 @@ export default i18n({
     muiltBar: "卡片多选工具栏",
     selectionBar: "文字选择工具栏",
     action_not_work: "模块未启用，该动作无法执行",
-    custom_shortcut: "自定义捷径"
+    custom_shortcut: "自定义捷径",
+    only_mn: "仅支持 MarginNote 插件的 URL Scheme，但不限于 OhMyMN"
   },
   en: {
     intro:
@@ -17,6 +18,8 @@ export default i18n({
     muiltBar: "Multi Select Toolbar",
     selectionBar: "Text Select Toolbar",
     action_not_work: "Module is not enabled, the action cannot be executed",
-    custom_shortcut: "Custom Shortcut"
+    custom_shortcut: "Custom Shortcut",
+    only_mn:
+      "Only support MarginNote addon's URL Scheme, but not limited to OhMyMN"
   }
 })

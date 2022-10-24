@@ -14,7 +14,8 @@ export default defineConfig({
       key: "shortcutPro",
       type: CellViewType.Switch,
       help: lang.shortcut_pro.help,
-      label: lang.shortcut_pro.label
+      label: lang.shortcut_pro.label,
+      link: lang.shortcut_pro.link
     },
     ...[...Array(8).keys()].map(
       i =>

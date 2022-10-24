@@ -30,7 +30,10 @@ export default defineConfig({
           help: lang.custom_shortcut,
           key: `${q[1]}BarSwipe${k[1]}Shortcut`,
           type: CellViewType.Input,
-          bind: [`${q[1]}BarSwipe${k[1]}`, 1]
+          bind: [`${q[1]}BarSwipe${k[1]}`, 1],
+          check({ input }: { input: string }) {
+            if (!input.startsWith("marginnote3app://addon")) throw lang.only_mn
+          }
         }
       ])
     })

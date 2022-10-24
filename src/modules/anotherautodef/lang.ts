@@ -32,11 +32,11 @@ export default i18n({
     },
     extract_title: {
       label: "提取标题",
-      $option2: ["使用 AutoDef 中的配置", "确定"] as StringTuple<2>
+      $option2: ["使用 AutoDef 中的设置", "确定"] as StringTuple<2>
     },
     split_excerpt: {
       label: "拆分摘录",
-      $option2: ["使用 AutoDef 中的配置", "确定"] as StringTuple<2>,
+      $option2: ["使用 AutoDef 中的设置", "确定"] as StringTuple<2>,
       help: "将摘录拆分为标题（被定义项）和摘录（定义项）两部分。"
     },
     custom_title_split: {
