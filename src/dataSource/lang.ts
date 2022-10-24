@@ -5,6 +5,7 @@ export default i18n({
     magicaction_from_which_module: (module: string) =>
       `该动作来自于 ${module}，与其使用相同的设置。`,
     open_panel: "切换控制面板",
+    custom_shortcut: "自定义捷径",
     none: "无",
     expand: "▶ 点击展开所有选项",
     website: "OhMyMN 官网：ohmymn.marginnote.cn",
@@ -17,6 +18,7 @@ export default i18n({
       `This action comes from ${module} and uses the same settings. `,
     open_panel: "Switch Control Panel",
     none: "None",
+    custom_shortcut: "Custom Shortcut",
     expand: "▶ Click to expand all options",
     website: "OhMyMN Website: ohmymn.marginnote.con",
     core_team: "Core Team: ourongxing，Bryan",

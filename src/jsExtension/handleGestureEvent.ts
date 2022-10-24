@@ -65,6 +65,7 @@ export default defineGestureHandlers({
     const { singleBarSwipeUp, muiltBarSwipeUp, selectionBarSwipeUp } =
       self.globalProfile.gesture
     actionTrigger(
+      "Up",
       singleBarSwipeUp[0],
       muiltBarSwipeUp[0],
       selectionBarSwipeUp[0],
@@ -75,6 +76,7 @@ export default defineGestureHandlers({
     const { singleBarSwipeDown, muiltBarSwipeDown, selectionBarSwipeDown } =
       self.globalProfile.gesture
     actionTrigger(
+      "Down",
       singleBarSwipeDown[0],
       muiltBarSwipeDown[0],
       selectionBarSwipeDown[0],
@@ -85,6 +87,7 @@ export default defineGestureHandlers({
     const { singleBarSwipeLeft, muiltBarSwipeLeft, selectionBarSwipeLeft } =
       self.globalProfile.gesture
     actionTrigger(
+      "Left",
       singleBarSwipeLeft[0],
       muiltBarSwipeLeft[0],
       selectionBarSwipeLeft[0],
@@ -95,6 +98,7 @@ export default defineGestureHandlers({
     const { singleBarSwipeRight, muiltBarSwipeRight, selectionBarSwipeRight } =
       self.globalProfile.gesture
     actionTrigger(
+      "Right",
       singleBarSwipeRight[0],
       muiltBarSwipeRight[0],
       selectionBarSwipeRight[0],

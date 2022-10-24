@@ -19,12 +19,20 @@ export default defineConfig({
         ["↓", "Down"],
         ["←", "Left"],
         ["→", "Right"]
-      ].map(k => ({
-        label: `${q[0]} ${k[0]}`,
-        key: `${q[1]}BarSwipe${k[1]}`,
-        type: CellViewType.Select,
-        option: [] as string[]
-      }))
+      ].map(k => [
+        {
+          label: `${q[0]} ${k[0]}`,
+          key: `${q[1]}BarSwipe${k[1]}`,
+          type: CellViewType.Select,
+          option: [] as string[]
+        },
+        {
+          help: lang.custom_shortcut,
+          key: `${q[1]}BarSwipe${k[1]}Shortcut`,
+          type: CellViewType.Input,
+          bind: [`${q[1]}BarSwipe${k[1]}`, 1]
+        }
+      ])
     })
-    .flat() as ISettingSelect<IAllProfile["gesture"]>[]
+    .flat(Infinity) as ISettingSelect<IAllProfile["gesture"]>[]
 })

@@ -81,7 +81,7 @@ async function textFieldShouldReturn(sender: UITextField) {
   const row = section.rows[indexPath.row] as IRowInput
   const text = sender.text.trim()
   // Allowed be empty
-  if (/^marginnote3app:/.test(text)) openUrl(text)
+  if (text.startsWith("marginnote3app://note/")) openUrl(text)
   if (!text || (await checkInputCorrect(text, row.key))) {
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
@@ -189,9 +189,10 @@ function clickSelectButton(sender: UIButton) {
             return status
           }
         } else if (sectionKey === "shortcut") {
-          const { module } = rowKey.includes("text")
+          const { module, key } = rowKey.includes("text")
             ? actionKey4Text[index]
             : actionKey4Card[index]
+          if (key === "customShortcut") return true
           if (!module) return false
           const status = cacheModuleOFF[module]
           if (status !== undefined) {

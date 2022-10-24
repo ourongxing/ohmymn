@@ -23,6 +23,18 @@ export const defaultGlobalProfile = {
     noteOptions: []
   },
   gesture: {
+    singleBarSwipeUpShortcut: "",
+    singleBarSwipeDownShortcut: "",
+    singleBarSwipeRightShortcut: "",
+    singleBarSwipeLeftShortcut: "",
+    muiltBarSwipeUpShortcut: "",
+    muiltBarSwipeDownShortcut: "",
+    muiltBarSwipeRightShortcut: "",
+    muiltBarSwipeLeftShortcut: "",
+    selectionBarSwipeUpShortcut: "",
+    selectionBarSwipeDownShortcut: "",
+    selectionBarSwipeRightShortcut: "",
+    selectionBarSwipeLeftShortcut: "",
     singleBarSwipeUp: [0],
     singleBarSwipeDown: [0],
     singleBarSwipeRight: [0],
@@ -268,6 +280,18 @@ export const rewriteSelection: RewriteCase[] = [
     global: {
       autocomment: {
         preset: (old: number[]) => old.filter(k => k !== 1)
+      }
+    }
+  },
+  {
+    version: {
+      from: "4.0.11 - 4.0.13",
+      to: ">=4.0.14"
+    },
+    global: {
+      addon: {
+        cardAction: (old: number[]) => [old[0] > 0 ? old[0] + 1 : old[0]],
+        textAction: (old: number[]) => [old[0] > 0 ? old[0] + 1 : old[0]]
       }
     }
   }

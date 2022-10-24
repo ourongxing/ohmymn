@@ -1,10 +1,16 @@
-import { DocMapSplitMode, GroupMode, StudyMode } from "marginnote"
-import { DirectionOfSelection } from "marginnote"
+import {
+  DirectionOfSelection,
+  DocMapSplitMode,
+  GroupMode,
+  MN,
+  openUrl,
+  showHUD,
+  StudyMode
+} from "marginnote"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
-import { MN, showHUD } from "marginnote"
-import { isModuleON, moduleKeys } from "~/merged"
+import { isModuleON } from "~/merged"
 import { IRowButton } from "~/typings"
 import { reverseEscape } from "~/utils"
 import lang from "./lang"
@@ -176,7 +182,8 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
 }
 
 export async function actionTrigger(
-  sigleBarOption: number,
+  direction: string,
+  singleBarOption: number,
   muiltBarOption: number,
   selectionBarOption: number,
   sender: UIGestureRecognizer
@@ -187,9 +194,8 @@ export async function actionTrigger(
 
   let actionInfo: typeof actionKey4Card[number]
   let type: "card" | "text" = "card"
-
-  if (swipePosition === SwipePosition.SingleBar && sigleBarOption) {
-    actionInfo = actionKey4Card[sigleBarOption]
+  if (swipePosition === SwipePosition.SingleBar && singleBarOption) {
+    actionInfo = actionKey4Card[singleBarOption]
   } else if (swipePosition === SwipePosition.MuiltBar && muiltBarOption) {
     actionInfo = actionKey4Card[muiltBarOption]
   } else if (
@@ -203,7 +209,15 @@ export async function actionTrigger(
   const { key, module, option, moduleName } = actionInfo
   if (key === "none") return
   else if (key == "switchPanel") switchPanel()
-  else if (module && !isModuleON(module))
+  else if (key === "customShortcut") {
+    const pKey =
+      ["singleBar", "muiltBar", "selectionBar"][swipePosition - 1] +
+      "Swipe" +
+      direction +
+      "Shortcut"
+    const val = self.globalProfile.gesture[pKey]
+    if (val) openUrl(val)
+  } else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {
     const [sec, row] =

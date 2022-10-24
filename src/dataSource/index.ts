@@ -175,7 +175,7 @@ function genDataSourceIndex(dataSource: ISection[]) {
 }
 
 function getActionKeyGetureOption(section: ISection) {
-  const gestureOption = [lang.open_panel]
+  const gestureOption = [lang.custom_shortcut, lang.open_panel]
   const actionKeys = []
   for (const _row of section.rows) {
     if (
@@ -227,10 +227,11 @@ export const actionKey4Card: {
   option?: number
   module?: OptionalModuleKeyUnion
   moduleName?: string
-}[] = [{ key: "none" }, { key: "switchPanel" }]
+}[] = [{ key: "none" }, { key: "customShortcut" }, { key: "switchPanel" }]
 
 export const actionKey4Text: typeof actionKey4Card = [
   { key: "none" },
+  { key: "customShortcut" },
   { key: "switchPanel" }
 ]
 

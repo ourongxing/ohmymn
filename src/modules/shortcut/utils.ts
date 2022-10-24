@@ -23,10 +23,10 @@ export async function handleURLScheme(params: string) {
         content?: string
       }[] = []
       try {
-        shortcuts = JSON.parse(info as string)
+        shortcuts = JSON.parse(decodeURIComponent(info as string))
         if (!shortcuts.length) throw ""
       } catch (error) {
-        throw "错误的 Info 参数"
+        throw lang.info_error
       }
       shortcuts.forEach(async k => {
         const { type, action, option, content } = k
