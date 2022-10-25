@@ -1,6 +1,5 @@
 import {
-  alert,
-  defineLifeCycleHandler,
+  defineLifecycleHandler,
   isfileExists,
   MN,
   openUrl,
@@ -41,11 +40,11 @@ import { closePanel, layoutViewController } from "./switchPanel"
  * 7. Close a window
  */
 
-export default defineLifeCycleHandler({
+export default defineLifecycleHandler({
   instanceMethods: {
     sceneWillConnect() {
-      self.useConsole = true
-      dev.log("Open a new window", "lifeCycle")
+      // self.useConsole = true
+      dev.log("Open a new window", "lifecycle")
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
         status: false,
@@ -87,10 +86,16 @@ export default defineLifeCycleHandler({
     notebookWillOpen(notebookid: string) {
       if (MN.studyController.studyMode === StudyMode.review) return
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
-        alert(lang.no_doc)
+        showHUD(lang.no_doc)
         return
       }
-      dev.log("Open a notebook", "lifeCycle")
+      dev.log(MN.db.getNotebookById(notebookid))
+      dev.log(
+        MN.db
+          .getNotebookById(notebookid)
+          ?.notes?.filter(k => k.options?.draftArranged !== undefined)
+      )
+      dev.log("Open a notebook", "lifecycle")
       if (!self.isFirstOpenDoc) {
         readProfile({
           range: Range.Notebook,
@@ -105,7 +110,7 @@ export default defineLifeCycleHandler({
       if (MN.studyController.studyMode === StudyMode.review) return
       // Switch document, read doc profile
       if (self.isFirstOpenDoc) {
-        dev.log("First open a document", "lifeCycle")
+        dev.log("First open a document", "lifecycle")
         self.isFirstOpenDoc = false
         readProfile({
           range: Range.All,
@@ -118,12 +123,12 @@ export default defineLifeCycleHandler({
           docmd5
         })
       }
-      dev.log("Open a document", "lifeCycle")
+      dev.log("Open a document", "lifecycle")
     },
     notebookWillClose(notebookid: string) {
       if (MN.studyController.studyMode === StudyMode.review) return
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) return
-      dev.log("Close a notebook", "lifeCycle")
+      dev.log("Close a notebook", "lifecycle")
       removeLastComment()
       removeUndefinedCache()
       writeProfile({
@@ -141,11 +146,11 @@ export default defineLifeCycleHandler({
         range: Range.Doc,
         docmd5
       })
-      dev.log("Close a document", "lifeCycle")
+      dev.log("Close a document", "lifecycle")
     },
     // Not triggered on ipad
     sceneDidDisconnect() {
-      dev.log("Close a window", "lifeCycle")
+      dev.log("Close a window", "lifecycle")
       removeLastComment()
       if (MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
         removeUndefinedCache()
@@ -158,7 +163,7 @@ export default defineLifeCycleHandler({
     },
     sceneWillResignActive() {
       // or go to the background
-      dev.log("Window is inactivation", "lifeCycle")
+      dev.log("Window is inactivation", "lifecycle")
       removeLastComment()
       if (!MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
         removeUndefinedCache()
@@ -172,12 +177,12 @@ export default defineLifeCycleHandler({
     sceneDidBecomeActive() {
       !MN.isMac && layoutViewController()
       // or go to the foreground
-      dev.log("Window is activated", "lifeCycle")
+      dev.log("Window is activated", "lifecycle")
     }
   },
   classMethods: {
     async addonWillDisconnect() {
-      dev.log("Addon disconected", "lifeCycle")
+      dev.log("Addon disconected", "lifecycle")
       const { option } = await popup(
         {
           title: Addon.title,
@@ -203,7 +208,7 @@ export default defineLifeCycleHandler({
       }
     },
     addonDidConnect() {
-      dev.log("Addon connected", "lifeCycle")
+      dev.log("Addon connected", "lifecycle")
       if (
         !isfileExists(`${Addon.path}/AutoCompleteData.db`) &&
         isfileExists(`${Addon.path}/AutoCompleteData.zip`)

@@ -2,16 +2,16 @@ import { getObjCClassDeclar } from "marginnote"
 import { Addon } from "~/addon"
 import handleGestureEvent from "./handleGestureEvent"
 import handleReceivedEvent from "./handleReceivedEvent"
-import lifeCycle from "./lifeCycle"
+import lifecycle from "./lifecycle"
 import switchPanel from "./switchPanel"
 
 export default JSB.defineClass(
   getObjCClassDeclar(Addon.title, "JSExtension"),
   {
-    ...lifeCycle.instanceMethods,
+    ...lifecycle.instanceMethods,
     ...switchPanel,
     ...handleGestureEvent,
     ...handleReceivedEvent
   },
-  lifeCycle.classMethods
+  lifecycle.classMethods
 )

@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "使用百度 OCR 服务来进行小语种的在线矫正。",
+    intro: "使用百度 OCR 服务在摘录时进行小语种的在线矫正。      ",
     on: {
       label: "摘录时自动执行",
       help: "【仅当前文档】"
