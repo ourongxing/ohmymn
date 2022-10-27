@@ -84,18 +84,8 @@ export default defineLifecycleHandler({
       self.settingViewController.notebookProfile = self.notebookProfile
     },
     notebookWillOpen(notebookid: string) {
-      if (MN.studyController.studyMode === StudyMode.review) return
-      if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
-        showHUD(lang.no_doc)
-        return
-      }
-      dev.log(MN.db.getNotebookById(notebookid))
-      dev.log(
-        MN.db
-          .getNotebookById(notebookid)
-          ?.notes?.filter(k => k.options?.draftArranged !== undefined)
-      )
       dev.log("Open a notebook", "lifecycle")
+      if (MN.studyController.studyMode === StudyMode.review) return
       if (!self.isFirstOpenDoc) {
         readProfile({
           range: Range.Notebook,
@@ -105,8 +95,24 @@ export default defineLifecycleHandler({
       // Add hooks, aka observers
       eventHandlers.add()
       gestureHandlers().add()
+      if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
+        if (self.isFirstOpenDoc) {
+          self.isFirstOpenDoc = false
+          readProfile({
+            range: Range.All,
+            docmd5: "00000000",
+            notebookid
+          })
+        } else {
+          readProfile({
+            range: Range.Doc,
+            docmd5: "00000000"
+          })
+        }
+      }
     },
     documentDidOpen(docmd5: string) {
+      dev.log("Open a document", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       // Switch document, read doc profile
       if (self.isFirstOpenDoc) {
@@ -123,12 +129,10 @@ export default defineLifecycleHandler({
           docmd5
         })
       }
-      dev.log("Open a document", "lifecycle")
     },
     notebookWillClose(notebookid: string) {
-      if (MN.studyController.studyMode === StudyMode.review) return
-      if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) return
       dev.log("Close a notebook", "lifecycle")
+      if (MN.studyController.studyMode === StudyMode.review) return
       removeLastComment()
       removeUndefinedCache()
       writeProfile({
@@ -141,12 +145,12 @@ export default defineLifecycleHandler({
       gestureHandlers().remove()
     },
     documentWillClose(docmd5: string) {
+      dev.log("Close a document", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       writeProfile({
         range: Range.Doc,
         docmd5
       })
-      dev.log("Close a document", "lifecycle")
     },
     // Not triggered on ipad
     sceneDidDisconnect() {
