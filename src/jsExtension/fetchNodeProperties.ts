@@ -62,7 +62,8 @@ const fetchDataFromMetadata = () => {
       if (data === undefined) {
         self.metadata.data = undefined
       } else {
-        const { pageOffset, citeKey, reference } = data.addon
+        const { pageOffset, reference } = data.addon
+        const { citeKey } = data.additional
         const metadata = JSON.parse(data.additional.data || "{}")
         self.metadata.data = {
           pageOffset,

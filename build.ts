@@ -33,10 +33,10 @@ const footerText = `
 
 const outDir = isProd
   ? "./dist/"
-  : // : homedir() +
-    //   `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
-    homedir() +
-    `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+  : homedir() +
+    `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+//  : homedir() +
+//   `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
 
 function clear(): Plugin {
   return {
