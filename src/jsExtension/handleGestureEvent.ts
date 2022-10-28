@@ -2,7 +2,6 @@ import {
   defineGestureHandlers,
   gestureHandlerController,
   initGesture,
-  MN,
   UISwipeGestureRecognizerDirection
 } from "marginnote"
 import { PanelControl } from "~/modules/addon/typings"

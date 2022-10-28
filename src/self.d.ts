@@ -16,6 +16,7 @@ import type { ISection } from "./typings"
 import { AllModuleKeyUnion } from "./merged"
 
 declare global {
+  const MN: typeof import("marginnote")["MN"]
   const dev: typeof import("marginnote")["dev"]
   const self: {
     useConsole?: boolean

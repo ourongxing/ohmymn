@@ -1,7 +1,6 @@
 import {
   defineLifecycleHandler,
   isfileExists,
-  MN,
   openUrl,
   popup,
   showHUD,

@@ -2,7 +2,6 @@ import {
   getDocURL,
   getLocalDataByKey,
   MbBookNote,
-  MN,
   NodeNote,
   removeHighlight
 } from "marginnote"

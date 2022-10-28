@@ -2,7 +2,6 @@ import {
   delayBreak,
   isNoteExist,
   MbBookNote,
-  MN,
   NodeNote,
   undoGroupingWithRefresh
 } from "marginnote"

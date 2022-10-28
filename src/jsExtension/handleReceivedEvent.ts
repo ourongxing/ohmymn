@@ -2,7 +2,6 @@ import {
   defineEventHandlers,
   delayBreak,
   eventHandlerController,
-  MN,
   showHUD,
   StudyMode
 } from "marginnote"

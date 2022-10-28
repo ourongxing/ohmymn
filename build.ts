@@ -95,7 +95,7 @@ const plugins: Plugin[] = [
   autoImport({
     imports: [
       {
-        marginnote: ["dev"]
+        marginnote: ["dev", "MN"]
       }
     ],
     dts: false

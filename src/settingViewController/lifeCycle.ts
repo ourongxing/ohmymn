@@ -1,5 +1,4 @@
 import { Addon } from "~/addon"
-import { MN } from "marginnote"
 export default {
   viewDidLoad() {
     self.tableView.allowsSelection = true
