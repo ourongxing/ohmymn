@@ -1,11 +1,11 @@
-import { CJK, isCJK, notCJK } from "~/utils/text"
+import { CJK, isCJK, isHalfWidth, notCJK } from "~/utils/text"
 import pangu from "~/utils/third party/pangu"
 import { AutoFormatPreset } from "./typings"
 import { toTitleCase } from "~/utils/third party/toTitleCase"
 
 export function titleCase(titles: string[]) {
   return titles.map(title =>
-    notCJK(title) ? title : (toTitleCase(title) as string)
+    isHalfWidth(title) ? (toTitleCase(title) as string) : title
   )
 }
 
