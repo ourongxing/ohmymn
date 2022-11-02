@@ -46,13 +46,11 @@ export function extractTitle(
     params = self.tempProfile.replaceParam.customExtractTitle
   }
   if (!params?.length) return
-  let flag = 0
   const allTitles = params.reduce((acc, cur) => {
-    const { newSubStr, fnKey } = cur
+    const { newSubStr } = cur
     let { regexp } = cur
     regexp = regFlag.add(regexp, "g")
     if (regexp.test(text)) {
-      if (flag === 0) flag = fnKey
       acc.push(
         ...text
           .match(regexp)!
@@ -66,7 +64,7 @@ export function extractTitle(
   if (allTitles.length)
     return {
       title: unique(allTitles.map(k => split2MuiltTitles(k)).flat()),
-      text: flag ? "" : text
+      text
     }
 }
 
@@ -88,7 +86,7 @@ export function customSplit(text: string, regGloups?: RegExp[][]) {
       isReverse = true
     }
     const matched = text.match(mainReg)
-    if (matched && regGroup.slice(1).every(k => k.test(matched[0]))) {
+    if (matched?.length && regGroup.slice(1).every(k => k.test(matched[0]))) {
       let [def, desc] = text.split(mainReg).filter(k => k)
       // 交换顺序
       if (isReverse) [def, desc] = [desc, def]
