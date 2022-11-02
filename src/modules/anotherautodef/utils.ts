@@ -65,7 +65,7 @@ export function extractTitle(
   }, [] as string[])
   if (allTitles.length)
     return {
-      title: unique(allTitles),
+      title: unique(allTitles.map(k => split2MuiltTitles(k)).flat()),
       text: flag ? "" : text
     }
 }

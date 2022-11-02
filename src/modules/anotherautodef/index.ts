@@ -62,7 +62,7 @@ export default defineConfig({
       key: "toTitleLink",
       type: CellViewType.Switch,
       label: lang.to_title_link,
-      bind: ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
+      bind: ["preset", [0, 1, 2, 3, 4, 5, 6, 7, 8]]
     },
     {
       type: CellViewType.MuiltSelect,
@@ -71,7 +71,7 @@ export default defineConfig({
       option: lang.title_link_split.$option3,
       bind: [
         ["toTitleLink", true],
-        ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
+        ["preset", [0, 1, 2, 3, 4, 5, 6, 7, 8]]
       ]
     },
     {
@@ -82,7 +82,7 @@ export default defineConfig({
       bind: [
         ["toTitleLink", true],
         ["titleLinkSplit", 0],
-        ["preset", [1, 2, 3, 4, 5, 6, 7, 8]]
+        ["preset", [0, 1, 2, 3, 4, 5, 6, 7, 8]]
       ],
       check({ input }) {
         checkRegArrayFromMNLink(input)
