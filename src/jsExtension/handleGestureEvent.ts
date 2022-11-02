@@ -11,14 +11,15 @@ import { closePanel } from "./switchPanel"
 // Not support Mac
 // Cannot access self unless use function
 export const gestureHandlers = () => {
-  if (MN.isMac) {
+  if (MN.isMacMNE) return gestureHandlerController([])
+  else if (MN.isMacMN3)
     return gestureHandlerController([
       {
         view: self.settingViewController.tableView!,
         gesture: initGesture.tap(1, 2, "DoubleClickOnTableView")
       }
     ])
-  } else
+  else
     return gestureHandlerController([
       {
         view: MN.studyController.view,

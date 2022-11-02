@@ -9,7 +9,7 @@ export default {
   //Execute when each time it is opened
   viewWillAppear() {
     self.tableView.reloadData()
-    if (MN.isMac) {
+    if (MN.isMacMN3) {
       self.tableView.backgroundColor = MN.currentThemeColor
       Addon.textColor =
         MN.app.currentTheme == "Gray" || MN.app.currentTheme == "Dark"

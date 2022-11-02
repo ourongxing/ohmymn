@@ -42,7 +42,7 @@ import { closePanel, layoutViewController } from "./switchPanel"
 export default defineLifecycleHandler({
   instanceMethods: {
     sceneWillConnect() {
-      // self.useConsole = true
+      self.useConsole = false
       dev.log("Open a new window", "lifecycle")
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
