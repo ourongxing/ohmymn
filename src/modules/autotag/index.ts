@@ -74,7 +74,8 @@ export default defineConfig({
             if (node.note.excerptPic?.paint && node.isOCR === false)
               text = "@picture"
             const tags = generateTags(node, text)
-            if (tags?.length) node.appendTags(...tags)
+            if (tags?.length)
+              node.appendTags(...tags.map(k => k.replace(/[\p{P} ]+/gu, "_")))
           })
         } else if (content) {
           if (/^\(.+\)$/.test(content)) {
@@ -90,7 +91,7 @@ export default defineConfig({
                   newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
                 }))
               )
-              node.appendTags(...tags)
+              node.appendTags(...tags.map(k => k.replace(/[\p{P} ]+/gu, "_")))
             })
           } else {
             nodes.forEach(node => {
@@ -98,7 +99,7 @@ export default defineConfig({
                 renderTemplateOfNodeProperties(
                   node,
                   reverseEscape(`${escapeDoubleQuote(content)}`, true)
-                )
+                ).replace(/[\p{P} ]+/gu, "_")
               )
             })
           }

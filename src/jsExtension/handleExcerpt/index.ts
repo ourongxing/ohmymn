@@ -217,7 +217,7 @@ function addCommentTag({
       node.appendTextComments(...comments)
     }
     if (tags?.length) {
-      tags = unique(tags)
+      tags = unique(tags.map(k => k.replace(/[\p{P} ]+/gu, "_")))
       const { cacheTag } = self.notebookProfile.additional
       const cachedTags = cacheTag[note.noteId!]
       const existTags = node.tags.filter(k =>
