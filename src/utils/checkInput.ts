@@ -12,9 +12,9 @@ export function checkPlainText(input: string) {
 }
 
 export function checkRegArray(input: string) {
-  string2RegArray(input)
-    .flat()
-    .forEach(reg => void reg.test("test"))
+  for (const reg of string2RegArray(input).flat()) {
+    reg.test("test")
+  }
 }
 
 export function checkRegArrayFromMNLink(input: string) {
@@ -24,9 +24,9 @@ export function checkRegArrayFromMNLink(input: string) {
 }
 
 export function checkReplaceParam(input: string) {
-  string2ReplaceParam(input).forEach(param => {
+  for (const param of string2ReplaceParam(input)) {
     "test".replace(param.regexp, param.newSubStr)
-  })
+  }
 }
 
 export function checkReplaceParamFromMNLink(input: string) {

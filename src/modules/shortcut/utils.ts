@@ -11,7 +11,7 @@ export async function handleURLScheme(params: string) {
   try {
     // marginnote3app://addon/ohmymn?type=card&shortcut=1
     // marginnote3app://addon/ohmymn?type=text&shortcut=1
-    // marginnote3app://addon/ohmymn?custom=true&type=card&action=renameTitle&option=1&content=1
+    // marginnote3app://addon/ohmymn?custom=true&info=
     const query = queryString.parse(params)
     if (query.custom) {
       if (!self.globalProfile.shortcut.shortcutPro) return
@@ -23,13 +23,13 @@ export async function handleURLScheme(params: string) {
         content?: string
       }[] = []
       try {
-        shortcuts = JSON.parse(decodeURIComponent(info as string))
+        shortcuts = JSON.parse(info as string)
         if (!shortcuts.length) throw ""
       } catch (error) {
         throw lang.info_error
       }
-      shortcuts.forEach(async k => {
-        const { type, action, option, content } = k
+      for (const shortcut of shortcuts) {
+        const { type, action, option, content } = shortcut
         if (!action) throw lang.no_action
         const ret = (() => {
           if (type === "card") {
@@ -52,9 +52,9 @@ export async function handleURLScheme(params: string) {
         })()
         if (!ret) throw lang.action_not_exist
         const { key, module, moduleName, type: _type } = ret
-        if (module && !isModuleON(module))
+        if (module && !isModuleON(module)) {
           throw `${moduleName ?? module} ${lang.action_not_work}`
-        else {
+        } else {
           const [sec, row] =
             dataSourceIndex[
               _type === "card" ? "magicaction4card" : "magicaction4text"
@@ -69,7 +69,7 @@ export async function handleURLScheme(params: string) {
             content === null ? undefined : String(content)
           )
         }
-      })
+      }
     } else {
       const { type, shortcut } = query
       switch (type) {
