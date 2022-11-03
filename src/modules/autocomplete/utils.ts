@@ -9,7 +9,13 @@ import {
   showHUD
 } from "marginnote"
 import { Addon } from "~/addon"
-import { CJK, escapeDoubleQuote, reverseEscape, serialSymbols } from "~/utils"
+import {
+  CJK,
+  CJKRegex,
+  escapeDoubleQuote,
+  reverseEscape,
+  serialSymbols
+} from "~/utils"
 
 import { MbBookNote, UIAlertViewStyle } from "marginnote"
 import { render } from "~/utils/third party/mustache"
@@ -318,7 +324,6 @@ function resolveExchange(ex: string): Exchange {
   return ret
 }
 
-// TODO improve context recognition
 function getContext(note: MbBookNote, text: string) {
   try {
     const data = MN.db
@@ -334,24 +339,45 @@ function getContext(note: MbBookNote, text: string) {
         (acc, cur) => {
           const { y } = CGRectValue2CGRect(cur[0].rect)
           const des = y - wordY
+          // 上下 50
           if (des < 50 && des > -50) {
             let flag = 0
-            let line = cur.reduce((a, c) => {
-              a += String.fromCharCode(Number(c.char))
+            let line = cur.reduce((k, c) => {
+              k += String.fromCharCode(Number(c.char))
               if (flag !== 1 && des < 5 && des > -5) {
                 const { x } = CGRectValue2CGRect(c.rect)
-                if (x - wordX < 5 && x - wordX > -5) flag = 1
-                else flag = 2
+                // 上下左右 5，当前单词所在行
+                if (x - wordX < 5 && x - wordX > -5) {
+                  flag = 1
+                  k += "orogxng"
+                } else flag = 2
               }
-              return a
+              return k
             }, "")
-            if (!line.endsWith(" ")) line += " "
+            line = line.replace(CJKRegex, ".$1.")
+            if (flag === 1) {
+              const index = line.indexOf("orogxng")
+              line = line.replace("orogxng", "")
+              const matched = line.match(new RegExp(text, "g"))
+              if (!matched?.length) throw ""
+              if (matched.length === 1) {
+                line = line.replace(text, "orogxng")
+              } else {
+                line = line.replace(new RegExp(text, "g"), (_, i) => {
+                  if (index - i > -5 && index - i < 5) return "orogxng"
+                  return _
+                })
+              }
+            }
+            // 每一行后面加上空格，不包括 "-" 结尾
+            if (!/[ \-]$/.test(line)) line += " "
+            // 如果前一行以空格结尾，当前行以大写，数字+"." ，或者非字母开头，就把前一行看作单独一句话。
             if (
               acc.length &&
-              /\w\s*$/.test(acc[acc.length - 1].text) &&
-              /^\s*(?:[A-Z]\w+|[A-Z]\.|\d+\.|\W)/.test(line)
+              !/-$/.test(acc[acc.length - 1].text) &&
+              /^(?:\s+|[A-Z]\w*|[^A-Za-z-])/.test(line)
             ) {
-              acc[acc.length - 1].text = acc[acc.length - 1].text.trim() + "."
+              acc[acc.length - 1].text = acc[acc.length - 1].text.trim() + "..."
             }
             line &&
               acc.push({
@@ -381,26 +407,29 @@ function getContext(note: MbBookNote, text: string) {
           contextArray = contextArray.slice(row[x - 1].index, row[x + 1].index)
       }
       const context = contextArray.map(k => k.text).join("")
-      if (context.includes(text)) {
-        const res = context
-          .replace(
-            new RegExp(`^.*?([\u0000-\u00ff]*${text}[\u0000-\u00ff]*).*$`),
-            "$1"
-          )
-          .replace(new RegExp(`^.*\\(([^)]*?${text}[^)]*?)\\).*$`), "$1")
-          .replace(new RegExp(`^.*“([^”]*?${text}[^”]*?)”.*$`), "$1")
-          .replace(new RegExp(`^.*"([^"]*?${text}[^"]*?)".*$`), "$1")
-          .replace(new RegExp(`^.*\\[([^\\]]*?${text}[^\\]]*?)\\].*$`), "$1")
-          .replace(
-            new RegExp(
-              `^.*?[ ,!.?)\\]]*?((?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"’‘“”$])*${text}(?:\\d\\.\\d|[/()a-zA-Z0-9, \\-—'"‘“’”$])*[.?!]).*$`
-            ),
-            "$1"
-          )
-          .trim()
-          .replace(/^O([A-Z])\w/, "$1")
-        if (!/^\w+$/.test(res)) return res
-      }
+      dev.log(context)
+      let [head, tail] = context.split(/\s*orogxng\s*/)
+      head = head.replace(
+        /^.*(?:[?!。？！…;；]|\.(?!\d))\s*(.*)$|^\s*(.*)$/,
+        "$1$2"
+      )
+      console.log(head)
+      tail = tail.replace(
+        /^(\s*.*?(?:[?!。？！…;；]|\.(?!\d))).*$|^(.*)\s*$/,
+        "$1$2"
+      )
+      const res = [
+        head,
+        /\W$/.test(head) ? "" : " ",
+        text,
+        /^\W/.test(head) ? "" : " ",
+        tail
+      ]
+        .join("")
+        .replace(/^\.+/, "")
+        .replace(/^[\[【(]?(?:\d+|[A-Za-z])[\]】)]/, "")
+
+      if (!/^\w+$/.test(res)) return res
     }
   } catch {
     return
