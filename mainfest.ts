@@ -6,7 +6,7 @@ export default defineMainfest({
   version,
   key: "ohmymn",
   title: "OhMyMN",
-  minMarginNoteVersion: "3.7.18",
+  minMarginNoteVersion: "3.7.21",
   profileKey: {
     global: "ohmymn_profile_global_v4",
     doc: "ohmymn_profile_doc_v4",

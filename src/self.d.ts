@@ -35,10 +35,7 @@ declare global {
       isChangeExcerptRange: boolean
       lastExcerptText: string
       isModify: boolean
-      OCROnline: {
-        status: "begin" | "end" | "free"
-        times: number
-      }
+      OCROnlineStatus: "begin" | "end" | "free"
       lastRemovedComment:
         | {
             nodeNote: MbBookNote

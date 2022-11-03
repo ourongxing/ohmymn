@@ -4,7 +4,7 @@ import { doc } from "~/utils"
 export default i18n({
   zh: {
     intro:
-      "【3.7.19】通过 URL Scheme 来触发 MagicAction 中的动作，你可以设置快捷键来打开 URL。该功能完全由 OhMyMN 提供，与 MN 无关。点击查看设置方法及注意事项。",
+      "通过 URL Scheme 来触发 MagicAction 中的动作，你可以设置快捷键来打开 URL。该功能完全由 OhMyMN 提供，与 MN 无关。点击查看设置方法及注意事项。",
     shortcut_pro: {
       help: "点击创建自定义捷径。",
       label: "自定义捷径",
@@ -22,7 +22,7 @@ export default i18n({
   },
   en: {
     intro:
-      "[3.7.19] Trigger the action in MagicAction through URL Scheme, you can set the shortcut to open the URL. This function is provided by OhMyMN, and has nothing to do with MN. Click to view the setting method and precautions.",
+      "Trigger the action in MagicAction through URL Scheme, you can set the shortcut to open the URL. This function is provided by OhMyMN, and has nothing to do with MN. Click to view the setting method and precautions.",
     shortcut_pro: {
       help: "Click to create a custom shortcut.",
       label: "Custom Shortcut",

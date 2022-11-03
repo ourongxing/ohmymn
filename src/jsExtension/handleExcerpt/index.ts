@@ -60,7 +60,6 @@ export default async (
         note.excerptText ? true : false
       )
       if (success) {
-        // 目前看来 选区自动 OCR 不会调用在线矫正，和以前不同个，所有执行次数已经没有意义了。
         dev.log("Image to text success", "ocr")
         isPicOCRed = true
         self.excerptStatus.OCROnlineStatus = "free"

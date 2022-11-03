@@ -407,13 +407,11 @@ function getContext(note: MbBookNote, text: string) {
           contextArray = contextArray.slice(row[x - 1].index, row[x + 1].index)
       }
       const context = contextArray.map(k => k.text).join("")
-      dev.log(context)
       let [head, tail] = context.split(/\s*orogxng\s*/)
       head = head.replace(
         /^.*(?:[?!。？！…;；]|\.(?!\d))\s*(.*)$|^\s*(.*)$/,
         "$1$2"
       )
-      console.log(head)
       tail = tail.replace(
         /^(\s*.*?(?:[?!。？！…;；]|\.(?!\d))).*$|^(.*)\s*$/,
         "$1$2"

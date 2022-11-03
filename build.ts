@@ -31,12 +31,23 @@ const footerText = `
 }
 `
 
+const enum OutDirType {
+  Prod,
+  MNE,
+  MN,
+  ConsoleMN
+}
+
 const outDir = isProd
   ? "./dist/"
-  : homedir() +
-    `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
-//  : homedir() +
-//   `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+  : [
+      homedir() +
+        `/Library/Containers/QReader.MarginStudy.easy/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`,
+      homedir() +
+        `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`,
+      homedir() +
+        `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+    ][OutDirType.MN]
 
 function clear(): Plugin {
   return {
