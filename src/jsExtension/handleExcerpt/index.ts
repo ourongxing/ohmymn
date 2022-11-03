@@ -45,7 +45,7 @@ export default async (
     self.globalProfile.addon.lockExcerpt &&
     self.excerptStatus.isModify &&
     lastExcerptText &&
-    lastExcerptText !== "😎"
+    lastExcerptText !== "orogxng"
   ) {
     addTitleExcerpt({ text: lastExcerptText })
     return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")

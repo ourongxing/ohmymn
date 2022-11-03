@@ -149,7 +149,7 @@ export default defineEventHandlers<
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
     if (self.globalProfile.addon.lockExcerpt)
-      self.excerptStatus.lastExcerptText = "😎"
+      self.excerptStatus.lastExcerptText = "orogxng"
     removeLastComment()
     handleExcerpt(note, false)
   },

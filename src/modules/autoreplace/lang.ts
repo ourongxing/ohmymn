@@ -10,7 +10,7 @@ export default i18n({
       $option1: ["自定义"] as StringTuple<1>
     },
     replace_selected: {
-      label: "替换摘录文字",
+      label: "替换摘录内容",
       $option2: ["使用 AutoReplace 的设置", "确定"] as StringTuple<2>
     },
     custom_replace: {

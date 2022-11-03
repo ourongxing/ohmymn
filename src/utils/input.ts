@@ -21,9 +21,9 @@ function string2ReplaceParam(str: string): ReplaceParam[] {
   const params = []
   for (const bracket of brackets) {
     const [regString, newSubStr, fnKey] = bracket
-      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1😎"$2`)
-      .replace(/"\x20*,\x20*(\d)\)/g, '"😎$1')
-      .split("😎")
+      .replace(/\((\/.*\/[gimsuy]*)\x20*,\x20*"(.*")\x20*\)?/, `$1orogxng"$2`)
+      .replace(/"\x20*,\x20*(\d)\)/g, '"orogxng$1')
+      .split("orogxng")
     if (
       (fnKey && !isIntegerString(fnKey)) ||
       (!fnKey && isIntegerString(newSubStr))

@@ -23,10 +23,10 @@ function split2MuiltTitles(text: string) {
       const mainReg = regGroup[0]
       const matched = text.match(mainReg)
       if (matched && regGroup.slice(1).every(k => k.test(matched[0]))) {
-        return acc.replace(regFlag.add(mainReg, "g"), "😎")
+        return acc.replace(regFlag.add(mainReg, "g"), "orogxng")
       } else return acc
     }, text)
-    .split("😎")
+    .split("orogxng")
     .reduce((acc, k) => {
       k = k.trim()
       if (k) acc.push(k)
