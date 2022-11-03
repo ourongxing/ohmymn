@@ -1,4 +1,5 @@
 import {
+  alert,
   DirectionOfSelection,
   DocMapSplitMode,
   GroupMode,
@@ -76,23 +77,20 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
     const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
     /**
      * 脑图
-     * 如果是从右往左框选，菜单在上面，(y-145, y-105)
-     * 从左往右框选，菜单在下面， (y-80, y-40)
-     * 文档模式下还不太一样
-     * (y-70, y-30)
-     * (y-0, y+40)
+     * 如果是从右往左框选，菜单在上面，(y-70, y-30)
+     * 从左往右框选，菜单在下面，(y-0, y+40)
      */
-    // alert(`y: ${parseInt(String(y))}
-    // swipeY: ${parseInt(String(swipeY))}
-    // y - ${parseInt(String(y - swipeY))} = swipeY`)
+    if (self.globalProfile.gesture.showY) {
+      showHUD(String(Math.round(y - swipeY)), 3)
+    }
+    const [L2R, R2L] = reverseEscape(
+      self.globalProfile.gesture.selectionBarY || "[0,70]"
+    ) as number[]
     if (
       isWithinArea(
         { swipeY },
         {
-          y:
-            // studyController.studyMode === StudyMode.study
-            // ? y - (arrow === DirectionOfSelection.toRight ? 80 : 145)
-            y - (arrow === DirectionOfSelection.toRight ? 0 : 70),
+          y: y - (arrow === DirectionOfSelection.toRight ? L2R : R2L),
           height: 40
         }
       )

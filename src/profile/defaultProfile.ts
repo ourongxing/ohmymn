@@ -23,6 +23,8 @@ export const defaultGlobalProfile = {
     noteOptions: []
   },
   gesture: {
+    showY: false,
+    selectionBarY: "[0, 70]",
     singleBarSwipeUpShortcut: "",
     singleBarSwipeDownShortcut: "",
     singleBarSwipeRightShortcut: "",
