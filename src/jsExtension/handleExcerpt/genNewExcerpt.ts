@@ -4,20 +4,24 @@ import { DragMerge, HasTitleThen } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
 
 export async function customOCR() {
-  const imgBase64 = MN.currentDocumentController
-    .imageFromFocusNote()
-    .base64Encoding()
-  if (autoUtils.customOCR)
-    for (const util of autoUtils.customOCR) {
-      const res = await util({ imgBase64 })
+  const utils = autoUtils.customOCR?.filter(k => k.status())
+  if (utils?.length) {
+    const imgBase64 = MN.currentDocumentController
+      .imageFromFocusNote()
+      .base64Encoding()
+    for (const util of utils) {
+      const res = await util.method({ imgBase64 })
       if (res) return res
     }
+    dev.log("Custom OCR over", "ocr")
+  }
 }
 
 async function genTitles(note: MbBookNote, node: NodeNote, text: string) {
-  if (autoUtils.generateTitles) {
-    for (const util of autoUtils.generateTitles) {
-      const r = await util({ note, node, text })
+  const utils = autoUtils.generateTitles?.filter(k => k.status())
+  if (utils?.length) {
+    for (const util of utils) {
+      const r = await util.method({ note, node, text })
       if (r) return r
     }
   }
@@ -32,15 +36,17 @@ export async function genCommentTag(
     comments: [] as string[],
     tags: [] as string[]
   }
-  if (autoUtils.generateComments) {
-    for (const util of autoUtils.generateComments) {
-      const res = await util({ note, node, text })
+  const genCommentsUtils = autoUtils.generateComments?.filter(k => k.status())
+  const genTagsUtils = autoUtils.generateTags?.filter(k => k.status())
+  if (genCommentsUtils?.length) {
+    for (const util of genCommentsUtils) {
+      const res = await util.method({ note, node, text })
       if (res) retVal.comments.push(...res)
     }
   }
-  if (autoUtils.generateTags) {
-    for (const util of autoUtils.generateTags) {
-      const res = await util({ note, node, text })
+  if (genTagsUtils?.length) {
+    for (const util of genTagsUtils) {
+      const res = await util.method({ note, node, text })
       if (res) retVal.tags.push(...res)
     }
   }
@@ -68,9 +74,10 @@ export async function genTitleTextCommentTag(param: {
     tags: [] as string[]
   }
 
-  if (autoUtils.modifyExcerptText) {
-    for (const util of autoUtils.modifyExcerptText) {
-      const res = await util({ node, note, text: retVal.text })
+  const utils = autoUtils.modifyExcerptText?.filter(k => k.status())
+  if (utils?.length) {
+    for (const util of utils) {
+      const res = await util.method({ node, note, text: retVal.text })
       if (res) retVal.text = res
     }
     modifiedText = retVal.text
@@ -148,18 +155,20 @@ export async function genTitleTextCommentTag(param: {
 
 export async function modifyTitles(titles: string[]) {
   if (self.excerptStatus.isModify) titles = titles.map(k => removeHighlight(k))
-  if (autoUtils.modifyTitles)
-    for (const util of autoUtils.modifyTitles) {
-      const res = await util({ titles })
+  const utils = autoUtils.modifyTitles?.filter(k => k.status())
+  if (utils?.length)
+    for (const util of utils) {
+      const res = await util.method({ titles })
       if (res) titles = res
     }
   return titles
 }
 
 export async function genColorStyle(note: MbBookNote) {
-  if (autoUtils.modifyStyle)
-    for (const util of autoUtils.modifyStyle) {
-      const res = await util({ note })
+  const utils = autoUtils.modifyStyle?.filter(k => k.status())
+  if (utils?.length)
+    for (const util of utils) {
+      const res = await util.method({ note })
       if (res) return res
     }
 }

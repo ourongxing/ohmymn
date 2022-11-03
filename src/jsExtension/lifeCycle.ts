@@ -63,7 +63,7 @@ export default defineLifecycleHandler({
         isProcessNewExcerpt: false,
         isChangeExcerptRange: false,
         lastExcerptText: "orogxng",
-        OCROnline: { times: 0, status: "free" },
+        OCROnlineStatus: "free",
         isModify: false,
         lastRemovedComment: undefined
       }

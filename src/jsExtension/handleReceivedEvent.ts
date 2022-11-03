@@ -80,14 +80,15 @@ export default defineEventHandlers<
   },
   onOCRImageBegin(sender) {
     if (self.window !== MN.currentWindow) return
-    self.excerptStatus.OCROnline.status = "begin"
-    dev.log("OCR begin", "ocr")
+    // 虽然手动矫正也会触发，其实既然手动了，那么有很大概率会开启自动在线矫正，所以差这么一点点也无所谓。
+    self.docProfile.additional.needOCRWait = true
+    self.excerptStatus.OCROnlineStatus = "begin"
+    dev.log("Online OCR begin", "ocr")
   },
   async onOCRImageEnd(sender) {
     if (self.window !== MN.currentWindow) return
-    self.excerptStatus.OCROnline.status = "end"
-    self.excerptStatus.OCROnline.times = 1
-    dev.log("OCR end", "ocr")
+    self.excerptStatus.OCROnlineStatus = "end"
+    dev.log("Online OCR end", "ocr")
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
@@ -100,11 +101,7 @@ export default defineEventHandlers<
   onClosePopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
     self.textSelectBar = undefined
-    self.excerptStatus.OCROnline = {
-      times: 0,
-      status: "free"
-    }
-    dev.log("Reset OCR status", "ocr")
+    self.excerptStatus.OCROnlineStatus = "free"
     dev.log("Popup menu on selection close", "event")
   },
   async onPopupMenuOnNote(sender) {
@@ -125,11 +122,7 @@ export default defineEventHandlers<
   },
   async onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
-    self.excerptStatus.OCROnline = {
-      times: 0,
-      status: "free"
-    }
-    dev.log("Reset OCR status", "ocr")
+    self.excerptStatus.OCROnlineStatus = "free"
     dev.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {

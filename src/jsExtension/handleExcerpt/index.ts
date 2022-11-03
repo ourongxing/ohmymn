@@ -21,7 +21,7 @@ import {
 let note: MbBookNote
 let node: NodeNote
 let nodeNote: MbBookNote
-let isOCR = false
+let isPicOCRed = false
 let isComment = false
 let isPic = false
 
@@ -33,7 +33,7 @@ export default async (
   dev.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
-  isOCR = false
+  isPicOCRed = false
   isPic = false
   node = new NodeNote(note)
   nodeNote = node.note
@@ -51,28 +51,19 @@ export default async (
     return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")
   }
 
-  /**
-   * When will be OCR
-   * 1. For the scanned version of the PDF, regardless of whether there is a text layer, even if nothing is open, will be OCR,
-   * so that the text on the image can be searched when searching.
-   * 2. Also, the rectangular excerpt to text automatically is essentially an online OCR, and then it will not be OCR online.
-   */
   if (note.excerptPic) {
     const autoOCR =
       MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
     dev.log("The excerpt is image", "ocr")
     if (autoOCR) {
-      const success = await delayBreak(30, 0.1, () =>
+      const success = await delayBreak(50, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
+        // 目前看来 选区自动 OCR 不会调用在线矫正，和以前不同个，所有执行次数已经没有意义了。
         dev.log("Image to text success", "ocr")
-        // If the PDF itself is pure text, is not the need for OCR. But other cases will call the online OCR to convert text,
-        dev.log(
-          self.excerptStatus.OCROnline.times === 1 ? "OCR" : "not OCR",
-          "ocr"
-        )
-        isOCR = true
+        isPicOCRed = true
+        self.excerptStatus.OCROnlineStatus = "free"
       } else {
         isPic = true
         dev.log("Image to text fail, no text", "ocr")
@@ -90,36 +81,26 @@ export default async (
       tags
     })
   } else {
-    // Indicates that the preceding rectangular excerpt to text does not use online OCR
-    if (self.excerptStatus.OCROnline.times === 0) {
-      self.excerptStatus.isModify &&
-        (await delayBreak(
-          30,
-          0.01,
-          () => self.excerptStatus.OCROnline.status === "begin"
-        ))
-      if (self.excerptStatus.OCROnline.status === "begin") {
-        dev.log("Online Correcting", "ocr")
-        const success = await delayBreak(
-          30,
-          0.1,
-          () => self.excerptStatus.OCROnline.status === "end"
-        )
-        if (success) dev.log("Correct success", "ocr")
-        else dev.log("Correct fail", "ocr")
-      }
+    if (self.docProfile.additional.needOCRWait) {
+      self.docProfile.additional.needOCRWait = await delayBreak(
+        50,
+        0.01,
+        () => self.excerptStatus.OCROnlineStatus === "begin"
+      )
+    }
+    if (self.excerptStatus.OCROnlineStatus === "begin") {
+      dev.log("Online OCR ing", "ocr")
+      const success = await delayBreak(
+        50,
+        0.1,
+        () => self.excerptStatus.OCROnlineStatus === "end"
+      )
+      if (success) dev.log("Online OCR success", "ocr")
+      else dev.log("Online OCR fail", "ocr")
     }
 
-    self.excerptStatus.OCROnline = {
-      times: 0,
-      status: "free"
-    }
-    dev.log("Rest OCR status", "ocr")
-
-    const OCRContent = await customOCR()
-    dev.log("Custom OCR over", "ocr")
-    if (OCRContent) note.excerptText = OCRContent
-    const excerptText = note.excerptText?.trim()
+    self.excerptStatus.OCROnlineStatus = "free"
+    const excerptText = (await customOCR()) ?? note.excerptText?.trim()
     if (!excerptText) return
     const { title, text, comments, tags } = await genTitleTextCommentTag({
       note,
@@ -162,7 +143,7 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
           }
         }
         if (
-          isOCR &&
+          isPicOCRed &&
           nodeNote.excerptText?.trim() === nodeNote.noteTitle?.trim()
         ) {
           nodeNote.excerptText = title
@@ -171,7 +152,7 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
 
       // Excerpts can't be cleared after being OCR, otherwise the image will be displayed,
       // and must be set to the same title to not display
-      else if (isOCR) note.excerptText = title
+      else if (isPicOCRed) note.excerptText = title
       else note.excerptText = ""
     }
 

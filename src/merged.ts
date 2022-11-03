@@ -2,8 +2,8 @@ import { MN, showHUD } from "marginnote"
 import { optionalModules, requiredModules } from "./modules"
 import type {
   AutoUtilType,
-  TypeUtilFalseArray,
-  TypeUtilIndexFalseArray,
+  TypeUtilArray,
+  TypeUtilIndexArray,
   ICheckMethod,
   IActionMethod4Text,
   IActionMethod4Card
@@ -29,16 +29,15 @@ export const autoUtils = (() => {
               "index" in v
                 ? {
                     index: v.index,
-                    method: async (...rest: Parameters<typeof v.method>) =>
-                      // @ts-ignore
-                      isModuleAutoON(module.key) && (await v.method(...rest))
+                    status: () =>
+                      isModuleAutoON(module.key as AutoModuleKeyUnion),
+                    method: v.method
                   }
                 : {
                     index: 0,
-                    // @ts-ignore
-                    method: async (...rest: Parameters<typeof v>) =>
-                      // @ts-ignore
-                      isModuleAutoON(module.key) && (await v(...rest))
+                    status: () =>
+                      isModuleAutoON(module.key as AutoModuleKeyUnion),
+                    method: v
                   }
             ]
           })
@@ -46,11 +45,16 @@ export const autoUtils = (() => {
         }
       }
       return acc
-    }, {} as TypeUtilIndexFalseArray<AutoUtilType>)
+    }, {} as TypeUtilIndexArray<AutoUtilType>)
     return Object.entries(res).reduce((acc, [k, v]) => {
-      acc[k] = v.sort((a, b) => a.index - b.index).map(k => k.method)
+      acc[k] = v
+        .sort((a, b) => a.index - b.index)
+        .map(k => ({
+          status: k.status,
+          method: k.method
+        }))
       return acc
-    }, {} as TypeUtilFalseArray<AutoUtilType>)
+    }, {} as TypeUtilArray<AutoUtilType>)
   } catch (err) {
     dev.error(err)
     return {}

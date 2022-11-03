@@ -61,21 +61,22 @@ export type TypeUtilIndex<T> = {
   >
 }
 
-export type TypeUtilFalseArray<T> = {
-  [K in keyof T]?: Array<
-    T[K] extends (...a: any) => infer Ret
-      ? (...a: Parameters<T[K]>) => MaybePromise<Ret | false | undefined>
+export type TypeUtilArray<T> = {
+  [K in keyof T]?: Array<{
+    method: T[K] extends (...a: any) => infer Ret
+      ? (...a: Parameters<T[K]>) => MaybePromise<Ret | undefined>
       : never
-  >
+    status(): boolean
+  }>
 }
 
-export type TypeUtilIndexFalseArray<T> = {
+export type TypeUtilIndexArray<T> = {
   [K in keyof T]?: Array<
     T[K] extends (...a: any) => infer Ret
       ? ((
           ...a: Parameters<T[K]>
-        ) => MaybePromise<Ret | false | undefined>) extends infer R
-        ? { index: number; method: R }
+        ) => MaybePromise<Ret | undefined>) extends infer R
+        ? { index: number; method: R; status(): boolean }
         : never
       : never
   >

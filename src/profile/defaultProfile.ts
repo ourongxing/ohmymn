@@ -198,6 +198,10 @@ export const defaultDocProfile = {
   },
   autosimplify: {
     on: false
+  },
+  additional: {
+    // 如果摘录时发现一直没有开启在线矫正，就不再等了。如果你开启了在线矫正，将自动开启该选项。
+    needOCRWait: true
   }
 }
 
