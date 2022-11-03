@@ -4,7 +4,7 @@
 <p align="center">
   <a href="https://github.com/marginnoteapp/ohmymn/network/members"><img src="https://img.shields.io/github/forks/marginnoteapp/ohmymn.svg?style=flat" alt="forks"></a>
   <a href="https://github.com/marginnoteapp/ohmymn/stargazers"><img src="https://img.shields.io/github/stars/marginnoteapp/ohmymn.svg?style=flat" alt="stars"></a>
-  <a href="https://github.com/marginnoteapp/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/version-v4.0.15-yellow" alt="version"></a>
+  <a href="https://github.com/marginnoteapp/ohmymn/blob/main/package.json"><img src="https://img.shields.io/badge/version-v4.0.16-yellow" alt="version"></a>
   <a href="https://github.com/marginnoteapp/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
