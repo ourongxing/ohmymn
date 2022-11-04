@@ -107,6 +107,11 @@ export default i18n({
       help: "彩云小译 Token，点击查看如何获取。",
       link: doc("autotranslate", "彩云小译")
     },
+    translate_card: {
+      label: "翻译摘录内容",
+      help: "会翻译卡片中所有的摘录"
+    },
+    loading: "正在翻译...",
     translate_text: "翻译选中文字",
     no_baidu_app_id: "没有设置百度翻译的 App ID",
     no_baidu_secret_key: "没有设置百度翻译的密钥",
@@ -166,6 +171,10 @@ export default i18n({
         "Vietnamese"
       ]
     },
+    translate_card: {
+      label: "Translate Excerpt",
+      help: "Translate all excerpts in the card"
+    },
     baidu_to_lang: {
       label: "Output Language",
       $option28: [
@@ -218,6 +227,7 @@ export default i18n({
       link: doc("autotranslate", "彩云小译")
     },
     translate_text: "Translate Selected Text",
+    loading: "Translating...",
     no_baidu_app_id: "No Baidu Fanyi App ID",
     no_baidu_secret_key: "No Baidu Fanyi Secret Key",
     no_caiyun_token: "No Caiyun Translate Token"
