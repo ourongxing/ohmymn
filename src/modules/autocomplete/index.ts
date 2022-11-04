@@ -104,6 +104,7 @@ export default defineConfig({
             nodes = nodes.slice(0, 5)
           }
         }
+
         const getCompletedWord = (node: NodeNote) => {
           const text = node.titles[0]
           return text ? completeWord(text, node.note) : undefined
@@ -116,7 +117,8 @@ export default defineConfig({
           nodes.forEach((node, index) => {
             const info = allInfo?.[index]
             if (info) {
-              const { title, comments } = info
+              const { title, comments, text } = info
+              if (text) node.mainExcerptText = text
               node.titles = title
               node.removeCommentButLinkTag(
                 k =>
