@@ -109,7 +109,7 @@ export default i18n({
     },
     translate_card: {
       label: "翻译摘录内容",
-      help: "会翻译卡片中所有的摘录"
+      help: "会翻译卡片中所有的摘录，注意不要同时翻译太多内容。"
     },
     loading: "正在翻译...",
     translate_text: "翻译选中文字",
@@ -173,7 +173,7 @@ export default i18n({
     },
     translate_card: {
       label: "Translate Excerpt",
-      help: "Translate all excerpts in the card"
+      help: "Translate all excerpts in the card, note that too many translations at the same time may cause the translation to fail."
     },
     baidu_to_lang: {
       label: "Output Language",

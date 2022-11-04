@@ -300,5 +300,16 @@ export const rewriteSelection: RewriteCase[] = [
         textAction: (old: number[]) => [old[0] > 0 ? old[0] + 1 : old[0]]
       }
     }
+  },
+  {
+    version: {
+      from: "4.0.14 - 4.0.15",
+      to: ">=4.0.16"
+    },
+    global: {
+      addon: {
+        cardAction: (old: number[]) => [old[0] >= 56 ? old[0] + 1 : old[0]]
+      }
+    }
   }
 ]

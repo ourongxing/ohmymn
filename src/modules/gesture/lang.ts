@@ -20,7 +20,7 @@ export default i18n({
       enter_positive: "请输入正整数",
       input_array: "请输入数组，比如 [0,70]",
       input_two_number: "数组内必须有两个数字，比如 [0,70]",
-      link: doc("gesture")
+      link: doc("gesture", "调整文字选择工具栏识别区域")
     }
   },
   en: {
@@ -39,7 +39,7 @@ export default i18n({
       input_array: "Please enter an array, such as [0,70]",
       input_two_number:
         "There must be two numbers in the array, such as [0,70]",
-      link: doc("gesture")
+      link: doc("gesture", "调整文字选择工具栏识别区域")
     },
     show_y: {
       label: "Show Y coordinate",
