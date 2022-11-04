@@ -57,6 +57,7 @@ export async function baiduTranslate(
   ]
   const toLangKey = fromLangKey.slice(1)
   const salt = Date.now()
+  text = text.replace(/\n/g, "")
   const sign = getBaiduSign(text, baiduAppID, baiduSecretKey, salt)
   const res = (await fetch(
     "https://fanyi-api.baidu.com/api/trans/vip/translate",
