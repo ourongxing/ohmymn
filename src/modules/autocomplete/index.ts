@@ -1,4 +1,9 @@
-import { NodeNote, showHUD, undoGroupingWithRefresh } from "marginnote"
+import {
+  HUDController,
+  NodeNote,
+  showHUD,
+  undoGroupingWithRefresh
+} from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { checkPlainText, doc } from "~/utils"
@@ -110,9 +115,30 @@ export default defineConfig({
           return text ? completeWord(text, node.note) : undefined
         }
 
-        const allInfo = await Promise.all(
-          nodes.map(node => getCompletedWord(node))
-        )
+        const allInfo = await (async () => {
+          const { selectLemma } = self.globalProfile.autocomplete
+          const selectMeanings = [
+            ...self.globalProfile.autocomplete.selectMeanings
+          ]
+          if (nodes.length > 1) {
+            self.globalProfile.autocomplete.selectLemma = false
+            self.globalProfile.autocomplete.selectMeanings = []
+          }
+          if (
+            self.globalProfile.autocomplete.selectLemma === false &&
+            self.globalProfile.autocomplete.selectMeanings.length === 0
+          ) {
+            HUDController.show(lang.loading)
+          }
+          const res = await Promise.all(
+            nodes.map(node => getCompletedWord(node))
+          )
+          if (nodes.length > 1) {
+            self.globalProfile.autocomplete.selectLemma = selectLemma
+            self.globalProfile.autocomplete.selectMeanings = selectMeanings
+          }
+          return res
+        })()
         undoGroupingWithRefresh(() => {
           nodes.forEach((node, index) => {
             const info = allInfo?.[index]
@@ -132,6 +158,7 @@ export default defineConfig({
             }
           })
         })
+        HUDController.hidden()
       }
     }
   ]

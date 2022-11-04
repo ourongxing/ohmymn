@@ -5,6 +5,7 @@ export default i18n({
   zh: {
     intro: "补全单词词形，只支持动词和名词。顺便提供词义补充和上下文摘录。",
     on: "摘录时自动执行",
+    loading: "正在制卡...",
     complete_selected: "补全单词词形",
     select_meaning: {
       label: "动态选择释义",
@@ -59,6 +60,7 @@ export default i18n({
       error: "The input bar is not allowed to use {{zh}} or {{en}}"
     },
     complete_selected: "Complete Word Form",
+    loading: "Loading...",
     select_lemma: "Dynamic Select Word Lemma",
     select_meaning: {
       label: "Dynamic Select Meaning",
