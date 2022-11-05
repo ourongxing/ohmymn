@@ -37,7 +37,7 @@ export default defineConfig({
     {
       key: "panelControl",
       type: CellViewType.MuiltSelect,
-      option: lang.panle_control.$option3,
+      option: lang.panle_control.$option2,
       label: lang.panle_control.label
     },
     {

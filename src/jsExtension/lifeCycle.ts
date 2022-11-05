@@ -93,7 +93,7 @@ export default defineLifecycleHandler({
       }
       // Add hooks, aka observers
       eventHandlers.add()
-      gestureHandlers().add()
+      !MN.isMac && gestureHandlers().add()
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
         if (self.isFirstOpenDoc) {
           self.isFirstOpenDoc = false
@@ -141,7 +141,7 @@ export default defineLifecycleHandler({
       closePanel()
       // Remove hooks, aka observers
       eventHandlers.remove()
-      gestureHandlers().remove()
+      !MN.isMac && gestureHandlers().remove()
     },
     documentWillClose(docmd5: string) {
       dev.log("Close a document", "lifecycle")

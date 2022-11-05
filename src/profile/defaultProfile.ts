@@ -311,5 +311,16 @@ export const rewriteSelection: RewriteCase[] = [
         cardAction: (old: number[]) => [old[0] >= 56 ? old[0] + 1 : old[0]]
       }
     }
+  },
+  {
+    version: {
+      from: "4.0.16",
+      to: ">=4.1.0"
+    },
+    global: {
+      addon: {
+        panelControl: (old: number[]) => old.filter(k => k !== 1)
+      }
+    }
   }
 ]

@@ -13,7 +13,7 @@ export default i18n({
         "初始化"
       ] as StringTuple<5>,
       label: "选择全局配置",
-      help: "【仅当前笔记本】不同场景，不同配置"
+      help: "【仅当前笔记本】不同场景，不同配置。"
     },
     quick_switch: {
       label: "模块快捷开关"
@@ -34,11 +34,7 @@ export default i18n({
       label: "面板显示高度"
     },
     panle_control: {
-      $option3: [
-        "双击图标打开面板",
-        "双击面板关闭面板",
-        "动作执行完关闭面板"
-      ] as StringTuple<3>,
+      $option2: ["双击图标打开面板", "动作执行完关闭面板"] as StringTuple<2>,
       label: "面板显示控制"
     },
     drag_merge: {
@@ -62,8 +58,7 @@ export default i18n({
       label: "锁定摘录文字"
     },
     auto_backup: {
-      label: "自动备份配置",
-      help: "MagicAction for Card -> 配置管理 -> 写入配置，写入后才能自动备份。"
+      label: "自动备份配置"
     },
     backup_ID: {
       help: "输入备份卡片链接，请确保该卡片有子卡片，否则无法写入。子卡片越多越好。",
@@ -84,7 +79,7 @@ export default i18n({
         "Initialize"
       ],
       label: "Select Global Profile",
-      help: "[Only Current Notebook] Different scenes, different profile"
+      help: "[Only Current Notebook] Different Scenes, Different Profile"
     },
     quick_switch: {
       label: "Module Quick Switch"
@@ -105,16 +100,12 @@ export default i18n({
       label: "Panel Height"
     },
     panle_control: {
-      $option3: [
-        "Double Click Icon to Open Panel",
-        "Double Click Panel to Close Panel",
-        "Close Panel After Action"
-      ],
+      $option2: ["Double Click Icon to Open Panel", "Close Panel After Action"],
       label: "Panel Control"
     },
     drag_merge: {
       label: "Drag Merge to Generate Title",
-      help: "[AutoTitle、AutoDef、AutoComplete] If there is an excerpt in the card, use the hand tool to drag the selection area to merge into the card.",
+      help: "[AutoTitle, AutoDef, AutoComplete] If the card has an excerpt, use the hand tool to drag the selection area to merge into the card.",
       $option2: [
         "Never Generate Title",
         "Always Generate Title",
@@ -123,18 +114,17 @@ export default i18n({
     },
     has_title_then: {
       $option3: ["Not Turn to Title", "Merge Title", "Override Title"],
-      label: "If Card Has Title"
+      label: "> Has Title"
     },
     remove_excerpt: {
       $option2: ["Remove Immediately", "Remove Later"],
-      label: "After Convert to Title, Excerpt Will"
+      label: "> The Dragged Excerpt Will"
     },
     lock_excerpt: {
       label: "Lock Excerpt Text"
     },
     auto_backup: {
-      label: "Auto Backup Profile",
-      help: "MagicAction for Card -> Config Management -> Write Config, write it first to enable auto backup."
+      label: "Auto Backup Profile"
     },
     backup_ID: {
       help: "Enter the backup card link, please make sure that the card has subcards, otherwise it cannot be written. The more subcards, the better.",
