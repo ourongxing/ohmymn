@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "搜索和复制你想要的",
+    intro: "搜索和复制你想要的。",
     which_partof_card: {
       label: "默认搜索卡片内容",
       $option4: [
@@ -57,7 +57,6 @@ export default i18n({
     search_card_info: "搜索卡片内容",
     copy_card_info: "复制卡片内容",
     search_text: "搜索选中文字",
-    copy_text: "复制选中文字",
     not_get_title: "没有获取到标题",
     not_get_excerpt: "没有获取到摘录，你看到的可能是评论",
     choose_search_engine: "本次使用哪一个搜索引擎",
@@ -93,7 +92,6 @@ export default i18n({
     search_card_info: "Search Card Content",
     copy_card_info: "Copy Card Content",
     search_text: "Search Selected Text",
-    copy_text: "Copy Selected Text",
     $search_engine7: [
       "Chinese",
       "English",

@@ -42,5 +42,15 @@ export default defineConfig({
       help: lang.note_options.help,
       option: lang.note_options.$option6
     }
+  ],
+  actions4text: [
+    {
+      type: CellViewType.Button,
+      key: "copyText",
+      label: lang.copy_text,
+      method({ text }) {
+        return text
+      }
+    }
   ]
 })

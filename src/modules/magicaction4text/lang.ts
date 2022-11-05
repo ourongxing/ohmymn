@@ -19,6 +19,7 @@ export default i18n({
     show_copy_content: {
       label: "显示复制的内容"
     },
+    copy_text: "复制选中文字",
     note_options: {
       $option6: [
         "复制",
@@ -35,6 +36,7 @@ export default i18n({
   en: {
     intro:
       "All actions require text selection or box selection. Actions come from various modules, and the corresponding modules need to be enabled. Click to view specific usage and precautions.",
+    copy_text: "Copy Selected Text",
     pre_OCR: {
       label: "Pre OCR",
       help: "[Only Current Document] Use AutoOCR to OCR. Please make sure you have filled in the OCR key."
