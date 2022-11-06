@@ -2,6 +2,7 @@ import {
   defineEventHandlers,
   delayBreak,
   eventHandlerController,
+  MbBookNote,
   showHUD,
   StudyMode
 } from "marginnote"
@@ -116,9 +117,8 @@ export default defineEventHandlers<
         self.excerptStatus.isProcessNewExcerpt
     )
     if (success) return
-    const note = sender.userInfo.note
-    // Excerpt text may be empty
-    self.excerptStatus.lastExcerptText = note.excerptText!
+    const note: MbBookNote = sender.userInfo.note
+    self.excerptStatus.lastExcerptText = note.excerptText ?? ""
   },
   async onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
@@ -132,7 +132,8 @@ export default defineEventHandlers<
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isChangeExcerptRange = true
-    handleExcerpt(note, true, self.excerptStatus.lastExcerptText)
+    self.excerptStatus.isModify = true
+    handleExcerpt(note)
   },
   onProcessNewExcerpt(sender) {
     if (self.window !== MN.currentWindow) return
@@ -141,10 +142,12 @@ export default defineEventHandlers<
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
+    self.excerptStatus.isModify = false
+    // 创建摘录时重置
     if (self.globalProfile.addon.lockExcerpt)
-      self.excerptStatus.lastExcerptText = "orogxng"
+      self.excerptStatus.lastExcerptText = undefined
     removeLastComment()
-    handleExcerpt(note, false)
+    handleExcerpt(note)
   },
   async onAddonBroadcast(sender) {
     // 需要点击卡片才能锁定到当前窗口

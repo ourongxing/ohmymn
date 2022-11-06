@@ -25,31 +25,16 @@ let isPicOCRed = false
 let isComment = false
 let isPic = false
 
-export default async (
-  n: MbBookNote,
-  isModify: boolean,
-  lastExcerptText?: string
-) => {
+export default async (n: MbBookNote) => {
   dev.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
-  isPicOCRed = false
-  isPic = false
   node = new NodeNote(note)
   nodeNote = node.note
-  isComment = nodeNote !== note
+  isPicOCRed = false
+  isComment = nodeNote.noteId !== note.noteId
   isComment && dev.log("The Excerpt is a comment", "excerpt")
-  self.excerptStatus.isModify = isModify
-
-  if (
-    self.globalProfile.addon.lockExcerpt &&
-    self.excerptStatus.isModify &&
-    lastExcerptText &&
-    lastExcerptText !== "orogxng"
-  ) {
-    addTitleExcerpt({ text: lastExcerptText })
-    return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")
-  }
+  isPic = false
 
   if (note.excerptPic) {
     const autoOCR =
@@ -99,6 +84,16 @@ export default async (
     }
 
     self.excerptStatus.OCROnlineStatus = "free"
+
+    if (
+      self.globalProfile.addon.lockExcerpt &&
+      self.excerptStatus.isModify &&
+      self.excerptStatus.lastExcerptText !== undefined
+    ) {
+      addTitleExcerpt({ text: self.excerptStatus.lastExcerptText })
+      return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")
+    }
+
     const excerptText = (await customOCR()) ?? note.excerptText?.trim()
     if (!excerptText) return
     const { title, text, comments, tags } = await genTitleTextCommentTag({
@@ -124,7 +119,7 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
   undoGroupingWithRefresh(() => {
     if (text) {
       note.excerptText = text
-      if (self.excerptStatus.lastRemovedComment?.note === note)
+      if (self.excerptStatus.lastRemovedComment?.note.noteId === note.noteId)
         self.excerptStatus.lastRemovedComment = undefined
     } else {
       // as comment
@@ -167,7 +162,7 @@ function addCommentTag({
   comments: string[]
 }) {
   if (
-    self.excerptStatus.lastRemovedComment?.note === note ||
+    self.excerptStatus.lastRemovedComment?.note.noteId === note.noteId ||
     !isNoteExist(note)
   )
     return
@@ -216,7 +211,7 @@ function addCommentTag({
 
 async function decorateExecrpt() {
   if (
-    self.excerptStatus.lastRemovedComment?.note === note ||
+    self.excerptStatus.lastRemovedComment?.note.noteId === note.noteId ||
     !isNoteExist(note)
   )
     return
