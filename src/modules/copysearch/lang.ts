@@ -15,11 +15,11 @@ export default i18n({
       help: "若优先的内容为空，则按照标题 > 摘录 > 自定义的顺序递推。选中多张卡片时递推无效。"
     },
     multiple_titles: {
-      label: "如果有多个标题",
+      label: "> 如果有多个标题",
       $option3: ["动态选择", "所有标题", "第一个"] as StringTuple<3>
     },
     multiple_excerpts: {
-      label: "如果有多个摘录",
+      label: "> 如果有多个摘录",
       $option3: ["动态选择", "所有摘录", "第一个"] as StringTuple<3>
     },
     muiltple_cards: {
@@ -67,24 +67,19 @@ export default i18n({
     choose_you_want: `请选择一个你想要的`
   },
   en: {
-    intro: "Copy and search for what you want",
+    intro: "Copy and search for what you want.",
     which_partof_card: {
-      label: "Default Part of Card",
-      $option4: [
-        "Instant Select",
-        "Title First",
-        "Excerpt First",
-        "Custom First"
-      ],
+      label: "Default Content To Search",
+      $option4: ["Dynamic Selection", "Title First", "Excerpt First", "Custom"],
       help: "If the first content is empty, it will get the content in the order of Title > Excerpt > Custom. Not valid when multiple cards are selected"
     },
     multiple_titles: {
-      label: "If Multiple Titles",
-      $option3: ["All", "First", "Instant Select"]
+      label: "> If Multiple Titles",
+      $option3: ["All", "First", "Dynamic Selection"]
     },
     multiple_excerpts: {
-      label: "If Multiple Excerpts",
-      $option3: ["All", "First", "Instant Select"]
+      label: "> If Multiple Excerpts",
+      $option3: ["All", "First", "Dynamic Selection"]
     },
     muiltple_cards: {
       $option3: ["Title", "Excerpt", "Custom"]
@@ -104,18 +99,18 @@ export default i18n({
     show_search_engine: {
       help: "Click to see how to customize the URL",
       $label2: ["Show All Search Engines", "Hide All Search Engines"],
-      link: doc("copysearch", "搜索-url")
+      link: doc("copysearch", "search-url")
     },
     modify_symbols: {
       help: "Add prefix and suffix to the content of each card when multiple cards are selected, and add a number and a newline by default ($& represents each paragraph). Click to see how to customize it.",
-      link: doc("copysearch", "多张卡片")
+      link: doc("copysearch", "multiple-cards")
     },
     custom_copy: {
-      link: "",
+      link: doc("copysearch", "custom"),
       help: "Customize what you copy, click to see which variables are supported"
     },
     custom_search: {
-      link: "",
+      link: doc("copysearch", "custom"),
       help: "Customize what you search, click to see which variables are supported"
     },
     not_get_title: "No title found",

@@ -1,8 +1,9 @@
 import { i18n } from "marginnote"
+import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "自动转换为简体中文",
+    intro: "自动将摘录转换为简体中文。",
     on: {
       label: "摘录时自动执行",
       help: "【仅当前文档】"
@@ -15,7 +16,8 @@ export default i18n({
       label: "台湾特殊用词转换"
     },
     custom_simplify: {
-      help: "自定义转换，点击查看自定义方法"
+      help: "自定义转换，点击查看自定义方法。",
+      link: doc("autosimplify", "自定义")
     },
     simplify_card: {
       label: "转换为简体中文",
@@ -24,10 +26,10 @@ export default i18n({
     simplify_text: "转换为简体中文"
   },
   en: {
-    intro: "Auto convert to simplified Chinese",
+    intro: "Automatically convert the excerpt to Simplified Chinese.",
     on: {
-      label: "Auto Execute when Excerpting",
-      help: "【Current Document】"
+      label: "Auto Run When Excerpting",
+      help: "[Only Current Document]"
     },
     variant: {
       label: "Variant Conversion",
@@ -37,7 +39,8 @@ export default i18n({
       label: "Taiwan Special Word Conversion"
     },
     custom_simplify: {
-      help: "Custom conversion, click to get how to customize"
+      help: "Custom conversion, click to get how to customize.",
+      link: doc("autosimplify", "custom")
     },
     simplify_card: {
       label: "Convert to Simplified Chinese",

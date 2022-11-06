@@ -16,7 +16,7 @@ export default i18n({
     },
     smart_selection: {
       label: "智能选择",
-      help: "帮助你快速选中子卡片，后代卡片"
+      help: "帮助你快速选中子卡片，后代卡片。"
     },
     filter_cards: {
       label: "筛选卡片",
@@ -24,12 +24,12 @@ export default i18n({
     },
     switch_title: {
       label: "切换摘录标题",
-      help: "当两者都存在时请使用「交换标题和摘录」",
+      help: "当两者都存在时请使用「交换标题和摘录」。",
       $option2: ["切换为不存在的", "交换标题和摘录"] as StringTuple<2>
     },
     merge_text: {
       label: "合并卡片内文字",
-      help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶",
+      help: "仅支持合并文字摘录和文字评论，不合并标签和链接，其余内容会在合并后置顶。",
       is_excerpt_pic_text:
         "检测到当前摘录为图片 OCR 的文字，合并为评论无法删除该摘录，是否继续合并为评论？",
       $excerpt_pic_text_option2: ["继续", "合并为摘录"] as StringTuple<2>,
@@ -64,9 +64,9 @@ export default i18n({
       help: "Help you quickly select the child card and descendant card"
     },
     default_merge_text: {
-      help: "The default prefix and suffix of the merged text. Click to see the custom method.                 ",
+      help: "The front and rear decoration of the text in the card when merging, the default adds a serial number and a line break ($& represents each paragraph), click to view the custom method.                 ",
       error: "Missing $&",
-      link: doc("magicaction4card", "合并卡片内文字")
+      link: doc("magicaction4card", "merge-text")
     },
     switch_title: {
       help: "Use [Swap Title and Excerpt] when both are present」",

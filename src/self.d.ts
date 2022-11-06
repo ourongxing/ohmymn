@@ -33,7 +33,7 @@ declare global {
     excerptStatus: {
       isProcessNewExcerpt: boolean
       isChangeExcerptRange: boolean
-      lastExcerptText: string
+      lastExcerptText: string | undefined
       isModify: boolean
       OCROnlineStatus: "begin" | "end" | "free"
       lastRemovedComment:

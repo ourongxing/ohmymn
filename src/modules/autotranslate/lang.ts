@@ -9,7 +9,7 @@ export default i18n({
       label: "选择需要的预设",
       $option1: ["自定义"] as StringTuple<1>
     },
-    word_count: "[类中文字数，类英文单词数]，超过才会翻译。",
+    word_count: "[类中文字数，类英文单词数]，超过才会翻译。      ",
     translate_providers: {
       $option2: ["百度翻译", "彩云小译"] as StringTuple<2>,
       label: "翻译提供商"
@@ -118,15 +118,15 @@ export default i18n({
     no_caiyun_token: "没有设置彩云小译的 Token"
   },
   en: {
-    intro: "The excerpts are automatically translated and added as comments.",
-    on: "Auto Executed",
+    intro: "Translate selected text or card content.",
+    on: "Auto Run When Excerpting",
     preset: {
-      label: "Select the preset",
+      label: "Select Preset",
       $option1: ["Custom"]
     },
-    word_count: "[类中文字数，类英文单词数]，超过才会翻译。",
+    word_count: "[Chinese words, English words], if exceeded, then translate.",
     translate_providers: {
-      $option2: ["Baidu Translate", "Caiyun Translate"],
+      $option2: ["Baidu Translate", "LingoCloud Translate"],
       label: "Translate Providers"
     },
     caiyun_from_lang: {
@@ -172,7 +172,7 @@ export default i18n({
       ]
     },
     translate_card: {
-      label: "Translate Excerpt",
+      label: "Translate Excerpt Text",
       help: "Translate all excerpts in the card, note that too many translations at the same time may cause the translation to fail."
     },
     baidu_to_lang: {
@@ -213,18 +213,15 @@ export default i18n({
       help: "Only available in Baidu Translate Pro, only supports Chinese-English translation, click to create a custom thesaurus.",
       link: "https://fanyi-api.baidu.com/manage/term"
     },
-    $show_key2: [
-      "Click to view the key, don't let others see it",
-      "Click to hide the key, don't let others see it"
-    ],
+    $show_key2: ["Click to show secret key", "Click to hide secret key"],
     baidu_app_id: {
-      help: "Baidu Fanyi App ID, click to view how to get it.",
-      link: doc("autotranslate", "百度翻译")
+      help: "Baidu Translate App ID, click to view how to get it.",
+      link: doc("autotranslate", "baidu-translate")
     },
     baidu_secret_key: "Baidu Fanyi Secret Key",
     caiyun_token: {
-      help: "Caiyun Translate Token, click to view how to get it.",
-      link: doc("autotranslate", "彩云小译")
+      help: "LingoCloud Translate Token, click to view how to get it.",
+      link: doc("autotranslate", "lingocloud-translate")
     },
     translate_text: "Translate Selected Text",
     loading: "Translating...",

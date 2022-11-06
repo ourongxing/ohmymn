@@ -32,7 +32,6 @@ const footerText = `
 `
 
 const enum OutDirType {
-  Prod,
   MNE,
   MN,
   ConsoleMN

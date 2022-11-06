@@ -79,7 +79,7 @@ export default i18n({
         "Initialize"
       ],
       label: "Select Global Profile",
-      help: "[Only Current Notebook] Different Scenes, Different Profile"
+      help: "[Only Current Notebook] Different Scenes, Different Profile."
     },
     quick_switch: {
       label: "Module Quick Switch"
@@ -127,7 +127,7 @@ export default i18n({
       label: "Auto Backup Profile"
     },
     backup_ID: {
-      help: "Enter the backup card link, please make sure that the card has subcards, otherwise it cannot be written. The more subcards, the better.",
+      help: "Enter the backup card link, please make sure that the card has subcards, otherwise it cannot be written. The more subcards, the better.        ",
       not_link: "Not a card url",
       not_exit: "Card does not exist",
       no_child: "Card has no subcards"

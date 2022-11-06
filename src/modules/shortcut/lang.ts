@@ -6,7 +6,7 @@ export default i18n({
     intro:
       "通过 URL Scheme 来触发 MagicAction 中的动作，你可以设置快捷键来打开 URL。该功能完全由 OhMyMN 提供，与 MN 无关。点击查看设置方法及注意事项。",
     shortcut_pro: {
-      help: "点击创建自定义捷径。",
+      help: "用于同时触发多个动作并传入输入值，点击创建自定义捷径。",
       label: "自定义捷径",
       link: doc("shortcut", "自定义捷径")
     },
@@ -22,11 +22,11 @@ export default i18n({
   },
   en: {
     intro:
-      "Trigger the action in MagicAction through URL Scheme, you can set the shortcut to open the URL. This function is provided by OhMyMN, and has nothing to do with MN. Click to view the setting method and precautions.",
+      "Trigger the action in MagicAction by URL Scheme, you can set a shortcut to open the URL. This feature is provided by OhMyMN, not MN. Click to view the setup method and precautions.         ",
     shortcut_pro: {
-      help: "Click to create a custom shortcut.",
-      label: "Custom Shortcut",
-      link: doc("shortcut", "自定义捷径")
+      help: "Used to trigger multiple actions at the same time and pass in input values. Click to create a custom shortcut.",
+      label: "Custom Shortcuts",
+      link: doc("shortcut", "custom-shortcuts")
     },
     card_shortcut: "Card Action Shortcut",
     text_shortcut: "Text Action Shortcut",

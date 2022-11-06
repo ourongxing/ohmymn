@@ -10,30 +10,22 @@ export default i18n({
       $option3: ["自定义", "字数", "不含有点号"] as StringTuple<3>
     },
     word_count: {
-      help: "[类中文字数, 类英文单词数]，没超过就自动设置为标题",
+      help: "[类中文字数, 类英文单词数]，没超过就自动设置为标题。",
       enter_positive: "请输入正整数",
       input_array: "请输入数组，比如 [10,5]",
       input_three_number: "数组内必须有两个数字，比如 [10,5]"
     },
     custom_be_title: {
-      help: "自定义，点击查看具体格式",
+      help: "自定义，点击查看具体格式。",
       link: doc("anotherautotitle", "自定义")
-    },
-    change_title_no_limit: {
-      label: "标题摘录始终为标题",
-      help: "修改已经转为标题的摘录选区，始终转为标题"
     }
   },
   en: {
     intro: "Automatically convert the excerpt to the title.",
-    on: "Auto Executed",
+    on: "Auto Run When Excerpting",
     preset: {
       label: "Select Presets",
       $option3: ["Custom", "Word Count", "Not Contain Dot Symbols"]
-    },
-    change_title_no_limit: {
-      label: "Title Always Be Title",
-      help: "Change the excerpt selection that has been converted to a title to always be a title"
     },
     word_count: {
       help: "[Chinese words, English words], if not exceeded, then set the excerpt text as the title",
@@ -44,7 +36,7 @@ export default i18n({
     },
     custom_be_title: {
       help: "Customize. Click for specific formats",
-      link: doc("anotherautotitle", "自定义")
+      link: doc("anotherautotitle", "custom")
     }
   }
 })

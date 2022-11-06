@@ -2,7 +2,7 @@ import { IAllProfile } from "~/profile"
 import { CellViewType, ISettingSelect } from "~/typings"
 import { defineConfig } from "~/profile"
 import lang from "./lang"
-import { doc, serialSymbols } from "~/utils"
+import { doc } from "~/utils"
 
 export default defineConfig({
   name: "Shortcut",
@@ -22,7 +22,7 @@ export default defineConfig({
         ({
           key: `cardShortcut${i}`,
           type: CellViewType.Select,
-          label: `${lang.card_shortcut} ${serialSymbols.hollow_circle_number[i]}`,
+          label: `${lang.card_shortcut} ${i + 1}`,
           option: [] as string[]
         } as ISettingSelect<IAllProfile["shortcut"]>)
     ),
@@ -31,7 +31,7 @@ export default defineConfig({
         ({
           key: `textShortcut${i}`,
           type: CellViewType.Select,
-          label: `${lang.text_shortcut} ${serialSymbols.hollow_circle_number[i]}`,
+          label: `${lang.text_shortcut} ${i + 1}`,
           option: [] as string[]
         } as ISettingSelect<IAllProfile["shortcut"]>)
     )

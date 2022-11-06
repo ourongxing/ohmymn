@@ -2,7 +2,6 @@ import { requiredModules, optionalModules } from "../modules"
 import { AllModuleKeyUnion, OptionalModuleKeyUnion } from "../merged"
 import type { ISection, IConfig, IRow, IRowButton } from "~/typings"
 import { CellViewType } from "~/typings"
-import { serialSymbols } from "../utils"
 import { more } from "./more"
 import lang from "./lang"
 
@@ -122,10 +121,7 @@ function genDataSource(
   const [AddonSection, ShortcutSection, GestureSection] = dataSource
   for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
-      row.option = moduleNameList.name.map(
-        (value, index) =>
-          serialSymbols.hollow_circle_number[index] + " " + value
-      )
+      row.option = moduleNameList.name
   }
 
   // 同步 gesture 的 option 为 magicaction 列表
@@ -244,9 +240,9 @@ export const { dataSource: defaultDataSource, moduleNameList } = genDataSource(
 )
 
 export const dataSourceIndex = genDataSourceIndex(defaultDataSource)
+// const cardaction: any[] = []
+// const textaction: any[] = []
 // defaultDataSource.forEach(sec => {
-//   const cardaction: any[] = []
-//   const textaction: any[] = []
 //   if (sec.key === "magicaction4card") {
 //     cardaction.push(
 //       ...sec.rows.filter(
@@ -264,6 +260,7 @@ export const dataSourceIndex = genDataSourceIndex(defaultDataSource)
 //       )
 //     )
 //   }
-//   console.log(cardaction)
-//   console.log(textaction)
 // })
+
+// copy(JSON.stringify(cardaction))
+// copy(JSON.stringify(textaction))

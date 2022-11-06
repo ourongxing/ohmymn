@@ -36,12 +36,9 @@ async function selectParaphrase(
     {
       title,
       message,
-      buttons: [
-        ...parts.map((k, i) => `${serialSymbols.hollow_circle_number[i]} ${k}`),
-        "自定义"
-      ],
+      buttons: [...parts.map((k, i) => `(${i + 1}) ${k}`), lang.custom],
       multiLine: true,
-      canCancel: false,
+      canCancel: true,
       type: UIAlertViewStyle.PlainTextInput
     },
     ({ alert, buttonIndex }) => ({
@@ -169,7 +166,7 @@ async function getWordInfo(word: string): Promise<Word> {
           `${Addon.path}/AutoCompleteData.db`
         )
         Addon.dataAutoComplete.open()
-      } else throw "没有本地数据库"
+      } else throw lang.not_find_db
     }
     const query = Addon.dataAutoComplete.executeQueryWithArgumentsInArray(
       `SELECT * FROM stardict WHERE word = '${word}'`,
@@ -449,7 +446,7 @@ async function getLemmaInfo(word: string) {
         const i = await selectIndex(
           [word, lemma],
           Addon.title,
-          "检测到当前单词既可能是其他单词的变形，也可能就是原形，请选择单词原形"
+          lang.maybe_other_word
         )
         if (i) return await getWordInfo(lemma)
       } else {

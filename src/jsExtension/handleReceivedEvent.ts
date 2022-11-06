@@ -2,7 +2,6 @@ import {
   defineEventHandlers,
   delayBreak,
   eventHandlerController,
-  MbBookNote,
   showHUD,
   StudyMode
 } from "marginnote"
@@ -117,7 +116,7 @@ export default defineEventHandlers<
         self.excerptStatus.isProcessNewExcerpt
     )
     if (success) return
-    const note: MbBookNote = sender.userInfo.note
+    const note = sender.userInfo.note
     self.excerptStatus.lastExcerptText = note.excerptText ?? ""
   },
   async onClosePopupMenuOnNote(sender) {

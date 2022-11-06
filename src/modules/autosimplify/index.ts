@@ -75,7 +75,8 @@ export default defineConfig({
     {
       key: "customSimplify",
       type: CellViewType.Input,
-      help: lang.custom_simplify.help
+      help: lang.custom_simplify.help,
+      link: lang.custom_simplify.link
     }
   ],
   actions4card: [
@@ -104,7 +105,6 @@ export default defineConfig({
       type: CellViewType.Button,
       label: lang.simplify_card.label,
       key: "simplifyText",
-      option: lang.simplify_card.$option3,
       method: ({ text }) => {
         return simplifyText(text)
       }

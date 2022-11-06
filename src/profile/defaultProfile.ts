@@ -169,8 +169,8 @@ export const defaultGlobalProfile = {
     translateProviders: [0],
     caiyunToken: "",
     showKey: true,
-    baiduFromLang: [0],
-    caiyunFromLang: [0],
+    baiduFromLang: [2],
+    caiyunFromLang: [2],
     baiduToLang: [0],
     caiyunToLang: [0]
   },

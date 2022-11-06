@@ -6,7 +6,7 @@ export default i18n({
     intro: "优化摘录和标题的排版与格式。",
     on: "摘录时自动执行",
     custom_format: {
-      help: "自定义，点击查看具体格式",
+      help: "自定义，点击查看具体格式。",
       link: doc("autoformat")
     },
     preset: {
@@ -34,8 +34,8 @@ export default i18n({
     }
   },
   en: {
-    intro: "Optimize the typography and formatting of excerpts & titles.",
-    on: "Auto Executed",
+    intro: "Optimize the layout and format of excerpts and titles.",
+    on: "Auto Run When Excerpting",
     remove_space: {
       label: "Remove All Spaces",
       help: "[Only Current Document] If there are a lot of words in the document, please use it with caution."
@@ -59,7 +59,7 @@ export default i18n({
       $option3: ["All", "Only Title", "Only Excerpt Text"]
     },
     format_title: {
-      label: " Normalize English Title",
+      label: "Normalize English Title",
       link: doc("autoformat"),
       help: "Click for  specific specifications"
     }

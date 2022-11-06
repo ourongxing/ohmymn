@@ -15,15 +15,15 @@ export default i18n({
       $option2: ["使用 AutoTag 的设置", "确定"] as StringTuple<2>
     },
     custom_tag: {
-      link: "",
-      help: "自定义，点击查看具体格式"
+      link: doc("autotag", "自定义"),
+      help: "自定义，点击查看具体格式。"
     }
   },
   en: {
     intro:
       "Extract tags from excerpts or add tags at specific times Automatically.",
     link: doc("autotag"),
-    on: "Auto Executed",
+    on: "Auto Run When Excerpting",
     preset: {
       label: "Select Presets",
       $option1: ["Custom"]
@@ -33,7 +33,7 @@ export default i18n({
       $option2: ["Use AutoTag Settings", "Confirm"]
     },
     custom_tag: {
-      link: "",
+      link: doc("autotag", "custom"),
       help: "Customize. Click for specific formats"
     }
   }

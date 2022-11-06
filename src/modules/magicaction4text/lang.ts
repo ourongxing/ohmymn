@@ -26,8 +26,8 @@ export default i18n({
         "设置为标题",
         "合并标题",
         "合并到摘录",
-        "设置为摘录",
-        "设置为评论"
+        "添加为摘录",
+        "添加为评论"
       ] as StringTuple<6>,
       label: "弹出更多选项",
       help: "如果选中这段文字之前，你已经选中了一个摘录。此时执行某些会将结果复制到剪贴板的动作时会弹出更多选项，方便直接写入卡片中。"
@@ -35,7 +35,7 @@ export default i18n({
   },
   en: {
     intro:
-      "All actions require text selection or box selection. Actions come from various modules, and the corresponding modules need to be enabled. Click to view specific usage and precautions.",
+      "All actions require text to be selected or a selection area to be selected. Actions come from various modules and require the corresponding module to be enabled. Click to view specific usage and precautions.",
     copy_text: "Copy Selected Text",
     pre_OCR: {
       label: "Pre OCR",
@@ -58,11 +58,11 @@ export default i18n({
         "Set as Title",
         "Merge Title",
         "Merge to Note",
-        "Set as Note",
-        "Set as Comment"
+        "Add as Note",
+        "Add as Comment"
       ],
-      label: "More Options",
-      help: "If you have selected a note before selecting this text or area, the copy action will pop up more options to write directly into the card."
+      label: "Popup More Options",
+      help: "If you have selected a note before selecting this text or area, some action which copied result will pop up more options to write directly into the card."
     }
   }
 })

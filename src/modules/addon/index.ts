@@ -6,7 +6,7 @@ import lang from "./lang"
 export default defineConfig({
   name: Addon.title,
   key: "addon",
-  link: "https://ohmymn.marginnote.cn/update.html",
+  link: Addon.forum,
   intro: lang.intro,
   settings: [
     {

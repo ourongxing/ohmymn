@@ -18,6 +18,9 @@ const undefine2undefine = (v: any, f: (t: any) => any) => {
   return res
 }
 
+// TODO: 考虑使用 {{data | foramt: "YYYY-MM-DD"}} 的函数形式，从而支持参数
+// https://github.com/jvitela/mustache-wax
+
 const func: {
   [key: string]: () => (text: string, render: (p: string) => string) => string
 } = {

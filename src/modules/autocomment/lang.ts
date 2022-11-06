@@ -3,7 +3,7 @@ import { doc } from "~/utils"
 
 export default i18n({
   zh: {
-    intro: "自动从摘录中提取评论或者在特定时候自动添加评论",
+    intro: "自动从摘录中提取评论或者在特定时候自动添加评论。",
     on: "摘录时自动执行",
     preset: {
       label: "选择需要的预设",
@@ -14,14 +14,14 @@ export default i18n({
       $option2: ["使用 AutoComment 的设置", "确定"] as StringTuple
     },
     custom_comment: {
-      help: "自定义，点击查看具体格式",
+      help: "自定义，点击查看具体格式。",
       link: doc("autocomment")
     }
   },
   en: {
     intro:
-      "Extract comments from excerpts or add comments at specific times Automatically",
-    on: "Auto Executed",
+      "Automatically extract comments from excerpts or add comments at a specific time.",
+    on: "Auto Run When Excerpting",
     preset: {
       label: "Select Presets",
       $option: ["Custom"]
@@ -31,7 +31,7 @@ export default i18n({
       label: "Add Comment"
     },
     custom_comment: {
-      help: "Customize. Click for specific formats",
+      help: "Customize. Click for specific formats.",
       link: doc("autocomment")
     }
   }

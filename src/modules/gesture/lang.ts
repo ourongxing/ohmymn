@@ -16,7 +16,7 @@ export default i18n({
       help: "针对文字选择工具栏区域手势无法识别的问题，开启后会显示滑动位置的 Y 轴坐标，方便自行调整。     "
     },
     selection_bar_y: {
-      help: "[从左到右选择时在文字选择工具栏顶部滑动时的 Y 轴坐标, 从右到左选择时在文字选择工具栏顶部滑动时的 Y 轴坐标]。点击查看设置方法。",
+      help: "[从左到右选择时在文字选择工具栏顶部滑动时的 Y 轴坐标, 从右到左选择时在文字选择工具栏顶部滑动时的 Y 轴坐标]。点击查看设置方法。                   ",
       enter_positive: "请输入正整数",
       input_array: "请输入数组，比如 [0,70]",
       input_two_number: "数组内必须有两个数字，比如 [0,70]",
@@ -26,20 +26,20 @@ export default i18n({
   en: {
     intro:
       "【iPad only】Trigger MagicAction by gesture. This feature is provided by OhMyMN, not MarginNote. Click to view the gesture detection area and precautions.",
-    single_bar: "Single Select Toolbar",
-    muilt_bar: "Multi Select Toolbar",
-    selection_bar: "Text Select Toolbar",
-    action_not_work: "Module is not enabled, the action cannot be executed",
-    custom_shortcut: "Custom Shortcut",
+    single_bar: "Card Selection Toolbar",
+    muilt_bar: "Card Multi-Select Toolbar",
+    selection_bar: "Text Selection Toolbar",
+    action_not_work: "Module is not enabled, the action cannot be run",
+    custom_shortcut: "Custom Shortcuts",
     only_mn:
-      "Only support MarginNote addon's URL Scheme, but not limited to OhMyMN",
+      "Only support MarginNote addon's URL Scheme, but not limited to OhMyMN.",
     selection_bar_y: {
-      help: "[Y axis coordinate when swiping in the top of text select toolbar when selecting from left to right, Y axis coordinate when swiping in the top of text select toolbar when selecting from right to left]. Click to view the setting method.",
+      help: "[Y axis coordinate when swiping in the top of text select toolbar when selecting from left to right, Y axis coordinate when swiping in the top of text select toolbar when selecting from right to left].",
       enter_positive: "Please enter a positive integer",
       input_array: "Please enter an array, such as [0,70]",
       input_two_number:
         "There must be two numbers in the array, such as [0,70]",
-      link: doc("gesture", "调整文字选择工具栏识别区域")
+      link: doc("gesture", "adjust-the-text-selection-toolbar-recognition-area")
     },
     show_y: {
       label: "Show Y coordinate",

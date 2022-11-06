@@ -212,6 +212,7 @@ export async function saveProfile(name: string, key: string, value: any) {
         })
         break
       default: {
+        // TODO: 对于笔记本配置和文档配置的初始化，可以将其放入一个单独的配置里，然后作为新文档或者新笔记本的初始配置。
         if (self.globalProfile?.[name]?.[key] !== undefined) {
           self.globalProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {

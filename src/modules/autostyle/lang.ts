@@ -16,7 +16,7 @@ export default i18n({
     },
     change_color: {
       label: "修改摘录颜色",
-      help: "输入颜色索引，也就是顺序，1 到 16",
+      help: "输入颜色索引，也就是顺序，1 到 16。",
       out_of_range: "不再范围内（1,16）",
       $option2: ["使用 AutoStyle 的设置", "确定"] as StringTuple<2>
     },
@@ -50,7 +50,7 @@ export default i18n({
       "紫"
     ] as StringTuple<17>,
     word_count_area: {
-      help: "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认",
+      help: "[类中文字数, 类英文单词数, 选区面积]，超过则将摘录样式设置为线框，否则默认。",
       input_array: "请输入数组，比如 [10,5,100]",
       input_three_number: "数组内必须有三个数字，比如 [10,5,100]"
     },
@@ -63,11 +63,11 @@ export default i18n({
   },
   en: {
     intro: "Auto modify excerpt colors and styles.",
-    on: "Auto Executed",
+    on: "Auto Run When Excerpting",
     area: "Aera",
     change_style: {
       lable: "Modify Excerpt Style",
-      $option4: ["使用 AutoStyle 的设置", "线框+填充", "填充", "线框"]
+      $option4: ["Use AutoStyle Settings", "Outline+Fill", "Fill", "Outline"]
     },
     change_color: {
       label: "Modify Excerpt Color",

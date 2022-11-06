@@ -47,7 +47,7 @@ export default i18n({
     },
     markdown: {
       label: "使用的 Markdown 插件",
-      help: "用于显示公式，推荐使用 Milkdown",
+      help: "用于显示公式，推荐使用 Milkdown 。",
       $option3: ["Markdown", "myMarkDown", "Milkdown"] as StringTuple<3>
     },
     baidu_api_key: {
@@ -78,9 +78,9 @@ export default i18n({
   },
   en: {
     intro:
-      "Using Baidu OCR API, it can be used without activating OCR Pro and supports several small languages.",
+      "Use the Baidu OCR service to correct the online small language when excerpting.      ",
     on: {
-      label: "Auto Executed",
+      label: "Auto Run When Excerpting",
       help: "[Only Current Document]"
     },
     lang: {
@@ -126,7 +126,7 @@ export default i18n({
       $option3: ["Pure Latex", "$ Latex $", "$$ Latex $$"]
     },
     baidu_api_key: {
-      link: doc("autoocr", "百度-ocr"),
+      link: doc("autoocr", "baidu-ocr"),
       help: "Baidu Api Key, click to see how to get it."
     },
     baidu_secret_key: "Baidu Secret Key",
@@ -134,10 +134,7 @@ export default i18n({
       link: doc("autoocr", "mathpix"),
       help: "Mathpix App Key, click to see how to get it."
     },
-    $show_key2: [
-      "Click View Key, don't let others see",
-      "Click Hide Key, don't let others see"
-    ],
+    $show_key2: ["Click to show secret key", "Click to hide secret key"],
     text_ocr: "Text OCR",
     hand_writting_ocr: "Handwritting OCR",
     qr_code_ocr: "QRCode OCR",

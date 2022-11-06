@@ -47,7 +47,6 @@ export default defineConfig({
             option: [] as string[]
           },
           {
-            help: lang.custom_shortcut,
             key: `${q[1]}BarSwipe${k[1]}Shortcut`,
             type: CellViewType.Input,
             bind: [`${q[1]}BarSwipe${k[1]}`, 1],

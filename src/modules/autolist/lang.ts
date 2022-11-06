@@ -4,7 +4,7 @@ import { doc } from "~/utils"
 export default i18n({
   zh: {
     intro:
-      "针对有序号的摘录，自动添加换行。所有预设均必须满足两个及以上，包括自定义",
+      "针对有序号的摘录，自动添加换行。所有预设均必须匹配到两个及以上，包括自定义。",
     on: "摘录时自动执行",
     preset: {
       label: "选择需要的预设",
@@ -20,14 +20,14 @@ export default i18n({
       $option2: ["使用 AutoList 的设置", "确定"] as StringTuple<2>
     },
     custom_list: {
-      help: "自定义，点击查看具体格式",
+      help: "自定义，点击查看具体格式。",
       link: doc("autolist")
     }
   },
   en: {
     intro:
-      "For text with serial number, auto add line breaks. All presets need to meet a minimum of two serial numbers",
-    on: "Auto Executed",
+      "For text with serial number, auto add line breaks. All presets need to meet a minimum of two serial numbers.",
+    on: "Auto Run When Excerpting",
     custom_list: {
       help: "Customize. Click for specific formats",
       link: doc("autolist")

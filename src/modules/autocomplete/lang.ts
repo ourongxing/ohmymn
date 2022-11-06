@@ -6,11 +6,14 @@ export default i18n({
     intro: "补全单词词形，只支持动词和名词。顺便提供词义补充和上下文摘录。",
     on: "摘录时自动执行",
     loading: "正在制卡...",
+    custom: "自定义",
     complete_selected: "补全单词词形",
     select_meaning: {
       label: "动态选择释义",
       $option2: ["中文", "英文"] as StringTuple<2>
     },
+    maybe_other_word:
+      "检测到当前单词既可能是其他单词的变形，也可能就是原形，请选择单词原形",
     select_lemma: "动态选择单词原形",
     complete_word: {
       label: "英文单词制卡",
@@ -23,17 +26,13 @@ export default i18n({
       error: "当前输入栏不允许使用 {{zh}} 或 {{en}}"
     },
     auto_context: {
-      help: "目前不支持 OCR Pro",
+      help: "目前不支持 OCR Pro，必须 PDF 自带文字层。     ",
       label: "自动摘录上下文"
-    },
-    translate_context: {
-      label: "翻译上下文",
-      help: "请设置好 AutoTranslate 的翻译 API Key。"
     },
     collins: {
       label: "柯林斯星级筛选",
       $option6: ["零", "一", "二", "三", "四", "五"],
-      help: "星越多代表越常用，但也越简单，没有选中的星级单词会被排除。"
+      help: "星越多代表越常用，但也越简单，没有选中的星级单词会被排除，不会触发。"
     },
     fill_word_info: {
       label: "填充单词信息",
@@ -47,54 +46,55 @@ export default i18n({
     not_find_word: "查询不到该单词",
     forbid:
       "为减小服务器压力，禁止同时处理超过 5 张卡片。如果需要大量制卡，请使用本地数据库。",
-    choose_meaning: "选择在文中的释义"
+    choose_meaning: "选择在文中的释义",
+    not_find_db: "没有找到数据库"
   },
   en: {
-    intro: "Complete word form. Only support verbs and nouns",
-    on: "Auto Executed",
+    intro: "Complete word form. Only support verbs and nouns.",
+    on: "Auto Run When Excerpting",
     custom_fill:
       "Custom excerption filling template, click for support variables",
     custom_fill_front: {
-      help: "Custom excerption filling template, click for support variables",
+      help: "Custom excerption filling template, click for support variables.",
       link: doc("autocomplete"),
       error: "The input bar is not allowed to use {{zh}} or {{en}}"
     },
+    custom: "Custom",
     complete_selected: "Complete Word Form",
     loading: "Loading...",
-    select_lemma: "Dynamic Select Word Lemma",
+    select_lemma: "Dynamic Basic Form Selection",
+    maybe_other_word:
+      "The word may be the basic form or the inflected form, choose you want.",
     select_meaning: {
-      label: "Dynamic Select Meaning",
+      label: "Dynamic Interpretation Selection",
       $option2: ["Chinese", "English"]
     },
     complete_word: {
       label: "Generate Word Card",
       $option2: ["Append", "Replace"]
     },
-    translate_context: {
-      label: "Translate Context",
-      help: "Set it up first with AutoTranslate"
-    },
     auto_context: {
       label: "Auto Excert Context",
-      help: "OCR Pro is not currently supported"
+      help: "Currently not support OCR Pro, only PDF with text layer."
     },
     collins: {
-      label: "Collins Star",
+      label: "Collins Star Filtering",
       $option6: ["Zero", "One", "Two", "Three", "Four", "Five"],
-      help: "The more stars, the more useful, but the simpler it is"
+      help: "The more stars, the more common, but also the simpler, the words without the selected star level will be excluded, and will not trigger."
     },
     fill_word_info: {
-      label: "Fill Word Info",
-      $option3: ["Not Fill", "Customize", "Chinese Meaning"]
+      label: "Fill in Word Info",
+      $option3: ["Not Fill", "Custom", "Chinese Meaning"]
     },
     data_source: {
       label: "Data Source",
       $option2: ["Online API", "Local Database"],
-      help: "Local databases are larger, but faster and of higher quality"
+      help: "For users outside of China, please choose local database. You can download it in Github Release."
     },
     not_find_word: "No matching words found",
     forbid:
       "To reduce server pressure, it is forbidden to process more than 5 cards at the same time. If you need to make a lot of word cards, please use the local database.",
-    choose_meaning: "Select the meanings in the text."
+    choose_meaning: "Select the meanings in the text.",
+    not_find_db: "No database found"
   }
 })
