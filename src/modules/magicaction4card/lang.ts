@@ -61,7 +61,7 @@ export default i18n({
       "All actions require the card to be selected first. The actions come from various modules and require the corresponding modules to be enabled. Click to view the specific usage method and precautions.",
     smart_selection: {
       label: "Smart Selector",
-      help: "Help you quickly select the child card and descendant card"
+      help: "Help you quickly select the child card and descendant card."
     },
     default_merge_text: {
       help: "The front and rear decoration of the text in the card when merging, the default adds a serial number and a line break ($& represents each paragraph), click to view the custom method.                 ",
