@@ -10,7 +10,7 @@
 
 ## Document
 
-[简体中文](https://ohmymn.marginnote.cn/)
+[ [English](https://ohmymn.marginnote.com/) ] [ [简体中文](https://ohmymn.marginnote.cn/) ]
 
 ## Development
 

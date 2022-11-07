@@ -14,6 +14,7 @@ interface Mainfest {
     doc: string
     notebook: string
   }
+  certKey?: string
   color: {
     border: string
     button: string

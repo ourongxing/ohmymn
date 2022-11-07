@@ -67,10 +67,13 @@ function zip(): Plugin {
     setup(build) {
       build.onEnd(() => {
         if (isProd && fs.existsSync(outDir)) {
-          const fileName = `${mainfest.key} v${mainfest.version}`.replace(
-            /[ .]/g,
-            "_"
-          )
+          const fileName = `${mainfest.key} v${mainfest.version} ${
+            mainfest.certKey ? "signed" : "unsigned"
+          }${
+            mainfest.files.find(k => k.includes("AutoCompleteData"))
+              ? " local database autocomplete"
+              : ""
+          }`.replace(/[ .]/g, "_")
           exec(`cd ${outDir} && zip -qr ${fileName}.mnaddon *`)
           console.log(`Generated at ${outDir}${fileName}.mnaddon`)
         }
