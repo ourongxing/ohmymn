@@ -319,7 +319,8 @@ export const rewriteSelection: RewriteCase[] = [
     },
     global: {
       addon: {
-        panelControl: (old: number[]) => old.filter(k => k !== 1),
+        panelControl: (old: number[]) =>
+          old.filter(k => k !== 1).map(k => (k > 1 ? k - 1 : k)),
         textAction: (old: number[]) => [
           old[0] === 2 ? 3 : old[0] === 3 ? 2 : old[0]
         ]

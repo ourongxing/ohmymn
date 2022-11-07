@@ -18,8 +18,9 @@ export default defineMainfest({
   },
   github: "https://github.com/marginnoteapp/ohmymn",
   forumZH: "https://bbs.marginnote.cn/t/topic/20501",
+  forum: "https://forum.marginnote.com/t/5883",
   docZH: "https://ohmymn.marginnote.cn",
-  doc: "https://ohmymn.marginnote.com",
+  doc: "https://ohmymn.vercel.app",
   files: [
     "assets/logo.png",
     "assets/icon",

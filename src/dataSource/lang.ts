@@ -20,7 +20,7 @@ export default i18n({
     none: "None",
     custom_shortcut: "Custom Shortcut",
     expand: "▶ Click to expand all options",
-    website: "Website: ohmymn.marginnote.com",
+    website: "Website: ohmymn.vercel.app",
     core_team: "Core Team: ourongxing，Bryan",
     intro:
       "OhMyMN is a toolbox that can process excerpts automatically and also is MarginNote addon development framework. OhMyMN is completely open source, officially supported, and welcome to join us."
