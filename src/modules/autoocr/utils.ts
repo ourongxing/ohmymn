@@ -43,7 +43,7 @@ export async function mathpixOCR(imgBase64: string) {
 export async function QRCodeOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
-    `https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode?access_token=${token}}`,
+    `https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode?access_token=${token}`,
     {
       method: "POST",
       headers: {
@@ -64,7 +64,7 @@ export async function QRCodeOCR(imgBase64: string) {
 export async function baiduFormulaOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
-    `https://aip.baidubce.com/rest/2.0/ocr/v1/formula?access_token=${token}}`,
+    `https://aip.baidubce.com/rest/2.0/ocr/v1/formula?access_token=${token}`,
     {
       method: "POST",
       headers: {
@@ -85,7 +85,7 @@ export async function baiduFormulaOCR(imgBase64: string) {
 export async function baiduHandWrittingOCR(imgBase64: string) {
   const token = await getBaiduToken()
   const res = (await fetch(
-    `https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting?access_token=${token}}`,
+    `https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting?access_token=${token}`,
     {
       method: "POST",
       headers: {
