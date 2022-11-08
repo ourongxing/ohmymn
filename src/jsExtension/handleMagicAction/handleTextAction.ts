@@ -74,7 +74,8 @@ export default async function (key: string, option: number, content: string) {
           res.replace(
             /^.*(https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]).*$/,
             "$1"
-          )
+          ),
+          true
         )
         return
       }

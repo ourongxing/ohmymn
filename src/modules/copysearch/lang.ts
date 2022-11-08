@@ -63,7 +63,7 @@ export default i18n({
     copy_seccess: "复制成功，快去粘贴吧",
     one_card_search: "默认搜索第一张卡片的内容，请不要选择多张卡片",
     no_search_engine_url: "没有填写此搜索引擎的 URL",
-    no_keyword: "没有输入 {{keyword}}",
+    no_keyword: "缺少 {{keyword}}",
     choose_you_want: `请选择一个你想要的`
   },
   en: {
@@ -120,7 +120,7 @@ export default i18n({
     one_card_search:
       "Default search the content of the first card, please do not select more than one card",
     no_search_engine_url: "No URL of this search engine",
-    no_keyword: "No {{keyword}}",
+    no_keyword: "Missing {{keyword}}",
     choose_you_want: "Choose one you want"
   }
 })

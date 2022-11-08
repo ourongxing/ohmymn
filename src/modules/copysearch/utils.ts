@@ -128,6 +128,7 @@ export async function search(text: string, option: number) {
     searchQuestion,
     searchOtherText
   ][option]
-  if (searchEngine) openUrl(searchEngine.replace("{{keyword}}", text))
+  if (searchEngine)
+    openUrl(searchEngine.replace("{{keyword}}", encodeURIComponent(text)))
   else showHUD(lang.no_search_engine_url, 2)
 }

@@ -1,4 +1,4 @@
-import queryString from "query-string"
+import qs from "querystringify"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
@@ -11,11 +11,10 @@ export async function handleURLScheme(params: string) {
   try {
     // marginnote3app://addon/ohmymn?type=card&shortcut=1
     // marginnote3app://addon/ohmymn?type=text&shortcut=1
-    // marginnote3app://addon/ohmymn?custom=true&info=
-    const query = queryString.parse(params)
-    if (query.custom) {
+    // marginnote3app://addon/ohmymn?actions=JSON.stringify(actions)
+    const query = qs.parse(params) as Record<string, string>
+    if ("info" in query || "actions" in query) {
       if (!self.globalProfile.shortcut.shortcutPro) return
-      const { info } = query
       let shortcuts: {
         action: string
         type: "text" | "card"
@@ -23,7 +22,8 @@ export async function handleURLScheme(params: string) {
         content?: string
       }[] = []
       try {
-        shortcuts = JSON.parse(info as string)
+        const { info, actions } = query
+        shortcuts = JSON.parse(actions || info)
         if (!shortcuts.length) throw ""
       } catch (error) {
         throw lang.info_error

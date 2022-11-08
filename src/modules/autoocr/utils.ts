@@ -130,7 +130,7 @@ export async function mainOCR(imgBase64: string) {
     ]
     const token = await getBaiduToken()
     const res = (await fetch(
-      `https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=${token}}`,
+      `https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=${token}`,
       {
         method: "POST",
         headers: {

@@ -3,7 +3,8 @@ import {
   type UITableView,
   MN,
   openUrl,
-  postNotification
+  postNotification,
+  isNoteLink
 } from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Card, actionKey4Text } from "~/dataSource"
@@ -36,7 +37,7 @@ async function tableViewDidSelectRowAtIndexPath(
     case CellViewType.PlainText:
       {
         if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
-          row.link && openUrl(row.link)
+          row.link && openUrl(row.link, true)
         } else if (self.expandSections.has(sec.key)) {
           row.label = lang.expand
           self.expandSections.delete(sec.key as OptionalModuleKeyUnion)
@@ -81,7 +82,7 @@ async function textFieldShouldReturn(sender: UITextField) {
   const row = section.rows[indexPath.row] as IRowInput
   const text = sender.text.trim()
   // Allowed be empty
-  if (text.startsWith("marginnote3app://note/")) openUrl(text)
+  if (isNoteLink(text)) openUrl(text)
   if (!text || (await checkInputCorrect(text, row.key))) {
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
