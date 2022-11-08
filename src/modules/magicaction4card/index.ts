@@ -233,35 +233,53 @@ export default defineConfig({
       option: lang.switch_title.$option2,
       help: lang.switch_title.help,
       method: async ({ nodes, option }) => {
-        for (const node of nodes) {
-          const title = node.title
-          const text = node.mainExcerptText
-            ? removeHighlight(node.mainExcerptText)
-            : ""
-          switch (option) {
-            case SwitchTitle.ToNonexistent:
-              /**
-               * 只有标题
-               * 1. 摘录和标题相同：删除标题
-               * 2. 摘录为空：删除标题，设置摘录
-               * 只有摘录：删除摘录（是文字），设置标题
-               */
-              if (node.note.excerptPic?.paint && !node.note.textFirst) break
-              else if (text === title) node.title = ""
-              else if (title && !text) {
+        if (option === SwitchTitle.ToNonexistent) {
+          for (const node of nodes) {
+            const title = node.title
+            const text = removeHighlight(node.mainExcerptText)
+            /**
+             * 只有标题
+             * 1. 摘录和标题相同：删除标题
+             * 2. 摘录为空：删除标题，设置摘录
+             * 只有摘录：删除摘录（是文字），设置标题
+             */
+            if (node.note.excerptPic?.paint && !node.note.textFirst) {
+            } else if (text === title) node.title = ""
+            else if (title && !text) {
+              node.title = ""
+              node.mainExcerptText = title
+            } else if (text && !title) {
+              node.title = text
+              // 有可能有重点
+              if (node.note.excerptPic?.paint) node.mainExcerptText = text
+              else node.mainExcerptText = ""
+            }
+          }
+        } else {
+          /**
+           * 标题和摘录都存在
+           * 1. 交换：标题和摘录交换
+           * 2. 摘录强制转为标题：删除摘录（是文字），设置标题
+           * 3. 标题强制转为摘录：删除标题，设置摘录
+           */
+          const res = nodes.map(node => [
+            node.title,
+            removeHighlight(node.mainExcerptText)
+          ])
+          const option = res.find(([title, text]) => title && text)
+            ? await selectIndex(
+                lang.switch_title.$both_option3,
+                lang.switch_title.swap_title_excerpt,
+                lang.switch_title.swap_help
+              )
+            : 0
+          undoGroupingWithRefresh(() => {
+            nodes.forEach((node, index) => {
+              const [title, text] = res[index]
+              if (node.note.excerptPic?.paint && !node.note.textFirst) {
+              } else if (text === title) {
                 node.title = ""
-                node.mainExcerptText = title
-              } else if (text && !title) {
-                node.title = text
-                // 有可能有重点
-                if (node.note.excerptPic?.paint) node.mainExcerptText = text
-                else node.mainExcerptText = ""
-              }
-              break
-            case SwitchTitle.Exchange:
-              if (node.note.excerptPic?.paint && !node.note.textFirst) break
-              else if (text === title) node.title = ""
-              else if (title && !text) {
+              } else if (title && !text) {
                 node.title = ""
                 node.mainExcerptText = title
               } else if (text && !title) {
@@ -269,36 +287,22 @@ export default defineConfig({
                 if (node.note.excerptPic?.paint) node.mainExcerptText = text
                 else node.mainExcerptText = ""
               } else {
-                /**
-                 * 标题和摘录都存在
-                 * 1. 交换：标题和摘录交换
-                 * 2. 摘录强制转为标题：删除摘录（是文字），设置标题
-                 * 3. 标题强制转为摘录：删除标题，设置摘录
-                 */
-                const option = await selectIndex(
-                  ["摘录 ⇄ 标题", "摘录 → 标题", "摘录 ← 标题"],
-                  "交换标题和摘录",
-                  "检测到标题和摘录同时存在，请选择交换方式"
-                )
-                undoGroupingWithRefresh(() => {
-                  switch (option) {
-                    case 0:
-                      node.title = text
-                      node.mainExcerptText = title
-                      break
-                    case 1:
-                      node.title = text
-                      if (!node.note.excerptPic?.paint)
-                        node.mainExcerptText = ""
-                      break
-                    case 2:
-                      node.title = ""
-                      node.mainExcerptText = title
-                  }
-                })
+                switch (option) {
+                  case 0:
+                    node.title = text
+                    node.mainExcerptText = title
+                    break
+                  case 1:
+                    node.title = text
+                    if (!node.note.excerptPic?.paint) node.mainExcerptText = ""
+                    break
+                  case 2:
+                    node.title = ""
+                    node.mainExcerptText = title
+                }
               }
-              break
-          }
+            })
+          })
         }
       }
     }
