@@ -4,7 +4,7 @@ import {
   defaultGlobalProfile,
   defaultNotebookProfile,
   defaultTempProfile
-} from "./defaultProfile"
+} from "./default"
 
 export const enum Range {
   All,
@@ -108,25 +108,61 @@ export interface RewriteCase {
               | "textAction"
               | PickKeyByValue<IGlobalProfile[key], number[]>
           : PickKeyByValue<IGlobalProfile[key], number[]>,
-        (old: number[]) => number[]
+        (old: number[], thisProfile: IGlobalProfile) => number[]
       >
-    >
+    > &
+      Partial<
+        Record<
+          PickKeyByValue<IGlobalProfile[key], string>,
+          (old: string, thisProfile: IGlobalProfile) => string
+        >
+      > &
+      Partial<
+        Record<
+          PickKeyByValue<IGlobalProfile[key], boolean>,
+          (old: boolean, thisProfile: IGlobalProfile) => boolean
+        >
+      >
   }
   doc?: {
     [key in keyof IDocProfile]?: Partial<
       Record<
         PickKeyByValue<IDocProfile[key], number[]>,
-        (old: number[]) => number[]
+        (old: number[], thisProfile: IDocProfile) => number[]
       >
-    >
+    > &
+      Partial<
+        Record<
+          PickKeyByValue<IDocProfile[key], string>,
+          (old: string, thisProfile: IDocProfile) => string
+        >
+      > &
+      Partial<
+        Record<
+          PickKeyByValue<IDocProfile[key], boolean>,
+          (old: boolean, thisProfile: IDocProfile) => boolean
+        >
+      >
   }
   notebook?: {
     [key in keyof INotebookProfile]?: Partial<
       Record<
         PickKeyByValue<INotebookProfile[key], number[]>,
-        (old: number[]) => number[]
+        (old: number[], thisProfile: INotebookProfile) => number[]
       >
-    >
+    > &
+      Partial<
+        Record<
+          PickKeyByValue<INotebookProfile[key], string>,
+          (old: string, thisProfile: INotebookProfile) => string
+        >
+      > &
+      Partial<
+        Record<
+          PickKeyByValue<INotebookProfile[key], boolean>,
+          (old: boolean, thisProfile: INotebookProfile) => boolean
+        >
+      >
   }
 }
 

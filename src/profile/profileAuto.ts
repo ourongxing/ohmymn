@@ -5,7 +5,7 @@ import {
   defaultDocProfile,
   defaultGlobalProfile,
   defaultNotebookProfile
-} from "./defaultProfile"
+} from "./default"
 import { writeProfile2Card } from "./profileAction"
 import {
   IDocProfile,

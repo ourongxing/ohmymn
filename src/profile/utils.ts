@@ -3,7 +3,7 @@ import semver from "semver"
 import { Addon } from "~/addon"
 import { AllModuleKeyUnion } from "~/merged"
 import { IConfig } from "~/typings"
-import { rewriteSelection } from "./defaultProfile"
+import { rewriteSelection } from "./rewrite"
 import {
   IDocProfile,
   IGlobalProfile,
@@ -75,34 +75,35 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
     p: IGlobalProfile,
     module: string,
     key: string,
-    f: (old: number[]) => number[]
+    f: any
   ) {
     if (p[module]?.[key] !== undefined) {
-      p[module][key] = f(p[module][key])
+      p[module][key] = f(p[module][key], p)
     } else if (key === "cardAction") {
       if (p.gesture) {
         ;["single", "muilt"].forEach(k =>
           ["Up", "Down", "Left", "Right"].forEach(j => {
-            p.gesture[`${k}BarSwipe${j}`] = f(p.gesture[`${k}BarSwipe${j}`])
+            p.gesture[`${k}BarSwipe${j}`] = f(p.gesture[`${k}BarSwipe${j}`], p)
           })
         )
       }
       if (p.shortcut) {
         Array.from({ length: 8 }).forEach((_, k) => {
-          p.shortcut[`cardShortcut${k}`] = f(p.shortcut[`cardShortcut${k}`])
+          p.shortcut[`cardShortcut${k}`] = f(p.shortcut[`cardShortcut${k}`], p)
         })
       }
     } else if (key === "textAction") {
       if (p.gesture) {
         ;["Up", "Down", "Left", "Right"].forEach(j => {
           p.gesture[`selectionBarSwipe${j}`] = f(
-            p.gesture[`selectionBarSwipe${j}`]
+            p.gesture[`selectionBarSwipe${j}`],
+            p
           )
         })
       }
       if (p.shortcut) {
         Array.from({ length: 4 }).forEach((_, k) => {
-          p.shortcut[`textShortcut${k}`] = f(p.shortcut[`textShortcut${k}`])
+          p.shortcut[`textShortcut${k}`] = f(p.shortcut[`textShortcut${k}`], p)
         })
       }
     } else return false
@@ -128,7 +129,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
                 for (const [key, f] of Object.entries(_))
                   for (const p of docProfileList) {
                     if (p[module]?.[key] !== undefined) {
-                      p[module][key] = f(p[module][key])
+                      p[module][key] = f(p[module][key], p)
                     } else return
                   }
             }
@@ -160,7 +161,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
                 for (const [key, f] of Object.entries(_))
                   for (const p of notebookProfileList) {
                     if (p[module]?.[key] !== undefined) {
-                      p[module][key] = f(p[module][key])
+                      p[module][key] = f(p[module][key], p)
                     } else return
                   }
             }
