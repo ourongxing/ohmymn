@@ -64,7 +64,7 @@ export async function genTitleTextCommentTag(param: {
   const { hasTitleThen, dragMerge } = self.globalProfile.addon
   const { cacheTitle } = self.notebookProfile.additional
   let generatedTitles: string[] | undefined = undefined
-  let modifiedText: string | undefined = undefined
+  let modifiedText = text
   let insertIndex: undefined | number = undefined
 
   const retVal = {
