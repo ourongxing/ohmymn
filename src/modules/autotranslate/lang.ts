@@ -22,6 +22,7 @@ export default i18n({
       label: "输出语言",
       $option3: ["中文", "英文", "日文"] as StringTuple<3>
     },
+    no_result: "没有获取到结果",
     baidu_from_lang: {
       label: "输入语言",
       $option29: [
@@ -137,6 +138,7 @@ export default i18n({
       label: "Output Language",
       $option3: ["Chinese", "English", "Japanese"]
     },
+    no_result: "No Result",
     baidu_from_lang: {
       label: "Input Language",
       $option29: [

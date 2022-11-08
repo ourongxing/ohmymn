@@ -25,7 +25,14 @@ export default i18n({
     switch_title: {
       label: "切换摘录标题",
       help: "当两者都存在时请使用「交换标题和摘录」。",
-      $option2: ["切换为不存在的", "交换标题和摘录"] as StringTuple<2>
+      $option2: ["切换为不存在的", "交换标题和摘录"] as StringTuple<2>,
+      swap_title_excerpt: "交换标题和摘录",
+      swap_help: "检测到所选卡片中有标题和摘录同时存在的情况，请选择交换方式",
+      $both_option3: [
+        "摘录 ⇄ 标题",
+        "摘录 → 标题",
+        "摘录 ← 标题"
+      ] as StringTuple<3>
     },
     merge_text: {
       label: "合并卡片内文字",
@@ -71,7 +78,11 @@ export default i18n({
     switch_title: {
       help: "Use [Swap Title and Excerpt] when both are present」",
       label: "Switch Excerption or Title",
-      $option2: ["Switch to Non-Existent", "Swap Title and Excerpt"]
+      $option2: ["Switch to Non-Existent", "Swap Title and Excerpt"],
+      swap_title_excerpt: "Swap Title and Excerpt",
+      swap_help:
+        "It is detected that there are both title and excerpt in the selected card. Please select the swap method",
+      $both_option3: ["Excerpt ⇄ Title", "Excerpt → Title", "Excerpt ← Title"]
     },
     filter_cards: {
       label: "Filter Cards",

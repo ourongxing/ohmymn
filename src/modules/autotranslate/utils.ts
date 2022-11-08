@@ -119,7 +119,7 @@ export async function caiyunTranslate(
   ).then(res => res.json())) as {
     target: string[]
   }
-  if (!res.target.length) throw "没有获取到结果"
+  if (!res.target.length) throw lang.no_result
   return res.target.join("\n")
 }
 
