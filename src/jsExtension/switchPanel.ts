@@ -70,7 +70,7 @@ export function layoutViewController(
   ][positionNum]()
   self.settingViewController.view.frame = {
     x,
-    y: 110,
+    y: MN.isMNE ? 150 : 110,
     height,
     width
   }

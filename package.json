@@ -4,7 +4,7 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.1.0",
+  "version": "4.1.1",
   "license": "MIT",
   "description": "MarginNote Addon Development Framework",
   "scripts": {
@@ -38,6 +38,7 @@
     "@ourongxing/estrella": "^1.4.1",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.16",
+    "@types/querystringify": "^2.0.0",
     "@types/semver": "^7.3.12",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
@@ -54,8 +55,8 @@
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
-    "marginnote": "0.9.19",
-    "query-string": "^7.1.1",
+    "marginnote": "0.9.20",
+    "querystringify": "^2.2.0",
     "semver": "^7.3.7"
   }
 }
