@@ -37,7 +37,9 @@ export const readProfile: ReadPrifile = ({
     const readNoteBookProfile = (notebookid: string) => {
       updateProfileDataSource(
         self.notebookProfile,
-        self.allNotebookProfile?.[notebookid] ?? defaultNotebookProfile
+        self.allNotebookProfile?.[notebookid] ??
+          self.allNotebookProfile?.["default"] ??
+          defaultNotebookProfile
       )
       dev.log("Read currect notebook profile", "profile")
     }
@@ -45,7 +47,9 @@ export const readProfile: ReadPrifile = ({
     const readDocProfile = (docmd5: string) => {
       updateProfileDataSource(
         self.docProfile,
-        self.allDocProfile?.[docmd5] ?? defaultDocProfile
+        self.allDocProfile?.[docmd5] ??
+          self.allDocProfile?.["default"] ??
+          defaultDocProfile
       )
       dev.log("Read currect doc profile", "profile")
     }
@@ -83,7 +87,7 @@ export const readProfile: ReadPrifile = ({
           }
         } else {
           dev.log("Initialize global profile", "profile")
-          self.allGlobalProfile = Array(5).fill(defaultGlobalProfile)
+          self.allGlobalProfile = Array(5).fill(deepCopy(defaultGlobalProfile))
         }
 
         if (docProfileLocal) {
@@ -92,7 +96,8 @@ export const readProfile: ReadPrifile = ({
         } else {
           dev.log("Initialize doc profile", "profile")
           self.allDocProfile = {
-            [docmd5]: defaultDocProfile
+            [docmd5]: deepCopy(defaultDocProfile),
+            default: deepCopy(defaultDocProfile)
           }
         }
 
@@ -104,7 +109,8 @@ export const readProfile: ReadPrifile = ({
         } else {
           dev.log("Initialize notebook profile", "profile")
           self.allNotebookProfile = {
-            [notebookid]: defaultNotebookProfile
+            [notebookid]: deepCopy(defaultNotebookProfile),
+            default: deepCopy(defaultNotebookProfile)
           }
         }
 
@@ -212,7 +218,6 @@ export async function saveProfile(name: string, key: string, value: any) {
         })
         break
       default: {
-        // TODO: 对于笔记本配置和文档配置的初始化，可以将其放入一个单独的配置里，然后作为新文档或者新笔记本的初始配置。
         if (self.globalProfile?.[name]?.[key] !== undefined) {
           self.globalProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
@@ -224,6 +229,11 @@ export async function saveProfile(name: string, key: string, value: any) {
         } else if (self.notebookProfile?.[name]?.[key] !== undefined) {
           self.notebookProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
+            if (!("default" in self.allNotebookProfile)) {
+              self.allNotebookProfile["default"] = deepCopy(
+                defaultNotebookProfile
+              )
+            }
             Object.entries(self.allNotebookProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined)
                 self.allNotebookProfile[m][name][key] = value
@@ -232,6 +242,9 @@ export async function saveProfile(name: string, key: string, value: any) {
         } else {
           self.docProfile[name][key] = value
           if (self.notebookProfile.addon.profile[0] === 4) {
+            if (!("default" in self.allDocProfile)) {
+              self.allDocProfile["default"] = deepCopy(defaultDocProfile)
+            }
             Object.entries(self.allDocProfile).forEach(([m, p]) => {
               if (p[name]?.[key] !== undefined)
                 self.allDocProfile[m][name][key] = value
