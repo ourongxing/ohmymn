@@ -17,7 +17,7 @@ export default i18n({
     no_action: "必须传入 action 参数",
     action_not_exist: "action 不存在",
     option_interger: "option 参数请传入整数",
-    info_error: "错误的 Info 参数",
+    info_error: "错误的 actions 参数",
     type_not_exist: "type 参数不正确，必须是 card 或 text"
   },
   en: {
@@ -37,6 +37,6 @@ export default i18n({
     action_not_exist: "action does not exist",
     option_interger: "The option parameter should be an integer",
     type_not_exist: "The type parameter is incorrect, it must be card or text",
-    info_error: "Incorrect Info parameter"
+    info_error: "Incorrect Actions parameter"
   }
 })

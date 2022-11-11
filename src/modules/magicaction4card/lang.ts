@@ -77,7 +77,7 @@ export default i18n({
     },
     switch_title: {
       help: "Use [Swap Title and Excerpt] when both are present」",
-      label: "Switch Excerption or Title",
+      label: "Switch Excerpt / Title",
       $option2: ["Switch to Non-Existent", "Swap Title and Excerpt"],
       swap_title_excerpt: "Swap Title and Excerpt",
       swap_help:
