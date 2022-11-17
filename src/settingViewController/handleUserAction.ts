@@ -1,20 +1,16 @@
 import {
-  type NSIndexPath,
-  type UITableView,
+  isNoteLink,
   MN,
   openUrl,
   postNotification,
-  isNoteLink
+  type NSIndexPath,
+  type UITableView
 } from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Card, actionKey4Text } from "~/dataSource"
 import { checkInputCorrect, type OptionalModuleKeyUnion } from "~/merged"
-import {
-  CellViewType,
-  type IRowInput,
-  type IRowSelect,
-  type IRowSwitch
-} from "~/typings"
+import type { IRowInput } from "~/typings"
+import { CellViewType, type IRowSelect, type IRowSwitch } from "~/typings"
 import { byteLength } from "~/utils"
 import lang from "./lang"
 import { _isModuleOFF } from "./settingView"

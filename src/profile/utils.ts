@@ -1,15 +1,12 @@
-import { MN, NoteComment } from "marginnote"
+import type { NoteComment } from "marginnote"
+import { MN } from "marginnote"
 import semver from "semver"
 import { Addon } from "~/addon"
-import { AllModuleKeyUnion } from "~/merged"
-import { IConfig } from "~/typings"
+import type { AllModuleKeyUnion } from "~/merged"
+import type { IConfig } from "~/typings"
 import { rewriteSelection } from "./rewrite"
-import {
-  IDocProfile,
-  IGlobalProfile,
-  INotebookProfile,
-  RewriteRange
-} from "./typings"
+import type { IDocProfile, IGlobalProfile, INotebookProfile } from "./typings"
+import { RewriteRange } from "./typings"
 
 /**
  * @param link Card link

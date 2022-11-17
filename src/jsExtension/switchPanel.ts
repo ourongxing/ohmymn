@@ -1,4 +1,5 @@
-import { delay, StudyMode, UIViewController } from "marginnote"
+import type { UIViewController } from "marginnote"
+import { delay, StudyMode } from "marginnote"
 import { PanelControl } from "~/modules/addon/typings"
 
 // Set the position and size of the panel

@@ -1,6 +1,7 @@
 import { Addon } from "~/addon"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { select, openUrl, showHUD, NodeNote, removeHighlight } from "marginnote"
+import type { NodeNote } from "marginnote"
+import { select, openUrl, showHUD, removeHighlight } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import lang from "./lang"

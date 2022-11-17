@@ -1,8 +1,9 @@
+import type { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { NodeNote } from "marginnote"
 import { unique } from "~/utils"
-import { regFlag, ReplaceParam } from "~/utils/input"
-import { TitleLinkSplit, AutoDefPreset } from "./typings"
+import type { ReplaceParam } from "~/utils/input"
+import { regFlag } from "~/utils/input"
+import { AutoDefPreset, TitleLinkSplit } from "./typings"
 
 function split2MuiltTitles(text: string) {
   if (!self.globalProfile.anotherautodef.toTitleLink) return [text]

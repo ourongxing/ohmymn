@@ -1,9 +1,5 @@
-import {
-  HUDController,
-  NodeNote,
-  showHUD,
-  undoGroupingWithRefresh
-} from "marginnote"
+import type { NodeNote } from "marginnote"
+import { HUDController, showHUD, undoGroupingWithRefresh } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { checkPlainText, doc } from "~/utils"

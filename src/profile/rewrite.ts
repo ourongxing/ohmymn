@@ -1,4 +1,4 @@
-import { RewriteCase } from "./typings"
+import type { RewriteCase } from "./typings"
 
 export const rewriteSelection: RewriteCase[] = [
   {

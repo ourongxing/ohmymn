@@ -13,7 +13,7 @@ import type {
   NodeNote
 } from "marginnote"
 import type { ISection } from "./typings"
-import { AllModuleKeyUnion } from "./merged"
+import type { AllModuleKeyUnion } from "./merged"
 
 declare global {
   const MN: typeof import("marginnote")["MN"]

@@ -7,15 +7,14 @@ import {
   defaultNotebookProfile
 } from "./default"
 import { writeProfile2Card } from "./profileAction"
-import {
+import type {
   IDocProfile,
   IGlobalProfile,
   INotebookProfile,
-  Range,
   ReadPrifile,
-  RewriteRange,
   WritePrifile
 } from "./typings"
+import { Range, RewriteRange } from "./typings"
 import { refreshPanel, updateProfileDataSource } from "./updateDataSource"
 import { checkNewVerProfile, rewriteProfile } from "./utils"
 

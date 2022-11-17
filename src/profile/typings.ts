@@ -1,5 +1,5 @@
-import { ReplaceParam } from "~/utils"
-import {
+import type { ReplaceParam } from "~/utils"
+import type {
   defaultDocProfile,
   defaultGlobalProfile,
   defaultNotebookProfile,

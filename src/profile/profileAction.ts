@@ -1,8 +1,7 @@
+import type { MbBookNote, NodeNote } from "marginnote"
 import {
   confirm,
-  MbBookNote,
   MN,
-  NodeNote,
   selectIndex,
   setLocalDataByKey,
   showHUD,

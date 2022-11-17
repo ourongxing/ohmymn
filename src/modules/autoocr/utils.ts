@@ -1,6 +1,6 @@
 import { fetch, showHUD } from "marginnote"
 import lang from "./lang"
-import { BaiduOCRError } from "./typings"
+import type { BaiduOCRError } from "./typings"
 
 export async function getBaiduToken() {
   const { lastGetToken, baiduToken } = self.globalProfile.additional.autoocr

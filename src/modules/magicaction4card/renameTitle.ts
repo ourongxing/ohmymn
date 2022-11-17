@@ -1,5 +1,5 @@
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { IActionMethod4Card } from "~/typings"
+import type { IActionMethod4Card } from "~/typings"
 import {
   getSerialByIndex,
   getSerialInfo,

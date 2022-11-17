@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import { AllModuleKeyUnion } from "~/merged"
+import type { AllModuleKeyUnion } from "~/merged"
 
 export const deepCopy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => {
@@ -43,7 +43,7 @@ export function doc(module: AllModuleKeyUnion, hash?: string) {
   return `${Addon.doc}/guide/modules/${module}.html${hash ? "#" + hash : ""}`
 }
 
-export * from "./text"
-export * from "./number"
-export * from "./input"
 export * from "./checkInput"
+export * from "./input"
+export * from "./number"
+export * from "./text"

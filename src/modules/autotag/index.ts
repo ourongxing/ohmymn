@@ -1,4 +1,4 @@
-import { NodeNote } from "marginnote"
+import type { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"

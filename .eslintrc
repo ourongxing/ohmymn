@@ -8,7 +8,21 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": false,
+        "fixStyle": "separate-type-imports"
+      }
+    ],
+    "semi": [
+      "error",
+      "never",
+      {
+        "beforeStatementContinuationChars": "never"
+      }
+    ],
     "no-unused-vars": "off",
     "@typescript-eslint/naming-convention": [
       "error",
@@ -31,7 +45,8 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+    "prettier/prettier": "warn"
   },
   "env": {
     "browser": true,

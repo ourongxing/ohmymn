@@ -5,7 +5,7 @@ import { switchPanel } from "~/JSExtension/switchPanel"
 import lang from "./lang"
 import { isModuleON } from "~/merged"
 import { showHUD } from "marginnote"
-import { IRowButton } from "~/typings"
+import type { IRowButton } from "~/typings"
 
 export async function handleURLScheme(params: string) {
   try {

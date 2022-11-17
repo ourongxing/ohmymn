@@ -1,12 +1,12 @@
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
+import type { ReplaceParam } from "~/utils"
 import {
   checkReplaceParamFromMNLink,
   checkRegArrayFromMNLink,
   checkReplaceParam,
   string2ReplaceParam,
   doc,
-  ReplaceParam,
   string2RegArray
 } from "~/utils"
 import lang from "./lang"

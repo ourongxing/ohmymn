@@ -1,16 +1,16 @@
 import {
   isNSNull,
   MN,
-  type NSIndexPath,
   NSTextAlignment,
+  type NSIndexPath,
   type UITableView
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
-import lang from "./lang"
-import { DataSourceSectionKeyUnion, moduleKeys } from "~/merged"
-import { type BindType, CellViewType, type IRowSelect } from "~/typings"
+import { moduleKeys, type DataSourceSectionKeyUnion } from "~/merged"
+import { CellViewType, type BindType, type IRowSelect } from "~/typings"
 import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
+import lang from "./lang"
 
 const fontSize = {
   label: (text: string) => {

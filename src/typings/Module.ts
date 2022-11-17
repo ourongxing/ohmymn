@@ -1,8 +1,8 @@
-import { IAllProfile } from "~/profile"
-import { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
-import { NodeNote } from "marginnote"
-import { CellViewType } from "."
-import { AllModuleKeyUnion } from "~/merged"
+import { type NodeNote } from "marginnote"
+import { type AllModuleKeyUnion } from "~/merged"
+import { type IAllProfile } from "~/profile"
+import { type CellViewType } from "."
+import type { AutoUtilType, TypeUtilIndex } from "./AutoUtils"
 
 export type IConfig<T extends AllModuleKeyUnion | null = null> = {
   name: string

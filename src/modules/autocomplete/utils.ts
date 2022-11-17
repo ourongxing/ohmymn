@@ -9,19 +9,15 @@ import {
   showHUD
 } from "marginnote"
 import { Addon } from "~/addon"
-import {
-  CJK,
-  CJKRegex,
-  escapeDoubleQuote,
-  reverseEscape,
-  serialSymbols
-} from "~/utils"
+import { CJK, CJKRegex, escapeDoubleQuote, reverseEscape } from "~/utils"
 
-import { MbBookNote, UIAlertViewStyle } from "marginnote"
+import type { MbBookNote } from "marginnote"
+import { UIAlertViewStyle } from "marginnote"
 import { render } from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
 import lang from "./lang"
-import { Exchange, FillWordInfo, Word } from "./typings"
+import type { Exchange, Word } from "./typings"
+import { FillWordInfo } from "./typings"
 
 async function selectParaphrase(
   obj: Record<string, string[]>,

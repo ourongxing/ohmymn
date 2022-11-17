@@ -1,5 +1,7 @@
-import { defineConfig, IAllProfile } from "~/profile"
-import { CellViewType, ISettingSelect } from "~/typings"
+import type { IAllProfile } from "~/profile"
+import { defineConfig } from "~/profile"
+import type { ISettingSelect } from "~/typings"
+import { CellViewType } from "~/typings"
 import { doc, reverseEscape } from "~/utils"
 import lang from "./lang"
 

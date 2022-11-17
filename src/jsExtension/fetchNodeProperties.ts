@@ -1,7 +1,7 @@
+import type { MbBookNote } from "marginnote"
 import {
   getDocURL,
   getLocalDataByKey,
-  MbBookNote,
   NodeNote,
   removeHighlight
 } from "marginnote"

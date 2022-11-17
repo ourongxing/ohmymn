@@ -6,12 +6,13 @@ import {
   StudyMode,
   UIAlertViewStyle
 } from "marginnote"
-import lang from "../lang"
 import { checkInputCorrect } from "~/merged"
 import { getMNLinkValue } from "~/profile"
-import { CellViewType, IRowButton } from "~/typings"
-import handleTextAction from "./handleTextAction"
+import type { IRowButton } from "~/typings"
+import { CellViewType } from "~/typings"
+import lang from "../lang"
 import handleCardAction from "./handleCardAction"
+import handleTextAction from "./handleTextAction"
 
 export default async (
   type: "card" | "text",

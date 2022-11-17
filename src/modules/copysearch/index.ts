@@ -1,7 +1,9 @@
 import { copy, selectIndex } from "marginnote"
 import { Addon } from "~/addon"
-import { defineConfig, IDocProfile, IGlobalProfile } from "~/profile"
-import { CellViewType, ISettingInput } from "~/typings"
+import type { IDocProfile, IGlobalProfile } from "~/profile"
+import { defineConfig } from "~/profile"
+import type { ISettingInput } from "~/typings"
+import { CellViewType } from "~/typings"
 import {
   checkPlainText,
   doc,

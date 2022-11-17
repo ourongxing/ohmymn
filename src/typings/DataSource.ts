@@ -1,5 +1,5 @@
-import { DataSourceSectionKeyUnion } from "~/merged"
-import { CellViewType } from "."
+import type { DataSourceSectionKeyUnion } from "~/merged"
+import type { CellViewType } from "."
 
 export type ISection = {
   key: DataSourceSectionKeyUnion
