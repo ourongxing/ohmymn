@@ -1,11 +1,11 @@
+import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {
-  string2ReplaceParam,
-  checkReplaceParamFromMNLink,
   checkReplaceParam,
-  doc
+  checkReplaceParamFromMNLink,
+  doc,
+  string2ReplaceParam
 } from "~/utils"
-import { defineConfig } from "~/profile"
 import lang from "./lang"
 import { ListCard } from "./typings"
 import { addLineBreak, addNumber } from "./utils"

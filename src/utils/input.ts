@@ -1,5 +1,5 @@
-import lang from "./lang"
 import { unique } from "."
+import lang from "./lang"
 
 function reverseEscape(str: string, quote = false) {
   try {

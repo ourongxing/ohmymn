@@ -1,10 +1,10 @@
 import {
   HUDController,
-  showHUD,
+  NodeNote,
   popup,
+  showHUD,
   UIAlertViewStyle,
-  undoGroupingWithRefresh,
-  NodeNote
+  undoGroupingWithRefresh
 } from "marginnote"
 import { actions4card } from "~/merged"
 import { PanelControl } from "~/modules/addon/typings"
