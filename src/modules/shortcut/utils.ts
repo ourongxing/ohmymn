@@ -1,11 +1,11 @@
+import { showHUD } from "marginnote"
 import qs from "querystringify"
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
-import lang from "./lang"
 import { isModuleON } from "~/merged"
-import { showHUD } from "marginnote"
 import type { IRowButton } from "~/typings"
+import lang from "./lang"
 
 export async function handleURLScheme(params: string) {
   try {
@@ -59,14 +59,11 @@ export async function handleURLScheme(params: string) {
             dataSourceIndex[
               _type === "card" ? "magicaction4card" : "magicaction4text"
             ][key]
-          if (option !== null && !Number.isInteger(Number(option)))
-            throw lang.option_interger
-          const opt = option === null ? undefined : Number(option)
           await handleMagicAction(
             _type,
             self.dataSource[sec].rows[row] as IRowButton,
-            opt,
-            content === null ? undefined : String(content)
+            option === undefined ? 0 : Number(option),
+            content === undefined ? "" : String(content)
           )
         }
       }
