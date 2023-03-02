@@ -13,8 +13,7 @@
     "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon",
     "lint:fix": "eslint . --fix --ext .ts",
     "lint": "eslint . --ext .ts",
-    "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prettier": "prettier --write ."
   },
   "lint-staged": {
     "package.json": [
@@ -32,9 +31,10 @@
     "addon",
     "typescript"
   ],
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
     "@ourongxing/estrella": "^1.4.1",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.16",
@@ -47,15 +47,15 @@
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
+    "simple-git-hooks": "^2.8.1",
     "tsx": "^3.9.0",
     "typescript": "^4.8.3",
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
-    "marginnote": "0.9.21",
+    "marginnote": "0.9.22",
     "querystringify": "^2.2.0",
     "semver": "^7.3.7"
   }
