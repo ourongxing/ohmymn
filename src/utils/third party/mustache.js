@@ -1,3 +1,6 @@
+import wax from "./mustache-wax"
+import { dateFormat, getSerialInfo, reverseEscape } from "~/utils"
+
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
@@ -793,7 +796,7 @@ Writer.prototype.getConfigEscape = function getConfigEscape(config) {
   }
 }
 
-var mustache = {
+const mustache = {
   name: "mustache.js",
   version: "4.2.0",
   tags: ["{{", "}}"],
@@ -821,7 +824,7 @@ var mustache = {
 }
 
 // All high-level mustache.* functions use this writer.
-var defaultWriter = new Writer()
+const defaultWriter = new Writer()
 
 /**
  * Clears all cached templates in the default writer.
@@ -843,7 +846,7 @@ mustache.parse = function parse(template, tags) {
  * Renders the `template` with the given `view`, `partials`, and `config`
  * using the default writer.
  */
-export function render(template, view, partials, config) {
+function render(template, view, partials, config) {
   if (typeof template !== "string") {
     throw new TypeError(
       'Invalid template! Template should be a "string" ' +
@@ -871,5 +874,71 @@ mustache.escape = escapeHtml
 mustache.Scanner = Scanner
 mustache.Context = Context
 mustache.Writer = Writer
+
+wax(mustache)
+
+function toString(value) {
+  if (isArray(value)) {
+    value = value.join("; ")
+  } else if (typeof value === "object") {
+    value = JSON.stringify(value)
+  } else value = value.toString()
+  return value
+}
+
+const methods = {
+  upper: value => {
+    return value.toUpperCase()
+  },
+  lower: value => {
+    return value.toLowerCase()
+  },
+  escape: value => {
+    return encodeURIComponent(value)
+  },
+  nohl: value => {
+    return value.replace(/\*\*(.+?)\*\*/g, "$1")
+  },
+  blod: value => {
+    return value.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+  },
+  clozeSync: value => {
+    return value.replace(/\*\*(.+?)\*\*/g, " {{c1::$1}} ")
+  },
+  cloze: value => {
+    let index = 1
+    return value.replace(/\*\*(.+?)\*\*/g, (_, m) => {
+      return ` {{c${index++}::${m}}} `
+    })
+  },
+  join: (value, prefix, suffix) => {
+    let item = value.split("; ")
+    if (!Array.isArray(item) || item.length < 2) return item
+    if (/\$\[.+\]/.test(prefix ?? "")) {
+      const serialArr = getSerialInfo(prefix, item.length, "\\$")
+      item = item.map((k, i) => prefix.replace(/\$\[(.+)\]/, serialArr[i]) + k)
+    } else if (prefix) item = item.map(k => (k = prefix + k))
+    return item.join(suffix ?? "; ")
+  },
+  fmt: (value, format) => {
+    const date = new Date(value)
+    if (date === "Invalid Date") return value
+    return dateFormat(date, format)
+  }
+}
+
+// 传的是原始数据
+mustache.Formatters = Object.entries(methods).reduce((acc, [k, f]) => {
+  acc[k] = function (value, ...rest) {
+    dev.log(value)
+    try {
+      return f(toString(value), ...rest)
+    } catch (err) {
+      dev.error(err)
+      return value
+    }
+  }
+  return acc
+}, {})
 
 export default mustache
