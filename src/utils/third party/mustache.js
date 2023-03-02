@@ -1,5 +1,5 @@
 import wax from "./mustache-wax"
-import { dateFormat, getSerialInfo, reverseEscape } from "~/utils"
+import { func } from "~/JSExtension/mustacheFunc"
 
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*
@@ -886,49 +886,8 @@ function toString(value) {
   return value
 }
 
-const methods = {
-  upper: value => {
-    return value.toUpperCase()
-  },
-  lower: value => {
-    return value.toLowerCase()
-  },
-  escape: value => {
-    return encodeURIComponent(value)
-  },
-  nohl: value => {
-    return value.replace(/\*\*(.+?)\*\*/g, "$1")
-  },
-  blod: value => {
-    return value.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-  },
-  clozeSync: value => {
-    return value.replace(/\*\*(.+?)\*\*/g, " {{c1::$1}} ")
-  },
-  cloze: value => {
-    let index = 1
-    return value.replace(/\*\*(.+?)\*\*/g, (_, m) => {
-      return ` {{c${index++}::${m}}} `
-    })
-  },
-  join: (value, prefix, suffix) => {
-    let item = value.split("; ")
-    if (!Array.isArray(item) || item.length < 2) return item
-    if (/\$\[.+\]/.test(prefix ?? "")) {
-      const serialArr = getSerialInfo(prefix, item.length, "\\$")
-      item = item.map((k, i) => prefix.replace(/\$\[(.+)\]/, serialArr[i]) + k)
-    } else if (prefix) item = item.map(k => (k = prefix + k))
-    return item.join(suffix ?? "; ")
-  },
-  fmt: (value, format) => {
-    const date = new Date(value)
-    if (date === "Invalid Date") return value
-    return dateFormat(date, format)
-  }
-}
-
 // 传的是原始数据
-mustache.Formatters = Object.entries(methods).reduce((acc, [k, f]) => {
+mustache.Formatters = Object.entries(func).reduce((acc, [k, f]) => {
   acc[k] = function (value, ...rest) {
     dev.log(value)
     try {

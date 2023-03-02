@@ -1,12 +1,8 @@
 import type { MbBookNote } from "marginnote"
-import {
-  getDocURL,
-  getLocalDataByKey,
-  NodeNote,
-  removeHighlight
-} from "marginnote"
-import { dateFormat, getSerialInfo } from "~/utils"
-import { render } from "~/utils/third party/mustache"
+import { getDocURL, getLocalDataByKey, NodeNote } from "marginnote"
+import { dateFormat } from "~/utils"
+import Mustache from "~/utils/third party/mustache"
+import { oldFunc } from "./mustacheFunc"
 
 /** undefine can be auto hidden when using Mustache */
 const undefine2undefine = (v: any, f: (t: any) => any) => {
@@ -19,38 +15,6 @@ const undefine2undefine = (v: any, f: (t: any) => any) => {
 }
 
 // TODO: 考虑使用 {{data | foramt: "YYYY-MM-DD"}} 的函数形式，从而支持参数
-// https://github.com/jvitela/mustache-wax
-
-const func: {
-  [key: string]: () => (text: string, render: (p: string) => string) => string
-} = {
-  escape: () => (text, render) => encodeURIComponent(render(text)),
-  nohl: () => (text, render) => removeHighlight(render(text)),
-  blod: () => (text, render) =>
-    render(text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"),
-  clozeSync: () => (text, render) =>
-    render(text).replace(/\*\*(.+?)\*\*/g, "{{c1::$1}}"),
-  cloze: () => (text, render) => {
-    let index = 1
-    return render(text).replace(/\*\*(.+?)\*\*/g, (_, m) => {
-      return `{{c${index++}::${m}}}}`
-    })
-  },
-  lower: () => (text, render) => render(text).toLowerCase(),
-  upper: () => (text, render) => render(text).toUpperCase(),
-  join: () => (text, render) => {
-    if (text.match(/{{.+}}/g)?.length !== 1) return render(text)
-    const [front, mustache, behind] = text.trimStart().split(/({{.+?}})/, 3)
-    const dataArr = render(mustache).split(/; /)
-    if (/\$\[.+\]/.test(front)) {
-      const serialArr = getSerialInfo(front, dataArr.length, "\\$")
-      return dataArr
-        .map((k, i) => front.replace(/\$\[(.+)\]/, serialArr[i]) + k)
-        .join(behind)
-    }
-    return dataArr.map(k => front + k).join(behind)
-  }
-}
 
 const fetchDataFromMetadata = () => {
   try {
@@ -87,7 +51,7 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
   const isRequire = (key: string) => template.includes(key)
   const nodeNote = node.note
   return {
-    ...func,
+    ...oldFunc,
     titles:
       isRequire("titles") &&
       undefine2undefine(nodeNote.noteTitle, t => t.split(/\s*[;；]\s*/)),
@@ -139,8 +103,16 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
       ...node.commentsTextPic,
       text: node.commentsText
     },
+    /**
+     * @deprecated use `date` instead
+     */
     time: isRequire("time.") && {
       creat: undefine2undefine(nodeNote.createDate, dateFormat),
+      modify: undefine2undefine(nodeNote.modifiedDate, dateFormat),
+      now: dateFormat(new Date())
+    },
+    date: isRequire("date.") && {
+      create: undefine2undefine(nodeNote.createDate, dateFormat),
       modify: undefine2undefine(nodeNote.modifiedDate, dateFormat),
       now: dateFormat(new Date())
     },
@@ -222,7 +194,8 @@ export const renderTemplateOfNodeProperties = (
   if (!/{{.+}}/.test(template)) return template
   const isRequire = (key: string) => template.includes(key)
   try {
-    return render(template, {
+    // @ts-ignore
+    return Mustache.render(template, {
       ...fetchNodeProperties(node, template),
       parent:
         isRequire("parent.") &&
