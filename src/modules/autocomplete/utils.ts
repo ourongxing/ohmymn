@@ -13,7 +13,7 @@ import { CJK, CJKRegex, escapeDoubleQuote, reverseEscape } from "~/utils"
 
 import type { MbBookNote } from "marginnote"
 import { UIAlertViewStyle } from "marginnote"
-import { render } from "~/utils/third party/mustache"
+import Mustache from "~/utils/third party/mustache"
 import pangu from "~/utils/third party/pangu"
 import lang from "./lang"
 import type { Exchange, Word } from "./typings"
@@ -241,7 +241,8 @@ async function getFillInfo(info: Word) {
       en,
       zh
     }
-    return render(template, vars).trim()
+    // @ts-ignore
+    return Mustache.render(template, vars).trim()
   }
 
   return [

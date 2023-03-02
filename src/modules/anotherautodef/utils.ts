@@ -1,8 +1,6 @@
 import type { NodeNote } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import { unique } from "~/utils"
-import type { ReplaceParam } from "~/utils/input"
-import { regFlag } from "~/utils/input"
+import { regFlag, unique, type ReplaceParam } from "~/utils"
 import { AutoDefPreset, TitleLinkSplit } from "./typings"
 
 function split2MuiltTitles(text: string) {

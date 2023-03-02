@@ -5,10 +5,10 @@ import { MN } from "marginnote"
 
 class MNADDON {
   path!: string
-  textColor = UIColor.blackColor()
   dataAutoComplete?: SQLiteDatabase
   dataAutoSimplify?: OpenCC
   lastVersion!: string
+  textColor = UIColor.blackColor()
   readonly key = mainfest.key
   readonly title = mainfest.title
   readonly author = mainfest.author
