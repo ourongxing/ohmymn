@@ -11,7 +11,12 @@ export const defaultGlobalProfile = {
     panelPosition: [0],
     panelHeight: [1],
     autoBackup: false,
-    backupID: ""
+    backupID: "",
+    doubleLink: false
+  },
+  chatgpt: {
+    openaiKey: "",
+    showKey: true
   },
   magicaction4card: {
     smartSelection: false,

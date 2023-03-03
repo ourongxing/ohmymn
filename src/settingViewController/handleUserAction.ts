@@ -22,6 +22,11 @@ function _tag2indexPath(tag: number): NSIndexPath {
   )
 }
 
+const doubleClickTemp = {
+  location: undefined as undefined | NSIndexPath,
+  lastTime: 0
+}
+
 async function tableViewDidSelectRowAtIndexPath(
   tableView: UITableView,
   indexPath: NSIndexPath
@@ -33,7 +38,24 @@ async function tableViewDidSelectRowAtIndexPath(
     case CellViewType.PlainText:
       {
         if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
-          row.link && openUrl(row.link, true)
+          if (row.link) {
+            dev.log(self.globalProfile.addon.doubleLink)
+            if (self.globalProfile.addon.doubleLink) {
+              if (
+                Date.now() - doubleClickTemp.lastTime < 500 &&
+                indexPath === doubleClickTemp.location
+              ) {
+                openUrl(row.link, true)
+                doubleClickTemp.lastTime = 0
+                doubleClickTemp.location = undefined
+              } else {
+                doubleClickTemp.lastTime = Date.now()
+                doubleClickTemp.location = indexPath
+              }
+            } else {
+              openUrl(row.link, true)
+            }
+          }
         } else if (self.expandSections.has(sec.key)) {
           row.label = lang.expand
           self.expandSections.delete(sec.key as OptionalModuleKeyUnion)

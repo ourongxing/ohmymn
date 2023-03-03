@@ -4,6 +4,7 @@ import { Addon } from "~/addon"
 export default i18n({
   zh: {
     intro: `当前版本：${Addon.version}`,
+    double_link: "双击打开链接",
     profile: {
       $option5: [
         "配置 1",
@@ -70,6 +71,7 @@ export default i18n({
 
   en: {
     intro: `Current Version: ${Addon.version}`,
+    double_link: "Double Click to Open Link",
     profile: {
       $option5: [
         "Profile 1",

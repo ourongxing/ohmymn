@@ -90,6 +90,11 @@ export default defineConfig({
         if (!node) throw lang.backup_ID.not_exit
         if (!node.childNotes?.length) throw lang.backup_ID.no_child
       }
+    },
+    {
+      key: "doubleLink",
+      type: CellViewType.Switch,
+      label: lang.double_link
     }
   ]
 })
