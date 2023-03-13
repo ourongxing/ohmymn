@@ -178,6 +178,14 @@ export const defaultGlobalProfile = {
     baiduToLang: [0],
     caiyunToLang: [0]
   },
+  aiassistant: {
+    on: false,
+    wordCount: "[10, 5]",
+    openaiSecretKey: "",
+    openaiURL: "api.openai.com",
+    prompt: [0],
+    openaiToLang: [0]
+  },
   additional: {
     lastVision: Addon.version,
     // 最好不要多层对象，不允许被修改

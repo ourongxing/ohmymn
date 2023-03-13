@@ -16,6 +16,7 @@ import autotranslate from "./autotranslate"
 import copysearch from "./copysearch"
 import autosimplify from "./autosimplify"
 import shortcut from "./shortcut"
+import aiassistant from "./aiassistant"
 
 export const optionalModules = {
   shortcut,
@@ -32,7 +33,8 @@ export const optionalModules = {
   autoocr,
   autotranslate,
   autocomment,
-  autosimplify
+  autosimplify,
+  aiassistant
 }
 
 export const requiredModules = { addon, magicaction4card, magicaction4text }
