@@ -23,12 +23,12 @@ export default i18n({
     },
     openai_prompt: {
       label: "功能",
-      $option5: ["翻译", "润色", "概括", "分析", "解释代码"] as StringTuple<5>
+      $option5: ["翻译", "润色", "总结", "分析", "解释代码"] as StringTuple<5>
     },
     no_result: "没有获取到结果",
-    translate_card: {
-      label: "翻译摘录内容",
-      help: "会翻译卡片中所有的摘录，注意不要同时翻译太多内容。"
+    process_card: {
+      label: "处理摘录内容",
+      help: "根据设置中的功能处理卡片中所有的摘录，注意不要同时提交太多内容。"
     },
     loading: "处理中, 可能会有点慢...",
     translate_text: "翻译",
@@ -74,9 +74,9 @@ export default i18n({
       ] as StringTuple<5>
     },
     no_result: "No Result",
-    translate_card: {
-      label: "Translate Excerpt Text",
-      help: "Translate all excerpts in the card, note that too many translations at the same time may cause the translation to fail."
+    process_card: {
+      label: "Processing Excerpt Text",
+      help: "Process all excerpts on the card based on the settings in the function field. Please note that processing too much text simultaneously may result in failure."
     },
     translate_text: "Translate",
     polishing_text: "Polish",

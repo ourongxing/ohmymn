@@ -62,14 +62,16 @@ export default defineConfig({
   ],
   actions4card: [
     {
-      key: "translate",
+      key: "process",
       type: CellViewType.Button,
-      label: lang.translate_card.label,
-      help: lang.translate_card.help,
+      label: lang.process_card.label,
+      help: lang.process_card.help,
       method: async ({ nodes }) => {
         try {
           function getTranslatedText(text?: string) {
-            if (text) return sendtoai(Prompt.Translate, text)
+            const { prompt } = self.globalProfile.aiassistant
+            const defaultPrompt: Prompt = prompt[0]
+            if (text) return sendtoai(defaultPrompt, text)
             else return ""
           }
 

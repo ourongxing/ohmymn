@@ -3,6 +3,7 @@ import { reverseEscape, countWord, notCJK } from "~/utils"
 import { Prompt } from "./typings"
 import lang from "./lang"
 
+// Prompts are borrowed from https://github.com/yetone/openai-translator
 const promptMap = {
   [Prompt.Translate]: {
     systemPrompt:
@@ -15,8 +16,7 @@ const promptMap = {
     assistantPrompt: "polish this text in"
   },
   [Prompt.Summarize]: {
-    systemPrompt:
-      "You are a text summarizer, you can only summarize the text, don't interpret it.",
+    systemPrompt: "You are a text summarizer.",
     assistantPrompt:
       "summarize this text in the most concise language and must use"
   },
