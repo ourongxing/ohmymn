@@ -27,10 +27,10 @@ export default i18n({
     },
     no_result: "没有获取到结果",
     process_card: {
-      label: "处理摘录内容",
-      help: "根据设置中的功能处理卡片中所有的摘录，注意不要同时提交太多内容。"
+      label: "AI处理摘录内容",
+      help: "根据 AIAssistant 设置中的功能处理卡片中所有的摘录，注意不要同时提交太多内容。"
     },
-    loading: "处理中, 可能会有点慢...",
+    loading: "AI 处理中, 可能会有点慢...",
     translate_text: "翻译",
     polishing_text: "润色",
     summarize_text: "总结",
@@ -75,7 +75,7 @@ export default i18n({
     },
     no_result: "No Result",
     process_card: {
-      label: "Processing Excerpt Text",
+      label: "Processing Excerpt with AI",
       help: "Process all excerpts on the card based on the settings in the function field. Please note that processing too much text simultaneously may result in failure."
     },
     translate_text: "Translate",
