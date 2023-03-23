@@ -55,6 +55,7 @@
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
+    "fs-extra": "^11.1.0",
     "marginnote": "0.9.22",
     "querystringify": "^2.2.0",
     "semver": "^7.3.7"
