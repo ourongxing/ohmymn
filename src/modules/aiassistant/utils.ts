@@ -1,4 +1,4 @@
-import { fetch, showHUD } from "marginnote"
+import { fetch, showHUD, HUDController } from "marginnote"
 import { reverseEscape, countWord, notCJK } from "~/utils"
 import { Prompt } from "./typings"
 import lang from "./lang"
@@ -41,6 +41,7 @@ const langInEnglish = [
 ]
 
 export async function sendtoai(prompt: Prompt, text: string) {
+  if (text === "") return undefined
   try {
     const { wordCount, openaiSecretKey, openaiURL, openaiToLang } =
       self.globalProfile.aiassistant
@@ -82,17 +83,25 @@ export async function sendtoai(prompt: Prompt, text: string) {
       ]
     }
 
+    HUDController.show(lang.loading)
     const res = await fetch(`https://${hostname}/v1/chat/completions`, {
       method: "POST",
       headers: headers,
       timeout: 60,
       json: body
-    }).then(res => res.json())
+    })
+      .then(function (res) {
+        return res.json()
+      })
+      .finally(function () {
+        HUDController.hidden()
+      })
     if (!res.choices || res.choices.length > 0) {
       return res.choices[0].message.content.trim()
     }
   } catch (err) {
     showHUD(String(err), 2)
+    HUDController.hidden()
     return undefined
   }
 }
