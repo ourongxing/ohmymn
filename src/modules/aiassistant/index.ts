@@ -5,7 +5,7 @@ import { Prompt } from "./typings"
 import { defineConfig } from "~/profile"
 import lang from "./lang"
 import { sendtoai } from "./utils"
-import { HUDController, showHUD, undoGroupingWithRefresh } from "marginnote"
+import { showHUD, undoGroupingWithRefresh } from "marginnote"
 
 export default defineConfig({
   name: "AIAssistant",
@@ -76,7 +76,6 @@ export default defineConfig({
           }
 
           const allTranslation: string[][] = []
-          HUDController.show(lang.loading)
           for (const node of nodes) {
             allTranslation.push(
               await Promise.all(
@@ -97,7 +96,6 @@ export default defineConfig({
                 )
             })
           })
-          HUDController.hidden()
         } catch (err) {
           showHUD(String(err), 2)
         }
