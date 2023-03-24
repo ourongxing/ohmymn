@@ -120,7 +120,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
           case RewriteRange.Doc:
             if (doc) {
               const docProfileList = Object.values(
-                profile as Record<string, IDocProfile>
+                profile as unknown as Record<string, IDocProfile>
               )
               for (const [module, _] of Object.entries(doc))
                 for (const [key, f] of Object.entries(_))
@@ -135,7 +135,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
             if (global) {
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
-                  for (const p of profile as IGlobalProfile[]) {
+                  for (const p of profile as unknown as IGlobalProfile[]) {
                     if (!resloveGlobal(p, module, key, f)) return
                   }
             }
@@ -145,14 +145,21 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
               dev.assert(profile)
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
-                  if (!resloveGlobal(profile as IGlobalProfile, module, key, f))
+                  if (
+                    !resloveGlobal(
+                      profile as unknown as IGlobalProfile,
+                      module,
+                      key,
+                      f
+                    )
+                  )
                     return
             }
             break
           case RewriteRange.Notebook:
             if (notebook) {
               const notebookProfileList = Object.values(
-                profile as Record<string, INotebookProfile>
+                profile as unknown as Record<string, INotebookProfile>
               )
               for (const [module, _] of Object.entries(notebook))
                 for (const [key, f] of Object.entries(_))

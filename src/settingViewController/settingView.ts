@@ -69,6 +69,34 @@ function tableViewTitleForHeaderInSection(
   return _isModuleOFF(key) ? undefined : header
 }
 
+function tableViewViewForHeaderInSection(
+  tableView: UITableView,
+  section: number
+) {
+  const { key, header } = self.dataSource[section]
+  const cell = UITableViewCell.makeWithStyleReuseIdentifier(
+    0,
+    "PlainTextCellID"
+  )
+  cell.selectionStyle = 0
+  cell.textLabel.opaque = false
+  cell.textLabel.textAlignment = 0
+  cell.textLabel.lineBreakMode = 0
+  cell.textLabel.numberOfLines = 0
+  cell.textLabel.textColor = UIColor.grayColor()
+  cell.textLabel.font = UIFont.boldSystemFontOfSize(15)
+  cell.textLabel.text = header
+  return _isModuleOFF(key) ? undefined : cell
+}
+
+function tableViewHeightForHeaderInSection(
+  tableView: UITableView,
+  section: number
+) {
+  const { key, header } = self.dataSource[section]
+  return _isModuleOFF(key) ? 0 : 40
+}
+
 // If one of the bind objects does not meet the requirements, it will be hidden
 function _isBindOFF(bindArr: BindType, sectionKey: string) {
   /**
@@ -368,6 +396,13 @@ export default {
   numberOfSectionsInTableView,
   tableViewNumberOfRowsInSection,
   tableViewCellForRowAtIndexPath,
-  tableViewTitleForHeaderInSection,
-  tableViewHeightForRowAtIndexPath
+  tableViewHeightForRowAtIndexPath,
+  ...(MN.isMacMNE
+    ? {
+        tableViewHeightForHeaderInSection,
+        tableViewViewForHeaderInSection
+      }
+    : {
+        tableViewTitleForHeaderInSection
+      })
 }
