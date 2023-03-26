@@ -40,7 +40,7 @@ export default i18n({
     },
     drag_merge: {
       label: "拖拽合并生成标题",
-      help: "【AutoTitle、AutoDef、AutoComplete】如果卡片中有摘录，使用手型工具拖拽选区合并到该卡片中。",
+      help: "【可以生成标题的模块】如果卡片中有摘录，使用手型工具拖拽选区合并到该卡片中。",
       $option2: [
         "始终不生成标题",
         "满足条件时生成标题",
@@ -107,7 +107,7 @@ export default i18n({
     },
     drag_merge: {
       label: "Drag Merge to Generate Title",
-      help: "[AutoTitle, AutoDef, AutoComplete] If the card has an excerpt, use the hand tool to drag the selection area to merge into the card.",
+      help: "[Modules that can generate titles] If the card has an excerpt, use the hand tool to drag the selection area to merge into the card.",
       $option2: [
         "Never Generate Title",
         "Always Generate Title",

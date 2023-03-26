@@ -45,28 +45,26 @@ export default defineConfig({
       type: CellViewType.Select,
       label: lang.drag_merge.label,
       option: lang.drag_merge.$option2,
-      help: lang.drag_merge.help,
-      bind: ["quickSwitch", [2, 3, 5]]
+      help: lang.drag_merge.help
     },
     {
       key: "hasTitleThen",
       type: CellViewType.Select,
       label: lang.has_title_then.label,
       option: lang.has_title_then.$option3,
-      bind: [
-        ["quickSwitch", [2, 3, 5]],
-        ["dragMerge", [1, 2]]
-      ]
+      bind: ["dragMerge", [1, 2]]
     },
     {
       key: "removeExcerpt",
       type: CellViewType.Select,
       label: lang.remove_excerpt.label,
       option: lang.remove_excerpt.$option2,
-      bind: [
-        ["quickSwitch", [2, 3, 5]],
-        ["dragMerge", [1, 2]]
-      ]
+      bind: ["dragMerge", [1, 2]]
+    },
+    {
+      key: "doubleLink",
+      type: CellViewType.Switch,
+      label: lang.double_link
     },
     {
       key: "lockExcerpt",
@@ -90,11 +88,6 @@ export default defineConfig({
         if (!node) throw lang.backup_ID.not_exit
         if (!node.childNotes?.length) throw lang.backup_ID.no_child
       }
-    },
-    {
-      key: "doubleLink",
-      type: CellViewType.Switch,
-      label: lang.double_link
     }
   ]
 })

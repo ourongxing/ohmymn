@@ -16,18 +16,18 @@ export default i18n({
     },
     caiyun_from_lang: {
       label: "输入语言",
-      $option4: ["自动检测", "中文", "英文", "日文"] as StringTuple<4>
+      $option4: ["自动检测", "简体中文", "英文", "日文"] as StringTuple<4>
     },
     caiyun_to_lang: {
       label: "输出语言",
-      $option3: ["中文", "英文", "日文"] as StringTuple<3>
+      $option3: ["简体中文", "英文", "日文"] as StringTuple<3>
     },
     no_result: "没有获取到结果",
     baidu_from_lang: {
       label: "输入语言",
       $option29: [
         "自动检测",
-        "中文",
+        "简体中文",
         "英语",
         "粤语",
         "文言文",
@@ -60,7 +60,7 @@ export default i18n({
     baidu_to_lang: {
       label: "输出语言",
       $option28: [
-        "中文",
+        "简体中文",
         "英语",
         "粤语",
         "文言文",
@@ -132,18 +132,18 @@ export default i18n({
     },
     caiyun_from_lang: {
       label: "Input Language",
-      $option4: ["Auto Detect", "Chinese", "English", "Japanese"]
+      $option4: ["Auto Detect", "Simplified Chinese", "English", "Japanese"]
     },
     caiyun_to_lang: {
       label: "Output Language",
-      $option3: ["Chinese", "English", "Japanese"]
+      $option3: ["Simplified Chinese", "English", "Japanese"]
     },
     no_result: "No Result",
     baidu_from_lang: {
       label: "Input Language",
       $option29: [
         "Auto Detect",
-        "Chinese",
+        "Simplified Chinese",
         "English",
         "Cantonese",
         "Classical Chinese",
@@ -180,7 +180,7 @@ export default i18n({
     baidu_to_lang: {
       label: "Output Language",
       $option28: [
-        "Chinese",
+        "Simplified Chinese",
         "English",
         "Cantonese",
         "Classical Chinese",
