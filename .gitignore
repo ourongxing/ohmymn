@@ -9,5 +9,4 @@ test*
 .local_history
 assets/AutoCompleteData.db
 assets/AutoCompleteData.zip
-pnpm-lock.yaml
 .vercel/
