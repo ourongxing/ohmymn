@@ -8,14 +8,16 @@
   <a href="https://github.com/marginnoteapp/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
-## Document
+## Documentation
 
-[ [English](https://ohmymn.vercel.app/) ] [ [简体中文](https://ohmymn.marginnote.cn/) ]
+[简体中文](https://ohmymn.marginnote.cn/) | [English](https://ohmymn.marginnote.cn/en/)
 
 ## Development
 
 🚧
+## API Reference
 
+🚧
 ## Acknowledgements
 
 - [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop mnaddon.
