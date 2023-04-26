@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "target": "ES2020",
+    "allowJs": true,
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "downlevelIteration": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "strict": true,
+    "baseUrl": ".",
+    "lib": ["ES2020"]
+  },
+  "include": ["src/**/*.ts"]
+}

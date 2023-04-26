@@ -1,0 +1,100 @@
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-accent: #dab40b;
+  --vp-c-brand-lighter: #e9dd1b;
+  --vp-c-brand-light: #beb617;
+  --vp-c-brand: #bc9f00;
+  --vp-c-brand-dark: #e9dd1b;
+  --vp-c-brand-darker: #beb617;
+  --vp-c-text-code: #eb5757;
+  --vp-code-block-bg: rgba(125, 125, 125, 0.04);
+  /* fix TIP on light: the default one is too light (2 in contrast) */
+  --vp-custom-block-tip-text: rgb(12, 124, 108);
+  --vp-custom-block-tip-border: rgba(12, 124, 108, 0.5);
+  --vp-custom-block-tip-bg: rgba(18, 181, 157, 0.1);
+  --vp-custom-block-warning-border: rgba(255, 197, 23, 0.5);
+  --vp-custom-block-warning-text: #ad850e;
+  --vp-custom-block-warning-bg: rgba(255, 197, 23, 0.05);
+  /* fix contrast on gray cards: used by --vp-c-text-2 */
+  --vp-c-text-light-2: rgba(56 56 56 / 70%);
+  /* fix contrast: lang name on gray code block */
+  --vp-c-text-dark-3: rgba(180, 180, 180, 0.7);
+}
+
+.dark {
+  --vp-c-gutter: #3e3a3a;
+  --vp-code-block-bg: rgba(0, 0, 0, 0.2);
+  /* fix TIP: check the same above (these are the defaults) */
+  --vp-custom-block-tip-text: rgb(18, 181, 157);
+  --vp-custom-block-tip-border: rgba(18, 181, 157, 0.5);
+  --vp-custom-block-tip-bg: rgba(18, 181, 157, 0.1);
+  --vp-custom-block-warning-border: rgba(255, 197, 23, 0.25);
+  --vp-custom-block-warning-text: #fcd253;
+  --vp-custom-block-warning-bg: rgba(255, 197, 23, 0.05);
+  /* fix contrast on gray cards: check the same above (this is the default) */
+  --vp-c-text-dark-2: rgba(235, 235, 235, 0.6);
+  /* fix lang name: check the same above (this is the default) */
+  --vp-c-text-dark-3: rgba(235, 235, 235, 0.38);
+}
+
+:root {
+  --el-color-primary: var(--vp-c-brand) !important;
+}
+
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-button-brand-border: var(--vp-c-brand-light);
+  --vp-button-brand-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-bg: var(--vp-c-brand);
+  --vp-button-brand-hover-border: var(--vp-c-brand-lighter);
+  --vp-button-brand-hover-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-light);
+  --vp-button-brand-active-border: var(--vp-c-brand-light);
+  --vp-button-brand-active-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    180deg,
+    #1a79b9 30%,
+    #e9dd1b
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    #1a79b989 30%,
+    #e9df1b8e
+  );
+  --vp-home-hero-image-filter: blur(30px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(72px);
+  }
+}
+
+/**
+ * Component: Algolia
+ * -------------------------------------------------------------------------- */
+
+.DocSearch {
+  --docsearch-primary-color: var(--vp-c-brand) !important;
+}

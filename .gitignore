@@ -1,6 +1,5 @@
 node_modules
 dist
-api
 yarn.lock
 yarn-error.log
 test*
@@ -11,3 +10,4 @@ test*
 assets/AutoCompleteData.db
 assets/AutoCompleteData.zip
 pnpm-lock.yaml
+.vercel/

@@ -1,0 +1,123 @@
+.dark [img-light] {
+  display: none;
+}
+
+html:not(.dark) [img-dark] {
+  display: none;
+}
+
+.VPNavBarTitle .VPImage {
+  height: 24px;
+  width: 24px;
+}
+
+/* Overrides */
+
+.VPSocialLink {
+  transform: scale(0.9);
+}
+
+.vp-doc th,
+.vp-doc td {
+  padding: 6px 10px;
+  border: 1px solid #8882;
+}
+
+.dark .vp-doc th {
+  background-color: var(--vp-c-bg-soft);
+}
+
+/* h3 breaks SEO => replaced with h2 with the same size */
+.home-content h2 {
+  margin-top: 2rem;
+  font-size: 1.35rem;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+img.resizable-img {
+  width: unset;
+  height: unset;
+}
+
+/* fix height ~ 2 lines of text: 3 or more cards per row */
+.VPTeamMembersItem.small .profile .data .affiliation {
+  min-height: 3rem;
+}
+.VPTeamMembersItem.small .profile .data .desc {
+  min-height: 3rem;
+}
+
+/* fix height ~ 3 lines of text: 4 cards per row */
+@media (min-width: 1064px) and (max-width: 1143px) {
+  .VPTeamMembersItem.small .profile .data .affiliation {
+    min-height: 4rem;
+  }
+  .VPTeamMembersItem.small .profile .data .desc {
+    min-height: 4rem;
+  }
+}
+/* fix height ~ 3 lines of text: 3 cards per row */
+@media (min-width: 815px) and (max-width: 875px) {
+  .VPTeamMembersItem.small .profile .data .affiliation {
+    min-height: 4rem;
+  }
+  .VPTeamMembersItem.small .profile .data .desc {
+    min-height: 4rem;
+  }
+}
+/* fix height ~ 3 lines of text: 2 cards per row */
+@media (max-width: 612px) {
+  .VPTeamMembersItem.small .profile .data .affiliation {
+    min-height: 4rem;
+  }
+  .VPTeamMembersItem.small .profile .data .desc {
+    min-height: 4rem;
+  }
+}
+/* fix height: one card per row */
+@media (max-width: 568px) {
+  .VPTeamMembersItem.small .profile .data .affiliation {
+    min-height: unset;
+  }
+  .VPTeamMembersItem.small .profile .data .desc {
+    min-height: unset;
+  }
+}
+
+.betterVideo a {
+  color: #909090;
+  font-size: 12px;
+}
+
+.vp-doc video,
+.VPDoc .vp-doc img {
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+.VPDoc .vp-doc a {
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+
+.VPDoc .vp-doc a:hover {
+  text-decoration: none;
+  border-bottom: 1px solid;
+}
+
+.VPDoc .vp-doc a.header-anchor:hover,
+.VPDoc .vp-doc a.header-anchor {
+  border-bottom: 0px solid;
+}
+
+.vp-doc .custom-block a {
+  opacity: 0.8;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+
+.vp-doc .custom-block a:hover {
+  opacity: 1;
+  border-bottom: 1px solid;
+}

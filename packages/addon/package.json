@@ -1,0 +1,49 @@
+{
+  "name": "ohmymn",
+  "author": "MarginNote<https://github.com/marginnoteapp>",
+  "contributors": [
+    "ourongxing<https://github.com/ourongxing>"
+  ],
+  "version": "4.2.0",
+  "license": "MIT",
+  "description": "MarginNote Addon Development Framework",
+  "scripts": {
+    "dev": "tsx ./build.ts",
+    "build": "NODE_ENV=production pnpm dev",
+    "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon",
+    "lint:fix": "eslint . --fix --ext .ts",
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --write ."
+  },
+  "lint-staged": {
+    "package.json": [
+      "tsx ./scripts/updateVersion.ts",
+      "git add README.md"
+    ],
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "prettier --write",
+      "eslint --cache --fix",
+      "git add"
+    ]
+  },
+  "keywords": [
+    "marginote",
+    "addon",
+    "typescript"
+  ],
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "devDependencies": {
+    "@ourongxing/estrella": "^1.4.1",
+    "@types/querystringify": "^2.0.0",
+    "@types/semver": "^7.3.12",
+    "esbuild": "^0.15.7",
+    "esbuild-plugin-mxn-copy": "^1.0.1",
+    "unplugin-auto-import": "^0.11.2"
+  },
+  "dependencies": {
+    "querystringify": "^2.2.0",
+    "semver": "^7.3.8"
+  }
+}

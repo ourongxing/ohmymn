@@ -1,0 +1,4 @@
+packages:
+  - "packages/addon"
+  - "packages/api"
+  - "packages/docs"

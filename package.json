@@ -1,30 +1,16 @@
 {
-  "name": "ohmymn",
+  "name": "@ohmymn/monorepo",
   "author": "MarginNote<https://github.com/marginnoteapp>",
+  "private": true,
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.2.0",
   "license": "MIT",
   "description": "MarginNote Addon Development Framework",
   "scripts": {
-    "dev": "tsx ./build.ts",
-    "build": "NODE_ENV=production pnpm dev",
-    "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon",
     "lint:fix": "eslint . --fix --ext .ts",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write ."
-  },
-  "lint-staged": {
-    "package.json": [
-      "tsx ./scripts/updateVersion.ts",
-      "git add README.md"
-    ],
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "prettier --write",
-      "eslint --cache --fix",
-      "git add"
-    ]
   },
   "keywords": [
     "marginote",
@@ -35,15 +21,10 @@
     "pre-commit": "pnpm exec lint-staged"
   },
   "devDependencies": {
-    "@ourongxing/estrella": "^1.4.1",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.16",
-    "@types/querystringify": "^2.0.0",
-    "@types/semver": "^7.3.12",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
-    "esbuild": "^0.15.7",
-    "esbuild-plugin-mxn-copy": "^1.0.1",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -52,12 +33,6 @@
     "simple-git-hooks": "^2.8.1",
     "tsx": "^3.9.0",
     "typescript": "4.7.4",
-    "unplugin-auto-import": "^0.11.2"
-  },
-  "dependencies": {
-    "fs-extra": "^11.1.0",
-    "marginnote": "link:/Users/ourongxing/Development/marginnote/mnaddon/api",
-    "querystringify": "^2.2.0",
-    "semver": "^7.3.7"
+    "fs-extra": "^11.1.0"
   }
 }
