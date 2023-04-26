@@ -10,3 +10,7 @@ test*
 assets/AutoCompleteData.db
 assets/AutoCompleteData.zip
 .vercel/
+cache/
+tmp/
+temp/
+.env
