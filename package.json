@@ -2,6 +2,7 @@
   "name": "@ohmymn/monorepo",
   "author": "MarginNote<https://github.com/marginnoteapp>",
   "private": true,
+  "version": "4.2.0",
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
@@ -10,6 +11,8 @@
   "scripts": {
     "lint:fix": "eslint . --fix --ext .ts",
     "lint": "eslint . --ext .ts",
+    "doc": "pnpm run --filter @ohmymn/docs",
+    "addon": "pnpm run --filter @ohmymn/addon",
     "prettier": "prettier --write ."
   },
   "keywords": [

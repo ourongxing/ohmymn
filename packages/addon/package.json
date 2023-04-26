@@ -1,12 +1,12 @@
 {
-  "name": "ohmymn",
+  "name": "@ohmymn/addon",
   "author": "MarginNote<https://github.com/marginnoteapp>",
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
   "version": "4.2.0",
   "license": "MIT",
-  "description": "MarginNote Addon Development Framework",
+  "description": "MarginNote toolbox that can process excerpts automatically",
   "scripts": {
     "dev": "tsx ./build.ts",
     "build": "NODE_ENV=production pnpm dev",

@@ -1,15 +1,15 @@
 {
-  "name": "@ohmymn/doc",
+  "name": "@ohmymn/docs",
   "private": true,
   "version": "4.1.1",
-  "unsignedVersion": "4.1.1",
+  "unsignedVersion": "4.2.0",
   "scripts": {
     "dev": "vitepress --port 3333",
     "build": "pnpm prefetch && vitepress build && node .vitepress/scripts/build-pwa.mjs",
     "build-no-prefetch": "vitepress build && node .vitepress/scripts/build-pwa.mjs",
     "serve": "vitepress serve",
     "docsearch": "docker run -it --env-file=.env -e \"CONFIG=$(cat docsearch.json | jq -r tostring)\" algolia/docsearch-scraper",
-    "publish": "pnpm build && vercel deploy --prod",
+    "deploy": "pnpm build && vercel deploy --prod",
     "preview-https": "pnpm build && serve .vitepress/dist",
     "prefetch": "tsx .vitepress/scripts/fetch-avatars.ts"
   },
