@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import type { AllModuleKeyUnion } from "~/merged"
+import type { AllModuleKeyUnion } from "~/coreModule"
 
 export const deepCopy = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 export const unique = <T>(arr: T[]): T[] => {

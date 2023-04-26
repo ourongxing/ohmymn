@@ -10,7 +10,7 @@ import {
   undoGroupingWithRefresh
 } from "marginnote"
 import { Addon } from "~/addon"
-import { actions4text, isModuleON } from "~/merged"
+import { actions4text, isModuleON } from "~/coreModule"
 import { formatText } from "~/modules/autoformat/utils"
 import { mainOCR as ocrSelection } from "~/modules/autoocr/utils"
 import { simplifyText } from "~/modules/autosimplify"

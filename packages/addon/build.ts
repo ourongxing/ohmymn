@@ -1,4 +1,4 @@
-import { build } from "@ourongxing/estrella"
+import { build } from "@kossnocorp/estrella"
 import type { Plugin } from "esbuild"
 import mainfest from "./mainfest"
 import copy from "esbuild-plugin-mxn-copy"

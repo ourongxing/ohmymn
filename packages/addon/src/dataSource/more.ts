@@ -1,6 +1,5 @@
 import { Addon } from "~/addon"
-import type { ISection } from "~/typings"
-import { CellViewType } from "~/typings"
+import { CellViewType, type ISection } from "~/typings"
 import lang from "./lang"
 
 export const more: ISection = {

@@ -11,7 +11,7 @@ import {
 import { actionKey4Card, actionKey4Text, dataSourceIndex } from "~/dataSource"
 import handleMagicAction from "~/JSExtension/handleMagicAction"
 import { switchPanel } from "~/JSExtension/switchPanel"
-import { isModuleON } from "~/merged"
+import { isModuleON } from "~/coreModule"
 import type { IRowButton } from "~/typings"
 import { reverseEscape } from "~/utils"
 import lang from "./lang"

@@ -14,8 +14,6 @@ const undefine2undefine = (v: any, f: (t: any) => any) => {
   return res
 }
 
-// TODO: 考虑使用 {{data | foramt: "YYYY-MM-DD"}} 的函数形式，从而支持参数
-
 const fetchDataFromMetadata = () => {
   try {
     if (self.metadata.lastFetch && Date.now() - self.metadata.lastFetch < 100) {

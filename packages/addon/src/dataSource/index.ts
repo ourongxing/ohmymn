@@ -1,5 +1,5 @@
 import { requiredModules, optionalModules } from "../modules"
-import type { AllModuleKeyUnion, OptionalModuleKeyUnion } from "../merged"
+import type { AllModuleKeyUnion, OptionalModuleKeyUnion } from "../coreModule"
 import type { ISection, IConfig, IRow, IRowButton } from "~/typings"
 import { CellViewType } from "~/typings"
 import { more } from "./more"

@@ -8,9 +8,13 @@ import {
 } from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Card, actionKey4Text } from "~/dataSource"
-import { checkInputCorrect, type OptionalModuleKeyUnion } from "~/merged"
-import type { IRowInput } from "~/typings"
-import { CellViewType, type IRowSelect, type IRowSwitch } from "~/typings"
+import { checkInputCorrect, type OptionalModuleKeyUnion } from "~/coreModule"
+import {
+  CellViewType,
+  type IRowSelect,
+  type IRowSwitch,
+  type IRowInput
+} from "~/typings"
 import { byteLength } from "~/utils"
 import lang from "./lang"
 import { _isModuleOFF } from "./settingView"

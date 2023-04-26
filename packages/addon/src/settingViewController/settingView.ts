@@ -7,7 +7,7 @@ import {
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
-import { moduleKeys, type DataSourceSectionKeyUnion } from "~/merged"
+import { moduleKeys, type DataSourceSectionKeyUnion } from "~/coreModule"
 import { CellViewType, type BindType, type IRowSelect } from "~/typings"
 import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 import lang from "./lang"

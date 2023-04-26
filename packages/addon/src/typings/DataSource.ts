@@ -1,4 +1,4 @@
-import type { DataSourceSectionKeyUnion } from "~/merged"
+import type { DataSourceSectionKeyUnion } from "~/coreModule"
 import type { CellViewType } from "."
 
 export type ISection = {

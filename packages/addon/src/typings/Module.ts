@@ -1,5 +1,5 @@
 import { type NodeNote } from "marginnote"
-import { type AllModuleKeyUnion } from "~/merged"
+import { type AllModuleKeyUnion } from "~/coreModule"
 import { type IAllProfile } from "~/profile"
 import { type CellViewType } from "."
 import type { AutoUtilType, TypeUtilIndex } from "./AutoUtils"

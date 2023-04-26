@@ -1,6 +1,6 @@
 import type { MbBookNote, NodeNote } from "marginnote"
 import { removeHighlight } from "marginnote"
-import { autoUtils } from "~/merged"
+import { autoUtils } from "~/coreModule"
 import { DragMerge, HasTitleThen } from "~/modules/addon/typings"
 import { cacheTransformer } from "~/profile"
 

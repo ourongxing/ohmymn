@@ -8,7 +8,7 @@ import {
 import { Addon } from "~/addon"
 import handleExcerpt, { removeLastComment } from "~/JSExtension/handleExcerpt"
 import { layoutViewController } from "~/JSExtension/switchPanel"
-import { isModuleON } from "~/merged"
+import { isModuleON } from "~/coreModule"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"
 import handleMagicAction from "./handleMagicAction"

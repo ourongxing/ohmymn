@@ -24,7 +24,7 @@
     "typescript"
   ],
   "devDependencies": {
-    "@ourongxing/estrella": "^1.4.1",
+    "@kossnocorp/estrella": "^1.4.1",
     "@types/querystringify": "^2.0.0",
     "esbuild": "^0.15.7",
     "esbuild-plugin-mxn-copy": "^1.0.1",

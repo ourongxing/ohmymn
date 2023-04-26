@@ -6,7 +6,7 @@ import {
   StudyMode,
   UIAlertViewStyle
 } from "marginnote"
-import { checkInputCorrect } from "~/merged"
+import { checkInputCorrect } from "~/coreModule"
 import { getMNLinkValue } from "~/profile"
 import type { IRowButton } from "~/typings"
 import { CellViewType } from "~/typings"

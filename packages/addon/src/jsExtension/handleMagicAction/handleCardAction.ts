@@ -6,7 +6,7 @@ import {
   UIAlertViewStyle,
   undoGroupingWithRefresh
 } from "marginnote"
-import { actions4card } from "~/merged"
+import { actions4card } from "~/coreModule"
 import { PanelControl } from "~/modules/addon/typings"
 import { manageProfileAction } from "~/profile"
 import lang from "../lang"
