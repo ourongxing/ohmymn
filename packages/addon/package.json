@@ -4,6 +4,12 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
+  "homepage": "https://github.com/marginnoteapp/ohmymn/tree/main/packages/addon#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marginnoteapp/ohmymn.git",
+    "directory": "packages/addon"
+  },
   "version": "4.2.0",
   "license": "MIT",
   "description": "MarginNote toolbox that can process excerpts automatically",

@@ -3,6 +3,16 @@
   "private": true,
   "version": "4.1.1",
   "unsignedVersion": "4.2.0",
+  "author": "MarginNote<https://github.com/marginnoteapp>",
+  "contributors": [
+    "ourongxing<https://github.com/ourongxing>"
+  ],
+  "homepage": "https://github.com/marginnoteapp/ohmymn/tree/main/packages/docs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marginnoteapp/ohmymn.git",
+    "directory": "packages/docs"
+  },
   "scripts": {
     "dev": "vitepress --port 3333",
     "build": "pnpm prefetch && vitepress build && node .vitepress/scripts/build-pwa.mjs",
