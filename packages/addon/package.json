@@ -10,30 +10,13 @@
   "scripts": {
     "dev": "tsx ./build.ts",
     "build": "NODE_ENV=production pnpm dev",
-    "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon",
-    "lint:fix": "eslint . --fix --ext .ts",
-    "lint": "eslint . --ext .ts",
-    "prettier": "prettier --write ."
-  },
-  "lint-staged": {
-    "package.json": [
-      "tsx ./scripts/updateVersion.ts",
-      "git add README.md"
-    ],
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "prettier --write",
-      "eslint --cache --fix",
-      "git add"
-    ]
+    "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon"
   },
   "keywords": [
     "marginote",
     "addon",
     "typescript"
   ],
-  "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged"
-  },
   "devDependencies": {
     "@ourongxing/estrella": "^1.4.1",
     "@types/querystringify": "^2.0.0",
@@ -43,6 +26,7 @@
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
+    "marginnote": "link:/Users/ourongxing/Development/marginnote/mnaddon/api",
     "querystringify": "^2.2.0",
     "semver": "^7.3.8"
   }

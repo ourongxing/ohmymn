@@ -15,8 +15,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
-      "marginnote": ["../api/src/"]
+      "~/*": ["./src/*"]
     },
     "lib": ["ES2020"]
   },
