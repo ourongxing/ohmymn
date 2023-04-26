@@ -13,6 +13,7 @@
     "lint": "eslint . --ext .ts",
     "doc": "pnpm run --filter @ohmymn/docs",
     "addon": "pnpm run --filter @ohmymn/addon",
+    "api": "pnpm run --filter marginnote",
     "prettier": "prettier --write ."
   },
   "keywords": [
