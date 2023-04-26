@@ -1,7 +1,7 @@
 import { author, version } from "package.json"
-import { defineMainfest } from "scripts/utils"
+import { defineManifest } from "scripts/utils"
 
-export default defineMainfest({
+export default defineManifest({
   author,
   version,
   key: "ohmymn",

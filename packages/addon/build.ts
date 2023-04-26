@@ -1,6 +1,6 @@
 import { build } from "@kossnocorp/estrella"
 import type { Plugin } from "esbuild"
-import mainfest from "./mainfest"
+import manifest from "./manifest"
 import copy from "esbuild-plugin-mxn-copy"
 import autoImport from "unplugin-auto-import/esbuild"
 import { homedir } from "os"
@@ -17,7 +17,7 @@ MIT License
 Copyright (c) 2022 MarginNote
 
 If you want to view the source code, please visit the github repository.
-Github: ${mainfest.github}
+Github: ${manifest.github}
 
 Welcome to contribute to this project!
 */
@@ -27,7 +27,7 @@ try {
 
 const footerText = `
 } catch (e) {
-  Application.sharedInstance().alert("${mainfest.title}-"+String(e))
+  Application.sharedInstance().alert("${manifest.title}-"+String(e))
 }
 `
 
@@ -41,11 +41,11 @@ const outDir = isProd
   ? "./dist/"
   : [
       homedir() +
-        `/Library/Containers/QReader.MarginStudy.easy/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`,
+        `/Library/Containers/QReader.MarginStudy.easy/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`,
       homedir() +
-        `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`,
+        `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`,
       homedir() +
-        `/Library/MarginNote Extensions/marginnote.extension.${mainfest.key}/`
+        `/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`
     ][OutDirType.MN]
 
 function clear(): Plugin {
@@ -67,10 +67,10 @@ function zip(): Plugin {
     setup(build) {
       build.onEnd(() => {
         if (isProd && fs.existsSync(outDir)) {
-          const fileName = `${mainfest.key} v${mainfest.version} ${
-            mainfest.certKey ? "signed" : "unsigned"
+          const fileName = `${manifest.key} v${manifest.version} ${
+            manifest.certKey ? "signed" : "unsigned"
           }${
-            mainfest.files.find(k => k.includes("AutoCompleteData"))
+            manifest.files.find(k => k.includes("AutoCompleteData"))
               ? " local database autocomplete"
               : ""
           }`.replace(/[ .]/g, "_")
@@ -88,12 +88,12 @@ function genMainfest(): Plugin {
     setup(build) {
       build.onEnd(() => {
         const mnaddon = {
-          addonid: `marginnote.extension.${mainfest.key}`,
+          addonid: `marginnote.extension.${manifest.key}`,
           // author: mainfest.author,
           author: "MN(ourongxing",
-          title: mainfest.title,
-          version: mainfest.version,
-          marginnote_version_min: mainfest.minMarginNoteVersion,
+          title: manifest.title,
+          version: manifest.version,
+          marginnote_version_min: manifest.minMarginNoteVersion,
           cert_key: ""
         }
         if (fs.existsSync(outDir))
@@ -113,9 +113,9 @@ const plugins: Plugin[] = [
     ],
     dts: false
   }),
-  mainfest.files?.length &&
+  manifest.files?.length &&
     copy({
-      copy: mainfest.files.map(k => ({
+      copy: manifest.files.map(k => ({
         from: k,
         to: outDir
       }))

@@ -1,8 +1,8 @@
-export function defineMainfest(mainfest: Mainfest) {
+export function defineManifest(mainfest: Manifest) {
   return mainfest
 }
 
-interface Mainfest {
+interface Manifest {
   key: string
   author: string
   title: string
