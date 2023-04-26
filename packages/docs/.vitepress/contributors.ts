@@ -1,4 +1,4 @@
-import contributorNames from "./contributor-names.json"
+import contributorNames from "../../../contributors.json"
 
 export interface Contributor {
   name: string

@@ -4,7 +4,7 @@ import fs from "fs-extra"
 import { $fetch } from "ohmyfetch"
 
 const docsDir = resolve(fileURLToPath(import.meta.url), "../../..")
-const pathContributors = resolve(docsDir, ".vitepress/contributor-names.json")
+const pathContributors = resolve(docsDir, "../../contributors.json")
 const dirAvatars = resolve(docsDir, "public/user-avatars/")
 
 let contributors: string[] = []
