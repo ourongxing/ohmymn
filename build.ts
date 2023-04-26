@@ -139,7 +139,7 @@ build({
   footer: {
     js: footerText
   },
-  pure: ["dev.log", "dev.error", "dev.assert"],
+  pure: ["dev.log", "dev.error", "dev.stringify"],
   bundle: true,
   target: "safari13",
   plugins

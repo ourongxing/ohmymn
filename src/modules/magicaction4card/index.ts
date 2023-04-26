@@ -2,7 +2,7 @@ import {
   HUDController,
   MN,
   removeHighlight,
-  selectIndex,
+  select,
   showHUD,
   undoGroupingWithRefresh
 } from "marginnote"
@@ -194,7 +194,7 @@ export default defineConfig({
               switch (option) {
                 case MergeText.ToExpertText:
                   if (node.note.excerptPic?.paint && node.isOCR === false) {
-                    const index = await selectIndex(
+                    const { index } = await select(
                       lang.merge_text.$excerpt_pic_option2,
                       lang.merge_text.label,
                       lang.merge_text.is_excerpt_pic
@@ -208,7 +208,7 @@ export default defineConfig({
                   break
                 case MergeText.ToComment:
                   if (node.isOCR && node.mainExcerptText) {
-                    const index = await selectIndex(
+                    const { index } = await select(
                       lang.merge_text.$excerpt_pic_text_option2,
                       lang.merge_text.label,
                       lang.merge_text.is_excerpt_pic_text
@@ -267,11 +267,13 @@ export default defineConfig({
             removeHighlight(node.mainExcerptText)
           ])
           const option = res.find(([title, text]) => title && text)
-            ? await selectIndex(
-                lang.switch_title.$both_option3,
-                lang.switch_title.swap_title_excerpt,
-                lang.switch_title.swap_help
-              )
+            ? (
+                await select(
+                  lang.switch_title.$both_option3,
+                  lang.switch_title.swap_title_excerpt,
+                  lang.switch_title.swap_help
+                )
+              ).index
             : 0
           undoGroupingWithRefresh(() => {
             nodes.forEach((node, index) => {

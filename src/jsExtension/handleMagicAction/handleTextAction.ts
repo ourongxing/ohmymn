@@ -2,9 +2,9 @@ import {
   copy,
   MN,
   NodeNote,
-  openUrl,
+  openURL,
   popup,
-  selectIndex,
+  select,
   showHUD,
   UIAlertViewStyle,
   undoGroupingWithRefresh
@@ -58,19 +58,14 @@ export default async function (key: string, option: number, content: string) {
 
   if (res) {
     if (isURL(res, true)) {
-      const { option } = await popup(
-        {
-          title: Addon.title,
-          message: lang.detect_link,
-          type: UIAlertViewStyle.Default,
-          buttons: [lang.sure]
-        },
-        ({ buttonIndex }) => ({
-          option: buttonIndex
-        })
-      )
+      const { buttonIndex: option } = await popup({
+        title: Addon.title,
+        message: lang.detect_link,
+        type: UIAlertViewStyle.Default,
+        buttons: [lang.sure]
+      })
       if (option !== -1) {
-        openUrl(
+        openURL(
           res.replace(
             /^.*(https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]).*$/,
             "$1"
@@ -92,7 +87,7 @@ export default async function (key: string, option: number, content: string) {
     } else {
       let option = noteOptions[0]
       if (noteOptions.length > 1) {
-        const index = await selectIndex(
+        const { index } = await select(
           lang.text_more_option.$options6.filter((k, i) =>
             noteOptions.includes(i)
           ),

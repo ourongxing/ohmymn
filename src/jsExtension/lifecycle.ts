@@ -1,7 +1,7 @@
 import {
-  defineLifecycleHandler,
+  defineLifecycleHandlers,
   isfileExists,
-  openUrl,
+  openURL,
   popup,
   showHUD,
   StudyMode
@@ -23,8 +23,8 @@ import {
 import SettingViewController from "~/SettingViewController"
 import { deepCopy } from "~/utils"
 import { removeLastComment } from "./handleExcerpt"
-import { gestureHandlers } from "./handleGestureEvent"
-import { eventHandlers } from "./handleReceivedEvent"
+import { gestureRecognizers } from "./handleGestureEvent"
+import { eventObservers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
 
 /**
@@ -39,7 +39,7 @@ import { closePanel, layoutViewController } from "./switchPanel"
  * 7. Close a window
  */
 
-export default defineLifecycleHandler({
+export default defineLifecycleHandlers({
   instanceMethods: {
     sceneWillConnect() {
       self.useConsole = false
@@ -92,8 +92,8 @@ export default defineLifecycleHandler({
         })
       }
       // Add hooks, aka observers
-      eventHandlers.add()
-      !MN.isMac && gestureHandlers().add()
+      eventObservers.add()
+      !MN.isMac && gestureRecognizers().add()
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
         if (self.isFirstOpenDoc) {
           self.isFirstOpenDoc = false
@@ -140,8 +140,8 @@ export default defineLifecycleHandler({
       })
       closePanel()
       // Remove hooks, aka observers
-      eventHandlers.remove()
-      !MN.isMac && gestureHandlers().remove()
+      eventObservers.remove()
+      !MN.isMac && gestureRecognizers().remove()
     },
     documentWillClose(docmd5: string) {
       dev.log("Close a document", "lifecycle")
@@ -186,16 +186,11 @@ export default defineLifecycleHandler({
   classMethods: {
     async addonWillDisconnect() {
       dev.log("Addon disconected", "lifecycle")
-      const { option } = await popup(
-        {
-          title: Addon.title,
-          message: lang.uninstall.have_bugs,
-          buttons: lang.uninstall.$options2
-        },
-        ({ buttonIndex }) => ({
-          option: buttonIndex
-        })
-      )
+      const { buttonIndex: option } = await popup({
+        title: Addon.title,
+        message: lang.uninstall.have_bugs,
+        buttons: lang.uninstall.$options2
+      })
       switch (option) {
         case 0: {
           removeProfile()
@@ -206,7 +201,7 @@ export default defineLifecycleHandler({
           break
         }
         case 1: {
-          Addon.forum && openUrl(Addon.forum)
+          Addon.forum && openURL(Addon.forum)
         }
       }
     },

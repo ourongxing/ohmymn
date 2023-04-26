@@ -190,7 +190,7 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
 export const renderTemplateOfNodeProperties = (
   node: NodeNote,
   template: string
-) => {
+): string => {
   if (!/{{.+}}/.test(template)) return template
   const isRequire = (key: string) => template.includes(key)
   try {

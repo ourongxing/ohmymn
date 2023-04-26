@@ -5,7 +5,7 @@ import {
   isNSNull,
   MN,
   popup,
-  selectIndex,
+  select,
   showHUD
 } from "marginnote"
 import { Addon } from "~/addon"
@@ -28,20 +28,14 @@ async function selectParaphrase(
     .map(k => k[1].map(m => `${k[0]}. ${m}`))
     .flat()
     .slice(0, 9)
-  const { option, content } = await popup(
-    {
-      title,
-      message,
-      buttons: [...parts.map((k, i) => `(${i + 1}) ${k}`), lang.custom],
-      multiLine: true,
-      canCancel: true,
-      type: UIAlertViewStyle.PlainTextInput
-    },
-    ({ alert, buttonIndex }) => ({
-      option: buttonIndex,
-      content: alert.textFieldAtIndex(0).text
-    })
-  )
+  const { buttonIndex: option, inputContent: content } = await popup({
+    title,
+    message,
+    buttons: [...parts.map((k, i) => `(${i + 1}) ${k}`), lang.custom],
+    multiLine: true,
+    canCancel: true,
+    type: UIAlertViewStyle.PlainTextInput
+  })
   if (option < parts.length) return parts[option]
   else if (content) {
     return (reverseEscape(content, true) as string)
@@ -440,12 +434,12 @@ async function getLemmaInfo(word: string) {
         Object.keys(exchanges).length > 2 &&
         self.globalProfile.autocomplete.selectLemma
       ) {
-        const i = await selectIndex(
+        const { index } = await select(
           [word, lemma],
           Addon.title,
           lang.maybe_other_word
         )
-        if (i) return await getWordInfo(lemma)
+        if (index) return await getWordInfo(lemma)
       } else {
         word = lemma
         return await getWordInfo(lemma)

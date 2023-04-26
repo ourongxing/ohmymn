@@ -1,4 +1,4 @@
-import { copy, selectIndex } from "marginnote"
+import { copy, select } from "marginnote"
 import { Addon } from "~/addon"
 import type { IDocProfile, IGlobalProfile } from "~/profile"
 import { defineConfig } from "~/profile"
@@ -117,11 +117,12 @@ export default defineConfig({
             true
           ).split("$&")
           if (whichPartofCard[0] === WhichPartofCard.Choose) {
-            opt = await selectIndex(
+            const { index } = await select(
               lang.muiltple_cards.$option3,
               Addon.title,
               lang.choose_you_want
             )
+            opt = index
           } else opt -= 1
           const contentList = getContentofMuiltCards(nodes, opt, "search")
           contentList?.length &&

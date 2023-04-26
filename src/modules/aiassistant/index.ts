@@ -38,16 +38,6 @@ export default defineConfig({
       help: lang.word_count
     },
     {
-      key: "openaiURL",
-      type: CellViewType.Input,
-      help: lang.openai_url.help
-    },
-    {
-      key: "openaiSecretKey",
-      type: CellViewType.Input,
-      help: lang.openai_secretkey.help
-    },
-    {
       key: "openaiToLang",
       type: CellViewType.Select,
       label: lang.openai_to_lang.label,

@@ -1,6 +1,6 @@
 import {
   defineGestureHandlers,
-  gestureHandlerController,
+  gestureRecognizerController,
   initGesture,
   UISwipeGestureRecognizerDirection
 } from "marginnote"
@@ -10,8 +10,8 @@ import { closePanel } from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
-export const gestureHandlers = () => {
-  return gestureHandlerController([
+export const gestureRecognizers = () => {
+  return gestureRecognizerController([
     {
       view: MN.studyController.view,
       gesture: initGesture.swipe(

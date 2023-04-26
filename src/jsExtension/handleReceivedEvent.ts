@@ -1,7 +1,7 @@
 import {
   defineEventHandlers,
-  delayBreak,
-  eventHandlerController,
+  loopBreak,
+  eventObserverController,
   showHUD,
   StudyMode
 } from "marginnote"
@@ -33,10 +33,13 @@ const events = [
   "ClosePopupMenuOnSelection"
 ] as const
 
-export const eventHandlers = eventHandlerController([...panelEvents, ...events])
+export const eventObservers = eventObserverController([
+  ...panelEvents,
+  ...events
+])
 
 export default defineEventHandlers<
-  typeof events[number] | typeof panelEvents[number]["handler"]
+  (typeof events)[number] | (typeof panelEvents)[number]["handler"]
 >({
   async onButtonClick(sender) {
     if (self.window !== MN.currentWindow) return
@@ -92,6 +95,7 @@ export default defineEventHandlers<
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
+    dev.log(sender.userInfo)
     self.textSelectBar = {
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
@@ -108,7 +112,7 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.isChangeExcerptRange = false
     self.excerptStatus.isProcessNewExcerpt = false
-    const success = await delayBreak(
+    const success = await loopBreak(
       20,
       0.05,
       () =>
@@ -155,6 +159,7 @@ export default defineEventHandlers<
     if (MN.studyController.studyMode === StudyMode.review) return
     dev.log("Addon broadcast", "event")
     const { message } = sender.userInfo
+    dev.log(sender.userInfo)
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
     if (message !== params) {
       await handleURLScheme(params)

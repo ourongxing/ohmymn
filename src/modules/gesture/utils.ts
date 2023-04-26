@@ -4,7 +4,7 @@ import {
   DocMapSplitMode,
   GroupMode,
   MN,
-  openUrl,
+  openURL,
   showHUD,
   StudyMode
 } from "marginnote"
@@ -190,7 +190,7 @@ export async function actionTrigger(
   const swipePosition = checkSwipePosition(sender)
   if (swipePosition === SwipePosition.None) return
 
-  let actionInfo: typeof actionKey4Card[number]
+  let actionInfo: (typeof actionKey4Card)[number]
   let type: "card" | "text" = "card"
   if (swipePosition === SwipePosition.SingleBar && singleBarOption) {
     actionInfo = actionKey4Card[singleBarOption]
@@ -214,7 +214,7 @@ export async function actionTrigger(
       direction +
       "Shortcut"
     const val = self.globalProfile.gesture[pKey]
-    if (val) openUrl(val)
+    if (val) openURL(val)
   } else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)
   else {

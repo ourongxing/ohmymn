@@ -1,6 +1,6 @@
 import type { MbBookNote } from "marginnote"
 import {
-  delayBreak,
+  loopBreak,
   isNoteExist,
   NodeNote,
   undoGroupingWithRefresh
@@ -41,7 +41,7 @@ export default async (n: MbBookNote) => {
       MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
     dev.log("The excerpt is image", "ocr")
     if (autoOCR) {
-      const success = await delayBreak(50, 0.1, () =>
+      const success = await loopBreak(50, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
@@ -66,7 +66,7 @@ export default async (n: MbBookNote) => {
     })
   } else {
     if (self.docProfile.additional.needOCRWait) {
-      self.docProfile.additional.needOCRWait = await delayBreak(
+      self.docProfile.additional.needOCRWait = await loopBreak(
         50,
         0.01,
         () => self.excerptStatus.OCROnlineStatus === "begin"
@@ -74,7 +74,7 @@ export default async (n: MbBookNote) => {
     }
     if (self.excerptStatus.OCROnlineStatus === "begin") {
       dev.log("Online OCR ing", "ocr")
-      const success = await delayBreak(
+      const success = await loopBreak(
         50,
         0.1,
         () => self.excerptStatus.OCROnlineStatus === "end"

@@ -57,21 +57,16 @@ export default async function (key: string, option: number, content: string) {
         isHavingChildren &&
         !notNeedSmartSelection
       ) {
-        const { option } = await popup(
-          {
-            title: lang.smart_select.title,
-            message:
-              nodes.length > 1
-                ? lang.smart_select.cards_with_children
-                : lang.smart_select.card_with_children,
-            type: UIAlertViewStyle.Default,
-            buttons: lang.smart_select.$option4,
-            canCancel: false
-          },
-          ({ buttonIndex }) => ({
-            option: buttonIndex
-          })
-        )
+        const { buttonIndex: option } = await popup({
+          title: lang.smart_select.title,
+          message:
+            nodes.length > 1
+              ? lang.smart_select.cards_with_children
+              : lang.smart_select.card_with_children,
+          type: UIAlertViewStyle.Default,
+          buttons: lang.smart_select.$option4,
+          canCancel: false
+        })
 
         if (option !== 0) {
           const { children, descendant, all } = nodes.reduce(

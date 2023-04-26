@@ -1,0 +1,175 @@
+import { i18n } from "marginnote"
+import { doc } from "~/utils"
+
+export default i18n({
+  zh: {
+    intro: "使用 AI 来翻译",
+    on: "摘录时自动执行",
+    preset: {
+      label: "选择需要的预设",
+      $option1: ["自定义"] as StringTuple<1>
+    },
+    word_count: "[类中文字数，类英文单词数]，超过才会翻译。      ",
+    no_result: "没有获取到结果",
+    openai_from_lang: {
+      label: "输入语言",
+      $option28: [
+        "简体中文",
+        "繁体中文",
+        "粤语",
+        "文言文",
+        "英语",
+        "日语",
+        "韩语",
+        "法语",
+        "西班牙语",
+        "泰语",
+        "阿拉伯语",
+        "俄语",
+        "葡萄牙语",
+        "德语",
+        "意大利语",
+        "希腊语",
+        "荷兰语",
+        "波兰语",
+        "保加利亚语",
+        "爱沙尼亚语",
+        "丹麦语",
+        "芬兰语",
+        "捷克语",
+        "罗马尼亚语",
+        "斯洛文尼亚语",
+        "瑞典语",
+        "匈牙利语",
+        "越南语"
+      ] as StringTuple<28>
+    },
+    openai_to_lang: {
+      label: "输出语言",
+      $option28: [
+        "简体中文",
+        "繁体中文",
+        "粤语",
+        "文言文",
+        "英语",
+        "日语",
+        "韩语",
+        "法语",
+        "西班牙语",
+        "泰语",
+        "阿拉伯语",
+        "俄语",
+        "葡萄牙语",
+        "德语",
+        "意大利语",
+        "希腊语",
+        "荷兰语",
+        "波兰语",
+        "保加利亚语",
+        "爱沙尼亚语",
+        "丹麦语",
+        "芬兰语",
+        "捷克语",
+        "罗马尼亚语",
+        "斯洛文尼亚语",
+        "瑞典语",
+        "匈牙利语",
+        "越南语"
+      ] as StringTuple<28>
+    },
+    translate_card: {
+      label: "翻译摘录内容",
+      help: "会翻译卡片中所有的摘录，注意不要同时翻译太多内容。"
+    },
+    loading: "正在翻译...",
+    translate_text: "翻译选中文字",
+    no_baidu_app_id: "没有设置百度翻译的 App ID",
+    no_baidu_secret_key: "没有设置百度翻译的密钥",
+    no_caiyun_token: "没有设置彩云小译的 Token"
+  },
+  en: {
+    intro: "Translate selected text or card content.",
+    on: "Auto Run When Excerpting",
+    preset: {
+      label: "Select Preset",
+      $option1: ["Custom"]
+    },
+    word_count: "[Chinese words, English words], if exceeded, then translate.",
+    no_result: "No Result",
+    translate_card: {
+      label: "Translate Excerpt Text",
+      help: "Translate all excerpts in the card, note that too many translations at the same time may cause the translation to fail."
+    },
+    openai_from_lang: {
+      label: "Input Language",
+      $option28: [
+        "Simplified Chinese",
+        "Traditional Chinese",
+        "Cantonese",
+        "Classical Chinese",
+        "English",
+        "Japanese",
+        "Korean",
+        "French",
+        "Spanish",
+        "Thai",
+        "Arabic",
+        "Russian",
+        "Portuguese",
+        "German",
+        "Italian",
+        "Greek",
+        "Dutch",
+        "Polish",
+        "Bulgarian",
+        "Estonian",
+        "Danish",
+        "Finnish",
+        "Czech",
+        "Romanian",
+        "Slovenian",
+        "Swedish",
+        "Hungarian",
+        "Vietnamese"
+      ]
+    },
+    openai_to_lang: {
+      label: "Output Language",
+      $option28: [
+        "Simplified Chinese",
+        "Traditional Chinese",
+        "Cantonese",
+        "Classical Chinese",
+        "English",
+        "Japanese",
+        "Korean",
+        "French",
+        "Spanish",
+        "Thai",
+        "Arabic",
+        "Russian",
+        "Portuguese",
+        "German",
+        "Italian",
+        "Greek",
+        "Dutch",
+        "Polish",
+        "Bulgarian",
+        "Estonian",
+        "Danish",
+        "Finnish",
+        "Czech",
+        "Romanian",
+        "Slovenian",
+        "Swedish",
+        "Hungarian",
+        "Vietnamese"
+      ]
+    },
+    translate_text: "Translate Selected Text",
+    loading: "Translating...",
+    no_baidu_app_id: "No Baidu Fanyi App ID",
+    no_baidu_secret_key: "No Baidu Fanyi Secret Key",
+    no_caiyun_token: "No Caiyun Translate Token"
+  }
+})

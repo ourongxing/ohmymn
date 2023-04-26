@@ -142,7 +142,7 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
             break
           case RewriteRange.SingleGlobal:
             if (global) {
-              dev.assert(profile)
+              dev.stringify(profile)
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
                   if (

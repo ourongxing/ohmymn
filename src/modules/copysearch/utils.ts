@@ -1,7 +1,7 @@
 import { Addon } from "~/addon"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import type { NodeNote } from "marginnote"
-import { select, openUrl, showHUD, removeHighlight } from "marginnote"
+import { select, openURL, showHUD, removeHighlight } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
 import lang from "./lang"
@@ -24,7 +24,7 @@ async function getTitleExcerpt(
       if (origin) return k
       return k.length === 1
         ? k[0]
-        : await select(k, Addon.title, lang.choose_you_want)
+        : (await select(k, Addon.title, lang.choose_you_want)).value
   }
 }
 
@@ -72,7 +72,7 @@ export async function getContentofOneCard(
       ]
       if (customContent) list.push(customContent)
       if (list.length === 1) return list[0]
-      else return await select(list, Addon.title, lang.choose_you_want)
+      else return (await select(list, Addon.title, lang.choose_you_want)).value
     }
   }
 }
@@ -130,6 +130,6 @@ export async function search(text: string, option: number) {
     searchOtherText
   ][option]
   if (searchEngine)
-    openUrl(searchEngine.replace("{{keyword}}", encodeURIComponent(text)))
+    openURL(searchEngine.replace("{{keyword}}", encodeURIComponent(text)))
   else showHUD(lang.no_search_engine_url, 2)
 }

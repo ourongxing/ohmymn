@@ -1,7 +1,7 @@
 import {
   isNoteLink,
   MN,
-  openUrl,
+  openURL,
   postNotification,
   type NSIndexPath,
   type UITableView
@@ -45,7 +45,7 @@ async function tableViewDidSelectRowAtIndexPath(
                 Date.now() - doubleClickTemp.lastTime < 500 &&
                 indexPath === doubleClickTemp.location
               ) {
-                openUrl(row.link, true)
+                openURL(row.link, true)
                 doubleClickTemp.lastTime = 0
                 doubleClickTemp.location = undefined
               } else {
@@ -53,7 +53,7 @@ async function tableViewDidSelectRowAtIndexPath(
                 doubleClickTemp.location = indexPath
               }
             } else {
-              openUrl(row.link, true)
+              openURL(row.link, true)
             }
           }
         } else if (self.expandSections.has(sec.key)) {
@@ -100,7 +100,7 @@ async function textFieldShouldReturn(sender: UITextField) {
   const row = section.rows[indexPath.row] as IRowInput
   const text = sender.text.trim()
   // Allowed be empty
-  if (isNoteLink(text)) openUrl(text)
+  if (isNoteLink(text)) openURL(text)
   if (!text || (await checkInputCorrect(text, row.key))) {
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()

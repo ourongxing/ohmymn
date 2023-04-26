@@ -14,10 +14,6 @@ export const defaultGlobalProfile = {
     backupID: "",
     doubleLink: false
   },
-  chatgpt: {
-    openaiKey: "",
-    showKey: true
-  },
   magicaction4card: {
     smartSelection: false,
     defaultMergeText: `%["1"]. $&\\n\\n`
@@ -178,13 +174,23 @@ export const defaultGlobalProfile = {
     baiduToLang: [0],
     caiyunToLang: [0]
   },
+  aitranslate: {
+    on: false,
+    wordCount: "[10, 5]",
+    openaiFromLang: [5],
+    openaiToLang: [0]
+  },
   aiassistant: {
     on: false,
     wordCount: "[10, 5]",
-    openaiSecretKey: "",
-    openaiURL: "api.openai.com",
     prompt: [0],
     openaiToLang: [0]
+  },
+  ai: {
+    OpenAIApiKey: "",
+    OpenAIBaseURL: "api.openai.com",
+    showKey: true,
+    model: [0]
   },
   additional: {
     lastVision: Addon.version,

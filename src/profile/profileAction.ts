@@ -2,7 +2,7 @@ import type { MbBookNote, NodeNote } from "marginnote"
 import {
   confirm,
   MN,
-  selectIndex,
+  select,
   setLocalDataByKey,
   showHUD,
   undoGroupingWithRefresh
@@ -47,7 +47,7 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
       })
     )
   } else {
-    const index = await selectIndex(
+    const { index } = await select(
       lang.$profile_select_items9,
       lang.profile_management,
       lang.which_part_profile,
@@ -68,7 +68,7 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
         case ManageProfileItems.Global4:
         case ManageProfileItems.Global5: {
           const items = [lang.all_modules, ...moduleNameList.name]
-          const i = await selectIndex(
+          const { index: i } = await select(
             items,
             lang.profile_management,
             lang.which_module_profile_write
@@ -140,7 +140,7 @@ export async function readProfilefromCard(node: MbBookNote) {
       )
 
       if (pModuleKeys.length === 1) {
-        const index = await selectIndex(
+        const { index } = await select(
           lang.$global_profile_items5,
           lang.profile_management,
           lang.one_module_global(
@@ -158,12 +158,12 @@ export async function readProfilefromCard(node: MbBookNote) {
           }
         }
       } else {
-        const j = await selectIndex(
+        const { index: j } = await select(
           [lang.all_modules, ...pModuleNames],
           lang.profile_management,
           lang.detecte_global_profile(n)
         )
-        const index = await selectIndex(
+        const { index } = await select(
           lang.$global_profile_items5,
           lang.profile_management,
           lang.which_global_profile_read_into,
@@ -220,7 +220,7 @@ export async function readProfilefromCard(node: MbBookNote) {
         allGlobalProfileTemp: typeof self.allGlobalProfile
         allNotebookProfileTemp: typeof self.allNotebookProfile
       } = profiles
-      const profileIndex = await selectIndex(
+      const { index: profileIndex } = await select(
         lang.$profile_select_items9,
         lang.profile_management,
         lang.detecte_all_profile,
@@ -287,7 +287,7 @@ export async function readProfilefromCard(node: MbBookNote) {
         const globalProfile = profiles[profileKey]
         // 所有全局配置
         if (Array.isArray(globalProfile)) {
-          const i = await selectIndex(
+          const { index: i } = await select(
             [lang.range.all_global_profile, ...lang.$global_profile_items5],
             lang.profile_management,
             lang.detecte_all_notebook_profile,

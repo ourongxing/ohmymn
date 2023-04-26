@@ -4,7 +4,7 @@
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
-  "version": "4.1.1",
+  "version": "4.2.0",
   "license": "MIT",
   "description": "MarginNote Addon Development Framework",
   "scripts": {
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "fs-extra": "^11.1.0",
-    "marginnote": "0.9.22",
+    "marginnote": "link:/Users/ourongxing/Development/marginnote/mnaddon/api",
     "querystringify": "^2.2.0",
     "semver": "^7.3.7"
   }

@@ -45,19 +45,13 @@ export default async (
     switch (row.type) {
       case CellViewType.ButtonWithInput:
         while (1) {
-          const { option, content } = await popup(
-            {
-              title: row.label,
-              message: row.help ?? "",
-              type: UIAlertViewStyle.PlainTextInput,
-              // It is better to have only two options, because then the last option will be automatically selected after the input
-              buttons: row.option ? row.option : [lang.sure]
-            },
-            ({ alert, buttonIndex }) => ({
-              content: alert.textFieldAtIndex(0).text,
-              option: buttonIndex
-            })
-          )
+          const { buttonIndex: option, inputContent: content } = await popup({
+            title: row.label,
+            message: row.help ?? "",
+            type: UIAlertViewStyle.PlainTextInput,
+            // It is better to have only two options, because then the last option will be automatically selected after the input
+            buttons: row.option ? row.option : [lang.sure]
+          })
           if (option === -1) return
           const text = content ? getMNLinkValue(content)?.trim() : ""
           if (text === undefined) {
@@ -78,17 +72,12 @@ export default async (
           }
         }
       case CellViewType.Button:
-        const { option } = await popup(
-          {
-            title: row.label,
-            message: row.help ?? "",
-            type: UIAlertViewStyle.Default,
-            buttons: row.option ?? [lang.sure]
-          },
-          ({ buttonIndex }) => ({
-            option: buttonIndex
-          })
-        )
+        const { buttonIndex: option } = await popup({
+          title: row.label,
+          message: row.help ?? "",
+          type: UIAlertViewStyle.Default,
+          buttons: row.option ?? [lang.sure]
+        })
         if (option === -1) return
         await handler({
           type,
