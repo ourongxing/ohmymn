@@ -13,7 +13,8 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
   themeConfig: {
     editLink: {
-      pattern: "https://github.com/marginnoteapp/ohmymn-docs/tree/main/:path",
+      pattern:
+        "https://github.com/marginnoteapp/ohmymn/tree/main/packages/docs/:path",
       text: "为此页提供修改建议"
     },
     outline: {

@@ -14,7 +14,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
   themeConfig: {
     editLink: {
-      pattern: "https://github.com/marginnoteapp/ohmymn-docs/tree/main/:path",
+      pattern:
+        "https://github.com/marginnoteapp/ohmymn/tree/main/packages/docs/:path",
       text: "Edit this page on GitHub"
     },
 
