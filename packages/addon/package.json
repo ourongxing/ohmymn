@@ -25,6 +25,7 @@
     "unplugin-auto-import": "^0.11.2"
   },
   "dependencies": {
+    "marginnote": "workspace:^",
     "querystringify": "^2.2.0"
   }
 }

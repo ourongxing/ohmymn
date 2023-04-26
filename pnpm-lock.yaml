@@ -53,6 +53,9 @@ importers:
 
   packages/addon:
     dependencies:
+      marginnote:
+        specifier: workspace:^
+        version: link:../api
       querystringify:
         specifier: ^2.2.0
         version: registry.npmmirror.com/querystringify@2.2.0
