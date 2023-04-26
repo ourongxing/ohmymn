@@ -17,6 +17,13 @@
     "addon",
     "typescript"
   ],
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "prettier --write",
+      "eslint --cache --fix",
+      "git add"
+    ]
+  },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged"
   },
