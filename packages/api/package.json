@@ -1,0 +1,29 @@
+{
+  "name": "marginnote",
+  "description": "Type definitions of the latest MarginNote API.",
+  "license": "MIT",
+  "version": "0.9.25",
+  "repository": "https://github.com/marginnoteapp/marginnote-api",
+  "author": "MarginNote<https://github.com/marginnoteapp>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "tsup src/index.ts --format cjs --dts --watch",
+    "publish": "npm publish --access public --no-git-checks"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
+  ],
+  "devDependencies": {
+    "tsup": "^6.2.3"
+  },
+  "keywords": [
+    "marginote",
+    "addon",
+    "plugin",
+    "typescript",
+    "api"
+  ]
+}

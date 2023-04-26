@@ -2,3 +2,4 @@ packages:
   - "packages/addon"
   - "packages/create"
   - "packages/docs"
+  - "packages/api"
