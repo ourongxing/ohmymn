@@ -1,4 +1,4 @@
-import { NoteComment, MbBookNote, MNPic } from "src/api"
+import { NoteComment, MbBookNote, MNPic } from "src/low-level"
 import { MN } from "./mn"
 import { unique } from "./utils"
 

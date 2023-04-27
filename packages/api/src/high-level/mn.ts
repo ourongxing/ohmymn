@@ -1,5 +1,5 @@
-import { OSType } from "../api"
-import type { UIColor } from "../api"
+import { OSType } from "../low-level"
+import type { UIColor } from "../low-level"
 import gte from "semver/functions/gte"
 
 class MNAPP {

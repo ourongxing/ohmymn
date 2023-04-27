@@ -3,7 +3,7 @@ import {
   DocumentController,
   JSExtensionLifeCycle,
   MbBookNote
-} from "src/api"
+} from "src/low-level"
 
 /**
  *  Define lifecycle handlers. The handlers will be called when the corresponding lifecycle is triggered.

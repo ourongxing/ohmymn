@@ -1,5 +1,5 @@
-import type { UIAlertView } from "../api"
-import { UIAlertViewStyle } from "../api"
+import type { UIAlertView } from "../low-level"
+import { UIAlertViewStyle } from "../low-level"
 import { lang } from "./lang"
 import { MN } from "./mn"
 import { byteSlice } from "./utils"

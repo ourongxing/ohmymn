@@ -1,4 +1,4 @@
-import { NSJSONReadingOptions } from "../api"
+import { NSJSONReadingOptions } from "../low-level"
 import { MN } from "./mn"
 
 export function isfileExists(path: string) {

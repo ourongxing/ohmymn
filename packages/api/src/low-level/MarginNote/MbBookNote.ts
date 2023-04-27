@@ -1,5 +1,10 @@
 import { DictObj } from ".."
-import { NodeNote, MN, CGSizeValue2CGSize, CGRectValue2CGRect } from "src/sdk"
+import {
+  NodeNote,
+  MN,
+  CGSizeValue2CGSize,
+  CGRectValue2CGRect
+} from "src/high-level"
 import { NSValue } from "../Foundation"
 import { CGPoint, CGSize } from "../UIKit"
 import { MbBook, MbTopic } from "./NoteDatabase"

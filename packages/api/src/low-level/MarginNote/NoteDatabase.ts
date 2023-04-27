@@ -1,6 +1,6 @@
 import { MbBookNote } from "./MbBookNote"
 import type { NSValue, NSData, DictObj } from ".."
-import { MN } from "src/sdk"
+import { MN } from "src/high-level"
 
 export const enum NotebookType {
   Hiden = 0,

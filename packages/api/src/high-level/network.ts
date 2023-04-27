@@ -3,8 +3,8 @@ import type {
   NSData,
   NSHTTPURLResponse,
   NSError
-} from "../api"
-import { NSJSONWritingOptions, NSJSONReadingOptions } from "../api"
+} from "../low-level"
+import { NSJSONWritingOptions, NSJSONReadingOptions } from "../low-level"
 import { genNSURL } from "./common"
 import { lang } from "./lang"
 

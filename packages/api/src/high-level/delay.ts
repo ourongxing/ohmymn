@@ -1,4 +1,4 @@
-import type { NSTimer } from "../api"
+import type { NSTimer } from "../low-level"
 
 export declare type Timer = {
   /**

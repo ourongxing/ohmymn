@@ -11,7 +11,7 @@ import {
   HUDController,
   saveFile,
   MN
-} from "src/sdk"
+} from "src/high-level"
 
 export const enum OSType {
   iPadOS = 0,
