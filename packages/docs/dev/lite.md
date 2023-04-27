@@ -8,7 +8,7 @@
 3. mnaddon.json
 
 ## CLI
-为了更方便的开发 Lite 版插件，我们开发了一个命令行工具 [mnaddon-lite](https://www.npmjs.com/package/mnaddon-lite)。
+为了更方便的开发 Lite 版插件，我们开发了一个命令行工具 [mnaddon](https://www.npmjs.com/package/mnaddon)。
 
 该工具主要有以下命令
 1. create: 使用模板创建新的插件项目。
@@ -21,32 +21,29 @@
 
 不管是监听文件变化还是最终打包成插件，都只会处理 png，js，json 这三类文件。另外，请不要使用子文件夹，否则不会被监听或者打包。
 
-对于 Lite 版插件，仍然可以查看旧版的 [插件开发指南(预览版)](http://docs.test.marginnote.cn/)。基于 OhMyMN 的开发文档还在施工中。另外还可以查看 OhMyMN 正在使用的 [TypeScript 版的 API](https://github.com/marginnoteapp/marginnote-api)，包含最新的 API，并且更加简单易懂，文档正在编写中。
-
-
 ### 安装
 ::: code-group
 ```shell [npm]
-npm i mnaddon-lite -g
+npm i mnaddon -g
 ```
 ```shell [yarn]
-yarn add mnaddon-lite -g
+yarn add mnaddon -g
 ```
 ```shell [pnpm]
-pnpm add mnaddon-lite -g
+pnpm add mnaddon -g
 ```
 :::
 
 ### 使用
-上面已经介绍了每个命令的作用，你还可以使用 `mnaddon-lite help` 或者 `mnaddon-lite help restart` 来查看每个命令具体的使用方法。 `<project-name>` 表示必填，`[output-name]` 表示可选。
+上面已经介绍了每个命令的作用，你还可以使用 `mnaddon help` 或者 `mnaddon help restart` 来查看每个命令具体的使用方法。 `<project-name>` 表示必填，`[output-name]` 表示可选。
 
 ```shell
 # 创建新的插件项目，名为 template
-mnaddon-lite create template
+mnaddon create template
 # 进入项目目录
 cd template
 # 打包成插件
-mnaddon-lite build
+mnaddon build
 ```
 
 ## 示例
@@ -79,7 +76,7 @@ mnaddon-lite build
       JSB.log(`${Addon.key} %@`, obj)
     }
   }
-  
+
   // 弹窗
   const popup = (title, message, buttons = [lang.confirm]) => {
     return new Promise(resolve =>
@@ -97,7 +94,7 @@ mnaddon-lite build
       )
     )
   }
-  
+
   JSB.newAddon = () => {
     const showHUD = (text, duration = 2) => {
       self.app.showHUD(text, self.window, duration)
@@ -112,7 +109,7 @@ mnaddon-lite build
         NSURL.URLWithString(encodeURI("http://docs.test.marginnote.cn/"))
       )
     }
-    // 返回一个 JSExtension 对象，也就是插件
+    // 返回一个 JSExtension 类，也就是插件
     return JSB.defineClass(
       Addon.name + ": JSExtension",
       {
@@ -122,7 +119,7 @@ mnaddon-lite build
           self.app = Application.sharedInstance()
           self.studyController = self.app.studyController(self.window)
         },
-        
+
         // 设置插件按钮图标以及选中状态。点击插件按钮会触发 "onToggle" 方法。
         // 只在脑图模式下才显示图标。
         queryAddonCommandStatus() {
@@ -135,7 +132,7 @@ mnaddon-lite build
               }
             : null
         },
-        
+
         // 点击插件图标执行的方法。效果就是按钮被选中，然后弹窗，然后取消选中。
         async onToggle() {
           self.status = true
@@ -151,3 +148,4 @@ mnaddon-lite build
   }
 })()
 ```
+这个插件的作用就是，点击插件按钮弹出一个对话框，点击确定后打开开发文档。

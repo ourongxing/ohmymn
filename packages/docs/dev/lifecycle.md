@@ -4,25 +4,11 @@
 ## 实例方法
 MN 的执行顺序
 
-```mermaid
-graph LR
-A(Addon connected)
---> B(Open a new window)
---> C(Open a notebook)
---> D(Open a document)
---> E(Close a notebook)
---> F(Close a document)
---> G(Close a window)
+![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/mermaid-diagram-2023-04-27-015512.svg?x-oss-process=base_webp)
 
-A(Addon connected)
---> B1(Open another window)
---> C1(Open a notebook)
---> D1(Open a document)
---> E1(Close a notebook)
---> F1(Close a document)
---> G1(Close a window)
-```
-
+::: warning 注意
+iPad 上直接划掉后台，不会触发关闭事件，包括关闭笔记本和关闭文档。请在进入后台的时候触发相关动作。
+:::
 ### sceneWillConnect()
 创建新的 MN 窗口时触发，MN 支持多窗口，每次新建窗口都会触发这个方法。
 ### sceneDidDisconnect()

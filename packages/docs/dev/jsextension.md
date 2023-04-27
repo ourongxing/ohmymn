@@ -1,7 +1,6 @@
-# 插件实例
+# 插件对象
 
-## 插件对象
-如何创建一个插件？下面是通过 [mnadon-lite](./lite.md) 工具创建的插件模版的一部分。
+如何创建一个插件？下面是通过 [mnadon](./lite.md) 工具创建的插件模版的一部分。
 
 ```js
 JSB.newAddon = () => {
@@ -18,7 +17,7 @@ JSB.newAddon = () => {
       NSURL.URLWithString(encodeURI("http://docs.test.marginnote.cn/"))
     )
   }
-  // 返回一个 JSExtension 对象，也就是插件
+  // 返回一个 JSExtension 类，也就是插件
   return JSB.defineClass(
     Addon.name + ": JSExtension",
     // 实例方法
@@ -53,19 +52,33 @@ JSB.newAddon = () => {
         self.studyController.refreshAddonCommands()
       }
     },
-    // 静态方法
+    // 类方法
     {}
   )
 ```
 
-从上面的示例可以看出，我们只需要给 `JSB.newAddon` 赋值一个函数，这个函数返回一个 `JSB.defineClass` 的 Objective-C 对象，这个对象就是我们的插件。
+从上面的示例可以看出，我们只需要给 `JSB.newAddon` 赋值一个函数，这个函数返回一个 `JSB.defineClass` 定义的 Objective-C 类，这个对象就是我们的插件。这个对象不需要我们手动 new 实例，会自动创建。
 
 而这样的一个 `JSB.defineClass` 方法，需要传入 3 个参数：
-1. 对象的名称以及继承的父类，上面的 `Template: JSExtension` 就表示这是一个继承自 `JSExtension` 的对象，这个对象的名称是 `Template`。
-2. 对象的实例方法，主要包括：
-    - 插件的[生命周期](./lifecycle.md)
-    - 插件接收到的[事件](./events.md)
-3. 对象的静态方法。
+1. 类的名称以及继承的父类，上面的 `Template: JSExtension` 就表示这是一个继承自 `JSExtension` 的类，这个类的名称是 `Template`。
+2. 实例方法，主要包括：
+    - 插件的[生命周期](./lifecycle.md#实例方法)
+    - 插件接收到的[事件](./events.md)处理方法。
+    - 插件按钮刷新，按钮点击等等一系列的处理方法都需要作为实例方法。
+ ```js
+ // OhMyMN 中的实例方法
+  JSB.defineClass(
+    getObjCClassDeclar(Addon.title, "JSExtension"),
+    {
+      ...lifecycle.instanceMethods,
+      ...switchPanel,
+      ...handleGestureEvent,
+      ...handleReceivedEvent
+    },
+    lifecycle.classMethods
+  )
+ ```
+3. 类方法。只需要了解插件安装和卸载的事件是静态方法, [生命周期](./lifecycle.md#静态方法)
 
 ## self
 self 指代的就是这个插件实例，注意，这是 Objective-C 里的对象。并且这个 self 只能在对象的实例方法中使用。

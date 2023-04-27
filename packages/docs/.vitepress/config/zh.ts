@@ -58,7 +58,11 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: "/dev/"
             },
             {
-              text: "插件实例",
+              text: "插件结构",
+              link: "/dev/structure"
+            },
+            {
+              text: "插件对象",
               link: "/dev/jsextension"
             },
             {
@@ -68,6 +72,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {
               text: "事件监听",
               link: "/dev/events"
+            },
+            {
+              text: "数据存储",
+              link: "/dev/store"
             }
           ]
         },
@@ -86,12 +94,63 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       ],
       "/api/": [
         {
-          text: "API",
+          text: "介绍",
           link: "/api/"
         },
         {
-          text: "Origin API",
-          link: "/api/origin"
+          text: "Objective-C API 转换",
+          link: "/api/transform"
+        },
+        {
+          text: "MarginNote",
+          items: [
+            {
+              text: "MN",
+              link: "/api/marginnote/"
+            },
+            {
+              text: "NodeNote",
+              link: "/api/marginnote/nodenote"
+            },
+            {
+              text: "Popup",
+              link: "/api/marginnote/popup"
+            },
+            {
+              text: "Low-Level API",
+              items: [
+                {
+                  text: "Application",
+                  link: "/api/marginnote/application"
+                },
+                {
+                  text: "Database",
+                  link: "/api/marginnote/database"
+                },
+                {
+                  text: "MbBookNote",
+                  link: "/api/marginnote/mbbooknote"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: "OhMyMN",
+          items: []
+        },
+        {
+          text: "补充",
+          items: [
+            {
+              text: "Foundation",
+              link: "/api/foundation"
+            },
+            {
+              text: "UIKit",
+              link: "/api/uikit"
+            }
+          ]
         }
       ],
       "/": [
