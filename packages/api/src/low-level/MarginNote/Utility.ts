@@ -2,16 +2,16 @@ import { UIWindow, UIViewController, UITableView } from "../UIKit"
 import type { JSValue, NSData } from ".."
 
 declare global {
+  /**
+   * Speech text
+   */
   const SpeechManager: {
-    /**
-     * create a new instance
-     */
     sharedInstance(): SpeechManager
   }
+  /**
+   * Undo
+   */
   const UndoManager: {
-    /**
-     * create a new instance
-     */
     sharedInstance(): UndoManager
   }
   /**

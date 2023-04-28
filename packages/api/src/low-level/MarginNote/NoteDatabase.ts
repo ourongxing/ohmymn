@@ -1,6 +1,5 @@
 import { MbBookNote } from "./MbBookNote"
 import type { NSValue, NSData, DictObj } from ".."
-import { MN } from "src/high-level"
 
 export const enum NotebookType {
   Hiden = 0,
@@ -76,7 +75,13 @@ export declare class MbTopic {
   readonly hashtags?: string
   readonly docList?: string
   readonly options?: DictObj
+  /**
+   * doucments in the notebook
+   */
   readonly documents?: MbBook[]
+  /**
+   * notes in the notebook
+   */
   readonly notes?: MbBookNote[]
   readonly flags: NotebookType
   hideLinksInMindMapNode: boolean
@@ -90,20 +95,41 @@ export declare class MbModelTool {
   getMediaByHash(hash: string): NSData | undefined
   getNoteById(noteid: string): MbBookNote | undefined
   getDocumentById(md5: string): MbBook | undefined
+  /**
+   * Get note in review mode
+   */
   getFlashcardByNoteId(
     noteid: string,
     notebookid: string
   ): MbBookNote | undefined
+  /**
+   * Get notes in review mode
+   */
   getFlashcardsByNoteId(noteid: string): MbBookNote[] | undefined
+  /**
+   * Whether has note in review mode
+   */
   hasFlashcardByNoteId(noteid: string): boolean
   savedb(): void
+  /**
+   * Fetch all notebooks
+   */
   allNotebooks(): MbTopic[]
+  /**
+   * Fetch all documents
+   */
   allDocuments(): MbBook[]
   setNotebookSyncDirty(notebookid: string): void
   saveHistoryArchiveKey(notebookid: string, key: string): any[]
   loadHistoryArchiveKey(notebookid: string, key: string): any[]
   deleteBookNote(noteid: string): void
+  /**
+   * Delete note and its all descendant notes
+   */
   deleteBookNoteTree(noteid: string): void
+  /**
+   * Clone notes to a notebook, and return the cloned notes
+   */
   cloneNotesToTopic(notes: MbBookNote[], notebookid: string): MbBookNote[]
   cloneNotesToFlashcardsToTopic(
     notes: MbBookNote[],
@@ -111,6 +137,9 @@ export declare class MbModelTool {
   ): MbBookNote[]
   exportNotebookStorePath(notebookid: string, storePath: string): boolean
   importNotebookFromStorePathMerge(storePath: string, merge: boolean): any
+  /**
+   * Get handwriting notes in notebook mindmap
+   */
   getSketchNotesForMindMap(notebookid: string): MbBookNote[]
   getSketchNotesForDocumentMd5Page(
     notebookid: string,
@@ -125,7 +154,13 @@ declare global {
      * @recommended use {@link MN.db}
      */
     sharedInstance(): MbModelTool
+    /**
+     * Transfrom unreadable OC dictionary to JS compatible
+     */
     transDictionaryToJSCompatible(dic: any): any
+    /**
+     * Transfrom unreadable OC array to JS compatible
+     */
     transArrayToJSCompatible(arr: any): any
   }
 }

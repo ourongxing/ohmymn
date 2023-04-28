@@ -98,6 +98,22 @@ class MNAPP {
     Green: UIColor.colorWithHexString("#E9FBC7"),
     Sepia: UIColor.colorWithHexString("#F5EFDC")
   }
+  log(obj: any, suffix = "normal", ...args: any[]) {
+    if (self.useConsole)
+      console.log(obj, `${MN.currentAddon.key}-${suffix}`, ...args)
+    else JSB.log(`${MN.currentAddon.key}-${suffix} %@`, obj)
+  }
+  error(obj: any, suffix = "error", ...args: any[]) {
+    if (self.useConsole)
+      console.error(obj, `${MN.currentAddon.key}-${suffix}`, ...args)
+    else
+      JSB.log(
+        `${MN.currentAddon.key}-${suffix} %@`,
+        String(obj) === "[object Object]"
+          ? JSON.stringify(obj, undefined, 2)
+          : String(obj)
+      )
+  }
 }
 
 /**

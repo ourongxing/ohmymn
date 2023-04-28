@@ -1,4 +1,4 @@
-import {
+import type {
   UISwipeGestureRecognizerDirection,
   DocumentController,
   JSExtensionLifeCycle,
@@ -31,7 +31,7 @@ export function eventObserverController(
   const add = () => {
     observers.forEach(v => {
       v = typeof v == "string" ? { event: v } : v
-      let handler = v.handler ?? `on${v.event}`
+      const handler = v.handler ?? `on${v.event}`
       NSNotificationCenter.defaultCenter().addObserverSelectorName(
         self,
         `${handler}:`,

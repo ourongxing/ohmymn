@@ -1,10 +1,4 @@
 import { DictObj } from ".."
-import {
-  NodeNote,
-  MN,
-  CGSizeValue2CGSize,
-  CGRectValue2CGRect
-} from "src/high-level"
 import { NSValue } from "../Foundation"
 import { CGPoint, CGSize } from "../UIKit"
 import { MbBook, MbTopic } from "./NoteDatabase"
@@ -38,6 +32,7 @@ export declare class MbBookNote {
    */
   fillIndex: number
   /**
+   * @deprecated
    * not working
    */
   mindmapPosition: CGPoint
@@ -72,7 +67,7 @@ export declare class MbBookNote {
   /**
    * Excerpt picture of the note, just the area of you selected
    */
-  readonly excerptPic?: excerptPic
+  readonly excerptPic?: ExcerptPic
   /**
    * Date of the note created
    */
@@ -106,7 +101,7 @@ export declare class MbBookNote {
    */
   readonly groupNoteId?: string
   /**
-   * Comments of the note, different from the excerptText
+  //  * Comments of the note, different from the excerptText
    */
   readonly comments: NoteComment[]
   /**
@@ -243,7 +238,7 @@ export interface MNPic {
 /**
  * The area of the excerpt
  */
-export interface excerptPic extends MNPic {
+export interface ExcerptPic extends MNPic {
   selLst: {
     [key: number]: {
       /**

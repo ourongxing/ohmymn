@@ -1,5 +1,4 @@
-import type { UIAlertView } from "../low-level"
-import { UIAlertViewStyle } from "../low-level"
+import { type UIAlertView, UIAlertViewStyle } from "../low-level"
 import { lang } from "./lang"
 import { MN } from "./mn"
 import { byteSlice } from "./utils"

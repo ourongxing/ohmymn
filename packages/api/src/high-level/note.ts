@@ -19,33 +19,16 @@ export function isNoteExist(note: MbBookNote | string) {
 }
 
 /**
- * Cancellable actions, all actions that will modify data should be wrapped in this method.
+ * Cancellable actions, all actions that will modify data should be wrapped in this method. And refresh after action done.
  * @param f Action need to be cancelled.
  */
-export function undoGrouping(f: () => void) {
+export function undoGroupingWithRefresh(f: () => void) {
   if (MN.currnetNotebookid) {
     UndoManager.sharedInstance().undoGrouping(
       String(Date.now()),
       MN.currnetNotebookid,
       f
     )
-  }
-}
-
-/**
- * Cancellable actions, all actions that will modify data should be wrapped in this method. And refresh after action done.
- * @param f Action need to be cancelled.
- */
-export function undoGroupingWithRefresh(f: () => void) {
-  undoGrouping(f)
-  RefreshAfterDBChange()
-}
-
-/**
- * Refresh the view after database change.
- */
-export function RefreshAfterDBChange() {
-  if (MN.currnetNotebookid) {
     MN.db.setNotebookSyncDirty(MN.currnetNotebookid)
     postNotification("RefreshAfterDBChange", {
       notebookid: MN.currnetNotebookid

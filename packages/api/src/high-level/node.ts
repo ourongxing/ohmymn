@@ -1,20 +1,21 @@
-import { NoteComment, MbBookNote, MNPic } from "src/low-level"
+import type { NoteComment, MbBookNote, MNPic } from "src/low-level"
 import { MN } from "./mn"
 import { unique } from "./utils"
 
 /**
- * Get picture base64 code
+ * Get picture base64 code wrapped in html and markdown
  * @param pic `MNPic`
- * @returns Base64 code of the picture.
+ * @returns
+ * - html: `<img class="MNPic" src="data:image/jpeg;base64,${base64}"/>`
+ * - md: `![MNPic](data:image/jpeg;base64,${base64})`
  */
 export function exportPic(pic: MNPic) {
   const base64 = MN.db.getMediaByHash(pic.paint)?.base64Encoding()
-  return base64
-    ? {
-        html: `<img class="MNPic" src="data:image/jpeg;base64,${base64}"/>`,
-        md: `![MNPic](data:image/jpeg;base64,${base64})`
-      }
-    : undefined
+  if (base64)
+    return {
+      html: `<img class="MNPic" src="data:image/jpeg;base64,${base64}"/>`,
+      md: `![MNPic](data:image/jpeg;base64,${base64})`
+    }
 }
 
 function getNoteExcerptTextPic(note: MbBookNote) {
@@ -116,6 +117,9 @@ export class NodeNote {
       [this.note]
     )
   }
+  get titles() {
+    return unique(this.note.noteTitle?.split(/\s*[;；]\s*/) ?? [], true)
+  }
   set titles(titles: string[]) {
     const newTitle = unique(titles, true).join("; ")
     if (this.note.excerptText === this.note.noteTitle) {
@@ -142,9 +146,6 @@ export class NodeNote {
   set mainExcerptText(text: string) {
     this.note.excerptText = text
   }
-  get titles() {
-    return unique(this.note.noteTitle?.split(/\s*[;；]\s*/) ?? [], true)
-  }
   /**
    * append titles as much as you want
    */
@@ -156,6 +157,7 @@ export class NodeNote {
     } else {
       this.note.noteTitle = newTitle
     }
+    return this
   }
   /**
    * get all tags, without `#`

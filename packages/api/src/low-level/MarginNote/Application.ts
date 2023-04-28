@@ -3,15 +3,6 @@ import { MbBookNote } from "./MbBookNote"
 import { MbBook } from "./NoteDatabase"
 import type { JSValue, NSIndexPath, NSURL, NSData } from "../Foundation"
 import { DictObj } from ".."
-import {
-  openFile,
-  openURL,
-  alert,
-  showHUD,
-  HUDController,
-  saveFile,
-  MN
-} from "src/high-level"
 
 export const enum OSType {
   iPadOS = 0,
@@ -183,14 +174,11 @@ export declare class ReaderController {
 }
 
 /**
- * Study Controller, inherit from UIViewController
- * inherit from {@link UIViewController}
+ * Study Controller
  */
 export declare class StudyController extends UIViewController {
   /**
    * View of the study controller
-   * {@link UIView}
-
    */
   view: UIView
   /**
@@ -230,7 +218,7 @@ export declare class StudyController extends UIViewController {
   refreshAddonCommands(): void
 }
 
-export declare type Application = {
+export declare class Application {
   /**
    * @value 4.0.2(97)
    *

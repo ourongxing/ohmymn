@@ -1,5 +1,4 @@
-import { NSValue, CGRect, CGSize } from "../low-level"
-import type { NSNull } from "src/low-level"
+import type { NSNull, NSValue, CGRect, CGSize } from "src/low-level"
 
 /**
  * NSValue can't be read by JavaScriptCore, so we need to convert it to string.

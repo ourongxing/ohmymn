@@ -13,11 +13,7 @@
     "importHelpers": true,
     "strict": true,
     "baseUrl": ".",
-    "lib": [
-      "ES2020"
-    ]
+    "lib": ["ES2020"]
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

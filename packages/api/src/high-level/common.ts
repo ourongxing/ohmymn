@@ -83,33 +83,6 @@ export function copy(text: string, hud = true) {
 /**
  * Like console but not, you need watch log in the console.app.
  */
-export const dev = {
-  log(obj: any, suffix = "normal", ...args: any[]) {
-    if (self.useConsole)
-      console.log(obj, `${MN.currentAddon.key}-${suffix}`, ...args)
-    else JSB.log(`${MN.currentAddon.key}-${suffix} %@`, obj)
-  },
-  error(obj: any, suffix = "error", ...args: any[]) {
-    if (self.useConsole)
-      console.error(obj, `${MN.currentAddon.key}-${suffix}`, ...args)
-    else
-      JSB.log(
-        `${MN.currentAddon.key}-${suffix} %@`,
-        String(obj) === "[object Object]"
-          ? JSON.stringify(obj, undefined, 2)
-          : String(obj)
-      )
-  },
-  stringify(obj: any, suffix = "normal", ...args: any[]) {
-    if (self.useConsole)
-      console.log(obj, `${MN.currentAddon.key}-${suffix}`, ...args)
-    else
-      JSB.log(
-        `${MN.currentAddon.key}-${suffix} %@`,
-        JSON.stringify(obj, undefined, 2)
-      )
-  }
-}
 
 export function i18n<M, N>(lang: { zh: M; en: N extends M ? M : M }) {
   return MN.isZH ? lang.zh : lang.en
