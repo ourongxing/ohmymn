@@ -1,4 +1,13 @@
 # Application
+```ts
+const Application: {
+  /**
+   * Create an Application instance
+   * @recommended use {@link MN.app}
+   */
+  sharedInstance(): Application
+}
+```
 
 ```ts
 export declare type Application = {

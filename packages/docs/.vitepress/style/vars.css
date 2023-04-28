@@ -22,11 +22,16 @@
   --vp-c-text-light-2: rgba(56 56 56 / 70%);
   /* fix contrast: lang name on gray code block */
   --vp-c-text-dark-3: rgba(180, 180, 180, 0.7);
+  --vp-c-text-dark-2: rgba(56 56 56 / 70%);
+  --vp-code-block-bg-light: rgba(0, 0, 0, 0.05);
+  --vp-code-block-bg: rgba(125, 125, 125, 0.08);
+  --vp-code-block-divider-color: #f2e9e9;
+  --vp-code-tab-hover-text-color: rgba(56 56 56);
+  --vp-code-tab-active-text-color: rgba(56 56 56);
 }
 
 .dark {
   --vp-c-gutter: #3e3a3a;
-  --vp-code-block-bg: rgba(0, 0, 0, 0.2);
   /* fix TIP: check the same above (these are the defaults) */
   --vp-custom-block-tip-text: rgb(18, 181, 157);
   --vp-custom-block-tip-border: rgba(18, 181, 157, 0.5);
@@ -38,6 +43,10 @@
   --vp-c-text-dark-2: rgba(235, 235, 235, 0.6);
   /* fix lang name: check the same above (this is the default) */
   --vp-c-text-dark-3: rgba(235, 235, 235, 0.38);
+  --vp-code-block-bg: rgba(0, 0, 0, 0.2);
+  --vp-code-block-divider-color: #272727;
+  --vp-code-tab-hover-text-color: rgba(235, 235, 235, 0.8);
+  --vp-code-tab-active-text-color: rgba(235, 235, 235, 0.8);
 }
 
 :root {

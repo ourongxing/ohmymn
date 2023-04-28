@@ -1,4 +1,4 @@
-# Popup
+# 弹窗
 [Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/popup.ts)
 
 ## showHUD

@@ -37,7 +37,9 @@
 ![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/ebffda8ba4d486a3d3.gif?x-oss-process=base_webp)
 
 OhMyMN 利用了这一特性。当你在文档中选中了一块摘录后，紧接着再用手型工具去选中一段文字，此时再执行动作，某些会将执行结果复制到剪贴板的动作就会弹出更多选项，比如设置标题，合并标题，设为评论等。
-
+::: tip
+这里的动作指的是 OhMyMN 里的动作，也就是👇这些动作。
+:::
 ## 动作
 
 ### 复制选中文字

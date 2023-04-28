@@ -109,12 +109,28 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: "/api/marginnote/"
             },
             {
+              text: "笔记相关",
+              link: "/api/marginnote/note"
+            },
+            {
               text: "NodeNote",
               link: "/api/marginnote/nodenote"
             },
             {
-              text: "Popup",
+              text: "弹窗",
               link: "/api/marginnote/popup"
+            },
+            {
+              text: "网络请求",
+              link: "/api/marginnote/fetch"
+            },
+            {
+              text: "等待/间隔",
+              link: "/api/marginnote/delay"
+            },
+            {
+              text: "文件操作",
+              link: "/api/marginnote/file"
             },
             {
               text: "Low-Level API",
@@ -128,8 +144,20 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                   link: "/api/marginnote/database"
                 },
                 {
+                  text: "StudyController",
+                  link: "/api/marginnote/studycontroller"
+                },
+                {
                   text: "MbBookNote",
                   link: "/api/marginnote/mbbooknote"
+                },
+                {
+                  text: "MbBook/MbTopic",
+                  link: "/api/marginnote/mbbooktopic"
+                },
+                {
+                  text: "Utility",
+                  link: "/api/marginnote/utility"
                 }
               ]
             }
