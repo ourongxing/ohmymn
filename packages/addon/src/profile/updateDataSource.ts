@@ -79,5 +79,5 @@ export function updateProfileDataSource(
 export function refreshPanel() {
   self.settingViewController.tableView?.reloadData()
   layoutViewController()
-  dev.log("Refresh Panel", "profile")
+  MN.log("Refresh Panel", "profile")
 }

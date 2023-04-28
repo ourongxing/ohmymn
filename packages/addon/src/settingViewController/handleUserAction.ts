@@ -1,6 +1,5 @@
 import {
   isNoteLink,
-  MN,
   openURL,
   postNotification,
   type NSIndexPath,
@@ -43,7 +42,7 @@ async function tableViewDidSelectRowAtIndexPath(
       {
         if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
           if (row.link) {
-            dev.log(self.globalProfile.addon.doubleLink)
+            MN.log(self.globalProfile.addon.doubleLink)
             if (self.globalProfile.addon.doubleLink) {
               if (
                 Date.now() - doubleClickTemp.lastTime < 500 &&
@@ -261,7 +260,7 @@ function clickSelectButton(sender: UIButton) {
     )
     self.popoverController.delegate = self
   } catch (e) {
-    dev.error(e)
+    MN.error(e)
   }
 }
 

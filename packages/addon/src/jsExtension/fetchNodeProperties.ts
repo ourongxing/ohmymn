@@ -38,7 +38,7 @@ const fetchDataFromMetadata = () => {
       }
     }
   } catch (e) {
-    dev.error(e)
+    MN.error(e)
   } finally {
     return self.metadata.data
   }
@@ -209,7 +209,7 @@ export const renderTemplateOfNodeProperties = (
         )
     }).trim()
   } catch (err) {
-    dev.error(err)
+    MN.error(err)
     return template
   }
 }

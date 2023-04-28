@@ -1,5 +1,4 @@
 import type { NoteComment } from "marginnote"
-import { MN } from "marginnote"
 import semver from "semver"
 import { Addon } from "~/addon"
 import type { AllModuleKeyUnion } from "~/coreModule"
@@ -33,7 +32,7 @@ export function getMNLinkValue(link: string) {
       if (x.length) return x.join(";")
     }
   } catch (e) {
-    dev.error(e)
+    MN.error(e)
     return undefined
   }
 }
@@ -142,7 +141,6 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
             break
           case RewriteRange.SingleGlobal:
             if (global) {
-              dev.stringify(profile)
               for (const [module, _] of Object.entries(global))
                 for (const [key, f] of Object.entries(_))
                   if (

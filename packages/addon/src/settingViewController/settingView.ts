@@ -150,7 +150,7 @@ function _isBindOFF(bindArr: BindType, sectionKey: string) {
       })
     })
   } catch (e) {
-    dev.error(String(e))
+    MN.error(String(e))
     return e
   }
 }

@@ -17,7 +17,6 @@ import type { AllModuleKeyUnion } from "./coreModule"
 
 declare global {
   const MN: typeof import("marginnote")["MN"]
-  const dev: typeof import("marginnote")["dev"]
   const self: {
     useConsole?: boolean
     addon?: {

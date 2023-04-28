@@ -35,7 +35,7 @@ export function simplifyText(text: string) {
       ) ?? ret
     )
   } catch (err) {
-    dev.error(err)
+    MN.error(err)
     return text
   }
 }

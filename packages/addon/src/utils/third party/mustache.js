@@ -889,11 +889,10 @@ function toString(value) {
 // 传的是原始数据
 mustache.Formatters = Object.entries(func).reduce((acc, [k, f]) => {
   acc[k] = function (value, ...rest) {
-    dev.log(value)
     try {
       return f(toString(value), ...rest)
     } catch (err) {
-      dev.error(err)
+      MN.error(err)
       return value
     }
   }

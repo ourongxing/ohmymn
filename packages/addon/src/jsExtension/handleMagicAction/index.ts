@@ -105,6 +105,6 @@ async function handler({
       await handleCardAction(key, option, content ?? "")
     }
   } catch (err) {
-    dev.error(String(err))
+    MN.error(String(err))
   }
 }

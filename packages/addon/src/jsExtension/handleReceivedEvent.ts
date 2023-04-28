@@ -44,19 +44,19 @@ export default defineEventHandlers<
   async onButtonClick(sender) {
     if (self.window !== MN.currentWindow) return
     // For magicaction
-    dev.log("Click a button", "event")
+    MN.log("Click a button", "event")
     const { row, type } = sender.userInfo
     await handleMagicAction(type, row)
   },
   async onSwitchChange(sender) {
     if (self.window !== MN.currentWindow) return
-    dev.log("Switch the switch", "event")
+    MN.log("Switch the switch", "event")
     const { name, key, status } = sender.userInfo
     await saveProfile(name, key, status)
   },
   async onSelectChange(sender) {
     if (self.window !== MN.currentWindow) return
-    dev.log("Change the selection", "event")
+    MN.log("Change the selection", "event")
     const { name, key, selections } = sender.userInfo
     switch (key) {
       case "panelPosition":
@@ -70,7 +70,7 @@ export default defineEventHandlers<
   },
   async onInputOver(sender) {
     if (self.window !== MN.currentWindow) return
-    dev.log("Input", "event")
+    MN.log("Input", "event")
     const { name, key, content } = sender.userInfo
     updateProfileTemp(key, content)
     showHUD(content ? lang.input_saved : lang.input_clear)
@@ -86,27 +86,27 @@ export default defineEventHandlers<
     // 虽然手动矫正也会触发，其实既然手动了，那么有很大概率会开启自动在线矫正，所以差这么一点点也无所谓。
     self.docProfile.additional.needOCRWait = true
     self.excerptStatus.OCROnlineStatus = "begin"
-    dev.log("Online OCR begin", "ocr")
+    MN.log("Online OCR begin", "ocr")
   },
   async onOCRImageEnd(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnlineStatus = "end"
-    dev.log("Online OCR end", "ocr")
+    MN.log("Online OCR end", "ocr")
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    dev.log(sender.userInfo)
+    MN.log(sender.userInfo)
     self.textSelectBar = {
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
     }
-    dev.log("Popup menu on selection open", "event")
+    MN.log("Popup menu on selection open", "event")
   },
   onClosePopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
     self.textSelectBar = undefined
     self.excerptStatus.OCROnlineStatus = "free"
-    dev.log("Popup menu on selection close", "event")
+    MN.log("Popup menu on selection close", "event")
   },
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
@@ -126,12 +126,12 @@ export default defineEventHandlers<
   async onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnlineStatus = "free"
-    dev.log("Popup menu on note close", "event")
+    MN.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    dev.log("Change excerpt range", "event")
+    MN.log("Change excerpt range", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isChangeExcerptRange = true
@@ -141,7 +141,7 @@ export default defineEventHandlers<
   onProcessNewExcerpt(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    dev.log("Process new excerpt", "event")
+    MN.log("Process new excerpt", "event")
     self.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
@@ -157,9 +157,9 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     if (!isModuleON("shortcut")) return
     if (MN.studyController.studyMode === StudyMode.review) return
-    dev.log("Addon broadcast", "event")
+    MN.log("Addon broadcast", "event")
     const { message } = sender.userInfo
-    dev.log(sender.userInfo)
+    MN.log(sender.userInfo)
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
     if (message !== params) {
       await handleURLScheme(params)

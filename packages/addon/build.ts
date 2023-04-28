@@ -108,7 +108,7 @@ const plugins: Plugin[] = [
   autoImport({
     imports: [
       {
-        marginnote: ["dev", "MN"]
+        marginnote: ["MN"]
       }
     ],
     dts: false
@@ -139,7 +139,7 @@ build({
   footer: {
     js: footerText
   },
-  pure: ["dev.log", "dev.error", "dev.stringify"],
+  pure: ["MN.log", "MN.error"],
   bundle: true,
   target: "safari13",
   plugins

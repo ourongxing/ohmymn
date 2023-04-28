@@ -473,7 +473,7 @@ export async function completeWord(text: string, note: MbBookNote) {
       text: context
     }
   } catch (error) {
-    dev.error(error)
+    MN.error(error)
     error && showHUD(String(error), 2)
     return undefined
   }

@@ -14,7 +14,7 @@ export async function customOCR() {
       const res = await util.method({ imgBase64 })
       if (res) return res
     }
-    dev.log("Custom OCR over", "ocr")
+    MN.log("Custom OCR over", "ocr")
   }
 }
 

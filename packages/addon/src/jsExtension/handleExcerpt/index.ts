@@ -26,35 +26,35 @@ let isComment = false
 let isPic = false
 
 export default async (n: MbBookNote) => {
-  dev.log("Processing Excerpt", "excerpt")
+  MN.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
   node = new NodeNote(note)
   nodeNote = node.note
   isPicOCRed = false
   isComment = nodeNote.noteId !== note.noteId
-  isComment && dev.log("The Excerpt is a comment", "excerpt")
+  isComment && MN.log("The Excerpt is a comment", "excerpt")
   isPic = false
 
   if (note.excerptPic) {
     const autoOCR =
       MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
-    dev.log("The excerpt is image", "ocr")
+    MN.log("The excerpt is image", "ocr")
     if (autoOCR) {
       const success = await loopBreak(50, 0.1, () =>
         note.excerptText ? true : false
       )
       if (success) {
-        dev.log("Image to text success", "ocr")
+        MN.log("Image to text success", "ocr")
         isPicOCRed = true
         self.excerptStatus.OCROnlineStatus = "free"
       } else {
         isPic = true
-        dev.log("Image to text fail, no text", "ocr")
+        MN.log("Image to text fail, no text", "ocr")
       }
     } else {
       isPic = true
-      dev.log("No auto-to-text option on, no image processing", "ocr")
+      MN.log("No auto-to-text option on, no image processing", "ocr")
     }
   }
 
@@ -73,14 +73,14 @@ export default async (n: MbBookNote) => {
       )
     }
     if (self.excerptStatus.OCROnlineStatus === "begin") {
-      dev.log("Online OCR ing", "ocr")
+      MN.log("Online OCR ing", "ocr")
       const success = await loopBreak(
         50,
         0.1,
         () => self.excerptStatus.OCROnlineStatus === "end"
       )
-      if (success) dev.log("Online OCR success", "ocr")
-      else dev.log("Online OCR fail", "ocr")
+      if (success) MN.log("Online OCR success", "ocr")
+      else MN.log("Online OCR fail", "ocr")
     }
 
     self.excerptStatus.OCROnlineStatus = "free"
@@ -91,7 +91,7 @@ export default async (n: MbBookNote) => {
       self.excerptStatus.lastExcerptText !== undefined
     ) {
       addTitleExcerpt({ text: self.excerptStatus.lastExcerptText })
-      return dev.log("Locking excerpt is ON, restore excerpt", "excerpt")
+      return MN.log("Locking excerpt is ON, restore excerpt", "excerpt")
     }
 
     const excerptText = (await customOCR()) ?? note.excerptText?.trim()

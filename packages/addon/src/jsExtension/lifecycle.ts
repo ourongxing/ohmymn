@@ -43,7 +43,7 @@ export default defineLifecycleHandlers({
   instanceMethods: {
     sceneWillConnect() {
       self.useConsole = false
-      dev.log("Open a new window", "lifecycle")
+      MN.log("Open a new window", "lifecycle")
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
         status: false,
@@ -83,7 +83,7 @@ export default defineLifecycleHandlers({
       self.settingViewController.notebookProfile = self.notebookProfile
     },
     notebookWillOpen(notebookid: string) {
-      dev.log("Open a notebook", "lifecycle")
+      MN.log("Open a notebook", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       if (!self.isFirstOpenDoc) {
         readProfile({
@@ -111,11 +111,11 @@ export default defineLifecycleHandlers({
       }
     },
     documentDidOpen(docmd5: string) {
-      dev.log("Open a document", "lifecycle")
+      MN.log("Open a document", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       // Switch document, read doc profile
       if (self.isFirstOpenDoc) {
-        dev.log("First open a document", "lifecycle")
+        MN.log("First open a document", "lifecycle")
         self.isFirstOpenDoc = false
         readProfile({
           range: Range.All,
@@ -130,7 +130,7 @@ export default defineLifecycleHandlers({
       }
     },
     notebookWillClose(notebookid: string) {
-      dev.log("Close a notebook", "lifecycle")
+      MN.log("Close a notebook", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       removeLastComment()
       removeUndefinedCache()
@@ -144,7 +144,7 @@ export default defineLifecycleHandlers({
       !MN.isMac && gestureRecognizers().remove()
     },
     documentWillClose(docmd5: string) {
-      dev.log("Close a document", "lifecycle")
+      MN.log("Close a document", "lifecycle")
       if (MN.studyController.studyMode === StudyMode.review) return
       writeProfile({
         range: Range.Doc,
@@ -153,7 +153,7 @@ export default defineLifecycleHandlers({
     },
     // Not triggered on ipad
     sceneDidDisconnect() {
-      dev.log("Close a window", "lifecycle")
+      MN.log("Close a window", "lifecycle")
       removeLastComment()
       if (MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
         removeUndefinedCache()
@@ -166,7 +166,7 @@ export default defineLifecycleHandlers({
     },
     sceneWillResignActive() {
       // or go to the background
-      dev.log("Window is inactivation", "lifecycle")
+      MN.log("Window is inactivation", "lifecycle")
       removeLastComment()
       if (!MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
         removeUndefinedCache()
@@ -180,12 +180,12 @@ export default defineLifecycleHandlers({
     sceneDidBecomeActive() {
       !MN.isMac && layoutViewController()
       // or go to the foreground
-      dev.log("Window is activated", "lifecycle")
+      MN.log("Window is activated", "lifecycle")
     }
   },
   classMethods: {
     async addonWillDisconnect() {
-      dev.log("Addon disconected", "lifecycle")
+      MN.log("Addon disconected", "lifecycle")
       const { buttonIndex: option } = await popup({
         title: Addon.title,
         message: lang.uninstall.have_bugs,
@@ -206,7 +206,7 @@ export default defineLifecycleHandlers({
       }
     },
     addonDidConnect() {
-      dev.log("Addon connected", "lifecycle")
+      MN.log("Addon connected", "lifecycle")
       if (
         !isfileExists(`${Addon.path}/AutoCompleteData.db`) &&
         isfileExists(`${Addon.path}/AutoCompleteData.zip`)

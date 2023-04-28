@@ -56,7 +56,7 @@ export const autoUtils = (() => {
       return acc
     }, {} as TypeUtilArray<AutoUtilType>)
   } catch (err) {
-    dev.error(err)
+    MN.error(err)
     return {}
   }
 })()

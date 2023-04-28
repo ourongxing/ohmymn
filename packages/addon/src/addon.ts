@@ -1,7 +1,6 @@
 import type { OpenCC } from "~/modules/autosimplify/opencc"
 import mainfest from "../manifest"
 import type { SQLiteDatabase } from "marginnote"
-import { MN } from "marginnote"
 
 class MNADDON {
   path!: string
