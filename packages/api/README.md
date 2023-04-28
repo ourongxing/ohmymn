@@ -16,9 +16,9 @@ Type definitions for the latest MarginNote API, and some utility functions that 
 
 ```shell
 pnpm add marginnote
-or
+# or
 npm install marginnote
-or
+# or
 yarn add marginnote
 ```
 
@@ -28,9 +28,9 @@ then
 import { MN } from "marginnote"
 ```
 
-## Document
+## Documentation
 
-🚧
+[简体中文]()
 
 ## License
 
