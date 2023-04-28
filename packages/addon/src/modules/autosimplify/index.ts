@@ -1,7 +1,7 @@
 import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import { Addon } from "~/addon"
-import { isfileExists, readJSON } from "marginnote"
+import { isfileExists, readJSON, undoGroupingWithRefresh } from "marginnote"
 import { OpenCC } from "~/modules/autosimplify/opencc"
 import lang from "./lang"
 import { doc } from "~/utils"
@@ -86,16 +86,18 @@ export default defineConfig({
       key: "simplifyCard",
       option: lang.simplify_card.$option3,
       method: ({ nodes, option }) => {
-        nodes.forEach(node => {
-          if (option == 0 || option == 1) {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text) note.excerptText = simplifyText(text)
-            })
-          }
-          if ((option == 0 || option == 2) && node.title) {
-            node.title = simplifyText(node.title)
-          }
+        undoGroupingWithRefresh(() => {
+          nodes.forEach(node => {
+            if (option == 0 || option == 1) {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text) note.excerptText = simplifyText(text)
+              })
+            }
+            if ((option == 0 || option == 2) && node.title) {
+              node.title = simplifyText(node.title)
+            }
+          })
         })
       }
     }

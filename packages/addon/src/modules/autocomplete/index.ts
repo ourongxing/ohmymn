@@ -107,8 +107,12 @@ export default defineConfig({
         }
 
         const getCompletedWord = (node: NodeNote) => {
-          const text = node.titles[0]
-          return text ? completeWord(text, node.note) : undefined
+          try {
+            const text = node.titles[0]
+            return text ? completeWord(text, node.note) : undefined
+          } catch {
+            return undefined
+          }
         }
 
         const allInfo = await (async () => {

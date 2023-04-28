@@ -1,4 +1,4 @@
-import type { NodeNote } from "marginnote"
+import { type NodeNote, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -78,41 +78,43 @@ export default defineConfig({
       key: "addComment",
       option: lang.add_comment.$option2,
       method({ nodes, option, content }) {
-        if (option == AddComment.UseAutoComment) {
-          nodes.forEach(node => {
-            let text = node.excerptsText.join("\n")
-            if (node.note.excerptPic?.paint && node.isOCR === false)
-              text = "@picture"
-            const comments = generateComments(node, text)
-            if (comments?.length) node.appendTextComments(...comments)
-          })
-        } else if (content) {
-          if (/^\(.+\)$/.test(content)) {
-            const params = string2ReplaceParam(content)
+        undoGroupingWithRefresh(() => {
+          if (option == AddComment.UseAutoComment) {
             nodes.forEach(node => {
               let text = node.excerptsText.join("\n")
               if (node.note.excerptPic?.paint && node.isOCR === false)
                 text = "@picture"
-              const comments = extractArray(
-                text,
-                params.map(k => ({
-                  ...k,
-                  newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-                }))
-              )
-              node.appendTextComments(...comments)
+              const comments = generateComments(node, text)
+              if (comments?.length) node.appendTextComments(...comments)
             })
-          } else {
-            nodes.forEach(node => {
-              node.appendTextComments(
-                renderTemplateOfNodeProperties(
-                  node,
-                  reverseEscape(`${escapeDoubleQuote(content)}`, true)
+          } else if (content) {
+            if (/^\(.+\)$/.test(content)) {
+              const params = string2ReplaceParam(content)
+              nodes.forEach(node => {
+                let text = node.excerptsText.join("\n")
+                if (node.note.excerptPic?.paint && node.isOCR === false)
+                  text = "@picture"
+                const comments = extractArray(
+                  text,
+                  params.map(k => ({
+                    ...k,
+                    newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+                  }))
                 )
-              )
-            })
+                node.appendTextComments(...comments)
+              })
+            } else {
+              nodes.forEach(node => {
+                node.appendTextComments(
+                  renderTemplateOfNodeProperties(
+                    node,
+                    reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                  )
+                )
+              })
+            }
           }
-        }
+        })
       },
       check({ input }) {
         if (/^\(.+\)$/.test(input)) checkReplaceParam(input)

@@ -4,6 +4,7 @@ import { serialSymbols, reverseEscape, doc } from "~/utils"
 import lang from "./lang"
 import { ChangeStyle } from "./typings"
 import { modifyStyle } from "./utils"
+import { undoGroupingWithRefresh } from "marginnote"
 
 const colors = lang.$color17.map((color, index) =>
   index ? serialSymbols.hollow_circle_number[index - 1] + " " + color : color
@@ -83,22 +84,24 @@ export default defineConfig({
       option: lang.change_color.$option2,
       help: lang.change_color.help,
       method({ content, nodes, option }) {
-        if (option === ChangeStyle.UseAutoStyle) {
-          for (const node of nodes) {
-            node.notes.forEach(note => {
-              const { color } = modifyStyle(note)
-              if (color !== undefined)
-                note.colorIndex = color !== -1 ? color : 12
-            })
+        undoGroupingWithRefresh(() => {
+          if (option === ChangeStyle.UseAutoStyle) {
+            for (const node of nodes) {
+              node.notes.forEach(note => {
+                const { color } = modifyStyle(note)
+                if (color !== undefined)
+                  note.colorIndex = color !== -1 ? color : 12
+              })
+            }
+          } else if (content) {
+            const color = Number(content) - 1
+            for (const node of nodes) {
+              node.notes.forEach(note => {
+                note.colorIndex = color
+              })
+            }
           }
-        } else if (content) {
-          const color = Number(content) - 1
-          for (const node of nodes) {
-            node.notes.forEach(note => {
-              note.colorIndex = color
-            })
-          }
-        }
+        })
       },
       check({ input }) {
         const index = Number(input)
@@ -112,21 +115,23 @@ export default defineConfig({
       key: "changeStyle",
       option: lang.change_style.$option4,
       method({ option, nodes }) {
-        if (option === ChangeStyle.UseAutoStyle) {
-          for (const node of nodes) {
-            node.notes.forEach(note => {
-              const { style } = modifyStyle(note)
-              if (style !== undefined) note.fillIndex = style
-            })
+        undoGroupingWithRefresh(() => {
+          if (option === ChangeStyle.UseAutoStyle) {
+            for (const node of nodes) {
+              node.notes.forEach(note => {
+                const { style } = modifyStyle(note)
+                if (style !== undefined) note.fillIndex = style
+              })
+            }
+          } else {
+            const style = option - 1
+            for (const node of nodes) {
+              node.notes.forEach(note => {
+                note.fillIndex = style
+              })
+            }
           }
-        } else {
-          const style = option - 1
-          for (const node of nodes) {
-            node.notes.forEach(note => {
-              note.fillIndex = style
-            })
-          }
-        }
+        })
       }
     }
   ]

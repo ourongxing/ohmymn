@@ -98,12 +98,10 @@ export default async function (key: string, option: number, content: string) {
       })
       break
     default:
-      undoGroupingWithRefresh(() => {
-        actions4card[key]({
-          content,
-          nodes,
-          option
-        })
+      await actions4card[key]({
+        content,
+        nodes,
+        option
       })
   }
 }

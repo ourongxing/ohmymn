@@ -4,6 +4,7 @@ import { defineConfig } from "~/profile"
 import lang from "./lang"
 import { Format } from "./typings"
 import { formatText, titleCase } from "./utils"
+import { undoGroupingWithRefresh } from "marginnote"
 
 export default defineConfig({
   name: "AutoFormat",
@@ -66,23 +67,25 @@ export default defineConfig({
       label: lang.format_selected.label,
       option: lang.format_selected.$option3,
       method: ({ nodes, option }) => {
-        nodes.forEach(node => {
-          const title = node.title
-          if (
-            title &&
-            (option === Format.Title || option === Format.TitlenExcerpt)
-          ) {
-            let newTitle = formatText(title)
-            if (self.globalProfile.autoformat.formatTitle)
-              newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("; ")
-            node.title = newTitle
-          }
-          if (option === Format.Excerpt || option === Format.TitlenExcerpt) {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text) note.excerptText = formatText(text)
-            })
-          }
+        undoGroupingWithRefresh(() => {
+          nodes.forEach(node => {
+            const title = node.title
+            if (
+              title &&
+              (option === Format.Title || option === Format.TitlenExcerpt)
+            ) {
+              let newTitle = formatText(title)
+              if (self.globalProfile.autoformat.formatTitle)
+                newTitle = titleCase(newTitle.split(/\s*[;；]\s*/)).join("; ")
+              node.title = newTitle
+            }
+            if (option === Format.Excerpt || option === Format.TitlenExcerpt) {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text) note.excerptText = formatText(text)
+              })
+            }
+          })
         })
       }
     }

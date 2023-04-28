@@ -1,4 +1,4 @@
-import type { NodeNote } from "marginnote"
+import { NodeNote, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -82,43 +82,45 @@ export default defineConfig({
       key: "addTag",
       option: lang.add_tag.$option2,
       method({ nodes, option, content }) {
-        if (option == AddTag.UseAutoTag) {
-          nodes.forEach(node => {
-            let text = node.excerptsText.join("\n")
-            if (node.note.excerptPic?.paint && node.isOCR === false)
-              text = "@picture"
-            const tags = generateTags(node, text)
-            if (tags?.length) node.appendTags(...tags)
-          })
-        } else if (content) {
-          if (/^\(.+\)$/.test(content)) {
-            const params = string2ReplaceParam(content)
+        undoGroupingWithRefresh(() => {
+          if (option == AddTag.UseAutoTag) {
             nodes.forEach(node => {
               let text = node.excerptsText.join("\n")
               if (node.note.excerptPic?.paint && node.isOCR === false)
                 text = "@picture"
-              const tags = extractArray(
-                text,
-                params.map(k => ({
-                  ...k,
-                  newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
-                }))
-              )
-              node.appendTags(...clearTags(...tags))
+              const tags = generateTags(node, text)
+              if (tags?.length) node.appendTags(...tags)
             })
-          } else {
-            nodes.forEach(node => {
-              node.appendTags(
-                ...clearTags(
-                  renderTemplateOfNodeProperties(
-                    node,
-                    reverseEscape(`${escapeDoubleQuote(content)}`, true)
+          } else if (content) {
+            if (/^\(.+\)$/.test(content)) {
+              const params = string2ReplaceParam(content)
+              nodes.forEach(node => {
+                let text = node.excerptsText.join("\n")
+                if (node.note.excerptPic?.paint && node.isOCR === false)
+                  text = "@picture"
+                const tags = extractArray(
+                  text,
+                  params.map(k => ({
+                    ...k,
+                    newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
+                  }))
+                )
+                node.appendTags(...clearTags(...tags))
+              })
+            } else {
+              nodes.forEach(node => {
+                node.appendTags(
+                  ...clearTags(
+                    renderTemplateOfNodeProperties(
+                      node,
+                      reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                    )
                   )
                 )
-              )
-            })
+              })
+            }
           }
-        }
+        })
       },
       check({ input }) {
         if (/^\(.+\)$/.test(input)) checkReplaceParam(input)

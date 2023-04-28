@@ -12,6 +12,7 @@ import {
 import lang from "./lang"
 import { ExtractTitle, SplitExcerpt } from "./typings"
 import { extractTitle, splitExcerptTitles } from "./utils"
+import { undoGroupingWithRefresh } from "marginnote"
 
 export default defineConfig({
   name: "Another AutoDef",
@@ -101,18 +102,20 @@ export default defineConfig({
         } else if (content) {
           params = string2ReplaceParam(content)
         } else return
-        nodes.forEach(node => {
-          if (!node.note.excerptPic || node.isOCR) {
-            const allTitles = [] as string[]
-            node.notes.forEach(k => {
-              const text = k.excerptText
-              if (text) {
-                const ret = extractTitle(node, text, params)
-                ret?.title.length && allTitles.push(...ret.title)
-              }
-            })
-            node.appendTitles(...allTitles)
-          }
+        undoGroupingWithRefresh(() => {
+          nodes.forEach(node => {
+            if (!node.note.excerptPic || node.isOCR) {
+              const allTitles = [] as string[]
+              node.notes.forEach(k => {
+                const text = k.excerptText
+                if (text) {
+                  const ret = extractTitle(node, text, params)
+                  ret?.title.length && allTitles.push(...ret.title)
+                }
+              })
+              node.appendTitles(...allTitles)
+            }
+          })
         })
       },
       check({ input }) {

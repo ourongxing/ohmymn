@@ -1,4 +1,4 @@
-import type { NodeNote } from "marginnote"
+import { type NodeNote, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -66,32 +66,34 @@ export default defineConfig({
       key: "replaceCard",
       option: lang.replace_selected.$option2,
       method: ({ content, nodes, option }) => {
-        if (option == ReplaceCard.UseAutoReplace) {
-          nodes.forEach(node => {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text) note.excerptText = replaceText(node, text)
+        undoGroupingWithRefresh(() => {
+          if (option == ReplaceCard.UseAutoReplace) {
+            nodes.forEach(node => {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text) note.excerptText = replaceText(node, text)
+              })
             })
-          })
-        } else if (content) {
-          content = /^\(.*\)$/.test(content)
-            ? content
-            : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
-          const params = string2ReplaceParam(content)
-          nodes.forEach(node => {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text) {
-                note.excerptText = params.reduce((acc, params) => {
-                  return acc.replace(
-                    params.regexp,
-                    renderTemplateOfNodeProperties(node, params.newSubStr)
-                  )
-                }, text)
-              }
+          } else if (content) {
+            content = /^\(.*\)$/.test(content)
+              ? content
+              : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
+            const params = string2ReplaceParam(content)
+            nodes.forEach(node => {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text) {
+                  note.excerptText = params.reduce((acc, params) => {
+                    return acc.replace(
+                      params.regexp,
+                      renderTemplateOfNodeProperties(node, params.newSubStr)
+                    )
+                  }, text)
+                }
+              })
             })
-          })
-        }
+          }
+        })
       }
     }
   ]

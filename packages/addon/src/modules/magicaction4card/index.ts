@@ -122,23 +122,24 @@ export default defineConfig({
           }
         )
         const titles = node.titles
-        for (const n of nodes) {
-          if (n === node) continue
-          titles.push(...n.titles)
-          node.note.merge(n.note)
-        }
-        const len = node.note.comments.length
-        // 从后往前删，索引不会乱
-        node.note.comments.reverse().forEach((comment, index) => {
-          if (comment.type == "TextNote" && titles.includes(comment.text)) {
-            node.note.removeCommentByIndex(len - index - 1)
+        undoGroupingWithRefresh(() => {
+          for (const n of nodes) {
+            if (n === node) continue
+            titles.push(...n.titles)
+            node.note.merge(n.note)
           }
+          const len = node.note.comments.length
+          // 从后往前删，索引不会乱
+          node.note.comments.reverse().forEach((comment, index) => {
+            if (comment.type == "TextNote" && titles.includes(comment.text)) {
+              node.note.removeCommentByIndex(len - index - 1)
+            }
+          })
+          if (option == MergeCards.MergeTitle) {
+            node.titles = titles
+          }
+          node.tidyupTags()
         })
-
-        if (option == MergeCards.MergeTitle) {
-          node.titles = titles
-        }
-        node.tidyupTags()
       }
     },
     {
@@ -146,7 +147,11 @@ export default defineConfig({
       label: lang.rename_title.label,
       key: "renameTitle",
       help: lang.rename_title.help,
-      method: renameTitle,
+      method({ content, nodes }) {
+        undoGroupingWithRefresh(() => {
+          renameTitle(content, nodes)
+        })
+      },
       check({ input }) {
         input = /^\(.+\)$/.test(input)
           ? input
@@ -170,60 +175,62 @@ export default defineConfig({
           `${escapeDoubleQuote(defaultMergeText)}`,
           true
         ).split("$&")
-        for (const node of nodes) {
-          const allText = ((arr: string[]) => {
-            if (/%\[.+\]/.test(front)) {
-              const serialArr = getSerialInfo(front, arr.length)
-              return arr
-                .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
-                .join(behind)
-            }
-            return arr.map(k => front + k).join(behind)
-          })(node.excerptsCommentsText)
-
-          node.removeCommentButLinkTag(
-            k =>
-              k.type === "PaintNote" ||
-              k.type === "HtmlNote" ||
-              (k.type === "LinkNote" &&
-              !node.isOCR &&
-              MN.db.getNoteById(k.noteid!)?.excerptPic?.paint
-                ? true
-                : false),
-            async node => {
-              switch (option) {
-                case MergeText.ToExpertText:
-                  if (node.note.excerptPic?.paint && node.isOCR === false) {
-                    const { index } = await select(
-                      lang.merge_text.$excerpt_pic_option2,
-                      lang.merge_text.label,
-                      lang.merge_text.is_excerpt_pic
-                    )
-                    if (index) {
-                      node.appendTextComments(removeHighlight(allText))
-                      return
-                    }
-                  }
-                  node.mainExcerptText = allText
-                  break
-                case MergeText.ToComment:
-                  if (node.isOCR && node.mainExcerptText) {
-                    const { index } = await select(
-                      lang.merge_text.$excerpt_pic_text_option2,
-                      lang.merge_text.label,
-                      lang.merge_text.is_excerpt_pic_text
-                    )
-                    if (index) {
-                      node.mainExcerptText = allText
-                      return
-                    }
-                  }
-                  if (!node.note.excerptPic?.paint) node.mainExcerptText = ""
-                  node.appendTextComments(removeHighlight(allText))
+        undoGroupingWithRefresh(() => {
+          for (const node of nodes) {
+            const allText = ((arr: string[]) => {
+              if (/%\[.+\]/.test(front)) {
+                const serialArr = getSerialInfo(front, arr.length)
+                return arr
+                  .map((k, i) => front.replace(/%\[(.+)\]/, serialArr[i]) + k)
+                  .join(behind)
               }
-            }
-          )
-        }
+              return arr.map(k => front + k).join(behind)
+            })(node.excerptsCommentsText)
+
+            node.removeCommentButLinkTag(
+              k =>
+                k.type === "PaintNote" ||
+                k.type === "HtmlNote" ||
+                (k.type === "LinkNote" &&
+                !node.isOCR &&
+                MN.db.getNoteById(k.noteid!)?.excerptPic?.paint
+                  ? true
+                  : false),
+              async node => {
+                switch (option) {
+                  case MergeText.ToExpertText:
+                    if (node.note.excerptPic?.paint && node.isOCR === false) {
+                      const { index } = await select(
+                        lang.merge_text.$excerpt_pic_option2,
+                        lang.merge_text.label,
+                        lang.merge_text.is_excerpt_pic
+                      )
+                      if (index) {
+                        node.appendTextComments(removeHighlight(allText))
+                        return
+                      }
+                    }
+                    node.mainExcerptText = allText
+                    break
+                  case MergeText.ToComment:
+                    if (node.isOCR && node.mainExcerptText) {
+                      const { index } = await select(
+                        lang.merge_text.$excerpt_pic_text_option2,
+                        lang.merge_text.label,
+                        lang.merge_text.is_excerpt_pic_text
+                      )
+                      if (index) {
+                        node.mainExcerptText = allText
+                        return
+                      }
+                    }
+                    if (!node.note.excerptPic?.paint) node.mainExcerptText = ""
+                    node.appendTextComments(removeHighlight(allText))
+                }
+              }
+            )
+          }
+        })
       }
     },
     {
@@ -234,27 +241,29 @@ export default defineConfig({
       help: lang.switch_title.help,
       method: async ({ nodes, option }) => {
         if (option === SwitchTitle.ToNonexistent) {
-          for (const node of nodes) {
-            const title = node.title
-            const text = removeHighlight(node.mainExcerptText)
-            /**
-             * 只有标题
-             * 1. 摘录和标题相同：删除标题
-             * 2. 摘录为空：删除标题，设置摘录
-             * 只有摘录：删除摘录（是文字），设置标题
-             */
-            if (node.note.excerptPic?.paint && !node.note.textFirst) {
-            } else if (text === title) node.title = ""
-            else if (title && !text) {
-              node.title = ""
-              node.mainExcerptText = title
-            } else if (text && !title) {
-              node.title = text
-              // 有可能有重点
-              if (node.note.excerptPic?.paint) node.mainExcerptText = text
-              else node.mainExcerptText = ""
+          undoGroupingWithRefresh(() => {
+            for (const node of nodes) {
+              const title = node.title
+              const text = removeHighlight(node.mainExcerptText)
+              /**
+               * 只有标题
+               * 1. 摘录和标题相同：删除标题
+               * 2. 摘录为空：删除标题，设置摘录
+               * 只有摘录：删除摘录（是文字），设置标题
+               */
+              if (node.note.excerptPic?.paint && !node.note.textFirst) {
+              } else if (text === title) node.title = ""
+              else if (title && !text) {
+                node.title = ""
+                node.mainExcerptText = title
+              } else if (text && !title) {
+                node.title = text
+                // 有可能有重点
+                if (node.note.excerptPic?.paint) node.mainExcerptText = text
+                else node.mainExcerptText = ""
+              }
             }
-          }
+          })
         } else {
           /**
            * 标题和摘录都存在

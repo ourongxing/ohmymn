@@ -1,5 +1,4 @@
 import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import type { IActionMethod4Card } from "~/typings"
 import {
   getSerialByIndex,
   getSerialInfo,
@@ -7,13 +6,10 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam
 } from "~/utils"
-import { showHUD } from "marginnote"
+import { type NodeNote, showHUD } from "marginnote"
 import lang from "./lang"
 
-export const getLayerSerialInfo = (
-  newSubStr: string,
-  treeIndex: number[][]
-) => {
+export function getLayerSerialInfo(newSubStr: string, treeIndex: number[][]) {
   // string[], [...string[],[string,number,boolean]]
   const serialArr = reverseEscape(
     newSubStr.replace(/^.*#(\[.+\]).*$/, "$1").replace(/'/g, '"')
@@ -57,7 +53,7 @@ export const getLayerSerialInfo = (
   })
 }
 
-export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
+export function renameTitle(content: string, nodes: NodeNote[]) {
   content = /^\(.*\)$/.test(content)
     ? content
     : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
@@ -90,6 +86,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
       return
     }
   }
+
   // 如果含有编号信息，就获取新的 replaceValue
   else if (/%\[(.+)\]/.test(newSubStr)) {
     const newTitles = getSerialInfo(newSubStr, nodes.length).map(k =>
@@ -104,6 +101,7 @@ export const renameTitle: IActionMethod4Card = ({ content, nodes }) => {
         )
     })
   }
+
   // 或者直接替换
   else {
     nodes.forEach(node => {

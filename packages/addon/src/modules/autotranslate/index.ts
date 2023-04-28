@@ -124,11 +124,15 @@ export default defineConfig({
           } = self.globalProfile.autotranslate
 
           function getTranslatedText(text?: string) {
-            if (text)
-              return translateProviders[0] === TranslateProviders.Baidu
-                ? baiduTranslate(text, baiduFromLang[0], baiduToLang[0])
-                : caiyunTranslate(text, caiyunFromLang[0], caiyunToLang[0])
-            else return ""
+            try {
+              if (text)
+                return translateProviders[0] === TranslateProviders.Baidu
+                  ? baiduTranslate(text, baiduFromLang[0], baiduToLang[0])
+                  : caiyunTranslate(text, caiyunFromLang[0], caiyunToLang[0])
+              else return ""
+            } catch {
+              return ""
+            }
           }
 
           const allTranslation: string[][] = []

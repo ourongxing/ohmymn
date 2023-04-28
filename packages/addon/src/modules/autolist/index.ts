@@ -1,3 +1,4 @@
+import { undoGroupingWithRefresh } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {
@@ -53,30 +54,32 @@ export default defineConfig({
       key: "listCard",
       option: lang.list_selected.$option2,
       method({ nodes, content, option }) {
-        if (option == ListCard.UseAutoList) {
-          nodes.forEach(node => {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text) note.excerptText = addLineBreak(text)
+        undoGroupingWithRefresh(() => {
+          if (option == ListCard.UseAutoList) {
+            nodes.forEach(node => {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text) note.excerptText = addLineBreak(text)
+              })
             })
-          })
-        } else if (content) {
-          const params = string2ReplaceParam(content)
-          const { regexp, fnKey, newSubStr } = params[0]
-          nodes.forEach(node => {
-            node.notes.forEach(note => {
-              const text = note.excerptText
-              if (text)
-                note.excerptText = addNumber(
-                  text
-                    .replace(regexp, newSubStr)
-                    .replace(/\n{2,}/g, "\n")
-                    .trim(),
-                  fnKey
-                )
+          } else if (content) {
+            const params = string2ReplaceParam(content)
+            const { regexp, fnKey, newSubStr } = params[0]
+            nodes.forEach(node => {
+              node.notes.forEach(note => {
+                const text = note.excerptText
+                if (text)
+                  note.excerptText = addNumber(
+                    text
+                      .replace(regexp, newSubStr)
+                      .replace(/\n{2,}/g, "\n")
+                      .trim(),
+                    fnKey
+                  )
+              })
             })
-          })
-        }
+          }
+        })
       },
       check({ input }) {
         checkReplaceParam(input)
