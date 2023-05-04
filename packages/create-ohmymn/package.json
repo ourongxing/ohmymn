@@ -2,25 +2,36 @@
   "name": "create-ohmymn",
   "description": "",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "MarginNote<https://github.com/marginnoteapp>",
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"
   ],
   "homepage": "https://github.com/marginnoteapp/ohmymn/tree/main/packages/create-ohmymn#readme",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --clean",
+    "dev": "pnpm build --watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marginnoteapp/ohmymn.git",
     "directory": "packages/create-ohmymn"
   },
   "files": [
-    "dist/**/*.mjs",
-    "template/**/*"
+    "dist",
+    "templates"
   ],
-  "bin": "dist/index.mjs",
+  "bin": "dist/index.js",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@types/minimist": "^1.2.2",
+    "@types/prompts": "^2.4.2",
+    "tsup": "^6.2.3"
+  },
   "dependencies": {
     "chokidar": "^3.5.3",
-    "commander": "^9.4.0",
-    "jimp": "^0.16.1"
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2"
   }
 }
