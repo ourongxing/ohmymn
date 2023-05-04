@@ -82,14 +82,14 @@ function zip(): Plugin {
   }
 }
 
-function genMainfest(): Plugin {
+function genManifest(): Plugin {
   return {
-    name: "GenMainfest",
+    name: "GenManifest",
     setup(build) {
       build.onEnd(() => {
         const mnaddon = {
           addonid: `marginnote.extension.${manifest.key}`,
-          // author: mainfest.author,
+          // author: manifest.author,
           author: "MN(ourongxing",
           title: manifest.title,
           version: manifest.version,
@@ -120,7 +120,7 @@ const plugins: Plugin[] = [
         to: outDir
       }))
     }),
-  genMainfest(),
+  genManifest(),
   isProd && zip()
 ].filter(k => k)
 

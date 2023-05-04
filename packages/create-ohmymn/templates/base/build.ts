@@ -78,9 +78,9 @@ function zip(): Plugin {
   }
 }
 
-function genMainfest(): Plugin {
+function genManifest(): Plugin {
   return {
-    name: "GenMainfest",
+    name: "GenManifest",
     setup(build) {
       build.onEnd(() => {
         const mnaddon = {
@@ -115,7 +115,7 @@ const plugins: Plugin[] = [
         to: outDir
       }))
     }),
-  genMainfest(),
+  genManifest(),
   isProd && zip()
 ].filter(k => k)
 

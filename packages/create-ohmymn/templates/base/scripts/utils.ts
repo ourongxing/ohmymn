@@ -1,5 +1,5 @@
-export function defineManifest(mainfest: Manifest) {
-  return mainfest
+export function defineManifest(manifest: Manifest) {
+  return manifest
 }
 
 interface Manifest {
