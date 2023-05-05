@@ -240,27 +240,3 @@ export const { dataSource: defaultDataSource, moduleNameList } = genDataSource(
 )
 
 export const dataSourceIndex = genDataSourceIndex(defaultDataSource)
-// const cardaction: any[] = []
-// const textaction: any[] = []
-// defaultDataSource.forEach(sec => {
-//   if (sec.key === "magicaction4card") {
-//     cardaction.push(
-//       ...sec.rows.filter(
-//         k =>
-//           k.type === CellViewType.Button ||
-//           k.type === CellViewType.ButtonWithInput
-//       )
-//     )
-//   } else if (sec.key === "magicaction4text") {
-//     textaction.push(
-//       ...sec.rows.filter(
-//         k =>
-//           k.type === CellViewType.Button ||
-//           k.type === CellViewType.ButtonWithInput
-//       )
-//     )
-//   }
-// })
-
-// copy(JSON.stringify(cardaction))
-// copy(JSON.stringify(textaction))

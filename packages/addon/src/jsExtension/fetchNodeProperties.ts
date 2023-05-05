@@ -121,9 +121,16 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
         t => MN.db.getDocumentById(t)?.docTitle
       ),
       url: isRequire("url.") && {
-        pure: undefine2undefine(getDocURL(), t => t),
+        pure: undefine2undefine(
+          nodeNote.docMd5 &&
+            nodeNote.notebookId &&
+            getDocURL(nodeNote.docMd5, nodeNote.notebookId, nodeNote.startPage),
+          t => t
+        ),
         md: undefine2undefine(
-          getDocURL(),
+          nodeNote.docMd5 &&
+            nodeNote.notebookId &&
+            getDocURL(nodeNote.docMd5, nodeNote.notebookId, nodeNote.startPage),
           t =>
             `[${
               nodeNote.docMd5
@@ -133,7 +140,9 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
             }](marginnote3app://note/${t}`
         ),
         html: undefine2undefine(
-          getDocURL(),
+          nodeNote.docMd5 &&
+            nodeNote.notebookId &&
+            getDocURL(nodeNote.docMd5, nodeNote.notebookId, nodeNote.startPage),
           t =>
             `<a href="marginnote3app://note/${t}" class="MNDoc">${
               nodeNote.docMd5

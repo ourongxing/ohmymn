@@ -43,6 +43,10 @@ export default defineLifecycleHandlers({
   instanceMethods: {
     sceneWillConnect() {
       self.useConsole = false
+      self.addon = {
+        key: Addon.key,
+        title: Addon.title
+      }
       MN.log("Open a new window", "lifecycle")
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
@@ -50,10 +54,6 @@ export default defineLifecycleHandlers({
         lastOpenPanel: 0,
         lastClickButton: 0,
         lastReaderViewWidth: 0
-      }
-      self.addon = {
-        key: Addon.key,
-        title: Addon.title
       }
       self.metadata = {
         data: undefined,

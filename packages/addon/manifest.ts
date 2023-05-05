@@ -23,7 +23,7 @@ export default defineManifest({
   doc: "https://ohmymn.vercel.app",
   files: [
     "assets/logo.png",
-    "assets/icon",
+    "assets/icon/",
     "assets/AutoSimplifyData.json"
     // "assets/AutoCompleteData.db"
     // "assets/AutoCompleteData.zip"

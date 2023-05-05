@@ -38,6 +38,7 @@ export function checkReplaceParamFromMNLink(input: string) {
 export function checkInteger(input: number) {
   if (!Number.isInteger(input)) throw lang.input_integer
 }
+
 export function checkPositiveinteger(input: number) {
   checkInteger(input)
   if (input < 0) throw lang.input_positive

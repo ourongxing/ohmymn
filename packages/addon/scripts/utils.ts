@@ -1,21 +1,36 @@
-export function defineManifest(mainfest: Manifest) {
-  return mainfest
+export function defineManifest(manifest: Manifest) {
+  return manifest
 }
 
 interface Manifest {
+  /**
+   * Unique identifier of the addon. Not need "marginnote.extension.".
+   */
   key: string
   author: string
   title: string
   version: string
+  /**
+   * Github repository url.
+   */
   github?: string
+  /**
+   * The minimum version of MarginNote that the addon supports.
+   */
   minMarginNoteVersion: string
-  profileKey: {
+  /**
+   * Profile key, used to save addon settings.
+   */
+  profileKey?: {
     global: string
     doc: string
     notebook: string
   }
   certKey?: string
-  color: {
+  /**
+   * Panel color
+   */
+  color?: {
     border: string
     button: string
   }
@@ -24,5 +39,6 @@ interface Manifest {
   forum?: string
   docZH?: string
   doc?: string
+  /** Files to be copied to the addon folder */
   files?: string[]
 }
