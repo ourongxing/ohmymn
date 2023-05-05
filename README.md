@@ -10,14 +10,17 @@
 
 ## Documentation
 
-[简体中文](https://ohmymn.marginnote.cn/) | [English](https://ohmymn.marginnote.cn/en/)
+### User Guide
 
-## Development
+[简体中文](https://ohmymn.marginnote.cn/guide/) | [English](https://ohmymn.marginnote.cn/en/guide/)
 
-🚧
-## API Reference
+### Development
 
-🚧
+[简体中文](https://ohmymn.marginnote.cn/dev/)
+### API Reference
+
+[简体中文](https://ohmymn.marginnote.cn/api/)
+
 ## Acknowledgements
 
 - [obsidian-bridge](https://github.com/aidenlx/obsidian-bridge) The first project using TypeScript to develop mnaddon.
