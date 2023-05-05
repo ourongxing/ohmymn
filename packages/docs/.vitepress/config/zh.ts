@@ -87,7 +87,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: "/dev/ohmymn/",
               items: [
                 {
-                  text: "配置清单",
+                  text: "描述清单",
                   link: "/dev/ohmymn/manifest"
                 },
                 {
@@ -97,6 +97,14 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                 {
                   text: "项目结构",
                   link: "/dev/ohmymn/structure"
+                },
+                {
+                  text: "默认配置",
+                  link: "/dev/ohmymn/profile"
+                },
+                {
+                  text: "国际化",
+                  link: "/dev/ohmymn/i18n"
                 }
               ]
             },
@@ -105,8 +113,8 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: "/dev/module/",
               items: [
                 {
-                  text: "模块结构",
-                  link: "/dev/module/structure"
+                  text: "如何开发",
+                  link: "/dev/module/how"
                 }
               ]
             }
@@ -206,6 +214,14 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {
               text: "模块",
               link: "/api/ohmymn/module"
+            },
+            {
+              text: "输入处理",
+              link: "/api/ohmymn/input"
+            },
+            {
+              text: "文字相关",
+              link: "/api/ohmymn/text"
             }
           ]
         }

@@ -29,7 +29,7 @@ pnpm env use --global 18
 2. [OhMyMN 模块开发](./module/)
 3. [MN 插件（OhMyMN）开发](./ohmymn/)
 
-[MN 插件（Lite）开发](./lite.md) 只适用于简单功能，所以我称之为 Lite 版，也就是在 OhMyMN 出现之前传统的用一个 `main.js` 就能搞定的功能，比如 `AutoTitle`，`SearchInEudic`。如果你的功能比较复杂，又和摘录，卡片有关，建议阅读 [OhMyMN 模块开发](./module/)。如果无关，建议阅读 [MN 插件（OhMyMN）开发](./ohmymn.md)。
+[MN 插件（Lite）开发](./lite.md) 只适用于简单功能，所以我称之为 Lite 版，也就是在 OhMyMN 出现之前传统的用一个 `main.js` 就能搞定的功能，比如 `AutoTitle`，`SearchInEudic`。如果你的功能比较复杂，又和摘录，卡片有关，建议阅读 [OhMyMN 模块开发](./module/)。如果无关，建议阅读 [MN 插件（OhMyMN）开发](./ohmymn/)。
 
 OhMyMN 模块就是 OhMyMN 内置的插件，独立于 MN 插件。[OhMyMN 模块开发](./module/) 非常简单，可以快速开发复杂的功能。
 

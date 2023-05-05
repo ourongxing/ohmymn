@@ -26,14 +26,6 @@ Foundation 和 UIKit 是 Apple 提供的两个框架，用于开发 iOS/MacOS �
 所有的 API 代码都可以在 [marinnoteapp/ohmymn/packages/api](https://github.com/marginnoteapp/ohmymn/tree/main/packages/api) 找到。其中包括了 Objective-C 和 TypeScript 两种语言的代码。
 
 推荐使用 VSCode 作为代码编辑器，可以检查类型，自动补全。导入 `marginnote` 包，以获得更好的开发体验。这个包里还包括了部分 Foundation 和 UIKit API。
-::: code-group
-```shell [npm]
-npm install marginnote
-```
-```shell [pnpm]
+```shell
 pnpm install marginnote
 ```
-```shell [yarn]
-pnpm add marginnote
-```
-:::
