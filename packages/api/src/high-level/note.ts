@@ -43,23 +43,3 @@ export function removeHighlight(text: string) {
   if (text) return text.replace(/\*\*/g, "")
   return text
 }
-
-/**
- * Get a note link as the document link.
- */
-export function getDocURL() {
-  if (
-    MN.studyController.studyMode !== StudyMode.study ||
-    !MN.currentDocmd5 ||
-    MN.currentDocmd5 === "00000000" ||
-    !MN.currnetNotebookid
-  )
-    return
-  const notebook = MN.db.getNotebookById(MN.currnetNotebookid)!
-  const note = notebook.notes?.find(
-    k => k.docMd5 === MN.currentDocmd5 && k.modifiedDate
-  )
-  return note?.noteId
-    ? `marginnote3app://note/${note.noteId}`
-    : `marginnote3app://notebook/${MN.currnetNotebookid}`
-}

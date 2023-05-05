@@ -80,10 +80,6 @@ export function copy(text: string, hud = true) {
   } else hud && showHUD(lang.copy_empty)
 }
 
-/**
- * Like console but not, you need watch log in the console.app.
- */
-
 export function i18n<M, N>(lang: { zh: M; en: N extends M ? M : M }) {
   return MN.isZH ? lang.zh : lang.en
 }

@@ -26,3 +26,27 @@ export function getPageContent(pageNo: number) {
     .join(" ")
     .trim()
 }
+
+/**
+ * Get a note link as the document link.
+ */
+export function getDocURL(md5: string, notebookid: string, pageNo?: number) {
+  const notebook = MN.db.getNotebookById(notebookid)
+  if (!notebook) return `marginnote3app://notebook/${notebookid}`
+  let noteId: string | undefined
+  if (pageNo) {
+    noteId = notebook?.notes?.find(
+      k =>
+        k.docMd5 === md5 &&
+        k.modifiedDate &&
+        (k.startPage === pageNo || k.endPage === pageNo)
+    )?.noteId
+  } else {
+    noteId = notebook?.notes?.find(
+      k => k.docMd5 === md5 && k.modifiedDate
+    )?.noteId
+  }
+  return notebook
+    ? `marginnote3app://note/${noteId}`
+    : `marginnote3app://notebook/${notebookid}`
+}
