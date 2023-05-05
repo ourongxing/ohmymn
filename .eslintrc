@@ -5,15 +5,10 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
+  "parserOptions": {
+    "emitDecoratorMetaData": false
+  },
   "rules": {
-    "@typescript-eslint/consistent-type-imports": [
-      "error",
-      {
-        "prefer": "type-imports",
-        "disallowTypeAnnotations": false,
-        "fixStyle": "separate-type-imports"
-      }
-    ],
     "semi": [
       "error",
       "never",
