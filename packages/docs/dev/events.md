@@ -22,6 +22,10 @@ NSNotificationCenter.defaultCenter().removeObserverName(
 )
 ```
 
+可以导入 [事件监听控制器](../api/marginnote/dev.md#eventobservercontroller)，同时监听多个事件。
+```ts
+import { eventObserverController } from "marginnote"
+```
 ## 所有事件
 事件处理函数可以接收到一个 `sender` 对象，可以通过 `sender.userInfo` 得到事件传递来的参数。
 

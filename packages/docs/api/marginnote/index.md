@@ -64,7 +64,7 @@ get currentDocmd5() {
 }
 ```
 ### currentAddon
-从 `self.addon` 中获取当前插件的信息。需要手动写入到    `self.addon` 中。默认值为 `mnaddon` 和 `MarginNote`。
+从 `self.addon` 中获取当前插件的信息。需要手动写入到 `self.addon` 中。默认值为 `mnaddon` 和 `MarginNote`。通常是在 [sceneWillConnect](../../dev/lifecycle.md#scenewillconnect) 阶段写入。
 ```ts
 get currentAddon(): {
   key: string
@@ -112,3 +112,29 @@ readonly themeColor = {
   Sepia: UIColor.colorWithHexString("#F5EFDC")
 }
 ```
+
+## log, error
+```ts
+/**
+ * You need watch log in console.app not in Browser
+ * @param obj any object
+ * @param suffix default is "normal"
+ * @param args any params
+ */
+log(obj: any, suffix?: string, ...args: any[]): void;
+/**
+ * You need watch log in console.app not in Browser
+ * @param obj any object
+ * @param suffix default is "error"
+ * @param args any params
+ */
+error(obj: any, suffix?: string, ...args: any[]): void;
+```
+
+用来调试，可以理解为 `console.log` 和 `console.error`。但是你需要在 `Console.app` 中查看，而不是在浏览器中。
+
+![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/20230428175152.png?x-oss-process=base_webp)
+
+通过插件 key 筛选即可。`suffix` 参数默认为 `normal` 和 `error`，也是为了方便筛选。OhMyMN 里有大量的调试输出。
+
+其实也有办法在浏览器里调试，可以查看 [这篇文章](https://bbs.marginnote.cn/t/topic/37255)。并且将 `self.useConsole` 设置为 `true`，这样就可以在浏览器中调试了。可以尝试，但不一定有效。

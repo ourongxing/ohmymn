@@ -1,6 +1,7 @@
 # Foundation
+
 ::: warning 注意
-MarginNote 插件只提供有限的支持，并且 API 版本比较老旧。
+MarginNote 插件只提供有限的支持，并且 API 版本比较老旧。如果有用不了的 API，是正常的。
 :::
 
 Foundation 框架为应用程序和框架提供了一个基础功能层，包括数据存储和持久性、文本处理、日期和时间计算、排序和过滤以及网络。Foundation 定义的类、协议和数据类型在 macOS、 iOS、 watch OS 和 tvOS SDK 中使用。

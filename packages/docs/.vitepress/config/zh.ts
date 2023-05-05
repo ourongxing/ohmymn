@@ -51,50 +51,71 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     sidebar: {
       "/dev/": [
         {
-          text: "基础",
           items: [
             {
-              text: "开始",
-              link: "/dev/"
+              text: "基础",
+              link: "/dev/",
+              items: [
+                {
+                  text: "插件结构",
+                  link: "/dev/structure"
+                },
+                {
+                  text: "插件对象",
+                  link: "/dev/jsextension"
+                },
+                {
+                  text: "生命周期",
+                  link: "/dev/lifecycle"
+                },
+                {
+                  text: "事件监听",
+                  link: "/dev/events"
+                },
+                {
+                  text: "数据存储",
+                  link: "/dev/store"
+                }
+              ]
             },
             {
-              text: "插件结构",
-              link: "/dev/structure"
+              text: "MN 插件（Lite）",
+              link: "/dev/lite"
             },
             {
-              text: "插件对象",
-              link: "/dev/jsextension"
+              text: "MN 插件（OhMyMN）",
+              link: "/dev/ohmymn/",
+              items: [
+                {
+                  text: "配置清单",
+                  link: "/dev/ohmymn/manifest"
+                },
+                {
+                  text: "打包插件",
+                  link: "/dev/ohmymn/esbuild"
+                },
+                {
+                  text: "项目结构",
+                  link: "/dev/ohmymn/structure"
+                }
+              ]
             },
             {
-              text: "生命周期",
-              link: "/dev/lifecycle"
-            },
-            {
-              text: "事件监听",
-              link: "/dev/events"
-            },
-            {
-              text: "数据存储",
-              link: "/dev/store"
+              text: "OhMyMN 模块",
+              link: "/dev/module/",
+              items: [
+                {
+                  text: "模块结构",
+                  link: "/dev/module/structure"
+                }
+              ]
             }
           ]
-        },
-        {
-          text: "MN 插件（Lite）",
-          link: "/dev/lite"
-        },
-        {
-          text: "OhMyMN 模块",
-          link: "/dev/module/"
-        },
-        {
-          text: "MN 插件（OhMyMN）",
-          link: "/dev/ohmymn"
         }
       ],
       "/api/": [
         {
-          text: "介绍",
+          text: "简介",
           link: "/api/"
         },
         {
@@ -107,6 +128,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {
               text: "MN",
               link: "/api/marginnote/"
+            },
+            {
+              text: "开发相关",
+              link: "/api/marginnote/dev"
             },
             {
               text: "笔记相关",
@@ -131,6 +156,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {
               text: "文件操作",
               link: "/api/marginnote/file"
+            },
+            {
+              text: "其它",
+              link: "/api/marginnote/other"
             },
             {
               text: "Low-Level API",
@@ -158,6 +187,14 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                 {
                   text: "Utility",
                   link: "/api/marginnote/utility"
+                },
+                {
+                  text: "Foundation",
+                  link: "/api/foundation"
+                },
+                {
+                  text: "UIKit",
+                  link: "/api/uikit"
                 }
               ]
             }
@@ -165,18 +202,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         },
         {
           text: "OhMyMN",
-          items: []
-        },
-        {
-          text: "补充",
           items: [
             {
-              text: "Foundation",
-              link: "/api/foundation"
-            },
-            {
-              text: "UIKit",
-              link: "/api/uikit"
+              text: "模块",
+              link: "/api/ohmymn/module"
             }
           ]
         }

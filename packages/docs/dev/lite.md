@@ -22,17 +22,9 @@
 不管是监听文件变化还是最终打包成插件，都只会处理 png，js，json 这三类文件。另外，请不要使用子文件夹，否则不会被监听或者打包。
 
 ### 安装
-::: code-group
-```shell [npm]
-npm i mnaddon -g
-```
-```shell [yarn]
-yarn add mnaddon -g
-```
-```shell [pnpm]
+```shell
 pnpm add mnaddon -g
 ```
-:::
 
 ### 使用
 上面已经介绍了每个命令的作用，你还可以使用 `mnaddon help` 或者 `mnaddon help restart` 来查看每个命令具体的使用方法。 `<project-name>` 表示必填，`[output-name]` 表示可选。

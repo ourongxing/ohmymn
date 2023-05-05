@@ -57,7 +57,7 @@ JSB.newAddon = () => {
   )
 ```
 
-从上面的示例可以看出，我们只需要给 `JSB.newAddon` 赋值一个函数，这个函数返回一个 `JSB.defineClass` 定义的 Objective-C 类，这个对象就是我们的插件。这个对象不需要我们手动 new 实例，会自动创建。
+从上面的示例可以看出，我们只需要给 `JSB.newAddon` 赋值一个函数，这个函数返回一个 `JSB.defineClass` 定义的 Objective-C 类，在 JS 中通常称之为对象，这个对象就是我们的插件。不需要我们手动 new 实例，会自动创建。
 
 而这样的一个 `JSB.defineClass` 方法，需要传入 3 个参数：
 1. 类的名称以及继承的父类，上面的 `Template: JSExtension` 就表示这是一个继承自 `JSExtension` 的类，这个类的名称是 `Template`。
