@@ -1,6 +1,10 @@
 import { unique } from "."
 import lang from "./lang"
 
+/**
+ * Reverse escape a string
+ * @param quote default false, if true, the str will be wrapped with double quotes
+ */
 function reverseEscape(str: string, quote = false) {
   try {
     return JSON.parse(quote ? `"${str}"` : str)
@@ -10,9 +14,13 @@ function reverseEscape(str: string, quote = false) {
   }
 }
 
+/**
+ * Escape double quotes
+ */
 function escapeDoubleQuote(str: string) {
   return str.replace(/"/g, `\\"`)
 }
+
 const isIntegerString = (text: string) => /^[0-9]+$/.test(text)
 const isNumberString = (text: string) => /^[0-9]+\.?[0-9]*$/.test(text)
 

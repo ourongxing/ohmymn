@@ -250,7 +250,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         },
         {
           text: "进阶",
-          collapsed: true,
           items: [
             {
               text: "正则表达式",
@@ -291,7 +290,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         },
         {
           text: "可选模块",
-          collapsed: true,
           items: modules.optional.map(k => ({
             text: k[0],
             link: "/guide/modules/" + k[1]

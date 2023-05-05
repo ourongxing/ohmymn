@@ -246,7 +246,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         },
         {
           text: "Advanced",
-          collapsed: true,
           items: [
             {
               text: "Regular Expressions",
@@ -287,7 +286,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         },
         {
           text: "Optional Module",
-          collapsed: true,
           items: modules.optional.map(k => ({
             text: k[0],
             link: "/en/guide/modules/" + k[1]

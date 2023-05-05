@@ -30,7 +30,7 @@ import { MN } from "marginnote"
 
 ## Documentation
 
-[简体中文]()
+[简体中文](https://ohmymn.marginnote.cn/api) | [English](https://ohmymn.marginnote.cn/en/api)
 
 ## License
 
