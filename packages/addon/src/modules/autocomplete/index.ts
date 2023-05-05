@@ -32,13 +32,13 @@ export default defineConfig({
       label: lang.collins.label,
       help: lang.collins.help
     },
-    {
-      key: "dataSource",
-      type: CellViewType.Select,
-      option: lang.data_source.$option2,
-      label: lang.data_source.label,
-      help: lang.data_source.help
-    },
+    // {
+    //   key: "dataSource",
+    //   type: CellViewType.Select,
+    //   option: lang.data_source.$option2,
+    //   label: lang.data_source.label,
+    //   help: lang.data_source.help
+    // },
     {
       key: "fillWordInfo",
       type: CellViewType.Select,
@@ -98,13 +98,13 @@ export default defineConfig({
       option: lang.complete_word.$option2,
       method: async ({ nodes, option }) => {
         if (option === -1) return
-        const { dataSource } = self.globalProfile.autocomplete
-        if (dataSource[0] === 0) {
-          if (nodes.length > 5) {
-            showHUD(lang.forbid, 2)
-            nodes = nodes.slice(0, 5)
-          }
-        }
+        // const { dataSource } = self.globalProfile.autocomplete
+        // if (dataSource[0] === 0) {
+        //   if (nodes.length > 5) {
+        //     showHUD(lang.forbid, 2)
+        //     nodes = nodes.slice(0, 5)
+        //   }
+        // }
 
         const getCompletedWord = (node: NodeNote) => {
           try {

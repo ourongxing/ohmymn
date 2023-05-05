@@ -142,7 +142,8 @@ async function getWordInfo(word: string): Promise<Word> {
     })
     return newObj
   }
-  if (dataSource[0] === 0) {
+  // if (dataSource[0] === 0) {
+  if (0) {
     const res = await fetch("http://dict.e.opac.vip/dict.php?sw=" + word).then(
       res => res.json()
     )
