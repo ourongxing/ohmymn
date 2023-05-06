@@ -26,6 +26,7 @@ export default i18n({
     },
     aiAction: {
       label: "AI 动作",
+      help: "读取 Prompts 数据源中的 Prompts",
       $option6: [
         "标题→评论",
         "摘录→标题",
@@ -77,6 +78,7 @@ export default i18n({
     aiAction: {
       label: "AI Action",
       select_io: "Select input and output",
+      help: "Fetch Prompts in Prompts data source",
       select_prompts: "Select Prompts",
       $option6: [
         "Title → Comment",

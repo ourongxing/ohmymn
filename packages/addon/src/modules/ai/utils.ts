@@ -22,12 +22,13 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
           "excerpt2comment",
           "card2title",
           "card2tag",
-          "card2comment"
+          "card2comment",
+          "selected_text"
         ]
         const io = optionStr
           .find(k => /io/i.test(k))
           ?.match(
-            /title2comment|excerpt2title|excerpt2comment|card2title|card2tag|card2comment/g
+            /title2comment|excerpt2title|excerpt2comment|card2title|card2tag|card2comment|selected_text/g
           )
         if (io?.length) {
           options.io = io.map(k => ioOpt.indexOf(k)) as AIActionIO[]

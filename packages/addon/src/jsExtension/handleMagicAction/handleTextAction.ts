@@ -1,4 +1,6 @@
 import {
+  alert,
+  confirm,
   copy,
   MN,
   NodeNote,
@@ -14,7 +16,7 @@ import { actions4text, isModuleON } from "~/coreModule"
 import { formatText } from "~/modules/autoformat/utils"
 import { mainOCR as ocrSelection } from "~/modules/autoocr/utils"
 import { simplifyText } from "~/modules/autosimplify"
-import { isURL } from "~/utils"
+import { countWord, isURL } from "~/utils"
 import lang from "../lang"
 
 const enum NoteOption {
@@ -79,8 +81,13 @@ export default async function (key: string, option: number, content: string) {
     const { noteOptions, showCopyContent } = self.globalProfile.magicaction4text
     if (!lastFocusNote || noteOptions.length === 0) {
       if (showCopyContent) {
-        copy(res, false)
-        showHUD(res, 3)
+        if (countWord(res) > 10 || res.includes("\n")) {
+          const t = await confirm(Addon.title + " Copy", res)
+          if (t) copy(res)
+        } else {
+          showHUD(res, 3)
+          copy(res, false)
+        }
       } else {
         copy(res)
       }

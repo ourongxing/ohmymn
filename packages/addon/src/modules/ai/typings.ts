@@ -23,5 +23,6 @@ export const enum AIActionIO {
   excerpt2comment,
   card2title,
   card2tag,
-  card2comment
+  card2comment,
+  selected_text
 }

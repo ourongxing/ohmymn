@@ -68,6 +68,7 @@ export default defineConfig({
       type: CellViewType.ButtonWithInput,
       label: lang.aiAction.label,
       option: lang.aiAction.$option6,
+      help: lang.aiAction.help,
       async method({ nodes, option, content }) {
         const { defaultTemperature } = self.globalProfile.ai
         for (const node of nodes) {
@@ -132,19 +133,22 @@ export default defineConfig({
           }
         }
 
+        const cardPrompts = Addon.prompts.filter(
+          k => k.options.io === undefined || !k.options.io.includes(6)
+        )
         let index = 0
         if (option !== -1) index = option
         else
           index = (
             await select(
-              Addon.prompts!.map(k => k.desc),
+              cardPrompts.map(k => k.desc),
               "AI",
               lang.aiAction.select_prompts,
               true
             )
           ).index
         if (index === -1) return
-        const prompt = Addon.prompts![index]
+        const prompt = cardPrompts[index]
 
         for (const node of nodes) {
           const options =
@@ -198,6 +202,53 @@ export default defineConfig({
             })
           }
         }
+      }
+    }
+  ],
+  actions4text: [
+    {
+      key: "aiActionPromptsText",
+      type: CellViewType.Button,
+      label: lang.aiAction.label + " (Prompts)",
+      option: [],
+      async method({ text, option }) {
+        if (!Addon.prompts?.length) {
+          const prompts = fetchPrompts()
+          if (prompts?.length) {
+            Addon.prompts = prompts
+          } else {
+            showHUD(lang.prompts_url.no_prompts)
+            return
+          }
+        }
+
+        const textPrompts = Addon.prompts.filter(
+          k => k.options.io === undefined || k.options.io.includes(6)
+        )
+        let index = 0
+        if (option !== -1) index = option
+        else {
+          index = (
+            await select(
+              textPrompts.map(k => k.desc),
+              "AI",
+              lang.aiAction.select_prompts,
+              true
+            )
+          ).index
+        }
+        if (index === -1) return
+        const prompt = textPrompts[index]
+        const output = await fetchGPTAnswer(
+          [
+            {
+              content: `${prompt.content}: ${text}`,
+              role: "assistant"
+            }
+          ],
+          prompt.options
+        )
+        return output
       }
     }
   ]
