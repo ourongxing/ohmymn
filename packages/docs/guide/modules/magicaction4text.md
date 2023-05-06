@@ -81,3 +81,10 @@ OhMyMN 利用了这一特性。当你在文档中选中了一块摘录后，紧�
 :::
 
 来自于 [AutoSimplify](autosimplify.md)
+
+### AI 动作 (Prompts)
+::: tip 更新
+[v4.2.0](/update.md) 新增
+:::
+
+来自于 [AI](ai.md)

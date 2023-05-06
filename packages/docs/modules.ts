@@ -19,7 +19,8 @@ const modules = {
     ["AutoTranslate", "autotranslate"],
     ["AutoOCR", "autoocr"],
     ["AutoComment", "autocomment"],
-    ["AutoSimplify", "autosimplify"]
+    ["AutoSimplify", "autosimplify"],
+    ["AI", "ai"]
   ]
 } as {
   required: [string, string][]

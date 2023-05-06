@@ -179,7 +179,24 @@ const cardActions = [
     moduleName: "AutoSimplify",
     module: "autosimplify",
     help: "该动作来自于 AutoSimplify，与其使用相同的设置。"
-  }
+  },
+  {
+    type: 3,
+    label: "AI 动作",
+    key: "aiAction",
+    option: [
+        "标题→标题",
+        "标题→评论",
+        "摘录→标题",
+        "摘录→评论",
+        "卡片→标题",
+        "卡片→标签",
+        "卡片→评论"
+      ],
+    moduleName: "AI",
+    module: "ai",
+    help: "该动作来自于 AI，与其使用相同的设置。"
+  },
 ]
 
 const textActions = [{

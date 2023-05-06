@@ -1,6 +1,6 @@
 # Documentation of [OhMyMN](https://github.com/marginnoteapp/ohmymn)
 
-[简体中文](https://ohmymn.marginnote.cn) | [English](https://ohmymn.marginnote.cn/en)
+[简体中文](https://ohmymn.marginnote.cn) | [English](https://ohmymn.marginnote.cn/en) (Only user guide)
 
 ## License
 
