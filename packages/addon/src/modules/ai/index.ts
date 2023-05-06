@@ -6,11 +6,13 @@ import { Addon } from "~/addon"
 import { AIActionIO } from "./typings"
 import { select, showHUD, undoGroupingWithRefresh } from "marginnote"
 import { clearTags } from "../autotag"
+import { doc } from "~/utils"
 
 export default defineConfig({
   name: "AI",
   key: "ai",
   intro: lang.intro,
+  link: doc("ai"),
   settings: [
     {
       key: "OpenAIBaseURL",
@@ -105,6 +107,7 @@ export default defineConfig({
                   node.appendTextComments(output)
                   break
                 case AIActionIO.card2title:
+                case AIActionIO.title2title:
                 case AIActionIO.excerpt2title:
                   node.title = output
                   break
@@ -134,7 +137,7 @@ export default defineConfig({
         }
 
         const cardPrompts = Addon.prompts.filter(
-          k => k.options.io === undefined || !k.options.io.includes(6)
+          k => k.options.io === undefined || !k.options.io.includes(7)
         )
         let index = 0
         if (option !== -1) index = option
@@ -178,8 +181,12 @@ export default defineConfig({
           const output = await fetchGPTAnswer(
             [
               {
-                content: `${prompt.content}: ${input}`,
-                role: "assistant"
+                content: prompt.content,
+                role: "system"
+              },
+              {
+                content: input,
+                role: "user"
               }
             ],
             prompt.options
@@ -194,6 +201,7 @@ export default defineConfig({
                   break
                 case AIActionIO.card2title:
                 case AIActionIO.excerpt2title:
+                case AIActionIO.title2title:
                   node.title = output
                   break
                 case AIActionIO.card2tag:
@@ -223,7 +231,7 @@ export default defineConfig({
         }
 
         const textPrompts = Addon.prompts.filter(
-          k => k.options.io === undefined || k.options.io.includes(6)
+          k => k.options.io === undefined || k.options.io.includes(7)
         )
         let index = 0
         if (option !== -1) index = option
@@ -242,8 +250,12 @@ export default defineConfig({
         const output = await fetchGPTAnswer(
           [
             {
-              content: `${prompt.content}: ${text}`,
-              role: "assistant"
+              content: prompt.content,
+              role: "system"
+            },
+            {
+              content: text,
+              role: "user"
             }
           ],
           prompt.options

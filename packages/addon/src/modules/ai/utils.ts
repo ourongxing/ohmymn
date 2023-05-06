@@ -1,4 +1,4 @@
-import { fetch, HUDController, NodeNote, MbBookNote } from "marginnote"
+import { fetch, HUDController, NodeNote, MbBookNote, showHUD } from "marginnote"
 import lang from "./lang"
 import type { AIActionIO, ChatMessage, Model, Prompt } from "./typings"
 
@@ -17,6 +17,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
       const options: Prompt["options"] = {}
       if (optionStr?.length) {
         const ioOpt = [
+          "title2title",
           "title2comment",
           "excerpt2title",
           "excerpt2comment",
@@ -27,9 +28,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
         ]
         const io = optionStr
           .find(k => /io/i.test(k))
-          ?.match(
-            /title2comment|excerpt2title|excerpt2comment|card2title|card2tag|card2comment|selected_text/g
-          )
+          ?.match(new RegExp(ioOpt.join("|"), "i"))
         if (io?.length) {
           options.io = io.map(k => ioOpt.indexOf(k)) as AIActionIO[]
         }
@@ -116,6 +115,6 @@ export async function fetchGPTAnswer(
     }
   } catch (err) {
     HUDController.hidden("AI: " + String(err), 2)
-    return undefined
+    return
   }
 }

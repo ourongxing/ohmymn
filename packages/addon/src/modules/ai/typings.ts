@@ -18,6 +18,7 @@ export type Role = "system" | "user" | "assistant"
 export type Model = "gpt-3.5-turbo" | "gpt-4" | "gpt-4-32k"
 
 export const enum AIActionIO {
+  title2title,
   title2comment,
   excerpt2title,
   excerpt2comment,

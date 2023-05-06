@@ -1,15 +1,17 @@
 import { i18n } from "marginnote"
+import { doc } from "~/utils"
 
 export default i18n({
   zh: {
     intro: "使用 OpenAI API 来增强 OhMyMN 模块。",
+    ai_not_on: "AI 模块未开启",
     $show_key2: [
       "点击查看 Key，不要让其他人看到",
       "点击隐藏 Key，不要让其他人看到"
     ] as StringTuple<2>,
     openai_base_url: {
       help: "OpenAI API 服务器地址",
-      link: ""
+      link: doc("ai", "openai-api-服务器地址")
     },
     prompts_url: {
       help: "Prompts 数据源，填写一张卡片的链接。点击查看具体格式。修改后需要重新回车更新。",
@@ -17,7 +19,7 @@ export default i18n({
       not_found: "未找到卡片",
       no_child: "卡片没有子卡片",
       no_prompts: "Prompts 数据源为空或者格式错误",
-      link: ""
+      link: doc("ai", "prompts-数据源")
     },
     defaultTemperature: {
       label: "思维发散程度",
@@ -28,6 +30,7 @@ export default i18n({
       label: "AI 动作",
       help: "读取 Prompts 数据源中的 Prompts",
       $option6: [
+        "标题→标题",
         "标题→评论",
         "摘录→标题",
         "摘录→评论",
@@ -64,11 +67,12 @@ export default i18n({
     ] as StringTuple<2>,
     openai_base_url: {
       help: "OpenAI API Base URL",
-      link: ""
+      link: doc("ai", "openai-api-服务器地址")
     },
+    ai_not_on: "AI module is not turned on",
     openai_api_key: {
       help: "OpenAI API Key",
-      link: ""
+      link: doc("ai", "prompts-数据源")
     },
     model: {
       label: "OpenAI Model",
@@ -81,6 +85,7 @@ export default i18n({
       help: "Fetch Prompts in Prompts data source",
       select_prompts: "Select Prompts",
       $option6: [
+        "Title → Title",
         "Title → Comment",
         "Excerpt → Title",
         "Excerpt → Comment",
