@@ -4,12 +4,38 @@ export default i18n({
   zh: {
     intro: "使用 OpenAI API 来增强 OhMyMN 模块。",
     $show_key2: [
-      "点击查看密钥，不要让其他人看到",
-      "点击隐藏密钥，不要让其他人看到"
+      "点击查看 Key，不要让其他人看到",
+      "点击隐藏 Key，不要让其他人看到"
     ] as StringTuple<2>,
     openai_base_url: {
       help: "OpenAI API 服务器地址",
       link: ""
+    },
+    prompts_url: {
+      help: "Prompts 数据源，填写一张卡片的链接。点击查看具体格式。修改后需要重新回车更新。",
+      not_link: "不是有效的链接",
+      not_found: "未找到卡片",
+      no_child: "卡片没有子卡片",
+      no_prompts: "Prompts 数据源为空或者格式错误",
+      link: ""
+    },
+    defaultTemperature: {
+      label: "思维发散程度",
+      help: "OpenAI temperature 参数，0-2，不建议超过 2。需要准确回答请尽量调小",
+      number: "请输入 0-2 之间的数字"
+    },
+    aiAction: {
+      label: "AI 动作",
+      $option6: [
+        "标题→评论",
+        "摘录→标题",
+        "摘录→评论",
+        "卡片→标题",
+        "卡片→标签",
+        "卡片→评论"
+      ],
+      select_prompts: "选择 Prompts",
+      select_io: "选择输入输出"
     },
     openai_api_key: {
       help: "OpenAI API Key",
@@ -20,10 +46,7 @@ export default i18n({
       $option3: ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k"] as StringTuple<3>
     },
     no_result: "没有获取到结果",
-    process_card: {
-      label: "AI处理摘录内容",
-      help: "根据 AIAssistant 设置中的功能处理卡片中所有的摘录，注意不要同时提交太多内容。"
-    },
+
     loading: "AI 正在思考...",
     translate_text: "翻译",
     polishing_text: "润色",
@@ -51,9 +74,18 @@ export default i18n({
       $option3: ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k"]
     },
     no_result: "No result obtained",
-    process_card: {
-      label: "AI process excerpt content",
-      help: "Process all excerpts in the card according to the functions set in AIAssistant. Be careful not to submit too much content at the same time."
+    aiAction: {
+      label: "AI Action",
+      select_io: "Select input and output",
+      select_prompts: "Select Prompts",
+      $option6: [
+        "Title → Comment",
+        "Excerpt → Title",
+        "Excerpt → Comment",
+        "Card → Title",
+        "Card → Tag",
+        "Card → Comment"
+      ]
     },
     loading: "AI is thinking...",
     translate_text: "Translate",
@@ -61,6 +93,19 @@ export default i18n({
     summarize_text: "Summarize",
     analyze_text: "Analyze sentence",
     explain_code: "Explain code",
-    no_openai_secretkey: "OpenAI API Key not set"
+    no_openai_secretkey: "OpenAI API Key not set",
+    prompts_url: {
+      help: "Prompts data source, fill in the link of a card. Click to view the specific format. You need to press Enter to update after modification.",
+      link: "",
+      not_link: "Not a valid link",
+      not_found: "Card not found",
+      no_child: "Card has no child cards",
+      no_prompts: "Prompts data source is empty or the format is wrong"
+    },
+    defaultTemperature: {
+      label: "Temperature",
+      help: "OpenAI Temperature parameter, 0-2, not recommended to exceed 2. Please try to reduce it if you need to answer accurately",
+      number: "Please enter a number between 0-2"
+    }
   }
 })

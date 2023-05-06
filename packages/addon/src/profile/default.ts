@@ -189,7 +189,9 @@ export const defaultGlobalProfile = {
   ai: {
     OpenAIApiKey: "",
     OpenAIBaseURL: "api.openai.com",
+    defaultTemperature: "0.6",
     showKey: true,
+    promptsURL: "",
     model: [0]
   },
   additional: {

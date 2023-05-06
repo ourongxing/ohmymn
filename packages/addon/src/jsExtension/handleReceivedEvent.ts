@@ -159,7 +159,6 @@ export default defineEventHandlers<
     if (MN.studyController.studyMode === StudyMode.review) return
     MN.log("Addon broadcast", "event")
     const { message } = sender.userInfo
-    MN.log(sender.userInfo)
     const params = message.replace(new RegExp(`^${Addon.key}\\?`), "")
     if (message !== params) {
       await handleURLScheme(params)

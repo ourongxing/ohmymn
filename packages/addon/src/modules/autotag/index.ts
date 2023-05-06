@@ -14,7 +14,10 @@ import {
 import lang from "./lang"
 import { AddTag, AutoTagPreset } from "./typings"
 
-function clearTags(...tags: string[]) {
+/**
+ * Remove # and other punctuations will be replaced by _
+ */
+export function clearTags(...tags: string[]) {
   return tags
     .map(k =>
       k

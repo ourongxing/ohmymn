@@ -3,10 +3,25 @@ export interface ChatMessage {
   content: string
 }
 
-export type Role = "system" | "user" | "assistant"
+export interface Prompt {
+  content: string
+  desc: string
+  options: {
+    io?: AIActionIO[]
+    temperature?: number
+    model?: Model
+    max_tokens?: number
+  }
+}
 
-export const Module = {
-  0: "gpt-3.5-turbo",
-  1: "gpt-4",
-  2: "gpt-4-32k"
+export type Role = "system" | "user" | "assistant"
+export type Model = "gpt-3.5-turbo" | "gpt-4" | "gpt-4-32k"
+
+export const enum AIActionIO {
+  title2comment,
+  excerpt2title,
+  excerpt2comment,
+  card2title,
+  card2tag,
+  card2comment
 }

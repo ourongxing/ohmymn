@@ -3,8 +3,7 @@ import {
   NodeNote,
   popup,
   showHUD,
-  UIAlertViewStyle,
-  undoGroupingWithRefresh
+  UIAlertViewStyle
 } from "marginnote"
 import { actions4card } from "~/coreModule"
 import { PanelControl } from "~/modules/addon/typings"

@@ -72,18 +72,22 @@ export default async (
           }
         }
       case CellViewType.Button:
-        const { buttonIndex: option } = await popup({
-          title: row.label,
-          message: row.help ?? "",
-          type: UIAlertViewStyle.Default,
-          buttons: row.option ?? [lang.sure]
-        })
-        if (option === -1) return
-        await handler({
-          type,
-          key: row.key,
-          option
-        })
+        if (row.option?.length === 0) {
+          await handler({ type, key: row.key, option: -1 })
+        } else {
+          const { buttonIndex: option } = await popup({
+            title: row.label,
+            message: row.help ?? "",
+            type: UIAlertViewStyle.Default,
+            buttons: row.option?.length ? row.option : [lang.sure]
+          })
+          if (option === -1) return
+          await handler({
+            type,
+            key: row.key,
+            option
+          })
+        }
     }
 }
 

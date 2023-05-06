@@ -1,6 +1,7 @@
 import type { OpenCC } from "~/modules/autosimplify/opencc"
 import manifest from "../manifest"
 import type { SQLiteDatabase } from "marginnote"
+import { Prompt } from "./modules/ai/typings"
 
 class MNADDON {
   path!: string
@@ -8,6 +9,7 @@ class MNADDON {
   dataAutoSimplify?: OpenCC
   lastVersion!: string
   textColor = UIColor.blackColor()
+  prompts?: Prompt[]
   readonly key = manifest.key
   readonly title = manifest.title
   readonly author = manifest.author
