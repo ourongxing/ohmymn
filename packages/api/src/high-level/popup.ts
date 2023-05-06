@@ -117,7 +117,7 @@ export function popup<T>({
                 type === UIAlertViewStyle.Default
                   ? undefined
                   : alert.textFieldAtIndex(0).text,
-              buttonIndex: buttonIndex - 1
+              buttonIndex: buttonIndex
             })
           }
         )
