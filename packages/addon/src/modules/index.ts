@@ -21,7 +21,6 @@ import ai from "./ai"
 export const optionalModules = {
   shortcut,
   gesture,
-  ai,
   anotherautotitle,
   anotherautodef,
   autoformat,
@@ -34,7 +33,8 @@ export const optionalModules = {
   autoocr,
   autotranslate,
   autocomment,
-  autosimplify
+  autosimplify,
+  ai
 }
 
 export const requiredModules = { addon, magicaction4card, magicaction4text }

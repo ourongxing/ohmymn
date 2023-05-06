@@ -47,7 +47,7 @@ export default i18n({
     forbid:
       "为减小服务器压力，禁止同时处理超过 5 张卡片。如果需要大量制卡，请使用本地数据库。",
     choose_meaning: "选择在文中的释义",
-    not_find_db: "没有找到数据库"
+    not_find_db: "AutoComplete: 没有找到数据库"
   },
   en: {
     intro: "Complete word form. Only support verbs and nouns.",
@@ -95,6 +95,6 @@ export default i18n({
     forbid:
       "To reduce server pressure, it is forbidden to process more than 5 cards at the same time. If you need to make a lot of word cards, please use the local database.",
     choose_meaning: "Select the meanings in the text.",
-    not_find_db: "No database found"
+    not_find_db: "AutoComplete: No database found"
   }
 })

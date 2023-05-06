@@ -1,4 +1,10 @@
-import { fetch, HUDController, NodeNote, MbBookNote, showHUD } from "marginnote"
+import {
+  fetch,
+  HUDController,
+  NodeNote,
+  MbBookNote,
+  undoGroupingWithRefresh
+} from "marginnote"
 import lang from "./lang"
 import type { AIActionIO, ChatMessage, Model, Prompt } from "./typings"
 
@@ -12,55 +18,60 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
   }
   if (note) {
     const node = new NodeNote(note)
-    return node.childNodes.map(k => {
-      const optionStr = k.commentsText?.[1]?.split("\n")
-      const options: Prompt["options"] = {}
-      if (optionStr?.length) {
-        const ioOpt = [
-          "title2title",
-          "title2comment",
-          "excerpt2title",
-          "excerpt2comment",
-          "card2title",
-          "card2tag",
-          "card2comment",
-          "selected_text"
-        ]
-        const io = optionStr
-          .find(k => /io/i.test(k))
-          ?.match(new RegExp(ioOpt.join("|"), "i"))
-        if (io?.length) {
-          options.io = io.map(k => ioOpt.indexOf(k)) as AIActionIO[]
-        }
+    const prompts: Prompt[] = []
+    undoGroupingWithRefresh(() => {
+      node.childNodes.forEach((k, i) => {
+        k.title = `${i}. ${k.title.replace(/^\d+\. /, "")}`
+        const optionStr = k.commentsText?.[1]?.split("\n")
+        const options: Prompt["options"] = {}
+        if (optionStr?.length) {
+          const ioOpt = [
+            "title2title",
+            "title2comment",
+            "excerpt2title",
+            "excerpt2comment",
+            "card2title",
+            "card2tag",
+            "card2comment",
+            "selected_text"
+          ]
+          const io = optionStr
+            .find(k => /io/i.test(k))
+            ?.match(new RegExp(ioOpt.join("|"), "ig"))
+          if (io?.length) {
+            options.io = io.map(k => ioOpt.indexOf(k)) as AIActionIO[]
+          }
 
-        const model = optionStr
-          .find(k => /model/i.test(k))
-          ?.match(/gpt-3.5-turbo|gpt-4|gpt-4-32k/)
-        if (model?.length) {
-          options.model = model[0] as Model
+          const model = optionStr
+            .find(k => /model/i.test(k))
+            ?.match(/gpt-3.5-turbo|gpt-4|gpt-4-32k/)
+          if (model?.length) {
+            options.model = model[0] as Model
+          }
+          const temperature = optionStr
+            .find(k => /temperature/i.test(k))
+            ?.match(/\d+\.\d+|\d+/)
+          if (temperature?.length) {
+            const num = Number(temperature[0])
+            if (!Number.isNaN(num) && num >= 0 && num <= 2)
+              options.temperature = num
+          }
+          const maxTokens = optionStr
+            .find(k => /max-tokens/i.test(k))
+            ?.match(/\d+\.\d+|\d+/)
+          if (maxTokens?.length) {
+            const num = Number(maxTokens[0])
+            if (!Number.isNaN(num)) options["max_tokens"] = num
+          }
         }
-        const temperature = optionStr
-          .find(k => /temperature/i.test(k))
-          ?.match(/\d+\.\d+|\d+/)
-        if (temperature?.length) {
-          const num = Number(temperature[0])
-          if (!Number.isNaN(num) && num >= 0 && num <= 2)
-            options.temperature = num
-        }
-        const maxTokens = optionStr
-          .find(k => /max-tokens/i.test(k))
-          ?.match(/\d+\.\d+|\d+/)
-        if (maxTokens?.length) {
-          const num = Number(maxTokens[0])
-          if (!Number.isNaN(num)) options["max_tokens"] = num
-        }
-      }
-      return {
-        desc: k.title,
-        content: k.commentsText[0],
-        options
-      }
+        prompts.push({
+          desc: k.title,
+          content: k.commentsText[0],
+          options
+        })
+      })
     })
+    return prompts
   }
   return []
 }

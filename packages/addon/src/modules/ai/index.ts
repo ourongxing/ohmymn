@@ -70,7 +70,6 @@ export default defineConfig({
       type: CellViewType.ButtonWithInput,
       label: lang.aiAction.label,
       option: lang.aiAction.$option6,
-      help: lang.aiAction.help,
       async method({ nodes, option, content }) {
         const { defaultTemperature } = self.globalProfile.ai
         for (const node of nodes) {
@@ -238,7 +237,7 @@ export default defineConfig({
         else {
           index = (
             await select(
-              textPrompts.map(k => k.desc),
+              textPrompts.map(k => k.desc.replace(/^\d+\. /, "")),
               "AI",
               lang.aiAction.select_prompts,
               true

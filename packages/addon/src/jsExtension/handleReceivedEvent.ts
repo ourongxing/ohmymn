@@ -121,6 +121,7 @@ export default defineEventHandlers<
     )
     if (success) return
     const note = sender.userInfo.note
+    console.log(JSON.stringify(note.comments))
     self.excerptStatus.lastExcerptText = note.excerptText ?? ""
   },
   async onClosePopupMenuOnNote(sender) {
