@@ -25,7 +25,7 @@ const nodes = NodeNote.getSelectedNodes()
 ```
 
 ## getter
-setter 不同于函数，不用加括号，直接调用就行。可以看作一个 readonly 的属性。
+getter 不同于函数，不用加括号，直接调用就行。可以看作一个 readonly 的属性。
 ### descendantNodes
 用来获取当前卡片的后代卡片，返回所有的后代卡片和后代卡片的树状结构。
 

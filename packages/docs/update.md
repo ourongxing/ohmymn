@@ -10,6 +10,13 @@ https://bbs.marginnote.cn/t/topic/20501#heading-6
 
 :::
 
+## v4.2.0 (2022-05-06)
+### 新功能
+- **AI**：引入 OpenAI，可以自定义 Prompt，执行动作。
+### 修复
+### 改进
+- 支持设置双击打开链接，防止误触。
+- 在 MNE 上的显示位置，以及 UI 调整。
 ## v4.1.1 (2022-11-09)
 ::: tip
 该版本有签名：https://bbs.marginnote.cn/t/topic/20501

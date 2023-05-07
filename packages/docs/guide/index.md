@@ -29,6 +29,7 @@
    - [Shortcut](./modules/shortcut)：使用 URL Scheme 触发动作，可自行设置快捷键来打开 URL Scheme。
    - [Gesture](./modules/gesture)：使用手势触发动作。
    - [CopySearch](./modules/copysearch)：复制或搜索选中的文字或选中的卡片。
+   - [AI](./modules/ai.md): AI 动作，自定义 Prompts。
    - AutoX
      - [Another AutoTitle](./modules/anotherautotitle)：自动转标题。
      - [Another AutoDef](./modules/anotherautodef)：自动拆分摘录为标题和摘录两部分，提取标题。

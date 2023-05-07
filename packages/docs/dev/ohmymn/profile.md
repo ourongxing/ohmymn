@@ -4,7 +4,7 @@
 - `defaultDocProfile` 文档配置，每个文档都有自己的配置。
 - `defaultNotebookProfile` 笔记本配置，每个笔记本都有自己的配置。
 
-除此之外，还有 `defaultTempProfile` ，但这属于 <Badge type="warning" text="just ohmymn addon" />，用于缓存正则表达式对象，value 必须要填 `[]` 即可。
+除此之外，还有 `defaultTempProfile` ，但这属于 <Badge type="warning" text="just ohmymn addon" />，用于缓存正则表达式对象，value 填写 `[]` 即可。
 ```ts
 export const defaultTempProfile = {
   replaceParam: {
