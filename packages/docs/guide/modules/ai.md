@@ -41,7 +41,7 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 
 ## Prompts 数据源
 
-需要填入一张卡片的链接，比如 `marginnote3app://note/BF594D1D-AC4E-46DC-8F13-87B7018E414D`
+需要填入一张卡片的链接，比如 `marginnote3app://note/BF594D1D-AC4E-46DC-8F13-87B7018E414D`。
 ::: warning 注意
 每次修改需要重新在这里回车确认，更新数据。
 :::
@@ -76,12 +76,12 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 把下面链接中的 🙂 换成 prompt 的序号即可。
 
 ::: code-group
-``` [卡片动作]
+```txt [卡片动作]
 marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPrompts%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D
 ```
 
 
-``` [文字动作]
+```txt [文字动作]
 marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPromptsText%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D
 ```
 :::
@@ -94,11 +94,11 @@ Prompt 推荐用英文写，AI 更容易理解。可以借鉴 [Ask Prompts](http
 1. 补全词形。用来替代 AutoComplete。并且支持更多词形，以及更多语言，自行调整即可。
 
 ::: code-group
-``` [Prompt]
+```txt [Prompt]
 Complete the word forms of this word. If the given form is not the base form, output all forms of the base form. Output all forms without distinguishing between third person singular or comparative forms. Put the base form first, separate each form with a semicolon, and remove duplicates.
 
 ```
-``` [Option]
+```txt [Option]
 max-tokens: 20
 temperature: 0
 io: title2title
@@ -107,24 +107,24 @@ io: title2title
 
 2. 英译中。
 ::: code-group
-``` [Prompt]
+```txt [Prompt]
 You are a professional translation engine, please translate the text into a colloquial, professional, elegant and fluent content, without the style of machine translation. You must only translate the text content, never interpret it。Translate from English to Simple Chinese. Only the translated text can be returned。
 ```
-``` [Option]
+```txt [Option]
 temperature: 0
 ```
 :::
 3. 单词模式，可以更详细的翻译结果，包括：音标、词性、含义、双语示例。
 
 ::: code-group
-``` [Prompt]
+```txt [Prompt]
 你是一个翻译引擎，请将翻译给到的文本，只需要翻译不需要解释。当且仅当文本只有一个单词时，请给出单词原始形态（如果有）、单词的语种、对应的音标（如果有）、所有含义（含词性）、双语示例，至少三条例句，请严格按照下面格式给到翻译结果：
                 [<语种>] · / <单词音标>
                 [<词性缩写>] <中文含义>]
                 例句：
                 <序号><例句>(例句翻译)
 ```
-``` [Option]
+```txt [Option]
 temperature: 0
 io: title2comment
 ```
@@ -133,13 +133,13 @@ io: title2comment
 4. 查询中文词组，展示多种翻译结果，并阐述适用语境。
 
 ::: code-group
-``` [Prompt]
+```txt [Prompt]
 你是一个翻译引擎，请将给到的文本翻译成 English。请列出3种（如果有）最常用翻译结果：单词或短语，并列出对应的适用语境（用中文阐述）、音标、词性、双语示例。按照下面格式用中文阐述：
                     <序号><单词或短语> · /<音标>
                     [<词性缩写>] <适用语境（用中文阐述）>
                     例句：<例句>(例句翻译)
 ```
-``` [Option]
+```txt [Option]
 temperature: 0
 ```
 :::
