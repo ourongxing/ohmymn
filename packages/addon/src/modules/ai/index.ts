@@ -143,7 +143,7 @@ export default defineConfig({
         else
           index = (
             await select(
-              cardPrompts.map(k => k.desc),
+              cardPrompts.map(k => k.desc.replace(/^\d+\. /, "")),
               "AI",
               lang.aiAction.select_prompts,
               true
