@@ -450,7 +450,11 @@ async function getLemmaInfo(word: string) {
   return info
 }
 
-export async function completeWord(text: string, note: MbBookNote) {
+export async function completeWord(
+  text: string,
+  note: MbBookNote,
+  needInfo = false
+) {
   try {
     const pureText = text.replace(
       new RegExp(`^[^${CJK}a-zA-Z]*(\\w+)[^${CJK}a-zA-Z]*$`, "g"),
@@ -467,11 +471,19 @@ export async function completeWord(text: string, note: MbBookNote) {
       return undefined
     }
     const title = getWordEx(info.word, info.exchange)
-    const context = autoContext ? getContext(note, pureText) ?? "" : ""
-    return {
-      title,
-      comments: [...(await getFillInfo(info))],
-      text: context
+    if (needInfo) {
+      const context = autoContext ? getContext(note, pureText) ?? "" : ""
+      return {
+        title,
+        comments: [...(await getFillInfo(info))],
+        text: context
+      }
+    } else {
+      return {
+        title,
+        comments: [],
+        text: ""
+      }
     }
   } catch (error) {
     MN.error(error)

@@ -1,5 +1,5 @@
 import type { NodeNote } from "marginnote"
-import { HUDController, showHUD, undoGroupingWithRefresh } from "marginnote"
+import { HUDController, undoGroupingWithRefresh } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import { checkPlainText, doc } from "~/utils"
@@ -20,7 +20,7 @@ export default defineConfig({
         generateTitles: {
           index: -999,
           method({ text, note }) {
-            return completeWord(text, note)
+            return completeWord(text, note, true)
           }
         }
       }
@@ -95,21 +95,41 @@ export default defineConfig({
       key: "completeWord",
       type: CellViewType.Button,
       label: lang.complete_word.label,
-      option: lang.complete_word.$option2,
       method: async ({ nodes, option }) => {
         if (option === -1) return
-        // const { dataSource } = self.globalProfile.autocomplete
-        // if (dataSource[0] === 0) {
-        //   if (nodes.length > 5) {
-        //     showHUD(lang.forbid, 2)
-        //     nodes = nodes.slice(0, 5)
-        //   }
-        // }
-
         const getCompletedWord = (node: NodeNote) => {
           try {
             const text = node.titles[0]
             return text ? completeWord(text, node.note) : undefined
+          } catch {
+            return undefined
+          }
+        }
+
+        const res = await Promise.all(nodes.map(node => getCompletedWord(node)))
+        undoGroupingWithRefresh(() => {
+          nodes.forEach((node, index) => {
+            const info = res?.[index]
+            if (info?.title.length) {
+              node.titles = info.title
+            }
+          })
+        })
+        HUDController.hidden()
+      }
+    },
+    {
+      key: "genWordCard",
+      type: CellViewType.Button,
+      label: lang.gen_word_card.label,
+      option: lang.gen_word_card.$option2,
+      method: async ({ nodes, option }) => {
+        if (option === -1) return
+
+        const getCompletedWord = (node: NodeNote) => {
+          try {
+            const text = node.titles[0]
+            return text ? completeWord(text, node.note, true) : undefined
           } catch {
             return undefined
           }
@@ -139,13 +159,13 @@ export default defineConfig({
           }
           return res
         })()
+
         undoGroupingWithRefresh(() => {
           nodes.forEach((node, index) => {
             const info = allInfo?.[index]
             if (info) {
               const { title, comments, text } = info
               if (text) node.mainExcerptText = text
-              node.titles = title
               node.removeCommentButLinkTag(
                 k =>
                   k.type === "PaintNote" ||

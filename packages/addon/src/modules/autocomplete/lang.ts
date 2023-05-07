@@ -7,7 +7,9 @@ export default i18n({
     on: "摘录时自动执行",
     loading: "正在制卡...",
     custom: "自定义",
-    complete_selected: "补全单词词形",
+    complete_word: {
+      label: "补全单词词形"
+    },
     select_meaning: {
       label: "动态选择释义",
       $option2: ["中文", "英文"] as StringTuple<2>
@@ -15,7 +17,7 @@ export default i18n({
     maybe_other_word:
       "检测到当前单词既可能是其他单词的变形，也可能就是原形，请选择单词原形",
     select_lemma: "动态选择单词原形",
-    complete_word: {
+    gen_word_card: {
       label: "英文单词制卡",
       $option2: ["追加", "替换"] as StringTuple<2>
     },
@@ -60,7 +62,9 @@ export default i18n({
       error: "The input bar is not allowed to use {{zh}} or {{en}}"
     },
     custom: "Custom",
-    complete_selected: "Complete Word Form",
+    complete_word: {
+      label: "Complete Word Form"
+    },
     loading: "Loading...",
     select_lemma: "Dynamic Basic Form Selection",
     maybe_other_word:
@@ -69,7 +73,7 @@ export default i18n({
       label: "Dynamic Interpretation Selection",
       $option2: ["Chinese", "English"]
     },
-    complete_word: {
+    gen_word_card: {
       label: "Generate Word Card",
       $option2: ["Append", "Replace"]
     },
