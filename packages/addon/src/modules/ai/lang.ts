@@ -27,6 +27,7 @@ export default i18n({
       number: "请输入 0-2 之间的数字"
     },
     aiAction: {
+      no_prompts: "没有找到这个 Prompt",
       label: "AI 动作",
       help: "读取 Prompts 数据源中的 Prompts",
       $option6: [
@@ -84,6 +85,7 @@ export default i18n({
       select_io: "Select input and output",
       help: "Fetch Prompts in Prompts data source",
       select_prompts: "Select Prompts",
+      no_prompts: "Prompt not found",
       $option6: [
         "Title → Title",
         "Title → Comment",

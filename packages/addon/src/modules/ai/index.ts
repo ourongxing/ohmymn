@@ -139,17 +139,20 @@ export default defineConfig({
           k => k.options.io === undefined || !k.options.io.includes(7)
         )
         let index = 0
-        if (option !== -1) index = option
-        else
+        if (option !== -1) {
+          index = cardPrompts.findIndex(k => k.desc.startsWith(String(option)))
+          if (index === -1) return showHUD(lang.aiAction.no_prompts)
+        } else {
           index = (
             await select(
-              cardPrompts.map(k => k.desc.replace(/^\d+\. /, "")),
+              cardPrompts.map(k => k.desc),
               "AI",
               lang.aiAction.select_prompts,
               true
             )
           ).index
-        if (index === -1) return
+          if (index === -1) return
+        }
         const prompt = cardPrompts[index]
 
         for (const node of nodes) {
@@ -233,18 +236,20 @@ export default defineConfig({
           k => k.options.io === undefined || k.options.io.includes(7)
         )
         let index = 0
-        if (option !== -1) index = option
-        else {
+        if (option !== -1) {
+          index = textPrompts.findIndex(k => k.desc.startsWith(String(option)))
+          if (index === -1) return showHUD(lang.aiAction.no_prompts)
+        } else {
           index = (
             await select(
-              textPrompts.map(k => k.desc.replace(/^\d+\. /, "")),
+              textPrompts.map(k => k.desc),
               "AI",
               lang.aiAction.select_prompts,
               true
             )
           ).index
+          if (index === -1) return
         }
-        if (index === -1) return
         const prompt = textPrompts[index]
         const output = await fetchGPTAnswer(
           [
