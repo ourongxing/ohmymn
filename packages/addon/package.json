@@ -1,5 +1,6 @@
 {
   "name": "@ohmymn/addon",
+  "private": true,
   "author": "MarginNote<https://github.com/marginnoteapp>",
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"

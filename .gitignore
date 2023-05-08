@@ -7,8 +7,8 @@ test*
 .pnpm*
 .DS_Store
 .local_history
-assets/AutoCompleteData.db
-assets/AutoCompleteData.zip
+*.db
+*.zip
 .vercel/
 cache/
 tmp/

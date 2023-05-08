@@ -95,7 +95,6 @@ export default defineEventHandlers<
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    MN.log(sender.userInfo)
     self.textSelectBar = {
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
@@ -121,7 +120,6 @@ export default defineEventHandlers<
     )
     if (success) return
     const note = sender.userInfo.note
-    console.log(JSON.stringify(note.comments))
     self.excerptStatus.lastExcerptText = note.excerptText ?? ""
   },
   async onClosePopupMenuOnNote(sender) {
