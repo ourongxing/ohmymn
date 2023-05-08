@@ -13,7 +13,7 @@ OhMyMN 完全开源，不会上传数据，如果遇到 API Key 被盗用，请�
 [v4.2.0](/update.md) 新增
 :::
 
-为 OhMyMN 提供 AI 能力。由于 OpenAI API 速度太慢，极大降低地摘录速度，违背了 OhMyMN 的初衷，所以我不会提供任何自动执行的 AI 模块。但是你可以自行编写 Prompt 手动执行。你也可以自己开发 [新的模块](../../dev/module/how.md)，比如 AI 翻译。可以查看 [AIAssistant](https://bbs.marginnote.com.cn/t/topic/41660)。
+为 OhMyMN 提供 AI 能力。由于 OpenAI API 速度太慢，极大降低了摘录速度，违背了 OhMyMN 的初衷，所以我不会提供任何自动执行的 AI 模块。但是你可以自行编写 Prompt 手动执行。你也可以自己开发 [新的模块](../../dev/module/how.md)，比如 AI 翻译。可以查看 [AIAssistant](https://bbs.marginnote.com.cn/t/topic/41660)。
 
 ## OpenAI API 服务器地址
 
@@ -55,6 +55,7 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 - 第二条评论: 参数。
   - `io`: 输入输出，`title2comment` 表示将标题作为输入，拼接到 Prompt 后面，得到的结果作为评论。其他同理，excerpt 表示摘录，card 表示卡片里所有的摘录和评论。可以写多个，用 `,` 隔开。比如 `io: title2comment,excerpt2comment`。如果不填写，会在使用时手动选择。
     - `title2comment`
+    - `title2title`
     - `excerpt2title`
     - `excerpt2comment`
     - `card2title`
