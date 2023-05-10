@@ -8,16 +8,14 @@
   <a href="https://github.com/marginnoteapp/ohmymn/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
-## Documentation
-
-### User Guide
+## User Guide
 
 [简体中文](https://ohmymn.marginnote.cn/guide/) | [English](https://ohmymn.marginnote.cn/en/guide/)
 
-### Development
+## Development
 
 [简体中文](https://ohmymn.marginnote.cn/dev/)
-### API Reference
+## API Reference
 
 [简体中文](https://ohmymn.marginnote.cn/api/)
 
