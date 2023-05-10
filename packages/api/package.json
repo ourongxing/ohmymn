@@ -24,8 +24,8 @@
     "dist/**/*.js",
     "dist/**/*.d.ts"
   ],
-  "devDependencies": {
-    "tsup": "^6.2.3"
+  "dependencies": {
+    "semver": "7.3.8"
   },
   "keywords": [
     "marginote",
