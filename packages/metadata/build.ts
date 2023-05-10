@@ -69,10 +69,6 @@ function zip(): Plugin {
         if (isProd && fs.existsSync(outDir)) {
           const fileName = `${manifest.key} v${manifest.version} ${
             manifest.certKey ? "signed" : "unsigned"
-          }${
-            manifest.files.find(k => k.includes("AutoCompleteData"))
-              ? " local database autocomplete"
-              : ""
           }`.replace(/[ .]/g, "_")
           exec(`cd ${outDir} && zip -qr ${fileName}.mnaddon *`)
           console.log(`Generated at ${outDir}${fileName}.mnaddon`)
@@ -89,8 +85,7 @@ function genManifest(): Plugin {
       build.onEnd(() => {
         const mnaddon = {
           addonid: `marginnote.extension.${manifest.key}`,
-          // author: manifest.author,
-          author: "MN(ourongxing",
+          author: manifest.author,
           title: manifest.title,
           version: manifest.version,
           marginnote_version_min: manifest.minMarginNoteVersion,

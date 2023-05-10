@@ -89,8 +89,7 @@ function genManifest(): Plugin {
       build.onEnd(() => {
         const mnaddon = {
           addonid: `marginnote.extension.${manifest.key}`,
-          // author: manifest.author,
-          author: "MN(ourongxing",
+          author: manifest.author,
           title: manifest.title,
           version: manifest.version,
           marginnote_version_min: manifest.minMarginNoteVersion,
