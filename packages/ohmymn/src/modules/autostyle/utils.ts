@@ -9,7 +9,7 @@ export function getExcerptArea(note: MbBookNote) {
   return Math.floor((width * height) / 1000)
 }
 
-export function modifyStyle(note: MbBookNote) {
+export function modifyStyle(note: MbBookNote, isAuto = false) {
   // 就跟随卡片 => 跟随兄弟节点 => 跟随父节点 => 默认 => 不动
   const {
     preset,
@@ -42,9 +42,16 @@ export function modifyStyle(note: MbBookNote) {
     style
   }
 
-  const nodeNote = note.groupNoteId
-    ? MN.db.getNoteById(note.groupNoteId)!
-    : note
+  const nodeid = isAuto
+    ? (MN.currnetNotebookid &&
+        note.realGroupNoteIdForTopicId &&
+        note.realGroupNoteIdForTopicId(MN.currnetNotebookid)) ||
+      note.groupNoteId
+    : (note.notebookId &&
+        note.realGroupNoteIdForTopicId &&
+        note.realGroupNoteIdForTopicId(note.notebookId)) ||
+      note.groupNoteId
+  const nodeNote = nodeid ? MN.db.getNoteById(nodeid)! : note
   if (
     preset.includes(AutoStylePreset.StyleByWordCountAndArea) &&
     wordCountArea
@@ -64,7 +71,7 @@ export function modifyStyle(note: MbBookNote) {
   for (const set of preset)
     switch (set) {
       case AutoStylePreset.ColorFollowCard:
-        if (note.groupNoteId) {
+        if (nodeid) {
           res.color = nodeNote.colorIndex
           return res
         }

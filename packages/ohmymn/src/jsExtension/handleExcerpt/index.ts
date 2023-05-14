@@ -29,8 +29,16 @@ export default async (n: MbBookNote) => {
   MN.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
-  node = new NodeNote(note)
-  nodeNote = node.note
+  /**
+   * 此时需要使用 MN.currnetNotebookid 而不是 note.notebookid
+   */
+  const nodeid =
+    (MN.currnetNotebookid &&
+      note.realGroupNoteIdForTopicId &&
+      note.realGroupNoteIdForTopicId(MN.currnetNotebookid)) ||
+    note.groupNoteId
+  const nodeNote = nodeid ? MN.db.getNoteById(nodeid)! : note
+  node = new NodeNote(nodeNote)
   isPicOCRed = false
   isComment = nodeNote.noteId !== note.noteId
   isComment && MN.log("The Excerpt is a comment", "excerpt")
@@ -189,7 +197,9 @@ function addCommentTag({
         k && acc.push(cacheTransformer.to(k))
         return acc
       }, [] as [string, string, string][])
-      node.appendTextComments(...comments)
+      if (self.globalProfile.addon.useMarkdown)
+        node.appendMarkdownComments(...comments)
+      else node.appendTextComments(...comments)
     }
     if (tags?.length) {
       tags = unique(tags)

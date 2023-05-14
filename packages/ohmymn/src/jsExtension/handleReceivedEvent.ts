@@ -142,7 +142,7 @@ export default defineEventHandlers<
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Process new excerpt", "event")
     self.noteid = sender.userInfo.noteid
-    const note = MN.db.getNoteById(self.noteid)!
+    const note = MN.db.getNoteById(sender.userInfo.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
     self.excerptStatus.isModify = false
     // 创建摘录时重置

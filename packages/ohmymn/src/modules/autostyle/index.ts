@@ -22,7 +22,7 @@ export default defineConfig({
       label: lang.on,
       auto: {
         modifyStyle({ note }) {
-          return modifyStyle(note)
+          return modifyStyle(note, true)
         }
       }
     },
