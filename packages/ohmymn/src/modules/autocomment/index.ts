@@ -85,7 +85,11 @@ export default defineConfig({
               if (node.note.excerptPic?.paint && node.isOCR === false)
                 text = "@picture"
               const comments = generateComments(node, text)
-              if (comments?.length) node.appendTextComments(...comments)
+              if (comments?.length) {
+                if (self.globalProfile.addon.useMarkdown) {
+                  node.appendMarkdownComments(...comments)
+                } else node.appendTextComments(...comments)
+              }
             })
           } else if (content) {
             if (/^\(.+\)$/.test(content)) {
@@ -101,16 +105,26 @@ export default defineConfig({
                     newSubStr: renderTemplateOfNodeProperties(node, k.newSubStr)
                   }))
                 )
-                node.appendTextComments(...comments)
+                if (self.globalProfile.addon.useMarkdown) {
+                  node.appendMarkdownComments(...comments)
+                } else node.appendTextComments(...comments)
               })
             } else {
               nodes.forEach(node => {
-                node.appendTextComments(
-                  renderTemplateOfNodeProperties(
-                    node,
-                    reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                if (self.globalProfile.addon.useMarkdown) {
+                  node.appendMarkdownComments(
+                    renderTemplateOfNodeProperties(
+                      node,
+                      reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                    )
                   )
-                )
+                } else
+                  node.appendTextComments(
+                    renderTemplateOfNodeProperties(
+                      node,
+                      reverseEscape(`${escapeDoubleQuote(content)}`, true)
+                    )
+                  )
               })
             }
           }

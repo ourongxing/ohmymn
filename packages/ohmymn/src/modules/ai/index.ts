@@ -103,7 +103,9 @@ export default defineConfig({
                 case AIActionIO.card2comment:
                 case AIActionIO.excerpt2comment:
                 case AIActionIO.title2comment:
-                  node.appendTextComments(output)
+                  if (self.globalProfile.addon.useMarkdown)
+                    node.appendMarkdownComments(output)
+                  else node.appendTextComments(output)
                   break
                 case AIActionIO.card2title:
                 case AIActionIO.title2title:
@@ -199,11 +201,13 @@ export default defineConfig({
                 case AIActionIO.card2comment:
                 case AIActionIO.excerpt2comment:
                 case AIActionIO.title2comment:
-                  node.appendTextComments(output)
+                  if (self.globalProfile.addon.useMarkdown)
+                    node.appendMarkdownComments(output)
+                  else node.appendTextComments(output)
                   break
                 case AIActionIO.card2title:
-                case AIActionIO.excerpt2title:
                 case AIActionIO.title2title:
+                case AIActionIO.excerpt2title:
                   node.title = output
                   break
                 case AIActionIO.card2tag:

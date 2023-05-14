@@ -152,7 +152,9 @@ export default defineConfig({
                 node.removeCommentButLinkTag(
                   () => true,
                   n => {
-                    n.appendTextComments(...translation)
+                    if (self.globalProfile.addon.useMarkdown)
+                      n.appendMarkdownComments(...translation)
+                    else n.appendTextComments(...translation)
                   }
                 )
             })

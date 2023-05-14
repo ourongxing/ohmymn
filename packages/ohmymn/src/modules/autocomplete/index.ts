@@ -172,7 +172,9 @@ export default defineConfig({
                   option !== 1 ||
                   k.type === "HtmlNote",
                 n => {
-                  n.appendTextComments(...comments)
+                  if (self.globalProfile.addon.useMarkdown)
+                    n.appendMarkdownComments(...comments)
+                  else n.appendTextComments(...comments)
                 }
               )
             }

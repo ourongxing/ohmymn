@@ -3,7 +3,7 @@ import { CellViewType } from "~/typings"
 import { defineConfig } from "~/profile"
 import lang from "./lang"
 
-export default defineConfig({
+const config = defineConfig({
   name: Addon.title,
   key: "addon",
   link: Addon.forum,
@@ -72,6 +72,12 @@ export default defineConfig({
       label: lang.lock_excerpt.label
     },
     {
+      key: "useMarkdown",
+      type: CellViewType.Switch,
+      label: lang.use_markdown.label,
+      help: lang.use_markdown.help
+    },
+    {
       key: "autoBackup",
       type: CellViewType.Switch,
       label: lang.auto_backup.label
@@ -91,3 +97,9 @@ export default defineConfig({
     }
   ]
 })
+
+if (!MN.isMNE) {
+  config.settings = config.settings.filter(k => k.key !== "useMarkdown")
+}
+
+export default config

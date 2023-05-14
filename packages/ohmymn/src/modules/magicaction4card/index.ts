@@ -206,7 +206,9 @@ export default defineConfig({
                         lang.merge_text.is_excerpt_pic
                       )
                       if (index) {
-                        node.appendTextComments(removeHighlight(allText))
+                        if (self.globalProfile.addon.useMarkdown)
+                          node.appendMarkdownComments(removeHighlight(allText))
+                        else node.appendTextComments(removeHighlight(allText))
                         return
                       }
                     }
@@ -225,7 +227,9 @@ export default defineConfig({
                       }
                     }
                     if (!node.note.excerptPic?.paint) node.mainExcerptText = ""
-                    node.appendTextComments(removeHighlight(allText))
+                    if (self.globalProfile.addon.useMarkdown) {
+                      node.appendMarkdownComments(removeHighlight(allText))
+                    } else node.appendTextComments(removeHighlight(allText))
                 }
               }
             )

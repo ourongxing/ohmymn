@@ -130,37 +130,45 @@ export default async function (key: string, option: number, content: string) {
               break
             case NoteOption.Comment:
               if (key === "formulaOCR") {
-                const { markdown } = self.globalProfile.autoocr
-                // 0. markdown
-                // 1. mymarkdown
-                // 2. milkdown
-                switch (markdown[0]) {
-                  case 0:
-                    lastFocusNote.appendHtmlComment(
-                      "```math\n" + res + "\n```",
-                      "```math\n" + res + "\n```",
-                      { width: 420, height: 100 },
-                      "MarkDownEditor"
-                    )
-                    break
-                  case 1:
-                    lastFocusNote.appendHtmlComment(
-                      res,
-                      res,
-                      { width: 420, height: 100 },
-                      "MarkdownEditor"
-                    )
-                    break
-                  case 2:
-                    lastFocusNote.appendHtmlComment(
-                      res,
-                      res,
-                      { width: 420, height: 100 },
-                      "MilkdownEditor"
-                    )
-                    break
+                if (lastFocusNode.note.appendMarkdownComment) {
+                  lastFocusNode.note.appendMarkdownComment(res)
+                } else {
+                  const { markdown } = self.globalProfile.autoocr
+                  // 0. markdown
+                  // 1. mymarkdown
+                  // 2. milkdown
+                  switch (markdown[0]) {
+                    case 0:
+                      lastFocusNote.appendHtmlComment(
+                        "```math\n" + res + "\n```",
+                        "```math\n" + res + "\n```",
+                        { width: 420, height: 100 },
+                        "MarkDownEditor"
+                      )
+                      break
+                    case 1:
+                      lastFocusNote.appendHtmlComment(
+                        res,
+                        res,
+                        { width: 420, height: 100 },
+                        "MarkdownEditor"
+                      )
+                      break
+                    case 2:
+                      lastFocusNote.appendHtmlComment(
+                        res,
+                        res,
+                        { width: 420, height: 100 },
+                        "MilkdownEditor"
+                      )
+                      break
+                  }
                 }
-              } else lastFocusNode.appendTextComments(res)
+              } else {
+                if (self.globalProfile.addon.useMarkdown)
+                  lastFocusNode.appendMarkdownComments(res)
+                else lastFocusNode.appendTextComments(res)
+              }
           }
       })
     }
