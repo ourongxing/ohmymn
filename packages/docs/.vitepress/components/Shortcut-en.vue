@@ -193,17 +193,8 @@ const cardActions = [{
 },
 {
   type: 3,
-  label: "AI Action",
-  key: "aiAction",
-  option: [
-    "Title → Title",
-    "Title → Comment",
-    "Excerpt → Title",
-    "Excerpt → Comment",
-    "Card → Title",
-    "Card → Tag",
-    "Card → Comment"
-  ],
+  label: "Answer with Card",
+  key: "answerWithCard",
   moduleName: "AI",
   module: "ai",
   help: "This action comes from AI and uses the same settings. "

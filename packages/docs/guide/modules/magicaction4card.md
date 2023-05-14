@@ -203,9 +203,9 @@ OhMyMN 中最强大的功能前三吧，用于批量对卡片重命名，编号�
 来自于 [AutoSimplify](autosimplify.md#转换为简体中文)
 
 
-### AI 动作
+### 基于卡片回答
 ::: tip 更新
-[v4.2.0](/update.md) 新增
+[v4.2.1](/update.md) 新增
 :::
 
 来自于 [AI](ai.md)

@@ -147,9 +147,9 @@ temperature: 0
 
 ## [MagicAction for Card](magicaction4card.md#ai-动作)
 
-### AI 动作
+### 基于卡片回答
 
-手动输入 Prompt，同样可以选择输入和输出。
+基于卡片内容回答问题并生成评论，你可以用自然语言指定标题，摘录，评论以及标签。
 
 ### AI 动作 (Prompts)
 

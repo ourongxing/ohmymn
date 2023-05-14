@@ -10,6 +10,17 @@ https://bbs.marginnote.cn/t/topic/20501#heading-6
 
 :::
 
+## v4.2.1 (2022-05-15)
+### 修复
+- MNE 中的 Bug。
+
+### 新功能
+- **OhMyMN**：添加 `使用 Markdown 评论` 功能，所有通过 OhMyMN 生成的评论将直接使用 Markdown 语法。<Badge type="warning" text="Only MNE" />。
+- **基于卡片回答**：新动作，AI 可以基于卡片内容回答问题并生成评论。
+
+### 改进
+- **AI 动作（Prompt）**：使用 Shortcut 方式触发 AI 动作时，使用 Prompt 前的序号来指定 Prompt。
+
 ## v4.2.0 (2022-05-06)
 ### 新功能
 - **AI**：引入 OpenAI，可以自定义 Prompt，执行动作。
