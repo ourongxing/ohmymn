@@ -2,7 +2,7 @@
   "name": "marginnote",
   "description": "Type definitions of the latest MarginNote API.",
   "license": "MIT",
-  "version": "0.9.28",
+  "version": "0.9.29",
   "author": "MarginNote<https://github.com/marginnoteapp>",
   "contributors": [
     "ourongxing<https://github.com/ourongxing>"

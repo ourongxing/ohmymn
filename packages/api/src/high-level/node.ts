@@ -48,7 +48,14 @@ function getNoteExcerptTextPic(note: MbBookNote) {
 export class NodeNote {
   public note: MbBookNote
   constructor(note: MbBookNote) {
-    this.note = note.groupNoteId ? MN.db.getNoteById(note.groupNoteId)! : note
+    const nodeid =
+      (note.notebookId &&
+        note.realGroupNoteIdForTopicId &&
+        note.realGroupNoteIdForTopicId(note.notebookId)) ||
+      note.groupNoteId
+    if (nodeid) {
+      this.note = MN.db.getNoteById(nodeid)!
+    } else this.note = note
   }
   static getSelectedNodes() {
     const MindMapNodes: any[] | undefined =
@@ -385,6 +392,21 @@ export class NodeNote {
         existComments.every(k => k.type === "TextNote" && k.text !== comment)
       ) {
         this.note.appendTextComment(comment)
+      }
+    })
+    return this
+  }
+  appendMarkdownComments(...comments: string[]) {
+    comments = unique(comments, true)
+    const existComments = this.note.comments.filter(k => k.type === "TextNote")
+    comments.forEach(comment => {
+      if (
+        comment &&
+        existComments.every(k => k.type === "TextNote" && k.text !== comment)
+      ) {
+        if (this.note.appendMarkdownComment)
+          this.note.appendMarkdownComment(comment)
+        else this.note.appendTextComment(comment)
       }
     })
     return this

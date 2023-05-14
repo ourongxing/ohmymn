@@ -98,8 +98,13 @@ export declare class MbBookNote {
   readonly notesText?: string
   /**
    * It Will be valid after merging itself into another note. It's the note id of the note it merged into.
+   * @deprecated MarginNote v4.0
    */
   readonly groupNoteId?: string
+  /**
+   * just the same as {@link MbBookNote.groupNoteId} in MarginNote v4.0
+   */
+  realGroupNoteIdForTopicId?(nodebookid: string): string
   /**
   //  * Comments of the note, different from the excerptText
    */
@@ -205,8 +210,11 @@ export declare class MbBookNote {
    */
   appendTextComment(text: string): void
   /**
+   * Append one text comment to the note, but it will be rendered as Markdown
+   */
+  appendMarkdownComment?(text: string): void
+  /**
    * Append Note Link to the note
-   *
    */
   appendNoteLink(note: MbBookNote): void
   /**
