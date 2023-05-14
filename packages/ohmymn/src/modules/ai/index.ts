@@ -66,31 +66,46 @@ export default defineConfig({
   ],
   actions4card: [
     {
-      key: "aiAction",
+      key: "answerWithCard",
       type: CellViewType.ButtonWithInput,
-      label: lang.aiAction.label,
-      option: lang.aiAction.$option6,
-      async method({ nodes, option, content }) {
+      label: lang.answer_with_card.label,
+      help: lang.answer_with_card.help,
+      async method({ nodes, content }) {
         const { defaultTemperature } = self.globalProfile.ai
         for (const node of nodes) {
-          const input = (() => {
-            switch (option) {
-              case AIActionIO.card2comment:
-              case AIActionIO.card2tag:
-              case AIActionIO.card2title:
-                return node.allText
-              case AIActionIO.excerpt2comment:
-              case AIActionIO.excerpt2title:
-                return node.excerptsText.join("\n")
-              default:
-                return node.title
-            }
-          })()
+          const cardContent = MN.isZH
+            ? `这是一张卡片(Card)，卡片里的内容如下：
+             - 标题(Titles)：${node.title}
+
+             - 摘录(Excerpts)：${node.excerptsText.join("\n")}。
+
+             - 评论(Comments): ${node.commentsText.join("\n")}。
+
+             - 标签(Tags)：${node.tags.join(" ")}。
+
+             请按照卡片内容回答
+            `
+            : `This is a Card. The contents of the Card are as follows:
+             - Titles：${node.title}.
+
+             - Excerpts：${node.excerptsText.join("\n")}.
+
+             - Comments: ${node.commentsText.join("\n")}.
+
+             - Tags：${node.tags.join(" ")}.
+
+              Please answer according to the contents of the card.
+             `
+
           const output = await fetchGPTAnswer(
             [
               {
-                content: `${content}\: ${input}`,
-                role: "assistant"
+                content: cardContent,
+                role: "system"
+              },
+              {
+                content,
+                role: "user"
               }
             ],
             {
@@ -99,23 +114,9 @@ export default defineConfig({
           )
           if (output) {
             undoGroupingWithRefresh(() => {
-              switch (option) {
-                case AIActionIO.card2comment:
-                case AIActionIO.excerpt2comment:
-                case AIActionIO.title2comment:
-                  if (self.globalProfile.addon.useMarkdown)
-                    node.appendMarkdownComments(output)
-                  else node.appendTextComments(output)
-                  break
-                case AIActionIO.card2title:
-                case AIActionIO.title2title:
-                case AIActionIO.excerpt2title:
-                  node.title = output
-                  break
-                case AIActionIO.card2tag:
-                  // 使用空格隔开多个标签
-                  node.appendTags(...clearTags(output))
-              }
+              if (self.globalProfile.addon.useMarkdown)
+                node.appendMarkdownComments(output)
+              else node.appendTextComments(output)
             })
           }
         }
@@ -124,7 +125,8 @@ export default defineConfig({
     {
       key: "aiActionPrompts",
       type: CellViewType.Button,
-      label: lang.aiAction.label + " (Prompts)",
+      label: lang.ai_action_prompt.label,
+      help: lang.ai_action_prompt.help,
       option: [],
       async method({ nodes, option }) {
         if (!Addon.prompts?.length) {
@@ -143,13 +145,13 @@ export default defineConfig({
         let index = 0
         if (option !== -1) {
           index = cardPrompts.findIndex(k => k.desc.startsWith(String(option)))
-          if (index === -1) return showHUD(lang.aiAction.no_prompts)
+          if (index === -1) return showHUD(lang.ai_action_prompt.no_prompts)
         } else {
           index = (
             await select(
               cardPrompts.map(k => k.desc),
               "AI",
-              lang.aiAction.select_prompts,
+              lang.ai_action_prompt.select_prompts,
               true
             )
           ).index
@@ -163,9 +165,11 @@ export default defineConfig({
           let io = options[0]
           if (options.length > 1) {
             const { index } = await select(
-              lang.aiAction.$option6.filter((_, i) => options.includes(i)),
+              lang.ai_action_prompt.$option6.filter((_, i) =>
+                options.includes(i)
+              ),
               "AI",
-              lang.aiAction.select_io
+              lang.ai_action_prompt.select_io
             )
             io = index
           }
@@ -186,7 +190,7 @@ export default defineConfig({
             [
               {
                 content: prompt.content,
-                role: "system"
+                role: "user"
               },
               {
                 content: input,
@@ -223,7 +227,8 @@ export default defineConfig({
     {
       key: "aiActionPromptsText",
       type: CellViewType.Button,
-      label: lang.aiAction.label + " (Prompts)",
+      label: lang.ai_action_prompt.label,
+      help: lang.ai_action_prompt.help,
       option: [],
       async method({ text, option }) {
         if (!Addon.prompts?.length) {
@@ -242,13 +247,13 @@ export default defineConfig({
         let index = 0
         if (option !== -1) {
           index = textPrompts.findIndex(k => k.desc.startsWith(String(option)))
-          if (index === -1) return showHUD(lang.aiAction.no_prompts)
+          if (index === -1) return showHUD(lang.ai_action_prompt.no_prompts)
         } else {
           index = (
             await select(
               textPrompts.map(k => k.desc),
               "AI",
-              lang.aiAction.select_prompts,
+              lang.ai_action_prompt.select_prompts,
               true
             )
           ).index

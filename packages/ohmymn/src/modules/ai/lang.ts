@@ -26,9 +26,13 @@ export default i18n({
       help: "OpenAI temperature 参数，0-2，不建议超过 2。需要准确回答请尽量调小",
       number: "请输入 0-2 之间的数字"
     },
-    aiAction: {
+    answer_with_card: {
+      label: "基于卡片回答",
+      help: "AI 可以基于卡片内容回答问题并生成评论，你可以用自然语言指定标题，摘录，评论以及标签。"
+    },
+    ai_action_prompt: {
       no_prompts: "没有找到这个 Prompt",
-      label: "AI 动作",
+      label: "AI 动作 (Prompts)",
       help: "读取 Prompts 数据源中的 Prompts",
       $option6: [
         "标题→标题",
@@ -80,7 +84,11 @@ export default i18n({
       $option3: ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k"]
     },
     no_result: "No result obtained",
-    aiAction: {
+    answer_with_card: {
+      label: "Answer with Card",
+      help: "AI can answer questions and generate comments based on the content of the card. You can specify the title, excerpt, comment and tag in natural language."
+    },
+    ai_action_prompt: {
       label: "AI Action",
       select_io: "Select input and output",
       help: "Fetch Prompts in Prompts data source",
