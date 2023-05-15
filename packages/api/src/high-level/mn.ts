@@ -57,12 +57,8 @@ class MNAPP {
   /**
    * Current notebook id of current window
    */
-  get currnetNotebookid() {
-    try {
-      return this.notebookController.notebookId
-    } catch {
-      return undefined
-    }
+  get currnetNotebookId() {
+    return this.notebookController?.notebookId
   }
   /**
    * Current doc md5 of current window

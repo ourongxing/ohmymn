@@ -23,15 +23,15 @@ export function isNoteExist(note: MbBookNote | string) {
  * @param f Action need to be cancelled.
  */
 export function undoGroupingWithRefresh(f: () => void) {
-  if (MN.currnetNotebookid) {
+  if (MN.currnetNotebookId) {
     UndoManager.sharedInstance().undoGrouping(
       String(Date.now()),
-      MN.currnetNotebookid,
+      MN.currnetNotebookId,
       f
     )
-    MN.db.setNotebookSyncDirty(MN.currnetNotebookid)
+    MN.db.setNotebookSyncDirty(MN.currnetNotebookId)
     postNotification("RefreshAfterDBChange", {
-      notebookid: MN.currnetNotebookid
+      notebookid: MN.currnetNotebookId
     })
   }
 }

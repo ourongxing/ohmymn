@@ -47,15 +47,27 @@ function getNoteExcerptTextPic(note: MbBookNote) {
  */
 export class NodeNote {
   public note: MbBookNote
-  constructor(note: MbBookNote) {
-    const nodeid =
-      (note.notebookId &&
+  constructor(note: MbBookNote, notebookid?: string) {
+    this.note = note
+    if (MN.isMNE) {
+      notebookid = notebookid ?? note.notebookId
+      const nodeid =
+        notebookid &&
         note.realGroupNoteIdForTopicId &&
-        note.realGroupNoteIdForTopicId(note.notebookId)) ||
-      note.groupNoteId
-    if (nodeid) {
-      this.note = MN.db.getNoteById(nodeid)!
-    } else this.note = note
+        note.realGroupNoteIdForTopicId(notebookid)
+      if (nodeid) {
+        const _note = MN.db.getNoteById(nodeid)
+        // 这种方式获取到的 nodeid 始终是不一样的，但是只有 nodeid 不一样，可以通过 createDate 来判断是否是同一个节点
+        if (_note && _note.createDate.getTime() !== note.createDate.getTime())
+          this.note = _note
+      }
+    } else {
+      const nodeid = note.groupNoteId
+      if (nodeid) {
+        const _note = MN.db.getNoteById(nodeid)
+        if (_note) this.note = _note
+      }
+    }
   }
   static getSelectedNodes() {
     const MindMapNodes: any[] | undefined =
@@ -64,7 +76,7 @@ export class NodeNote {
       ? MindMapNodes.map(item => new NodeNote(item.note.note))
       : []
   }
-  get nodeid() {
+  get nodeId() {
     return this.note.noteId
   }
   get descendantNodes() {
