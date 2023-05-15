@@ -24,7 +24,7 @@ export function switchPanel() {
 }
 
 function queryAddonCommandStatus() {
-  return MN.currnetNotebookid &&
+  return MN.currnetNotebookId &&
     MN.currentDocmd5 &&
     MN.currentDocmd5 !== "00000000"
     ? {

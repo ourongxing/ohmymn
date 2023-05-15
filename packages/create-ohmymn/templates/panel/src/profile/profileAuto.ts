@@ -197,7 +197,7 @@ export const writeProfile: WritePrifile = ({
 
 export async function saveProfile(name: string, key: string, value: any) {
   try {
-    if (!MN.currentDocmd5 || !MN.currnetNotebookid) return
+    if (!MN.currentDocmd5 || !MN.currnetNotebookId) return
     if (self.globalProfile?.[name]?.[key] !== undefined) {
       self.globalProfile[name][key] = value
     } else if (self.notebookProfile?.[name]?.[key] !== undefined) {
@@ -223,7 +223,7 @@ export async function saveProfile(name: string, key: string, value: any) {
       writeProfile({
         range: Range.All,
         docmd5: MN.currentDocmd5,
-        notebookid: MN.currnetNotebookid
+        notebookid: MN.currnetNotebookId
       })
       const { backupID, autoBackup } = self.globalProfile.addon
       if (backupID && autoBackup) {

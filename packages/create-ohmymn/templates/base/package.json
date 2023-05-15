@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "semver": "7.3.8",
-    "marginnote": "^0.9.28",
+    "marginnote": "^0.9.30",
     "querystringify": "^2.2.0"
   }
 }

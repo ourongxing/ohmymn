@@ -129,7 +129,7 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
 
 export async function readProfilefromCard(node: MbBookNote) {
   try {
-    if (!MN.currentDocmd5 || !MN.currnetNotebookid) return
+    if (!MN.currentDocmd5 || !MN.currnetNotebookId) return
     if (!node.childNotes?.length) throw lang.no_children
     // 传入单一全局配置
     async function getGlobalPath(p: any, n?: number) {
@@ -336,7 +336,7 @@ export async function readProfilefromCard(node: MbBookNote) {
     readProfile({
       range: Range.All,
       docmd5: MN.currentDocmd5,
-      notebookid: MN.currnetNotebookid
+      notebookid: MN.currnetNotebookId
     })
     layoutViewController()
     showHUD(lang.success)
@@ -347,7 +347,7 @@ export async function readProfilefromCard(node: MbBookNote) {
 }
 
 export async function manageProfileAction(node: NodeNote, option: number) {
-  if (!MN.currentDocmd5 || !MN.currnetNotebookid) return
+  if (!MN.currentDocmd5 || !MN.currnetNotebookId) return
   // Write
   switch (option) {
     case 0:
@@ -359,7 +359,7 @@ export async function manageProfileAction(node: NodeNote, option: number) {
         writeProfile({
           range: Range.All,
           docmd5: MN.currentDocmd5,
-          notebookid: MN.currnetNotebookid
+          notebookid: MN.currnetNotebookId
         })
         writeProfile2Card(node.note, false)
       }
@@ -369,7 +369,7 @@ export async function manageProfileAction(node: NodeNote, option: number) {
       readProfile({
         range: Range.All,
         docmd5: MN.currentDocmd5,
-        notebookid: MN.currnetNotebookid
+        notebookid: MN.currnetNotebookId
       })
       showHUD(lang.profile_reset)
       break
@@ -377,7 +377,7 @@ export async function manageProfileAction(node: NodeNote, option: number) {
       readProfile({
         range: Range.All,
         docmd5: MN.currentDocmd5,
-        notebookid: MN.currnetNotebookid
+        notebookid: MN.currnetNotebookId
       })
       showHUD(lang.profile_sync)
       break
