@@ -49,7 +49,14 @@ get currentDocumentController() {
   return this.studyController.readerController.currentDocumentController
 }
 ```
-
+### currentNotebookId(){
+当前笔记本的 id
+```ts
+get currnetNotebookId() {
+  return this.notebookController?.notebookId
+}
+```
+}
 ### currentDocmd5
 当前文档的 md5。如果笔记本中没有文档，也会随机产生一个 32 位的 md5，我在这里让这个值固定，8 个 0，避免生成无效配置。
 ```ts

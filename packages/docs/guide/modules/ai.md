@@ -1,3 +1,6 @@
+<script setup>
+import AIShortcut from '/.vitepress/components/AIShortcut.vue';
+</script>
 # AI
 
 ::: warning Powered by [OpenAI](https://openai.com/)
@@ -43,7 +46,7 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 
 需要填入一张卡片的链接，比如 `marginnote3app://note/BF594D1D-AC4E-46DC-8F13-87B7018E414D`。
 ::: warning 注意
-每次修改需要重新在这里回车确认，更新数据。
+序号为自动生成。每次修改需要重新在这里回车确认，更新数据。更新后，序号会重新生成。请不要调整卡片顺序。
 :::
 
 ![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/202305062309477.png?x-oss-process=base_webp)
@@ -74,17 +77,10 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 
 目前只能通过 [Shortcut](./shortcut.md#自定义捷径) 模块的自定义捷径功能。启用 Shortcut 模块，打开自定义捷径。
 
-把下面链接中的 🙂 换成 prompt 的序号即可。
+在下方输入 Prompt 前的序号，序号为自动生成。
 
-::: code-group
-```txt [卡片动作]
-marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPrompts%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D
-```
-
-
-```txt [文字动作]
-marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPromptsText%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D
-```
+::: warning 捷径生成器
+<AIShortcut/>
 :::
 
 用 Raycast 或者其他快捷键设置工具，设置快捷键打开链接即可。在 iPad 上通过手势也可以打开链接。
