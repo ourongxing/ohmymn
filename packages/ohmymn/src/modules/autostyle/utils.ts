@@ -1,4 +1,4 @@
-import type { MbBookNote } from "marginnote"
+import { MbBookNote, NodeNote } from "marginnote"
 import { CGSizeValue2CGSize, MN, removeHighlight, showHUD } from "marginnote"
 import { countWord, notCJK, reverseEscape } from "~/utils"
 import lang from "./lang"
@@ -42,16 +42,6 @@ export function modifyStyle(note: MbBookNote, isAuto = false) {
     style
   }
 
-  const nodeid = isAuto
-    ? (MN.currnetNotebookid &&
-        note.realGroupNoteIdForTopicId &&
-        note.realGroupNoteIdForTopicId(MN.currnetNotebookid)) ||
-      note.groupNoteId
-    : (note.notebookId &&
-        note.realGroupNoteIdForTopicId &&
-        note.realGroupNoteIdForTopicId(note.notebookId)) ||
-      note.groupNoteId
-  const nodeNote = nodeid ? MN.db.getNoteById(nodeid)! : note
   if (
     preset.includes(AutoStylePreset.StyleByWordCountAndArea) &&
     wordCountArea
@@ -68,10 +58,12 @@ export function modifyStyle(note: MbBookNote, isAuto = false) {
     }
   }
 
+  const node = new NodeNote(note, isAuto ? MN.currnetNotebookId : undefined)
+  const nodeNote = node.note
   for (const set of preset)
     switch (set) {
       case AutoStylePreset.ColorFollowCard:
-        if (nodeid) {
+        if (nodeNote.noteId !== note.noteId) {
           res.color = nodeNote.colorIndex
           return res
         }

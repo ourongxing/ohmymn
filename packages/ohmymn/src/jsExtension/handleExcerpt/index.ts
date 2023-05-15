@@ -30,18 +30,19 @@ export default async (n: MbBookNote) => {
   // Initialize global variables
   note = n
   /**
-   * 此时需要使用 MN.currnetNotebookid 而不是 note.notebookid
+   * MNE
+   * 此时需要使用 MN.currnetNotebookId 而不是 note.notebookid, 但是这样始终获取的的 nodeid 是不一样的,
+   * 如果没有合并，nodeid 也不一样，但是只有 nodeid 不一样，可以通过 createDate 来判断是否是同一个节点
    */
-  const nodeid =
-    (MN.currnetNotebookid &&
-      note.realGroupNoteIdForTopicId &&
-      note.realGroupNoteIdForTopicId(MN.currnetNotebookid)) ||
-    note.groupNoteId
-  const nodeNote = nodeid ? MN.db.getNoteById(nodeid)! : note
-  node = new NodeNote(nodeNote)
-  isPicOCRed = false
-  isComment = nodeNote.noteId !== note.noteId
+  if (MN.isMNE) {
+    node = new NodeNote(note, MN.currnetNotebookId)
+  } else {
+    node = new NodeNote(note)
+  }
+  nodeNote = node.note
+  isComment = node.nodeId !== note.noteId
   isComment && MN.log("The Excerpt is a comment", "excerpt")
+  isPicOCRed = false
   isPic = false
 
   if (note.excerptPic) {
@@ -132,7 +133,17 @@ function addTitleExcerpt({ text, title }: { text: string; title?: string }) {
     } else {
       // as comment
       if (isComment) {
-        const index = node.getCommentIndex(note)
+        /**
+          const index = node.getCommentIndex(note)
+         * MNE 中 node.getCommentIndex 会出错
+         * 合并后 noteid 会改变
+         */
+        const index = nodeNote.comments.findIndex(k => {
+          if (k.type === "LinkNote") {
+            const n = MN.db.getNoteById(k.noteid)
+            return n?.createDate.getTime() === note.createDate.getTime()
+          }
+        })
         if (index != -1) {
           const { removeExcerpt } = self.globalProfile.addon
           self.excerptStatus.lastRemovedComment = {
