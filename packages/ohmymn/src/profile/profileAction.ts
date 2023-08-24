@@ -7,7 +7,7 @@ import {
   showHUD,
   undoGroupingWithRefresh
 } from "marginnote"
-import semver from "semver"
+import { gt } from "semver"
 import { Addon } from "~/addon"
 import { moduleNameList } from "~/dataSource"
 import { layoutViewController } from "~/JSExtension/switchPanel"
@@ -206,7 +206,7 @@ export async function readProfilefromCard(node: MbBookNote) {
       throw lang.not_this_profile
     const profiles = data.profiles ?? data
     Addon.lastVersion = data.version ?? "4.0.0"
-    if (semver.gt(Addon.lastVersion, Addon.version)) {
+    if (gt(Addon.lastVersion, Addon.version)) {
       showHUD(lang.old_version)
     }
     const profileKeys = Object.keys(profiles)

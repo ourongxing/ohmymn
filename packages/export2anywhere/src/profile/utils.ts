@@ -1,5 +1,5 @@
 import type { NoteComment } from "marginnote"
-import semver from "semver"
+import { minVersion, satisfies } from "semver"
 import { Addon } from "~/addon"
 import type { AllModuleKeyUnion } from "~/coreModule"
 import type { IConfig } from "~/typings"
@@ -111,10 +111,10 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
     ;(function () {
       const { version, global, doc, notebook } = k
       if (
-        semver.satisfies(lastVersion, version.from) &&
-        semver.satisfies(Addon.version, version.to)
+        satisfies(lastVersion, version.from) &&
+        satisfies(Addon.version, version.to)
       ) {
-        lastVersion = semver.minVersion(k.version.to)!.version
+        lastVersion = minVersion(k.version.to)!.version
         switch (range) {
           case RewriteRange.Doc:
             if (doc) {

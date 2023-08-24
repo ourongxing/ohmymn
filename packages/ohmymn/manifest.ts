@@ -24,8 +24,8 @@ export default defineManifest({
   files: [
     "assets/logo.png",
     "assets/icon/",
-    "assets/AutoSimplifyData.json",
-    "assets/AutoCompleteData.db"
+    "assets/AutoSimplifyData.json"
+    // "assets/AutoCompleteData.db"
     // "assets/AutoCompleteData.zip"
   ]
 })
