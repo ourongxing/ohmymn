@@ -34,7 +34,7 @@ const footerText = `
 const outDir = isProd
   ? "./dist/"
   : homedir() +
-    `/Library/Containers/QReader.MarginStudy.easy/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`
+    `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`
 
 function clear(): Plugin {
   return {
