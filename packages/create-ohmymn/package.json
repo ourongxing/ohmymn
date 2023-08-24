@@ -3,18 +3,15 @@
   "description": "",
   "license": "MIT",
   "version": "0.0.3",
-  "author": "MarginNote<https://github.com/marginnoteapp>",
-  "contributors": [
-    "ourongxing<https://github.com/ourongxing>"
-  ],
-  "homepage": "https://github.com/marginnoteapp/ohmymn/tree/main/packages/create-ohmymn#readme",
+  "author": "ourongxing<https://github.com/ourongxing>",
+  "homepage": "https://github.com/ourongxing/ohmymn/tree/main/packages/create-ohmymn#readme",
   "scripts": {
     "build": "tsup src/index.ts --format cjs --clean",
     "dev": "pnpm build --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marginnoteapp/ohmymn.git",
+    "url": "git+https://github.com/ourongxing/ohmymn.git",
     "directory": "packages/create-ohmymn"
   },
   "files": [

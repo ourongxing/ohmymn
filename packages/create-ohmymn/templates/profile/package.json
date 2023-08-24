@@ -1,10 +1,7 @@
 {
   "name": "template-profile",
-  "author": "MarginNote",
-  "contributors": [
-    "ourongxing<https://github.com/ourongxing>"
-  ],
-  "homepage": "https://github.com/marginnoteapp/ohmymn",
+  "author": "ourongxing",
+  "homepage": "https://github.com/ourongxing/ohmymn",
   "version": "0.0.0",
   "license": "MIT",
   "description": "MarginNote Adddon Development Framework",

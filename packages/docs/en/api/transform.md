@@ -2,8 +2,8 @@
 
 MarginNote 一开始只提供了 Objective-C 版的 API，而 TypeScript 版的 API 则是通过 Objective-C API 转换而来。这里简单介绍一下转换的过程，以及注意事项。目前 UIKit 和 Foundation 的 API 只有部分有 TypeScript 版本，如果需要使用，可以参考这里的方法自行转换。也欢迎参与到 API 转换工作中来。
 
-- [Objective-C 版 API](https://github.com/marginnoteapp/ohmymn/tree/main/packages/api/Objective-C-API)
-- [TypeScript 版 API](https://github.com/marginnoteapp/ohmymn/tree/main/packages/api/src/low-level)
+- [Objective-C 版 API](https://github.com/ourongxing/ohmymn/tree/main/packages/api/Objective-C-API)
+- [TypeScript 版 API](https://github.com/ourongxing/ohmymn/tree/main/packages/api/src/low-level)
 
 ## JSExport
 

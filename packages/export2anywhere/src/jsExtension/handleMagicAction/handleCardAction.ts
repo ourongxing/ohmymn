@@ -44,7 +44,7 @@ export default async function (key: string, option: number, content: string) {
       // which leads to duplicate processing.
       const isHavingChildren = nodes.every(
         node =>
-          nodes[0].parentNode?.nodeid === node.note.parentNote?.noteId &&
+          nodes[0].parentNode?.nodeId === node.note.parentNote?.noteId &&
           node.childNodes.length
       )
 

@@ -1,11 +1,8 @@
 {
   "name": "@ohmymn/monorepo",
-  "author": "MarginNote<https://github.com/marginnoteapp>",
+  "author": "ourongxing<https://github.com/ourongxing>",
   "private": true,
-  "version": "4.2.0",
-  "contributors": [
-    "ourongxing<https://github.com/ourongxing>"
-  ],
+  "version": "4.2.1",
   "license": "MIT",
   "description": "MarginNote Addon Development Framework",
   "scripts": {

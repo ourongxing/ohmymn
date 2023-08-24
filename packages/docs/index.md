@@ -27,7 +27,7 @@ hero:
       link: https://bbs.marginnote.cn/t/topic/20501
     - theme: alt
       text: 查看源码
-      link: https://github.com/marginnoteapp/ohmymn
+      link: https://github.com/ourongxing/ohmymn
 ---
 <script setup>
 import HomePage from "/.vitepress/components/HomePage.vue"

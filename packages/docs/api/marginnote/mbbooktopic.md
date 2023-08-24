@@ -50,7 +50,7 @@ interface TextContent {
 import { getPageContent } from "marginnote"
 ```
 
-如果想要了解更复杂的使用这个方法，可以查看 OhMyMN AutoComplete 的获取上下文的[源码](https://github.com/marginnoteapp/ohmymn/blob/929f62c4ad5f62ae7f9451b39f110172074595dd/packages/addon/src/modules/autocomplete/utils.ts#L315)。
+如果想要了解更复杂的使用这个方法，可以查看 OhMyMN AutoComplete 的获取上下文的[源码](https://github.com/ourongxing/ohmymn/blob/929f62c4ad5f62ae7f9451b39f110172074595dd/packages/addon/src/modules/autocomplete/utils.ts#L315)。
 
 ## MbTopic
 也就是笔记本对象

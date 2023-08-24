@@ -1,5 +1,5 @@
 # 笔记相关
-[Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/note.ts)
+[Code](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/high-level/note.ts)
 
 与笔记相关的有两个比较重要的类，
 - [MbBookNote](./mbbooknote.md): MarginNote 里的笔记都属于 MbBookNote。MbBookNote 一定是笔记，但不一定是一张卡片。

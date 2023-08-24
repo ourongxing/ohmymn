@@ -10,7 +10,7 @@ https://bbs.marginnote.cn/t/topic/20501#heading-6
 
 :::
 
-## v4.2.1 (2022-05-15)
+## v4.2.1 (2023-05-15)
 ### 修复
 - MNE 中的 Bug。
 
@@ -21,7 +21,7 @@ https://bbs.marginnote.cn/t/topic/20501#heading-6
 ### 改进
 - **AI 动作（Prompt）**：使用 Shortcut 方式触发 AI 动作时，使用 Prompt 前的序号来指定 Prompt。
 
-## v4.2.0 (2022-05-06)
+## v4.2.0 (2023-05-06)
 ### 新功能
 - **AI**：引入 OpenAI，可以自定义 Prompt，执行动作。
 ### 改进

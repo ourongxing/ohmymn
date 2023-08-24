@@ -16,7 +16,7 @@ export default defineManifest({
     border: "#8A95A2",
     button: "#8A95A2"
   },
-  github: "https://github.com/marginnoteapp/ohmymn",
+  github: "https://github.com/ourongxing/ohmymn",
   forumZH: "https://bbs.marginnote.cn/t/topic/20501",
   forum: "https://forum.marginnote.com/t/5883",
   docZH: "https://ohmymn.marginnote.cn",
@@ -24,8 +24,8 @@ export default defineManifest({
   files: [
     "assets/logo.png",
     "assets/icon/",
-    "assets/AutoSimplifyData.json"
-    // "assets/AutoCompleteData.db"
+    "assets/AutoSimplifyData.json",
+    "assets/AutoCompleteData.db"
     // "assets/AutoCompleteData.zip"
   ]
 })

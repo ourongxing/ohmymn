@@ -3,7 +3,7 @@
 <p>
   <a href="https://www.npmjs.com/package/marginnote"><img src="https://img.shields.io/npm/v/marginnote.svg" alt="npm-version"></a>
   <a href="https://www.marginnote.com/store-v2"><img src="https://img.shields.io/badge/MarginNote-v3.7.21-blue" alt="marginnote-version"></a>
-  <a href="https://github.com/marginnoteapp/marginnote-api/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <a href="https://github.com/ourongxing/marginnote-api/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
 </p>
 
 > **Warning**
@@ -30,8 +30,8 @@ import { MN } from "marginnote"
 
 ## Documentation
 
-[简体中文](https://ohmymn.marginnote.cn/api) | [English](https://ohmymn.marginnote.cn/en/api)
+[简体中文](https://ohmymn.marginnote.cn/api)
 
 ## License
 
-<a href="https://github.com/marginnoteapp/marginnote-api/blob/main/LICENSE">MIT</a> © <a href="https://github.com/marginnoteapp"><img src="https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/mn.png?x-oss-process=base_webp" alt="MarginNote" width="80"></a>
+<a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE">MIT</a>

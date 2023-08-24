@@ -7,7 +7,7 @@ MN 插件文件以 `.mnaddon` 为后缀，本质上是一个 `.zip` 压缩包，
 ```json
 {
   "addonid": "marginnote.extension.ohmymn",
-  "author": "MarginNote",
+  "author": "ourongxing",
   "title": "OhMyMN",
   "version": "4.2.0",
   "marginnote_version_min": "3.7.21",

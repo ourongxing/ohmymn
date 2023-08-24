@@ -58,7 +58,7 @@ export declare type SpeechManager = {
 }
 ```
 如何使用:
-来源于 [read-aloud](https://github.com/marginnoteapp/read-aloud/blob/main/main.js#L200)
+来源于 [read-aloud](https://github.com/ourongxing/read-aloud/blob/main/main.js#L200)
 ```ts
 class Speaker {
   constructor() {

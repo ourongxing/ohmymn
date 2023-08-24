@@ -120,7 +120,7 @@ export default defineLifecycleHandlers({
         readProfile({
           range: Range.All,
           docmd5,
-          notebookid: MN.currnetNotebookid!
+          notebookid: MN.currnetNotebookId!
         })
       } else {
         readProfile({
@@ -155,12 +155,12 @@ export default defineLifecycleHandlers({
     sceneDidDisconnect() {
       MN.log("Close a window", "lifecycle")
       removeLastComment()
-      if (MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
+      if (MN.isMac && MN.currentDocmd5 && MN.currnetNotebookId) {
         removeUndefinedCache()
         writeProfile({
           range: Range.All,
           docmd5: MN.currentDocmd5,
-          notebookid: MN.currnetNotebookid
+          notebookid: MN.currnetNotebookId
         })
       }
     },
@@ -168,12 +168,12 @@ export default defineLifecycleHandlers({
       // or go to the background
       MN.log("Window is inactivation", "lifecycle")
       removeLastComment()
-      if (!MN.isMac && MN.currentDocmd5 && MN.currnetNotebookid) {
+      if (!MN.isMac && MN.currentDocmd5 && MN.currnetNotebookId) {
         removeUndefinedCache()
         writeProfile({
           range: Range.All,
           docmd5: MN.currentDocmd5,
-          notebookid: MN.currnetNotebookid
+          notebookid: MN.currnetNotebookId
         })
       }
     },

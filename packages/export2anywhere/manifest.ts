@@ -16,7 +16,7 @@ export default defineManifest({
     border: "#8A95A2",
     button: "#8A95A2"
   },
-  github: "https://github.com/marginnoteapp/ohmymn/packages/export2anywhere",
+  github: "https://github.com/ourongxing/ohmymn/packages/export2anywhere",
   forumZH: "https://bbs.marginnote.cn/t/topic/20501",
   forum: "https://forum.marginnote.com/t/5883",
   docZH: "https://ohmymn.marginnote.cn",

@@ -1,5 +1,5 @@
 # 等待/间隔
-[Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/delay.ts)
+[Code](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/high-level/delay.ts)
 
 ## delay
 等待一段时间，单位是秒

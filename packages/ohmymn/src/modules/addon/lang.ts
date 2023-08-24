@@ -7,7 +7,7 @@ export default i18n({
     double_link: "双击打开链接",
     use_markdown: {
       label: "使用 Markdown 评论",
-      help: "所有通过 OhMyMN 生成的评论将直接使用 Markdown"
+      help: "所有通过 OhMyMN 生成的评论将直接使用 Markdown     "
     },
     profile: {
       $option5: [

@@ -3,18 +3,18 @@
 If you have already learned [Template Syntax](mustache), then you can use the following variables at your leisure.
 
 ::: tip
-`Metadata` addon could import data from Zotero. You can use the data in template. Not yet officially released, you can test it from [Github](https://github.com/marginnoteapp/metadata/releases).
+`Metadata` addon could import data from Zotero. You can use the data in template. Not yet officially released, you can test it from [Github](https://github.com/ourongxing/metadata/releases).
 :::
 ## Variables
 
 ### MindMap Cards
 
 | Variables Name <div style="width:140px"/> | Type         | Description                                                                                   |
-|-------------------------------------------|--------------|-----------------------------------------------------------------------------------------------|
+| ----------------------------------------- | ------------ | --------------------------------------------------------------------------------------------- |
 | `id`                                      | String       | Note ID                                                                                       |
 | `url.pure`                                | String       | Note URL                                                                                      |
-| `url.md`                                  | String       | Note URL，add `[]()`                                                                           |
-| `url.html`                                | String       | Note URL，add `<a>`                                                                            |
+| `url.md`                                  | String       | Note URL，add `[]()`                                                                          |
+| `url.html`                                | String       | Note URL，add `<a>`                                                                           |
 | `page.start`                              | String       | Start page of notes in the document                                                           |
 | `page.end`                                | String       | End page of notes in the document                                                             |
 | `page.real.start`                         | String       | `Metadata Required` Calculate the start page number after the offset.                         |
@@ -41,7 +41,7 @@ If you have already learned [Template Syntax](mustache), then you can use the fo
 The document to which the current card belongs
 
 | Variables Name <div style="width:80px"/> | Type   | Description                                                                                                                |
-|------------------------------------------|--------|----------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
 | `doc.title`                              | String | Document title                                                                                                             |
 | `doc.md5`                                | String | Document md5                                                                                                               |
 | `doc.path`                               | String | Document path                                                                                                              |
@@ -58,7 +58,7 @@ The document to which the current card belongs
 The notebook to which the current card belongs
 
 | Variables Name <div style="width:150px"/> | Type   | Description               |
-|-------------------------------------------|--------|---------------------------|
+| ----------------------------------------- | ------ | ------------------------- |
 | `notebook.title`                          | String | Notebook title            |
 | `notebook.id`                             | String | Notebook  ID              |
 | `notebook.url.pure`                       | String | Notebook  URL             |
@@ -70,7 +70,7 @@ The notebook to which the current card belongs
 You can actually get all the above information about the current card's parent and child cards as well.
 
 | Variables Name | Type         | Description                                       |
-|----------------|--------------|---------------------------------------------------|
+| -------------- | ------------ | ------------------------------------------------- |
 | `parent`       | Object       | `parent.titles` is the parent's `titles`          |
 | `children`     | Object Array | `children.0.titles` is the first child's `titles` |
 
@@ -79,7 +79,7 @@ You can actually get all the above information about the current card's parent a
 ## Functions
 
 | Function Name <div style="width:80px"/> | Description                                                                       |
-|-----------------------------------------|-----------------------------------------------------------------------------------|
+| --------------------------------------- | --------------------------------------------------------------------------------- |
 | `nohl`                                  | Remove `**`, it's highlight symbol                                                |
 | `blod`                                  | Modify `**highlight**` to `<b>highlight</b>`                                      |
 | `cloze`                                 | Modify `**highlight**` to `{{c1::highlight}}`                                     |

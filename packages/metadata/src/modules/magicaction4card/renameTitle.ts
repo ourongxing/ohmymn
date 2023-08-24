@@ -62,7 +62,7 @@ export function renameTitle(content: string, nodes: NodeNote[]) {
   if (/#\[(.+)\]/.test(newSubStr)) {
     const isHavingChildren = nodes.every(
       node =>
-        nodes[0].parentNode?.nodeid === node.parentNode?.nodeid &&
+        nodes[0].parentNode?.nodeId === node.parentNode?.nodeId &&
         node?.childNodes?.length
     )
     if (isHavingChildren) {

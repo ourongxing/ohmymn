@@ -3,7 +3,7 @@ outline: deep
 ---
 # MbBookNote
 
-[完整定义](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/low-level/MarginNote/MbBookNote.ts)
+[完整定义](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/low-level/MarginNote/MbBookNote.ts)
 
 MbBookNote 是 MarginNote 中的笔记对象。推荐使用 [NodeNote](nodenote.md) 的相关方法来操作卡片。
 

@@ -1,6 +1,6 @@
 # 网络请求
 
-[Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/network.ts)
+[Code](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/high-level/network.ts)
 
 ```ts
 import { fetch } from "marginnote"

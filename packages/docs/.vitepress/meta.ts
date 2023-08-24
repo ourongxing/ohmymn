@@ -9,8 +9,8 @@ export const ogUrl = "https://ohmymn.marginnote.cn/"
 export const ogImage = `${ogUrl}og.jpg`
 
 /* GitHub and social links */
-export const github = "https://github.com/marginnoteapp/ohmymn"
-export const releases = "https://github.com/marginnoteapp/ohmymn/releases"
+export const github = "https://github.com/ourongxing/ohmymn"
+export const releases = "https://github.com/ourongxing/ohmymn/releases"
 
 /* Avatar/Image/Sponsors servers */
 export const preconnectLinks = [googleapis, gstatic]

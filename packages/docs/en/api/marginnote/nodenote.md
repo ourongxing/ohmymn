@@ -2,7 +2,7 @@
 outline: deep
 ---
 # NodeNote
-[Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/node.ts)
+[Code](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/high-level/node.ts)
 
 NodeNote 是对 [MbBookNote](./mbbooknote.md) 的扩展，用于表示脑图中的一个节点，或者一张卡片。
 
@@ -37,7 +37,7 @@ treeIndex 为二维数组，第一个数字表示第几层，第二个数字表�
 const { descendant, treeIndex } = node.descendantNodes
 ```
 
-OhMyMN 的 [分层编号](https://github.com/marginnoteapp/ohmymn/blob/fd99b43f16c7a9cb1b047d0c740e1d7aa45e3ce9/packages/addon/src/modules/magicaction4card/renameTitle.ts#L13) 就用到了这个 treeIndex。
+OhMyMN 的 [分层编号](https://github.com/ourongxing/ohmymn/blob/fd99b43f16c7a9cb1b047d0c740e1d7aa45e3ce9/packages/addon/src/modules/magicaction4card/renameTitle.ts#L13) 就用到了这个 treeIndex。
 ### ancestorNodes
 获取当前卡片的祖先卡片。祖先卡片就是父卡片，父卡片的父卡片，父卡片的父卡片的父卡片，以此类推。
 ### childNodes, parentNode

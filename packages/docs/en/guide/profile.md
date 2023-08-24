@@ -25,7 +25,7 @@ The notebook profile and the doc profile are annotated with instructions. Those 
 If you think the initial profile doesn't suit your needs and it's too tedious to modify different notebooks or documents one by one. Don't worry, I've already thought of it. You may have noticed that the last item in `OhMyMN-Select Global Profile` is called `Initialize`. When you make changes to this profile, it will be synchronized to all documents and notebooks. However, note that the options `OhMyMN-Select Global Profile` and `OhMyMN-Module Quick Switch` will not participate in the synchronization.
 
 ::: tip Update
-[v4.1.1](https://github.com/marginnoteapp/ohmymn/releases) Improved. The initialized document profile and notebook profile will be used as the default profile for new documents and new notebooks.
+[v4.1.1](https://github.com/ourongxing/ohmymn/releases) Improved. The initialized document profile and notebook profile will be used as the default profile for new documents and new notebooks.
 :::
 
 ~~For document profiles and notebook profiles, the initialization will only work on documents or notebooks that have already been opened.~~

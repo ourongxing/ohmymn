@@ -1,10 +1,7 @@
 {
   "name": "ohmymn",
   "private": true,
-  "author": "MarginNote",
-  "contributors": [
-    "ourongxing<https://github.com/ourongxing>"
-  ],
+  "author": "ourongxing",
   "version": "4.2.1",
   "license": "MIT",
   "description": "MarginNote toolbox that can process excerpts automatically",

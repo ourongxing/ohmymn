@@ -100,4 +100,4 @@ export declare class SQLiteResultSet {
   resultDictionary(): DictObj
 }
 ```
-但是你确实可以通过这个读取 SQLite 数据库。比如 OhMyMN 就通过这个方法来读取来一个词典数据库，查看 [源码](https://github.com/marginnoteapp/ohmymn/blob/929f62c4ad5f62ae7f9451b39f110172074595dd/packages/addon/src/modules/autocomplete/utils.ts#L153)。
+但是你确实可以通过这个读取 SQLite 数据库。比如 OhMyMN 就通过这个方法来读取来一个词典数据库，查看 [源码](https://github.com/ourongxing/ohmymn/blob/929f62c4ad5f62ae7f9451b39f110172074595dd/packages/addon/src/modules/autocomplete/utils.ts#L153)。

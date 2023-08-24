@@ -3,14 +3,11 @@
   "description": "Type definitions of the latest MarginNote API.",
   "license": "MIT",
   "version": "0.9.30",
-  "author": "MarginNote<https://github.com/marginnoteapp>",
-  "contributors": [
-    "ourongxing<https://github.com/ourongxing>"
-  ],
-  "homepage": "https://github.com/marginnoteapp/ohmymn/tree/main/packages/api#readme",
+  "author": "ourongxing<https://github.com/ourongxing>",
+  "homepage": "https://github.com/ourongxing/ohmymn/tree/main/packages/api#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marginnoteapp/ohmymn.git",
+    "url": "git+https://github.com/ourongxing/ohmymn.git",
     "directory": "packages/api"
   },
   "main": "dist/index.js",

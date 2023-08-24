@@ -1,5 +1,5 @@
 # 文件操作
-[Code](https://github.com/marginnoteapp/ohmymn/blob/main/packages/api/src/high-level/file.ts)
+[Code](https://github.com/ourongxing/ohmymn/blob/main/packages/api/src/high-level/file.ts)
 
 一些文件操作
 ## Path
