@@ -7,6 +7,27 @@ import {
 } from "marginnote"
 import lang from "./lang"
 import type { AIActionIO, ChatMessage, Model, Prompt } from "./typings"
+const models = [
+  "gpt-3.5-turbo-0613",
+  "gpt-3.5-turbo-16k-0613",
+  "gpt-4-0613",
+  "gpt-4-32k-0613"
+] as Model[]
+
+function findModel(model: string) {
+  switch (model) {
+    case "gpt-3.5":
+      return "gpt-3.5-turbo-0613"
+    case "gpt-3.5-16k":
+      return "gpt-3.5-turbo-16k-0613"
+    case "gpt-4":
+      return "gpt-4-0613"
+    case "gpt-4-32k-0613":
+      return "gpt-4-32k-0613"
+    default:
+      return "gpt-3.5-turbo-0613"
+  }
+}
 
 export function fetchPrompts(note?: MbBookNote): Prompt[] {
   if (note === undefined) {
@@ -46,20 +67,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
             .find(k => /model/i.test(k))
             ?.match(/gpt-3.5-16k|gpt-3.5|gpt-4-32k|gpt-4/)
           if (model?.length) {
-            switch (model[0]) {
-              case "gpt-3.5":
-                options.model = "gpt-3.5-turbo-0613"
-                break
-              case "gpt-3.5-16k":
-                options.model = "gpt-3.5-turbo-16k-0613"
-                break
-              case "gpt-4":
-                options.model = "gpt-4-0613"
-                break
-              case "gpt-4-32k-0613":
-                options.model = "gpt-4-32k-0613"
-                break
-            }
+            options.model = findModel(model[0])
           }
           const temperature = optionStr
             .find(k => /temperature/i.test(k))
@@ -109,7 +117,6 @@ export async function fetchGPTAnswer(
     if (OpenAIBaseURL.trim() === "") {
       baseURL = "api.openai.com"
     }
-    const models = ["gpt-3.5-turbo", "gpt-4", "gpt-4-32k"]
     const body = {
       model: models[model[0]],
       temperature: Number(defaultTemperature),
