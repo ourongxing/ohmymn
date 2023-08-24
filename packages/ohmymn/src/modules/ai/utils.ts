@@ -44,9 +44,22 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
 
           const model = optionStr
             .find(k => /model/i.test(k))
-            ?.match(/gpt-3.5-turbo|gpt-4|gpt-4-32k/)
+            ?.match(/gpt-3.5-16k|gpt-3.5|gpt-4-32k|gpt-4/)
           if (model?.length) {
-            options.model = model[0] as Model
+            switch (model[0]) {
+              case "gpt-3.5":
+                options.model = "gpt-3.5-turbo-0613"
+                break
+              case "gpt-3.5-16k":
+                options.model = "gpt-3.5-turbo-16k-0613"
+                break
+              case "gpt-4":
+                options.model = "gpt-4-0613"
+                break
+              case "gpt-4-32k-0613":
+                options.model = "gpt-4-32k-0613"
+                break
+            }
           }
           const temperature = optionStr
             .find(k => /temperature/i.test(k))

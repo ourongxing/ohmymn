@@ -53,6 +53,10 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 
 你只需要按照这个格式在子卡片中填写 Prompt 即可，好的 Prompt 可以让 OpenAI 无所不能。
 
+::: tip 更新
+[v4.2.2](/update.md) 支持 `gpt-3.5-turbo-16k`
+:::
+
 - 标题：作为 Prompt 的描述信息，选择 Prompts 的时候会显示。
 - 第一条评论：注意是评论，作为 Prompt。
 - 第二条评论: 参数。
@@ -65,9 +69,9 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
     - `card2tag`
     - `card2comment`
     - `selected_text`: 用于 MagicAction for Text 的 AI 动作 Prompts。
-
   - `model`: 模型，在这里可以设置不同的 Prompt 使用不同的模型。降低成本。
-    - `gpt-3.5-turbo`
+    - `gpt-3.5`
+    - `gpt-3.5-16k`
     - `gpt-4`
     - `gpt-4-32k`
   - `temperature`: 也就是前面提到的思维发散程度。可以根据 Prompt 填写。
