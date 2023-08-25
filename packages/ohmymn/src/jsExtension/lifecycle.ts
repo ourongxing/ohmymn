@@ -26,6 +26,7 @@ import { removeLastComment } from "./handleExcerpt"
 import { gestureRecognizers } from "./handleGestureEvent"
 import { eventObservers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
+import { dragOverlay, stretchOverlay } from "./dragOverlay"
 
 /**
  * Addon life cycle
@@ -76,6 +77,10 @@ export default defineLifecycleHandlers({
       self.dataSource = deepCopy(defaultDataSource)
 
       self.settingViewController = SettingViewController.new()
+      self.dragOverlayView = dragOverlay(self.settingViewController.view.frame)
+      self.stretchOverlayView = stretchOverlay(
+        self.settingViewController.view.frame
+      )
       self.settingViewController.addon = self.addon
       self.settingViewController.dataSource = self.dataSource
       self.settingViewController.globalProfile = self.globalProfile

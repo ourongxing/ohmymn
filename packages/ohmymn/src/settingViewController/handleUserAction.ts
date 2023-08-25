@@ -184,6 +184,9 @@ async function selectAction(param: {
     menuController.menuTableView!.reloadData()
   }
   self.tableView.reloadData()
+  if (row.key === "quickSwitch") {
+    self.settingViewCache.moduleOff.clear()
+  }
 }
 
 function clickSelectButton(sender: UIButton) {

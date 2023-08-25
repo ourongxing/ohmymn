@@ -30,12 +30,13 @@ export default i18n({
         "脑图靠内",
         "靠左",
         "居中",
-        "靠右"
-      ] as StringTuple<6>,
+        "靠右",
+        "手动"
+      ] as StringTuple<7>,
       label: "面板显示位置"
     },
     panel_height: {
-      $option3: ["高点", "标准", "矮点"] as StringTuple<3>,
+      $option3: ["高点", "标准", "矮点", "手动"] as StringTuple<4>,
       label: "面板显示高度"
     },
     panle_control: {
@@ -97,12 +98,13 @@ export default i18n({
         "MindMap Inner Side",
         "Left",
         "Center",
-        "Right"
+        "Right",
+        "Custom"
       ],
       label: "Panel Position"
     },
     panel_height: {
-      $option3: ["Taller", "Standard", "Shorter"],
+      $option3: ["Taller", "Standard", "Shorter", "Custom"],
       label: "Panel Height"
     },
     panle_control: {

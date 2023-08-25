@@ -1,6 +1,7 @@
-import type { UIViewController } from "marginnote"
+import type { CGPoint, CGRect, UIViewController } from "marginnote"
 import { delay, StudyMode } from "marginnote"
-import { PanelControl } from "~/modules/addon/typings"
+import { Addon } from "~/addon"
+import { PanelControl, PanelPosition } from "~/modules/addon/typings"
 
 // Set the position and size of the panel
 export function layoutViewController(
@@ -12,7 +13,8 @@ export function layoutViewController(
   self.panel.lastReaderViewWidth = readerView.frame.width
   const frame = studyController.view.bounds
   const width = 300
-  const height = [600, 450, 300][heightNum]
+  const customFrame = JSON.parse(self.globalProfile.additional.settingViewFrame)
+  const height = [600, 450, 300, customFrame.height ?? 450][heightNum]
   const docSide = () => {
     const isHidden = readerView.hidden
     if (studyController.rightMapMode) {
@@ -61,25 +63,42 @@ export function layoutViewController(
         : x
     }
   }
-  const x = [
-    docSide,
-    middleDocMap,
-    mapSide,
-    () => 50,
-    () => (frame.width - width) / 2,
-    () => frame.width - width - 50
-  ][positionNum]()
-  self.settingViewController.view.frame = {
-    x,
-    y: MN.isMNE ? 150 : 110,
-    height,
-    width
+  if (positionNum === PanelPosition.Custom && customFrame.x) {
+    resizeSettingViewView(
+      {
+        ...ensureSecurity({ x: customFrame.x, y: customFrame.y }),
+        height,
+        width
+      },
+      0.2
+    )
+  } else {
+    const x = [
+      docSide,
+      middleDocMap,
+      mapSide,
+      () => 50,
+      () => (frame.width - width) / 2,
+      () => frame.width - width - 50,
+      docSide
+    ][positionNum]()
+    resizeSettingViewView(
+      {
+        x,
+        y: MN.isMNE ? 150 : 110,
+        height,
+        width
+      },
+      0.2
+    )
   }
 }
 
 export function closePanel() {
   if (!self.panel.status) return
   self.settingViewController.view.removeFromSuperview()
+  self.dragOverlayView.removeFromSuperview()
+  self.stretchOverlayView.removeFromSuperview()
   self.panel.status = false
   MN.studyController.refreshAddonCommands()
 }
@@ -88,13 +107,17 @@ export function openPanel() {
   if (self.panel.status) return
   const { studyController } = MN
   studyController.view.addSubview(self.settingViewController.view)
+  studyController.view.addSubview(self.dragOverlayView)
+  studyController.view.addSubview(self.stretchOverlayView)
   self.panel.status = true
   studyController.refreshAddonCommands()
   self.panel.lastOpenPanel = Date.now()
   delay(0.2).then(() => void studyController.view.becomeFirstResponder())
 }
 
-export function switchPanel() {
+export function switchPanel(sender?: UIView) {
+  const addonBarView = sender?.superview.superview
+  Addon.barPosition = addonBarView?.frame.x ? "right" : "left"
   if (self.panel.status) closePanel()
   else {
     if (
@@ -136,7 +159,56 @@ function queryAddonCommandStatus() {
     : null
 }
 
+function clickCloseButton() {
+  closePanel()
+}
+
+export function resizeSettingViewView(rect: CGRect, animateDuration?: number) {
+  const { y, height } = rect
+  function resize() {
+    self.settingViewController.view.frame = {
+      ...rect
+    }
+    self.dragOverlayView.frame = {
+      ...rect,
+      height: self.dragOverlayView.frame.height
+    }
+    self.stretchOverlayView.frame = {
+      ...rect,
+      y: y + height - self.stretchOverlayView.frame.height / 2,
+      height: self.stretchOverlayView.frame.height
+    }
+  }
+  if (animateDuration)
+    UIView.animateWithDurationAnimationsCompletion(
+      animateDuration,
+      resize,
+      () => {}
+    )
+  else resize()
+}
+
+export function ensureSecurity(
+  { x, y }: CGPoint,
+  frame = MN.studyController.view.bounds,
+  dragOverlayFrame = self.dragOverlayView.frame
+) {
+  if (Addon.barPosition === "left") {
+    if (x < 50) x = 50
+    if (x > frame.width - dragOverlayFrame.width - 10)
+      x = frame.width - dragOverlayFrame.width - 10
+  } else {
+    if (x < 10) x = 10
+    if (x > frame.width - dragOverlayFrame.width - 50)
+      x = frame.width - dragOverlayFrame.width - 50
+  }
+  if (y < 50) y = 50
+  if (y > frame.height - dragOverlayFrame.height - 50)
+    y = frame.height - dragOverlayFrame.height - 50
+  return { x, y }
+}
 export default {
+  clickCloseButton,
   queryAddonCommandStatus,
   switchPanel,
   controllerWillLayoutSubviews

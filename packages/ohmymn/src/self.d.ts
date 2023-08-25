@@ -10,15 +10,19 @@ import type {
   UITableView,
   UITableViewController,
   DirectionOfSelection,
-  NodeNote
+  NodeNote,
+  UIImage
 } from "marginnote"
 import type { ISection } from "./typings"
-import type { AllModuleKeyUnion } from "./coreModule"
+import type { AllModuleKeyUnion, DataSourceSectionKeyUnion } from "./coreModule"
+import { MyMap } from "./utils"
 
 declare global {
   const MN: typeof import("marginnote")["MN"]
   const self: {
     useConsole?: boolean
+    dragOverlayView: UIView
+    stretchOverlayView: UIView
     addon?: {
       key: string
       title: string
@@ -55,6 +59,9 @@ declare global {
           }
         | undefined
       lastFetch: number
+    }
+    settingViewCache: {
+      moduleOff: MyMap<DataSourceSectionKeyUnion, boolean | undefined>
     }
     isFirstOpenDoc: boolean
     window: UIWindow

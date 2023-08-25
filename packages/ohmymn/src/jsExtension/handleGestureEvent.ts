@@ -1,12 +1,22 @@
 import {
+  CGPoint,
   defineGestureHandlers,
   gestureRecognizerController,
   initGesture,
   UISwipeGestureRecognizerDirection
 } from "marginnote"
-import { PanelControl } from "~/modules/addon/typings"
+import {
+  PanelControl,
+  PanelHeight,
+  PanelPosition
+} from "~/modules/addon/typings"
 import { actionTrigger } from "~/modules/gesture/utils"
-import { closePanel } from "./switchPanel"
+import { Range, readProfile, writeProfile } from "~/profile"
+import {
+  closePanel,
+  ensureSecurity,
+  resizeSettingViewView
+} from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
@@ -95,5 +105,80 @@ export default defineGestureHandlers({
   onDoubleClickOnTableView() {
     const { panelControl } = self.globalProfile.addon
     if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
+  },
+  onDnd(sender) {
+    const locationInMN = sender.locationInView(MN.studyController.view)
+    const frameInMN = MN.studyController.view.bounds
+    if (Date.now() - dndState.last > 100 && sender.state !== 3) {
+      const translation = sender.translationInView(MN.studyController.view)
+      dndState.locationInButton = sender.locationInView(sender.view)
+      dndState.locationInButton.x -= translation.x
+      dndState.locationInButton.y -= translation.y
+    }
+    if (dndState.locationInButton) {
+      let x = locationInMN.x - dndState.locationInButton.x
+      let y = locationInMN.y - dndState.locationInButton.y
+      ;({ x, y } = ensureSecurity({ x, y }, frameInMN, sender.view.frame))
+      const rect = {
+        ...self.settingViewController.view.frame,
+        x,
+        y
+      }
+      resizeSettingViewView(rect, 0.1)
+      // resizeSettingViewView will write profile
+      if (sender.state === 3) {
+        dndState.last = 0
+        self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
+        const toggle =
+          self.globalProfile.addon.panelPosition[0] !== PanelPosition.Custom
+        if (toggle) {
+          self.globalProfile.addon.panelPosition = [PanelPosition.Custom]
+        }
+        writeProfile({
+          range: Range.Global,
+          profileNO: self.notebookProfile.addon.profile[0]
+        })
+        if (toggle) {
+          readProfile({
+            range: Range.Global,
+            profileNO: self.notebookProfile.addon.profile[0]
+          })
+        }
+      }
+    }
+    if (sender.state !== 3) dndState.last = Date.now()
+  },
+  onStretch(sender) {
+    const location = sender.locationInView(self.settingViewController.view)
+    const frame = sender.view.frame
+    let height = location.y + frame.height / 2
+    const rect = {
+      ...self.settingViewController.view.frame,
+      height
+    }
+    resizeSettingViewView(rect)
+    if (sender.state === 3) {
+      self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
+      const toogle =
+        self.globalProfile.addon.panelHeight[0] !== PanelHeight.Custom
+      if (toogle) {
+        self.globalProfile.addon.panelHeight = [PanelHeight.Custom]
+      }
+      writeProfile({
+        range: Range.Global,
+        profileNO: self.notebookProfile.addon.profile[0]
+      })
+      if (toogle) {
+        readProfile({
+          range: Range.Global,
+          profileNO: self.notebookProfile.addon.profile[0]
+        })
+      }
+    }
   }
 })
+
+const dndState = {
+  locationInButton: undefined as CGPoint | undefined,
+  last: 0
+}

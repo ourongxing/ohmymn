@@ -197,6 +197,7 @@ export const defaultGlobalProfile = {
   },
   additional: {
     lastVision: Addon.version,
+    settingViewFrame: "{}",
     // 最好不要多层对象，不允许被修改
     autoocr: {
       lastGetToken: 0,

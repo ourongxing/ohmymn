@@ -1,14 +1,18 @@
 export const enum PanelPosition {
-  Auto,
-  Left,
-  Center,
-  Right
+  "Document Inner Side",
+  "Document MindMap Middle",
+  "MindMap Inner Side",
+  "Left",
+  "Center",
+  "Right",
+  "Custom"
 }
 
 export const enum PanelHeight {
   Higher,
   Standard,
-  Lower
+  Lower,
+  Custom
 }
 
 export const enum PanelControl {

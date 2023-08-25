@@ -1,10 +1,14 @@
 import { Addon } from "~/addon"
+import { MyMap } from "~/utils"
 export default {
   viewDidLoad() {
     self.tableView.allowsSelection = true
     self.view.layer.cornerRadius = 10
     self.view.layer.borderWidth = 2
     self.expandSections = new Set()
+    self.settingViewCache = {
+      moduleOff: new MyMap()
+    }
   },
   //Execute when each time it is opened
   viewWillAppear() {
@@ -16,7 +20,7 @@ export default {
           ? UIColor.whiteColor()
           : UIColor.blackColor()
     }
-    self.view.layer.borderColor = Addon.buttonColor
+    self.view.layer.borderColor = Addon.mainColor
   }
   // viewWillDisappear() {
   // self.tableView.setContentOffsetAnimated({ x: 0, y: 0 }, false)

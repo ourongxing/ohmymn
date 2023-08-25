@@ -3,13 +3,20 @@ import {
   MN,
   NSTextAlignment,
   type NSIndexPath,
-  type UITableView
+  type UITableView,
+  type UIImage
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import { moduleKeys, type DataSourceSectionKeyUnion } from "~/coreModule"
 import { CellViewType, type BindType, type IRowSelect } from "~/typings"
-import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
+import {
+  byteLength,
+  byteSlice,
+  byteSplitByLen,
+  MyMap,
+  serialSymbols
+} from "~/utils"
 import lang from "./lang"
 
 const fontSize = {
@@ -25,24 +32,37 @@ const fontSize = {
   selectButton: 13
 }
 
+const imagesCache = new MyMap<string, UIImage | undefined>()
+
 function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999
 }
 
 /** If the module is not enabled, the menu will be hidden */
 export function _isModuleOFF(key: DataSourceSectionKeyUnion) {
+  // if (self.settingViewCache.moduleOff.has(key)) {
+  //   return self.settingViewCache.moduleOff.get(key) as boolean | undefined
+  // }
   if (
     key === "more" ||
     key === "addon" ||
     key === "magicaction4card" ||
     key === "magicaction4text"
-  )
+  ) {
+    self.settingViewCache.moduleOff.set(key, undefined)
     return undefined
+  }
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeys.indexOf(key)
-  if (index === -1) return undefined
-  else return !quickSwitch.includes(index)
+  if (index === -1) {
+    self.settingViewCache.moduleOff.set(key, undefined)
+    return undefined
+  } else {
+    const status = quickSwitch.includes(index)
+    self.settingViewCache.moduleOff.set(key, !status)
+    return !status
+  }
 }
 
 function numberOfSectionsInTableView() {
@@ -69,32 +89,31 @@ function tableViewTitleForHeaderInSection(
   return _isModuleOFF(key) ? undefined : header
 }
 
-function tableViewViewForHeaderInSection(
-  tableView: UITableView,
-  section: number
-) {
-  const { key, header } = self.dataSource[section]
-  const cell = UITableViewCell.makeWithStyleReuseIdentifier(
-    0,
-    "PlainTextCellID"
-  )
-  cell.selectionStyle = 0
-  cell.textLabel.opaque = false
-  cell.textLabel.textAlignment = 0
-  cell.textLabel.lineBreakMode = 0
-  cell.textLabel.numberOfLines = 0
-  cell.textLabel.textColor = UIColor.grayColor()
-  cell.textLabel.font = UIFont.boldSystemFontOfSize(15)
-  cell.textLabel.text = header
-  return _isModuleOFF(key) ? undefined : cell
-}
-
 function tableViewHeightForHeaderInSection(
   tableView: UITableView,
   section: number
 ) {
   const { key, header } = self.dataSource[section]
-  return _isModuleOFF(key) ? 0 : 40
+  return _isModuleOFF(key) ? 0.01 : 30
+}
+
+function tableViewViewForHeaderInSection(
+  tableView: UITableView,
+  section: number
+) {
+  const { key, header } = self.dataSource[section]
+  if (_isModuleOFF(key)) return undefined
+  const cell = UITableViewCell.makeWithStyleReuseIdentifier(0, "HeaderCellID")
+  cell.selectionStyle = 0
+  cell.textLabel.opaque = false
+  cell.textLabel.textAlignment = 0
+  cell.textLabel.lineBreakMode = 0
+  cell.textLabel.numberOfLines = 0
+  cell.textLabel.textColor = UIColor.whiteColor()
+  cell.textLabel.font = UIFont.boldSystemFontOfSize(16)
+  cell.textLabel.text = header
+  cell.contentView.backgroundColor = Addon.mainColor
+  return cell
 }
 
 // If one of the bind objects does not meet the requirements, it will be hidden
@@ -236,11 +255,17 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.font = UIFont.systemFontOfSize(fontSize.label(row.label))
       if (MN.isMacMN3) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
-      const image = NSData.dataWithContentsOfFile(
-        Addon.path + `/icon/${row.key}.png`
-      )
-      if (!isNSNull(image))
-        cell.imageView.image = UIImage.imageWithDataScale(image, 2)
+      if (!imagesCache.has(row.key)) {
+        const data = NSData.dataWithContentsOfFile(
+          Addon.path + `/icon/${row.key}.png`
+        )
+        imagesCache.set(
+          row.key,
+          isNSNull(data) ? undefined : UIImage.imageWithDataScale(data, 2)
+        )
+      }
+      const img = imagesCache.get(row.key)
+      if (img) cell.imageView.image = img
       return cell
     }
     case CellViewType.Switch: {
@@ -354,7 +379,7 @@ const initCellView = {
       0
     )
     view.setTitleColorForState(UIColor.whiteColor(), 0)
-    view.backgroundColor = Addon.buttonColor
+    view.backgroundColor = Addon.mainColor
     view.layer.cornerRadius = 10
     view.layer.masksToBounds = true
     view.titleLabel.font = UIFont.boldSystemFontOfSize(fontSize.selectButton)
@@ -397,7 +422,7 @@ export default {
   tableViewNumberOfRowsInSection,
   tableViewCellForRowAtIndexPath,
   tableViewHeightForRowAtIndexPath,
-  ...(MN.isMacMNE
+  ...(MN.isMac
     ? {
         tableViewHeightForHeaderInSection,
         tableViewViewForHeaderInSection

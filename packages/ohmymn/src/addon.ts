@@ -9,7 +9,10 @@ class MNADDON {
   dataAutoSimplify?: OpenCC
   lastVersion!: string
   textColor = UIColor.blackColor()
+  barPosition: "left" | "right" = "left"
   prompts?: Prompt[]
+  readonly mainColor =
+    UIColor.colorWithHexString("#8A95A2").colorWithAlphaComponent(0.9)
   readonly key = manifest.key
   readonly title = manifest.title
   readonly author = manifest.author
@@ -17,8 +20,6 @@ class MNADDON {
   readonly globalProfileKey = manifest.profileKey!.global
   readonly docProfileKey = manifest.profileKey!.doc
   readonly notebookProfileKey = manifest.profileKey!.notebook
-  readonly borderColor = UIColor.colorWithHexString(manifest.color!.border)
-  readonly buttonColor = UIColor.colorWithHexString(manifest.color!.button)
   readonly github = manifest.github
   readonly forum = MN.isZH ? manifest.forumZH : manifest.forum
   readonly doc = MN.isZH ? manifest.docZH : manifest.doc
