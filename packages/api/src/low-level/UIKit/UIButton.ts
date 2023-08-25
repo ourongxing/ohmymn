@@ -1,4 +1,4 @@
-import { UIControl, UIColor } from "."
+import { UIControl, UIColor, UIImage } from "."
 
 export const enum UIButtonType {
   system = 0
@@ -17,7 +17,9 @@ declare global {
     buttonType: UIButtonType
     titleEdgeInsets: UIEdgeInsets
     lineBreakMode: NSLineBreakMode
+    adjustsImageWhenHighlighted: boolean
     setTitleForState(title: string, state: UIControlState): void
+    setImageForState(image: UIImage, state: UIControlState): void
     setTitleColorForState(color: UIColor, state: UIControlState): void
     titleLabel: UILabel
   }

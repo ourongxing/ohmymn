@@ -2,6 +2,7 @@ import { UITableView, UIViewController } from "."
 
 export declare class UITableViewController extends UIViewController {
   [k: string]: any
+  view: UIView
   tableView?: UITableView
   clearsSelectionOnViewWillAppear: boolean
 }

@@ -26,6 +26,7 @@ declare global {
     ignoreTouchForEvevnt(touch: UITouch, event: UIEvent): void
     reset(): void
     locationInView(view: UIView): CGPoint
+    translationInView(view: UIView): CGPoint
   }
   class UITapGestureRecognizer extends UIGestureRecognizer {
     numberOfTapsRequired: number
@@ -35,4 +36,5 @@ declare global {
     direction: UISwipeGestureRecognizerDirection
     numberOfTouchesRequired: number
   }
+  class UIPanGestureRecognizer extends UIGestureRecognizer {}
 }

@@ -3,6 +3,11 @@ import { CGFloat, CGPoint, CGRect, UIResponder, UIColor } from "."
 export const enum UIViewAutoresizing {}
 declare global {
   class UIView extends UIResponder {
+    static animateWithDurationAnimationsCompletion(
+      duration: number,
+      animations: () => void,
+      completion: () => void
+    ): void
     constructor(frame?: CGRect)
     bounds: CGRect
     frame: CGRect
@@ -16,6 +21,7 @@ declare global {
     autoresizesSubviews: boolean
     backgroundColor: UIColor
     convertRectToView(rect: CGRect, view: UIView): CGRect
+    removeFromSuperview(): void
     convertPointToView(point: CGPoint, view: UIView): CGPoint
     addSubview(view: UIView): void
     addGestureRecognizer(gestureRecognizer: UIGestureRecognizer): void
