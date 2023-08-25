@@ -54,7 +54,7 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 你只需要按照这个格式在子卡片中填写 Prompt 即可，好的 Prompt 可以让 OpenAI 无所不能。
 
 ::: tip 更新
-[v4.2.2](/update.md) 支持 `gpt-3.5-turbo-16k`
+[v4.3.0](/update.md) 支持 `gpt-3.5-turbo-16k`
 :::
 
 - 标题：作为 Prompt 的描述信息，选择 Prompts 的时候会显示。

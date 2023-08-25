@@ -10,6 +10,12 @@ https://bbs.marginnote.cn/t/topic/20501#heading-6
 
 :::
 
+## v4.3.0 (2023-08-25)
+### 新功能
+- 支持拖拽面板顶部调整位置。（实现逻辑来自于 [MN Browser](https://bbs.marginnote.com.cn/t/topic/44257)）
+- 支持拖拽面板底部调整高度。
+- AI 模块支持 gpt-3.5-turbo-16k
+
 ## v4.2.1 (2023-05-15)
 ### 修复
 - MNE 中的 Bug。
