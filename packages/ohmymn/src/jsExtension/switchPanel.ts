@@ -66,7 +66,7 @@ export function layoutViewController(
   if (positionNum === PanelPosition.Custom && customFrame.x) {
     resizeSettingViewView(
       {
-        ...ensureSecurity({ x: customFrame.x, y: customFrame.y }),
+        ...ensureSafety({ x: customFrame.x, y: customFrame.y }),
         height,
         width
       },
@@ -188,23 +188,21 @@ export function resizeSettingViewView(rect: CGRect, animateDuration?: number) {
   else resize()
 }
 
-export function ensureSecurity(
+export function ensureSafety(
   { x, y }: CGPoint,
   frame = MN.studyController.view.bounds,
   dragOverlayFrame = self.dragOverlayView.frame
 ) {
+  let tmp = x
   if (Addon.barPosition === "left") {
     if (x < 50) x = 50
-    if (x > frame.width - dragOverlayFrame.width - 10)
-      x = frame.width - dragOverlayFrame.width - 10
+    else if (x > (tmp = frame.width - dragOverlayFrame.width - 10)) x = tmp
   } else {
     if (x < 10) x = 10
-    if (x > frame.width - dragOverlayFrame.width - 50)
-      x = frame.width - dragOverlayFrame.width - 50
+    else if (x > (tmp = frame.width - dragOverlayFrame.width - 50)) x = tmp
   }
   if (y < 50) y = 50
-  if (y > frame.height - dragOverlayFrame.height - 50)
-    y = frame.height - dragOverlayFrame.height - 50
+  else if (y > (tmp = frame.height - dragOverlayFrame.height - 50)) y = tmp
   return { x, y }
 }
 export default {

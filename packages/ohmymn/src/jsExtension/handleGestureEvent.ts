@@ -12,11 +12,7 @@ import {
 } from "~/modules/addon/typings"
 import { actionTrigger } from "~/modules/gesture/utils"
 import { Range, readProfile, writeProfile } from "~/profile"
-import {
-  closePanel,
-  ensureSecurity,
-  resizeSettingViewView
-} from "./switchPanel"
+import { closePanel, ensureSafety, resizeSettingViewView } from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
@@ -108,7 +104,7 @@ export default defineGestureHandlers({
   },
   onDnd(sender) {
     const locationInMN = sender.locationInView(MN.studyController.view)
-    const frameInMN = MN.studyController.view.bounds
+    const frameOfMN = MN.studyController.view.bounds
     if (Date.now() - dndState.last > 100 && sender.state !== 3) {
       const translation = sender.translationInView(MN.studyController.view)
       dndState.locationInButton = sender.locationInView(sender.view)
@@ -118,27 +114,26 @@ export default defineGestureHandlers({
     if (dndState.locationInButton) {
       let x = locationInMN.x - dndState.locationInButton.x
       let y = locationInMN.y - dndState.locationInButton.y
-      ;({ x, y } = ensureSecurity({ x, y }, frameInMN, sender.view.frame))
+      ;({ x, y } = ensureSafety({ x, y }, frameOfMN, sender.view.frame))
       const rect = {
         ...self.settingViewController.view.frame,
         x,
         y
       }
       resizeSettingViewView(rect, 0.1)
-      // resizeSettingViewView will write profile
       if (sender.state === 3) {
         dndState.last = 0
         self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
-        const toggle =
+        const flag =
           self.globalProfile.addon.panelPosition[0] !== PanelPosition.Custom
-        if (toggle) {
+        if (flag) {
           self.globalProfile.addon.panelPosition = [PanelPosition.Custom]
         }
         writeProfile({
           range: Range.Global,
           profileNO: self.notebookProfile.addon.profile[0]
         })
-        if (toggle) {
+        if (flag) {
           readProfile({
             range: Range.Global,
             profileNO: self.notebookProfile.addon.profile[0]
@@ -159,16 +154,16 @@ export default defineGestureHandlers({
     resizeSettingViewView(rect)
     if (sender.state === 3) {
       self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
-      const toogle =
+      const flag =
         self.globalProfile.addon.panelHeight[0] !== PanelHeight.Custom
-      if (toogle) {
+      if (flag) {
         self.globalProfile.addon.panelHeight = [PanelHeight.Custom]
       }
       writeProfile({
         range: Range.Global,
         profileNO: self.notebookProfile.addon.profile[0]
       })
-      if (toogle) {
+      if (flag) {
         readProfile({
           range: Range.Global,
           profileNO: self.notebookProfile.addon.profile[0]
