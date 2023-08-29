@@ -18,4 +18,4 @@ Yeah, just click <kbd>enter</kbd> to create.
 Restart MarginNote quickly. It's helpful when you develop mnaddon.
 ## License
 
-<a href="https://github.com/marginnoteapp/raycast/blob/main/LICENSE">MIT</a> © <a href="https://github.com/marginnoteapp"><img src="https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/mn.png?x-oss-process=base_webp" alt="MarginNote" width="80"></a>
+<a href="https://github.com/ourongxing/ohmymn/blob/main/LICENSE">MIT</a>
