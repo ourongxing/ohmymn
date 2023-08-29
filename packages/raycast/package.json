@@ -1,0 +1,72 @@
+{
+  "name": "@ohmymn/raycast",
+  "private": true,
+  "title": "OhMyMN",
+  "description": "Offical Raycast Extensition of OhMyMN. Used to manage shortcuts of OhMyMN.",
+  "icon": "logo.png",
+  "author": "ourongxing",
+  "license": "MIT",
+  "categories": [
+    "Applications",
+    "Productivity"
+  ],
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "lint": "ray lint",
+    "fix-lint": "ray lint --fix"
+  },
+  "preferences": [
+    {
+      "name": "actionInChinese",
+      "description": "All of custom shortcuts and actions will be shown in Chinese",
+      "type": "checkbox",
+      "label": "Action Name in Chinese",
+      "required": true,
+      "default": true
+    },
+    {
+      "name": "username",
+      "title": "Your name",
+      "description": "Displayed when you share shortcut",
+      "type": "textfield",
+      "default": "anonymous",
+      "required": true,
+      "placeholder": "Your name will be used when you share shortcut"
+    }
+  ],
+  "commands": [
+    {
+      "name": "create_normal_shortcuts_quicklink",
+      "title": "Create Normal Shortcuts Quicklink",
+      "subtitle": "OhMyMN",
+      "description": "Restart marginote and skip the unsigned mnaddon alert",
+      "mode": "view"
+    },
+    {
+      "name": "gen_custom_shortcut",
+      "title": "Generate Custom Shortcut",
+      "subtitle": "OhMyMN",
+      "description": "Restart marginote and skip the unsigned mnaddon alert",
+      "mode": "view"
+    },
+    {
+      "name": "find_custom_shortcuts",
+      "title": "Find Custom Shortcuts",
+      "subtitle": "OhMyMN",
+      "description": "Restart marginote and skip the unsigned mnaddon alert",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "1.57.2",
+    "got": "^13.0.0",
+    "run-applescript": "^6.1.0",
+    "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "react-devtools": "^4.28.0"
+  }
+}
