@@ -10,7 +10,6 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "suppressImplicitAnyIndexErrors": true,
-    "ignoreDeprecations": "5.0",
     "resolveJsonModule": true,
     "importHelpers": true,
     "strict": true,
