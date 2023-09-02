@@ -6,8 +6,8 @@ import {
   StudyMode
 } from "marginnote"
 import { Addon } from "~/addon"
-import handleExcerpt, { removeLastComment } from "~/JSExtension/handleExcerpt"
-import { layoutViewController } from "~/JSExtension/switchPanel"
+import handleExcerpt, { removeLastComment } from "./handleExcerpt"
+import { layoutViewController } from "./switchPanel"
 import { isModuleON } from "~/coreModule"
 import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"

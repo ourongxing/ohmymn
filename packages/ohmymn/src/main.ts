@@ -1,5 +1,5 @@
 import { Addon } from "~/addon"
-import JSExtension from "./JSExtension"
+import JSExtension from "./jsExtension"
 
 JSB.newAddon = path => {
   Addon.path = path

@@ -1,4 +1,4 @@
-import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import {
   getSerialByIndex,
   getSerialInfo,

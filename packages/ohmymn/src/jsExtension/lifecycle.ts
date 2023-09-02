@@ -20,7 +20,7 @@ import {
   removeUndefinedCache,
   writeProfile
 } from "~/profile"
-import SettingViewController from "~/SettingViewController"
+import SettingViewController from "~/settingViewController"
 import { deepCopy } from "~/utils"
 import { removeLastComment } from "./handleExcerpt"
 import { gestureRecognizers } from "./handleGestureEvent"

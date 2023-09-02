@@ -1,5 +1,5 @@
 import { NodeNote, undoGroupingWithRefresh } from "marginnote"
-import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
 import {

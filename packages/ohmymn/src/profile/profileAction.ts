@@ -10,7 +10,7 @@ import {
 import { gt } from "semver"
 import { Addon } from "~/addon"
 import { moduleNameList } from "~/dataSource"
-import { layoutViewController } from "~/JSExtension/switchPanel"
+import { layoutViewController } from "~/jsExtension/switchPanel"
 import { dateFormat } from "~/utils"
 import { decode, encode } from "~/utils/third party/base64"
 import { readProfile, rewriteProfile, writeProfile } from "."

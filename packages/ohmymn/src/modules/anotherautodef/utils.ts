@@ -1,5 +1,5 @@
 import type { NodeNote } from "marginnote"
-import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { regFlag, unique, type ReplaceParam } from "~/utils"
 import { AutoDefPreset, TitleLinkSplit } from "./typings"
 

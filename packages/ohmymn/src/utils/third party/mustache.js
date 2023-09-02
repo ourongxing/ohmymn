@@ -1,5 +1,5 @@
 import wax from "./mustache-wax"
-import { func } from "~/JSExtension/mustacheFunc"
+import { func } from "~/jsExtension/mustacheFunc"
 
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*
