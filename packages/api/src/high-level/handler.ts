@@ -117,18 +117,25 @@ export const initGesture = {
   swipe(
     touchNumber: number,
     direction: UISwipeGestureRecognizerDirection,
-    action: string
+    handler: string
   ) {
-    const swipe = new UISwipeGestureRecognizer(self, `on${action}:`)
+    const swipe = new UISwipeGestureRecognizer(self, `${handler}:`)
+    swipe.addTargetAction(self, `${handler}:`)
     swipe.numberOfTouchesRequired = touchNumber
     swipe.direction = direction
     return swipe
   },
-  tap(touchNumber: number, tapNumber: number, action: string) {
-    const tap = new UITapGestureRecognizer(self, `on${action}:`)
+  tap(touchNumber: number, tapNumber: number, handler: string) {
+    const tap = new UITapGestureRecognizer(self, `${handler}:`)
+    tap.addTargetAction(self, `${handler}:`)
     tap.numberOfTapsRequired = tapNumber
     tap.numberOfTouchesRequired = touchNumber
     return tap
+  },
+  pan(handler: string) {
+    const pan = new UIPanGestureRecognizer(self, `${handler}:`)
+    pan.addTargetAction(self, `${handler}:`)
+    return pan
   }
 }
 
