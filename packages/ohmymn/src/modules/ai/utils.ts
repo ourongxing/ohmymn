@@ -22,7 +22,7 @@ function findModel(model: string) {
       return "gpt-3.5-turbo-16k-0613"
     case "gpt-4":
       return "gpt-4-0613"
-    case "gpt-4-32k-0613":
+    case "gpt-4-32k":
       return "gpt-4-32k-0613"
     default:
       return "gpt-3.5-turbo-0613"
