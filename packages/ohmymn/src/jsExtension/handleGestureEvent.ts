@@ -5,14 +5,10 @@ import {
   initGesture,
   UISwipeGestureRecognizerDirection
 } from "marginnote"
-import {
-  PanelControl,
-  PanelHeight,
-  PanelPosition
-} from "~/modules/addon/typings"
+import { PanelHeight, PanelPosition } from "~/modules/addon/typings"
 import { actionTrigger } from "~/modules/gesture/utils"
 import { Range, readProfile, writeProfile } from "~/profile"
-import { closePanel, ensureSafety, resizeSettingViewView } from "./switchPanel"
+import { ensureSafety, resizeSettingViewView } from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
@@ -105,10 +101,6 @@ export default defineGestureHandlers({
       selectionBarSwipeRight[0],
       sender
     )
-  },
-  onDoubleClickOnTableView() {
-    const { panelControl } = self.globalProfile.addon
-    if (panelControl.includes(PanelControl.DoubleClickClose)) closePanel()
   },
   onDnd(sender) {
     const locationInMN = sender.locationInView(MN.studyController.view)

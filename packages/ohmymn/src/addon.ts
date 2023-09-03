@@ -1,10 +1,20 @@
 import type { OpenCC } from "~/modules/autosimplify/opencc"
 import manifest from "../manifest"
-import type { SQLiteDatabase } from "marginnote"
+import type { SQLiteDatabase, UIImage } from "marginnote"
 import { Prompt } from "./modules/ai/typings"
+import { MyMap } from "./utils"
 
 class MNADDON {
+  private static instance?: MNADDON
+  private constructor() {}
+  static getInstance() {
+    if (!MNADDON.instance) {
+      MNADDON.instance = new MNADDON()
+    }
+    return MNADDON.instance
+  }
   path!: string
+  imagesCache = new MyMap<string, UIImage | undefined>()
   dataAutoComplete?: SQLiteDatabase
   dataAutoSimplify?: OpenCC
   lastVersion!: string
@@ -25,4 +35,4 @@ class MNADDON {
   readonly doc = MN.isZH ? manifest.docZH : manifest.doc
 }
 
-export const Addon = new MNADDON()
+export const Addon = MNADDON.getInstance()

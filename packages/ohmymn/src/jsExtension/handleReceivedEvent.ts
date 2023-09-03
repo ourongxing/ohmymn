@@ -111,9 +111,6 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.isChangeExcerptRange = false
     self.excerptStatus.isProcessNewExcerpt = false
-    self.bar.card = {
-      winRect: sender.userInfo.winRect
-    }
     const success = await loopBreak(
       20,
       0.05,
@@ -128,7 +125,6 @@ export default defineEventHandlers<
   onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnlineStatus = "free"
-    self.bar.card = undefined
     MN.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {

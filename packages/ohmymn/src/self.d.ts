@@ -10,8 +10,7 @@ import type {
   UITableView,
   UITableViewController,
   DirectionOfSelection,
-  NodeNote,
-  UIImage
+  NodeNote
 } from "marginnote"
 import type { ISection } from "./typings"
 import type { AllModuleKeyUnion, DataSourceSectionKeyUnion } from "./coreModule"
@@ -28,6 +27,9 @@ declare global {
      * Only mainView
      */
     stretchOverlayView: UIView
+    /**
+     * Only mainView
+     */
     gestureRecognizers: {
       add: () => void
       remove: () => void

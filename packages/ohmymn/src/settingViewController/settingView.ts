@@ -3,20 +3,13 @@ import {
   MN,
   NSTextAlignment,
   type NSIndexPath,
-  type UITableView,
-  type UIImage
+  type UITableView
 } from "marginnote"
 import { Addon } from "~/addon"
 import { dataSourceIndex } from "~/dataSource"
 import { moduleKeys, type DataSourceSectionKeyUnion } from "~/coreModule"
 import { CellViewType, type BindType, type IRowSelect } from "~/typings"
-import {
-  byteLength,
-  byteSlice,
-  byteSplitByLen,
-  MyMap,
-  serialSymbols
-} from "~/utils"
+import { byteLength, byteSlice, byteSplitByLen, serialSymbols } from "~/utils"
 import lang from "./lang"
 
 const fontSize = {
@@ -31,8 +24,6 @@ const fontSize = {
   plain: 12,
   selectButton: 13
 }
-
-const imagesCache = new MyMap<string, UIImage | undefined>()
 
 function _indexPath2tag(indexPath: NSIndexPath): number {
   return indexPath.section * 100 + indexPath.row + 999
@@ -255,16 +246,16 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.font = UIFont.systemFontOfSize(fontSize.label(row.label))
       if (MN.isMacMN3) cell.textLabel.textColor = Addon.textColor
       cell.textLabel.text = row.label
-      if (!imagesCache.has(row.key)) {
+      if (!Addon.imagesCache.has(row.key)) {
         const data = NSData.dataWithContentsOfFile(
           Addon.path + `/icon/${row.key}.png`
         )
-        imagesCache.set(
+        Addon.imagesCache.set(
           row.key,
           isNSNull(data) ? undefined : UIImage.imageWithDataScale(data, 2)
         )
       }
-      const img = imagesCache.get(row.key)
+      const img = Addon.imagesCache.get(row.key)
       if (img) cell.imageView.image = img
       return cell
     }

@@ -1,9 +1,11 @@
-import { CGRect, isNSNull } from "marginnote"
+import { isNSNull } from "marginnote"
 import { Addon } from "~/addon"
 
-export function dragOverlay(frame: CGRect) {
+export function dragOverlay() {
   const view = new UIView({
-    ...frame,
+    x: 0,
+    y: 0,
+    width: 0,
     height: MN.isMac ? 30 : 50
   })
   view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
@@ -14,15 +16,21 @@ export function dragOverlay(frame: CGRect) {
 function closeButton() {
   const view = UIButton.buttonWithType(0)
   view.frame = {
-    x: MN.isMac ? 290 : -25,
-    y: 5,
-    width: 20,
-    height: 20
+    x: -30,
+    y: 2,
+    width: 25,
+    height: 25
   }
-  const image = NSData.dataWithContentsOfFile(Addon.path + `/icon/close.png`)
-  if (!isNSNull(image)) {
-    view.setImageForState(UIImage.imageWithDataScale(image, 2), 0)
+  const name = "close"
+  if (!Addon.imagesCache.has(name)) {
+    const data = NSData.dataWithContentsOfFile(Addon.path + `/icon/${name}.png`)
+    Addon.imagesCache.set(
+      name,
+      isNSNull(data) ? undefined : UIImage.imageWithDataScale(data, 2)
+    )
   }
+  const img = Addon.imagesCache.get(name)
+  if (img) view.setImageForState(img, 0)
   view.autoresizingMask = (1 << 0) | (1 << 3)
   view.layer.cornerRadius = 8
   view.layer.masksToBounds = true
@@ -31,12 +39,13 @@ function closeButton() {
   return view
 }
 
-export function stretchOverlay(frame: CGRect) {
+export function stretchOverlay() {
   const height = 20
   const view = new UIView({
-    ...frame,
+    x: 0,
+    width: 0,
     height,
-    y: frame.y + frame.height - height / 2
+    y: 0
   })
   view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
   return view

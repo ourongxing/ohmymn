@@ -78,10 +78,8 @@ export default defineLifecycleHandlers({
       self.dataSource = deepCopy(defaultDataSource)
 
       self.settingViewController = SettingViewController.new()
-      self.dragOverlayView = dragOverlay(self.settingViewController.view.frame)
-      self.stretchOverlayView = stretchOverlay(
-        self.settingViewController.view.frame
-      )
+      self.dragOverlayView = dragOverlay()
+      self.stretchOverlayView = stretchOverlay()
       self.settingViewController.addon = self.addon
       self.settingViewController.dataSource = self.dataSource
       self.settingViewController.globalProfile = self.globalProfile

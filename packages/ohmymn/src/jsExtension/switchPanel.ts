@@ -205,6 +205,7 @@ export function ensureSafety(
   else if (y > (tmp = frame.height - dragOverlayFrame.height - 50)) y = tmp
   return { x, y }
 }
+
 export default {
   clickCloseButton,
   queryAddonCommandStatus,
