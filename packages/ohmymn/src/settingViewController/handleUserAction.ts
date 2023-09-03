@@ -59,13 +59,17 @@ async function tableViewDidSelectRowAtIndexPath(
               openURL(row.link, true)
             }
           }
-        } else if (self.expandSections.has(sec.key)) {
+        } else if (self.settingViewCache.expandSections.has(sec.key)) {
           row.label = lang.expand
-          self.expandSections.delete(sec.key as OptionalModuleKeyUnion)
+          self.settingViewCache.expandSections.delete(
+            sec.key as OptionalModuleKeyUnion
+          )
           self.tableView.reloadData()
         } else {
           row.label = lang.collapse
-          self.expandSections.add(sec.key as OptionalModuleKeyUnion)
+          self.settingViewCache.expandSections.add(
+            sec.key as OptionalModuleKeyUnion
+          )
           self.tableView.reloadData()
         }
       }
@@ -185,7 +189,7 @@ async function selectAction(param: {
   }
   self.tableView.reloadData()
   if (row.key === "quickSwitch") {
-    self.settingViewCache.moduleOff.clear()
+    self.settingViewCache.offModules.clear()
   }
 }
 

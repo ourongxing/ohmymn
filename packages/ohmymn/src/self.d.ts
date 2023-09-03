@@ -20,24 +20,43 @@ import { MyMap } from "./utils"
 declare global {
   const MN: typeof import("marginnote")["MN"]
   const self: {
-    useConsole?: boolean
+    /**
+     * Only mainView
+     */
     dragOverlayView: UIView
+    /**
+     * Only mainView
+     */
     stretchOverlayView: UIView
+    gestureRecognizers: {
+      add: () => void
+      remove: () => void
+    }
+    /**
+     * Both
+     */
     addon?: {
       key: string
       title: string
     }
+    /**
+     * Only mainView
+     */
     panel: {
       status: boolean
       lastOpenPanel: number
       lastClickButton: number
       lastReaderViewWidth: number
     }
+    /**
+     * Only mainView
+     */
     excerptStatus: {
       isProcessNewExcerpt: boolean
       isChangeExcerptRange: boolean
       lastExcerptText: string | undefined
       isModify: boolean
+      noteid: string
       OCROnlineStatus: "begin" | "end" | "free"
       lastRemovedComment:
         | {
@@ -47,8 +66,13 @@ declare global {
           }
         | undefined
     }
-    expandSections: Set<Exclude<AllModuleKeyUnion, "addon">>
+    /**
+     * Only mainView
+     */
     backupWaitTimes: number | undefined
+    /**
+     * Only mainView
+     */
     metadata: {
       data:
         | {
@@ -60,29 +84,88 @@ declare global {
         | undefined
       lastFetch: number
     }
+    /**
+     * Only settingView
+     */
     settingViewCache: {
-      moduleOff: MyMap<DataSourceSectionKeyUnion, boolean | undefined>
+      offModules: MyMap<DataSourceSectionKeyUnion, boolean | undefined>
+      expandSections: Set<Exclude<AllModuleKeyUnion, "addon">>
     }
+    /**
+     * Only mainView
+     */
     isFirstOpenDoc: boolean
+    /**
+     * Both
+     */
     window: UIWindow
-    webView: UIWebView
+    /**
+     * Only settingView
+     */
     view: UIView
-    noteid: string
+    /**
+     * Only mainView
+     */
+    excerptNoteid: string
+    /**
+     * Only settingView
+     */
     tableView: UITableView
-    textSelectBar?: {
-      arrow: DirectionOfSelection
-      winRect: string
+    /**
+     * Only mainView
+     */
+    bar: {
+      text?: {
+        arrow: DirectionOfSelection
+        winRect: string
+      }
+      card?: {
+        winRect: string
+      }
     }
+    /**
+     * Only mainView
+     */
     customSelectedNodes: NodeNote[]
+    /**
+     * Both
+     */
     docProfile: IDocProfile
+    /**
+     * Both
+     */
     globalProfile: IGlobalProfile
+    /**
+     * Only mainView
+     */
     tempProfile: ITempProfile
+    /**
+     * Both
+     */
     notebookProfile: INotebookProfile
+    /**
+     * Both
+     */
     dataSource: ISection[]
+    /**
+     * Only mainView
+     */
     allGlobalProfile: IGlobalProfile[]
+    /**
+     * Only mainView
+     */
     allDocProfile: Record<string, IDocProfile>
+    /**
+     * Only mainView
+     */
     allNotebookProfile: Record<string, INotebookProfile>
+    /**
+     * Only mainView
+     */
     settingViewController: UITableViewController
+    /**
+     * Only settingView
+     */
     popoverController: UIPopoverController
   }
 }

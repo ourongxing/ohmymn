@@ -103,7 +103,7 @@ export async function genTitleTextCommentTag(param: {
       generatedTitles = res.title
       retVal.text = res.text
       retVal.comments = [...(res?.comments ?? []), ...retVal.comments]
-      const cache = cacheTitle[self.noteid]
+      const cache = cacheTitle[self.excerptStatus.noteid]
       if (self.excerptStatus.isModify && nodeTitle.length && cache?.length) {
         // 记录当前笔记产生的所有旧标题的索引
         const indexList = nodeTitle.reduce((acc, k, i) => {
@@ -120,7 +120,9 @@ export async function genTitleTextCommentTag(param: {
       }
     }
     if (generatedTitles?.length) {
-      cacheTitle[self.noteid] = generatedTitles.map(k => cacheTransformer.to(k))
+      cacheTitle[self.excerptStatus.noteid] = generatedTitles.map(k =>
+        cacheTransformer.to(k)
+      )
       if (isComment) {
         if (hasTitleThen[0] === HasTitleThen.MergeTitle) {
           if (insertIndex !== undefined) {

@@ -23,7 +23,7 @@ export const gestureRecognizers = () => {
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Up,
-        "SwipeUpOnMindMapView"
+        "onSwipeUpOnMindMapView"
       )
     },
     {
@@ -31,7 +31,7 @@ export const gestureRecognizers = () => {
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Down,
-        "SwipeDownOnMindMapView"
+        "onSwipeDownOnMindMapView"
       )
     },
     {
@@ -39,7 +39,7 @@ export const gestureRecognizers = () => {
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Left,
-        "SwipeLeftOnMindMapView"
+        "onSwipeLeftOnMindMapView"
       )
     },
     {
@@ -47,8 +47,16 @@ export const gestureRecognizers = () => {
       gesture: initGesture.swipe(
         1,
         UISwipeGestureRecognizerDirection.Right,
-        "SwipeRightOnMindMapView"
+        "onSwipeRightOnMindMapView"
       )
+    },
+    {
+      view: self.dragOverlayView,
+      gesture: initGesture.pan("onDnd")
+    },
+    {
+      view: self.stretchOverlayView,
+      gesture: initGesture.pan("onStretch")
     }
   ])
 }

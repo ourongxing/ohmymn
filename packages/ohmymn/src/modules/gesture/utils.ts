@@ -72,8 +72,8 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
     return SwipePosition.None
 
   // Popup menu on selection
-  if (self.textSelectBar) {
-    const { winRect, arrow } = self.textSelectBar
+  if (self.bar.text) {
+    const { winRect, arrow } = self.bar.text
     const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
     /**
      * 脑图

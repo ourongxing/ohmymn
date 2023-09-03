@@ -26,7 +26,7 @@ import { removeLastComment } from "./handleExcerpt"
 import { gestureRecognizers } from "./handleGestureEvent"
 import { eventObservers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
-import { dragOverlay, stretchOverlay } from "./dragOverlay"
+import { dragOverlay, stretchOverlay } from "./overlayView"
 
 /**
  * Addon life cycle
@@ -43,7 +43,6 @@ import { dragOverlay, stretchOverlay } from "./dragOverlay"
 export default defineLifecycleHandlers({
   instanceMethods: {
     sceneWillConnect() {
-      self.useConsole = false
       self.addon = {
         key: Addon.key,
         title: Addon.title
@@ -66,8 +65,10 @@ export default defineLifecycleHandlers({
         lastExcerptText: undefined,
         OCROnlineStatus: "free",
         isModify: false,
+        noteid: "",
         lastRemovedComment: undefined
       }
+      self.bar = {}
       self.isFirstOpenDoc = true
       self.customSelectedNodes = []
       self.globalProfile = deepCopy(defaultGlobalProfile)
@@ -98,7 +99,8 @@ export default defineLifecycleHandlers({
       }
       // Add hooks, aka observers
       eventObservers.add()
-      !MN.isMac && gestureRecognizers().add()
+      self.gestureRecognizers = gestureRecognizers()
+      self.gestureRecognizers.add()
       if (MN.db.getNotebookById(notebookid)?.documents?.length === 0) {
         if (self.isFirstOpenDoc) {
           self.isFirstOpenDoc = false
@@ -146,7 +148,7 @@ export default defineLifecycleHandlers({
       closePanel()
       // Remove hooks, aka observers
       eventObservers.remove()
-      !MN.isMac && gestureRecognizers().remove()
+      self.gestureRecognizers.remove()
     },
     documentWillClose(docmd5: string) {
       MN.log("Close a document", "lifecycle")

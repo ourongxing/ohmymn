@@ -95,7 +95,7 @@ export default defineEventHandlers<
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    self.textSelectBar = {
+    self.bar.text = {
       winRect: sender.userInfo.winRect,
       arrow: sender.userInfo.arrow
     }
@@ -103,7 +103,7 @@ export default defineEventHandlers<
   },
   onClosePopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    self.textSelectBar = undefined
+    self.bar.text = undefined
     self.excerptStatus.OCROnlineStatus = "free"
     MN.log("Popup menu on selection close", "event")
   },
@@ -111,6 +111,9 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.isChangeExcerptRange = false
     self.excerptStatus.isProcessNewExcerpt = false
+    self.bar.card = {
+      winRect: sender.userInfo.winRect
+    }
     const success = await loopBreak(
       20,
       0.05,
@@ -122,17 +125,18 @@ export default defineEventHandlers<
     const note = sender.userInfo.note
     self.excerptStatus.lastExcerptText = note.excerptText ?? ""
   },
-  async onClosePopupMenuOnNote(sender) {
+  onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     self.excerptStatus.OCROnlineStatus = "free"
+    self.bar.card = undefined
     MN.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Change excerpt range", "event")
-    self.noteid = sender.userInfo.noteid
-    const note = MN.db.getNoteById(self.noteid)!
+    self.excerptStatus.noteid = sender.userInfo.noteid
+    const note = MN.db.getNoteById(self.excerptStatus.noteid)!
     self.excerptStatus.isChangeExcerptRange = true
     self.excerptStatus.isModify = true
     handleExcerpt(note)
@@ -141,7 +145,7 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Process new excerpt", "event")
-    self.noteid = sender.userInfo.noteid
+    self.excerptStatus.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(sender.userInfo.noteid)!
     self.excerptStatus.isProcessNewExcerpt = true
     self.excerptStatus.isModify = false

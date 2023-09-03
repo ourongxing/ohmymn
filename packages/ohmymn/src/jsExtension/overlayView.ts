@@ -7,14 +7,11 @@ export function dragOverlay(frame: CGRect) {
     height: MN.isMac ? 30 : 50
   })
   view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
-  const gesture = new UIPanGestureRecognizer(self, "onDnd:")
-  view.addGestureRecognizer(gesture)
-  gesture.addTargetAction(self, "onDnd:")
-  view.addSubview(button())
+  view.addSubview(closeButton())
   return view
 }
 
-function button() {
+function closeButton() {
   const view = UIButton.buttonWithType(0)
   view.frame = {
     x: MN.isMac ? 290 : -25,
@@ -42,8 +39,5 @@ export function stretchOverlay(frame: CGRect) {
     y: frame.y + frame.height - height / 2
   })
   view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
-  const gesture = new UIPanGestureRecognizer(self, "onStretch:")
-  view.addGestureRecognizer(gesture)
-  gesture.addTargetAction(self, "onStretch:")
   return view
 }

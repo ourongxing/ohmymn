@@ -49,18 +49,18 @@ export function _isModuleOFF(key: DataSourceSectionKeyUnion) {
     key === "magicaction4card" ||
     key === "magicaction4text"
   ) {
-    self.settingViewCache.moduleOff.set(key, undefined)
+    self.settingViewCache.offModules.set(key, undefined)
     return undefined
   }
   const [sec, row] = dataSourceIndex.addon.quickSwitch
   const quickSwitch = (self.dataSource[sec].rows[row] as IRowSelect).selections
   const index = moduleKeys.indexOf(key)
   if (index === -1) {
-    self.settingViewCache.moduleOff.set(key, undefined)
+    self.settingViewCache.offModules.set(key, undefined)
     return undefined
   } else {
     const status = quickSwitch.includes(index)
-    self.settingViewCache.moduleOff.set(key, !status)
+    self.settingViewCache.offModules.set(key, !status)
     return !status
   }
 }
@@ -77,7 +77,7 @@ function tableViewNumberOfRowsInSection(
   if (key === "addon" || key === "more")
     return self.dataSource[section].rows.length
   else if (_isModuleOFF(key)) return 0
-  else if (!self.expandSections.has(key)) return 2
+  else if (!self.settingViewCache.expandSections.has(key)) return 2
   else return self.dataSource[section].rows.length
 }
 
