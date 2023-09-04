@@ -28,6 +28,7 @@
 
    - [Shortcut](./modules/shortcut)：使用 URL Scheme 触发动作，可自行设置快捷键来打开 URL Scheme。
    - [Gesture](./modules/gesture)：使用手势触发动作。
+   - [Toolbar](./modules/toolbar)：在点击卡片或者选择文字时添加动作工具栏。
    - [CopySearch](./modules/copysearch)：复制或搜索选中的文字或选中的卡片。
    - [AI](./modules/ai.md): AI 动作，自定义 Prompts。
    - AutoX

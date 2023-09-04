@@ -7,6 +7,7 @@ const modules = {
   optional: [
     ["Shortcut", "shortcut"],
     ["Gesture", "gesture"],
+    ["Toolbar", "toolbar"],
     ["Another AutoTitle", "anotherautotitle"],
     ["Another AutoDef", "anotherautodef"],
     ["AutoFormat", "autoformat"],
