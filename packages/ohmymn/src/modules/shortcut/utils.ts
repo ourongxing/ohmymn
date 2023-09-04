@@ -23,7 +23,6 @@ export async function handleURLScheme(params: string) {
       }[] = []
       try {
         const { info, actions } = query
-        MN.log(actions || info)
         shortcuts = JSON.parse(actions || info)
 
         if (!shortcuts.length) throw ""

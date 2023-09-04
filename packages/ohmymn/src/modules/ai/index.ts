@@ -139,12 +139,17 @@ export default defineConfig({
           }
         }
 
-        const cardPrompts = Addon.prompts.filter(
-          k => k.options.io === undefined || !k.options.io.includes(7)
-        )
+        const cardPrompts = Addon.prompts
+          .map(k => {
+            if (k.options.io) k.options.io = k.options.io?.filter(k => k !== 7)
+            return k
+          })
+          .filter(k => k.options.io === undefined || !k.options.io.includes(7))
         let index = 0
         if (option !== -1) {
-          index = cardPrompts.findIndex(k => k.desc.startsWith(String(option)))
+          index = cardPrompts.findIndex(k => {
+            return k.desc.startsWith(String(option))
+          })
           if (index === -1) return showHUD(lang.ai_action_prompt.no_prompts)
         } else {
           index = (
@@ -161,11 +166,11 @@ export default defineConfig({
 
         for (const node of nodes) {
           const options =
-            prompt.options?.io ?? ([0, 1, 2, 3, 4, 5] as AIActionIO[])
+            prompt.options?.io ?? ([0, 1, 2, 3, 4, 5, 6] as AIActionIO[])
           let io = options[0]
           if (options.length > 1) {
             const { index } = await select(
-              lang.ai_action_prompt.$option6.filter((_, i) =>
+              lang.ai_action_prompt.$option7.filter((_, i) =>
                 options.includes(i)
               ),
               "AI",

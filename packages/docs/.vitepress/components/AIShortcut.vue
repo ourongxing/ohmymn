@@ -55,7 +55,7 @@ const state = reactive({
 
 async function genShortcut() {
   const card = `marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPrompts%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D`
-  const text = `marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPromptsText%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D`
+  const text = `marginnote3app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPromptsText%22%2C%22type%22%3A%22text%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D`
   if (state.type === "text")
     await copyToClipboard(text.replace("🙂", String(state.num)))
   else

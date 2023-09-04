@@ -34,7 +34,7 @@ export default i18n({
       no_prompts: "没有找到这个 Prompt",
       label: "AI 动作 (Prompts)",
       help: "读取 Prompts 数据源中的 Prompts",
-      $option6: [
+      $option7: [
         "标题→标题",
         "标题→评论",
         "摘录→标题",
@@ -99,7 +99,7 @@ export default i18n({
       help: "Fetch Prompts in Prompts data source",
       select_prompts: "Select Prompts",
       no_prompts: "Prompt not found",
-      $option6: [
+      $option7: [
         "Title → Title",
         "Title → Comment",
         "Excerpt → Title",
