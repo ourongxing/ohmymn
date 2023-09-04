@@ -23,7 +23,7 @@ export default i18n({
     },
     defaultTemperature: {
       label: "思维发散程度",
-      help: "OpenAI temperature 参数，0-2，不建议超过 2。需要准确回答请尽量调小",
+      help: "OpenAI temperature 参数，0-2，不建议超过 1。需要准确回答请尽量调小。",
       number: "请输入 0-2 之间的数字"
     },
     answer_with_card: {
@@ -126,7 +126,7 @@ export default i18n({
     },
     defaultTemperature: {
       label: "Temperature",
-      help: "OpenAI Temperature parameter, 0-2, not recommended to exceed 2. Please try to reduce it if you need to answer accurately",
+      help: "OpenAI Temperature parameter, 0-2, not recommended to exceed 1. Please try to reduce it if you need to answer accurately",
       number: "Please enter a number between 0-2"
     }
   }
