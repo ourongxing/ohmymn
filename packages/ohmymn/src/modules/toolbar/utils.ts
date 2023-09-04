@@ -145,7 +145,7 @@ export function onToolbarButtonClick(sender: UIButton) {
   const type = tag % 2 ? "text" : "card"
   const actionNum = Math.floor((tag - 4096) / 100) % 100
   const actionIndex = Math.floor((tag - 4096) / 10000)
-  actionTrigger(type, `${type}Toolbar${actionNum}Shorcut`, actionIndex)
+  actionTrigger(type, `${type}Toolbar${actionNum}Shortcut`, actionIndex)
 }
 
 async function actionTrigger(
@@ -164,7 +164,7 @@ async function actionTrigger(
   if (key === "none") return
   else if (key == "switchPanel") switchPanel()
   else if (key === "customShortcut") {
-    const val = self.globalProfile.gesture[shortcutKey]
+    const val = self.globalProfile.toolbar[shortcutKey]
     if (val) openURL(val)
   } else if (module && !isModuleON(module))
     showHUD(`${moduleName ?? module} ${lang.action_not_work}`, 2)

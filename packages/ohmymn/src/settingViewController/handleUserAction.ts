@@ -207,11 +207,17 @@ function clickSelectButton(sender: UIButton) {
             : actionKey4Card[index]
           if (!module) return false
           return _isModuleOFF(module)
-        } else if (sectionKey === "shortcut" || sectionKey === "toolbar") {
+        } else if (sectionKey === "shortcut") {
           const { module, key } = rowKey.includes("text")
             ? actionKey4Text[index]
             : actionKey4Card[index]
           if (key === "customShortcut") return true
+          if (!module) return false
+          return _isModuleOFF(module)
+        } else if (sectionKey === "toolbar") {
+          const { module, key } = rowKey.includes("text")
+            ? actionKey4Text[index]
+            : actionKey4Card[index]
           if (!module) return false
           return _isModuleOFF(module)
         } else return false
