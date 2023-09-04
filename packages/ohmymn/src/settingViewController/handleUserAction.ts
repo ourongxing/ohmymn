@@ -186,7 +186,7 @@ async function selectAction(param: {
     menuController.menuTableView!.reloadData()
   }
   self.tableView.reloadData()
-  if (row.key === "quickSwitch") {
+  if (row.key === "quickSwitch" || row.key === "profile") {
     self.settingViewCache.offModules.clear()
   }
 }
