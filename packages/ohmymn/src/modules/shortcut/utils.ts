@@ -14,7 +14,7 @@ export async function handleURLScheme(params: string) {
     // marginnote3app://addon/ohmymn?actions=JSON.stringify(actions)
     const query = qs.parse(params) as Record<string, string>
     if ("info" in query || "actions" in query) {
-      if (!self.globalProfile.shortcut.shortcutPro) return
+      if (!self.globalProfile.shortcut.shortcutPro) return showHUD(lang.pro)
       let shortcuts: {
         action: string
         type: "text" | "card"
@@ -23,7 +23,9 @@ export async function handleURLScheme(params: string) {
       }[] = []
       try {
         const { info, actions } = query
+        MN.log(actions || info)
         shortcuts = JSON.parse(actions || info)
+
         if (!shortcuts.length) throw ""
       } catch (error) {
         throw lang.info_error

@@ -17,10 +17,12 @@ import copysearch from "./copysearch"
 import autosimplify from "./autosimplify"
 import shortcut from "./shortcut"
 import ai from "./ai"
+import toolbar from "./toolbar"
 
 export const optionalModules = {
   shortcut,
   gesture,
+  toolbar,
   anotherautotitle,
   anotherautodef,
   autoformat,

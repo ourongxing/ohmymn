@@ -67,11 +67,6 @@ const config = defineConfig({
       label: lang.double_link
     },
     {
-      key: "lockExcerpt",
-      type: CellViewType.Switch,
-      label: lang.lock_excerpt.label
-    },
-    {
       key: "useMarkdown",
       type: CellViewType.Switch,
       label: lang.use_markdown.label,

@@ -1,9 +1,9 @@
 import {
   defineEventHandlers,
-  loopBreak,
   eventObserverController,
   showHUD,
-  StudyMode
+  StudyMode,
+  DocMapSplitMode
 } from "marginnote"
 import { Addon } from "~/addon"
 import handleExcerpt, { removeLastComment } from "./handleExcerpt"
@@ -13,6 +13,20 @@ import { handleURLScheme } from "~/modules/shortcut/utils"
 import { saveProfile, updateProfileTemp } from "~/profile"
 import handleMagicAction from "./handleMagicAction"
 import lang from "./lang"
+import { actionBarController } from "~/modules/toolbar/utils"
+
+function isDocSide(x: number) {
+  const { studyController } = MN
+  const { width: readerViewWidth } = studyController.readerController.view.frame
+  const { width } = studyController.view.bounds
+  if (
+    studyController.docMapSplitMode == DocMapSplitMode.half &&
+    ((studyController.rightMapMode && x < readerViewWidth) ||
+      (!studyController.rightMapMode && x > width - readerViewWidth))
+  )
+    return true
+  return false
+}
 
 const panelEvents = [
   { event: Addon.key + "InputOver", handler: "onInputOver" },
@@ -95,36 +109,60 @@ export default defineEventHandlers<
   },
   onPopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    self.bar.text = {
-      winRect: sender.userInfo.winRect,
-      arrow: sender.userInfo.arrow
+    if (isModuleON("gesture") || isModuleON("toolbar")) {
+      const [x, y, width, height] = JSON.parse(
+        `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
+      ) as number[]
+      self.bar.text = {
+        winRect: { x, y, width, height },
+        arrow: sender.userInfo.arrow
+      }
+      actionBarController("text")?.add()
     }
     MN.log("Popup menu on selection open", "event")
   },
   onClosePopupMenuOnSelection(sender) {
     if (self.window !== MN.currentWindow) return
-    self.bar.text = undefined
+    if (isModuleON("gesture") || isModuleON("toolbar")) {
+      actionBarController("text")?.remove()
+      self.bar.text = undefined
+    }
     self.excerptStatus.OCROnlineStatus = "free"
     MN.log("Popup menu on selection close", "event")
   },
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
-    self.excerptStatus.isChangeExcerptRange = false
-    self.excerptStatus.isProcessNewExcerpt = false
-    const success = await loopBreak(
-      20,
-      0.05,
-      () =>
-        self.excerptStatus.isChangeExcerptRange ||
-        self.excerptStatus.isProcessNewExcerpt
+    if (MN.studyController.studyMode !== StudyMode.study) return
+    const [x, , width] = JSON.parse(
+      `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
     )
-    if (success) return
-    const note = sender.userInfo.note
-    self.excerptStatus.lastExcerptText = note.excerptText ?? ""
+    if (isDocSide(x + width)) return
+    MN.log("Popup menu on note open", "event")
+    if (isModuleON("gesture") || isModuleON("toolbar")) {
+      const { mindmapView } = MN.studyController.notebookController
+      const { selViewLst } = mindmapView
+      const view = selViewLst![0].view
+      const rect = mindmapView.subviews[0].subviews[0].convertRectToView(
+        view.frame,
+        MN.studyController.view
+      )
+      self.bar.card = {
+        winRect: rect,
+        lastShow: Date.now()
+      }
+      actionBarController("card")?.add()
+    }
   },
   onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
+    if (MN.studyController.studyMode !== StudyMode.study) return
+    // 如果从一张卡片跳到另一张卡片，会先触发 add ，再 remove
+    if (self.bar.card && Date.now() - self.bar.card.lastShow < 500) return
     self.excerptStatus.OCROnlineStatus = "free"
+    self.bar.card = undefined
+    if (isModuleON("gesture") || isModuleON("toolbar")) {
+      actionBarController("card")?.remove()
+    }
     MN.log("Popup menu on note close", "event")
   },
   onChangeExcerptRange(sender) {
@@ -133,7 +171,6 @@ export default defineEventHandlers<
     MN.log("Change excerpt range", "event")
     self.excerptStatus.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(self.excerptStatus.noteid)!
-    self.excerptStatus.isChangeExcerptRange = true
     self.excerptStatus.isModify = true
     handleExcerpt(note)
   },
@@ -143,11 +180,7 @@ export default defineEventHandlers<
     MN.log("Process new excerpt", "event")
     self.excerptStatus.noteid = sender.userInfo.noteid
     const note = MN.db.getNoteById(sender.userInfo.noteid)!
-    self.excerptStatus.isProcessNewExcerpt = true
     self.excerptStatus.isModify = false
-    // 创建摘录时重置
-    if (self.globalProfile.addon.lockExcerpt)
-      self.excerptStatus.lastExcerptText = undefined
     removeLastComment()
     handleExcerpt(note)
   },

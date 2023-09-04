@@ -31,9 +31,9 @@ function _indexPath2tag(indexPath: NSIndexPath): number {
 
 /** If the module is not enabled, the menu will be hidden */
 export function _isModuleOFF(key: DataSourceSectionKeyUnion) {
-  // if (self.settingViewCache.moduleOff.has(key)) {
-  //   return self.settingViewCache.moduleOff.get(key) as boolean | undefined
-  // }
+  if (self.settingViewCache.offModules.has(key)) {
+    return self.settingViewCache.offModules.get(key) as boolean | undefined
+  }
   if (
     key === "more" ||
     key === "addon" ||

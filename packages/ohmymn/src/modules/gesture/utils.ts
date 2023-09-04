@@ -74,7 +74,7 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
   // Popup menu on selection
   if (self.bar.text) {
     const { winRect, arrow } = self.bar.text
-    const [, y] = reverseEscape(`[${winRect.replace(/[{}]/g, "")}]`) as number[]
+    const { y } = winRect
     /**
      * 脑图
      * 如果是从右往左框选，菜单在上面，(y-70, y-30)
@@ -106,7 +106,7 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
     !selViewLst?.length
   )
     return SwipePosition.None
-  if (selViewLst.length == 1) {
+  if (selViewLst.length == 1 && self.bar.card) {
     const { width: readerViewWidth } =
       studyController.readerController.view.frame
 
@@ -118,12 +118,8 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
     )
       return SwipePosition.None
 
-    const view = selViewLst![0].view
-    const { y: cardY, height: cardHeight } =
-      mindmapView.subviews[0].subviews[0].convertRectToView(
-        view.frame,
-        studyController.view
-      )
+    const { y: cardY, height: cardHeight } = self.bar.card.winRect
+
     // alert(`y: ${parseInt(String(cardY))}
     // swipeY: ${parseInt(String(swipeY))}
     // y - ${parseInt(String(cardY - swipeY))} = swipeY`)
@@ -222,6 +218,7 @@ export async function actionTrigger(
       dataSourceIndex[
         type === "card" ? "magicaction4card" : "magicaction4text"
       ][key]
+    // if(key === "aiActionPromptsText" || key === "aiActionPromptsCard") option = undefined
     await handleMagicAction(
       type,
       self.dataSource[sec].rows[row] as IRowButton,

@@ -1,4 +1,4 @@
-import { CGFloat, CGPoint, CGRect, UIResponder, UIColor } from "."
+import { CGFloat, CGPoint, CGRect, UIResponder, UIColor, CGSize } from "."
 
 export const enum UIViewAutoresizing {}
 declare global {
@@ -36,4 +36,8 @@ export declare class CALayer {
   borderWidth: CGFloat
   borderColor: UIColor
   opacity: CGFloat
+  shadowColor: UIColor
+  shadowOffset: CGSize
+  shadowRadius: CGFloat
+  shadowOpacity: CGFloat
 }

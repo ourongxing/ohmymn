@@ -27,6 +27,7 @@ import { gestureRecognizers } from "./handleGestureEvent"
 import { eventObservers } from "./handleReceivedEvent"
 import { closePanel, layoutViewController } from "./switchPanel"
 import { dragOverlay, stretchOverlay } from "./overlayView"
+import { actionBarView } from "~/modules/toolbar/utils"
 
 /**
  * Addon life cycle
@@ -60,9 +61,6 @@ export default defineLifecycleHandlers({
         lastFetch: 0
       }
       self.excerptStatus = {
-        isProcessNewExcerpt: false,
-        isChangeExcerptRange: false,
-        lastExcerptText: undefined,
         OCROnlineStatus: "free",
         isModify: false,
         noteid: "",
@@ -80,6 +78,8 @@ export default defineLifecycleHandlers({
       self.settingViewController = SettingViewController.new()
       self.dragOverlayView = dragOverlay()
       self.stretchOverlayView = stretchOverlay()
+      self.cardActionBar = actionBarView("card")
+      self.textActionBar = actionBarView("text")
       self.settingViewController.addon = self.addon
       self.settingViewController.dataSource = self.dataSource
       self.settingViewController.globalProfile = self.globalProfile

@@ -93,5 +93,16 @@ export const rewriteSelection: RewriteCase[] = [
         cardAction: old => [old[0] >= 26 ? old[0] + 1 : old[0]]
       }
     }
+  },
+  {
+    version: {
+      from: "4.2.1 - 4.3.0",
+      to: ">=4.3.1"
+    },
+    global: {
+      addon: {
+        quickSwitch: old => old.map(k => (k > 1 ? k + 1 : k))
+      }
+    }
   }
 ]

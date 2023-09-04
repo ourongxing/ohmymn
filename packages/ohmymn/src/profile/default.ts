@@ -51,6 +51,33 @@ export const defaultGlobalProfile = {
     selectionBarSwipeRight: [0],
     selectionBarSwipeLeft: [0]
   },
+  toolbar: {
+    cardToolbar0: [0],
+    cardToolbar1: [0],
+    cardToolbar2: [0],
+    cardToolbar3: [0],
+    cardToolbar4: [0],
+    cardToolbar5: [0],
+    cardToolbar6: [0],
+    cardToolbar7: [0],
+    textToolbar0: [0],
+    textToolbar1: [0],
+    textToolbar2: [0],
+    textToolbar3: [0],
+
+    cardToolbar0Shortcut: "",
+    cardToolbar1Shortcut: "",
+    cardToolbar2Shortcut: "",
+    cardToolbar3Shortcut: "",
+    cardToolbar4Shortcut: "",
+    cardToolbar5Shortcut: "",
+    cardToolbar6Shortcut: "",
+    cardToolbar7Shortcut: "",
+    textToolbar0Shortcut: "",
+    textToolbar1Shortcut: "",
+    textToolbar2Shortcut: "",
+    textToolbar3Shortcut: ""
+  },
   shortcut: {
     shortcutPro: false,
     cardShortcut0: [0],

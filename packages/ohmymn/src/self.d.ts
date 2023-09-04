@@ -10,11 +10,14 @@ import type {
   UITableView,
   UITableViewController,
   DirectionOfSelection,
-  NodeNote
+  NodeNote,
+  CGRect
 } from "marginnote"
 import type { ISection } from "./typings"
 import type { AllModuleKeyUnion, DataSourceSectionKeyUnion } from "./coreModule"
 import { MyMap } from "./utils"
+import { actionBarView } from "~/modules/toolbar/utils"
+type ActionBarType = ReturnType<typeof actionBarView>
 
 declare global {
   const MN: typeof import("marginnote")["MN"]
@@ -27,6 +30,14 @@ declare global {
      * Only mainView
      */
     stretchOverlayView: UIView
+    /**
+     * Only mainView
+     */
+    cardActionBar: ActionBarType
+    /**
+     * Only mainView
+     */
+    textActionBar: ActionBarType
     /**
      * Only mainView
      */
@@ -54,9 +65,6 @@ declare global {
      * Only mainView
      */
     excerptStatus: {
-      isProcessNewExcerpt: boolean
-      isChangeExcerptRange: boolean
-      lastExcerptText: string | undefined
       isModify: boolean
       noteid: string
       OCROnlineStatus: "begin" | "end" | "free"
@@ -119,10 +127,11 @@ declare global {
     bar: {
       text?: {
         arrow: DirectionOfSelection
-        winRect: string
+        winRect: CGRect
       }
       card?: {
-        winRect: string
+        lastShow: number
+        winRect: CGRect
       }
     }
     /**

@@ -19,10 +19,9 @@ import lang from "./lang"
 import { _isModuleOFF } from "./settingView"
 
 function _tag2indexPath(tag: number): NSIndexPath {
-  return NSIndexPath.indexPathForRowInSection(
-    (tag - 999) % 100,
-    (tag - 999 - ((tag - 999) % 100)) / 100
-  )
+  const row = (tag - 999) % 100
+  const section = (tag - 999 - row) / 100
+  return NSIndexPath.indexPathForRowInSection(row, section)
 }
 
 const doubleClickTemp = {
@@ -42,7 +41,6 @@ async function tableViewDidSelectRowAtIndexPath(
       {
         if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
           if (row.link) {
-            MN.log(self.globalProfile.addon.doubleLink)
             if (self.globalProfile.addon.doubleLink) {
               if (
                 Date.now() - doubleClickTemp.lastTime < 500 &&
@@ -201,7 +199,6 @@ function clickSelectButton(sender: UIButton) {
     const menuController = MenuController.new()
     const height = 44
     const zero = 0.00001
-    const cacheModuleOFF: Partial<Record<OptionalModuleKeyUnion, boolean>> = {}
     const isHidden = (sectionKey: string, rowKey: string, index: number) => {
       try {
         if (sectionKey === "gesture") {
@@ -209,28 +206,14 @@ function clickSelectButton(sender: UIButton) {
             ? actionKey4Text[index]
             : actionKey4Card[index]
           if (!module) return false
-          const status = cacheModuleOFF[module]
-          if (status !== undefined) {
-            return status
-          } else {
-            const status = _isModuleOFF(module)
-            cacheModuleOFF[module] = status
-            return status
-          }
-        } else if (sectionKey === "shortcut") {
+          return _isModuleOFF(module)
+        } else if (sectionKey === "shortcut" || sectionKey === "toolbar") {
           const { module, key } = rowKey.includes("text")
             ? actionKey4Text[index]
             : actionKey4Card[index]
           if (key === "customShortcut") return true
           if (!module) return false
-          const status = cacheModuleOFF[module]
-          if (status !== undefined) {
-            return status
-          } else {
-            const status = _isModuleOFF(module)
-            cacheModuleOFF[module] = status
-            return status
-          }
+          return _isModuleOFF(module)
         } else return false
       } catch {
         return true

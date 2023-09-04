@@ -118,33 +118,40 @@ function genDataSource(
   Action4TextSection.rows.push(...actions4text)
 
   // 更新 quickSwitch 为 moduleList
-  const [AddonSection, ShortcutSection, GestureSection] = dataSource
+  const [AddonSection, ShortcutSection, GestureSection, ToolbarSection] =
+    dataSource
   for (const row of AddonSection.rows) {
     if (row.type == CellViewType.MuiltSelect && row.key == "quickSwitch")
       row.option = moduleNameList.name
   }
 
   // 同步 gesture 的 option 为 magicaction 列表
-  const { gestureOption: gestureOption4Card, actionKeys: _actionKey4Card } =
-    getActionKeyGetureOption(Action4CardSection)
-  const { gestureOption: gestureOption4Text, actionKeys: _actionKey4Text } =
-    getActionKeyGetureOption(Action4TextSection)
+  const { options: option4Card, actionKeys: _actionKey4Card } =
+    getActionKeyOption(Action4CardSection)
+  const { options: option4Text, actionKeys: _actionKey4Text } =
+    getActionKeyOption(Action4TextSection)
 
   actionKey4Card.push(..._actionKey4Card)
   actionKey4Text.push(..._actionKey4Text)
   GestureSection.rows = GestureSection.rows.map(row => {
     if (row.type == CellViewType.Select) {
       if (row.key.includes("selectionBar"))
-        row.option = [lang.none, ...gestureOption4Text]
-      else row.option = [lang.none, ...gestureOption4Card]
+        row.option = [lang.none, ...option4Text]
+      else row.option = [lang.none, ...option4Card]
     }
     return row
   })
   ShortcutSection.rows = ShortcutSection.rows.map(row => {
     if (row.type == CellViewType.Select) {
-      if (row.key.includes("text"))
-        row.option = [lang.none, ...gestureOption4Text]
-      else row.option = [lang.none, ...gestureOption4Card]
+      if (row.key.includes("text")) row.option = [lang.none, ...option4Text]
+      else row.option = [lang.none, ...option4Card]
+    }
+    return row
+  })
+  ToolbarSection.rows = ToolbarSection.rows.map(row => {
+    if (row.type == CellViewType.Select) {
+      if (row.key.includes("text")) row.option = [lang.none, ...option4Text]
+      else row.option = [lang.none, ...option4Card]
     }
     return row
   })
@@ -170,8 +177,8 @@ function genDataSourceIndex(dataSource: ISection[]) {
   }, {} as Record<AllModuleKeyUnion, Record<string, [number, number]>>)
 }
 
-function getActionKeyGetureOption(section: ISection) {
-  const gestureOption = [lang.custom_shortcut, lang.open_panel]
+function getActionKeyOption(section: ISection) {
+  const options = [lang.custom_shortcut, lang.open_panel]
   const actionKeys = []
   for (const _row of section.rows) {
     if (
@@ -180,15 +187,27 @@ function getActionKeyGetureOption(section: ISection) {
     )
       continue
     const row = _row as IRowButton
-    gestureOption.push(row.label)
-    if (!row.option?.length)
-      actionKeys.push({
-        key: row.key,
-        module: row.module as OptionalModuleKeyUnion,
-        moduleName: row.moduleName,
-        option: row.type === CellViewType.ButtonWithInput ? undefined : 0
-      })
-    else {
+    options.push(row.label)
+    if (!row.option?.length) {
+      if (
+        row.key.includes("aiActionPrompts") ||
+        row.type === CellViewType.ButtonWithInput
+      ) {
+        actionKeys.push({
+          key: row.key,
+          module: row.module as OptionalModuleKeyUnion,
+          moduleName: row.moduleName,
+          option: undefined
+        })
+      } else {
+        actionKeys.push({
+          key: row.key,
+          module: row.module as OptionalModuleKeyUnion,
+          moduleName: row.moduleName,
+          option: 0
+        })
+      }
+    } else {
       actionKeys.push({
         key: row.key,
         module: row.module as OptionalModuleKeyUnion,
@@ -196,7 +215,7 @@ function getActionKeyGetureOption(section: ISection) {
       })
       if (row.type == CellViewType.Button) {
         row.option.forEach((option, index) => {
-          gestureOption.push("——" + option)
+          options.push("——" + option)
           actionKeys.push({
             key: row.key,
             option: index,
@@ -205,7 +224,7 @@ function getActionKeyGetureOption(section: ISection) {
           })
         })
       } else if (row.option[0].includes("Auto")) {
-        gestureOption.push("——" + row.option[0])
+        options.push("——" + row.option[0])
         actionKeys.push({
           key: row.key,
           option: 0,
@@ -215,7 +234,7 @@ function getActionKeyGetureOption(section: ISection) {
       }
     }
   }
-  return { actionKeys, gestureOption }
+  return { actionKeys, options }
 }
 
 export const actionKey4Card: {

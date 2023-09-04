@@ -159,10 +159,6 @@ function queryAddonCommandStatus() {
     : null
 }
 
-function clickCloseButton() {
-  closePanel()
-}
-
 export function resizeSettingViewView(rect: CGRect, animateDuration?: number) {
   const { y, height } = rect
   function resize() {
@@ -188,6 +184,10 @@ export function resizeSettingViewView(rect: CGRect, animateDuration?: number) {
   else resize()
 }
 
+function onCloseButtonClick() {
+  closePanel()
+}
+
 export function ensureSafety(
   { x, y }: CGPoint,
   frame = MN.studyController.view.bounds,
@@ -207,7 +207,6 @@ export function ensureSafety(
 }
 
 export default {
-  clickCloseButton,
   queryAddonCommandStatus,
   switchPanel,
   controllerWillLayoutSubviews

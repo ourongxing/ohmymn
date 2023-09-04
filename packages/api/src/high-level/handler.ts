@@ -81,7 +81,10 @@ export type UserInfo<K> = K extends
       documentController: DocumentController
     }
   : K extends "onPopupMenuOnNote" | "onClosePopupMenuOnNote"
-  ? { note: MbBookNote }
+  ? {
+      note: MbBookNote
+      winRect: string
+    }
   : K extends "onChangeExcerptRange" | "onProcessNewExcerpt"
   ? { noteid: string }
   : K extends "onAddonBroadcast"

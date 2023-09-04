@@ -10,6 +10,7 @@ export default i18n({
       label: "自定义捷径",
       link: doc("shortcut", "自定义捷径")
     },
+    pro: "请打开自定义捷径功能",
     card_shortcut: "卡片动作捷径",
     action_not_work: "模块未启用，该动作无法执行",
     text_shortcut: "文字动作捷径",
@@ -28,6 +29,7 @@ export default i18n({
       label: "Custom Shortcuts",
       link: doc("shortcut", "custom-shortcuts")
     },
+    pro: "Please open the custom shortcut feature",
     card_shortcut: "Card Action Shortcut",
     text_shortcut: "Text Action Shortcut",
     action_not_work: "Module is not enabled, the action cannot be executed",

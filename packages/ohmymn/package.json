@@ -2,7 +2,7 @@
   "name": "ohmymn",
   "private": true,
   "author": "ourongxing",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "license": "MIT",
   "description": "MarginNote toolbox that can process excerpts automatically",
   "scripts": {

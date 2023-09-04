@@ -94,15 +94,6 @@ export default async (n: MbBookNote) => {
 
     self.excerptStatus.OCROnlineStatus = "free"
 
-    if (
-      self.globalProfile.addon.lockExcerpt &&
-      self.excerptStatus.isModify &&
-      self.excerptStatus.lastExcerptText !== undefined
-    ) {
-      addTitleExcerpt({ text: self.excerptStatus.lastExcerptText })
-      return MN.log("Locking excerpt is ON, restore excerpt", "excerpt")
-    }
-
     const excerptText = (await customOCR()) ?? note.excerptText?.trim()
     if (!excerptText) return
     const { title, text, comments, tags } = await genTitleTextCommentTag({

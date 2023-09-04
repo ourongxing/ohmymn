@@ -83,6 +83,11 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
           })
         )
       }
+      if (p.toolbar) {
+        Array.from({ length: 8 }).forEach((_, k) => {
+          p.shortcut[`cardToolbar${k}`] = f(p.shortcut[`cardToolbar${k}`], p)
+        })
+      }
       if (p.shortcut) {
         Array.from({ length: 8 }).forEach((_, k) => {
           p.shortcut[`cardShortcut${k}`] = f(p.shortcut[`cardShortcut${k}`], p)
@@ -97,6 +102,11 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
           )
         })
       }
+      if (p.toolbar) {
+        Array.from({ length: 4 }).forEach((_, k) => {
+          p.shortcut[`textToolbar${k}`] = f(p.shortcut[`textToolbar${k}`], p)
+        })
+      }
       if (p.shortcut) {
         Array.from({ length: 4 }).forEach((_, k) => {
           p.shortcut[`textShortcut${k}`] = f(p.shortcut[`textShortcut${k}`], p)
@@ -108,69 +118,67 @@ export function rewriteProfile<T>(range: RewriteRange, profile: T): T {
 
   let { lastVersion } = Addon
   rewriteSelection.forEach(k => {
-    ;(function () {
-      const { version, global, doc, notebook } = k
-      if (
-        satisfies(lastVersion, version.from) &&
-        satisfies(Addon.version, version.to)
-      ) {
-        lastVersion = minVersion(k.version.to)!.version
-        switch (range) {
-          case RewriteRange.Doc:
-            if (doc) {
-              const docProfileList = Object.values(
-                profile as unknown as Record<string, IDocProfile>
-              )
-              for (const [module, _] of Object.entries(doc))
-                for (const [key, f] of Object.entries(_))
-                  for (const p of docProfileList) {
-                    if (p[module]?.[key] !== undefined) {
-                      p[module][key] = f(p[module][key], p)
-                    } else return
-                  }
-            }
-            break
-          case RewriteRange.AllGlobal:
-            if (global) {
-              for (const [module, _] of Object.entries(global))
-                for (const [key, f] of Object.entries(_))
-                  for (const p of profile as unknown as IGlobalProfile[]) {
-                    if (!resloveGlobal(p, module, key, f)) return
-                  }
-            }
-            break
-          case RewriteRange.SingleGlobal:
-            if (global) {
-              for (const [module, _] of Object.entries(global))
-                for (const [key, f] of Object.entries(_))
-                  if (
-                    !resloveGlobal(
-                      profile as unknown as IGlobalProfile,
-                      module,
-                      key,
-                      f
-                    )
+    const { version, global, doc, notebook } = k
+    if (
+      satisfies(lastVersion, version.from) &&
+      satisfies(Addon.version, version.to)
+    ) {
+      lastVersion = minVersion(k.version.to)!.version
+      switch (range) {
+        case RewriteRange.Doc:
+          if (doc) {
+            const docProfileList = Object.values(
+              profile as unknown as Record<string, IDocProfile>
+            )
+            for (const [module, _] of Object.entries(doc))
+              for (const [key, f] of Object.entries(_))
+                for (const p of docProfileList) {
+                  if (p[module]?.[key] !== undefined) {
+                    p[module][key] = f(p[module][key], p)
+                  } else return
+                }
+          }
+          break
+        case RewriteRange.AllGlobal:
+          if (global) {
+            for (const [module, _] of Object.entries(global))
+              for (const [key, f] of Object.entries(_))
+                for (const p of profile as unknown as IGlobalProfile[]) {
+                  if (!resloveGlobal(p, module, key, f)) return
+                }
+          }
+          break
+        case RewriteRange.SingleGlobal:
+          if (global) {
+            for (const [module, _] of Object.entries(global))
+              for (const [key, f] of Object.entries(_))
+                if (
+                  !resloveGlobal(
+                    profile as unknown as IGlobalProfile,
+                    module,
+                    key,
+                    f
                   )
-                    return
-            }
-            break
-          case RewriteRange.Notebook:
-            if (notebook) {
-              const notebookProfileList = Object.values(
-                profile as unknown as Record<string, INotebookProfile>
-              )
-              for (const [module, _] of Object.entries(notebook))
-                for (const [key, f] of Object.entries(_))
-                  for (const p of notebookProfileList) {
-                    if (p[module]?.[key] !== undefined) {
-                      p[module][key] = f(p[module][key], p)
-                    } else return
-                  }
-            }
-            break
-        }
+                )
+                  return
+          }
+          break
+        case RewriteRange.Notebook:
+          if (notebook) {
+            const notebookProfileList = Object.values(
+              profile as unknown as Record<string, INotebookProfile>
+            )
+            for (const [module, _] of Object.entries(notebook))
+              for (const [key, f] of Object.entries(_))
+                for (const p of notebookProfileList) {
+                  if (p[module]?.[key] !== undefined) {
+                    p[module][key] = f(p[module][key], p)
+                  } else return
+                }
+          }
+          break
       }
-    })()
+    }
   })
   return profile
 }
