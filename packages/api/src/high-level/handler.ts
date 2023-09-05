@@ -80,10 +80,15 @@ export type UserInfo<K> = K extends
       arrow: DirectionOfSelection
       documentController: DocumentController
     }
-  : K extends "onPopupMenuOnNote" | "onClosePopupMenuOnNote"
+  : K extends "onPopupMenuOnNote"
   ? {
       note: MbBookNote
+      arrow: DirectionOfSelection
       winRect: string
+    }
+  : K extends "onClosePopupMenuOnNote"
+  ? {
+      noteid: string
     }
   : K extends "onChangeExcerptRange" | "onProcessNewExcerpt"
   ? { noteid: string }
