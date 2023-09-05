@@ -14,21 +14,21 @@ export default defineConfig({
       type: CellViewType.Switch,
       label: lang.pre_OCR.label,
       help: lang.pre_OCR.help,
-      bind: ["quickSwitch", 11]
+      bind: ["quickSwitch", 12]
     },
     {
       key: "preSimplify",
       type: CellViewType.Switch,
       label: lang.pre_simplify.label,
       help: lang.pre_simplify.help,
-      bind: ["quickSwitch", 14]
+      bind: ["quickSwitch", 15]
     },
     {
       key: "preFormat",
       type: CellViewType.Switch,
       label: lang.pre_format.label,
       help: lang.pre_format.help,
-      bind: ["quickSwitch", 4]
+      bind: ["quickSwitch", 5]
     },
     {
       key: "showCopyContent",
