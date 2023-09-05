@@ -133,12 +133,12 @@ export default defineEventHandlers<
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    const [x, y, width, height] = JSON.parse(
-      `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
-    )
-    if (isDocSide(x + width)) return
     MN.log("Popup menu on note open", "event")
     if (isModuleON("gesture") || isModuleON("toolbar")) {
+      const [x, y, width, height] = JSON.parse(
+        `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
+      )
+      if (isDocSide(x + width)) return
       self.bar.card = {
         winRect: {
           x,
@@ -154,12 +154,12 @@ export default defineEventHandlers<
   onClosePopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    // 如果从一张卡片跳到另一张卡片，会先触发 add ，再 remove
-    if (self.bar.card && Date.now() - self.bar.card.lastShow < 500) return
     self.excerptStatus.OCROnlineStatus = "free"
-    self.bar.card = undefined
     if (isModuleON("gesture") || isModuleON("toolbar")) {
+      // 如果从一张卡片跳到另一张卡片，会先触发 add ，再 remove
+      if (self.bar.card && Date.now() - self.bar.card.lastShow < 500) return
       actionBarController("card")?.remove()
+      self.bar.card = undefined
     }
     MN.log("Popup menu on note close", "event")
   },
