@@ -6,7 +6,6 @@ import { switchPanel } from "~/jsExtension/switchPanel"
 import handleMagicAction from "~/jsExtension/handleMagicAction"
 import { IRowButton } from "~/typings"
 import lang from "./lang"
-import { MyMap } from "~/utils"
 
 export function actionBarController(type: "card" | "text") {
   if (!isModuleON("toolbar")) return
@@ -14,11 +13,16 @@ export function actionBarController(type: "card" | "text") {
     add() {
       if (type === "card") {
         const { winRect } = self.bar.card!
-        const { height } = self.cardActionBar.view.frame
-        const lastWidth = self.cardActionBar.view.frame.width
+        const { height, width: lastWidth } = self.cardActionBar.view.frame
         self.cardActionBar.view.frame = {
           x: winRect.x,
-          y: winRect.y > 60 ? winRect.y - 90 : winRect.y + winRect.height + 60,
+          // y:
+          //   (winRect.y > 60 ? winRect.y - 67 : winRect.y + winRect.height - 9) +
+          //   (MN.isMac ? 0 : -3),
+          y:
+            (winRect.y > 60
+              ? winRect.y - 67 - 35
+              : winRect.y + winRect.height - 9 + 40) + (MN.isMac ? 0 : -3),
           height,
           width: winRect.width
         }
@@ -31,10 +35,14 @@ export function actionBarController(type: "card" | "text") {
         const { height } = self.textActionBar.view.frame
         self.textActionBar.view.frame = {
           x: winRect.x,
+          // y:
+          //   (arrow === DirectionOfSelection.toLeft
+          //     ? winRect.y - 67
+          //     : winRect.y + 1) + (MN.isMac ? 0 : -3),
           y:
-            arrow === DirectionOfSelection.toRight
-              ? winRect.y + 45
-              : winRect.y - 105,
+            (arrow === DirectionOfSelection.toLeft
+              ? winRect.y - 67 - 35
+              : winRect.y + 1 + 40) + (MN.isMac ? 0 : -3),
           height,
           width: winRect.width
         }
@@ -57,6 +65,7 @@ export function actionBarController(type: "card" | "text") {
 export function actionBarView(type: "card" | "text") {
   const size = 30
   const gap = 5
+  const borderWidth = 3
   const view = new UIView({
     x: 0,
     width: 0,
@@ -92,7 +101,7 @@ export function actionBarView(type: "card" | "text") {
           4096 + index * 10000 + num * 100 + (type === "card" ? 0 : 1)
         button.layer.borderColor = MN.currentThemeColor
         button.backgroundColor = MN.currentThemeColor
-        button.layer.borderWidth = 3
+        button.layer.borderWidth = borderWidth
         button.layer.cornerRadius = 5
         button.layer.shadowColor = UIColor.blackColor()
         button.layer.shadowOffset = { width: 0.0, height: 1.0 }
@@ -107,6 +116,7 @@ export function actionBarView(type: "card" | "text") {
       length: buttonNum
     }
   }
+  const { width: MNWidth } = MN.studyController.view.bounds
 
   return {
     view,
@@ -114,14 +124,19 @@ export function actionBarView(type: "card" | "text") {
       const { buttons, length, totalKey } = genButtons()
       if (length) {
         const width = buttons[length - 1].frame.x + size
-        const x =
-          type === "card"
-            ? view.frame.x + view.frame.width / 2 - width / 2 + gap / 2
-            : view.frame.x - width / 2 + gap / 2
+        const x = (() => {
+          const x =
+            type === "card"
+              ? view.frame.x + view.frame.width / 2 - width / 2 + gap / 2
+              : view.frame.x - width / 2 + gap / 2
+          if (x < 30) return 30
+          if (x > MNWidth - 30 - width) return MNWidth - 30 - width
+          return x
+        })()
         view.frame = {
           ...view.frame,
           width,
-          x: x < 20 ? 20 : x
+          x
         }
         if (
           lastButtonsLength !== length ||

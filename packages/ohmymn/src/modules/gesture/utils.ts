@@ -13,7 +13,6 @@ import handleMagicAction from "~/jsExtension/handleMagicAction"
 import { switchPanel } from "~/jsExtension/switchPanel"
 import { isModuleON } from "~/coreModule"
 import type { IRowButton } from "~/typings"
-import { reverseEscape } from "~/utils"
 import lang from "./lang"
 
 export const enum SwipePosition {
@@ -75,22 +74,11 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
   if (self.bar.text) {
     const { winRect, arrow } = self.bar.text
     const { y } = winRect
-    /**
-     * 脑图
-     * 如果是从右往左框选，菜单在上面，(y-70, y-30)
-     * 从左往右框选，菜单在下面，(y-0, y+40)
-     */
-    if (self.globalProfile.gesture.showY) {
-      showHUD(String(Math.round(y - swipeY)), 3)
-    }
-    const [L2R, R2L] = reverseEscape(
-      self.globalProfile.gesture.selectionBarY || "[0,70]"
-    ) as number[]
     if (
       isWithinArea(
         { swipeY },
         {
-          y: y - (arrow === DirectionOfSelection.toRight ? L2R : R2L),
+          y: (arrow === DirectionOfSelection.toLeft ? y - 67 : y + 1) - 3,
           height: 40
         }
       )
@@ -120,35 +108,12 @@ export function checkSwipePosition(sender: UIGestureRecognizer): SwipePosition {
 
     const { y: cardY, height: cardHeight } = self.bar.card.winRect
 
-    // alert(`y: ${parseInt(String(cardY))}
-    // swipeY: ${parseInt(String(swipeY))}
-    // y - ${parseInt(String(cardY - swipeY))} = swipeY`)
-    const mode = selViewLst[0].note.note.groupMode
-    /**
-     * Popup menu on mindmap note
-     * height 30
-     * distance from the card 20
-     */
     if (
-      mode === GroupMode.Tree &&
       isWithinArea(
         { swipeY },
         {
-          y: cardY > 60 ? cardY - 20 - 30 : cardY + cardHeight + 20,
-          height: 30
-        }
-      )
-    )
-      return SwipePosition.SingleBar
-
-    // Menu will be in the middle and above the card when frame style
-    if (
-      mode === GroupMode.Frame &&
-      isWithinArea(
-        { swipeY },
-        {
-          y: cardY - 20 - 30,
-          height: cardHeight + 20 + 30
+          y: (cardY > 60 ? cardY - 67 : cardY + cardHeight - 9) - 3,
+          height: 40
         }
       )
     )

@@ -11,25 +11,6 @@ export default defineConfig({
   intro: lang.intro,
   link: doc("gesture"),
   settings: [
-    {
-      key: "selectionBarY",
-      type: CellViewType.Input,
-      help: lang.selection_bar_y.help,
-      link: lang.selection_bar_y.link,
-      check({ input }) {
-        input = reverseEscape(input)
-        if (!Array.isArray(input)) throw lang.selection_bar_y.input_array
-        if (input.length !== 2) throw lang.selection_bar_y.input_two_number
-        if (input.some(item => !Number.isInteger(item)))
-          throw lang.selection_bar_y.enter_positive
-      }
-    },
-    {
-      key: "showY",
-      type: CellViewType.Switch,
-      label: lang.show_y.label,
-      help: lang.show_y.help
-    },
     ...([
       [lang.single_bar, "single"],
       [lang.muilt_bar, "muilt"],

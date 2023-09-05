@@ -133,21 +133,19 @@ export default defineEventHandlers<
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
-    const [x, , width] = JSON.parse(
+    const [x, y, width, height] = JSON.parse(
       `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
     )
     if (isDocSide(x + width)) return
     MN.log("Popup menu on note open", "event")
     if (isModuleON("gesture") || isModuleON("toolbar")) {
-      const { mindmapView } = MN.studyController.notebookController
-      const { selViewLst } = mindmapView
-      const view = selViewLst![0].view
-      const rect = mindmapView.subviews[0].subviews[0].convertRectToView(
-        view.frame,
-        MN.studyController.view
-      )
       self.bar.card = {
-        winRect: rect,
+        winRect: {
+          x,
+          y,
+          width,
+          height
+        },
         lastShow: Date.now()
       }
       actionBarController("card")?.add()

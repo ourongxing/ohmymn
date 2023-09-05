@@ -25,7 +25,6 @@ export const defaultGlobalProfile = {
   },
   gesture: {
     showY: false,
-    selectionBarY: "[0, 70]",
     singleBarSwipeUpShortcut: "",
     singleBarSwipeDownShortcut: "",
     singleBarSwipeRightShortcut: "",
