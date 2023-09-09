@@ -116,7 +116,6 @@ export function actionBarView(type: "card" | "text") {
       length: buttonNum
     }
   }
-  const { width: MNWidth } = MN.studyController.view.bounds
 
   return {
     view,
@@ -130,6 +129,7 @@ export function actionBarView(type: "card" | "text") {
               ? view.frame.x + view.frame.width / 2 - width / 2 + gap / 2
               : view.frame.x - width / 2 + gap / 2
           if (x < 30) return 30
+          const { width: MNWidth } = MN.studyController.view.bounds
           if (x > MNWidth - 30 - width) return MNWidth - 30 - width
           return x
         })()

@@ -13,39 +13,7 @@ import { ensureSafety, resizeSettingViewView } from "./switchPanel"
 // Not support Mac
 // Cannot access self unless use function
 export const gestureRecognizers = () => {
-  return gestureRecognizerController([
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Up,
-        "onSwipeUpOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Down,
-        "onSwipeDownOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Left,
-        "onSwipeLeftOnMindMapView"
-      )
-    },
-    {
-      view: MN.studyController.view,
-      gesture: initGesture.swipe(
-        1,
-        UISwipeGestureRecognizerDirection.Right,
-        "onSwipeRightOnMindMapView"
-      )
-    },
+  const gestures = [
     {
       view: self.dragOverlayView,
       gesture: initGesture.pan("onDnd")
@@ -54,7 +22,44 @@ export const gestureRecognizers = () => {
       view: self.stretchOverlayView,
       gesture: initGesture.pan("onStretch")
     }
-  ])
+  ]
+  if (!MN.isMac) {
+    gestures.push(
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Up,
+          "onSwipeUpOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Down,
+          "onSwipeDownOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Left,
+          "onSwipeLeftOnMindMapView"
+        )
+      },
+      {
+        view: MN.studyController.view,
+        gesture: initGesture.swipe(
+          1,
+          UISwipeGestureRecognizerDirection.Right,
+          "onSwipeRightOnMindMapView"
+        )
+      }
+    )
+  }
+  return gestureRecognizerController(gestures)
 }
 
 export default defineGestureHandlers({
