@@ -1,9 +1,14 @@
 import {
   CGRectValue2CGRect,
+  copyFile,
+  delay,
   fetch,
+  HUDController,
   isfileExists,
   isNSNull,
   MN,
+  openFile,
+  openURL,
   popup,
   select,
   showHUD
@@ -132,7 +137,6 @@ async function getEN(text: string, isSelect = false) {
 }
 
 async function getWordInfo(word: string): Promise<Word> {
-  const { dataSource } = self.globalProfile.autocomplete
   function unifiyData(obj: any) {
     const newObj = {} as Word
     Object.entries(obj).forEach(([k, v]) => {
@@ -157,9 +161,55 @@ async function getWordInfo(word: string): Promise<Word> {
           `${Addon.path}/AutoCompleteData.db`
         )
         Addon.dataAutoComplete.open()
-      } else throw lang.not_find_db
+      } else {
+        const { index } = await select(
+          lang.not_find_db.$options2,
+          undefined,
+          lang.not_find_db.message,
+          true
+        )
+        switch (index) {
+          case 0:
+            openURL(
+              "https://github.com/ourongxing/ohmymn/releases/tag/database"
+            )
+            throw ""
+          case 1:
+            {
+              const path = await openFile("com.pkware.zip-archive")
+              if (path) {
+                if (
+                  path.endsWith("AutoCompleteData.zip") ||
+                  path.endsWith("AutoCompleteData(online-version).zip")
+                ) {
+                  HUDController.show(lang.not_find_db.wait)
+                  await delay(0.1)
+                  copyFile(path, `${Addon.path}/AutoCompleteData.zip`)
+                  ZipArchive.unzipFileAtPathToDestination(
+                    `${Addon.path}/AutoCompleteData.zip`,
+                    Addon.path
+                  )
+                  HUDController.hidden()
+                  if (isfileExists(`${Addon.path}/AutoCompleteData.db`)) {
+                    Addon.dataAutoComplete = SQLiteDatabase.databaseWithPath(
+                      `${Addon.path}/AutoCompleteData.db`
+                    )
+                    Addon.dataAutoComplete.open()
+                  } else {
+                    throw lang.not_find_db.wrong_file
+                  }
+                } else {
+                  throw lang.not_find_db.wrong_file
+                }
+              }
+            }
+            break
+          default:
+            throw ""
+        }
+      }
     }
-    const query = Addon.dataAutoComplete.executeQueryWithArgumentsInArray(
+    const query = Addon.dataAutoComplete!.executeQueryWithArgumentsInArray(
       `SELECT * FROM stardict WHERE word = '${word}'`,
       []
     )

@@ -1,6 +1,5 @@
 import {
   defineLifecycleHandlers,
-  isfileExists,
   openURL,
   popup,
   showHUD,
@@ -210,17 +209,8 @@ export default defineLifecycleHandlers({
         }
       }
     },
-    addonDidConnect() {
+    async addonDidConnect() {
       MN.log("Addon connected", "lifecycle")
-      if (
-        !isfileExists(`${Addon.path}/AutoCompleteData.db`) &&
-        isfileExists(`${Addon.path}/AutoCompleteData.zip`)
-      ) {
-        ZipArchive.unzipFileAtPathToDestination(
-          `${Addon.path}/AutoCompleteData.zip`,
-          Addon.path
-        )
-      }
     }
   }
 })

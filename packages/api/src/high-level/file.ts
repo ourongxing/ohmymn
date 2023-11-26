@@ -64,7 +64,6 @@ export function saveTextFile(
 
 /**
  * Open files from Finder
- * @warning not working on iPad
  */
 export async function openFile(...uti: string[]) {
   // ["com.adobe.pdf"],
@@ -72,6 +71,5 @@ export async function openFile(...uti: string[]) {
     MN.app.openFileWithUTIs(uti, MN.studyController, (path: string) => {
       resolve(path)
     })
-    resolve(undefined)
   })
 }

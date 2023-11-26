@@ -49,7 +49,13 @@ export default i18n({
     forbid:
       "为减小服务器压力，禁止同时处理超过 5 张卡片。如果需要大量制卡，请使用本地数据库。",
     choose_meaning: "选择在文中的释义",
-    not_find_db: "AutoComplete: 没有找到数据库"
+    not_find_db: {
+      message:
+        "没有找到 AutoComplete 数据库。请下载并导入名为 AutoCompleteData.zip 或者 AutoCompleteData(online-version).zip 的文件。",
+      $options2: ["立即下载", "导入数据库"] as StringTuple<2>,
+      wrong_file: "文件不符合要求，请不要导入错误文件或者修改文件名!",
+      wait: "正在导入数据库，请稍后..."
+    }
   },
   en: {
     intro: "Complete word form. Only support verbs and nouns.",
@@ -99,6 +105,13 @@ export default i18n({
     forbid:
       "To reduce server pressure, it is forbidden to process more than 5 cards at the same time. If you need to make a lot of word cards, please use the local database.",
     choose_meaning: "Select the meanings in the text.",
-    not_find_db: "AutoComplete: No database found"
+    not_find_db: {
+      message:
+        "AutoComplete: Database not found. Please download and import the file named AutoCompleteData.zip",
+      $options2: ["Download Now", "Import Database"],
+      wrong_file:
+        "The file does not meet the requirements. Please do not import the wrong file or modify the file name!",
+      wait: "Importing database, please wait..."
+    }
   }
 })

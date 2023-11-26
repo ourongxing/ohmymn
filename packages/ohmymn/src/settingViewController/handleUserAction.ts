@@ -165,17 +165,17 @@ async function selectAction(param: {
   } else {
     const selections = row.selections
 
-    const nowSelect = row.selections.includes(selection)
+    const nowSelected = row.selections.includes(selection)
       ? selections.filter(item => item != selection)
       : [selection, ...selections]
     ;(<IRowSelect>(
       self.dataSource[indexPath.section].rows[indexPath.row]
-    )).selections = nowSelect
+    )).selections = nowSelected
 
     lastSelectInfo = {
       name: section.key,
       key: row.key,
-      selections: nowSelect.sort()
+      selections: nowSelected.sort()
     }
     menuController.commandTable = menuController.commandTable?.map(
       (item, index) => {
