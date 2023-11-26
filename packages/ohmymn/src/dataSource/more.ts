@@ -13,11 +13,6 @@ export const more: ISection = {
     },
     {
       type: CellViewType.PlainText,
-      label: lang.core_team,
-      link: Addon.github
-    },
-    {
-      type: CellViewType.PlainText,
       label: lang.intro,
       link: Addon.github
     },
