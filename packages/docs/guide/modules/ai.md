@@ -27,7 +27,12 @@ api.openai.com
 网络上有不少代理 OpenAI API 服务器，可以在国内使用。但安全性未知，不建议使用。
 
 ## OpenAI 模型
-- `gpt-3.5-turbo`: 速度较快，Max Tokens 为 4k，也就是 4076。
+
+::: tip 更新
+[v4.3.3](/update.md) 支持 `gpt-3.5-turbo-1106`，默认支持 16k 上下文，不需要单独选择 16k。
+:::
+
+- `gpt-3.5-turbo`: 速度较快，Max Tokens 为 16k，
 - `gpt-4`: 回答质量较高，速度较慢，Max Tokens 为 8k，目前还处于内测阶段，需要自行申请。
 - `gpt-4-32k`: Max Tokens 为 32k，目前还没有开放使用。
 
@@ -52,10 +57,6 @@ OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包
 ![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/202305062309477.png?x-oss-process=base_webp)
 
 你只需要按照这个格式在子卡片中填写 Prompt 即可，好的 Prompt 可以让 OpenAI 无所不能。
-
-::: tip 更新
-[v4.3.0](/update.md) 支持 `gpt-3.5-turbo-16k`
-:::
 
 - 标题：作为 Prompt 的描述信息，选择 Prompts 的时候会显示。
 - 第一条评论：注意是评论，作为 Prompt。
