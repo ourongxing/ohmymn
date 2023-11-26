@@ -180,7 +180,7 @@ async function getWordInfo(word: string): Promise<Word> {
               if (path) {
                 if (
                   path.endsWith("AutoCompleteData.zip") ||
-                  path.endsWith("AutoCompleteData(online-version).zip")
+                  path.endsWith("AutoCompleteData.online.zip")
                 ) {
                   HUDController.show(lang.not_find_db.wait)
                   await delay(0.1)
