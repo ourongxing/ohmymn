@@ -7,20 +7,16 @@ import {
 } from "marginnote"
 import lang from "./lang"
 import type { AIActionIO, ChatMessage, Model, Prompt } from "./typings"
-const models = ["gpt-3.5-turbo-1106", "gpt-4", "gpt-4-32k"] as Model[]
+const models = ["gpt-3.5-turbo", "gpt-4-turbo"] as Model[]
 
 function findModel(model: string) {
   switch (model) {
     case "gpt-3.5":
-      return "gpt-3.5-turbo-1106"
-    case "gpt-3.5-16k":
-      return "gpt-3.5-turbo-1106"
+      return "gpt-3.5-turbo"
     case "gpt-4":
-      return "gpt-4"
-    case "gpt-4-32k":
-      return "gpt-4-32k"
+      return "gpt-4-turbo"
     default:
-      return "gpt-3.5-turbo-1106"
+      return "gpt-3.5-turbo"
   }
 }
 
@@ -60,7 +56,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
 
           const model = optionStr
             .find(k => /model/i.test(k))
-            ?.match(/gpt-3.5-16k|gpt-3.5|gpt-4-32k|gpt-4/)
+            ?.match(/gpt-3.5|gpt-4/)
           if (model?.length) {
             options.model = findModel(model[0])
           }

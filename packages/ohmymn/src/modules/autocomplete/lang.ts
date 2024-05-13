@@ -33,7 +33,7 @@ export default i18n({
     },
     collins: {
       label: "柯林斯星级筛选",
-      $option6: ["零", "一", "二", "三", "四", "五"],
+      $option6: ["无", "⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
       help: "星越多代表越常用，但也越简单，没有选中的星级单词会被排除，不会触发。"
     },
     fill_word_info: {
@@ -89,7 +89,7 @@ export default i18n({
     },
     collins: {
       label: "Collins Star Filtering",
-      $option6: ["Zero", "One", "Two", "Three", "Four", "Five"],
+      $option6: ["None", "⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
       help: "The more stars, the more common, but also the simpler, the words without the selected star level will be excluded, and will not trigger."
     },
     fill_word_info: {

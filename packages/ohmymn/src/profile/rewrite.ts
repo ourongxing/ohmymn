@@ -104,5 +104,17 @@ export const rewriteSelection: RewriteCase[] = [
         quickSwitch: old => old.map(k => (k > 1 ? k + 1 : k))
       }
     }
+  },
+  {
+    version: {
+      from: "4.3.2 - 4.3.3",
+      to: ">=4.4.0"
+    },
+    global: {
+      ai: {
+        // 只剩下 0,2
+        model: old => [old[0] === 1 ? 0 : old[0] === 3 ? 2 : old[0]]
+      }
+    }
   }
 ]

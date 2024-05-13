@@ -33,6 +33,9 @@ const footerText = `
 
 const outDir = isProd
   ? "./dist/"
+  : process.env.MN === "4"
+  ? homedir() +
+    `/Library/Containers/QReader.MarginStudy.easy/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`
   : homedir() +
     `/Library/Containers/QReader.MarginStudyMac/Data/Library/MarginNote Extensions/marginnote.extension.${manifest.key}/`
 

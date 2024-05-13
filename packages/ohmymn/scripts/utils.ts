@@ -26,7 +26,6 @@ interface Manifest {
     doc: string
     notebook: string
   }
-  certKey?: string
   /**
    * Panel color
    */

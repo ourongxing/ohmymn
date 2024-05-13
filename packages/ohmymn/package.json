@@ -7,6 +7,7 @@
   "description": "MarginNote toolbox that can process excerpts automatically",
   "scripts": {
     "dev": "tsx ./build.ts",
+    "dev4": "MN=4 tsx ./build.ts",
     "build": "NODE_ENV=production pnpm dev",
     "build:iPad": "pnpm build && airdrop ./dist/*.mnaddon"
   },

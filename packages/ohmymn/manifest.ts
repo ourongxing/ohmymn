@@ -21,11 +21,5 @@ export default defineManifest({
   forum: "https://forum.marginnote.com/t/5883",
   docZH: "https://ohmymn.marginnote.cn",
   doc: "https://ohmymn.marginnote.cn/en",
-  files: [
-    "assets/logo.png",
-    "assets/icon/",
-    "assets/AutoSimplifyData.json"
-    // "assets/AutoCompleteData.db"
-    // "assets/AutoCompleteData.zip"
-  ]
+  files: ["assets/logo.png", "assets/icon/", "assets/AutoSimplifyData.json"]
 })

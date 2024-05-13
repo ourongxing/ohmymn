@@ -52,12 +52,7 @@ export default i18n({
     },
     model: {
       label: "OpenAI 模型",
-      $option3: [
-        "gpt-3.5",
-        "gpt-3.5-16k",
-        "gpt-4",
-        "gpt-4-32k"
-      ] as StringTuple<4>
+      $option3: ["gpt-3.5", "gpt-4"] as StringTuple<2>
     },
     no_result: "没有获取到结果",
 
@@ -86,7 +81,7 @@ export default i18n({
     },
     model: {
       label: "OpenAI Model",
-      $option3: ["gpt-3.5", "gpt-3.5-16k", "gpt-4", "gpt-4-32k"]
+      $option3: ["gpt-3.5", "gpt-4"]
     },
     no_result: "No result obtained",
     answer_with_card: {
