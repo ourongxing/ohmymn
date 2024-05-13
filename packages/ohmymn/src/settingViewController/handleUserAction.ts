@@ -185,10 +185,10 @@ async function selectAction(param: {
     )
     menuController.menuTableView!.reloadData()
   }
-  self.tableView.reloadData()
   if (row.key === "quickSwitch" || row.key === "profile") {
     self.settingViewCache.offModules.clear()
   }
+  self.tableView.reloadData()
 }
 
 function clickSelectButton(sender: UIButton) {
