@@ -7,7 +7,7 @@ import {
 } from "marginnote"
 import { Addon } from "~/addon"
 import { actionKey4Card, actionKey4Text } from "~/dataSource"
-import { checkInputCorrect, type OptionalModuleKeyUnion } from "~/coreModule"
+import { AllModuleKeyUnion, checkInputCorrect } from "~/coreModule"
 import {
   CellViewType,
   type IRowSelect,
@@ -39,36 +39,32 @@ async function tableViewDidSelectRowAtIndexPath(
   switch (row.type) {
     case CellViewType.PlainText:
       {
-        if (indexPath.row !== 1 || sec.key === "more" || sec.key === "addon") {
-          if (row.link) {
-            if (self.globalProfile.addon.doubleLink) {
-              if (
-                Date.now() - doubleClickTemp.lastTime < 500 &&
-                indexPath === doubleClickTemp.location
-              ) {
-                openURL(row.link, true)
-                doubleClickTemp.lastTime = 0
-                doubleClickTemp.location = undefined
-              } else {
-                doubleClickTemp.lastTime = Date.now()
-                doubleClickTemp.location = indexPath
-              }
-            } else {
-              openURL(row.link, true)
-            }
-          }
-        } else if (self.settingViewCache.expandSections.has(sec.key)) {
+        if (row.label === lang.expand) {
+          row.label = lang.collapse
+          self.settingViewCache.expandSections.add(sec.key as AllModuleKeyUnion)
+          self.tableView.reloadData()
+        } else if (row.label === lang.collapse) {
           row.label = lang.expand
           self.settingViewCache.expandSections.delete(
-            sec.key as OptionalModuleKeyUnion
+            sec.key as AllModuleKeyUnion
           )
           self.tableView.reloadData()
-        } else {
-          row.label = lang.collapse
-          self.settingViewCache.expandSections.add(
-            sec.key as OptionalModuleKeyUnion
-          )
-          self.tableView.reloadData()
+        } else if (row.link) {
+          if (self.globalProfile.addon.doubleLink) {
+            if (
+              Date.now() - doubleClickTemp.lastTime < 500 &&
+              indexPath === doubleClickTemp.location
+            ) {
+              openURL(row.link, true)
+              doubleClickTemp.lastTime = 0
+              doubleClickTemp.location = undefined
+            } else {
+              doubleClickTemp.lastTime = Date.now()
+              doubleClickTemp.location = indexPath
+            }
+          } else {
+            openURL(row.link, true)
+          }
         }
       }
       break

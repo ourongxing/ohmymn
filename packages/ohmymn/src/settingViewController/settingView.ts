@@ -65,10 +65,10 @@ function tableViewNumberOfRowsInSection(
   section: number
 ) {
   const { key } = self.dataSource[section]
-  if (key === "addon" || key === "more")
-    return self.dataSource[section].rows.length
+  if (key === "more") return self.dataSource[section].rows.length
   else if (_isModuleOFF(key)) return 0
-  else if (!self.settingViewCache.expandSections.has(key)) return 2
+  else if (!self.settingViewCache.expandSections.has(key))
+    return key === "addon" ? 5 : 2
   else return self.dataSource[section].rows.length
 }
 
@@ -214,7 +214,12 @@ function tableViewCellForRowAtIndexPath(
       cell.textLabel.textColor = UIColor.grayColor()
       cell.textLabel.font = UIFont.systemFontOfSize(fontSize.plain)
       if (row.link) cell.textLabel.text = `⎋ ${row.label}`
-      else if (key === "more" || indexPath.row === 0 || indexPath.row === 1)
+      else if (
+        key === "more" ||
+        indexPath.row === 0 ||
+        indexPath.row === 1 ||
+        (key === "addon" && indexPath.row === 4)
+      )
         cell.textLabel.text = row.label
       else cell.textLabel.text = `↑ ${row.label}`
       return cell

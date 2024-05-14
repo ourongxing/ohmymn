@@ -99,7 +99,7 @@ declare global {
      */
     settingViewCache: {
       offModules: MyMap<DataSourceSectionKeyUnion, boolean | undefined>
-      expandSections: Set<Exclude<AllModuleKeyUnion, "addon">>
+      expandSections: Set<AllModuleKeyUnion>
     }
     /**
      * Only mainView

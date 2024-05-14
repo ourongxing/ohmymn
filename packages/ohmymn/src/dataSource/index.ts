@@ -14,12 +14,6 @@ function genSection(config: IConfig<AllModuleKeyUnion>): ISection {
     }
   ]
 
-  if (config.key !== "addon")
-    rows.push({
-      type: CellViewType.PlainText,
-      label: lang.expand
-    })
-
   for (const setting of config.settings) {
     //@ts-ignore magic hack
     rows.push(setting)
@@ -41,6 +35,17 @@ function genSection(config: IConfig<AllModuleKeyUnion>): ISection {
         }
       }
     }
+  }
+  if (config.key === "addon") {
+    rows.splice(4, 0, {
+      type: CellViewType.PlainText,
+      label: lang.expand
+    })
+  } else {
+    rows.splice(1, 0, {
+      type: CellViewType.PlainText,
+      label: lang.expand
+    })
   }
   return {
     header: config.name,

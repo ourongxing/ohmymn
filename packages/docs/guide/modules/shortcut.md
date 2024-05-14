@@ -8,7 +8,7 @@ import Shortcut from '/.vitepress/components/Shortcut.vue';
 :::
 
 ::: warning 注意
-该功能完全由 OhMyMN 提供，与 MarginNote 无关。
+该功能完全由 OhMyMN 提供，与 MarginNote 无关。如果你使用的是 MN4，注意把所有 URL Scheme 中的 `marginnote3app` 替换为 `marginnote4app`
 :::
 
 通过 URL Scheme 来触发 MagicAction 中的动作，在 Mac 上可以设置快捷键打开 URL。
@@ -17,10 +17,6 @@ import Shortcut from '/.vitepress/components/Shortcut.vue';
 2. 打开 `marginnote3app://addon/ohmymn?type=text&shortcut=2` 就可以触发第二个文字动作。
 
 ## 自定义捷径
-
-::: tip 更新
-[v4.0.14](/update.md) 改进。捷径 Pro 更名为自定义捷径，并改进了语法。
-:::
 
 可以为每个动作以及任意输入值设置 URL，并将其设置成快捷键。甚至可以同时执行多个动作，通过选择的顺序来改变执行的顺序。
 
