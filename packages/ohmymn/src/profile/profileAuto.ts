@@ -276,7 +276,7 @@ export async function saveProfile(name: string, key: string, value: any) {
       if (backupID && autoBackup) {
         MN.log("Auto backup to card", "profile")
         const node = MN.db.getNoteById(
-          backupID.replace("marginnote3app://note/", "")
+          backupID.replace(MN.scheme + "://note/", "")
         )
         node && writeProfile2Card(node)
       }

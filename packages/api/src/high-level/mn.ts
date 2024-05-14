@@ -83,10 +83,14 @@ class MNAPP {
    * 4.0.2 is version, 97 is build num
    */
   readonly version = this.app.appVersion ?? "3.7.21"
-  readonly isMNE = gte(this.version, "4.0.0")
+  readonly isMN4 = gte(this.version, "4.0.0")
   readonly isMac = this.app.osType === OSType.macOS
-  readonly isMacMNE = this.isMac && gte(this.version, "4.0.2")
-  readonly isMacMN3 = this.isMac && !this.isMacMNE
+  readonly isMacMN4 = this.isMac && gte(this.version, "4.0.2")
+  readonly isMacMN3 = this.isMac && !this.isMacMN4
+  /**
+   * support marginnote4
+   */
+  readonly scheme = this.isMN4 ? "marginnote4app" : "marginnote3app"
   readonly themeColor = {
     Gray: UIColor.colorWithHexString("#414141"),
     Default: UIColor.colorWithHexString("#FFFFFF"),

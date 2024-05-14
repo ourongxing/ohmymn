@@ -32,7 +32,7 @@ export function getPageContent(pageNo: number) {
  */
 export function getDocURL(md5: string, notebookid: string, pageNo?: number) {
   const notebook = MN.db.getNotebookById(notebookid)
-  if (!notebook) return `marginnote3app://notebook/${notebookid}`
+  if (!notebook) return `${MN.scheme}://notebook/${notebookid}`
   let noteId: string | undefined
   if (pageNo) {
     noteId = notebook?.notes?.find(
@@ -47,6 +47,6 @@ export function getDocURL(md5: string, notebookid: string, pageNo?: number) {
     )?.noteId
   }
   return notebook
-    ? `marginnote3app://note/${noteId}`
-    : `marginnote3app://notebook/${notebookid}`
+    ? `${MN.scheme}://note/${noteId}`
+    : `${MN.scheme}://notebook/${notebookid}`
 }

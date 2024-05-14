@@ -6,7 +6,7 @@ import { MN, postNotification } from "."
  * @param url note link
  */
 export function isNoteLink(url: string) {
-  return url.startsWith("marginnote3app://note/")
+  return url.startsWith(MN.scheme + "://note/")
 }
 
 /**

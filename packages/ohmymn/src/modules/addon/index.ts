@@ -83,7 +83,7 @@ const config = defineConfig({
       help: lang.backup_ID.help,
       bind: ["autoBackup", true],
       check: ({ input }) => {
-        const noteid = input.replace("marginnote3app://note/", "")
+        const noteid = input.replace(MN.scheme + "://note/", "")
         if (noteid === input) throw lang.backup_ID.not_link
         const node = MN.db.getNoteById(noteid)
         if (!node) throw lang.backup_ID.not_exit
@@ -93,7 +93,7 @@ const config = defineConfig({
   ]
 })
 
-if (!MN.isMNE) {
+if (!MN.isMN4) {
   config.settings = config.settings.filter(k => k.key !== "useMarkdown")
 }
 

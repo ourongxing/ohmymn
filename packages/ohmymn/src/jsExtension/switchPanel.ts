@@ -64,7 +64,7 @@ export function layoutViewController(
     }
   }
   if (positionNum === PanelPosition.Custom && customFrame.x) {
-    resizeSettingViewView(
+    resizeSettingView(
       {
         ...ensureSafety({ x: customFrame.x, y: customFrame.y }),
         height,
@@ -82,10 +82,10 @@ export function layoutViewController(
       () => frame.width - width - 50,
       docSide
     ][positionNum]()
-    resizeSettingViewView(
+    resizeSettingView(
       {
         x,
-        y: MN.isMNE ? 150 : 110,
+        y: MN.isMN4 ? 150 : 110,
         height,
         width
       },
@@ -159,7 +159,7 @@ function queryAddonCommandStatus() {
     : null
 }
 
-export function resizeSettingViewView(rect: CGRect, animateDuration?: number) {
+export function resizeSettingView(rect: CGRect, animateDuration?: number) {
   const { y, height } = rect
   function resize() {
     self.settingViewController.view.frame = {

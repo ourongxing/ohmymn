@@ -31,7 +31,7 @@ export default defineConfig({
       help: lang.prompts_url.help,
       link: lang.prompts_url.link,
       check({ input }) {
-        const noteid = input.replace("marginnote3app://note/", "")
+        const noteid = input.replace(MN.scheme + "://note/", "")
         if (noteid === input) throw lang.prompts_url.not_link
         const note = MN.db.getNoteById(noteid)
         if (!note) throw lang.prompts_url.not_found

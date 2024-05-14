@@ -49,7 +49,7 @@ export class NodeNote {
   public note: MbBookNote
   constructor(note: MbBookNote, notebookid?: string) {
     this.note = note
-    if (MN.isMNE) {
+    if (MN.isMN4) {
       notebookid = notebookid ?? note.notebookId
       const nodeid =
         notebookid &&
@@ -283,7 +283,7 @@ export class NodeNote {
             })
         } else if (cur.type == "TextNote" || cur.type == "HtmlNote") {
           const text = cur.text.trim()
-          if (text && !text.includes("marginnote3app") && !text.startsWith("#"))
+          if (text && !text.includes(MN.scheme) && !text.startsWith("#"))
             Object.values(acc).map(k => k.push(text))
         }
         return acc
@@ -312,7 +312,7 @@ export class NodeNote {
     return this.note.comments.reduce((acc, cur) => {
       if (cur.type == "TextNote" || cur.type == "HtmlNote") {
         const text = cur.text.trim()
-        if (text && !text.includes("marginnote3app") && !text.startsWith("#"))
+        if (text && !text.includes(MN.scheme) && !text.startsWith("#"))
           acc.push(text)
       }
       return acc
@@ -380,7 +380,7 @@ export class NodeNote {
     this.note.comments.forEach(k => {
       if (k.type == "TextNote" || k.type == "HtmlNote") {
         const text = k.text.trim()
-        if (text && !text.includes("marginnote3app") && !text.startsWith("#"))
+        if (text && !text.includes(MN.scheme) && !text.startsWith("#"))
           retVal.push(text)
       } else if (k.type == "LinkNote") {
         const note = MN.db.getNoteById(k.noteid)
@@ -437,7 +437,7 @@ export class NodeNote {
       (acc, comment, i) => {
         if (
           comment.type == "TextNote" &&
-          (comment.text.includes("marginnote3app://note/") ||
+          (comment.text.includes(MN.scheme + "://note/") ||
             comment.text.startsWith("#"))
         ) {
           acc.linkTags.push(comment.text)

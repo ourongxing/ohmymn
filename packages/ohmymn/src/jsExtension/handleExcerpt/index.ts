@@ -34,7 +34,7 @@ export default async (n: MbBookNote) => {
    * 此时需要使用 MN.currnetNotebookId 而不是 note.notebookid, 但是这样始终获取的的 nodeid 是不一样的,
    * 如果没有合并，nodeid 也不一样，但是只有 nodeid 不一样，可以通过 createDate 来判断是否是同一个节点
    */
-  if (MN.isMNE) {
+  if (MN.isMN4) {
     node = new NodeNote(note, MN.currnetNotebookId)
   } else {
     node = new NodeNote(note)

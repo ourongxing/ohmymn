@@ -8,7 +8,7 @@ import {
 import { PanelHeight, PanelPosition } from "~/modules/addon/typings"
 import { actionTrigger } from "~/modules/gesture/utils"
 import { Range, readProfile, writeProfile } from "~/profile"
-import { ensureSafety, resizeSettingViewView } from "./switchPanel"
+import { ensureSafety, resizeSettingView } from "./switchPanel"
 
 // Not support Mac
 // Cannot access self unless use function
@@ -108,26 +108,35 @@ export default defineGestureHandlers({
     )
   },
   onDnd(sender) {
+    /**
+     * state 0: begin
+     * state 1: move
+     * state 2: end
+     */
     const locationInMN = sender.locationInView(MN.studyController.view)
     const frameOfMN = MN.studyController.view.bounds
-    if (Date.now() - dndState.last > 100 && sender.state !== 3) {
+    if (Date.now() - dndState.lastTime > 100 && sender.state !== 3) {
       const translation = sender.translationInView(MN.studyController.view)
       dndState.locationInButton = sender.locationInView(sender.view)
-      dndState.locationInButton.x -= translation.x
-      dndState.locationInButton.y -= translation.y
-    }
-    if (dndState.locationInButton) {
-      let x = locationInMN.x - dndState.locationInButton.x
-      let y = locationInMN.y - dndState.locationInButton.y
-      ;({ x, y } = ensureSafety({ x, y }, frameOfMN, sender.view.frame))
-      const rect = {
-        ...self.settingViewController.view.frame,
-        x,
-        y
+      // translation 有可能突然变大
+      if (Math.abs(translation.x) < 20 && Math.abs(translation.y) < 20) {
+        dndState.locationInButton.x -= translation.x
+        dndState.locationInButton.y -= translation.y
       }
-      resizeSettingViewView(rect, 0.1)
+    }
+    if (sender.state !== 3) dndState.lastTime = Date.now()
+    if (dndState.locationInButton) {
+      let _x = locationInMN.x - dndState.locationInButton.x
+      let _y = locationInMN.y - dndState.locationInButton.y
+      const { x, y } = ensureSafety(
+        { x: _x, y: _y },
+        frameOfMN,
+        sender.view.frame
+      )
+      const rect = { ...self.settingViewController.view.frame, x, y }
+      resizeSettingView(rect, 0.1)
       if (sender.state === 3) {
-        dndState.last = 0
+        dndState.lastTime = 0
         self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
         const flag =
           self.globalProfile.addon.panelPosition[0] !== PanelPosition.Custom
@@ -146,17 +155,19 @@ export default defineGestureHandlers({
         }
       }
     }
-    if (sender.state !== 3) dndState.last = Date.now()
   },
   onStretch(sender) {
-    const location = sender.locationInView(self.settingViewController.view)
+    if (sender.state === 1) return
+    const y = sender.locationInView(self.settingViewController.view).y
     const frame = sender.view.frame
-    let height = location.y + frame.height / 2
+    let height = y + frame.height / 2
     const rect = {
       ...self.settingViewController.view.frame,
-      height
+      height: Math.max(100, height)
     }
-    resizeSettingViewView(rect)
+    if (rect.y + rect.height > MN.studyController.view.bounds.height - 50)
+      return
+    resizeSettingView(rect)
     if (sender.state === 3) {
       self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
       const flag =
@@ -180,5 +191,5 @@ export default defineGestureHandlers({
 
 const dndState = {
   locationInButton: undefined as CGPoint | undefined,
-  last: 0
+  lastTime: 0
 }

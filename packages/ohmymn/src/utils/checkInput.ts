@@ -45,7 +45,7 @@ export function checkPositiveinteger(input: number) {
 }
 
 export function checkMNLink(input: string) {
-  const noteid = input.replace("marginnote3app://note/", "")
+  const noteid = input.replace(MN.scheme + "://note/", "")
   if (noteid === input) throw lang.not_mnlink
   if (!MN.db.getNoteById(noteid)) throw lang.not_exist
 }

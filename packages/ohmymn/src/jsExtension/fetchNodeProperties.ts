@@ -55,19 +55,15 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
       undefine2undefine(nodeNote.noteTitle, t => t.split(/\s*[;；]\s*/)),
     id: isRequire("id") && nodeNote.noteId,
     url: isRequire("url") && {
-      pure: undefine2undefine(
-        nodeNote.noteId,
-        t => "marginnote3app://note/" + t
-      ),
+      pure: undefine2undefine(nodeNote.noteId, t => `${MN.scheme}://note/` + t),
       md: undefine2undefine(
         nodeNote.noteId,
-        t =>
-          `[${nodeNote.noteTitle ?? "MarginNote"}](marginnote3app://note/${t}`
+        t => `[${nodeNote.noteTitle ?? "MarginNote"}](${MN.scheme}://note/${t}`
       ),
       html: undefine2undefine(
         nodeNote.noteId,
         t =>
-          `<a href="marginnote3app://note/${t}" class="MNLink">${
+          `<a href="${MN.scheme}://note/${t}" class="MNLink">${
             nodeNote.noteTitle ?? "MarginNote"
           }</a>`
       )
@@ -137,14 +133,14 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
                 ? MN.db.getDocumentById(nodeNote.docMd5)?.docTitle ??
                   "MarginNote"
                 : "MarginNote"
-            }](marginnote3app://note/${t}`
+            }](${MN.scheme}://note/${t}`
         ),
         html: undefine2undefine(
           nodeNote.docMd5 &&
             nodeNote.notebookId &&
             getDocURL(nodeNote.docMd5, nodeNote.notebookId, nodeNote.startPage),
           t =>
-            `<a href="marginnote3app://note/${t}" class="MNDoc">${
+            `<a href="${MN.scheme}://note/${t}" class="MNDoc">${
               nodeNote.docMd5
                 ? MN.db.getDocumentById(nodeNote.docMd5)?.docTitle ??
                   "MarginNote"
@@ -167,7 +163,7 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
       url: isRequire("url.") && {
         pure: undefine2undefine(
           nodeNote.notebookId,
-          t => "marginnote3app://notebook/" + t
+          t => `${MN.scheme}://notebook/` + t
         ),
         md: undefine2undefine(
           nodeNote.notebookId,
@@ -177,12 +173,12 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
                 nodeNote.notebookId,
                 t => MN.db.getNotebookById(t)?.title
               ) ?? "MarginNote"
-            }](marginnote3app://notebook/${t}`
+            }](${MN.scheme}://notebook/${t}`
         ),
         html: undefine2undefine(
           nodeNote.notebookId,
           t =>
-            `<a href="marginnote3app://notebook/${t}" class="MNNotebookUrl">${
+            `<a href="${MN.scheme}://notebook/${t}" class="MNNotebookUrl">${
               undefine2undefine(
                 nodeNote.notebookId,
                 t => MN.db.getNotebookById(t)?.title

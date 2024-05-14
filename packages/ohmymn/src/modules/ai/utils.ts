@@ -24,7 +24,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
   if (note === undefined) {
     const { promptsURL } = self.globalProfile.ai
     if (promptsURL) {
-      const noteid = promptsURL.replace("marginnote3app://note/", "")
+      const noteid = promptsURL.replace(MN.scheme + "://note/", "")
       note = MN.db.getNoteById(noteid)
     }
   }

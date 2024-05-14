@@ -34,8 +34,7 @@ export default defineConfig({
             type: CellViewType.Input,
             bind: [`${q[1]}BarSwipe${k[1]}`, 1],
             check({ input }: { input: string }) {
-              if (!input.startsWith("marginnote3app://addon"))
-                throw lang.only_mn
+              if (!input.startsWith(MN.scheme + "://addon")) throw lang.only_mn
             }
           }
         ])

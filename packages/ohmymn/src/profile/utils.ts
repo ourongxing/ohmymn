@@ -13,7 +13,7 @@ import { RewriteRange } from "./typings"
  */
 export function getMNLinkValue(link: string) {
   try {
-    const noteid = link.replace("marginnote3app://note/", "")
+    const noteid = link.replace(MN.scheme + "://note/", "")
     if (noteid === link) return link
     const node = MN.db.getNoteById(noteid)
     if (node && node.childNotes?.length) {
