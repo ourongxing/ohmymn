@@ -11,7 +11,8 @@ export function layoutViewController(
   const { studyController } = MN
   const readerView = studyController.readerController.view
   self.panel.lastReaderViewWidth = readerView.frame.width
-  const frame = studyController.view.bounds
+  self.panel.lastStudyControllerViewWidth = studyController.view.frame.width
+  const frame = studyController.view.frame
   const width = 300
   const customFrame = JSON.parse(self.globalProfile.additional.settingViewFrame)
   const height = [600, 450, 300, customFrame.height ?? 450][heightNum]
@@ -136,10 +137,13 @@ export function switchPanel(sender?: UIView) {
 function controllerWillLayoutSubviews(controller: UIViewController) {
   if (controller != MN.studyController) return
   if (!self.panel.status) return
+  layoutViewController()
   if (
     Date.now() - self.panel.lastOpenPanel < 200 ||
-    (self.panel.lastReaderViewWidth !==
-      MN.studyController.readerController.view.frame.width &&
+    ((self.panel.lastReaderViewWidth !==
+      MN.studyController.readerController.view.frame.width ||
+      self.panel.lastStudyControllerViewWidth !==
+        MN.studyController.view.frame.width) &&
       [0, 1, 2].includes(self.globalProfile.addon.panelPosition[0]))
   ) {
     layoutViewController()
@@ -190,7 +194,7 @@ function onCloseButtonClick() {
 
 export function ensureSafety(
   { x, y }: CGPoint,
-  frame = MN.studyController.view.bounds,
+  frame = MN.studyController.view.frame,
   dragOverlayFrame = self.dragOverlayView.frame
 ) {
   let tmp = x

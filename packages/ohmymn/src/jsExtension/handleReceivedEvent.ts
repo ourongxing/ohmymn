@@ -18,7 +18,7 @@ import { actionBarController } from "~/modules/toolbar/utils"
 function isDocSide(x: number) {
   const { studyController } = MN
   const { width: readerViewWidth } = studyController.readerController.view.frame
-  const { width } = studyController.view.bounds
+  const { width } = studyController.view.frame
   if (
     studyController.docMapSplitMode == DocMapSplitMode.half &&
     ((studyController.rightMapMode && x < readerViewWidth) ||
@@ -113,8 +113,14 @@ export default defineEventHandlers<
       const [x, y, width, height] = JSON.parse(
         `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
       ) as number[]
+      const frame = MN.studyController.view.frame
       self.bar.text = {
-        winRect: { x, y, width, height },
+        winRect: {
+          x: x - frame.x,
+          y: y - frame.y,
+          width,
+          height
+        },
         arrow: sender.userInfo.arrow
       }
       actionBarController("text")?.add()
@@ -132,17 +138,27 @@ export default defineEventHandlers<
   },
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
+    // MN.log(MN.studyController.view.frame)
+    // MN.log(MN.studyController.view.bounds)
+    // alert(JSON.stringify(MN.studyController.view.frame))
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Popup menu on note open", "event")
     if (isModuleON("gesture") || isModuleON("toolbar")) {
+      /**
+       * studyController.view 的 frame 和 bounds 的区别，frame 是相对于父视图，bounds 是相对于自身。宽度和高度始终保持一致。
+       * frame 的 x 和 y 是有值的，而且 y 一直是 30 (MN3 上是 20，在 iPad 上又都是 24)，x 在打开侧边栏的情况下会变为 280。
+       * bounds 的 x 和 y 一直是 0。
+       * 影响最严重的就是 winRect 了，导致后面的 Gesture 以及 Toolbar 适配困难。
+       */
+      const frame = MN.studyController.view.frame
       const [x, y, width, height] = JSON.parse(
         `[${sender.userInfo.winRect.replace(/[{}]/g, "")}]`
       )
-      if (isDocSide(x + width)) return
+      if (isDocSide(x - frame.x + width)) return
       self.bar.card = {
         winRect: {
-          x,
-          y,
+          x: x - frame.x,
+          y: y - frame.y,
           width,
           height
         },

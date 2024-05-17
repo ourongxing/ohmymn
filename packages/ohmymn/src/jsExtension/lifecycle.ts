@@ -53,7 +53,8 @@ export default defineLifecycleHandlers({
         status: false,
         lastOpenPanel: 0,
         lastClickButton: 0,
-        lastReaderViewWidth: 0
+        lastReaderViewWidth: 0,
+        lastStudyControllerViewWidth: 0
       }
       self.metadata = {
         data: undefined,

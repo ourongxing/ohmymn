@@ -60,6 +60,7 @@ declare global {
       lastOpenPanel: number
       lastClickButton: number
       lastReaderViewWidth: number
+      lastStudyControllerViewWidth: number
     }
     /**
      * Only mainView

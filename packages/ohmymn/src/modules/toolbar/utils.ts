@@ -16,13 +16,7 @@ export function actionBarController(type: "card" | "text") {
         const { height, width: lastWidth } = self.cardActionBar.view.frame
         self.cardActionBar.view.frame = {
           x: winRect.x,
-          // y:
-          //   (winRect.y > 60 ? winRect.y - 67 : winRect.y + winRect.height - 9) +
-          //   (MN.isMac ? 0 : -3),
-          y:
-            (winRect.y > 60
-              ? winRect.y - 67 - 35
-              : winRect.y + winRect.height - 9 + 40) + (MN.isMac ? 0 : -3),
+          y: winRect.y > 40 ? winRect.y - 82 : winRect.y + winRect.height + 51,
           height,
           width: winRect.width
         }
@@ -35,14 +29,10 @@ export function actionBarController(type: "card" | "text") {
         const { height } = self.textActionBar.view.frame
         self.textActionBar.view.frame = {
           x: winRect.x,
-          // y:
-          //   (arrow === DirectionOfSelection.toLeft
-          //     ? winRect.y - 67
-          //     : winRect.y + 1) + (MN.isMac ? 0 : -3),
           y:
-            (arrow === DirectionOfSelection.toLeft
-              ? winRect.y - 67 - 35
-              : winRect.y + 1 + 40) + (MN.isMac ? 0 : -3),
+            arrow === DirectionOfSelection.toLeft
+              ? winRect.y - 82
+              : winRect.y + 61,
           height,
           width: winRect.width
         }
@@ -129,7 +119,7 @@ export function actionBarView(type: "card" | "text") {
               ? view.frame.x + view.frame.width / 2 - width / 2 + gap / 2
               : view.frame.x - width / 2 + gap / 2
           if (x < 30) return 30
-          const { width: MNWidth } = MN.studyController.view.bounds
+          const { width: MNWidth } = MN.studyController.view.frame
           if (x > MNWidth - 30 - width) return MNWidth - 30 - width
           return x
         })()
