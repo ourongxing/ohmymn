@@ -71,10 +71,15 @@ export function actionBarView(type: "card" | "text") {
     Array.from({ length: type === "card" ? 8 : 4 }).forEach((_, num) => {
       const index = self.globalProfile.toolbar[type + "Toolbar" + num][0]
       if (index) {
-        const key =
+        let key =
           type === "card"
             ? actionKey4Card[index].key
             : actionKey4Text[index].key
+
+        if (key === "customShortcut") {
+          key = `customShortcut${num + 1}`
+        }
+
         totalKey += key
         const button = initButton(
           key,
