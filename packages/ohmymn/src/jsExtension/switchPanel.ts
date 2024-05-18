@@ -137,13 +137,16 @@ export function switchPanel(sender?: UIView) {
 function controllerWillLayoutSubviews(controller: UIViewController) {
   if (controller != MN.studyController) return
   if (!self.panel.status) return
-  layoutViewController()
+  if (self.panel.gestureStart) return
   if (
+    // 在滑动控制面板时也会触发，不过只会在 Mac MN3 出现
     Date.now() - self.panel.lastOpenPanel < 200 ||
-    ((self.panel.lastReaderViewWidth !==
-      MN.studyController.readerController.view.frame.width ||
-      self.panel.lastStudyControllerViewWidth !==
-        MN.studyController.view.frame.width) &&
+    // 在切换侧边栏时
+    self.panel.lastStudyControllerViewWidth !==
+      MN.studyController.view.frame.width ||
+    // 在调整文档宽度时，并且控制面板位置设置的跟随文档。
+    (self.panel.lastReaderViewWidth !==
+      MN.studyController.readerController.view.frame.width &&
       [0, 1, 2].includes(self.globalProfile.addon.panelPosition[0]))
   ) {
     layoutViewController()

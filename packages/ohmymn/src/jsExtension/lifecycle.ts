@@ -51,6 +51,7 @@ export default defineLifecycleHandlers({
       // Multiple windows will share global variables, so they need to be saved to self.
       self.panel = {
         status: false,
+        gestureStart: false,
         lastOpenPanel: 0,
         lastClickButton: 0,
         lastReaderViewWidth: 0,

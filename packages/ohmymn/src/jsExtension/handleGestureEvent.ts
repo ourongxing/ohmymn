@@ -113,21 +113,22 @@ export default defineGestureHandlers({
      * state 1: move
      * state 2: end
      */
+    if (sender.state === 1) self.panel.gestureStart = true
     const locationInMN = sender.locationInView(MN.studyController.view)
     const frameOfMN = MN.studyController.view.bounds
-    if (Date.now() - dndState.lastTime > 100 && sender.state !== 3) {
+    if (Date.now() - dndState.lastTime > 50) {
       const translation = sender.translationInView(MN.studyController.view)
-      dndState.locationInButton = sender.locationInView(sender.view)
+      dndState.locationInOverlay = sender.locationInView(sender.view)
       // translation 有可能突然变大
       if (Math.abs(translation.x) < 20 && Math.abs(translation.y) < 20) {
-        dndState.locationInButton.x -= translation.x
-        dndState.locationInButton.y -= translation.y
+        dndState.locationInOverlay.x -= translation.x
+        dndState.locationInOverlay.y -= translation.y
       }
     }
-    if (sender.state !== 3) dndState.lastTime = Date.now()
-    if (dndState.locationInButton) {
-      let _x = locationInMN.x - dndState.locationInButton.x
-      let _y = locationInMN.y - dndState.locationInButton.y
+    dndState.lastTime = Date.now()
+    if (dndState.locationInOverlay) {
+      let _x = locationInMN.x - dndState.locationInOverlay.x
+      let _y = locationInMN.y - dndState.locationInOverlay.y
       const { x, y } = ensureSafety(
         { x: _x, y: _y },
         frameOfMN,
@@ -137,6 +138,7 @@ export default defineGestureHandlers({
       resizeSettingView(rect, 0.1)
       if (sender.state === 3) {
         dndState.lastTime = 0
+        self.panel.gestureStart = false
         self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
         const flag =
           self.globalProfile.addon.panelPosition[0] !== PanelPosition.Custom
@@ -157,18 +159,21 @@ export default defineGestureHandlers({
     }
   },
   onStretch(sender) {
-    if (sender.state === 1) return
-    const y = sender.locationInView(self.settingViewController.view).y
-    const frame = sender.view.frame
-    let height = y + frame.height / 2
+    if (sender.state === 1) {
+      self.panel.gestureStart = true
+    }
+    const currentY = sender.locationInView(MN.studyController.view).y
+    const originY = sender.view.frame.y
+    const frame = self.settingViewController.view.frame
+    let height = frame.height + (currentY - originY)
     const rect = {
-      ...self.settingViewController.view.frame,
+      ...frame,
       height: Math.max(100, height)
     }
-    if (rect.y + rect.height > MN.studyController.view.bounds.height - 50)
-      return
+    if (rect.y + rect.height > MN.studyController.view.frame.height - 50) return
     resizeSettingView(rect)
     if (sender.state === 3) {
+      self.panel.gestureStart = false
       self.globalProfile.additional.settingViewFrame = JSON.stringify(rect)
       const flag =
         self.globalProfile.addon.panelHeight[0] !== PanelHeight.Custom
@@ -190,6 +195,6 @@ export default defineGestureHandlers({
 })
 
 const dndState = {
-  locationInButton: undefined as CGPoint | undefined,
+  locationInOverlay: undefined as CGPoint | undefined,
   lastTime: 0
 }
