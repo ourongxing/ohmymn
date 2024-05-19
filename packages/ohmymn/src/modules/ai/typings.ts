@@ -15,7 +15,7 @@ export interface Prompt {
 }
 
 export type Role = "system" | "user" | "assistant"
-export type Model = "gpt-3.5-turbo" | "gpt-4-turbo"
+export type Model = "gpt-3.5-turbo" | "gpt-4o"
 
 export const enum AIActionIO {
   title2title,

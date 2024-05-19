@@ -7,14 +7,14 @@ import {
 } from "marginnote"
 import lang from "./lang"
 import type { AIActionIO, ChatMessage, Model, Prompt } from "./typings"
-const models = ["gpt-3.5-turbo", "gpt-4-turbo"] as Model[]
+const models = ["gpt-3.5-turbo", "gpt-4o"] as Model[]
 
 function findModel(model: string) {
   switch (model) {
     case "gpt-3.5":
       return "gpt-3.5-turbo"
     case "gpt-4":
-      return "gpt-4-turbo"
+      return "gpt-4o"
     default:
       return "gpt-3.5-turbo"
   }
