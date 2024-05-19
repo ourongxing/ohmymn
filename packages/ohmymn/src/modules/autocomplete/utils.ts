@@ -174,10 +174,10 @@ async function getWordInfo(word: string): Promise<Word> {
               "https://github.com/ourongxing/ohmymn/releases/tag/database"
             )
             throw ""
-          case 0:
+          case 1:
             openURL("https://www.123pan.com/s/Ns8lVv-arEq.html")
             throw ""
-          case 1:
+          case 2:
             {
               const path = await openFile("com.pkware.zip-archive")
               if (path) {
