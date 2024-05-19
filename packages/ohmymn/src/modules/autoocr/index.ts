@@ -11,7 +11,7 @@ import {
 } from "./utils"
 import { doc } from "~/utils"
 
-export default defineConfig({
+const config = defineConfig({
   name: "AutoOCR",
   key: "autoocr",
   intro: lang.intro,
@@ -136,3 +136,9 @@ export default defineConfig({
     }
   ]
 })
+
+if (MN.isMN4) {
+  config.settings = config.settings.filter(k => k.key !== "markdown")
+}
+
+export default config

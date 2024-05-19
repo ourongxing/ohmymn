@@ -61,6 +61,7 @@ declare global {
       lastClickButton: number
       lastReaderViewWidth: number
       lastStudyControllerViewWidth: number
+      gestureStart: boolean
     }
     /**
      * Only mainView

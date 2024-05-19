@@ -58,15 +58,12 @@ function zip(): Plugin {
     setup(build) {
       build.onEnd(() => {
         if (isProd && fs.existsSync(outDir)) {
-          const fileName = `${manifest.key} v${manifest.version} ${
-            manifest.certKey ? "signed" : "unsigned"
-          }${
-            manifest.files.find(k => k.includes("AutoCompleteData"))
-              ? " local database autocomplete"
-              : ""
-          }`.replace(/[ .]/g, "_")
-          exec(`cd ${outDir} && zip -qr ${fileName}.mnaddon *`)
-          console.log(`Generated at ${outDir}${fileName}.mnaddon`)
+          const fileName = `${manifest.key} v${manifest.version}`.replace(
+            /[ .]/g,
+            "_"
+          )
+          exec(`cd ${outDir} && zip -qr ${fileName}.unsigned.mnaddon *`)
+          console.log(`Generated at ${outDir}${fileName}.unsigned.mnaddon`)
         }
       })
     }
