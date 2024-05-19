@@ -29,16 +29,16 @@ const enum NoteOption {
 }
 
 export default async function (key: string, option: number, content: string) {
-  const imageFromSelection = MN.currentDocumentController
-    .imageFromSelection()
-    ?.base64Encoding()
+  const imageFromSelection = MN.currentDocumentController.imageFromSelection()
   if (imageFromSelection === undefined) return showHUD(lang.not_select_area, 2)
   let res: string | undefined = undefined
+  const imageFromSelectionBase64 = imageFromSelection.base64Encoding()
 
   if (key.endsWith("OCR")) {
     res = await actions4text[key]({
       text: "",
-      imgBase64: imageFromSelection,
+      img: imageFromSelection,
+      imgBase64: imageFromSelectionBase64,
       option
     })
   } else {
@@ -46,14 +46,15 @@ export default async function (key: string, option: number, content: string) {
     const { selectionText } = MN.currentDocumentController
     let text =
       preOCR && isModuleON("autoocr")
-        ? (await ocrSelection(imageFromSelection)) ?? selectionText
+        ? (await ocrSelection(imageFromSelectionBase64)) ?? selectionText
         : selectionText
     if (!text) return showHUD(lang.no_text_selection, 2)
     if (preSimplify && isModuleON("autosimplify")) text = simplifyText(text)
     if (preFormat && isModuleON("autoformat")) text = formatText(text)
     res = await actions4text[key]({
       text,
-      imgBase64: "",
+      img: imageFromSelection,
+      imgBase64: imageFromSelectionBase64,
       option
     })
   }
@@ -78,8 +79,12 @@ export default async function (key: string, option: number, content: string) {
       }
     }
     const { lastFocusNote } = MN.currentDocumentController
+    const selectedNotes = NodeNote.getSelectedNodes()
     const { noteOptions, showCopyContent } = self.globalProfile.magicaction4text
-    if (!lastFocusNote || noteOptions.length === 0) {
+    if (
+      (!lastFocusNote && selectedNotes.length !== 1) ||
+      noteOptions.length === 0
+    ) {
       if (showCopyContent) {
         if (countWord(res) > 10 || res.includes("\n")) {
           const t = await confirm(Addon.title + " Copy", res)
@@ -103,7 +108,9 @@ export default async function (key: string, option: number, content: string) {
         )
         option = noteOptions[index]
       }
-      const lastFocusNode = new NodeNote(lastFocusNote)
+      const focusNode = lastFocusNote
+        ? new NodeNote(lastFocusNote)
+        : selectedNotes[0]
       undoGroupingWithRefresh(() => {
         if (res)
           switch (option) {
@@ -116,22 +123,21 @@ export default async function (key: string, option: number, content: string) {
               }
               break
             case NoteOption.Title:
-              lastFocusNode.title = res
+              focusNode.title = res
               break
             case NoteOption.MergeTitle:
-              lastFocusNode.appendTitles(res)
+              focusNode.appendTitles(res)
               break
             case NoteOption.Excerpt:
-              lastFocusNode.mainExcerptText = res
+              focusNode.mainExcerptText = res
               break
             case NoteOption.MergeExcerpt:
-              lastFocusNode.mainExcerptText =
-                lastFocusNode.mainExcerptText + res
+              focusNode.mainExcerptText = focusNode.mainExcerptText + res
               break
             case NoteOption.Comment:
               if (key === "formulaOCR") {
-                if (lastFocusNode.note.appendMarkdownComment) {
-                  lastFocusNode.note.appendMarkdownComment(res)
+                if (focusNode.note.appendMarkdownComment) {
+                  focusNode.note.appendMarkdownComment(res)
                 } else {
                   const { markdown } = self.globalProfile.autoocr
                   // 0. markdown
@@ -139,7 +145,7 @@ export default async function (key: string, option: number, content: string) {
                   // 2. milkdown
                   switch (markdown[0]) {
                     case 0:
-                      lastFocusNote.appendHtmlComment(
+                      focusNode.note.appendHtmlComment(
                         "```math\n" + res + "\n```",
                         "```math\n" + res + "\n```",
                         { width: 420, height: 100 },
@@ -147,7 +153,7 @@ export default async function (key: string, option: number, content: string) {
                       )
                       break
                     case 1:
-                      lastFocusNote.appendHtmlComment(
+                      focusNode.note.appendHtmlComment(
                         res,
                         res,
                         { width: 420, height: 100 },
@@ -155,7 +161,7 @@ export default async function (key: string, option: number, content: string) {
                       )
                       break
                     case 2:
-                      lastFocusNote.appendHtmlComment(
+                      focusNode.note.appendHtmlComment(
                         res,
                         res,
                         { width: 420, height: 100 },
@@ -166,8 +172,8 @@ export default async function (key: string, option: number, content: string) {
                 }
               } else {
                 if (self.globalProfile.addon.useMarkdown)
-                  lastFocusNode.appendMarkdownComments(res)
-                else lastFocusNode.appendTextComments(res)
+                  focusNode.appendMarkdownComments(res)
+                else focusNode.appendTextComments(res)
               }
           }
       })

@@ -29,8 +29,8 @@ export default i18n({
         "添加为摘录",
         "添加为评论"
       ] as StringTuple<6>,
-      label: "弹出更多选项",
-      help: "如果选中这段文字之前，你已经选中了一个摘录。此时执行某些会将结果复制到剪贴板的动作时会弹出更多选项，方便直接写入卡片中。"
+      label: "选中卡片弹出更多选项",
+      help: "如果选中这段文字之前，你已经选中了一个卡片/摘录。此时执行某些会将结果复制到剪贴板的动作时会弹出更多选项，方便直接写入卡片中。"
     }
   },
   en: {
@@ -61,7 +61,7 @@ export default i18n({
         "Add as Note",
         "Add as Comment"
       ],
-      label: "Popup More Options",
+      label: "Popup More Options within Card",
       help: "If you have selected a note before selecting this text or area, some action which copied result will pop up more options to write directly into the card."
     }
   }
