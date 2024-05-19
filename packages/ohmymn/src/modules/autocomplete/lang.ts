@@ -51,9 +51,10 @@ export default i18n({
     choose_meaning: "选择在文中的释义",
     not_find_db: {
       message:
-        "没有找到 AutoComplete 数据库。请下载并导入名为 AutoCompleteData.zip 或者 AutoCompleteData.online.zip 的文件。",
-      $options2: ["立即下载", "导入数据库"] as StringTuple<2>,
-      wrong_file: "文件不符合要求，请不要导入错误文件或者修改文件名!",
+        "没有找到 AutoComplete 数据库。请下载并导入名为 AutoCompleteData.zip 或者 AutoCompleteData.online.zip 的文件。不需要解压。",
+      $options2: ["立即下载", "备用下载地址", "导入数据库"] as StringTuple<3>,
+      wrong_file:
+        "文件不符合要求，请不要解压文件或者导入错误文件或者修改文件名!",
       wait: "正在导入数据库，请稍后..."
     }
   },
@@ -108,7 +109,11 @@ export default i18n({
     not_find_db: {
       message:
         "AutoComplete database not found. Please download and import the file named AutoCompleteData.zip or AutoCompleteData.online.zip .",
-      $options2: ["Download Now", "Import Database"],
+      $options2: [
+        "Download Now",
+        "Download from Another Webpage",
+        "Import Database"
+      ],
       wrong_file:
         "The file does not meet the requirements. Please do not import the wrong file or modify the file name!",
       wait: "Importing database, please wait..."
