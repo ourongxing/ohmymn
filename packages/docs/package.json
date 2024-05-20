@@ -2,7 +2,7 @@
   "name": "docs",
   "private": true,
   "version": "4.1.1",
-  "unsignedVersion": "4.4.1",
+  "unsignedVersion": "4.4.2",
   "author": "ourongxing",
   "scripts": {
     "dev": "vitepress --port 3333",

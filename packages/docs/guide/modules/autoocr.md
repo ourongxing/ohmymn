@@ -19,7 +19,7 @@ AutoOCR 采用高精度版本，免费额度较低。额度用完会自动停止
 ### Doc2X
 
 ::: warning 注意
-Doc2X 官网：https://doc2x.com/，个人信息里的身份令牌就是 API 密钥。具体价格和额度以官网为准，目前免费，所产生的任何费用与 OhMyMN 无关。
+Doc2X 官网：[https://doc2x.com/](https://doc2x.com/)，个人信息里的身份令牌就是 API 密钥。具体价格和额度以官网为准，目前免费，所产生的任何费用与 OhMyMN 无关。
 :::
 
 Doc2X 对于多行公式以及文本和公式混合的识别效果非常好，甚至可以识别成 Markdown，推荐。
