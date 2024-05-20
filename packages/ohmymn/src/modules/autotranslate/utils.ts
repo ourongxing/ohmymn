@@ -63,9 +63,6 @@ export async function baiduTranslate(
     "https://fanyi-api.baidu.com/api/trans/vip/translate",
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
       form: {
         sign,
         salt,

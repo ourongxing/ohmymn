@@ -138,9 +138,6 @@ export default defineEventHandlers<
   },
   async onPopupMenuOnNote(sender) {
     if (self.window !== MN.currentWindow) return
-    // MN.log(MN.studyController.view.frame)
-    // MN.log(MN.studyController.view.bounds)
-    // alert(JSON.stringify(MN.studyController.view.frame))
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Popup menu on note open", "event")
     if (isModuleON("gesture") || isModuleON("toolbar")) {

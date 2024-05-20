@@ -1,4 +1,4 @@
-import { type NodeNote } from "marginnote"
+import { type NSData, type NodeNote } from "marginnote"
 import { type AllModuleKeyUnion } from "~/coreModule"
 import { type IAllProfile } from "~/profile"
 import { type CellViewType } from "."
@@ -109,10 +109,11 @@ export type IActionMethod4Card = ({
 
 export type IActionMethod4Text = ({
   text,
-  imgBase64,
+  img,
   option
 }: {
   text: string
+  img: NSData
   imgBase64: string
   option: number
 }) => any

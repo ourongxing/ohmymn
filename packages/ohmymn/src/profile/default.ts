@@ -183,6 +183,9 @@ export const defaultGlobalProfile = {
     formulaOCRProviders: [0],
     markdown: [2],
     mathpixAppKey: "",
+    simpleTexModel: [1],
+    doc2xApiKey: "",
+    simpleTexApiKey: "",
     showKey: true
   },
   autotranslate: {
@@ -223,6 +226,8 @@ export const defaultGlobalProfile = {
   additional: {
     lastVision: Addon.version,
     settingViewFrame: "{}",
+    doc2xToken: "",
+    doc2xTokenLastGet: 0,
     // 最好不要多层对象，不允许被修改
     autoocr: {
       lastGetToken: 0,

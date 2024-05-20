@@ -1,13 +1,15 @@
 import { CellViewType } from "~/typings"
-import { showHUD } from "marginnote"
+import { HUDController, showHUD } from "marginnote"
 import { defineConfig } from "~/profile"
 import lang from "./lang"
 import {
   baiduFormulaOCR,
   baiduHandWrittingOCR,
+  doc2xOCR,
   mainOCR,
   mathpixOCR,
-  QRCodeOCR
+  QRCodeOCR,
+  simpleTexOCR
 } from "./utils"
 import { doc } from "~/utils"
 
@@ -53,6 +55,13 @@ const config = defineConfig({
       help: lang.markdown.help
     },
     {
+      key: "simpleTexModel",
+      type: CellViewType.Select,
+      option: lang.simpletex_model.$option2,
+      label: lang.simpletex_model.label,
+      bind: ["formulaOCRProviders", 2]
+    },
+    {
       key: "showKey",
       type: CellViewType.Expland,
       label: lang.$show_key2
@@ -67,7 +76,7 @@ const config = defineConfig({
     {
       key: "baiduSecretKey",
       type: CellViewType.Input,
-      help: lang.baidu_secret_key,
+      help: lang.baidu_secret_key.help,
       bind: ["showKey", true]
     },
     {
@@ -79,6 +88,26 @@ const config = defineConfig({
         ["showKey", true],
         ["formulaOCRProviders", 1]
       ]
+    },
+    {
+      key: "simpleTexApiKey",
+      type: CellViewType.Input,
+      help: lang.simpletex_api_key.help,
+      link: lang.simpletex_api_key.link,
+      bind: [
+        ["showKey", true],
+        ["formulaOCRProviders", 2]
+      ]
+    },
+    {
+      key: "doc2xApiKey",
+      type: CellViewType.Input,
+      help: lang.doc2x_api_key.help,
+      link: lang.doc2x_api_key.link,
+      bind: [
+        ["showKey", true],
+        ["formulaOCRProviders", 3]
+      ]
     }
   ],
   actions4text: [
@@ -87,16 +116,29 @@ const config = defineConfig({
       key: "formulaOCR",
       label: lang.formula_ocr.label,
       option: lang.formula_ocr.$option3,
-      help: lang.formula_ocr.help,
-      method: async ({ imgBase64, option }) => {
+      method: async ({ option, img, imgBase64 }) => {
         try {
-          const res = (
-            self.globalProfile.autoocr.formulaOCRProviders[0] === 0
-              ? await baiduFormulaOCR(imgBase64)
-              : await mathpixOCR(imgBase64)
-          ).trim()
-          return [res, `$${res}$`, `$$\n${res}\n$$`][option]
+          const fn = (function () {
+            switch (self.globalProfile.autoocr.formulaOCRProviders[0]) {
+              case 1:
+                return mathpixOCR
+              case 2:
+                return simpleTexOCR
+              case 3:
+                return doc2xOCR
+              default:
+                return baiduFormulaOCR
+            }
+          })()
+          HUDController.show("正在识别中...")
+          let res = await fn(imgBase64, img)
+          HUDController.hidden()
+          if (res) {
+            res = res.trim()
+            return [res, `$${res}$`, `$$\n${res}\n$$`][option]
+          }
         } catch (err) {
+          HUDController.hidden()
           showHUD(String(err), 2)
         }
       }
