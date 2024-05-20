@@ -29,11 +29,11 @@ api.openai.com
 ## OpenAI 模型
 
 ::: tip 更新
-[v4.4.0](/update.md) 只支持 gpt-3.5-turbo 和 gpt-4-turbo。
+[v4.4.1](/update.md) 只支持 gpt-3.5-turbo 和 gpt-4o。gpt-4 指向 gpt-4o。
 :::
 
 - `gpt-3.5`: 即 gpt-3.5-turbo 速度较快。
-- `gpt-4`: 即 gpt-4-turbo 速度较慢，但更聪明。
+- `gpt-4`: 即 gpt-4o 速度较慢，但更聪明。
 
 ::: tip token
 OpenAI API 有输入+输出长度限制，也就是 Max Tokens，而且不光包括输入，还包括输出。比如 Max Tokens 为 4k，输入 2k，输出只能 2k。

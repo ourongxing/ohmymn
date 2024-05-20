@@ -62,6 +62,16 @@ async function genShortcut() {
     await copyToClipboard(card.replace("🙂", String(state.num)))
 }
 
+async function genShortcut4() {
+  const card = `marginnote4app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPrompts%22%2C%22type%22%3A%22card%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D`
+  const text = `marginnote4app://addon/ohmymn?actions=%5B%7B%22action%22%3A%22aiActionPromptsText%22%2C%22type%22%3A%22text%22%2C%22option%22%3A%22🙂%22%2C%22content%22%3A%22%22%7D%5D`
+  if (state.type === "text")
+    await copyToClipboard(text.replace("🙂", String(state.num)))
+  else
+    await copyToClipboard(card.replace("🙂", String(state.num)))
+}
+
+
 </script>
 
 <template>
@@ -74,11 +84,18 @@ async function genShortcut() {
     </div>
     <div class="flex justify-between itmes-center my-2">
       <el-input-number v-model="state.num" :min="0" :max="100" />
-      <el-popover placement="top-end" trigger="click" content="复制成功">
-        <template #reference>
-          <el-button plain @click="genShortcut">生成并复制</el-button>
-        </template>
-      </el-popover>
+      <div>
+        <el-popover placement="top-end" trigger="click" content="复制成功">
+          <template #reference>
+            <el-button plain @click="genShortcut">生成并复制</el-button>
+          </template>
+        </el-popover>
+        <el-popover placement="top-end" trigger="click" content="复制成功">
+          <template #reference>
+            <el-button plain @click="genShortcut4">生成并复制(MN4)</el-button>
+          </template>
+        </el-popover>
+      </div>
     </div>
     <hr />
   </client-only>

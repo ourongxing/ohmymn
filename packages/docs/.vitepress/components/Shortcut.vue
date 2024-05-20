@@ -371,6 +371,26 @@ function genShortcut() {
   copyToClipboard(shortcut)
 }
 
+function genShortcut4() {
+  const actions = state.selections.map(k => {
+    if (k.input && k.content)
+      return {
+        action: k.action,
+        type: k.type,
+        option: k.option,
+        content: k.content.replace(/\n/g, "\\n"),
+      }
+    else return {
+      action: k.action,
+      type: k.type,
+      option: k.option,
+      content: ""
+    }
+  })
+  const shortcut = `marginnote4app://addon/ohmymn?actions=${encodeURIComponent(JSON.stringify(actions))}`
+  copyToClipboard(shortcut)
+}
+
 async function copyToClipboard(text: string) {
   if (!text) return
   try {
@@ -427,11 +447,19 @@ async function copyToClipboard(text: string) {
     </div>
     <div class="flex justify-between itmes-center my-2">
       <el-input-number v-model="state.num" :min="1" :max="10" />
-      <el-popover placement="top-end" trigger="click" content="复制成功">
-        <template #reference>
-          <el-button plain @click="genShortcut" :disabled="state.error">生成并复制</el-button>
-        </template>
-      </el-popover>
+      <div>
+
+        <el-popover placement="top-end" trigger="click" content="复制成功">
+          <template #reference>
+            <el-button plain @click="genShortcut" :disabled="state.error">生成并复制</el-button>
+          </template>
+        </el-popover>
+        <el-popover placement="top-end" trigger="click" content="复制成功">
+          <template #reference>
+            <el-button plain @click="genShortcut4" :disabled="state.error">生成并复制(MN4)</el-button>
+          </template>
+        </el-popover>
+      </div>
     </div>
     <hr />
     <div v-for="(selection, i) in state.selections">
