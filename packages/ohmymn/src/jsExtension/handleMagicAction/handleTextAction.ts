@@ -1,9 +1,8 @@
 import {
-  alert,
   confirm,
   copy,
   MN,
-  NodeNote,
+  CanvasNode,
   openURL,
   popup,
   select,
@@ -60,7 +59,7 @@ export default async function (key: string, option: number, content: string) {
   }
 
   if (res) {
-    if (isURL(res, true)) {
+    if (isURL(res)) {
       const { buttonIndex: option } = await popup({
         title: Addon.title,
         message: lang.detect_link,
@@ -68,23 +67,13 @@ export default async function (key: string, option: number, content: string) {
         buttons: [lang.sure]
       })
       if (option !== -1) {
-        openURL(
-          res.replace(
-            /^.*(https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]).*$/,
-            "$1"
-          ),
-          true
-        )
+        openURL(res, true)
         return
       }
     }
-    const { lastFocusNote } = MN.currentDocumentController
-    const selectedNotes = NodeNote.getSelectedNodes()
+    const selectedNotes = CanvasNode.getSelectedNodes()
     const { noteOptions, showCopyContent } = self.globalProfile.magicaction4text
-    if (
-      (!lastFocusNote && selectedNotes.length !== 1) ||
-      noteOptions.length === 0
-    ) {
+    if (selectedNotes.length !== 1 || noteOptions.length === 0) {
       if (showCopyContent) {
         if (countWord(res) > 10 || res.includes("\n")) {
           const t = await confirm(Addon.title + " Copy", res)
@@ -108,11 +97,9 @@ export default async function (key: string, option: number, content: string) {
         )
         option = noteOptions[index]
       }
-      const focusNode = lastFocusNote
-        ? new NodeNote(lastFocusNote)
-        : selectedNotes[0]
+      const focusNode = selectedNotes[0]
       undoGroupingWithRefresh(() => {
-        if (res)
+        if (res) {
           switch (option) {
             case NoteOption.Copy:
               if (showCopyContent) {
@@ -136,8 +123,8 @@ export default async function (key: string, option: number, content: string) {
               break
             case NoteOption.Comment:
               if (key === "formulaOCR") {
-                if (focusNode.note.appendMarkdownComment) {
-                  focusNode.note.appendMarkdownComment(res)
+                if (MN.isMN4) {
+                  focusNode.appendMarkdownComments(res)
                 } else {
                   const { markdown } = self.globalProfile.autoocr
                   // 0. markdown
@@ -176,6 +163,7 @@ export default async function (key: string, option: number, content: string) {
                 else focusNode.appendTextComments(res)
               }
           }
+        }
       })
     }
   }

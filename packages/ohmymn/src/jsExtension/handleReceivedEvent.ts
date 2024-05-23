@@ -140,6 +140,8 @@ export default defineEventHandlers<
     if (self.window !== MN.currentWindow) return
     if (MN.studyController.studyMode !== StudyMode.study) return
     MN.log("Popup menu on note open", "event")
+    // const note = sender.userInfo.note
+    // MN.log(note.noteTitle)
     if (isModuleON("gesture") || isModuleON("toolbar")) {
       /**
        * studyController.view 的 frame 和 bounds 的区别，frame 是相对于父视图，bounds 是相对于自身。宽度和高度始终保持一致。

@@ -46,6 +46,9 @@ export default async function handleExcerpt(n: MbBookNote) {
   isPic = false
 
   if (note.excerptPic) {
+    /**
+     * MarginNote 4 will always return false
+     */
     const autoOCR =
       MN.db.getNotebookById(note.notebookId!)?.options?.autoOCRMode ?? false
     MN.log("The excerpt is image", "ocr")
