@@ -2,7 +2,7 @@ import type { MbBookNote } from "marginnote"
 import {
   loopBreak,
   isNoteExist,
-  NodeNote,
+  CanvasNode,
   undoGroupingWithRefresh
 } from "marginnote"
 
@@ -19,13 +19,13 @@ import {
 
 // 记得初始化
 let note: MbBookNote
-let node: NodeNote
+let node: CanvasNode
 let nodeNote: MbBookNote
 let isPicOCRed = false
 let isComment = false
 let isPic = false
 
-export default async (n: MbBookNote) => {
+export default async function handleExcerpt(n: MbBookNote) {
   MN.log("Processing Excerpt", "excerpt")
   // Initialize global variables
   note = n
@@ -35,12 +35,12 @@ export default async (n: MbBookNote) => {
    * 如果没有合并，nodeid 也不一样，但是只有 nodeid 不一样，可以通过 createDate 来判断是否是同一个节点
    */
   if (MN.isMN4) {
-    node = new NodeNote(note, MN.currnetNotebookId)
+    node = new CanvasNode(note, MN.currnetNotebookId)
   } else {
-    node = new NodeNote(note)
+    node = new CanvasNode(note)
   }
   nodeNote = node.note
-  isComment = node.nodeId !== note.noteId
+  isComment = node.id !== note.noteId
   isComment && MN.log("The Excerpt is a comment", "excerpt")
   isPicOCRed = false
   isPic = false

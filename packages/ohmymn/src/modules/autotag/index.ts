@@ -1,4 +1,4 @@
-import { NodeNote, undoGroupingWithRefresh } from "marginnote"
+import { CanvasNode, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -29,7 +29,7 @@ export function clearTags(...tags: string[]) {
     .filter(k => k)
 }
 
-function generateTags(node: NodeNote, text: string) {
+function generateTags(node: CanvasNode, text: string) {
   if (!text) return
   const { customTag: params } = self.tempProfile.replaceParam
   const { preset } = self.globalProfile.autotag

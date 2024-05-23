@@ -10,7 +10,7 @@ import type {
   UITableView,
   UITableViewController,
   DirectionOfSelection,
-  NodeNote,
+  CanvasNode,
   CGRect
 } from "marginnote"
 import type { ISection } from "./typings"
@@ -139,7 +139,7 @@ declare global {
     /**
      * Only mainView
      */
-    customSelectedNodes: NodeNote[]
+    customSelectedNodes: CanvasNode[]
     /**
      * Both
      */

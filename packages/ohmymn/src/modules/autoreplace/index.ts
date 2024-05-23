@@ -1,4 +1,4 @@
-import { type NodeNote, undoGroupingWithRefresh } from "marginnote"
+import { type CanvasNode, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -6,7 +6,7 @@ import { doc, escapeDoubleQuote, string2ReplaceParam } from "~/utils"
 import lang from "./lang"
 import { AutoReplacePreset, ReplaceCard } from "./typings"
 
-function replaceText(node: NodeNote, text: string) {
+function replaceText(node: CanvasNode, text: string) {
   const { preset } = self.globalProfile.autoreplace
   for (const set of preset) {
     switch (set) {

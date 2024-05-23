@@ -1,7 +1,7 @@
 import {
   fetch,
   HUDController,
-  NodeNote,
+  CanvasNode,
   MbBookNote,
   undoGroupingWithRefresh
 } from "marginnote"
@@ -29,7 +29,7 @@ export function fetchPrompts(note?: MbBookNote): Prompt[] {
     }
   }
   if (note) {
-    const node = new NodeNote(note)
+    const node = new CanvasNode(note)
     const prompts: Prompt[] = []
     undoGroupingWithRefresh(() => {
       node.childNodes.forEach((k, i) => {

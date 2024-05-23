@@ -1,4 +1,4 @@
-import type { MbBookNote, NodeNote } from "marginnote"
+import type { MbBookNote, CanvasNode } from "marginnote"
 
 export type AutoUtilType = {
   customOCR: ({ imgBase64 }: { imgBase64: string }) => string
@@ -7,7 +7,7 @@ export type AutoUtilType = {
     note,
     text
   }: {
-    node: NodeNote
+    node: CanvasNode
     note: MbBookNote
     text: string
   }) => string
@@ -16,7 +16,7 @@ export type AutoUtilType = {
     text,
     note
   }: {
-    node: NodeNote
+    node: CanvasNode
     note: MbBookNote
     text: string
   }) => {
@@ -30,7 +30,7 @@ export type AutoUtilType = {
     text
   }: {
     note: MbBookNote
-    node: NodeNote
+    node: CanvasNode
     text: string
   }) => string[]
   generateComments: ({
@@ -39,7 +39,7 @@ export type AutoUtilType = {
     text
   }: {
     note: MbBookNote
-    node: NodeNote
+    node: CanvasNode
     text: string
   }) => string[]
   modifyTitles: ({ titles }: { titles: string[] }) => string[]

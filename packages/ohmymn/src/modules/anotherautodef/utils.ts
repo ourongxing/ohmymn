@@ -1,4 +1,4 @@
-import type { NodeNote } from "marginnote"
+import type { CanvasNode } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { regFlag, unique, type ReplaceParam } from "~/utils"
 import { AutoDefPreset, TitleLinkSplit } from "./typings"
@@ -35,7 +35,7 @@ function split2MuiltTitles(text: string) {
 }
 
 export function extractTitle(
-  node: NodeNote,
+  node: CanvasNode,
   text: string,
   params?: ReplaceParam[]
 ) {

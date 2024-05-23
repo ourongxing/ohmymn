@@ -1,5 +1,5 @@
 import type { MbBookNote } from "marginnote"
-import { getDocURL, getLocalDataByKey, NodeNote } from "marginnote"
+import { getDocURL, getLocalDataByKey, CanvasNode } from "marginnote"
 import { dateFormat } from "~/utils"
 import Mustache from "~/utils/third party/mustache"
 import { oldFunc } from "./mustacheFunc"
@@ -44,27 +44,25 @@ const fetchDataFromMetadata = () => {
   }
 }
 
-export const fetchNodeProperties = (node: NodeNote, template: string) => {
+export const fetchNodeProperties = (node: CanvasNode, template: string) => {
   /** Reduce unnecessary memory consumption */
   const isRequire = (key: string) => template.includes(key)
   const nodeNote = node.note
   return {
     ...oldFunc,
-    titles:
-      isRequire("titles") &&
-      undefine2undefine(nodeNote.noteTitle, t => t.split(/\s*[;；]\s*/)),
-    id: isRequire("id") && nodeNote.noteId,
+    titles: isRequire("titles") && undefine2undefine(node, k => k.titles()),
+    id: isRequire("id") && node.id,
     url: isRequire("url") && {
-      pure: undefine2undefine(nodeNote.noteId, t => `${MN.scheme}://note/` + t),
+      pure: undefine2undefine(node.id, t => `${MN.scheme}://note/` + t),
       md: undefine2undefine(
-        nodeNote.noteId,
-        t => `[${nodeNote.noteTitle ?? "MarginNote"}](${MN.scheme}://note/${t}`
+        node.id,
+        t => `[${node.title ?? "MarginNote"}](${MN.scheme}://note/${t}`
       ),
       html: undefine2undefine(
-        nodeNote.noteId,
+        node.id,
         t =>
           `<a href="${MN.scheme}://note/${t}" class="MNLink">${
-            nodeNote.noteTitle ?? "MarginNote"
+            node.title ?? "MarginNote"
           }</a>`
       )
     },
@@ -191,7 +189,7 @@ export const fetchNodeProperties = (node: NodeNote, template: string) => {
 }
 
 export const renderTemplateOfNodeProperties = (
-  node: NodeNote,
+  node: CanvasNode,
   template: string
 ): string => {
   if (!/{{.+}}/.test(template)) return template
@@ -203,13 +201,13 @@ export const renderTemplateOfNodeProperties = (
       parent:
         isRequire("parent.") &&
         undefine2undefine(node.note.parentNote, t =>
-          fetchNodeProperties(new NodeNote(t), template)
+          fetchNodeProperties(new CanvasNode(t), template)
         ),
       children:
         isRequire("children") &&
         undefine2undefine(node.note.childNotes, k =>
           k.map((k: MbBookNote) =>
-            fetchNodeProperties(new NodeNote(k), template)
+            fetchNodeProperties(new CanvasNode(k), template)
           )
         )
     }).trim()

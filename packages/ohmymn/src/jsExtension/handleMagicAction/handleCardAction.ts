@@ -1,6 +1,6 @@
 import {
   HUDController,
-  NodeNote,
+  CanvasNode,
   popup,
   showHUD,
   UIAlertViewStyle
@@ -12,7 +12,7 @@ import lang from "../lang"
 import { closePanel } from "../switchPanel"
 
 export default async function (key: string, option: number, content: string) {
-  let nodes: NodeNote[] = []
+  let nodes: CanvasNode[] = []
   if (
     key != "filterCard" &&
     self.globalProfile.addon.panelControl.includes(PanelControl.CompleteClose)
@@ -24,7 +24,7 @@ export default async function (key: string, option: number, content: string) {
     self.customSelectedNodes = []
     HUDController.hidden()
   } else {
-    nodes = NodeNote.getSelectedNodes()
+    nodes = CanvasNode.getSelectedNodes()
     if (key === "manageProfile") {
       if (option > 1) await manageProfileAction(nodes[0], option)
       else {
@@ -44,7 +44,7 @@ export default async function (key: string, option: number, content: string) {
       // which leads to duplicate processing.
       const isHavingChildren = nodes.every(
         node =>
-          nodes[0].parentNode?.nodeId === node.note.parentNote?.noteId &&
+          nodes[0].parentNode?.id === node.note.parentNote?.noteId &&
           node.childNodes.length
       )
 
@@ -77,9 +77,9 @@ export default async function (key: string, option: number, content: string) {
               return acc
             },
             {
-              children: [] as NodeNote[],
-              descendant: [] as NodeNote[],
-              all: [] as NodeNote[]
+              children: [] as CanvasNode[],
+              descendant: [] as CanvasNode[],
+              all: [] as CanvasNode[]
             }
           )
           nodes = [children, descendant, all][option - 1]

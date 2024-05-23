@@ -1,4 +1,4 @@
-import type { MbBookNote, NodeNote } from "marginnote"
+import type { MbBookNote, CanvasNode } from "marginnote"
 import { removeHighlight } from "marginnote"
 import { autoUtils } from "~/coreModule"
 import { DragMerge, HasTitleThen } from "~/modules/addon/typings"
@@ -18,7 +18,7 @@ export async function customOCR() {
   }
 }
 
-async function genTitles(note: MbBookNote, node: NodeNote, text: string) {
+async function genTitles(note: MbBookNote, node: CanvasNode, text: string) {
   const utils = autoUtils.generateTitles?.filter(k => k.status())
   if (utils?.length) {
     for (const util of utils) {
@@ -30,7 +30,7 @@ async function genTitles(note: MbBookNote, node: NodeNote, text: string) {
 
 export async function genCommentTag(
   note: MbBookNote,
-  node: NodeNote,
+  node: CanvasNode,
   text: string
 ) {
   const retVal = {
@@ -57,7 +57,7 @@ export async function genCommentTag(
 export async function genTitleTextCommentTag(param: {
   note: MbBookNote
   text: string
-  node: NodeNote
+  node: CanvasNode
   isComment: boolean
 }) {
   const { note, text, node, isComment } = param

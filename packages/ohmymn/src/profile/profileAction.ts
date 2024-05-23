@@ -1,4 +1,4 @@
-import type { MbBookNote, NodeNote } from "marginnote"
+import type { MbBookNote, CanvasNode } from "marginnote"
 import {
   confirm,
   MN,
@@ -346,7 +346,7 @@ export async function readProfilefromCard(node: MbBookNote) {
   }
 }
 
-export async function manageProfileAction(node: NodeNote, option: number) {
+export async function manageProfileAction(node: CanvasNode, option: number) {
   if (!MN.currentDocmd5 || !MN.currnetNotebookId) return
   // Write
   switch (option) {

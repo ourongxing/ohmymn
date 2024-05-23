@@ -1,6 +1,6 @@
 import { Addon } from "~/addon"
-import { renderTemplateOfNodeProperties } from "~/JSExtension/fetchNodeProperties"
-import type { NodeNote } from "marginnote"
+import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
+import type { CanvasNode } from "marginnote"
 import { select, openURL, showHUD, removeHighlight } from "marginnote"
 import { reverseEscape, escapeDoubleQuote } from "~/utils"
 import { MultipleTitlesExcerpt, WhichPartofCard } from "./typings"
@@ -28,7 +28,7 @@ async function getTitleExcerpt(
   }
 }
 
-function getCustomContent(node: NodeNote, type: "copy" | "search") {
+function getCustomContent(node: CanvasNode, type: "copy" | "search") {
   const { customContent, customSearchContent } = self.globalProfile.copysearch
   const custom = type === "copy" ? customContent : customSearchContent
   if (!custom) return undefined
@@ -37,7 +37,7 @@ function getCustomContent(node: NodeNote, type: "copy" | "search") {
 }
 
 export async function getContentofOneCard(
-  node: NodeNote,
+  node: CanvasNode,
   option: number,
   type: "copy" | "search"
 ) {
@@ -77,7 +77,7 @@ export async function getContentofOneCard(
   }
 }
 export function getContentofMuiltCards(
-  nodes: NodeNote[],
+  nodes: CanvasNode[],
   option: number,
   type: "copy" | "search"
 ) {

@@ -1,4 +1,4 @@
-import type { NodeNote } from "marginnote"
+import type { CanvasNode } from "marginnote"
 import { HUDController, undoGroupingWithRefresh } from "marginnote"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -97,7 +97,7 @@ export default defineConfig({
       label: lang.complete_word.label,
       method: async ({ nodes, option }) => {
         if (option === -1) return
-        const getCompletedWord = (node: NodeNote) => {
+        const getCompletedWord = (node: CanvasNode) => {
           try {
             const text = node.titles[0]
             return text ? completeWord(text, node.note) : undefined
@@ -126,7 +126,7 @@ export default defineConfig({
       method: async ({ nodes, option }) => {
         if (option === -1) return
 
-        const getCompletedWord = (node: NodeNote) => {
+        const getCompletedWord = (node: CanvasNode) => {
           try {
             const text = node.titles[0]
             return text ? completeWord(text, node.note, true) : undefined

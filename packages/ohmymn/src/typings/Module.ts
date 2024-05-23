@@ -1,4 +1,4 @@
-import { type NSData, type NodeNote } from "marginnote"
+import { type NSData, type CanvasNode } from "marginnote"
 import { type AllModuleKeyUnion } from "~/coreModule"
 import { type IAllProfile } from "~/profile"
 import { type CellViewType } from "."
@@ -103,7 +103,7 @@ export type IActionMethod4Card = ({
   option
 }: {
   content: string
-  nodes: NodeNote[]
+  nodes: CanvasNode[]
   option: number
 }) => any
 

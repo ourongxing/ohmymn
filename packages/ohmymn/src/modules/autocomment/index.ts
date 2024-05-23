@@ -1,4 +1,4 @@
-import { type NodeNote, undoGroupingWithRefresh } from "marginnote"
+import { type CanvasNode, undoGroupingWithRefresh } from "marginnote"
 import { renderTemplateOfNodeProperties } from "~/jsExtension/fetchNodeProperties"
 import { defineConfig } from "~/profile"
 import { CellViewType } from "~/typings"
@@ -16,7 +16,7 @@ import {
 import lang from "./lang"
 import { AddComment, AutoCommentPreset } from "./typings"
 
-function generateComments(node: NodeNote, text: string) {
+function generateComments(node: CanvasNode, text: string) {
   if (!text) return
   const { preset } = self.globalProfile.autocomment
   const { customComment: params } = self.tempProfile.replaceParam

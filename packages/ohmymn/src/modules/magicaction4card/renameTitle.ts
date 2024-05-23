@@ -6,7 +6,7 @@ import {
   escapeDoubleQuote,
   string2ReplaceParam
 } from "~/utils"
-import { type NodeNote, showHUD } from "marginnote"
+import { type CanvasNode, showHUD } from "marginnote"
 import lang from "./lang"
 
 export function getLayerSerialInfo(newSubStr: string, treeIndex: number[][]) {
@@ -53,7 +53,7 @@ export function getLayerSerialInfo(newSubStr: string, treeIndex: number[][]) {
   })
 }
 
-export function renameTitle(content: string, nodes: NodeNote[]) {
+export function renameTitle(content: string, nodes: CanvasNode[]) {
   content = /^\(.*\)$/.test(content)
     ? content
     : `(/^.*$/gs, "${escapeDoubleQuote(content)}")`
@@ -62,7 +62,7 @@ export function renameTitle(content: string, nodes: NodeNote[]) {
   if (/#\[(.+)\]/.test(newSubStr)) {
     const isHavingChildren = nodes.every(
       node =>
-        nodes[0].parentNode?.nodeId === node.parentNode?.nodeId &&
+        nodes[0].parentNode?.id === node.parentNode?.id &&
         node?.childNodes?.length
     )
     if (isHavingChildren) {

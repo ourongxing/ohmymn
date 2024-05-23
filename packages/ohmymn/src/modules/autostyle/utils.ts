@@ -1,4 +1,4 @@
-import { MbBookNote, NodeNote } from "marginnote"
+import { MbBookNote, CanvasNode } from "marginnote"
 import { CGSizeValue2CGSize, MN, removeHighlight, showHUD } from "marginnote"
 import { countWord, notCJK, reverseEscape } from "~/utils"
 import lang from "./lang"
@@ -58,7 +58,7 @@ export function modifyStyle(note: MbBookNote, isAuto = false) {
     }
   }
 
-  const node = new NodeNote(note, isAuto ? MN.currnetNotebookId : undefined)
+  const node = new CanvasNode(note, isAuto ? MN.currnetNotebookId : undefined)
   const nodeNote = node.note
   for (const set of preset)
     switch (set) {
