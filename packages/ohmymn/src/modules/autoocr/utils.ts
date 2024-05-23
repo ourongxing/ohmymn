@@ -108,10 +108,13 @@ async function getDoc2xResutlt(uuid: string, token: string) {
     }).then(res => res.json())
     return res.code === "success" && res.data.progress === 100
   })
-  if (!status) throw `Doc2X: Timeout`
-  return res.data.result.pages[0].md
-    .replace(/(\\\[\s?)|(\s?\\\])/g, "$$")
-    .replace(/(\\\(\s?)|(\s?\\\))/g, "$")
+  if (!status) throw `Doc2X: ${lang.timeout}`
+  const md = res.data.result.pages[0].md
+  if (md)
+    return md
+      .replace(/(\\\[\s?)|(\s?\\\])/g, "$$")
+      .replace(/(\\\(\s?)|(\s?\\\))/g, "$")
+  else throw "Doc2X: " + lang.doc2x_api_key.cant_ocr
 }
 
 export async function doc2xOCR(imgBase64: string, img: NSData) {

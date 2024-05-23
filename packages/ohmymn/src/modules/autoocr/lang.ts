@@ -70,11 +70,13 @@ export default i18n({
       no_mathpix_key: "没有输入 Mathpix key！",
       mathpix_key_error: "Mathpix key 输入错误！"
     },
+    timeout: "超时！",
     doc2x_api_key: {
       help: "Doc2X Api Key，点击查看如何获取。",
       link: doc("autoocr", "doc2x"),
       no_doc2x_key: "没有输入 Doc2X API key！",
-      doc2x_key_error: "Doc2X API key 输入错误！"
+      doc2x_key_error: "Doc2X API key 输入错误！",
+      cant_ocr: "无法 OCR！"
     },
     simpletex_api_key: {
       help: "SimpleTex Api Key，点击查看如何获取。",
@@ -159,11 +161,13 @@ export default i18n({
       no_mathpix_key: "No Mathpix key！",
       mathpix_key_error: "Mathpix key is wrong!"
     },
+    timeout: "Timeout!",
     doc2x_api_key: {
       link: doc("autoocr", "doc2x"),
       help: "Doc2X API Key, click to see how to get it.",
       doc2x_key_error: "Doc2X API key is wrong!",
-      no_doc2x_key: "No Doc2X API key！"
+      no_doc2x_key: "No Doc2X API key!",
+      cant_ocr: "Can't OCR!"
     },
     simpletex_api_key: {
       link: doc("autoocr", "simpletex"),
