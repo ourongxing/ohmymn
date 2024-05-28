@@ -1,7 +1,9 @@
 import {
+  delay,
   isNoteLink,
   openURL,
   postNotification,
+  showHUD,
   type NSIndexPath,
   type UITableView
 } from "marginnote"
@@ -28,6 +30,8 @@ const doubleClickTemp = {
   location: undefined as undefined | NSIndexPath,
   lastTime: 0
 }
+
+let entered = false
 
 async function tableViewDidSelectRowAtIndexPath(
   tableView: UITableView,
@@ -95,14 +99,27 @@ async function tableViewDidSelectRowAtIndexPath(
   }
 }
 
+async function textFieldShouldEndEditing(sender: UITextField) {
+  if (entered) {
+    entered = false
+    return false
+  }
+  delay(0.1).then(() => {
+    sender.becomeFirstResponder()
+    showHUD(lang.not_saved)
+  })
+  return false
+}
+
 async function textFieldShouldReturn(sender: UITextField) {
   const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
   const section = self.dataSource[indexPath.section]
   const row = section.rows[indexPath.row] as IRowInput
-  const text = sender.text.trim()
+  const text = sender.text.trim().replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
   // Allowed be empty
   if (isNoteLink(text)) openURL(text)
   if (!text || (await checkInputCorrect(text, row.key))) {
+    entered = true
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()
     row.content = text
@@ -267,6 +284,7 @@ function popoverControllerDidDismissPopover() {
 export default {
   popoverControllerDidDismissPopover,
   tableViewDidSelectRowAtIndexPath,
+  textFieldShouldEndEditing,
   textFieldShouldReturn,
   clickSelectButton,
   switchChange,
