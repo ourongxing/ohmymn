@@ -99,16 +99,15 @@ async function tableViewDidSelectRowAtIndexPath(
   }
 }
 
-async function textFieldShouldEndEditing(sender: UITextField) {
+async function textFieldDidEndEditing(sender: UITextField) {
   if (entered) {
     entered = false
-    return false
+  } else {
+    delay(0.1).then(() => {
+      sender.becomeFirstResponder()
+      showHUD(lang.not_saved)
+    })
   }
-  delay(0.1).then(() => {
-    sender.becomeFirstResponder()
-    showHUD(lang.not_saved)
-  })
-  return false
 }
 
 async function textFieldShouldReturn(sender: UITextField) {
@@ -284,7 +283,7 @@ function popoverControllerDidDismissPopover() {
 export default {
   popoverControllerDidDismissPopover,
   tableViewDidSelectRowAtIndexPath,
-  textFieldShouldEndEditing,
+  textFieldDidEndEditing,
   textFieldShouldReturn,
   clickSelectButton,
   switchChange,
