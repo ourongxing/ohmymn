@@ -15,7 +15,10 @@ When you select a card with child nodes or select multiple cards at the same lev
 ### Manage Profile
 
 ::: warning Note
-Please first read OhMyMN's [Profile Structure](../profile.md#profile-structure).
+
+- Please first read OhMyMN's [Profile Structure](../profile.md#profile-structure).
+- Reference card can't contain in child cards.
+
 :::
 
 1. Write profile: Write the profile to the child cards of the selected card. Please make sure that the selected card has child cards, the more child cards the better because this profile information will keep expanding to avoid exceeding the maximum number of words for one card.
