@@ -1,3 +1,4 @@
+import { Base64 } from "../utils"
 import type {
   NSMutableURLRequest,
   NSData,
@@ -20,19 +21,22 @@ class Response {
   }
   json(): any {
     if (this.data.length() === 0) return {}
-    const res = NSJSONSerialization.JSONObjectWithDataOptions(
-      this.data,
-      NSJSONReadingOptions.MutableContainers
-    )
-    if (NSJSONSerialization.isValidJSONObject(res)) return res
-    throw lang.not_JSON
+    const encoding = this.data.base64Encoding()
+    const decoding = Base64.decode(encoding)
+    try {
+      return JSON.parse(decoding)
+    } catch {
+      throw lang.not_JSON
+    }
   }
   /**
    * @deprecated not supported, always return empty string
    */
   text(): string {
     if (this.data.length() === 0) return ""
-    return ""
+    const encoding = this.data.base64Encoding()
+    const decoding = Base64.decode(encoding)
+    return decoding
   }
 }
 
@@ -45,13 +49,28 @@ type RequestOptions = {
   headers?: Record<string, any>
 } & XOR<
   XOR<
-    { body?: string },
     XOR<
-      { json?: Record<string, any> },
-      { form?: Record<string, string | number | boolean> }
-    >
+      { body?: string },
+      XOR<
+        { json?: Record<string, any> },
+        { form?: Record<string, string | number | boolean> }
+      >
+    >,
+    { search?: Record<string, string | number | boolean> }
   >,
-  { search?: Record<string, string | number | boolean> }
+  {
+    multipartForm?: Record<
+      string,
+      | string
+      | number
+      | boolean
+      | {
+          filename: string
+          filetype: string
+          data: NSData
+        }
+    >
+  }
 >
 
 function initRequest(
@@ -65,12 +84,9 @@ function initRequest(
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15",
     "Content-Type": "application/json",
-    Accept: "application/json"
-  }
-  request.setAllHTTPHeaderFields({
-    ...headers,
+    Accept: "application/json",
     ...(options.headers ?? {})
-  })
+  }
   if (options.search) {
     request.setURL(
       genNSURL(
@@ -83,6 +99,7 @@ function initRequest(
   } else if (options.body) {
     request.setHTTPBody(NSData.dataWithStringEncoding(options.body, 4))
   } else if (options.form) {
+    headers["Content-Type"] = "application/x-www-form-urlencoded"
     request.setHTTPBody(
       NSData.dataWithStringEncoding(
         Object.entries(options.form).reduce((acc, cur) => {
@@ -99,7 +116,35 @@ function initRequest(
         NSJSONWritingOptions.SortedKeys
       )
     )
+  } else if (options.multipartForm) {
+    const boundary = "FormBoundaryOhMyMN"
+    headers["Content-Type"] = "multipart/form-data; boundary=" + boundary
+    const body = NSMutableData.new()
+    Object.entries(options.multipartForm).forEach(([key, value]) => {
+      if (typeof value === "object") {
+        body.appendData(
+          NSData.dataWithStringEncoding(
+            `--${boundary}\r\nContent-Disposition: form-data; name="${key}"; filename="${value.filename}"\r\nContent-Type: ${value.filetype}\r\n\r\n`,
+            4
+          )
+        )
+        body.appendData(value.data)
+      } else {
+        body.appendData(
+          NSData.dataWithStringEncoding(
+            `--${boundary}\r\nContent-Disposition: form-data; name="${key}"\r\n\r\n`,
+            4
+          )
+        )
+        body.appendData(
+          NSData.dataWithStringEncoding(`${value.toString()}\r\n`, 4)
+        )
+      }
+    })
+    body.appendData(NSData.dataWithStringEncoding(`\r\n--${boundary}--\r\n`, 4))
+    request.setHTTPBody(body)
   }
+  request.setAllHTTPHeaderFields(headers)
   return request
 }
 
@@ -119,7 +164,6 @@ export function fetch(
       queue,
       (res: NSHTTPURLResponse, data: NSData, err: NSError) => {
         // Can't get the res property
-        if (err.localizedDescription) reject(err.localizedDescription)
         resolve(new Response(data))
       }
     )

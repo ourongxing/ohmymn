@@ -71,9 +71,9 @@ MarginNote 的 OCR Pro 不支持很多小语种，导致无法正常摘录，~~�
 
 **演示**(MN4)
 - 常规操作
-![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/20240520111543_rec_.gif?x-oss-process=base_webp)
+![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/20240520174628_rec_.gif?x-oss-process=base_webp)
 - 进阶操作
-![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/20240520112449_rec_.gif?x-oss-process=base_webp)
+![](https://testmnbbs.oss-cn-zhangjiakou.aliyuncs.com/pic/20240520174754_rec_.gif?x-oss-process=base_webp)
 ### 文字识别
 
 对选中的文字或者区域进行文字识别，并将结果复制到剪贴板上。

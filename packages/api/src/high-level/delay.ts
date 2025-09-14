@@ -31,10 +31,10 @@ export function delay(sec: number) {
 export async function loopBreak(
   times: number,
   sec: number,
-  condition: () => boolean
+  condition: () => Promise<boolean> | boolean
 ): Promise<boolean> {
   for (let i = 0; i < times; i++) {
-    if (condition()) return true
+    if (await condition()) return true
     await delay(sec)
   }
   return false

@@ -1,7 +1,6 @@
 import lang from "./lang"
-import { fetch, showHUD } from "marginnote"
+import { fetch, showHUD, MD5 } from "marginnote"
 import { reverseEscape, countWord, isLanguage, notCJK } from "~/utils"
-import MD5 from "~/utils/third party/md5"
 import { TranslateProviders } from "./typings"
 
 function getBaiduSign(text: string, appid: string, key: string, salt: number) {

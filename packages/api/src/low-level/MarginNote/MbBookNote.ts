@@ -10,7 +10,7 @@ export const enum GroupMode {
 }
 /**
  * Notes of excerpt, mindmap nodes, and flashcards
- * @see {@link NodeNote} for better usage
+ * @see {@link CanvasNode} for better usage
  */
 export declare class MbBookNote {
   /**
@@ -19,8 +19,14 @@ export declare class MbBookNote {
   excerptText?: string
   /**
    * Title of the note
+   * @⚠ Use {@link CanvasNode.titles} instead, it will return markdown title
    */
   noteTitle?: string
+  /**
+   * @version 4.0.7
+   * Excerpt text of the note in markdown format
+   */
+  excerptTextMarkdown?: boolean
   /**
    * A int value, 0-15
    * Index of the color
@@ -93,7 +99,7 @@ export declare class MbBookNote {
   readonly mindmapBranchClose?: number
   /**
    * All the note text
-   * @recommand {@link NodeNote.allText}
+   * @recommand {@link CanvasNode.allText}
    */
   readonly notesText?: string
   /**
@@ -183,7 +189,7 @@ export declare class MbBookNote {
    */
   clearFormat(): void
   /**
-   * @recommand {@link NodeNote.allText}
+   * @recommand {@link CanvasNode.allText}
    */
   allNoteText(): string
   /**
@@ -225,6 +231,11 @@ export declare class MbBookNote {
    * Number of handwritten strokes
    */
   getStrokesCount(): number
+  /**
+   * @version: 4.0.2
+   *
+   */
+  addChild(note: MbBookNote): void
 }
 
 /**

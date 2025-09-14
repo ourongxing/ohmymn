@@ -43,9 +43,9 @@ function getNoteExcerptTextPic(note: MbBookNote) {
 }
 
 /**
- * NodeNote is a class that represents a node in the mindmap. It's also the excerpted note.
+ * CanvasNode is a class that represents a node in the mindmap. It's also the excerpted note.
  */
-export class NodeNote {
+export class CanvasNode {
   public note: MbBookNote
   constructor(note: MbBookNote, notebookid?: string) {
     this.note = note
@@ -58,8 +58,11 @@ export class NodeNote {
       if (nodeid) {
         const _note = MN.db.getNoteById(nodeid)
         // 这种方式获取到的 nodeid 始终是不一样的，但是只有 nodeid 不一样，可以通过 createDate 来判断是否是同一个节点
-        if (_note && _note.createDate.getTime() !== note.createDate.getTime())
+        // 实际上就算是普通的 note，也就是本来 note === node 的，通过 realGroup 获得 的 id 也不一样，从而无法判断 note === node
+        // 在摘录时就会出现问题。通过判断，如果是同一个节点，就不用重新赋值了，避免 noteid 发生变化，无法判断是否是同一 note。
+        if (_note && _note.createDate.getTime() !== note.createDate.getTime()) {
           this.note = _note
+        }
       }
     } else {
       const nodeid = note.groupNoteId
@@ -73,26 +76,26 @@ export class NodeNote {
     const MindMapNodes: any[] | undefined =
       MN.notebookController.mindmapView.selViewLst
     return MindMapNodes?.length
-      ? MindMapNodes.map(item => new NodeNote(item.note.note))
+      ? MindMapNodes.map(item => new CanvasNode(item.note.note))
       : []
   }
-  get nodeId() {
+  get id() {
     return this.note.noteId
   }
   get descendantNodes() {
     const { childNodes } = this
     if (!childNodes.length) {
       return {
-        descendant: [] as NodeNote[],
+        descendant: [] as CanvasNode[],
         treeIndex: [] as number[][]
       }
     } else {
       function down(
-        nodes: NodeNote[],
+        nodes: CanvasNode[],
         level = 0,
         lastIndex = [] as number[],
         ret = {
-          descendant: [] as NodeNote[],
+          descendant: [] as CanvasNode[],
           treeIndex: [] as number[][]
         }
       ) {
@@ -112,9 +115,9 @@ export class NodeNote {
     }
   }
   get ancestorNodes() {
-    function up(node: NodeNote, ancestorNodes: NodeNote[]) {
+    function up(node: CanvasNode, ancestorNodes: CanvasNode[]) {
       if (node.note.parentNote) {
-        const parentNode = new NodeNote(node.note.parentNote)
+        const parentNode = new CanvasNode(node.note.parentNote)
         ancestorNodes = up(parentNode, [...ancestorNodes, parentNode])
       }
       return ancestorNodes
@@ -122,11 +125,14 @@ export class NodeNote {
     return up(this, [])
   }
   get childNodes() {
-    return this.note.childNotes?.map(k => new NodeNote(k)) ?? []
+    return this.note.childNotes?.map(k => new CanvasNode(k)) ?? []
   }
   get parentNode() {
-    return this.note.parentNote && new NodeNote(this.note.parentNote)
+    return this.note.parentNote && new CanvasNode(this.note.parentNote)
   }
+  /**
+   * all notes, including the note itself and the notes merged
+   */
   get notes() {
     return this.note.comments.reduce(
       (acc, cur) => {
@@ -137,16 +143,11 @@ export class NodeNote {
     )
   }
   get titles() {
-    return unique(this.note.noteTitle?.split(/\s*[;；]\s*/) ?? [], true)
+    return unique(this.title.split(/\s*[;；]\s*/), true)
   }
   set titles(titles: string[]) {
     const newTitle = unique(titles, true).join("; ")
-    if (this.note.excerptText === this.note.noteTitle) {
-      this.note.noteTitle = newTitle
-      this.note.excerptText = newTitle
-    } else {
-      this.note.noteTitle = newTitle
-    }
+    this.title = newTitle
   }
   get isOCR() {
     if (this.note.excerptPic?.paint) {
@@ -154,10 +155,25 @@ export class NodeNote {
     }
   }
   get title() {
-    return this.note.noteTitle ?? ""
+    return this.note.noteTitle?.replace(/[; ]*{{.*}}/g, "") ?? ""
+  }
+  /**
+   * @version 4.0
+   */
+  get markdownTitles() {
+    return (
+      this.note.noteTitle?.match(/{{.*?}}/g)?.map(k => k.slice(2, -2)) ?? []
+    )
   }
   set title(title: string) {
-    this.note.noteTitle = title
+    const markdownTitles = this.markdownTitles.map(k => `; {{${k}}}`).join("")
+    title += markdownTitles
+    if (this.title && this.mainExcerptText === this.title) {
+      this.note.noteTitle = title
+      this.mainExcerptText = title
+    } else {
+      this.note.noteTitle = title
+    }
   }
   get mainExcerptText() {
     return this.note.excerptText ?? ""
@@ -170,11 +186,11 @@ export class NodeNote {
    */
   appendTitles(...titles: string[]) {
     const newTitle = unique([...this.titles, ...titles], true).join("; ")
-    if (this.note.excerptText === this.note.noteTitle) {
-      this.note.noteTitle = newTitle
-      this.note.excerptText = newTitle
+    if (this.mainExcerptText === this.title) {
+      this.title = newTitle
+      this.mainExcerptText = newTitle
     } else {
-      this.note.noteTitle = newTitle
+      this.title = newTitle
     }
     return this
   }
@@ -251,7 +267,9 @@ export class NodeNote {
         if (_comment.type == "TextNote" && _comment.text == comment) return i
       } else if (
         _comment.type == "LinkNote" &&
-        _comment.noteid == comment.noteId
+        (_comment.noteid == comment.noteId ||
+          MN.db.getNoteById(_comment.noteid)?.createDate ==
+            MN.db.getNoteById(comment.noteId)?.createDate)
       )
         return i
     }
@@ -431,7 +449,7 @@ export class NodeNote {
   async removeCommentButLinkTag(
     // 不删除
     filter: (comment: NoteComment) => boolean,
-    f?: (node: NodeNote) => Promise<void> | void
+    f?: (node: CanvasNode) => Promise<void> | void
   ) {
     const { removedIndex, linkTags } = this.note.comments.reduce(
       (acc, comment, i) => {
@@ -458,3 +476,8 @@ export class NodeNote {
     return this
   }
 }
+
+/**
+ * @deprecated use `CanvasNode` instead
+ */
+export class NodeNote extends CanvasNode {}

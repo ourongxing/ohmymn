@@ -5,14 +5,14 @@ import {
   select,
   setLocalDataByKey,
   showHUD,
-  undoGroupingWithRefresh
+  undoGroupingWithRefresh,
+  Base64
 } from "marginnote"
 import { gt } from "semver"
 import { Addon } from "~/addon"
 import { moduleNameList } from "~/dataSource"
 import { layoutViewController } from "~/jsExtension/switchPanel"
 import { dateFormat } from "~/utils"
-import { decode, encode } from "~/utils/third party/base64"
 import { readProfile, rewriteProfile, writeProfile } from "."
 import lang from "./lang"
 import { ManageProfileItems, Range, RewriteRange } from "./typings"
@@ -35,7 +35,7 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
   let module: string
   if (full) {
     range = lang.range.all_profile
-    data = encode(
+    data = Base64.encode(
       JSON.stringify({
         key: Addon.key,
         version: Addon.version,
@@ -106,7 +106,7 @@ export async function writeProfile2Card(node: MbBookNote, full = true) {
       }
     })()
     range = lang.$profile_select_items9[index]
-    data = encode(
+    data = Base64.encode(
       JSON.stringify({
         key: Addon.key,
         version: Addon.version,
@@ -197,7 +197,7 @@ export async function readProfilefromCard(node: MbBookNote) {
       }, "")
     const data = (() => {
       try {
-        return JSON.parse(decode(text))
+        return JSON.parse(Base64.decode(text))
       } catch {
         throw lang.parse_failed
       }

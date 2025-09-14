@@ -20,6 +20,10 @@ export interface TextComment {
    * NoteID of the note, is only valid after merging the notes
    */
   noteid?: string
+  /**
+   * @version 4.0.2
+   */
+  markdown?: boolean
 }
 
 /**
@@ -78,6 +82,14 @@ export interface LinkCommentText {
    * Text of the comment
    */
   q_htext: TextComment["text"]
+  /**
+   * @version 4.0.2
+   */
+  markdown?: boolean
+  /**
+   * @version 4.0.2
+   */
+  textFirst?: boolean
 }
 
 /**
@@ -97,4 +109,12 @@ export interface LinkCommentPic {
    * Image of the comment : {@link MNPic}
    */
   q_hpic: MNPic
+  /**
+   * @version 4.0.2
+   */
+  markdown?: boolean
+  /**
+   * @version 4.0.2
+   */
+  textFirst?: boolean
 }

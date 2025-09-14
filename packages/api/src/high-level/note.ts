@@ -1,4 +1,4 @@
-import { StudyMode, MbBookNote } from "../low-level"
+import { MbBookNote } from "../low-level"
 import { MN, postNotification } from "."
 
 /**

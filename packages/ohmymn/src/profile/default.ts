@@ -11,7 +11,7 @@ export const defaultGlobalProfile = {
     panelPosition: [0],
     panelHeight: [1],
     autoBackup: false,
-    useMarkdown: false,
+    useMarkdown: true,
     backupID: "",
     doubleLink: false
   },

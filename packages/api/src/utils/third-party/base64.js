@@ -3,7 +3,7 @@
 const _keyStr =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
-export function encode(input) {
+function encode(input) {
   let output = "",
     i = 0,
     chr1,
@@ -45,7 +45,7 @@ export function encode(input) {
   return output
 }
 
-export function decode(input) {
+function decode(input) {
   let output = "",
     i = 0,
     chr1,
@@ -138,9 +138,7 @@ function decodeTransform(input) {
   return output
 }
 
-const Base64 = {
+export const Base64 = {
   decode,
   encode
 }
-
-export default Base64

@@ -16,6 +16,7 @@ export declare type NSIndexPath = {
 }
 
 export declare type NSNull = typeof NSNull
+export declare type NSMutableData = typeof NSMutableData
 
 declare global {
   const NSIndexPath: {

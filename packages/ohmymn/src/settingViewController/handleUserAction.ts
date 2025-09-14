@@ -103,10 +103,15 @@ async function textFieldDidEndEditing(sender: UITextField) {
   if (entered) {
     entered = false
   } else {
-    delay(0.1).then(() => {
-      sender.becomeFirstResponder()
-      showHUD(lang.not_saved)
-    })
+    const indexPath: NSIndexPath = _tag2indexPath(sender.tag)
+    const section = self.dataSource[indexPath.section]
+    const row = section.rows[indexPath.row] as IRowInput
+    if (row.content !== sender.text) {
+      delay(0.1).then(() => {
+        sender.becomeFirstResponder()
+        showHUD(lang.not_saved)
+      })
+    }
   }
 }
 
@@ -117,7 +122,11 @@ async function textFieldShouldReturn(sender: UITextField) {
   const text = sender.text.trim().replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
   // Allowed be empty
   if (isNoteLink(text)) openURL(text)
-  if (!text || (await checkInputCorrect(text, row.key))) {
+  if (
+    !text ||
+    text === row.content ||
+    (await checkInputCorrect(text, row.key))
+  ) {
     entered = true
     // Cancel the cursor if the input is correct
     sender.resignFirstResponder()

@@ -4,10 +4,11 @@
   "version": "4.1.1",
   "unsignedVersion": "4.4.3",
   "author": "ourongxing",
+  "type": "module",
   "scripts": {
     "dev": "vitepress --port 3333",
-    "build": "pnpm prefetch && vitepress build && node .vitepress/scripts/build-pwa.mjs",
-    "build-no-prefetch": "vitepress build && node .vitepress/scripts/build-pwa.mjs",
+    "build": "pnpm prefetch && vitepress build",
+    "build-no-prefetch": "vitepress build",
     "serve": "vitepress serve",
     "docsearch": "docker run -it --env-file=.env -e \"CONFIG=$(cat docsearch.json | jq -r tostring)\" algolia/docsearch-scraper",
     "deploy": "pnpm build && vercel deploy --prod",
@@ -19,13 +20,12 @@
     "element-plus": "^2.3.3",
     "jiti": "^1.17.1",
     "markdown-it": "^13.0.1",
-    "vue": "latest"
+    "vue": "^3.4.27"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.16",
     "@types/markdown-it": "^12.2.3",
     "@unocss/reset": "^0.50.1",
-    "@vitejs/plugin-vue": "latest",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
     "node-fetch": "^3.3.0",

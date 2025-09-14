@@ -150,6 +150,10 @@ export declare type NSData = {
   base64Encoding(): string
 }
 
+export declare type NSMutableData = NSData & {
+  appendData(data: NSData): void
+}
+
 declare global {
   const NSData: {
     /**
@@ -209,5 +213,8 @@ declare global {
      * @param path NSString*
      */
     dataWithContentsOfMappedFile(path: string): NSData
+  }
+  const NSMutableData: {
+    ["new"](): NSMutableData
   }
 }

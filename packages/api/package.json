@@ -10,15 +10,15 @@
     "url": "git+https://github.com/ourongxing/ohmymn.git",
     "directory": "packages/api"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs --dts",
-    "dev": "tsup src/index.ts --format cjs --dts --watch",
+    "build": "tsup src/index.ts --format esm --dts",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
     "publish": "npm publish --access public --no-git-checks"
   },
   "files": [
-    "dist/**/*.js",
+    "dist/**/*.mjs",
     "dist/**/*.d.ts"
   ],
   "dependencies": {

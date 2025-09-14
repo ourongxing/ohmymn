@@ -1,5 +1,4 @@
-import media from ".vitepress/markdown-it/media"
-import { font, github, ogImage, ogUrl, title } from ".vitepress/meta"
+import { font, github, ogImage, ogUrl, title } from "../meta"
 import { defineConfig } from "vitepress"
 
 export const sharedConfig = defineConfig({
@@ -9,9 +8,6 @@ export const sharedConfig = defineConfig({
     theme: {
       light: "vitesse-light",
       dark: "vitesse-dark"
-    },
-    config(md) {
-      return md.use(media)
     }
   },
 

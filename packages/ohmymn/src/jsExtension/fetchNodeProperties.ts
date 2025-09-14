@@ -50,7 +50,7 @@ export const fetchNodeProperties = (node: CanvasNode, template: string) => {
   const nodeNote = node.note
   return {
     ...oldFunc,
-    titles: isRequire("titles") && undefine2undefine(node, k => k.titles()),
+    titles: isRequire("titles") && node.titles,
     id: isRequire("id") && node.id,
     url: isRequire("url") && {
       pure: undefine2undefine(node.id, t => `${MN.scheme}://note/` + t),
